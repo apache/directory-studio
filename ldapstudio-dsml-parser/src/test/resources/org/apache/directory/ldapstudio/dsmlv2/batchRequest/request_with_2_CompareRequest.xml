@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="1234567890">
+	<compareRequest requestID="9" dn="CN=Bob Rush,DC=Example,DC=COM">
+		<assertion name="sn"><value>CN=Michael Scofield, DC=prisonbreak, Dc=com</value></assertion>
+	</compareRequest>
+	<compareRequest requestID="9" dn="CN=Bob Rush,DC=Example,DC=COM">
+		<assertion name="sn"><value>CN=Michael Scofield, DC=prisonbreak, Dc=com</value></assertion>
+	</compareRequest>
+</batchRequest>

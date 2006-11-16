@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<modDNRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM"
+				newrdn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM2"
+				deleteoldrdn="0">
+	</modDNRequest>
+</batchRequest>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+<searchRequest dn="ou=marketing,dc=microsoft,dc=com"
+				scope="baseObject"
+				derefAliases="neverDerefAliases">
+		<filter>
+			<not>
+				<approxMatch>
+					<value name="sn">foobar</value>
+				</approxMatch>
+				<approxMatch>
+					<value name="sn">foobar</value>
+				</approxMatch>
+			</not>
+		</filter>
+	</searchRequest>
+</batchRequest>

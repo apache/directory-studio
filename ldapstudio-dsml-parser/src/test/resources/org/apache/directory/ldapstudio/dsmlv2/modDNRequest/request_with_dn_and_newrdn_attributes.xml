@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<modDNRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM"
+				newrdn="CN=Steve Jobs,OU=Dev,DC=apple,DC=com">
+	</modDNRequest>
+</batchRequest>

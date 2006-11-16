@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
+	<searchResponse>
+		<searchResultReference>
+			<control type="1.2.840.113556.1.4.643" criticality="true">
+			</control>
+			<control type="1.2.840.113556.1.4.789" criticality="false">
+			</control>
+			<control type="1.2.840.113556.1.4.456" criticality="true">
+			</control>
+			<ref>ldap://localhost</ref>
+		</searchResultReference>
+		<searchResultDone>
+			<resultCode code="0" descr="success"/>
+		</searchResultDone>
+	</searchResponse>		
+</batchResponse>

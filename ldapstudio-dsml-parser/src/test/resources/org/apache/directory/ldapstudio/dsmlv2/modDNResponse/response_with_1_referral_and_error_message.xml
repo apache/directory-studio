@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
+	<modDNResponse requestID="10">
+		<resultCode code="2" descr="protocolError"/>
+    	<errorMessage>Unrecognized extended operation EXTENSION_OID: 1.2.6.1.4.1.18060.1.1.1.100.2</errorMessage>
+		<referral>ldap://www.apache.org</referral>
+	</modDNResponse>
+</batchResponse>

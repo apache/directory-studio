@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+<searchRequest scope="singleLevel"
+				derefAliases="neverDerefAliases">
+		<filter>
+			<approxMatch name="sn">
+				<value>toto</value>
+			</approxMatch>
+		</filter>
+	</searchRequest>
+</batchRequest>

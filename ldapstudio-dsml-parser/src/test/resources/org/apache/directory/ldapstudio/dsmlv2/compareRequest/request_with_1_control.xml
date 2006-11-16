@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<compareRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+		<control type="1.2.840.113556.1.4.643" criticality="true">
+			<controlValue><!-- comment -->Some text<!-- another --></controlValue>
+		</control>
+		<assertion name="sn"><value>Johnson</value></assertion>
+	</compareRequest>
+</batchRequest>

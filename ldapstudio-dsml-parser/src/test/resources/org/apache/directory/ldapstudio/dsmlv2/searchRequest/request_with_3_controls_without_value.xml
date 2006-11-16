@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+<searchRequest dn="ou=marketing,dc=microsoft,dc=com"
+				scope="singleLevel"
+				derefAliases="neverDerefAliases">
+		<control type="1.2.840.113556.1.4.643" criticality="true">
+		</control>
+		<control type="1.2.840.113556.1.4.789" criticality="false">
+		</control>
+		<control type="1.2.840.113556.1.4.456" criticality="true">
+		</control>
+		<filter>
+			<approxMatch name="sn">
+				<value>toto</value>
+			</approxMatch>
+		</filter>
+	</searchRequest>
+</batchRequest>

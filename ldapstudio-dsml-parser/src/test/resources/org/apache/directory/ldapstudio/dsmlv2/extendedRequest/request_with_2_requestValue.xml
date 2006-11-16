@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<extendedRequest>
+		<requestName>1.3.563.52.425</requestName>
+		<requestValue xsi:type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</requestValue>
+		<requestValue xsi:type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</requestValue>
+	</extendedRequest>
+</batchRequest>

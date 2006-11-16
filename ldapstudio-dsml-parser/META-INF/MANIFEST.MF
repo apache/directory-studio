@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Package: org.apache.directory.ldapstudio.dsmlv2.*
+
+Name: org.apache.directory.ldapstudio.dsmlv2.*
+Specification-Title: ldapstudio-dsml-parser
+Specification-Version: 1.0
+Specification-Vendor: Apache Software Foundation
+Implementation-Title: org.apache.directory.ldapstudio.dsmlv2.*
+Implementation-Version: 1.0
+Implementation-Vendor: Apache Software Foundation
+Bundle-ClassPath: .

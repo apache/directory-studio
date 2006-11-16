@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
+	<delResponse>
+		<control type="1.2.840.113556.1.4.643" criticality="true">
+			<controlValue><!-- comment -->Some text<!-- another --></controlValue>
+		</control>
+		<control type="1.2.840.113556.1.4.789" criticality="false">
+			<controlValue><!-- comment -->Some other text<!-- another --></controlValue>
+		</control>
+		<resultCode code="0" descr="success"/>
+	</delResponse>
+</batchResponse>

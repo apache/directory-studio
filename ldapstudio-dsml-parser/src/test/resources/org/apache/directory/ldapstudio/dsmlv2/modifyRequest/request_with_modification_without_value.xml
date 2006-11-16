@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<modifyRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+		<modification name="directReport" operation="add">
+		</modification>
+	</modifyRequest>
+</batchRequest>

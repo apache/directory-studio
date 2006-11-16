@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="1234567890">
+	<extendedRequest requestID="12">
+		<requestName>1.2.6.1.4.1.18060.1.1.1.100.2</requestName>
+	</extendedRequest>
+</batchRequest>

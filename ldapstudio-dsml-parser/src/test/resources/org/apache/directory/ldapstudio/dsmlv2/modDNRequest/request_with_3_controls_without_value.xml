@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<modDNRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM"
+								newrdn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM2">
+		<control type="1.2.840.113556.1.4.643" criticality="true">
+		</control>
+		<control type="1.2.840.113556.1.4.789" criticality="false">
+		</control>
+		<control type="1.2.840.113556.1.4.456" criticality="true">
+		</control>
+	</modDNRequest>
+</batchRequest>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<authRequest requestID="456" principal="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+	</authRequest>
+</batchRequest>

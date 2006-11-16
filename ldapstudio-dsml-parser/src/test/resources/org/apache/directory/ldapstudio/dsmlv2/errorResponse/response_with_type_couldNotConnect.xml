@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
+	<errorResponse requestID="456" type="couldNotConnect">
+	</errorResponse>	
+</batchResponse>

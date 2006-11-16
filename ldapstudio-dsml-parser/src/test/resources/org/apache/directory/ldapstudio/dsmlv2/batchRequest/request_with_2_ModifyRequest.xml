@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="1234567890">
+	<modifyRequest requestID="13" dn="CN=Bob Rush,DC=Example,DC=COM">
+		<modification name="sn" operation="add">
+			<value>CN=John Smith, DC=microsoft, DC=com</value>
+			<value>CN=Michael Scofield, DC=prisonbreak, DC=com</value>
+		</modification>
+	</modifyRequest>
+	<modifyRequest requestID="13" dn="CN=Bob Rush,DC=Example,DC=COM">
+		<modification name="sn" operation="add">
+			<value>CN=John Smith, DC=microsoft, DC=com</value>
+			<value>CN=Michael Scofield, DC=prisonbreak, DC=com</value>
+		</modification>
+	</modifyRequest>
+</batchRequest>

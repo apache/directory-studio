@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<compareResponse requestID="30">
+		<resultCode code="0" descr="success"/>
+	</compareResponse>
+	<compareResponse requestID="30">
+		<resultCode code="0" descr="success"/>
+	</compareResponse>
+</batchResponse>

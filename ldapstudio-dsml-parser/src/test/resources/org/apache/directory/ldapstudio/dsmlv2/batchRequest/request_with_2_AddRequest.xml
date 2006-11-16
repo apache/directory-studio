@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="1234567890">
+	<addRequest requestID="5" dn="CN=Bob Rush,DC=Example,DC=COM">
+		<attr name="objectclass"><value>top</value></attr>
+		<attr name="objectclass"><value>person</value></attr>
+		<attr name="sn"><value>snvalue</value></attr>
+	</addRequest>
+	<addRequest requestID="5" dn="CN=Bob Rush,DC=Example,DC=COM">
+		<attr name="objectclass"><value>top</value></attr>
+		<attr name="objectclass"><value>person</value></attr>
+		<attr name="sn"><value>snvalue</value></attr>
+	</addRequest>
+</batchRequest>
