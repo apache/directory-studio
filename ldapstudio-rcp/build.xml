@@ -1,0 +1,217 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<project name="ldapstudio-rcp" default="product" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	<property name="project.name" value="org.apache.directory.ldapstudio" />
+	<property name="project.version" value="1.0.0" />
+
+	<property name="ldapstudio-rcp.output" value="${basedir}/target" />
+	<property name="ldapstudio-rcp.build" value="${ldapstudio-rcp.output}/build" />
+	<property name="ldapstudio-rcp.src" value="${basedir}/src/main/java" />
+	<property name="lib.dir" value="lib" />
+
+
+	<property name="repository.dir" location="../dependencies/externals/" />
+
+	<!-- Configuring Ivy (Needs to be AFTER the $repository.dir declaration) -->
+	<ivy:configure file="../tools/ivyconf.xml" />
+
+	<property name="ldapstudio-rcp.eclipse.dir" value="../dependencies/eclipse" />
+	<property name="ldapstudio-rcp.eclipse.version" value="3.2" />
+	<condition property="ldapstudio-rcp.os.name" value="macosx">
+		<and>
+			<os family="unix" />
+			<os name="Mac OS X" />
+		</and>
+	</condition>
+	<condition property="ldapstudio-rcp.os.extension" value=".app">
+		<and>
+			<os family="unix" />
+			<os name="Mac OS X" />
+		</and>
+	</condition>
+	<condition property="ldapstudio-rcp.os.name" value="linux">
+		<os family="unix" />
+	</condition>
+	<condition property="ldapstudio-rcp.os.extension" value="">
+		<os family="unix" />
+	</condition>
+	<condition property="ldapstudio-rcp.os.name" value="win32">
+			<os family="windows" />
+	</condition>
+	<condition property="ldapstudio-rcp.os.extension" value=".exe">
+		<os family="windows" />
+	</condition>	
+
+	<!-- ================================== -->
+	<!--              RESOLVE               -->
+	<!-- ================================== -->
+	<target name="resolve" description="--> retreive dependencies with ivy">
+		<ivy:retrieve />
+	</target>
+
+
+	<!-- ================================== -->
+	<!--             CLASSPATH              -->
+	<!-- ================================== -->
+	<target name="build-classpath" description="Computes a classpath according to current OS">
+		<path id="classpath">
+			<fileset dir="../dependencies/eclipse/3.2">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}" />
+		</path>
+	</target>
+
+	<!-- ================================== -->
+	<!--             COMPILE                -->
+	<!-- ================================== -->
+	<target name="compile" depends="resolve,checkclasses,build-classpath" unless="classes-up2date" description="Compiles the plugin">
+		<mkdir dir="${ldapstudio-rcp.build}" />
+		<copy todir="${ldapstudio-rcp.build}">
+			<fileset dir="${basedir}">
+				<include name="log4j.conf" />
+				<include name="plugin.xml" />
+				<include name="toc.xml" />
+				<include name="plugin.properties" />
+				<include name="splash.bmp" />
+				<include name="plugin_customization.ini" />
+				<include name="product_lg.gif" />
+			</fileset>
+		</copy>
+		<mkdir dir="${ldapstudio-rcp.build}/${lib.dir}" />
+		<copy todir="${ldapstudio-rcp.build}/${lib.dir}">
+			<fileset dir="${basedir}/${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<mkdir dir="${ldapstudio-rcp.build}/META-INF" />
+		<copy todir="${ldapstudio-rcp.build}/META-INF">
+			<fileset dir="${basedir}/META-INF">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<mkdir dir="${ldapstudio-rcp.build}/ressources" />
+		<copy todir="${ldapstudio-rcp.build}/ressources">
+			<fileset dir="${basedir}/ressources">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<copy todir="${ldapstudio-rcp.build}">
+			<fileset dir="${basedir}/src/main/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<javac source="1.5" debug="yes" srcdir="${ldapstudio-rcp.src}" excludes="" destdir="${ldapstudio-rcp.build}" classpathref="classpath" listfiles="yes" />
+
+		<tstamp>
+			<format pattern="yyyy-MMM-dd, HH:mm 'GMT'Z" property="timestamp" locale="en" />
+		</tstamp>
+		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${ldapstudio-rcp.build}/compile.timestamp" />
+	</target>
+
+	<target name="checkclasses">
+		<uptodate property="classes-up2date" targetfile="${ldapstudio-rcp.build}/compile.timestamp">
+			<srcfiles dir="${ldapstudio-rcp.src}" />
+		</uptodate>
+	</target>
+
+	<!-- ================================== -->
+	<!--              JAR                   -->
+	<!-- ================================== -->
+	<target name="jar" description="Creates jar file" depends="compile">
+		<jar destfile="${ldapstudio-rcp.output}/${project.name}_${project.version}.jar" manifest="${ldapstudio-rcp.build}/META-INF/MANIFEST.MF">
+			<fileset dir="${ldapstudio-rcp.build}" excludes="compile.timestamp" />
+		</jar>
+	</target>
+
+	<!-- ================================== -->
+	<!--              JAVADOC               -->
+	<!-- ================================== -->
+	<target name="javadoc" description="Generate Javadoc files">
+		<mkdir dir="${basedir}/doc" />
+		<javadoc destdir="${basedir}/doc">
+			<fileset dir="src/main/java" defaultexcludes="yes">
+				<include name="org/apache/ldapstudio/**"/>
+			</fileset>
+		</javadoc>
+	</target>
+	
+	<!-- ================================== -->
+	<!--     Eclipse RCP-based product      -->
+	<!-- ================================== -->
+	<property name="ldapstudio-rcp.application" value="${ldapstudio-rcp.output}/LDAP Studio" />
+	<property name="ldapstudio-rcp.application.zip" value="${ldapstudio-rcp.output}/${project.name}_${project.version}-${ldapstudio-rcp.os.name}-${os.arch}.zip" />
+
+	<target name="product" depends="jar" description="Create the standalone eclipse RCP application">
+		<mkdir dir="${ldapstudio-rcp.application}" />
+		<copy todir="${ldapstudio-rcp.application}" failonerror="true" overwrite="true" preservelastmodified="yes">
+			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/${ldapstudio-rcp.os.name}/rcp/" />
+		</copy>
+		<mkdir dir="${ldapstudio-rcp.application}/plugins" />
+		<copy todir="${ldapstudio-rcp.application}/plugins" failonerror="true" overwrite="true">
+			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/${ldapstudio-rcp.os.name}" excludes="rcp/" />
+			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/plugins" />
+		</copy>
+		<move file="${ldapstudio-rcp.application}/eclipse${ldapstudio-rcp.os.extension}" tofile="${ldapstudio-rcp.application}/LDAP Studio${ldapstudio-rcp.os.extension}">
+		</move>
+		<move file="${ldapstudio-rcp.output}/${project.name}_${project.version}.jar" tofile="${ldapstudio-rcp.application}/plugins/${project.name}_${project.version}.jar">
+		</move>
+		<antcall target="setPermission_${ldapstudio-rcp.os.name}" />
+	</target>
+
+	<!-- ================================== -->
+	<!--        Set Right Permissions       -->
+	<!-- ================================== -->
+	<target name="setPermission_macosx" description="Sets the right permissions on Mac OS X">
+		<chmod file="${ldapstudio-rcp.application}/LDAP Studio.app/Contents/MacOS/LDAPStudio" perm="755" />
+	</target>
+
+	<target name="setPermission_linux" description="Sets the right permissions on Linux">
+		<chmod file="${ldapstudio-rcp.application}/LDAP Studio" perm="755" />
+	</target>
+	
+	<target name="setPermission_win32" description="Sets the right permissions on windows">
+			<chmod file="${ldapstudio-rcp.application}/LDAP Studio${ldapstudio-rcp.os.extension}" perm="755" />
+	</target>
+
+	<!-- ================================== -->
+	<!--               CLEAN                -->
+	<!-- ================================== -->
+	<target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
+		<delete includeemptydirs="true">
+			<fileset dir="${basedir}">
+				<exclude name=".project" />
+				<exclude name=".classpath" />
+				<exclude name="build.properties" />
+				<exclude name="build.xml" />
+				<exclude name="ivy.xml" />
+				<exclude name="ldapstudio.product" />
+				<exclude name="log4j.conf" />
+				<exclude name="META-INF/**" />
+				<exclude name="plugin_customization.ini" />
+				<exclude name="plugin.properties" />
+				<exclude name="plugin.xml" />
+				<exclude name="product_lg.gif" />
+				<exclude name="ressources/**" />
+				<exclude name="splash.bmp" />
+				<exclude name="src/**" />
+			</fileset>
+		</delete>
+	</target>
+</project>

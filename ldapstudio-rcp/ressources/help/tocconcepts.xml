@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Concepts" link_to="toc.xml#concepts"> 
+	<topic label="Views"> 
+		<topic label="Hierarchy view" href="ressources/help/html/concepts/views_hierarchy_view.html" />
+		<topic label="Schemas view" href="ressources/help/html/concepts/views_schemas_view.html" />
+		<topic label="Search view" href="ressources/help/html/concepts/views_search_view.html" />
+	</topic>
+	<topic label="Editors">
+		<topic label="Attribute type editor" href="ressources/help/html/concepts/editors_attribute_type.html" />
+		<topic label="Object class editor" href="ressources/help/html/concepts/editors_object_class.html" /> 
+		<topic label="Schema editor" href="ressources/help/html/concepts/editors_schema.html" /> 
+	</topic> 
+</toc>

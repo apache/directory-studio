@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDAP Studio
+Bundle-SymbolicName: org.apache.directory.ldapstudio;singleton:=true
+Bundle-Version: 0.1
+Bundle-Activator: org.apache.directory.ldapstudio.Activator
+Bundle-Vendor: apache.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.update.core,
+ org.eclipse.update.ui
+Eclipse-LazyStart: true
+Bundle-ClassPath: .,
+ lib/nlog4j-1.2.24.jar
