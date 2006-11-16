@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDAP Studio DSMLv2 Plug-in
+Bundle-SymbolicName: org.apache.directory.ldapstudio.dsmlv2plugin;singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: org.apache.directory.ldapstudio.dsmlv2.Activator
+Bundle-Vendor: apache.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Eclipse-LazyStart: true
+Bundle-ClassPath: lib/dom4j-1.6.1.jar,
+ lib/ldapstudio-dsml-parser-0.1.jar,
+ lib/nlog4j-1.2.25.jar,
+ lib/shared-asn1-0.9.6-SNAPSHOT.jar,
+ lib/shared-ldap-0.9.6-SNAPSHOT.jar,
+ lib/xpp3-1.1.3_8.jar,
+ lib/commons-collections-3.1.jar,
+ .
