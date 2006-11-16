@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<plugin>
+<extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.directory.ldapstudio.schemas.view.perspectives.StandardPerspective"
+            id="org.apache.directory.ldapstudio.schemas.perspective"
+            name="%ldapstudio-schemas-plugin.perspective.schemas.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer"
+            icon="ressources/icons/chart_organisation.png"
+            id="org.apache.directory.ldapstudio.schemas.view.HierarchicalViewer"
+            name="%ldapstudio-schemas-plugin.views.hierarchy.name"/>
+      <view
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager"
+            icon="ressources/icons/box.png"
+            id="org.apache.directory.ldapstudio.schemas.view.PoolManager"
+            name="%ldapstudio-schemas-plugin.views.schemas.name"/>
+      <view
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.SearchViewer"
+            icon="ressources/icons/find.png"
+            id="org.apache.directory.ldapstudio.schemas.view.SearchViewer"
+            name="%ldapstudio-schemas-plugin.views.search.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.openalocalschema.description"
+            id="org.apache.directory.ldapstudio.schemas.openlocal"
+            name="%ldapstudio-schemas-plugin.commands.openalocalschema.name">
+      </command>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.saveselectedschema.description"
+            id="org.apache.directory.ldapstudio.schemas.save"
+            name="%ldapstudio-schemas-plugin.commands.saveselectedschema.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.saveselectedschemaas.description"
+            id="org.apache.directory.ldapstudio.schemas.saveas"
+            name="%ldapstudio-schemas-plugin.commands.saveselectedschemaas.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.saveallschemas.description"
+            id="org.apache.directory.ldapstudio.schemas.saveall"
+            name="%ldapstudio-schemas-plugin.commands.saveallschemas.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.removeselectedschema.description"
+            id="org.apache.directory.ldapstudio.schemas.removeschema"
+            name="%ldapstudio-schemas-plugin.commands.removeselectedschema.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.viewschemasourcecode.description"
+            id="org.apache.directory.ldapstudio.schemas.openschemasourcecode"
+            name="%ldapstudio-schemas-plugin.commands.viewschemasourcecode.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.delete.description"
+            id="org.apache.directory.ldapstudio.schemas.delete"
+            name="%ldapstudio-schemas-plugin.commands.delete.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.createanewschema.description"
+            id="org.apache.directory.ldapstudio.schemas.createanewschema"
+            name="%ldapstudio-schemas-plugin.commands.createanewschema.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.createanewobjectclass.description"
+            id="org.apache.directory.ldapstudio.schemas.createanewobjectclass"
+            name="%ldapstudio-schemas-plugin.commands.createanewobjectclass.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.createanewattributetype.description"
+            id="org.apache.directory.ldapstudio.schemas.createanewattributetype"
+            name="%ldapstudio-schemas-plugin.commands.createanewattributetype.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.sorthierarchicalviewer.description"
+            id="org.apache.directory.ldapstudio.schemas.sorthierarchicalviewer"
+            name="%ldapstudio-schemas-plugin.commands.sorthierarchicalviewer.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="%ldapstudio-schemas-plugin.commands.sortpoolmanager.description"
+            id="org.apache.directory.ldapstudio.schemas.sortpoolmanager"
+            name="%ldapstudio-schemas-plugin.commands.sortpoolmanager.name"/>
+      <category
+            id="org.apache.directory.ldapstudio.schemas.category"
+            name="%ldapstudio-schemas-plugin.commands.category.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.apache.directory.ldapstudio.schemas.openlocal"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+O">
+      </key>
+      <key
+            commandId="org.eclipse.ui.file.exit"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+Q">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor"
+            default="false"
+            icon="ressources/icons/object_class.gif"
+            id="org.apache.directory.ldapstudio.schemas.view.objectclassformeditor"
+            name="%ldapstudio-schemas-plugin.editors.objectclassformeditor.name"/>
+      <editor
+            class="org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor"
+            default="false"
+            icon="ressources/icons/attribute_type.gif"
+            id="org.apache.directory.ldapstudio.schemas.view.attributetypeformeditor"
+            name="%ldapstudio-schemas-plugin.editors.attributetypeformeditor.name"/>
+      <editor
+            class="org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor"
+            default="false"
+            icon="ressources/icons/schema.gif"
+            id="org.apache.directory.ldapstudio.schemas.view.schemaformeditor"
+            name="%ldapstudio-schemas-plugin.editors.schemaformeditor.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
+            id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
+            name="%ldapstudio-schemas-plugin.wizards.createanewschema.name"/>
+      <wizard
+            class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjectClassWizard"
+            id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjecClassWizard"
+            name="%ldapstudio-schemas-plugin.wizards.createanewobjectclass.name"/>
+      <wizard
+            class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"
+            id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"
+            name="%ldapstudio-schemas-plugin.wizards.createanewattributetype.namee"/>>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.GeneralPreferencePage"
+            id="org.apache.directory.ldapstudio.schemas.preferences.general"
+            name="%ldapstudio-schemas-plugin.preferencepages.objectclassandattributetype.name"/>
+      <page
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage"
+            id="org.apache.directory.ldapstudio.schemas.preferences.schema"
+            name="%ldapstudio-schemas-plugin.preferencepages.schema.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.apache.directory.ldapstudio.schemas.controller.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true"/>
+      <toc file="ressources/help/tocconcepts.xml"/>
+      <toc file="ressources/help/tocreference.xml"/>
+      <toc file="ressources/help/toctasks.xml"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.apache.directory.ldapstudio.schemas.actionSet"
+            label="%ldapstudio-schemas-plugin.actionsets.actionset.label"
+            visible="true">
+         <menu
+               id="org.apache.directory.ldapstudio.schemas.schemas.menu"
+               label="%ldapstudio-schemas-plugin.actionsets.menu.schemas.label">
+         </menu>
+         <action
+               class="org.apache.directory.ldapstudio.schemas.controller.actions.RemoveSchemaAction"
+               icon="ressources/icons/schema_remove.png"
+               id="org.apache.directory.ldapstudio.schemas.actions.removeschema"
+               label="%ldapstudio-schemas-plugin.actionsets.action.removeselectedschema.label"
+               menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManagePoolGroup"
+               toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+               tooltip="%ldapstudio-schemas-plugin.actionsets.action.removeselectedschema.tooltip"/>
+         <action
+               class="org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewSchemaAction"
+               icon="ressources/icons/schema_new.png"
+               id="org.apache.directory.ldapstudio.schemas.actions.createanewschema"
+               label="%ldapstudio-schemas-plugin.actionsets.action.createanewschema.label"
+               menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManagePoolGroup"
+               toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+               tooltip="%ldapstudio-schemas-plugin.actionsets.action.createanewschema.tooltip"/>
+         <action
+               class="org.apache.directory.ldapstudio.schemas.controller.actions.OpenLocalFileAction"
+               icon="ressources/icons/open.png"
+               id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
+               label="%ldapstudio-schemas-plugin.actionsets.action.openaschemafile.label"
+               menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManagePoolGroup"
+               toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+               tooltip="%ldapstudio-schemas-plugin.actionsets.action.openaschemafile.tooltip"/>
+          <action
+                class="org.apache.directory.ldapstudio.schemas.controller.actions.SaveAllAction"
+                icon="ressources/icons/save_all.png"
+                id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
+                label="Save all schemas"
+                menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManageSaveGroup"
+                toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+                tooltip="Saves all the schemas"/>
+          <action
+                class="org.apache.directory.ldapstudio.schemas.controller.actions.SaveAsAction"
+                icon="ressources/icons/save_as.png"
+                id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
+                label="%ldapstudio-schemas-plugin.actionsets.action.saveschemaas.label"
+                menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManageSaveGroup"
+                toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+                tooltip="%ldapstudio-schemas-plugin.actionsets.action.saveschemaas.tooltip"/>
+          <action
+                class="org.apache.directory.ldapstudio.schemas.controller.actions.SaveAction"
+                icon="ressources/icons/save.gif"
+                id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
+                label="%ldapstudio-schemas-plugin.actionsets.action.saveschema.label"
+                menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManageSaveGroup"
+                toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+                tooltip="%ldapstudio-schemas-plugin.actionsets.action.saveschema.tooltip"/>
+          <action
+                class="org.apache.directory.ldapstudio.schemas.controller.actions.DeleteAction"
+                icon="ressources/icons/delete.gif"
+                id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
+                label="%ldapstudio-schemas-plugin.actionsets.action.deleteselecteditem.label"
+                menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManageSchemaGroup"
+                toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+                tooltip="%ldapstudio-schemas-plugin.actionsets.action.deleteselecteditem.tooltip"/>
+          <action
+                class="org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttributeTypeAction"
+                icon="ressources/icons/attribute_type_new.gif"
+                id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
+                label="%ldapstudio-schemas-plugin.actionsets.action.createanewattributetype.label"
+                menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManageSchemaGroup"
+                toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+                tooltip="%ldapstudio-schemas-plugin.actionsets.action.createanewattributetype.tooltip"/>
+          <action
+                class="org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction"
+                icon="ressources/icons/object_class_new.gif"
+                id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
+                label="%ldapstudio-schemas-plugin.actionsets.action.createanewobjectclass.label"
+                menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManageSchemaGroup"
+                toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
+                tooltip="%ldapstudio-schemas-plugin.actionsets.action.createanewobjectclass.tooltip"/>
+      </actionSet>
+   </extension>
+</plugin>
