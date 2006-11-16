@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Main-Class: org.apache.directory.ldapstudio.dsmlCommand.DsmlCommand
+Class-Path: lib/commons-collections-3.1.jar 
+ lib/commons-cli-1.0.jar 
+ lib/commons-lang-2.1.jar 
+ lib/commons-logging-1.1.jar 
+ lib/dom4j-1.6.1.jar 
+ lib/nlog4j-1.2.25.jar 
+ lib/shared-asn1-0.9.6-SNAPSHOT.jar 
+ lib/shared-ldap-0.9.6-SNAPSHOT.jar 
+ lib/xpp3-1.1.3_8.jar 
+ lib/ldapstudio-dsml-parser-0.1.jar 
+ 
