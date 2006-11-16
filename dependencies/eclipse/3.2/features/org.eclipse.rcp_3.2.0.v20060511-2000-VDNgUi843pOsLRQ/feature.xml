@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.rcp"
+      label="%featureName"
+      version="3.2.0.v20060511-2000-VDNgUi843pOsLRQ"
+      provider-name="%providerName"
+      plugin="org.eclipse.rcp"
+      image="eclipse_update_120.jpg">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://update.eclipse.org/updates/3.2"/>
+   </url>
+
+   <plugin
+         id="com.ibm.icu"
+         download-size="0"
+         install-size="0"
+         version="3.4.4.1"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.commands"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.I20060511-0800a"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.jobs"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.expressions"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060512-1326"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.runtime"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511"
+         unpack="false"/>
+         
+   <plugin
+         id="org.eclipse.core.runtime.compatibility.auth"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.osgi"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060510"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.help"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060510b"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232h"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.I20060511-0800a"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jface.databinding"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.I20060511-2000"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.I20060511-0800a"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.workbench"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.I20060511-1600"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.update.configurator"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.win32.win32.x86"
+         os="win32"
+         ws="win32"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.gtk.linux.x86"
+         os="linux"
+         ws="gtk"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+         
+	 <plugin
+         id="org.eclipse.swt.gtk.solaris.sparc"
+         os="solaris"
+         ws="gtk"
+         arch="sparc"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+         
+         <plugin
+         id="org.eclipse.swt.gtk.solaris.x86"
+         os="solaris"
+         ws="gtk"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.HEAD"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.gtk.linux.ppc"
+         os="linux"
+         ws="gtk"
+         arch="ppc"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.gtk.linux.x86_64"
+         os="linux"
+         ws="gtk"
+         arch="x86_64"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.carbon.macosx"
+         os="macosx"
+         ws="carbon"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.motif.aix.ppc"
+         os="aix"
+         ws="motif"
+         arch="ppc"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.motif.hpux.PA_RISC"
+         os="hpux"
+         ws="motif"
+         arch="PA_RISC"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.motif.linux.x86"
+         os="linux"
+         ws="motif"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.gtk.linux.ia64"
+         os="linux"
+         ws="gtk"
+         arch="ia64"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.HEAD"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.motif.solaris.sparc"
+         os="solaris"
+         ws="motif"
+         arch="sparc"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.photon.qnx.x86"
+         os="qnx"
+         ws="photon"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v3232g"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.motif.hpux.ia64_32"
+         os="hpux"
+         ws="motif"
+         arch="ia64_32"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.HEAD"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.rcp"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511-1200"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.contenttype"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511"
+         unpack="false"/>           
+
+   <plugin
+         id="org.eclipse.equinox.common"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060512"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.preferences"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.registry"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.v20060511"
+         unpack="false"/>
+
+</feature>

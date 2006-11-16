@@ -1,0 +1,19 @@
+<ivy-module version="1.0">
+	<info organisation="commons-cli"
+		module="commons-cli"
+		revision="1.0"
+		status="release"
+		publication="20060910013012"
+		default="true"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="commons-cli" type="jar" ext="jar" conf="default"/>
+	</publications>
+	<dependencies>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1" conf="default"/>
+		<dependency org="commons-lang" name="commons-lang" rev="2.1" conf="default"/>
+	</dependencies>
+</ivy-module>

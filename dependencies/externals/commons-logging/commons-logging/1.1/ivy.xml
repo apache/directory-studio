@@ -1,0 +1,23 @@
+<ivy-module version="1.0">
+	<info organisation="commons-logging"
+		module="commons-logging"
+		revision="1.1"
+		status="release"
+		publication="20060518223745"
+	/>
+	<configurations>
+		<conf name="default"/>
+		<conf name="api"/>
+		<conf name="log4j" extends="default"/>		
+	</configurations>
+	
+	<publications>
+		<artifact name="commons-logging" type="jar" ext="jar" conf="default"/>
+		<artifact name="commons-logging-api" type="jar" ext="jar" conf="api"/>
+		<artifact name="commons-logging-adapters" type="jar" ext="jar" conf="adapters"/>
+	</publications>
+	
+	<dependencies>
+		<dependency org="log4j" name="log4j" rev="1.2.13" conf="log4j->default"/>
+	</dependencies>
+</ivy-module>

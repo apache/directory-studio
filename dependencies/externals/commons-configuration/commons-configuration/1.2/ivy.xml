@@ -1,0 +1,15 @@
+<ivy-module version="1.0">
+	<info organisation="commons-configuration"
+		module="commons-configuration"
+		revision="1.2"
+		status="release"
+		publication="20060519013012"
+		default="true"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="commons-configuration" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>

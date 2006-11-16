@@ -1,0 +1,103 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2006 Intel Corporation and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Intel Corporation - initial API and implementation
+ *******************************************************************************/
+
+BODY {
+	background-color:<%=prefs.getViewBackground()%>;
+	font:<%=prefs.getViewFont()%>;
+	margin:0;
+	padding:0;
+	border:0;
+	cursor:default;
+}
+
+UL {
+	border-width:0; 
+	margin-<%=isRTL?"right":"left"%>:20px;
+}
+
+#root {
+	margin-top:5px;
+	margin-<%=isRTL?"right":"left"%>:5px;
+}
+  
+UL.expanded {
+	display:block;
+}
+
+UL.collapsed {
+	display:none;
+}
+
+LI {
+	margin:0;
+	list-style-image:none;
+	list-style-type:none;
+	white-space: nowrap;
+}
+
+IMG {
+	border:0;
+	margin:0;
+	padding:0;
+	margin-<%=isRTL?"left":"right"%>:4px;
+}
+
+A {
+	text-decoration:none;
+	padding-<%=isRTL?"left":"right"%>:2px;
+	/* this works in ie5.5, but not in ie5.0  */
+	white-space:nowrap;
+}
+
+A:link, A:visited {
+	color:blue;
+}
+
+A:hover {
+	text-decoration:underline; 
+}
+
+A.nolink {
+	text-decoration:none; 
+}
+
+A.nolink:link, A.nolink:visited {
+	color:WindowText;
+}
+
+A.nolink:hover {
+	text-decoration:none; 
+}
+
+A.active {
+	background:Highlight;
+	color:HighlightText;
+	width:100%;
+}
+
+A.active:link, A.active:visited {
+	color:HighlightText;
+}
+
+<%if (data.isMozilla()) {%>
+UL {
+	margin-<%=isRTL?"right":"left"%>:-20px;
+}
+
+#root {
+	margin-<%=isRTL?"right":"left"%>:-35px; 
+	margin-top:5px;
+}
+<%}%>
+
+.h {
+	visibility:hidden;
+}

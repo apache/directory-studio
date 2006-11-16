@@ -1,0 +1,20 @@
+<ivy-module version="1.0">
+	<info organisation="org.apache.directory.shared"
+		module="shared-ldap"
+		revision="0.9.6-SNAPSHOT"
+		status="release"
+		publication="20060105024201"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="shared-ldap" type="jar" ext="jar" conf="default"/>
+	</publications>
+	<dependencies>
+		<dependency org="org.apache.directory.shared" name="shared-asn1" rev="0.9.6-SNAPSHOT" conf="default"/>
+		<dependency org="org.slf4j" name="nlog4j" rev="1.2.24" conf="default"/>
+		<dependency org="commons-collections" name="commons-collections" rev="3.1" conf="default"/>
+		<dependency org="antlr" name="antlr" rev="2.7.6" conf="default"/>
+	</dependencies>
+</ivy-module>

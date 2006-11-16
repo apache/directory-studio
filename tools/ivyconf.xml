@@ -1,0 +1,16 @@
+<ivyconf>
+	<conf defaultResolver="default-chain" defaultConflictManager="all" checkUpToDate="true"/>
+	<resolvers  checkUpToDate="true">
+		
+        <filesystem name="svn-repository" m2compatible="true" checkconsistency="true">
+			<!-- classic ivy style -->
+			<artifact pattern="${repository.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[type]" />
+			<!-- be compatible with the stupid m2 style -->
+			<artifact pattern="${repository.dir}/[organisation]/[artifact]/[revision]/[artifact]-[revision].[type]" />
+			<ivy pattern="${repository.dir}/[organisation]/[module]/[revision]/ivy.xml" />
+		</filesystem>		
+        <chain name="default-chain" returnFirst="true">
+			<resolver ref="svn-repository"/>
+		</chain>
+	</resolvers>
+</ivyconf>
