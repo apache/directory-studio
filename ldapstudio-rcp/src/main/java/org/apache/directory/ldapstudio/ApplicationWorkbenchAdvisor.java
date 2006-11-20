@@ -90,7 +90,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
      */
     public String getInitialWindowPerspectiveId()
     {
-        return "org.apache.directory.ldapstudio.schemas.perspective"; // We open the Schema Perspective by Default
+        return PERSPECTIVE_ID;
     }
 
 
