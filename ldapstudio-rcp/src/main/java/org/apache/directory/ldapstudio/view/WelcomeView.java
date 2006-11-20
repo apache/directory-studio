@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.directory.ldapstudio.Messages;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -43,19 +44,9 @@ import org.eclipse.ui.part.ViewPart;
 /**
  * This class defines the Welcome View.
  */
-
 public class WelcomeView extends ViewPart
 {
     public static final String ID = "org.apache.directory.ldapstudio.view.WelcomeView"; //$NON-NLS-1$
-
-
-    /**
-     * The constructor.
-     */
-    public WelcomeView()
-    {
-        // Does Nothing
-    }
 
 
     /**
@@ -76,7 +67,7 @@ public class WelcomeView extends ViewPart
 
         // LDAP Browser Plugin Image & Button
         Image ldapBrowserImage = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
-            "ldapstudio_ldap-browser-plugin.png" ) );
+            "ldapstudio_ldap-browser-plugin.png" ) ); //$NON-NLS-1$
         Button ldapBrowserButton = new Button( container, SWT.PUSH );
         ldapBrowserButton.setImage( ldapBrowserImage );
         ldapBrowserButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
@@ -86,13 +77,13 @@ public class WelcomeView extends ViewPart
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
                     PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(
-                        "org.apache.directory.ldapstudio.browser.perspective" ) );
+                        "org.apache.directory.ldapstudio.browser.perspective" ) ); //$NON-NLS-1$
             }
         } );
 
         // Schemas Editor Plugin Image & Button
         Image schemasEditorImage = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
-            "ldapstudio_schemas-editor-plugin.png" ) );
+            "ldapstudio_schemas-editor-plugin.png" ) ); //$NON-NLS-1$
         Button schemasEditorButton = new Button( container, SWT.PUSH );
         schemasEditorButton.setImage( schemasEditorImage );
         schemasEditorButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
@@ -102,25 +93,25 @@ public class WelcomeView extends ViewPart
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
                     PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(
-                        "org.apache.directory.ldapstudio.schemas.perspective" ) );
+                        "org.apache.directory.ldapstudio.schemas.perspective" ) ); //$NON-NLS-1$
             }
         } );
 
         // LDAP Browser Plugin Label
         Label ldapBrowserLabel = new Label( container, SWT.NONE );
-        ldapBrowserLabel.setFont( new Font( null, "Georgia", 13, SWT.BOLD ) );
-        ldapBrowserLabel.setText( "LDAP Browser Plugin" );
+        ldapBrowserLabel.setFont( new Font( null, "Georgia", 13, SWT.BOLD ) ); //$NON-NLS-1$
+        ldapBrowserLabel.setText( Messages.getString("WelcomeView.LDAP_Browser_Plugin") ); //$NON-NLS-1$
         ldapBrowserLabel.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, true, true ) );
 
         // Schemas Editor Plugin Label
         Label schemasEditorLabel = new Label( container, SWT.NONE );
-        schemasEditorLabel.setFont( new Font( null, "Georgia", 13, SWT.BOLD ) );
-        schemasEditorLabel.setText( "Schemas Editor Plugin" );
+        schemasEditorLabel.setFont( new Font( null, "Georgia", 13, SWT.BOLD ) ); //$NON-NLS-1$
+        schemasEditorLabel.setText( Messages.getString("WelcomeView.Schemas_Editor_Plugin") ); //$NON-NLS-1$
         schemasEditorLabel.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, true, true ) );
 
         // Apache Software Foundation Image
         Image asfLogoImange = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
-            "asf-logo.gif" ) );
+            "asf-logo.gif" ) ); //$NON-NLS-1$
         Button asfLogoButton = new Button( container, SWT.PUSH );
         asfLogoButton.setImage( asfLogoImange );
         asfLogoButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false, 2, 1 ) );
@@ -131,24 +122,24 @@ public class WelcomeView extends ViewPart
                 try
                 {
                     PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(
-                        new URL( "http://www.apache.org/" ) );
+                        new URL( Messages.getString("WelcomeView.Apache.org_url") ) ); //$NON-NLS-1$
                 }
                 catch ( PartInitException e1 )
                 {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    // Displaying an error
+                    MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                        Messages.getString("WelcomeView.Error"), Messages.getString("WelcomeView.LDAP_Studio_was_unable_to_open_www.apache.org") ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 catch ( MalformedURLException e1 )
                 {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    // Will never be thrown
                 }
             }
         } );
 
         // Copyright Label
         Label copyrightLabel = new Label( container, SWT.NONE );
-        copyrightLabel.setText( "© Copyright 2006 - Apache Software Foundation" );
+        copyrightLabel.setText( Messages.getString("WelcomeView.Copyright") ); //$NON-NLS-1$
         copyrightLabel.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false, 2, 1 ) );
     }
 
