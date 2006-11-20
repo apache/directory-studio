@@ -39,6 +39,7 @@ public class ImageKeys
     public static final String ATTRIBUTE_EDIT = "resources/icons/attribute_edit.gif"; //$NON-NLS-1$
     public static final String FOLDER_ENTRY = "resources/icons/folder_entry.gif"; //$NON-NLS-1$
     public static final String WIZARD_CONNECTION = "resources/icons/wizard_connection.gif"; //$NON-NLS-1$
+    public static final String WIZARD_ATTRIBUTE = "resources/icons/wizard_attribute.gif"; //$NON-NLS-1$
     public static final String REFRESH = "resources/icons/refresh.gif"; //$NON-NLS-1$
     public static final String CONNECTION_ERROR = "resources/icons/connection_error.gif"; //$NON-NLS-1$
 }

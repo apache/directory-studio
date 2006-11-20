@@ -23,8 +23,11 @@ package org.apache.directory.ldapstudio.browser.controller.actions;
 
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
+import org.apache.directory.ldapstudio.browser.view.views.AttributeAddWizard;
 import org.apache.directory.ldapstudio.browser.view.views.AttributesView;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -47,6 +50,10 @@ public class AttributeNewAction extends Action
 
     public void run()
     {
-        System.out.println( "New attribute" );
+        // Creating the Wizard and opening it
+    	AttributeAddWizard wizard = new AttributeAddWizard();
+        WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
+        dialog.create();
+        dialog.open();
     }
 }
