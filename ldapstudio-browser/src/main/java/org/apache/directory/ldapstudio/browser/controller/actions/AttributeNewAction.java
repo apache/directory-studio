@@ -51,7 +51,7 @@ public class AttributeNewAction extends Action
     public void run()
     {
         // Creating the Wizard and opening it
-    	AttributeAddWizard wizard = new AttributeAddWizard();
+        AttributeAddWizard wizard = new AttributeAddWizard();
         WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
         dialog.create();
         dialog.open();

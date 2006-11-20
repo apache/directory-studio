@@ -20,26 +20,30 @@
 
 package org.apache.directory.ldapstudio.browser.view.views;
 
+
 import org.eclipse.jface.wizard.Wizard;
 
 
 /**
  * This class implements the Attribute Add Wizard
  */
-public class AttributeAddWizard extends Wizard {
+public class AttributeAddWizard extends Wizard
+{
 
     private AttributeAddWizardPage attributeAddWizardPage;
-    
+
+
     /**
      * Default constructor
      */
-    public AttributeAddWizard() 
+    public AttributeAddWizard()
     {
-    	attributeAddWizardPage = new AttributeAddWizardPage();
+        attributeAddWizardPage = new AttributeAddWizardPage();
         addPage( attributeAddWizardPage );
         setWindowTitle( "Add a new attribute" );
-	}
-	
+    }
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#needsPreviousAndNextButtons()
      */
@@ -48,7 +52,8 @@ public class AttributeAddWizard extends Wizard {
     {
         return false;
     }
-    
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#canFinish()
      */
@@ -57,6 +62,7 @@ public class AttributeAddWizard extends Wizard {
     {
         return attributeAddWizardPage.canFinish();
     }
+
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
