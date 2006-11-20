@@ -49,7 +49,7 @@ public class ConnectionWizard extends Wizard
     {
         cwip = new ConnectionWizardInformationPage();
         addPage( cwip );
-        setWindowTitle( "Connection" );
+        setWindowTitle( "Add a new connection" );
     }
 
 
