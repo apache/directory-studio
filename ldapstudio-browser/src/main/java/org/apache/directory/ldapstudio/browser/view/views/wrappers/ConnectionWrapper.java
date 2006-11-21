@@ -29,6 +29,7 @@ import org.apache.directory.ldapstudio.browser.model.Connection;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
+import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Image;
@@ -133,6 +134,10 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
         {
             children = new ArrayList<EntryWrapper>();
 
+            // Getting the Browser View
+            BrowserView browserView = ( BrowserView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                .getActivePage().findView( BrowserView.ID );
+
             try
             {
                 // Initialization of the DSML Engine and the DSML Response Parser
@@ -158,34 +163,46 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
 
                 if ( ldapResponse instanceof SearchResponse )
                 {
-                    // Updating the HasError Flag and updating the UI
-                    if ( hasError() )
+                    SearchResponse searchResponse = ( SearchResponse ) ldapResponse;
+
+                    LdapResult ldapResult = searchResponse.getSearchResultDone().getLdapResult();
+
+                    if ( ldapResult.getResultCode() == 0 )
                     {
-                        setHasError( false );
+                        // Updating the HasError Flag and updating the UI
+                        if ( hasError() )
+                        {
+                            setHasError( false );
 
-                        // Getting the Browser View
-                        BrowserView browserView = ( BrowserView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                            .getActivePage().findView( BrowserView.ID );
-                        browserView.getViewer().update( this, null );
+                            browserView.getViewer().update( this, null );
+                        }
+
+                        // Getting the Base DN
+                        SearchResultEntry baseDN = ( ( SearchResponse ) ldapResponse ).getCurrentSearchResultEntry();
+
+                        EntryWrapper baseDNWrapper = new EntryWrapper( baseDN );
+                        baseDNWrapper.setParent( this );
+                        baseDNWrapper.setIsBaseDN( true );
+
+                        children.add( baseDNWrapper );
                     }
+                    else
+                    {
+                        // Displaying an error
+                        MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                            "Error !", "An error has ocurred.\n" + ldapResult.getErrorMessage() );
 
-                    // Getting the Base DN
-                    SearchResultEntry baseDN = ( ( SearchResponse ) ldapResponse ).getCurrentSearchResultEntry();
+                        setHasError( true );
+                        clearChildren();
 
-                    EntryWrapper baseDNWrapper = new EntryWrapper( baseDN );
-                    baseDNWrapper.setParent( this );
-                    baseDNWrapper.setIsBaseDN( true );
-
-                    children.add( baseDNWrapper );
+                        browserView.getViewer().update( this, null );
+                        return null;
+                    }
                 }
                 else if ( ldapResponse instanceof ErrorResponse )
                 {
                     setHasError( true );
                     clearChildren();
-
-                    // Getting the Browser View
-                    BrowserView browserView = ( BrowserView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getActivePage().findView( BrowserView.ID );
 
                     ErrorResponse errorResponse = ( ErrorResponse ) ldapResponse;
                     // Displaying an error
