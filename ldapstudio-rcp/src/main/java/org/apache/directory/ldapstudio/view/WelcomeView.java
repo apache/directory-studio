@@ -61,14 +61,14 @@ public class WelcomeView extends ViewPart
 
         // Welcome Label
         Label welcomeLabel = new Label( container, SWT.CENTER );
-        welcomeLabel.setFont( new Font( null, "Georgia", 13, SWT.FLAT ) ); //$NON-NLS-1$
+        welcomeLabel.setFont( new Font( null, "Georgia", 13, SWT.BOLD ) ); //$NON-NLS-1$
         welcomeLabel.setText( Messages.getString( "WelcomeView.Welcome_message" ) ); //$NON-NLS-1$
         welcomeLabel.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 ) );
 
         // LDAP Browser Plugin Image & Button
         Image ldapBrowserImage = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
             "ldapstudio_ldap-browser-plugin.png" ) ); //$NON-NLS-1$
-        Button ldapBrowserButton = new Button( container, SWT.PUSH );
+        Button ldapBrowserButton = new Button( container, SWT.FLAT );
         ldapBrowserButton.setImage( ldapBrowserImage );
         ldapBrowserButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
         ldapBrowserButton.addSelectionListener( new SelectionAdapter()
