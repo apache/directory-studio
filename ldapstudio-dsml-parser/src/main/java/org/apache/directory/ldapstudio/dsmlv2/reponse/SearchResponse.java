@@ -47,7 +47,14 @@ public class SearchResponse extends LdapResponse
     
     public SearchResultEntry getCurrentSearchResultEntry()
     {
-        return searchResultEntryList.get( searchResultEntryList.size() - 1 );
+        if ( searchResultEntryList.size() > 0 )
+        {
+            return searchResultEntryList.get( searchResultEntryList.size() - 1 );
+        }
+        else
+        {
+            return null;
+        }
     }
 	
 	public boolean addSearchResultReference(SearchResultReference searchResultReference)
