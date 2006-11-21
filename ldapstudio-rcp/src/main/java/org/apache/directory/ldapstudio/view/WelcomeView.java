@@ -61,7 +61,7 @@ public class WelcomeView extends ViewPart
 
         // Welcome Label
         Label welcomeLabel = new Label( container, SWT.CENTER );
-        welcomeLabel.setFont( new Font( null, "Georgia", 13, SWT.BOLD ) ); //$NON-NLS-1$
+        welcomeLabel.setFont( new Font( null, "Georgia", 13, SWT.FLAT ) ); //$NON-NLS-1$
         welcomeLabel.setText( Messages.getString( "WelcomeView.Welcome_message" ) ); //$NON-NLS-1$
         welcomeLabel.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 ) );
 
@@ -84,7 +84,7 @@ public class WelcomeView extends ViewPart
         // Schemas Editor Plugin Image & Button
         Image schemasEditorImage = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
             "ldapstudio_schemas-editor-plugin.png" ) ); //$NON-NLS-1$
-        Button schemasEditorButton = new Button( container, SWT.PUSH );
+        Button schemasEditorButton = new Button( container, SWT.FLAT );
         schemasEditorButton.setImage( schemasEditorImage );
         schemasEditorButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
         schemasEditorButton.addSelectionListener( new SelectionAdapter()
@@ -112,7 +112,7 @@ public class WelcomeView extends ViewPart
         // Apache Software Foundation Image
         Image asfLogoImange = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
             "asf-logo.gif" ) ); //$NON-NLS-1$
-        Button asfLogoButton = new Button( container, SWT.PUSH );
+        Button asfLogoButton = new Button( container, SWT.FLAT );
         asfLogoButton.setImage( asfLogoImange );
         asfLogoButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false, 2, 1 ) );
         asfLogoButton.addSelectionListener( new SelectionAdapter()
