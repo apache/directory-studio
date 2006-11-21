@@ -31,6 +31,7 @@ public class ImageKeys
     public static final String CONNECTION_DELETE = "resources/icons/connection_delete.gif"; //$NON-NLS-1$
     public static final String CONNECTION_EDIT = "resources/icons/connection_edit.gif"; //$NON-NLS-1$
     public static final String CONNECTION_NEW = "resources/icons/connection_new.gif"; //$NON-NLS-1$
+    public static final String CONNECTION_RUNNING = "resources/icons/connection_running.gif"; //$NON-NLS-1$
     public static final String ENTRY = "resources/icons/entry.gif"; //$NON-NLS-1$
     public static final String ENTRY_NEW = "resources/icons/entry_new.gif"; //$NON-NLS-1$
     public static final String ENTRY_DELETE = "resources/icons/entry_delete.gif"; //$NON-NLS-1$

@@ -28,6 +28,7 @@ import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.apache.directory.ldapstudio.browser.view.views.ConnectionWizard;
 import org.apache.directory.ldapstudio.browser.view.views.ConnectionWizard.ConnectionWizardType;
 import org.apache.directory.ldapstudio.browser.view.views.wrappers.ConnectionWrapper;
+import org.apache.directory.ldapstudio.browser.view.views.wrappers.ConnectionWrapper.ConnectionWrapperState;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -79,7 +80,7 @@ public class ConnectionEditAction extends Action
         }
 
         // Updating the state of the Connection since it has changed (this causes the icon to change)
-        connectionWrapper.setHasError( false );
+        connectionWrapper.setState( ConnectionWrapperState.NONE );
         connectionWrapper.connectionChanged();
         
         selectedConnection.notifyListeners();

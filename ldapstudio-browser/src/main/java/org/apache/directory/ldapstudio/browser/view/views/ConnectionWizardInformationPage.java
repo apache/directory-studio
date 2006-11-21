@@ -161,7 +161,7 @@ public class ConnectionWizardInformationPage extends WizardPage
         // Prefix User DN with Base DN
         Label prefixUserDNLabel = new Label( userGroup, SWT.NONE );
         prefixUserDN = new Button( userGroup, SWT.CHECK );
-        prefixUserDN.setText( "Prefix User DN with Base DN" );
+        prefixUserDN.setText( "Append Base DN to User DN" );
         prefixUserDN.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         // Password
