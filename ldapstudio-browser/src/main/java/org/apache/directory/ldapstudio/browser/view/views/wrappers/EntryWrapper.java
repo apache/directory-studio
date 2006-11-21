@@ -234,8 +234,7 @@ public class EntryWrapper implements Comparable<EntryWrapper>, DisplayableTreeVi
             try
             {
                 // Initialization of the DSML Engine and the DSML Response Parser
-                Dsmlv2Engine engine = new Dsmlv2Engine( getConnection().getHost(), getConnection().getPort(),
-                    getConnection().getUserDN().getNormName(), getConnection().getPassword() );
+                Dsmlv2Engine engine = getDsmlv2Engine();
                 Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
                 String request = "<batchRequest>" + "	<searchRequest dn=\"" + getEntry().getObjectName().getNormName()
@@ -310,10 +309,33 @@ public class EntryWrapper implements Comparable<EntryWrapper>, DisplayableTreeVi
     }
 
 
+    /**
+     * Erases the Children List
+     */
     public void clearChildren()
     {
         children = null;
         hasChildren = true;
     }
 
+    
+    /**
+     * Gets the Dsmlv2Engine
+     * @return the Dsmlv2Engine
+     */
+    public Dsmlv2Engine getDsmlv2Engine()
+    {
+        Object parent = getParent();
+        
+        if ( parent instanceof EntryWrapper )
+        {
+            return ( ( EntryWrapper ) parent ).getDsmlv2Engine();
+        }
+        else if ( parent instanceof ConnectionWrapper )
+        {
+            return ( ( ConnectionWrapper ) parent ).getDsmlv2Engine();
+        }
+        
+        return null;
+    }
 }

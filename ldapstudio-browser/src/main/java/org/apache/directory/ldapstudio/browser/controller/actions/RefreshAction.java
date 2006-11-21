@@ -22,12 +22,15 @@ package org.apache.directory.ldapstudio.browser.controller.actions;
 
 
 import org.apache.directory.ldapstudio.browser.Activator;
-import org.apache.directory.ldapstudio.browser.model.Connection;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.AttributesView;
 import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.apache.directory.ldapstudio.browser.view.views.wrappers.ConnectionWrapper;
 import org.apache.directory.ldapstudio.browser.view.views.wrappers.EntryWrapper;
+import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
+import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.eclipse.jface.action.Action;
@@ -36,10 +39,6 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
-import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 
 
 /**
@@ -93,11 +92,8 @@ public class RefreshAction extends Action
     {
         try
         {
-            Connection connection = entryWrapper.getConnection();
-
             // Initialization of the DSML Engine and the DSML Response Parser
-            Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection.getUserDN()
-                .getNormName(), connection.getPassword() );
+            Dsmlv2Engine engine = entryWrapper.getDsmlv2Engine();
             Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
             String request = "<batchRequest>" + "	<searchRequest dn=\""

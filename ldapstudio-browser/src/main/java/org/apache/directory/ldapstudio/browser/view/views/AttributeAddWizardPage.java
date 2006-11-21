@@ -26,7 +26,6 @@ import java.io.File;
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.ldapstudio.browser.Activator;
-import org.apache.directory.ldapstudio.browser.model.Connection;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.wrappers.EntryWrapper;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
@@ -303,12 +302,10 @@ public class AttributeAddWizardPage extends WizardPage
 
             EntryWrapper entryWrapper = ( EntryWrapper ) ( ( TreeSelection ) browserView.getViewer().getSelection() )
                 .getFirstElement();
-            Connection connection = entryWrapper.getConnection();
             SearchResultEntry entry = entryWrapper.getEntry();
 
             // Initialization of the DSML Engine and the DSML Response Parser
-            Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection.getUserDN()
-                .getNormName(), connection.getPassword() );
+            Dsmlv2Engine engine = entryWrapper.getDsmlv2Engine();
             Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
             String request = "<batchRequest>" + "	<modifyRequest dn=\""

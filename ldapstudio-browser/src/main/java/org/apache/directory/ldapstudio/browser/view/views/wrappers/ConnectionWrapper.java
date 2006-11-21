@@ -57,6 +57,8 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
     /** The hasError Flag */
     private boolean hasError = false;
 
+    private Dsmlv2Engine engine;
+
 
     public ConnectionWrapper( Connection connection )
     {
@@ -140,9 +142,13 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
 
             try
             {
-                // Initialization of the DSML Engine and the DSML Response Parser
-                Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
-                    .getUserDN().getNormName(), connection.getPassword() );
+                if ( engine == null )
+                {
+                    // Initialization of the DSML Engine and the DSML Response Parser
+                    engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
+                        .getUserDN().getNormName(), connection.getPassword() );
+                }
+                
                 Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
                 String request = "<batchRequest>" + "	<searchRequest dn=\"" + connection.getBaseDN().getNormName()
@@ -234,6 +240,15 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
     {
         children = null;
     }
+    
+    /**
+     * Erases the Children List and the Dsmlv2 Engine
+     */
+    public void connectionChanged()
+    {
+        clearChildren();
+        engine = null;
+    }
 
 
     /**
@@ -253,5 +268,14 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
     public void setHasError( boolean hasError )
     {
         this.hasError = hasError;
+    }
+    
+    /**
+     * Gets the Dsmlv2Engine
+     * @return the Dsmlv2Engine
+     */
+    public Dsmlv2Engine getDsmlv2Engine()
+    {
+        return this.engine;
     }
 }
