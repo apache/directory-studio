@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDAP Studio DSMLv2 Plug-in
-Bundle-SymbolicName: org.apache.directory.ldapstudio.dsmlv2plugin;singleton:=true
-Bundle-Version: 0.0.1
+Bundle-SymbolicName: org.apache.directory.ldapstudio.dsmlPlugin;singleton:=true
+Bundle-Version: 0.9
 Bundle-Activator: org.apache.directory.ldapstudio.dsmlv2.Activator
 Bundle-Vendor: apache.org
 Bundle-Localization: plugin

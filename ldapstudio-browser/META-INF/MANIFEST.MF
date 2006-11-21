@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDAP Browser Plug-in
 Bundle-SymbolicName: org.apache.directory.ldapstudio.browser; singleton:=true
-Bundle-Version: 1.0
+Bundle-Version: 0.1
 Bundle-Activator: org.apache.directory.ldapstudio.browser.Activator
 Bundle-Vendor: apache.org
 Bundle-Localization: plugin
