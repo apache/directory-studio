@@ -75,9 +75,9 @@ public class ConnectionGrammar extends AbstractGrammar
     public static int USERDN_START = 14;
     public static int USERDN_END = 15;
 
-    // States for prefixUserDNWithBaseDN tag
-    public static int PREFIXUSERDNWITHBASEDN_START = 18;
-    public static int PREFIXUSERDNWITHBASEDN_END = 19;
+    // States for appendBaseDNtoUserDNWithBaseDN tag
+    public static int APPENDBASEDNTOUSERDN_START = 18;
+    public static int APPENDBASEDNTOUSERDN_END = 19;
 
     // States for Password tag
     public static int PASSWORD_START = 16;
@@ -110,8 +110,8 @@ public class ConnectionGrammar extends AbstractGrammar
         super.transitions[ANONYMOUSBIND_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[USERDN_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[USERDN_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[PREFIXUSERDNWITHBASEDN_START] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[PREFIXUSERDNWITHBASEDN_END] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[APPENDBASEDNTOUSERDN_START] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[APPENDBASEDNTOUSERDN_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[PASSWORD_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[PASSWORD_END] = new HashMap<Tag, GrammarTransition>();
 
@@ -171,17 +171,17 @@ public class ConnectionGrammar extends AbstractGrammar
         super.transitions[USERDN_START].put( new Tag( "userDN", Tag.END ), new GrammarTransition( USERDN_START,
             USERDN_END, null ) );
 
-        // State: [USERDN_END] - Tag: <prefixUserDNWithBaseDN>
-        super.transitions[USERDN_END].put( new Tag( "prefixUserDNWithBaseDN", Tag.START ), new GrammarTransition(
-            USERDN_END, PREFIXUSERDNWITHBASEDN_START, addPrefixUserDNWithBaseDN ) );
+        // State: [USERDN_END] - Tag: <appendBaseDNtoUserDNWithBaseDN>
+        super.transitions[USERDN_END].put( new Tag( "appendBaseDNtoUserDNWithBaseDN", Tag.START ), new GrammarTransition(
+            USERDN_END, APPENDBASEDNTOUSERDN_START, appendBaseDNtoUserDNWithBaseDN ) );
 
-        // State: [PREFIXUSERDNWITHBASEDN_START] - Tag: </prefixUserDNWithBaseDN>
-        super.transitions[PREFIXUSERDNWITHBASEDN_START].put( new Tag( "prefixUserDNWithBaseDN", Tag.END ),
-            new GrammarTransition( PREFIXUSERDNWITHBASEDN_START, PREFIXUSERDNWITHBASEDN_END, null ) );
+        // State: [PREFIXUSERDNWITHBASEDN_START] - Tag: </appendBaseDNtoUserDNWithBaseDN>
+        super.transitions[APPENDBASEDNTOUSERDN_START].put( new Tag( "appendBaseDNtoUserDNWithBaseDN", Tag.END ),
+            new GrammarTransition( APPENDBASEDNTOUSERDN_START, APPENDBASEDNTOUSERDN_END, null ) );
 
         // State: [PREFIXUSERDNWITHBASEDN_END] - Tag: <password>
-        super.transitions[PREFIXUSERDNWITHBASEDN_END].put( new Tag( "password", Tag.START ), new GrammarTransition(
-            PREFIXUSERDNWITHBASEDN_END, PASSWORD_START, addPassword ) );
+        super.transitions[APPENDBASEDNTOUSERDN_END].put( new Tag( "password", Tag.START ), new GrammarTransition(
+            APPENDBASEDNTOUSERDN_END, PASSWORD_START, addPassword ) );
 
         // State: [PASSWORD_START] - Tag: </password>
         super.transitions[PASSWORD_START].put( new Tag( "password", Tag.END ), new GrammarTransition( PASSWORD_START,
@@ -460,9 +460,9 @@ public class ConnectionGrammar extends AbstractGrammar
     };
 
     /**
-     * GrammarAction that adds a prefixUserDNWithBaseDN to a Connection
+     * GrammarAction that adds a appendBaseDNtoUserDNWithBaseDN to a Connection
      */
-    private final GrammarAction addPrefixUserDNWithBaseDN = new GrammarAction( "Add prefixUserDNWithBaseDN" )
+    private final GrammarAction appendBaseDNtoUserDNWithBaseDN = new GrammarAction( "Add appendBaseDNtoUserDNWithBaseDN" )
     {
         public void action( ConnectionParserContainer container ) throws XmlPullParserException
         {
@@ -488,11 +488,11 @@ public class ConnectionGrammar extends AbstractGrammar
             {
                 if ( xpp.getText().equals( "false" ) )
                 {
-                    connection.setPrefixUserDNWithBaseDN( false );
+                    connection.setAppendBaseDNtoUserDNWithBaseDN( false );
                 }
                 else if ( xpp.getText().equals( "true" ) )
                 {
-                    connection.setPrefixUserDNWithBaseDN( true );
+                    connection.setAppendBaseDNtoUserDNWithBaseDN( true );
                 }
                 else
                 {

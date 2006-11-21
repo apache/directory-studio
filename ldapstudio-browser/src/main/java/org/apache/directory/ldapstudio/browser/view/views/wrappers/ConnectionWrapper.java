@@ -31,6 +31,7 @@ import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
@@ -174,8 +175,17 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
                 if ( engine == null )
                 {
                     // Initialization of the DSML Engine and the DSML Response Parser
-                    engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
-                        .getUserDN().getNormName(), connection.getPassword() );
+                    if ( connection.isAppendBaseDNtoUserDNWithBaseDN() )
+                    {
+                        engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), new LdapDN( connection
+                            .getUserDN().getNormName() + "," + connection.getBaseDN().getNormName() ).getNormName(),
+                            connection.getPassword() );
+                    }
+                    else
+                    {
+                        engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
+                            .getUserDN().getNormName(), connection.getPassword() );
+                    }
                 }
                 
                 Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();

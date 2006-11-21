@@ -38,7 +38,7 @@ public class Connection implements Comparable<Connection>
     private LdapDN baseDN;
     private boolean anonymousBind = true;
     private LdapDN userDN;
-    private boolean prefixUserDNWithBaseDN = false;
+    private boolean appendBaseDNtoUserDNWithBaseDN = false;
     private String password;
 
     /** The Listeners List */
@@ -62,11 +62,11 @@ public class Connection implements Comparable<Connection>
      * @param baseDN the Base DN
      * @param anonymousBind the value of the Anonymous Bind flag
      * @param userDN the User DN
-     * @param prefixUserDNWithBaseDN the value of the prefixUserDNWithBaseDN flag
+     * @param appendBaseDNtoUserDNWithBaseDN the value of the appendBaseDNtoUserDNWithBaseDN flag
      * @param password the Password
      */
     public Connection( String name, String host, int port, LdapDN baseDN, boolean anonymousBind, LdapDN userDN,
-        boolean prefixUserDNWithBaseDN, String password )
+        boolean appendBaseDNtoUserDNWithBaseDN, String password )
     {
         this.name = name;
         this.host = host;
@@ -74,7 +74,7 @@ public class Connection implements Comparable<Connection>
         this.baseDN = baseDN;
         this.anonymousBind = anonymousBind;
         this.userDN = userDN;
-        this.prefixUserDNWithBaseDN = prefixUserDNWithBaseDN;
+        this.appendBaseDNtoUserDNWithBaseDN = appendBaseDNtoUserDNWithBaseDN;
         this.password = password;
     }
 
@@ -220,22 +220,22 @@ public class Connection implements Comparable<Connection>
 
 
     /**
-     * Get the prefixUserDNWithBaseDN Flag
-     * @return the prefixUserDNWithBaseDN Flag
+     * Get the appendBaseDNtoUserDNWithBaseDN Flag
+     * @return the appendBaseDNtoUserDNWithBaseDN Flag
      */
-    public boolean isPrefixUserDNWithBaseDN()
+    public boolean isAppendBaseDNtoUserDNWithBaseDN()
     {
-        return prefixUserDNWithBaseDN;
+        return appendBaseDNtoUserDNWithBaseDN;
     }
 
 
     /**
-     * Sets prefixUserDNWithBaseDN Flag
-     * @param prefixUserDNWithBaseDN the prefixUserDNWithBaseDN Flag
+     * Sets appendBaseDNtoUserDNWithBaseDN Flag
+     * @param appendBaseDNtoUserDNWithBaseDN the appendBaseDNtoUserDNWithBaseDN Flag
      */
-    public void setPrefixUserDNWithBaseDN( boolean prefixUserDNWithBaseDN )
+    public void setAppendBaseDNtoUserDNWithBaseDN( boolean appendBaseDNtoUserDNWithBaseDN )
     {
-        this.prefixUserDNWithBaseDN = prefixUserDNWithBaseDN;
+        this.appendBaseDNtoUserDNWithBaseDN = appendBaseDNtoUserDNWithBaseDN;
     }
 
 
@@ -258,7 +258,7 @@ public class Connection implements Comparable<Connection>
         sb
             .append( "<userDN>" + ( ( "".equals( userDN.getNormName() ) ) ? "null" : userDN.getNormName() )
                 + "</userDN>" );
-        sb.append( "<prefixUserDNWithBaseDN>" + prefixUserDNWithBaseDN + "</prefixUserDNWithBaseDN>" );
+        sb.append( "<appendBaseDNtoUserDNWithBaseDN>" + appendBaseDNtoUserDNWithBaseDN + "</appendBaseDNtoUserDNWithBaseDN>" );
         sb.append( "<password>" + ( ( "".equals( password ) ) ? "null" : password ) + "</password>" );
         sb.append( "</connection>" );
 
@@ -307,7 +307,7 @@ public class Connection implements Comparable<Connection>
         sb.append( "\" | " );
         sb.append( "userDN=\"" + userDN.getNormName() );
         sb.append( "\" | " );
-        sb.append( "prefixUserDNWithBaseDN=\"" + prefixUserDNWithBaseDN );
+        sb.append( "appendBaseDNtoUserDNWithBaseDN=\"" + appendBaseDNtoUserDNWithBaseDN );
         sb.append( "\" | " );
         sb.append( "password=\"" + password );
         sb.append( "\"]" );

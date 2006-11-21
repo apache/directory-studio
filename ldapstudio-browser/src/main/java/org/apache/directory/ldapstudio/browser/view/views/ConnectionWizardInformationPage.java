@@ -50,7 +50,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ConnectionWizardInformationPage extends WizardPage
 {
-
     private Connection connection;
 
     private Group connectionGroup;
@@ -79,7 +78,7 @@ public class ConnectionWizardInformationPage extends WizardPage
     private Label passwordLabel;
     private Text passwordText;
 
-    private Button prefixUserDN;
+    private Button appendBaseDNtoUserDNWithBaseDNButton;
 
 
     protected ConnectionWizardInformationPage()
@@ -159,10 +158,10 @@ public class ConnectionWizardInformationPage extends WizardPage
         userDNText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         // Prefix User DN with Base DN
-        Label prefixUserDNLabel = new Label( userGroup, SWT.NONE );
-        prefixUserDN = new Button( userGroup, SWT.CHECK );
-        prefixUserDN.setText( "Append Base DN to User DN" );
-        prefixUserDN.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        Label appendBaseDNtoUserDNWithBaseDNLabel = new Label( userGroup, SWT.NONE );
+        appendBaseDNtoUserDNWithBaseDNButton = new Button( userGroup, SWT.CHECK );
+        appendBaseDNtoUserDNWithBaseDNButton.setText( "Append Base DN to User DN" );
+        appendBaseDNtoUserDNWithBaseDNButton.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         // Password
         passwordLabel = new Label( userGroup, SWT.NONE );
@@ -404,6 +403,9 @@ public class ConnectionWizardInformationPage extends WizardPage
 
         // User DN
         userDNText.setText( ( connection.getUserDN() == null ) ? "" : connection.getUserDN().getNormName() );
+        
+        // Append Base DN to User DN
+        appendBaseDNtoUserDNWithBaseDNButton.setSelection( connection.isAppendBaseDNtoUserDNWithBaseDN() );
 
         // Password
         passwordText.setText( ( connection.getPassword() == null ) ? "" : connection.getPassword() );
@@ -418,7 +420,7 @@ public class ConnectionWizardInformationPage extends WizardPage
         userGroup.setEnabled( true );
         userDNLabel.setEnabled( true );
         userDNText.setEnabled( true );
-        prefixUserDN.setEnabled( true );
+        appendBaseDNtoUserDNWithBaseDNButton.setEnabled( true );
         passwordLabel.setEnabled( true );
         passwordText.setEnabled( true );
     }
@@ -432,7 +434,7 @@ public class ConnectionWizardInformationPage extends WizardPage
         userGroup.setEnabled( false );
         userDNLabel.setEnabled( false );
         userDNText.setEnabled( false );
-        prefixUserDN.setEnabled( false );
+        appendBaseDNtoUserDNWithBaseDNButton.setEnabled( false );
         passwordLabel.setEnabled( false );
         passwordText.setEnabled( false );
     }
@@ -454,7 +456,7 @@ public class ConnectionWizardInformationPage extends WizardPage
             connection.setAnonymousBind( anonymousBind.getSelection() );
             connection.setUserDN( ( "".equals( userDNText.getText() ) ? LdapDN.EMPTY_LDAPDN : new LdapDN( userDNText
                 .getText() ) ) );
-            connection.setPrefixUserDNWithBaseDN( prefixUserDN.getSelection() );
+            connection.setAppendBaseDNtoUserDNWithBaseDN( appendBaseDNtoUserDNWithBaseDNButton.getSelection() );
             connection.setPassword( passwordText.getText() );
         }
         catch ( InvalidNameException e )
