@@ -23,22 +23,16 @@ package org.apache.directory.ldapstudio.browser.view.views;
 
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.controller.AttributesViewController;
-import org.apache.directory.ldapstudio.browser.controller.actions.RenameAttributeAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -52,7 +46,6 @@ public class AttributesView extends ViewPart
     public static final String ID = Activator.PLUGIN_ID + ".AttributesView";
     private Table table;
     private TableViewer viewer;
-    private AttributesView instance;
     private AttributesViewController controller;
 
 
@@ -65,8 +58,6 @@ public class AttributesView extends ViewPart
     @Override
     public void createPartControl( Composite parent )
     {
-        instance = this;
-
         table = new Table( parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL );
         table.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
         table.setLinesVisible( true );
@@ -95,29 +86,6 @@ public class AttributesView extends ViewPart
 
         // Registering the Viewer, so other views can be notified when the viewer selection changes
         getSite().setSelectionProvider( viewer );
-
-        // Handling selection of the Browser View to update this view TODO This should be done by the controller
-        getSite().getPage().addPostSelectionListener( BrowserView.ID, new ISelectionListener()
-        {
-            public void selectionChanged( IWorkbenchPart part, ISelection selection )
-            {
-                // Setting the new input
-                setInput( ( ( TreeSelection ) selection ).getFirstElement() );
-
-                // Resizing columns to fit
-                resizeColumsToFit();
-            }
-        } );
-
-        // Handling the double click modification
-        table.addSelectionListener( new SelectionAdapter()
-        {
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-                new RenameAttributeAction( instance, table, "Rename" ).run();
-            }
-        } );
 
         createContextMenu();
 

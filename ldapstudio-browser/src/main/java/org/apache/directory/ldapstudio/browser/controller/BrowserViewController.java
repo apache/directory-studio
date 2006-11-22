@@ -34,7 +34,10 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -101,9 +104,24 @@ public class BrowserViewController implements IMenuListener
      * Sets the controlled View
      * @param view the controlled View
      */
-    public void setView( BrowserView view )
+    public void setView( final BrowserView view )
     {
         this.view = view;
+        
+        // Adding DoubleClick behavior
+        view.getViewer().addDoubleClickListener( new IDoubleClickListener()
+        {
+            public void doubleClick( DoubleClickEvent event )
+            {
+                // What we get from the treeViewer is a StructuredSelection
+                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+
+                // Here's the real object
+                Object objectSelection = selection.getFirstElement();
+
+                view.getViewer().setExpandedState( objectSelection, !view.getViewer().getExpandedState( objectSelection ) );
+            }
+        } );
     }
 
 

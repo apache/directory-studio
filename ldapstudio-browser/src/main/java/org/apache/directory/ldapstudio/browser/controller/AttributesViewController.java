@@ -24,6 +24,7 @@ package org.apache.directory.ldapstudio.browser.controller;
 import org.apache.directory.ldapstudio.browser.controller.actions.AttributeDeleteAction;
 import org.apache.directory.ldapstudio.browser.controller.actions.AttributeEditAction;
 import org.apache.directory.ldapstudio.browser.controller.actions.AttributeNewAction;
+import org.apache.directory.ldapstudio.browser.controller.actions.RenameAttributeAction;
 import org.apache.directory.ldapstudio.browser.view.views.AttributesView;
 import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.apache.directory.ldapstudio.browser.view.views.wrappers.ConnectionWrapper;
@@ -34,6 +35,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -81,9 +84,31 @@ public class AttributesViewController implements IMenuListener
      * Sets the controlled View
      * @param view the controlled View
      */
-    public void setView( AttributesView view )
+    public void setView( final AttributesView view )
     {
         this.view = view;
+        
+        // Handling selection of the Browser View to update this view
+        view.getSite().getPage().addPostSelectionListener( BrowserView.ID, new ISelectionListener()
+        {
+            public void selectionChanged( IWorkbenchPart part, ISelection selection )
+            {
+                // Setting the new input
+                view.setInput( ( ( TreeSelection ) selection ).getFirstElement() );
+
+                // Resizing columns to fit
+                view.resizeColumsToFit();
+            }
+        } );
+        
+        // Handling the double click modification
+        view.getViewer().getTable().addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetDefaultSelected( SelectionEvent e )
+            {
+                new RenameAttributeAction( view, view.getViewer().getTable(), "Rename" ).run();
+            }
+        } );
     }
 
 

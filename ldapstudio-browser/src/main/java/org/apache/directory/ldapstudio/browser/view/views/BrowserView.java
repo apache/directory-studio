@@ -30,10 +30,7 @@ import org.apache.directory.ldapstudio.browser.view.views.wrappers.TreeViewerRoo
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -62,21 +59,6 @@ public class BrowserView extends ViewPart implements ConnectionsListener
         // Initializing ContentProvider and LabelProvider
         viewer.setContentProvider( new BrowserViewContentProvider() );
         viewer.setLabelProvider( new BrowserViewLabelProvider() );
-
-        // Adding DoubleClick behavior TODO This handling should be in the controller
-        viewer.addDoubleClickListener( new IDoubleClickListener()
-        {
-            public void doubleClick( DoubleClickEvent event )
-            {
-                // What we get from the treeViewer is a StructuredSelection
-                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
-
-                // Here's the real object
-                Object objectSelection = selection.getFirstElement();
-
-                viewer.setExpandedState( objectSelection, !viewer.getExpandedState( objectSelection ) );
-            }
-        } );
 
         // Creating the controller, registering the view to the controller and creating the Actions
         controller = BrowserViewController.getInstance();
