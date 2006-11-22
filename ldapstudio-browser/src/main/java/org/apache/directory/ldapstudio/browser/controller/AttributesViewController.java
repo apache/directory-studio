@@ -32,6 +32,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.ISelectionListener;
@@ -163,7 +164,25 @@ public class AttributesViewController implements IMenuListener
                 }
                 else
                 {
-                    attributeEditAction.setEnabled( true );
+                    if ( ( ( StructuredSelection ) selection).size() == 1 )
+                    {
+                        attributeEditAction.setEnabled( true );
+                        if ( attributeDeleteAction.getText().equals( "Delete attributes" ) )
+                        {
+                            attributeDeleteAction.setText( "Delete attribute" );
+                            attributeDeleteAction.setToolTipText( "Delete attribute" );
+                        }
+                    }
+                    else
+                    {
+                        attributeEditAction.setEnabled( false );
+                        if ( attributeDeleteAction.getText().equals( "Delete attribute" ) )
+                        {
+                            attributeDeleteAction.setText( "Delete attributes" );
+                            attributeDeleteAction.setToolTipText( "Delete attributes" );
+                        }
+                    }
+                    
                     attributeDeleteAction.setEnabled( true );
                 }
             }
