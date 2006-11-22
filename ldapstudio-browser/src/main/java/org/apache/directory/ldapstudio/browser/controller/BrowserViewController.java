@@ -148,7 +148,7 @@ public class BrowserViewController implements IMenuListener
     private void registerUpdateActions()
     {
         // Handling selection of the Browser View to enable/disable the Actions
-        view.getSite().getPage().addPostSelectionListener( BrowserView.ID, new ISelectionListener()
+        view.getSite().getPage().addSelectionListener( BrowserView.ID, new ISelectionListener()
         {
             public void selectionChanged( IWorkbenchPart part, ISelection selection )
             {

@@ -89,7 +89,7 @@ public class AttributesViewController implements IMenuListener
         this.view = view;
         
         // Handling selection of the Browser View to update this view
-        view.getSite().getPage().addPostSelectionListener( BrowserView.ID, new ISelectionListener()
+        view.getSite().getPage().addSelectionListener( BrowserView.ID, new ISelectionListener()
         {
             public void selectionChanged( IWorkbenchPart part, ISelection selection )
             {
@@ -149,7 +149,7 @@ public class AttributesViewController implements IMenuListener
     private void registerUpdateActions()
     {
         // Handling selection of the Browser View to enable/disable the Actions
-        view.getSite().getPage().addPostSelectionListener( BrowserView.ID, new ISelectionListener()
+        view.getSite().getPage().addSelectionListener( BrowserView.ID, new ISelectionListener()
         {
             public void selectionChanged( IWorkbenchPart part, ISelection selection )
             {
@@ -178,7 +178,7 @@ public class AttributesViewController implements IMenuListener
         } );
 
         // Handling selection of the Attributes View to enable/disable the Actions
-        view.getSite().getPage().addPostSelectionListener( AttributesView.ID, new ISelectionListener()
+        view.getSite().getPage().addSelectionListener( AttributesView.ID, new ISelectionListener()
         {
             public void selectionChanged( IWorkbenchPart part, ISelection selection )
             {
