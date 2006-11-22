@@ -21,6 +21,9 @@
 package org.apache.directory.ldapstudio.browser.controller.actions;
 
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.ldapstudio.browser.Activator;
@@ -36,8 +39,8 @@ import org.apache.directory.shared.ldap.codec.modify.ModifyResponse;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -50,6 +53,11 @@ public class AttributeDeleteAction extends Action
     private AttributesView view;
 
 
+    /**
+     * Creates a new instance of AttributeDeleteAction.
+     * @param view the associated view
+     * @param text the associated text
+     */
     public AttributeDeleteAction( AttributesView view, String text )
     {
         super( text );
@@ -60,16 +68,11 @@ public class AttributeDeleteAction extends Action
     }
 
 
+    @SuppressWarnings("unchecked")
     public void run()
     {
         try
         {
-            // Getting the selection for the Attributes View
-            TableItem item = view.getSelectedAttributeTableItem();
-
-            String selectedAttribute = item.getText( 0 );
-            String selectedValue = item.getText( 1 );
-
             // Getting the selected Entry in the Browser View
             BrowserView browserView = ( BrowserView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                 .getActivePage().findView( BrowserView.ID );
@@ -81,45 +84,60 @@ public class AttributeDeleteAction extends Action
             Dsmlv2Engine engine = entryWrapper.getDsmlv2Engine();
             Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
-            String request = "<batchRequest>" + "	<modifyRequest dn=\""
-                + entry.getObjectName().getNormName().toString() + "\">" + "		<modification name=\""
-                + selectedAttribute + "\" operation=\"delete\">" + "       	<value>" + selectedValue + "</value>"
-                + "       </modification>" + "	</modifyRequest>" + "</batchRequest>";
+            // Getting the selected items
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+            Iterator items = selection.iterator();
 
-            parser.setInput( engine.processDSML( request ) );
-            parser.parse();
-
-            LdapResponse ldapResponse = parser.getBatchResponse().getCurrentResponse();
-
-            if ( ldapResponse instanceof ModifyResponse )
+            // Iterating on each attribute and generating a request to delete it.
+            String request = null;
+            while ( items.hasNext() )
             {
-                ModifyResponse modifyResponse = ( ModifyResponse ) ldapResponse;
+                List<String> item = ( List<String> ) items.next();
+                String attributeName = item.get( 0 );
+                String attributeValue = item.get( 1 );
 
-                if ( modifyResponse.getLdapResult().getResultCode() == 0 )
+                request = "<batchRequest>" + 
+                "     <modifyRequest dn=\"" + entry.getObjectName().getNormName().toString() + "\">"+
+                "        <modification name=\"" + attributeName + "\" operation=\"delete\">" + 
+                "            <value>" + attributeValue + "</value>" + 
+                "        </modification>" +
+                "    </modifyRequest>" + 
+                "</batchRequest>";
+
+                parser.setInput( engine.processDSML( request ) );
+                parser.parse();
+
+                LdapResponse ldapResponse = parser.getBatchResponse().getCurrentResponse();
+
+                if ( ldapResponse instanceof ModifyResponse )
                 {
-                    // Removing the selected attribute value
-                    Attributes attributes = entry.getPartialAttributeList();
-                    attributes.get( selectedAttribute ).remove( selectedValue );
+                    ModifyResponse modifyResponse = ( ModifyResponse ) ldapResponse;
 
-                    // refreshing the UI
-                    view.setInput( entryWrapper );
-                    view.resizeColumsToFit();
+                    if ( modifyResponse.getLdapResult().getResultCode() == 0 )
+                    {
+                        // Removing the selected attribute value
+                        Attributes attributes = entry.getPartialAttributeList();
+                        attributes.get( attributeName ).remove( attributeValue );
+                    }
+                    else
+                    {
+                        // Displaying an error
+                        MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                            "Error !", "An error has ocurred.\n" + modifyResponse.getLdapResult().getErrorMessage() );
+                    }
                 }
-                else
+                else if ( ldapResponse instanceof ErrorResponse )
                 {
+                    ErrorResponse errorResponse = ( ErrorResponse ) ldapResponse;
+
                     // Displaying an error
                     MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                        "Error !", "An error has ocurred.\n" + modifyResponse.getLdapResult().getErrorMessage() );
+                        "Error !", "An error has ocurred.\n" + errorResponse.getMessage() );
                 }
             }
-            else if ( ldapResponse instanceof ErrorResponse )
-            {
-                ErrorResponse errorResponse = ( ErrorResponse ) ldapResponse;
-
-                // Displaying an error
-                MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error !",
-                    "An error has ocurred.\n" + errorResponse.getMessage() );
-            }
+            // refreshing the UI
+            view.setInput( entryWrapper );
+            view.resizeColumsToFit();
         }
         catch ( Exception e )
         {
