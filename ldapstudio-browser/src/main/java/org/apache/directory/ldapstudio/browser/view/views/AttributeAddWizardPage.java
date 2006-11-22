@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.browser.view.views;
 
 import java.io.File;
 
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.ldapstudio.browser.Activator;
@@ -326,8 +327,15 @@ public class AttributeAddWizardPage extends WizardPage
                 {
                     // Adding the provided attribute value
                     Attributes attributes = entry.getPartialAttributeList();
-
-                    attributes.put( nameText.getText(), textText.getText() );
+                    Attribute attribute = attributes.get( nameText.getText() );
+                    if ( attribute == null )
+                    {
+                        attributes.put( nameText.getText(), textText.getText() );
+                    }
+                    else
+                    {
+                        attribute.add( textText.getText() );
+                    }
 
                     // refreshing the UI
                     AttributesView attributesView = ( AttributesView ) PlatformUI.getWorkbench()
