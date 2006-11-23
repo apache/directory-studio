@@ -47,6 +47,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This class implements the Connection Information Page of the Connection Wizard
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionWizardInformationPage extends WizardPage
 {

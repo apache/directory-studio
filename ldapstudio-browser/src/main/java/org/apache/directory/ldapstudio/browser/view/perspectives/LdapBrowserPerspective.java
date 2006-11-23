@@ -28,6 +28,13 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 
+/**
+ * This class implements the LDAP Browser Perspective, which consists in :
+ *     - a Browser View for server and entry navigation
+ *     - an Attributes View for displaying the attributes of the selected entry
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdapBrowserPerspective implements IPerspectiveFactory
 {
 

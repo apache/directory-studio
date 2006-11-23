@@ -27,6 +27,8 @@ import java.util.HashMap;
 /**
  * The abstract IGrammar which is the Mother of all the grammars. It contains
  * the transitions table.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractGrammar implements IGrammar
 {

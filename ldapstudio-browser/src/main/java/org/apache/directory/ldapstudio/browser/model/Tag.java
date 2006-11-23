@@ -21,6 +21,13 @@
 package org.apache.directory.ldapstudio.browser.model;
 
 
+/**
+ * This class represent a XML Tag which consists of :
+ *     - a name
+ *     - a type (START, END) 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class Tag
 {
 

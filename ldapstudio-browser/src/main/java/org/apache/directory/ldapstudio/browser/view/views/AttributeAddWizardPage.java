@@ -58,6 +58,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class implements the Attribute Add Wizard Page of the Attribute Add Wizard
  * TODO Add support for Binary File...
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributeAddWizardPage extends WizardPage
 {

@@ -28,6 +28,8 @@ import org.eclipse.swt.graphics.Image;
 /**
  * All objects that want to be displayed in the JFace TreeViewer 
  * should implement this interface.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface DisplayableTreeViewerElement
 {

@@ -30,6 +30,8 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * This class is the Label Provider for the Attributes View
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributesViewLabelProvider extends LabelProvider implements ITableLabelProvider
 {

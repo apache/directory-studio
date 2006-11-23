@@ -35,6 +35,8 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * This class represent the Connection Grammar used to parsed the XML 
  * representation of a connection.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionGrammar extends AbstractGrammar
 {

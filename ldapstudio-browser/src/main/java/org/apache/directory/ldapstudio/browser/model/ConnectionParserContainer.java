@@ -29,10 +29,8 @@ import org.xmlpull.v1.XmlPullParser;
 
 /**
  * This container is used for parsing connections
- */
-/**
- * @author pajbam
- *
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionParserContainer
 {

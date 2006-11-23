@@ -45,6 +45,8 @@ import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 /**
  * ConnectionWrapper used to display a Connection in the TreeViewer 
  * of the Browser View
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionWrapper implements Comparable<ConnectionWrapper>, DisplayableTreeViewerElement
 {

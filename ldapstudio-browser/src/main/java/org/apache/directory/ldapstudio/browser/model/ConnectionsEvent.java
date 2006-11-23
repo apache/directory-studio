@@ -28,6 +28,8 @@ package org.apache.directory.ldapstudio.browser.model;
  *    - "Update" or 
  *    - "Remove"
  * of a Connection
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionsEvent
 {

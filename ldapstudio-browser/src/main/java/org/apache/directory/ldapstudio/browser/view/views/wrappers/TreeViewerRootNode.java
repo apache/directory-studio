@@ -34,6 +34,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This class represents the Root Node of the Browser View Table
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class TreeViewerRootNode implements DisplayableTreeViewerElement
 {
     private List<ConnectionWrapper> children;

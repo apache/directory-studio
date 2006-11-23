@@ -33,6 +33,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * This class implements the Attribute New Action.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributeNewAction extends Action
 {

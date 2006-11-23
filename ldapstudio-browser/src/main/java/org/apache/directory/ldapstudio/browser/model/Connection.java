@@ -29,6 +29,8 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 
 /**
  * This class represents a LDAP Connection used in the preferences
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Connection implements Comparable<Connection>
 {

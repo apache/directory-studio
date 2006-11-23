@@ -29,6 +29,8 @@ import org.eclipse.ui.IWorkbench;
 
 /**
  * This class implements the Connection Wizard
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionWizard extends Wizard
 {

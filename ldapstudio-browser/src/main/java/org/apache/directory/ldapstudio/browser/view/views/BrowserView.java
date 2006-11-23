@@ -39,6 +39,8 @@ import org.eclipse.ui.part.ViewPart;
 
 /**
  * This class implements the Browser View of the LDAP Browser's Perspective
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class BrowserView extends ViewPart implements ConnectionsListener
 {

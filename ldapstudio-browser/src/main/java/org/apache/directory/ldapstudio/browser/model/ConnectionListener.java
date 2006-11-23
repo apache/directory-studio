@@ -24,6 +24,8 @@ package org.apache.directory.ldapstudio.browser.model;
 /**
  * Interface that has to be implemented by each Class that wants to listen on changes 
  * on a Connection
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface ConnectionListener
 {

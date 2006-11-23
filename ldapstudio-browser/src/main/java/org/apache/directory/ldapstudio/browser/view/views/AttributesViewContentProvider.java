@@ -41,6 +41,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * This class is the Content Provider for the Attributes View
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributesViewContentProvider implements IStructuredContentProvider
 {

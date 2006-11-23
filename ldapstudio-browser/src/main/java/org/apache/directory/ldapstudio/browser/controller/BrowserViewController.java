@@ -45,6 +45,8 @@ import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * This class is the Controller for the Browser View.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class BrowserViewController implements IMenuListener
 {

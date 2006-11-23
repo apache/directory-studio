@@ -36,7 +36,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class implements the Connection New Action *
+ * This class implements the Connection New Action
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionNewAction extends Action
 {

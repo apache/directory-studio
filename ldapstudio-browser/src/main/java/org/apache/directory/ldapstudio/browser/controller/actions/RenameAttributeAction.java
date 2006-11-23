@@ -36,6 +36,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * This class implements the Rename Attribute Action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class RenameAttributeAction extends Action
 {
     private static final int COLUMN_TO_EDIT = 1;

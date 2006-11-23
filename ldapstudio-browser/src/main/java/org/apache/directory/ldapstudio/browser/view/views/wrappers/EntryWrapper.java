@@ -43,6 +43,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * EntryWrapper used to displays an entry in the TreeViewer of the Browser View
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class EntryWrapper implements Comparable<EntryWrapper>, DisplayableTreeViewerElement
 {

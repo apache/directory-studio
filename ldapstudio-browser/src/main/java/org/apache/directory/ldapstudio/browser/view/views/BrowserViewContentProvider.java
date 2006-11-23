@@ -31,6 +31,8 @@ import org.eclipse.jface.viewers.Viewer;
 
 /**
  * This class is the Content Provider for the Browser View
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class BrowserViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {

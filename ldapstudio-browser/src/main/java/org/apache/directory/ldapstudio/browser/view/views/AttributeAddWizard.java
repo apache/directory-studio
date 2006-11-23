@@ -26,6 +26,8 @@ import org.eclipse.jface.wizard.Wizard;
 
 /**
  * This class implements the Attribute Add Wizard
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributeAddWizard extends Wizard
 {

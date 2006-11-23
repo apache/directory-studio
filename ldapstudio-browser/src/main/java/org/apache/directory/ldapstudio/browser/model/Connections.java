@@ -35,6 +35,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * This class represent the Connections class used to store all the connections
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Connections implements ConnectionListener
 {

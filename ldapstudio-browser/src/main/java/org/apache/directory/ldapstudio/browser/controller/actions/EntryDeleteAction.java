@@ -28,6 +28,11 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
+/**
+ * This class implements the Entry Delete Action
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class EntryDeleteAction extends Action
 {
     private BrowserView view;

@@ -32,6 +32,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * This class is a Connection Parser
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionParser
 {

@@ -23,6 +23,8 @@ package org.apache.directory.ldapstudio.browser.model;
 
 /**
  * The interface which expose common behavior of a Gramar implementer.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface IGrammar
 {
