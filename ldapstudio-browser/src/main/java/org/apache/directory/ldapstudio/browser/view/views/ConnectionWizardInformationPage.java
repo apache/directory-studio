@@ -141,7 +141,7 @@ public class ConnectionWizardInformationPage extends WizardPage
         baseDNText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         // Anonymous Bind
-        Label anonymousBindLabel = new Label( hostGroup, SWT.NONE );
+        new Label( hostGroup, SWT.NONE );
         anonymousBind = new Button( hostGroup, SWT.CHECK );
         anonymousBind.setText( "Anonymous Bind" );
         anonymousBind.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
@@ -160,7 +160,7 @@ public class ConnectionWizardInformationPage extends WizardPage
         userDNText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         // Prefix User DN with Base DN
-        Label appendBaseDNtoUserDNWithBaseDNLabel = new Label( userGroup, SWT.NONE );
+        new Label( userGroup, SWT.NONE );
         appendBaseDNtoUserDNWithBaseDNButton = new Button( userGroup, SWT.CHECK );
         appendBaseDNtoUserDNWithBaseDNButton.setText( "Append Base DN to User DN" );
         appendBaseDNtoUserDNWithBaseDNButton.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
@@ -336,7 +336,7 @@ public class ConnectionWizardInformationPage extends WizardPage
                 {
                     try
                     {
-                        LdapDN ldapDN = new LdapDN( baseDNText.getText() );
+                        new LdapDN( baseDNText.getText() );
                     }
                     catch ( InvalidNameException e )
                     {
@@ -360,7 +360,7 @@ public class ConnectionWizardInformationPage extends WizardPage
                 {
                     try
                     {
-                        LdapDN ldapDN = new LdapDN( userDNText.getText() );
+                        new LdapDN( userDNText.getText() );
                     }
                     catch ( InvalidNameException e )
                     {
