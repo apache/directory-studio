@@ -38,6 +38,11 @@ public class AttributeEditAction extends Action
     private AttributesView view;
 
 
+    /**
+     * Creates a new instance of AttributeEditAction.
+     * @param view the associated view
+     * @param text the string used as the text for the action
+     */
     public AttributeEditAction( AttributesView view, String text )
     {
         super( text );
@@ -47,8 +52,11 @@ public class AttributeEditAction extends Action
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
     public void run()
     {
-        System.out.println( "Edit attribute" );
+        new RenameAttributeAction( view, "Rename attribute" ).run();
     }
 }

@@ -108,7 +108,7 @@ public class AttributesViewController implements IMenuListener
         {
             public void widgetDefaultSelected( SelectionEvent e )
             {
-                new RenameAttributeAction( view, view.getViewer().getTable(), "Rename" ).run();
+                new RenameAttributeAction( view, "Rename attribute" ).run();
             }
         } );
     }
