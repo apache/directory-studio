@@ -87,7 +87,7 @@ public class AttributesViewController implements IMenuListener
     public void setView( final AttributesView view )
     {
         this.view = view;
-        
+
         // Handling selection of the Browser View to update this view
         view.getSite().getPage().addSelectionListener( BrowserView.ID, new ISelectionListener()
         {
@@ -100,7 +100,7 @@ public class AttributesViewController implements IMenuListener
                 view.resizeColumsToFit();
             }
         } );
-        
+
         // Handling the double click modification
         view.getViewer().getTable().addSelectionListener( new SelectionAdapter()
         {
@@ -189,7 +189,7 @@ public class AttributesViewController implements IMenuListener
                 }
                 else
                 {
-                    if ( ( ( StructuredSelection ) selection).size() == 1 )
+                    if ( ( ( StructuredSelection ) selection ).size() == 1 )
                     {
                         attributeEditAction.setEnabled( true );
                         if ( attributeDeleteAction.getText().equals( "Delete attributes" ) )
@@ -207,7 +207,7 @@ public class AttributesViewController implements IMenuListener
                             attributeDeleteAction.setToolTipText( "Delete attributes" );
                         }
                     }
-                    
+
                     attributeDeleteAction.setEnabled( true );
                 }
             }

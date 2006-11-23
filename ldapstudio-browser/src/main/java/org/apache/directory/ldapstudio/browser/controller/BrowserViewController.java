@@ -107,7 +107,7 @@ public class BrowserViewController implements IMenuListener
     public void setView( final BrowserView view )
     {
         this.view = view;
-        
+
         // Adding DoubleClick behavior
         view.getViewer().addDoubleClickListener( new IDoubleClickListener()
         {
@@ -119,7 +119,8 @@ public class BrowserViewController implements IMenuListener
                 // Here's the real object
                 Object objectSelection = selection.getFirstElement();
 
-                view.getViewer().setExpandedState( objectSelection, !view.getViewer().getExpandedState( objectSelection ) );
+                view.getViewer().setExpandedState( objectSelection,
+                    !view.getViewer().getExpandedState( objectSelection ) );
             }
         } );
     }

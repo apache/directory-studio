@@ -29,16 +29,16 @@ import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.model.Connection;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
+import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
+import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
-import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 
 
 /**
@@ -318,7 +318,7 @@ public class EntryWrapper implements Comparable<EntryWrapper>, DisplayableTreeVi
         hasChildren = true;
     }
 
-    
+
     /**
      * Gets the Dsmlv2Engine
      * @return the Dsmlv2Engine
@@ -326,7 +326,7 @@ public class EntryWrapper implements Comparable<EntryWrapper>, DisplayableTreeVi
     public Dsmlv2Engine getDsmlv2Engine()
     {
         Object parent = getParent();
-        
+
         if ( parent instanceof EntryWrapper )
         {
             return ( ( EntryWrapper ) parent ).getDsmlv2Engine();
@@ -335,7 +335,78 @@ public class EntryWrapper implements Comparable<EntryWrapper>, DisplayableTreeVi
         {
             return ( ( ConnectionWrapper ) parent ).getDsmlv2Engine();
         }
-        
+
         return null;
+    }
+
+
+    /**
+     * Refreshes the Entry
+     * Executes a request on the server to re-fecth the attributes of the entry
+     * and its children
+     */
+    public void refreshAttributes()
+    {
+        try
+        {
+            // Initialization of the DSML Engine and the DSML Response Parser
+            Dsmlv2Engine engine = getDsmlv2Engine();
+            Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
+
+            String request = "<batchRequest>" + "   <searchRequest dn=\"" + getEntry().getObjectName().getNormName()
+                + "\"" + "         scope=\"baseObject\" derefAliases=\"neverDerefAliases\">"
+                + "     <filter><present name=\"objectclass\"></present></filter>" + "       <attributes>"
+                + "         <attribute name=\"*\"/>" + "            <attribute name=\"namingContexts\"/>"
+                + "         <attribute name=\"subSchemaSubEntry\"/>" + "            <attribute name=\"altServer\"/>"
+                + "         <attribute name=\"supportedExtension\"/>"
+                + "           <attribute name=\"supportedControl\"/>"
+                + "         <attribute name=\"supportedSaslMechanism\"/>"
+                + "           <attribute name=\"supportedLdapVersion\"/>" + "       </attributes>"
+                + "    </searchRequest>" + "</batchRequest>";
+
+            // Executing the request and sending the result to the Response Parser
+            parser.setInput( engine.processDSML( request ) );
+            parser.parse();
+
+            LdapResponse ldapResponse = parser.getBatchResponse().getCurrentResponse();
+
+            if ( ldapResponse instanceof ErrorResponse )
+            {
+                ErrorResponse errorResponse = ( ( ErrorResponse ) ldapResponse );
+
+                // Displaying an error
+                MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error !",
+                    "An error has ocurred.\n" + errorResponse.getMessage() );
+
+                // Creating an empty children list (this prevents the refresh to getting a new error)
+                children = new ArrayList<EntryWrapper>( 0 );
+
+                return;
+            }
+            else if ( ldapResponse instanceof SearchResponse )
+            {
+
+                // Getting the Search Result Entry List containing our objects for the response
+                SearchResponse searchResponse = ( ( SearchResponse ) ldapResponse );
+
+                SearchResultEntry sre = searchResponse.getSearchResultEntryList().get( 0 );
+
+                getEntry().setPartialAttributeList( sre.getPartialAttributeList() );
+                return;
+            }
+        }
+        catch ( Exception e )
+        {
+            // Displaying an error
+            MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error !",
+                "An error has ocurred.\n" + e.getMessage() );
+
+            // Creating an empty children list (this prevents the refresh to getting a new error)
+            children = new ArrayList<EntryWrapper>( 0 );
+
+            return;
+        }
+
+        clearChildren();
     }
 }

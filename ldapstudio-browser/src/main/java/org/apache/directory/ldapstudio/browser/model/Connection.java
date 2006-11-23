@@ -258,7 +258,8 @@ public class Connection implements Comparable<Connection>
         sb
             .append( "<userDN>" + ( ( "".equals( userDN.getNormName() ) ) ? "null" : userDN.getNormName() )
                 + "</userDN>" );
-        sb.append( "<appendBaseDNtoUserDNWithBaseDN>" + appendBaseDNtoUserDNWithBaseDN + "</appendBaseDNtoUserDNWithBaseDN>" );
+        sb.append( "<appendBaseDNtoUserDNWithBaseDN>" + appendBaseDNtoUserDNWithBaseDN
+            + "</appendBaseDNtoUserDNWithBaseDN>" );
         sb.append( "<password>" + ( ( "".equals( password ) ) ? "null" : password ) + "</password>" );
         sb.append( "</connection>" );
 

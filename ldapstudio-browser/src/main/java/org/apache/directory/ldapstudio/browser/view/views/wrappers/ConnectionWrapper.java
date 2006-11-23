@@ -53,17 +53,20 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
-    public enum ConnectionWrapperState{ NONE, RUNNING, ERROR }
-    
+    public enum ConnectionWrapperState
+    {
+        NONE, RUNNING, ERROR
+    }
+
     /** The parent element */
     private Object parent;
-    
+
     /** The children list */
     private List<EntryWrapper> children;
-    
+
     /** The wrapped conneection */
     private Connection connection;
-    
+
     /** The state of the ConnectionWrapper*/
     private ConnectionWrapperState state;
 
@@ -99,22 +102,19 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
     {
         if ( state == ConnectionWrapperState.NONE )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION ).createImage();
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION )
+                .createImage();
         }
         else if ( state == ConnectionWrapperState.RUNNING )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION_RUNNING ).createImage();
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION_RUNNING )
+                .createImage();
         }
         else if ( state == ConnectionWrapperState.ERROR )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION_ERROR ).createImage();
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION_ERROR )
+                .createImage();
         }
-         
-//        if ( hasError() )
-//        {
-//            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION_ERROR )
-//                .createImage();
-//        }
 
         return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION ).createImage();
     }
@@ -178,16 +178,16 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
                     if ( connection.isAppendBaseDNtoUserDNWithBaseDN() )
                     {
                         engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), new LdapDN( connection
-                            .getUserDN().getNormName() + "," + connection.getBaseDN().getNormName() ).getNormName(),
-                            connection.getPassword() );
+                            .getUserDN().getNormName()
+                            + "," + connection.getBaseDN().getNormName() ).getNormName(), connection.getPassword() );
                     }
                     else
                     {
-                        engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
-                            .getUserDN().getNormName(), connection.getPassword() );
+                        engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection.getUserDN()
+                            .getNormName(), connection.getPassword() );
                     }
                 }
-                
+
                 Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
                 String request = "<batchRequest>" + "	<searchRequest dn=\"" + connection.getBaseDN().getNormName()
@@ -222,7 +222,7 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
                         baseDNWrapper.setIsBaseDN( true );
 
                         children.add( baseDNWrapper );
-                        
+
                         setState( ConnectionWrapperState.RUNNING );
                         browserView.getViewer().update( this, null );
                     }
@@ -231,7 +231,7 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
                         setState( ConnectionWrapperState.ERROR );
                         clearChildren();
                         browserView.getViewer().update( this, null );
-                        
+
                         // Displaying an error
                         MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                             "Error !", "An error has ocurred.\n" + ldapResult.getErrorMessage() );
@@ -241,7 +241,7 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
                 else if ( ldapResponse instanceof ErrorResponse )
                 {
                     setState( ConnectionWrapperState.ERROR );
-                    clearChildren();
+                    children = new ArrayList<EntryWrapper>( 0 );
                     browserView.getViewer().update( this, null );
 
                     ErrorResponse errorResponse = ( ErrorResponse ) ldapResponse;
@@ -272,7 +272,8 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
     {
         children = null;
     }
-    
+
+
     /**
      * Erases the Children List and the Dsmlv2 Engine
      */
@@ -282,7 +283,7 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
         engine = null;
     }
 
-    
+
     /**
      * Sets the current state of the ConnectionWrapper
      * @param state the state to set
@@ -291,7 +292,8 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
     {
         this.state = state;
     }
-    
+
+
     /**
      * Gets the current state of the ConnectionWrapper
      * @return the state of the ConnectionWrapper
@@ -300,7 +302,8 @@ public class ConnectionWrapper implements Comparable<ConnectionWrapper>, Display
     {
         return this.state;
     }
-    
+
+
     /**
      * Gets the Dsmlv2Engine
      * @return the Dsmlv2Engine

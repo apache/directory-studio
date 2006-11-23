@@ -172,8 +172,8 @@ public class ConnectionGrammar extends AbstractGrammar
             USERDN_END, null ) );
 
         // State: [USERDN_END] - Tag: <appendBaseDNtoUserDNWithBaseDN>
-        super.transitions[USERDN_END].put( new Tag( "appendBaseDNtoUserDNWithBaseDN", Tag.START ), new GrammarTransition(
-            USERDN_END, APPENDBASEDNTOUSERDN_START, appendBaseDNtoUserDNWithBaseDN ) );
+        super.transitions[USERDN_END].put( new Tag( "appendBaseDNtoUserDNWithBaseDN", Tag.START ),
+            new GrammarTransition( USERDN_END, APPENDBASEDNTOUSERDN_START, appendBaseDNtoUserDNWithBaseDN ) );
 
         // State: [PREFIXUSERDNWITHBASEDN_START] - Tag: </appendBaseDNtoUserDNWithBaseDN>
         super.transitions[APPENDBASEDNTOUSERDN_START].put( new Tag( "appendBaseDNtoUserDNWithBaseDN", Tag.END ),
@@ -462,7 +462,8 @@ public class ConnectionGrammar extends AbstractGrammar
     /**
      * GrammarAction that adds a appendBaseDNtoUserDNWithBaseDN to a Connection
      */
-    private final GrammarAction appendBaseDNtoUserDNWithBaseDN = new GrammarAction( "Add appendBaseDNtoUserDNWithBaseDN" )
+    private final GrammarAction appendBaseDNtoUserDNWithBaseDN = new GrammarAction(
+        "Add appendBaseDNtoUserDNWithBaseDN" )
     {
         public void action( ConnectionParserContainer container ) throws XmlPullParserException
         {

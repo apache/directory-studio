@@ -403,7 +403,7 @@ public class ConnectionWizardInformationPage extends WizardPage
 
         // User DN
         userDNText.setText( ( connection.getUserDN() == null ) ? "" : connection.getUserDN().getNormName() );
-        
+
         // Append Base DN to User DN
         appendBaseDNtoUserDNWithBaseDNButton.setSelection( connection.isAppendBaseDNtoUserDNWithBaseDN() );
 

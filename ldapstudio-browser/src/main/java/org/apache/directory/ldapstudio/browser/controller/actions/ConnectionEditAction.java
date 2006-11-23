@@ -82,7 +82,7 @@ public class ConnectionEditAction extends Action
         // Updating the state of the Connection since it has changed (this causes the icon to change)
         connectionWrapper.setState( ConnectionWrapperState.NONE );
         connectionWrapper.connectionChanged();
-        
+
         selectedConnection.notifyListeners();
     }
 }
