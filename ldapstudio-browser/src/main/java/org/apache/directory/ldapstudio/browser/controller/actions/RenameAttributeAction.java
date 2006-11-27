@@ -57,7 +57,8 @@ public class RenameAttributeAction extends Action
     private Table table;
     private TableEditor tableEditor;
     private Text textEditor;
-    private String originalValue;
+    // A flag to not update twice the server
+    private boolean done = false;
 
 
     /**
@@ -129,7 +130,10 @@ public class RenameAttributeAction extends Action
         {
             public void focusLost( FocusEvent fe )
             {
-                saveChangesAndDisposeEditor();
+                if ( !done )
+                {
+                    saveChangesAndDisposeEditor();
+                }
             }
         } );
     }
@@ -140,9 +144,6 @@ public class RenameAttributeAction extends Action
      */
     private void showEditor()
     {
-        // Backup of the original value
-        originalValue = getAttributeValue();
-
         tableEditor.setEditor( textEditor, view.getViewer().getTable().getSelection()[0], COLUMN_TO_EDIT );
         textEditor.setText( getAttributeValue() );
         textEditor.selectAll();
@@ -155,8 +156,7 @@ public class RenameAttributeAction extends Action
      */
     private void saveChangesAndDisposeEditor()
     {
-        String newText = textEditor.getText();
-        if ( !originalValue.equals( newText ) )
+        if ( !getAttributeValue().equals( textEditor.getText()) )
         {
             saveChanges();
         }
@@ -245,6 +245,7 @@ public class RenameAttributeAction extends Action
                 }
                 else
                 {
+                    done = true;
                     // Displaying an error
                     MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                         "Error !", "An error has ocurred.\n" + modifyResponse.getLdapResult().getErrorMessage() );
@@ -254,6 +255,7 @@ public class RenameAttributeAction extends Action
             {
                 ErrorResponse errorResponse = ( ErrorResponse ) ldapResponse;
 
+                done = true;
                 // Displaying an error
                 MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error !",
                     "An error has ocurred.\n" + errorResponse.getMessage() );
@@ -261,6 +263,7 @@ public class RenameAttributeAction extends Action
         }
         catch ( Exception e )
         {
+            done = true;
             // Displaying an error
             MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error !",
                 "An error has ocurred.\n" + e.getMessage() );
