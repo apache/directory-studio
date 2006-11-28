@@ -21,10 +21,24 @@
 package org.apache.directory.ldapstudio.browser.controller.actions;
 
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
+import org.apache.directory.ldapstudio.browser.view.views.wrappers.EntryWrapper;
+import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
+import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
+import org.apache.directory.shared.ldap.codec.LdapResponse;
+import org.apache.directory.shared.ldap.codec.del.DelResponse;
+import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -49,6 +63,103 @@ public class EntryDeleteAction extends Action
 
     public void run()
     {
-        System.out.println( "delete entry" );
+        boolean answer = MessageDialog.openConfirm( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            "Confirm", "Are you sure you want to delete the selected entry, including its children?" );
+        if ( !answer )
+        {
+            // If the user clicks on the "Cancel" button, we return...
+            return;
+        }
+        
+        try
+        {
+            // Getting the selected items
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+            Iterator items = selection.iterator();
+
+            while ( items.hasNext() )
+            {
+                EntryWrapper entryWrapper = ( EntryWrapper ) items.next();
+
+                // Initialization of the DSML Engine and the DSML Response Parser
+                Dsmlv2Engine engine = entryWrapper.getDsmlv2Engine();
+                Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
+
+                String searchRequest = "<batchRequest>" + "   <searchRequest dn=\""
+                    + entryWrapper.getEntry().getObjectName().getNormName() + "\""
+                    + "          scope=\"wholeSubtree\" derefAliases=\"neverDerefAliases\">"
+                    + "     <filter><present name=\"objectclass\"></present></filter>" + "       <attributes>"
+                    + "         <attribute name=\"1.1\"/>" + "       </attributes>" + "    </searchRequest>"
+                    + "</batchRequest>";
+
+                // Executing the request and sending the result to the Response Parser
+                parser.setInput( engine.processDSML( searchRequest ) );
+                parser.parse();
+
+                LdapResponse ldapResponse = parser.getBatchResponse().getCurrentResponse();
+
+                if ( ldapResponse instanceof ErrorResponse )
+                {
+                    ErrorResponse errorResponse = ( ( ErrorResponse ) ldapResponse );
+
+                    // Displaying an error
+                    MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                        "Error !", "An error has ocurred.\n" + errorResponse.getMessage() );
+                    return;
+                }
+                else if ( ldapResponse instanceof SearchResponse )
+                {
+
+                    // Getting the Search Result Entry List containing our objects for the response
+                    SearchResponse searchResponse = ( ( SearchResponse ) ldapResponse );
+                    List<SearchResultEntry> sreList = searchResponse.getSearchResultEntryList();
+
+                    String deleteRequest = "<batchRequest>";
+                    for ( int i = sreList.size() - 1; i >= 0; i-- )
+                    {
+                        deleteRequest += "<delRequest dn=\"" + sreList.get( i ).getObjectName() + "\"/>\n";
+                    }
+                    deleteRequest += "</batchRequest>";
+
+                    // Executing the request and sending the result to the Response Parser
+                    parser.setInput( engine.processDSML( deleteRequest ) );
+                    parser.parse();
+
+                    ldapResponse = parser.getBatchResponse().getCurrentResponse();
+
+                    if ( ldapResponse instanceof ErrorResponse )
+                    {
+                        ErrorResponse errorResponse = ( ( ErrorResponse ) ldapResponse );
+
+                        // Displaying an error
+                        MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                            "Error !", "An error has ocurred.\n" + errorResponse.getMessage() );
+                        return;
+                    }
+                    else if ( ldapResponse instanceof DelResponse )
+                    {
+                        DelResponse delResponse = ( DelResponse ) ldapResponse;
+
+                        if ( delResponse.getLdapResult().getResultCode() == 0 )
+                        {
+                            view.getViewer().remove( entryWrapper );
+                        }
+                        else
+                        {
+                            // Displaying an error
+                            MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                                "Error !", "An error has ocurred.\n" + delResponse.getLdapResult().getErrorMessage() );
+                        }
+                    }
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            // Displaying an error
+            MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error !",
+                "An error has ocurred.\n" + e.getMessage() );
+            return;
+        }
     }
 }
