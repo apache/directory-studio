@@ -239,6 +239,9 @@ public class RenameAttributeAction extends Action
 
                 if ( modifyResponse.getLdapResult().getResultCode() == 0 )
                 {
+                    entry.getPartialAttributeList().get( getAttributeName() ).remove( getAttributeValue() );
+                    entry.getPartialAttributeList().get( getAttributeName() ).add( textEditor.getText() );
+                    
                     TableItem item = view.getSelectedAttributeTableItem();
                     item.setText( 1, textEditor.getText() );
                     view.getViewer().refresh( item );
