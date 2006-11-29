@@ -21,6 +21,9 @@
 package org.apache.directory.ldapstudio.browser.view.views;
 
 
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.controller.AttributesViewController;
 import org.eclipse.jface.action.IToolBarManager;
@@ -49,8 +52,14 @@ public class AttributesView extends ViewPart
     private Table table;
     private TableViewer viewer;
     private AttributesViewController controller;
+    private AttributesViewSorter sorter;
+    private TableColumn attributeColumn;
+    private TableColumn valueColumn;
 
 
+    /**
+     * Creates a new instance of AttributesView.
+     */
     public AttributesView()
     {
         controller = AttributesViewController.getInstance();
@@ -70,14 +79,15 @@ public class AttributesView extends ViewPart
         viewer.setUseHashlookup( true );
 
         // Adding columns headers
-        TableColumn attributeColumn = new TableColumn( table, SWT.NONE );
+        attributeColumn = new TableColumn( table, SWT.NONE );
         attributeColumn.setText( "Attribute" );
-        TableColumn valueColumn = new TableColumn( table, SWT.NONE );
+        valueColumn = new TableColumn( table, SWT.NONE );
         valueColumn.setText( "Value" );
 
         // Initializing ContentProvider and LabelProvider
         viewer.setContentProvider( new AttributesViewContentProvider() );
         viewer.setLabelProvider( new AttributesViewLabelProvider() );
+        createTableSorter();
 
         // Displaying and resizing the columns
         resizeColumsToFit();
@@ -95,6 +105,47 @@ public class AttributesView extends ViewPart
     }
 
 
+    /**
+     * Creates the table sorter
+     */
+    private void createTableSorter()
+    {
+        Comparator nameComparator = new Comparator()
+        {
+            @SuppressWarnings("unchecked")
+            public int compare( Object o1, Object o2 )
+            {
+                List<String> list1 = ( List<String> ) o1;
+                List<String> list2 = ( List<String> ) o2;
+
+                return list1.get( 0 ).compareTo( list2.get( 0 ) );
+            }
+        };
+
+        Comparator valueComparator = new Comparator()
+        {
+            @SuppressWarnings("unchecked")
+            public int compare( Object o1, Object o2 )
+            {
+                List<String> list1 = ( List<String> ) o1;
+                List<String> list2 = ( List<String> ) o2;
+
+                return list1.get( 1 ).compareTo( list2.get( 1 ) );
+            }
+        };
+
+        sorter = new AttributesViewSorter( viewer, new TableColumn[]
+            { attributeColumn, valueColumn }, new Comparator[]
+            { nameComparator, valueComparator } );
+
+        viewer.setSorter( sorter );
+
+    }
+
+
+    /**
+     * Creates the context menu
+     */
     private void createContextMenu()
     {
         // Initialization of the Menu Manager used to display context menu
@@ -108,6 +159,9 @@ public class AttributesView extends ViewPart
     }
 
 
+    /**
+     * Create the toolbar buttons
+     */
     private void createToolbarButtons()
     {
         IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
@@ -153,6 +207,10 @@ public class AttributesView extends ViewPart
     }
 
 
+    /**
+     * Gets the currently selected Attribute TableItem 
+     * @return the currently selected Attribute TableItem
+     */
     public TableItem getSelectedAttributeTableItem()
     {
         return table.getSelection()[0];
