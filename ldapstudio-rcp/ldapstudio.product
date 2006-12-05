@@ -82,7 +82,7 @@
    </plugins>
 
    <features>
-      <feature id="org.apache.directory.ldapstudio.feature" version="1.0.0"/>
+      <feature id="org.apache.directory.ldapstudio.feature" version="1.0"/>
    </features>
 
 </product>

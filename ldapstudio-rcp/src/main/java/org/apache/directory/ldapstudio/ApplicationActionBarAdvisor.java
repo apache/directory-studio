@@ -50,16 +50,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 {
-
-    // Actions - important to allocate these only in makeActions, and then use them
-    // in the fill methods.  This ensures that the actions aren't recreated
-    // when fillActionBars is called with FILL_PROXY.
-    private IWorkbenchAction closeEditorAction;
-    private IWorkbenchAction closeAllEditorsAction;
-
-    private IWorkbenchAction saveEditorAction;
-    private IWorkbenchAction saveAllEditorsAction;
-
+    private IWorkbenchAction closeAction;
+    private IWorkbenchAction closeAllAction;
+    private IWorkbenchAction saveAction;
+    private IWorkbenchAction saveAllAction;
     private IWorkbenchAction exitAction;
     private IWorkbenchAction aboutAction;
     private IWorkbenchAction preferencesAction;
@@ -67,6 +61,21 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private UpdateAction updateAction;
     private AddExtensionAction addExtensionAction;
     private ManageExtensionsAction manageExtensionsAction;
+    private IWorkbenchAction newAction;
+    private IWorkbenchAction importAction;
+    private IWorkbenchAction exportAction;
+    private IWorkbenchAction propertiesAction;
+    private IWorkbenchAction openPerspectiveAction;
+    private IWorkbenchAction closePerspectiveAction;
+    private IWorkbenchAction closeAllPerspectivesAction;
+    private IWorkbenchAction showViewAction;
+    private IWorkbenchAction undoAction;
+    private IWorkbenchAction redoAction;
+    private IWorkbenchAction cutAction;
+    private IWorkbenchAction copyAction;
+    private IWorkbenchAction pasteAction;
+    private IWorkbenchAction deleteAction;
+    private IWorkbenchAction selectAllAction;
 
 
     public ApplicationActionBarAdvisor( IActionBarConfigurer configurer )
@@ -90,30 +99,68 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         // Registering also provides automatic disposal of the actions when
         // the window is closed.
 
-        closeEditorAction = ActionFactory.CLOSE.create( window );
-        register( closeEditorAction );
+        newAction = ActionFactory.NEW.create( window );
+        register( newAction );
+        newAction.setText( "New..." );
+        
+        closeAction = ActionFactory.CLOSE.create( window );
+        register( closeAction );
 
-        closeAllEditorsAction = ActionFactory.CLOSE_ALL.create( window );
-        register( closeAllEditorsAction );
+        closeAllAction = ActionFactory.CLOSE_ALL.create( window );
+        register( closeAllAction );
 
-        saveEditorAction = ActionFactory.SAVE.create( window );
-        saveEditorAction.setText( Messages.getString( "ApplicationActionBarAdvisor.Save_editor" ) ); //$NON-NLS-1$
-        register( saveEditorAction );
+        saveAction = ActionFactory.SAVE.create( window );
+        register( saveAction );
 
-        saveAllEditorsAction = ActionFactory.SAVE_ALL.create( window );
-        saveAllEditorsAction.setText( Messages.getString( "ApplicationActionBarAdvisor.Save_all_editors" ) ); //$NON-NLS-1$
-        register( saveAllEditorsAction );
+        saveAllAction = ActionFactory.SAVE_ALL.create( window );
+        register( saveAllAction );
+        
+        importAction = ActionFactory.IMPORT.create( window );
+        register( importAction );
+        
+        exportAction = ActionFactory.EXPORT.create( window );
+        register( exportAction );
+        
+        propertiesAction = ActionFactory.PROPERTIES.create( window );
+        register( propertiesAction );
 
         exitAction = ActionFactory.QUIT.create( window );
-        exitAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-            ImageKeys.EXIT ) );
-        exitAction.setText( Messages.getString( "ApplicationActionBarAdvisor.Quit_LDAP_Studio" ) ); //$NON-NLS-1$
-        exitAction.setToolTipText( Messages.getString( "ApplicationActionBarAdvisor.Quit_LDAP_Studio" ) ); //$NON-NLS-1$
         register( exitAction );
-
+        
+        undoAction = ActionFactory.UNDO.create( window );
+        register( undoAction );
+        
+        redoAction = ActionFactory.REDO.create( window );
+        register( redoAction );
+        
+        cutAction = ActionFactory.CUT.create( window );
+        register( cutAction );
+        
+        copyAction = ActionFactory.COPY.create( window );
+        register( copyAction );
+        
+        pasteAction = ActionFactory.PASTE.create( window );
+        register( pasteAction );
+        
+        deleteAction = ActionFactory.DELETE.create( window );
+        register( deleteAction );
+        
+        selectAllAction = ActionFactory.SELECT_ALL.create( window );
+        register( selectAllAction );
+        
+        openPerspectiveAction = ActionFactory.OPEN_PERSPECTIVE_DIALOG.create( window );
+        register( openPerspectiveAction );
+        
+        showViewAction = ActionFactory.SHOW_VIEW_MENU.create( window );
+        register( showViewAction );
+        
+        closePerspectiveAction = ActionFactory.CLOSE_PERSPECTIVE.create( window );
+        register( closePerspectiveAction );
+        
+        closeAllPerspectivesAction = ActionFactory.CLOSE_ALL_PERSPECTIVES.create( window );
+        register( closeAllPerspectivesAction );
+        
         aboutAction = ActionFactory.ABOUT.create( window );
-        aboutAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-            ImageKeys.ABOUT ) );
         register( aboutAction );
 
         preferencesAction = ActionFactory.PREFERENCES.create( window );
@@ -141,23 +188,53 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     protected void fillMenuBar( IMenuManager menuBar )
     {
         MenuManager fileMenu = new MenuManager( "&File", IWorkbenchActionConstants.M_FILE ); //$NON-NLS-1$
+        MenuManager editMenu = new MenuManager( "&Edit", IWorkbenchActionConstants.M_EDIT ); //$NON-NLS-1$
+        MenuManager windowMenu = new MenuManager( "&Window", IWorkbenchActionConstants.M_WINDOW ); //$NON-NLS-1$
         MenuManager helpMenu = new MenuManager( "&Help", IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
 
+        // Adding menus
         menuBar.add( fileMenu );
+        menuBar.add( editMenu );
         // Add a group marker indicating where action set menus will appear.
         menuBar.add( new GroupMarker( IWorkbenchActionConstants.MB_ADDITIONS ) );
+        menuBar.add( windowMenu );
         menuBar.add( helpMenu );
 
-        // File
-        fileMenu.add( preferencesAction );
+        // Populating File Menu
+        fileMenu.add( newAction );
         fileMenu.add( new Separator() );
-        fileMenu.add( closeEditorAction );
-        fileMenu.add( closeAllEditorsAction );
+        fileMenu.add( closeAction );
+        fileMenu.add( closeAllAction );
         fileMenu.add( new Separator() );
-        fileMenu.add( saveEditorAction );
-        fileMenu.add( saveAllEditorsAction );
+        fileMenu.add( saveAction );
+        fileMenu.add( saveAllAction );
+        fileMenu.add( new Separator() );
+        fileMenu.add( importAction );
+        fileMenu.add( exportAction );
+        fileMenu.add( new Separator() );
+        fileMenu.add( propertiesAction );
         fileMenu.add( new Separator() );
         fileMenu.add( exitAction );
+        
+        // Population Edit Menu
+        editMenu.add( undoAction );
+        editMenu.add( redoAction );
+        editMenu.add( new Separator() );
+        editMenu.add( cutAction );
+        editMenu.add( copyAction );
+        editMenu.add( pasteAction );
+        editMenu.add( new Separator() );
+        editMenu.add( deleteAction );
+        editMenu.add( selectAllAction );
+        
+        // Window 
+        windowMenu.add( openPerspectiveAction );
+        windowMenu.add( showViewAction );
+        windowMenu.add( new Separator() );
+        windowMenu.add( closePerspectiveAction );
+        windowMenu.add( closeAllPerspectivesAction );
+        windowMenu.add( new Separator() );
+        windowMenu.add( preferencesAction );
 
         // Help
         helpMenu.add( helpAction );
@@ -177,12 +254,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     protected void fillCoolBar( ICoolBarManager coolBar )
     {
         IToolBarManager toolbar = new ToolBarManager( SWT.FLAT | SWT.RIGHT );
-
-        coolBar.add( new ToolBarContributionItem( toolbar, "main" ) ); //$NON-NLS-1$
-
-        toolbar.add( exitAction );
+        coolBar.add( new ToolBarContributionItem( toolbar, Application.PLUGIN_ID + ".toolbar" ) ); //$NON-NLS-1$
         toolbar.add( preferencesAction );
-        toolbar.add( aboutAction );
-        toolbar.add( new Separator() );
     }
 }
