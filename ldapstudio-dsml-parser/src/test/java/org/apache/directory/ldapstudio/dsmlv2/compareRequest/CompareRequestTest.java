@@ -124,6 +124,38 @@ public class CompareRequestTest extends AbstractTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
+    
+    /**
+     * Test parsing of a request with a (optional) Control element with Base64 value
+     */
+    public void testRequestWith1ControlBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( CompareRequestTest.class.getResource( "request_with_1_control.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        CompareRequest compareRequest = ( CompareRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( 1, compareRequest.getControls().size() );
+
+        Control control = compareRequest.getCurrentControl();
+
+        assertTrue( control.getCriticality() );
+
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+
+        assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
+    }
 
 
     /**

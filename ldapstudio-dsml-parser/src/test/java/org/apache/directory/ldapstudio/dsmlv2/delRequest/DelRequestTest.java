@@ -112,16 +112,40 @@ public class DelRequestTest extends AbstractTest
         }
 
         DelRequest delRequest = ( DelRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 1, delRequest.getControls().size() );
-
         Control control = delRequest.getCurrentControl();
-
+        
+        assertEquals( 1, delRequest.getControls().size() );
         assertTrue( control.getCriticality() );
-
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
+    }
+    
+    /**
+     * Test parsing of a request with a (optional) Control element
+     */
+    public void testRequestWith1ControlBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( DelRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        DelRequest delRequest = ( DelRequest ) parser.getBatchRequest().getCurrentRequest();
+        Control control = delRequest.getCurrentControl();
+        
+        assertEquals( 1, delRequest.getControls().size() );
+        assertTrue( control.getCriticality() );
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+        assertEquals( "DSMLv2.0 rocks!!", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
 
 
@@ -146,15 +170,11 @@ public class DelRequestTest extends AbstractTest
         }
 
         DelRequest delRequest = ( DelRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 1, delRequest.getControls().size() );
-
         Control control = delRequest.getCurrentControl();
-
+        
+        assertEquals( 1, delRequest.getControls().size() );
         assertTrue( control.getCriticality() );
-
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
 
@@ -179,15 +199,11 @@ public class DelRequestTest extends AbstractTest
         }
 
         DelRequest delRequest = ( DelRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 2, delRequest.getControls().size() );
-
         Control control = delRequest.getCurrentControl();
-
+        
+        assertEquals( 2, delRequest.getControls().size() );
         assertFalse( control.getCriticality() );
-
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-
         assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
 
@@ -213,15 +229,11 @@ public class DelRequestTest extends AbstractTest
         }
 
         DelRequest delRequest = ( DelRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 3, delRequest.getControls().size() );
-
         Control control = delRequest.getCurrentControl();
-
+        
+        assertEquals( 3, delRequest.getControls().size() );
         assertTrue( control.getCriticality() );
-
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
 }

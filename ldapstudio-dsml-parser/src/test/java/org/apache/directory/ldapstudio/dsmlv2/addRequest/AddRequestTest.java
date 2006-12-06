@@ -128,6 +128,34 @@ public class AddRequestTest extends AbstractTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
+    
+    /**
+     * Test parsing of a request with a (optional) Control element with Base64 value
+     */
+    public void testRequestWith1ControlBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
+        Control control = addRequest.getCurrentControl();
+        
+        assertEquals( 1, addRequest.getControls().size() );
+        assertTrue( control.getCriticality() );
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+        assertEquals( "DSMLv2.0 rocks!!", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
+    }
 
 
     /**
@@ -151,15 +179,11 @@ public class AddRequestTest extends AbstractTest
         }
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 1, addRequest.getControls().size() );
-
         Control control = addRequest.getCurrentControl();
-
+        
+        assertEquals( 1, addRequest.getControls().size() );
         assertTrue( control.getCriticality() );
-
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
 
@@ -184,15 +208,11 @@ public class AddRequestTest extends AbstractTest
         }
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 2, addRequest.getControls().size() );
-
         Control control = addRequest.getCurrentControl();
 
+        assertEquals( 2, addRequest.getControls().size() );
         assertFalse( control.getCriticality() );
-
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-
         assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
 
@@ -218,15 +238,11 @@ public class AddRequestTest extends AbstractTest
         }
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 3, addRequest.getControls().size() );
-
         Control control = addRequest.getCurrentControl();
 
+        assertEquals( 3, addRequest.getControls().size() );
         assertTrue( control.getCriticality() );
-
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
 
