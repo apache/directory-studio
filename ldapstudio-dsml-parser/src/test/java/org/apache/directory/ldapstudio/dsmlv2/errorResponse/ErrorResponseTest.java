@@ -20,18 +20,19 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.errorResponse;
 
+
 import org.apache.directory.ldapstudio.dsmlv2.AbstractResponseTest;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
+
 
 /**
  * Tests for the Error Response parsing
  */
 public class ErrorResponseTest extends AbstractResponseTest
 {
-    
-    
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute
      */
@@ -41,259 +42,269 @@ public class ErrorResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( 456, errorResponse.getMessageId() );
     }
-  
+
 
     /**
      * Test parsing of a response without Type attribute
      */
     public void testResponseWithoutType()
     {
-    	testParsingFail( ErrorResponseTest.class, "response_without_type.xml");
+        testParsingFail( ErrorResponseTest.class, "response_without_type.xml" );
     }
 
-    
+
     /**
      * Test parsing of a response with type == notAttempted
      */
     public void testResponseWithTypeNotAttempted()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_notAttempted.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( ErrorResponseTest.class.getResource( "response_with_type_notAttempted.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.NOT_ATTEMPTED, errorResponse.getType() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with type == couldNotConnect
      */
     public void testResponseWithTypeCouldNotConnect()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_couldNotConnect.xml" ).getFile() );
-        
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_couldNotConnect.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.COULD_NOT_CONNECT, errorResponse.getType() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with type == connectionClosed
      */
     public void testResponseWithTypeConnectionClosed()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_connectionClosed.xml" ).getFile() );
-        
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_connectionClosed.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.CONNECTION_CLOSED, errorResponse.getType() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with type == malformedRequest
      */
     public void testResponseWithTypeMalformedRequest()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_malformedRequest.xml" ).getFile() );
-        
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_malformedRequest.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.MALFORMED_REQUEST, errorResponse.getType() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with type == gatewayInternalError
      */
     public void testResponseWithTypeGatewayInternalError()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_gatewayInternalError.xml" ).getFile() );
-        
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_gatewayInternalError.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.GATEWAY_INTERNAL_ERROR, errorResponse.getType() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with type == authenticationFailed
      */
     public void testResponseWithTypeAuthenticationFailed()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_authenticationFailed.xml" ).getFile() );
-        
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_authenticationFailed.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.AUTHENTICATION_FAILED, errorResponse.getType() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with type == unresolvableURI
      */
     public void testResponseWithTypeUnresolvableURI()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_unresolvableURI.xml" ).getFile() );
-        
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_unresolvableURI.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.UNRESOLVABLE_URI, errorResponse.getType() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with type == other
      */
     public void testResponseWithTypeOther()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_other.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( ErrorResponseType.OTHER, errorResponse.getType() );
-    }    
-    
+    }
+
+
     /**
      * Test parsing of a response with type in error
      */
     public void testResponseWithTypeError()
     {
-    	testParsingFail( ErrorResponseTest.class, "response_with_type_inError.xml");
+        testParsingFail( ErrorResponseTest.class, "response_with_type_inError.xml" );
     }
-    
+
+
     /**
      * Test parsing of a response with Message
      */
     public void testResponseWithMessage()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_message.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
-        
+
         assertEquals( "Connection refused", errorResponse.getMessage() );
-    }    
+    }
 }

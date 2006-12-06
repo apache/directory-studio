@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -46,6 +47,7 @@ import org.apache.directory.ldapstudio.dsmlv2.searchResponse.SearchResponseTest;
 import org.apache.directory.ldapstudio.dsmlv2.searchResponse.searchResultDone.SearchResultDoneTest;
 import org.apache.directory.ldapstudio.dsmlv2.searchResponse.searchResultEntry.SearchResultEntryTest;
 import org.apache.directory.ldapstudio.dsmlv2.searchResponse.searchResultReference.SearchResultReferenceTest;
+
 
 /**
  * This is the complete Test Suite for DSMLv2 Parser (Request and Response)

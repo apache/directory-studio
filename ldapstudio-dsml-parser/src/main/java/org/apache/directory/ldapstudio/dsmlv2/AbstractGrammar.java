@@ -26,6 +26,7 @@ import java.util.HashMap;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+
 /**
  * The abstract IGrammar which is the Mother of all the grammars. It contains
  * the transitions table.
@@ -46,9 +47,10 @@ public abstract class AbstractGrammar implements IGrammar
     /** The grammar's states */
     protected IStates statesEnum;
 
+
     public AbstractGrammar()
     {
-        
+
     }
 
 
@@ -114,12 +116,12 @@ public abstract class AbstractGrammar implements IGrammar
     {
         this.statesEnum = statesEnum;
     }
-    
+
 
     public void executeAction( Dsmlv2Container container ) throws Exception
-    {        
+    {
         XmlPullParser xpp = container.getParser();
-        
+
         int eventType = xpp.getEventType();
         do
         {
@@ -144,19 +146,19 @@ public abstract class AbstractGrammar implements IGrammar
         while ( eventType != XmlPullParser.END_DOCUMENT );
     }
 
-    
+
     private void processTag( Dsmlv2Container container, int tagType ) throws Exception
-    {        
+    {
         XmlPullParser xpp = container.getParser();
-        
+
         String tagName = xpp.getName().toLowerCase();
-        
-        GrammarTransition transition = getTransition( container.getState(), new Tag( tagName, tagType) );
-        
-        if (transition != null)
+
+        GrammarTransition transition = getTransition( container.getState(), new Tag( tagName, tagType ) );
+
+        if ( transition != null )
         {
             container.setState( transition.getNextState() );
-            
+
             if ( transition.hasAction() )
             {
                 transition.getAction().action( container );
@@ -164,7 +166,8 @@ public abstract class AbstractGrammar implements IGrammar
         }
         else
         {
-            throw new XmlPullParserException( "The tag " + new Tag(tagName, tagType) + " can't be found at this position" , xpp, null );   
+            throw new XmlPullParserException( "The tag " + new Tag( tagName, tagType )
+                + " can't be found at this position", xpp, null );
         }
     }
 }

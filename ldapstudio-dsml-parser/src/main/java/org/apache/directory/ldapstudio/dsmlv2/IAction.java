@@ -20,7 +20,9 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import org.xmlpull.v1.XmlPullParserException;
+
 
 /**
  * IAction interface just contains the method 'action' which must be implemented

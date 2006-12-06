@@ -20,43 +20,53 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.codec.LdapResponse;
 
-public class BatchResponse {
-	
+
+public class BatchResponse
+{
+
     private List<LdapResponse> responses;
-    
+
     private int requestID;
-    
+
+
     public BatchResponse()
     {
-    	responses = new ArrayList<LdapResponse>();
+        responses = new ArrayList<LdapResponse>();
     }
-    
-    public boolean addResponse(LdapResponse response)
+
+
+    public boolean addResponse( LdapResponse response )
     {
         return responses.add( response );
     }
-    
+
+
     public LdapResponse getCurrentResponse()
     {
         return responses.get( responses.size() - 1 );
     }
-    
+
+
     public int getRequestID()
     {
         return requestID;
     }
+
 
     public void setRequestID( int requestID )
     {
         this.requestID = requestID;
     }
 
-	public List getResponses() {
-		return responses;
-	}
+
+    public List getResponses()
+    {
+        return responses;
+    }
 }

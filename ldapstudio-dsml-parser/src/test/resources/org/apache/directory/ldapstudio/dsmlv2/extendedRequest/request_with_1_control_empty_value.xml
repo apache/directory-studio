@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<extendedRequest>
+		<control type="1.2.840.113556.1.4.643" criticality="true">
+			<controlValue></controlValue>
+		</control>
+		<requestName>1.3.563.52.425</requestName>
+	</extendedRequest>
+</batchRequest>

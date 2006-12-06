@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.HashMap;
@@ -53,42 +54,42 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+
 /**
  * This Class represents the DSMLv2 Response Grammar
  */
 public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
 {
-	/** The instance of grammar. Dsmlv2ResponseGrammar is a singleton */
+    /** The instance of grammar. Dsmlv2ResponseGrammar is a singleton */
     private static Dsmlv2ResponseGrammar instance = new Dsmlv2ResponseGrammar();
-    
-    private static Set<String> DSMLV2_DESCR_TAGS = null; 
-    
+
+    // Initializing DESCR_TAGS
+    private static Set<String> DSMLV2_DESCR_TAGS = null;
     static
     {
-    	// Initializing DESCR_TAGS
-    	DSMLV2_DESCR_TAGS = new HashSet<String>();
-    	DSMLV2_DESCR_TAGS.add( "success");
-    	DSMLV2_DESCR_TAGS.add( "operationsError" );
-	    DSMLV2_DESCR_TAGS.add( "protocolError" );
-	    DSMLV2_DESCR_TAGS.add( "timeLimitExceeded" );
-	    DSMLV2_DESCR_TAGS.add( "sizeLimitExceeded" );
-	    DSMLV2_DESCR_TAGS.add( "compareFalse" );
+        DSMLV2_DESCR_TAGS = new HashSet<String>();
+        DSMLV2_DESCR_TAGS.add( "success" );
+        DSMLV2_DESCR_TAGS.add( "operationsError" );
+        DSMLV2_DESCR_TAGS.add( "protocolError" );
+        DSMLV2_DESCR_TAGS.add( "timeLimitExceeded" );
+        DSMLV2_DESCR_TAGS.add( "sizeLimitExceeded" );
+        DSMLV2_DESCR_TAGS.add( "compareFalse" );
         DSMLV2_DESCR_TAGS.add( "compareTrue" );
-	    DSMLV2_DESCR_TAGS.add( "authMethodNotSupported" );
+        DSMLV2_DESCR_TAGS.add( "authMethodNotSupported" );
         DSMLV2_DESCR_TAGS.add( "strongAuthRequired" );
-	    DSMLV2_DESCR_TAGS.add( "referral" );
+        DSMLV2_DESCR_TAGS.add( "referral" );
         DSMLV2_DESCR_TAGS.add( "adminLimitExceeded" );
-	    DSMLV2_DESCR_TAGS.add( "unavailableCriticalExtension" );
+        DSMLV2_DESCR_TAGS.add( "unavailableCriticalExtension" );
         DSMLV2_DESCR_TAGS.add( "confidentialityRequired" );
-	    DSMLV2_DESCR_TAGS.add( "saslBindInProgress" );
+        DSMLV2_DESCR_TAGS.add( "saslBindInProgress" );
         DSMLV2_DESCR_TAGS.add( "noSuchAttribute" );
-	    DSMLV2_DESCR_TAGS.add( "undefinedAttributeType" );
+        DSMLV2_DESCR_TAGS.add( "undefinedAttributeType" );
         DSMLV2_DESCR_TAGS.add( "inappropriateMatching" );
-	    DSMLV2_DESCR_TAGS.add( "constraintViolation" );
+        DSMLV2_DESCR_TAGS.add( "constraintViolation" );
         DSMLV2_DESCR_TAGS.add( "attributeOrValueExists" );
-	    DSMLV2_DESCR_TAGS.add( "invalidAttributeSyntax" );
+        DSMLV2_DESCR_TAGS.add( "invalidAttributeSyntax" );
         DSMLV2_DESCR_TAGS.add( "noSuchObject" );
-	    DSMLV2_DESCR_TAGS.add( "aliasProblem" );
+        DSMLV2_DESCR_TAGS.add( "aliasProblem" );
         DSMLV2_DESCR_TAGS.add( "invalidDNSyntax" );
         DSMLV2_DESCR_TAGS.add( "aliasDereferencingProblem" );
         DSMLV2_DESCR_TAGS.add( "inappropriateAuthentication" );
@@ -106,75 +107,83 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         DSMLV2_DESCR_TAGS.add( "objectClassModsProhibited" );
         DSMLV2_DESCR_TAGS.add( "affectMultipleDSAs" );
         DSMLV2_DESCR_TAGS.add( "other" );
-    	
     }
-    
+
+
     @SuppressWarnings("unchecked")
     private Dsmlv2ResponseGrammar()
     {
         name = Dsmlv2ResponseGrammar.class.getName();
         statesEnum = Dsmlv2StatesEnum.getInstance();
-        
+
         // Create the transitions table
-        super.transitions =  (HashMap<Tag, GrammarTransition>[]) Array.newInstance( HashMap.class, 300 );; // TODO Change this value
-        
+        super.transitions = ( HashMap<Tag, GrammarTransition>[] ) Array.newInstance( HashMap.class, 300 );; // TODO Change this value
+
         //====================================================
         //  Transitions concerning : BATCH RESPONSE
         //====================================================
         super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE] = new HashMap<Tag, GrammarTransition>();
-        
+
         // ** OPEN BATCH Reponse **
         // State: [INIT_GRAMMAR_STATE] - Tag: <batchResponse>
-        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE].put( new Tag( "batchResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, batchResponseCreation ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE].put( new Tag( "batchResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                batchResponseCreation ) );
+
         //====================================================
         //  Transitions concerning : BATCH RESPONSE LOOP
         //====================================================
         super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <addResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "addResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, addResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "addResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                addResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <authResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "authResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, authResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "authResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                authResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <compareResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "compareResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, compareResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "compareResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                compareResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <delResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "delResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, delResponseCreation ));
-       
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "delResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                delResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <modifyResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "modifyResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, modifyResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "modifyResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                modifyResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <modDNResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "modDNResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, modDNResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "modDNResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                modDNResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "extendedResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.EXTENDED_RESPONSE, extendedResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "extendedResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.EXTENDED_RESPONSE,
+                extendedResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <errorResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "errorResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.ERROR_RESPONSE, errorResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "errorResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.ERROR_RESPONSE,
+                errorResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: <searchReponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "searchResponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.SEARCH_RESPONSE, searchResponseCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "searchResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.SEARCH_RESPONSE,
+                searchResponseCreation ) );
+
         // State: [BATCH_RESPONSE_LOOP] - Tag: </batchResponse>
-        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "batchResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.GRAMMAR_END, null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP].put( new Tag( "batchResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
+
         //====================================================
         //  Transitions concerning : ERROR RESPONSE
         //====================================================
@@ -183,40 +192,39 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.MESSAGE_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.DETAIL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.DETAIL_END] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [ERROR_RESPONSE] - Tag: <message>
-        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "message", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.MESSAGE_START, errorResponseAddMessage ));
-        
+        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "message", Tag.START ), new GrammarTransition(
+            Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.MESSAGE_START, errorResponseAddMessage ) );
+
         // State: [ERROR_RESPONSE] - Tag: <detail>
-        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "detail", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.DETAIL_START, errorResponseAddDetail ));
-        
+        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "detail", Tag.START ), new GrammarTransition(
+            Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.DETAIL_START, errorResponseAddDetail ) );
+
         // State: [MESSAGE_START] - Tag: </message>
-        super.transitions[Dsmlv2StatesEnum.MESSAGE_START].put( new Tag( "message", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MESSAGE_START, Dsmlv2StatesEnum.MESSAGE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MESSAGE_START].put( new Tag( "message", Tag.END ), new GrammarTransition(
+            Dsmlv2StatesEnum.MESSAGE_START, Dsmlv2StatesEnum.MESSAGE_END, null ) );
+
         // State: [MESSAGE_END] - Tag: </errorResponse>
-        super.transitions[Dsmlv2StatesEnum.MESSAGE_END].put( new Tag( "errorResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MESSAGE_END].put( new Tag( "errorResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [MESSAGE_END] - Tag: <detail>
-        super.transitions[Dsmlv2StatesEnum.MESSAGE_END].put( new Tag( "detail", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.DETAIL_START, errorResponseAddDetail ));
-        
+        super.transitions[Dsmlv2StatesEnum.MESSAGE_END].put( new Tag( "detail", Tag.START ), new GrammarTransition(
+            Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.DETAIL_START, errorResponseAddDetail ) );
+
         // State: [DETAIL_START] - Tag: </detail>
-        super.transitions[Dsmlv2StatesEnum.DETAIL_START].put( new Tag( "detail", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.DETAIL_START, Dsmlv2StatesEnum.DETAIL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.DETAIL_START].put( new Tag( "detail", Tag.END ), new GrammarTransition(
+            Dsmlv2StatesEnum.DETAIL_START, Dsmlv2StatesEnum.DETAIL_END, null ) );
+
         // State: [DETAIL_END] - Tag: <detail>
-        super.transitions[Dsmlv2StatesEnum.DETAIL_END].put( new Tag( "detail", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.DETAIL_END, Dsmlv2StatesEnum.DETAIL_END, errorResponseAddDetail ));
-        
+        super.transitions[Dsmlv2StatesEnum.DETAIL_END].put( new Tag( "detail", Tag.END ), new GrammarTransition(
+            Dsmlv2StatesEnum.DETAIL_END, Dsmlv2StatesEnum.DETAIL_END, errorResponseAddDetail ) );
+
         // State: [ERROR_RESPONSE] - Tag: </errorResponse>
-        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "errorResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "errorResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : EXTENDED RESPONSE
         //====================================================
@@ -235,128 +243,158 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.RESPONSE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.RESPONSE_END] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [EXTENDED_RESPONSE] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE, Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, ldapResultControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, ldapResultControlCreation ) );
+
         // State: [EXTENDED_RESPONSE_CONTROL_START] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START, ldapResultControlValueCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START].put( new Tag( "controlValue", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START, ldapResultControlValueCreation ) );
+
         // State: [EXTENDED_RESPONSE_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START, Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START].put(
+            new Tag( "controlValue", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END, null ) );
+
         // State: [EXTENDED_RESPONSE_CONTROL_VALUE_END] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END, Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, null ) );
+
         // State: [EXTENDED_RESPONSE_CONTROL_START] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, null ) );
+
         // State: [EXTENDED_RESPONSE_CONTROL_END] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, ldapResultControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START, ldapResultControlCreation ) );
+
         // State: [EXTENDED_RESPONSE_CONTROL_END] - Tag: <resultCode>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END].put( new Tag( "resultCode", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END, Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START, extendedResponseAddResultCode ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END].put( new Tag( "resultCode", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START, extendedResponseAddResultCode ) );
+
         // State: [EXTENDED_RESPONSE] - Tag: <resultCode>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE].put( new Tag( "resultCode", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE, Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START, extendedResponseAddResultCode ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE].put( new Tag( "resultCode", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START, extendedResponseAddResultCode ) );
+
         // State: [EXTENDED_RESPONSE_RESULT_CODE_START] - Tag: </resultCode>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START].put( new Tag( "resultCode", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START, Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START].put( new Tag( "resultCode", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, null ) );
+
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <errorMessage>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "errorMessage", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START, extendedResponseAddErrorMessage ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put(
+            new Tag( "errorMessage", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START, extendedResponseAddErrorMessage ) );
+
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "referral", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "referral", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ) );
+
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <responseName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "responseName", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_NAME_START, extendedResponseAddResponseName ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put(
+            new Tag( "responseName", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_NAME_START,
+                extendedResponseAddResponseName ) );
+
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <response>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "response", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_START, extendedResponseAddResponse ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "response", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_START,
+                extendedResponseAddResponse ) );
+
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "extendedResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put(
+            new Tag( "extendedResponse", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_START] - Tag: </errorMessage>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START].put( new Tag( "errorMessage", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START, Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START].put(
+            new Tag( "errorMessage", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, null ) );
+
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "referral", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "referral", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ) );
+
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <responseName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "responseName", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.RESPONSE_NAME_START, extendedResponseAddResponseName ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put(
+            new Tag( "responseName", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.RESPONSE_NAME_START,
+                extendedResponseAddResponseName ) );
+
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <response>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "response", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.RESPONSE_START, extendedResponseAddResponse ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "response", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.RESPONSE_START, extendedResponseAddResponse ) );
+
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "extendedResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "extendedResponse",
+            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
+            Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [EXTENDED_RESPONSE_REFERRAL_START] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START].put( new Tag( "referral", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START].put( new Tag( "referral", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, null ) );
+
         // State: [EXTENDED_RESPONSE_REFERRAL_START] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START].put( new Tag( "referral", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START].put( new Tag( "referral", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, null ) );
+
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "referral", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "referral", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ) );
+
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <responseName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "responseName", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.RESPONSE_NAME_START, extendedResponseAddResponseName ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "responseName", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
+                Dsmlv2StatesEnum.RESPONSE_NAME_START, extendedResponseAddResponseName ) );
+
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <reponse>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "reponse", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.RESPONSE_START, extendedResponseAddResponse ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "reponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.RESPONSE_START,
+                extendedResponseAddResponse ) );
+
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "extendedResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "extendedResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [RESPONSE_NAME_START] - Tag: </responseName>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_START].put( new Tag( "responseName", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.RESPONSE_NAME_START, Dsmlv2StatesEnum.RESPONSE_NAME_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_START].put( new Tag( "responseName", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_START, Dsmlv2StatesEnum.RESPONSE_NAME_END, null ) );
+
         // State: [RESPONSE_NAME_END] - Tag: <response>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END].put( new Tag( "response", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.RESPONSE_START, extendedResponseAddResponse ));
-        
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END].put( new Tag( "response", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.RESPONSE_START,
+                extendedResponseAddResponse ) );
+
         // State: [RESPONSE_NAME_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END].put( new Tag( "extendedResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END].put( new Tag( "extendedResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [RESPONSE_START] - Tag: </response>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_START].put( new Tag( "response", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.RESPONSE_START, Dsmlv2StatesEnum.RESPONSE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_START].put( new Tag( "response", Tag.END ), new GrammarTransition(
+            Dsmlv2StatesEnum.RESPONSE_START, Dsmlv2StatesEnum.RESPONSE_END, null ) );
+
         // State: [RESPONSE_END] - Tag: </extendedResponse>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_END].put( new Tag( "extendedResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.RESPONSE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.RESPONSE_END].put( new Tag( "extendedResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : LDAP RESULT
         //====================================================
@@ -372,174 +410,210 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [LDAP_RESULT] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, ldapResultControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT].put( new Tag( "control", Tag.START ), new GrammarTransition(
+            Dsmlv2StatesEnum.LDAP_RESULT, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, ldapResultControlCreation ) );
+
         // State: [LDAP_RESULT] - Tag: <resultCode>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT].put( new Tag( "resultCode", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT, Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START, ldapResultAddResultCode ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT].put( new Tag( "resultCode", Tag.START ), new GrammarTransition(
+            Dsmlv2StatesEnum.LDAP_RESULT, Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START, ldapResultAddResultCode ) );
+
         // State: [LDAP_RESULT_CONTROL_START] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START, ldapResultControlValueCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START].put( new Tag( "controlValue", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START,
+                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START, ldapResultControlValueCreation ) );
+
         // State: [LDAP_RESULT_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START].put( new Tag( "controlValue", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START,
+                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END, null ) );
+
         // State: [LDAP_RESULT_CONTROL_VALUE_END] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END,
+                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, null ) );
+
         // State: [LDAP_RESULT_CONTROL_START] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START,
+                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, null ) );
+
         // State: [LDAP_RESULT_CONTROL_END] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, ldapResultControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END,
+                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START, ldapResultControlCreation ) );
+
         // State: [LDAP_RESULT_CONTROL_END] - Tag: <resultCode>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END].put( new Tag( "resultCode", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END, Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START, ldapResultAddResultCode ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END].put( new Tag( "resultCode", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END,
+                Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START, ldapResultAddResultCode ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_START] - Tag: </resultCode>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START].put( new Tag( "resultCode", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START, Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, null ));
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START].put( new Tag( "resultCode", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START,
+                Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, null ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: <errorMessage>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "errorMessage", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START, ldapResultAddErrorMessage ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "errorMessage", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
+                Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START, ldapResultAddErrorMessage ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "referral", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "referral", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
+                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </addResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "addResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "addResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </authResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "authResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "authResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </compareResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "compareResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "compareResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </delResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "delResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "delResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </modifyResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "modifyResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "modifyResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </modDNResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "modDNResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "modDNResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "searchResultDone", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END, Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "searchResultDone", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ) );
+
         // State: [SEARCH_RESULT_DONE_END] - Tag: </searchResponse>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END].put( new Tag( "searchResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END]
+            .put( new Tag( "searchResponse", Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_START] - Tag: </errorMessage>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START].put( new Tag( "errorMessage", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START, Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START].put( new Tag( "errorMessage", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START,
+                Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "referral", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "referral", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </addResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "addResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "addResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </authResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "authResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "authResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </compareResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "compareResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "compareResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </delResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "delResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "delResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </modifyResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "modifyResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "modifyResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </modDNResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "modDNResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "modDNResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
+
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "searchResultDone", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "searchResultDone", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ) );
+
         // State: [LDAP_RESULT_REFERRAL_START] - Tag: </referral>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START].put( new Tag( "referral", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START].put( new Tag( "referral", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START,
+                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, null ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "referral", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "referral", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END,
+                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </addResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "addResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "addResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </authResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "authResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "authResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </compareResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "compareResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "compareResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </delResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "delResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "delResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </modifyResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "modifyResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "modifyResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </modDNResponse>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "modDNResponse", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "modDNResponse", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                null ) );
+
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "searchResultDone", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "searchResultDone", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END,
+                null ) );
+
         //====================================================
         //  Transitions concerning : SEARCH RESPONSE
         //====================================================
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [SEARCH_REPONSE] - Tag: <searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE].put( new Tag( "searchResultEntry", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY, searchResultEntryCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE].put( new Tag( "searchResultEntry", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
+                searchResultEntryCreation ) );
+
         // State: [SEARCH_REPONSE] - Tag: <searchResultReference>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE].put( new Tag( "searchResultReference", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE, searchResultReferenceCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE].put( new Tag( "searchResultReference", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
+                searchResultReferenceCreation ) );
+
         // State: [SEARCH_REPONSE] - Tag: <searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE].put( new Tag( "searchResultDone", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.LDAP_RESULT, searchResultDoneCreation ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESPONSE].put( new Tag( "searchResultDone", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESPONSE, Dsmlv2StatesEnum.LDAP_RESULT,
+                searchResultDoneCreation ) );
+
         //====================================================
         //  Transitions concerning : SEARCH RESULT ENTRY
         //====================================================
@@ -552,92 +626,114 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [SEARCH_RESULT_ENTRY] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, searchResultEntryControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, searchResultEntryControlCreation ) );
+
         // State: [SEARCH_RESULT_ENTRY] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY].put( new Tag( "attr", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, searchResultEntryAddAttr ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY].put( new Tag( "attr", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, searchResultEntryAddAttr ) );
+
         // State: [SEARCH_RESULT_ENTRY] - Tag: </searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY].put( new Tag( "searchResultEntry", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY].put( new Tag( "searchResultEntry", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP,
+                null ) );
+
         // State: [SEARCH_RESULT_ENTRY_CONTROL_START] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START, searchResultEntryControlValueCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START].put(
+            new Tag( "controlValue", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START, searchResultEntryControlValueCreation ) );
+
         // State: [SEARCH_RESULT_ENTRY_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START].put( new Tag( "controlValue",
+            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START,
+            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_CONTROL_VALUE_END] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_CONTROL_START] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_CONTROL_END] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, searchResultEntryControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START, searchResultEntryControlCreation ) );
+
         // State: [SEARCH_RESULT_ENTRY_CONTROL_END] - Tag: </searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END].put( new Tag( "searchResultEntry", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END].put(
+            new Tag( "searchResultEntry", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_CONTROL_END] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END].put( new Tag( "attr", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END].put( new Tag( "attr", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_ATTR_START] - Tag: </attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START].put( new Tag( "attr", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START].put( new Tag( "attr", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_ATTR_START] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START, searchResultEntryAddValue ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START, searchResultEntryAddValue ) );
+
         // State: [SEARCH_RESULT_ENTRY_ATTR_END] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END].put( new Tag( "attr", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, searchResultEntryAddAttr ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END].put( new Tag( "attr", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START, searchResultEntryAddAttr ) );
+
         // State: [SEARCH_RESULT_ENTRY_ATTR_END] - Tag: </searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END].put( new Tag( "searchResultEntry", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END].put( new Tag( "searchResultEntry", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_VALUE_START] - Tag: </value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START].put( new Tag( "value", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START].put( new Tag( "value", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, null ) );
+
         // State: [SEARCH_RESULT_ENTRY_VALUE_END] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START, searchResultEntryAddValue ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START, searchResultEntryAddValue ) );
+
         // State: [SEARCH_RESULT_ENTRY_VALUE_END] - Tag: </attr>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END].put( new Tag( "attr", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END].put( new Tag( "attr", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END, null ) );
+
         //====================================================
         //  Transitions concerning : SEARCH RESULT ENTRY LOOP
         //====================================================
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [SEARCH_RESULT_ENTRY_LOOP] - Tag: <searchResultEntry>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP].put( new Tag( "searchResultEntry", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY, searchResultEntryCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP].put( new Tag( "searchResultEntry", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY,
+                searchResultEntryCreation ) );
+
         // State: [SEARCH_RESULT_ENTRY_LOOP] - Tag: <searchResultReference>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP].put( new Tag( "searchResultReference", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE, searchResultReferenceCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP].put(
+            new Tag( "searchResultReference", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
+                searchResultReferenceCreation ) );
+
         // State: [SEARCH_RESULT_ENTRY_LOOP] - Tag: <searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP].put( new Tag( "searchResultDone", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, searchResultDoneCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP].put( new Tag( "searchResultDone", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                searchResultDoneCreation ) );
+
         //====================================================
         //  Transitions concerning : SEARCH RESULT REFERENCE
         //====================================================
@@ -648,79 +744,92 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [SEARCH_RESULT_REFERENCE] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, searchResultReferenceControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, searchResultReferenceControlCreation ) );
+
         // State: [SEARCH_RESULT_REFERENCE] - Tag: <ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE].put( new Tag( "ref", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE].put( new Tag( "ref", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ) );
+
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_START] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START, searchResultReferenceControlValueCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START].put( new Tag( "controlValue",
+            Tag.START ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START,
+            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START, searchResultReferenceControlValueCreation ) );
+
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START].put( new Tag( "controlValue",
+            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START,
+            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END, null ) );
+
         // State: [sEARCH_RESULT_REFERENCE_CONTROL_VALUE_END] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END].put(
+            new Tag( "control", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, null ) );
+
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_START] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, null ) );
+
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_END] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, searchResultReferenceControlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START, searchResultReferenceControlCreation ) );
+
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_END] - Tag: <ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END].put( new Tag( "ref", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END].put( new Tag( "ref", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ) );
+
         // State: [SEARCH_RESULT_REFERENCE_REF_START] - Tag: </ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START].put( new Tag( "ref", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START].put( new Tag( "ref", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, null ) );
+
         // State: [SEARCH_RESULT_REFERENCE_REF_END] - Tag: <ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END].put( new Tag( "ref", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END].put( new Tag( "ref", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END,
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ) );
+
         // State: [SEARCH_RESULT_REFERENCE_REF_END] - Tag: </searchResultReference>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END].put( new Tag( "searchResultReference", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END].put( new Tag( "searchResultReference",
+            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END,
+            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, null ) );
+
         //==========================================================
         //  Transitions concerning : SEARCH RESULT REFERENCE LOOP
         //==========================================================
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [SEARCH_RESULT_REFERENCE_LOOP] - Tag: <searchResultReference>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP].put( new Tag( "searchResultReference", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE, searchResultReferenceCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP].put( new Tag( "searchResultReference",
+            Tag.START ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP,
+            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE, searchResultReferenceCreation ) );
+
         // State: [SEARCH_RESULT_REFERENCE_LOOP] - Tag: <searchResultDone>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP].put( new Tag( "searchResultDone", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT, searchResultDoneCreation ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP].put( new Tag( "searchResultDone", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
+                searchResultDoneCreation ) );
     }
-    
+
     /**
      * GrammarAction that creates the Batch Response
      */
-	private final GrammarAction batchResponseCreation = new GrammarAction( "Create Batch Response" )
+    private final GrammarAction batchResponseCreation = new GrammarAction( "Create Batch Response" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             BatchResponse batchResponse = new BatchResponse();
-            
+
             container.setBatchResponse( batchResponse );
-            
-			XmlPullParser xpp = container.getParser();
-            
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -729,32 +838,33 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	batchResponse.setRequestID( Integer.parseInt( attributeValue ) );
+                    batchResponse.setRequestID( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
         }
     };
-	
+
     /**
      * GrammarAction that creates the Add Response
      */
-	private final GrammarAction addResponseCreation = new GrammarAction( "Create Add Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction addResponseCreation = new GrammarAction( "Create Add Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			AddResponse addResponse = new AddResponse();
-			
-			container.getBatchResponse().addResponse( addResponse );
-			
-			LdapResult ldapResult = new LdapResult();
-			
-			addResponse.setLdapResult( ldapResult );
-            
-			XmlPullParser xpp = container.getParser();
-			
+            AddResponse addResponse = new AddResponse();
+
+            container.getBatchResponse().addResponse( addResponse );
+
+            LdapResult ldapResult = new LdapResult();
+
+            addResponse.setLdapResult( ldapResult );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -763,45 +873,46 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	addResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    addResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
             if ( attributeValue != null )
             {
                 try
                 {
-					ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
         }
-	};
-	
+    };
+
     /**
      * GrammarAction that creates the Auth Response
      */
-	private final GrammarAction authResponseCreation = new GrammarAction( "Create Auth Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction authResponseCreation = new GrammarAction( "Create Auth Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			BindResponse bindResponse = new BindResponse();
-			
-			container.getBatchResponse().addResponse( bindResponse );
-			
-			LdapResult ldapResult = new LdapResult();
-			
-			bindResponse.setLdapResult( ldapResult );
-            
-			XmlPullParser xpp = container.getParser();
-			
+            BindResponse bindResponse = new BindResponse();
+
+            container.getBatchResponse().addResponse( bindResponse );
+
+            LdapResult ldapResult = new LdapResult();
+
+            bindResponse.setLdapResult( ldapResult );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -810,45 +921,46 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	bindResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    bindResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
             if ( attributeValue != null )
             {
                 try
                 {
-					ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
-        }			
-	};
-	
+        }
+    };
+
     /**
      * GrammarAction that creates the Compare Response
      */
-	private final GrammarAction compareResponseCreation = new GrammarAction( "Create Compare Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction compareResponseCreation = new GrammarAction( "Create Compare Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			CompareResponse compareResponse = new CompareResponse();
-			
-			container.getBatchResponse().addResponse( compareResponse );
-			
-			LdapResult ldapResult = new LdapResult();
-			
-			compareResponse.setLdapResult( ldapResult );
-            
-			XmlPullParser xpp = container.getParser();
-			
+            CompareResponse compareResponse = new CompareResponse();
+
+            container.getBatchResponse().addResponse( compareResponse );
+
+            LdapResult ldapResult = new LdapResult();
+
+            compareResponse.setLdapResult( ldapResult );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -857,45 +969,46 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	compareResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    compareResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
             if ( attributeValue != null )
             {
                 try
                 {
-					ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
-        }			
-	};
-	
+        }
+    };
+
     /**
      * GrammarAction that creates the Del Response
      */
-	private final GrammarAction delResponseCreation = new GrammarAction( "Create Del Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction delResponseCreation = new GrammarAction( "Create Del Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			DelResponse delResponse = new DelResponse();
-			
-			container.getBatchResponse().addResponse( delResponse );
-			
-			LdapResult ldapResult = new LdapResult();
-			
-			delResponse.setLdapResult( ldapResult );
-            
-			XmlPullParser xpp = container.getParser();
-			
+            DelResponse delResponse = new DelResponse();
+
+            container.getBatchResponse().addResponse( delResponse );
+
+            LdapResult ldapResult = new LdapResult();
+
+            delResponse.setLdapResult( ldapResult );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -904,45 +1017,46 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	delResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    delResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
             if ( attributeValue != null )
             {
                 try
                 {
-					ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
-        }			
-	};
-	
+        }
+    };
+
     /**
      * GrammarAction that creates the Modify Response
      */
-	private final GrammarAction modifyResponseCreation = new GrammarAction( "Create Modify Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction modifyResponseCreation = new GrammarAction( "Create Modify Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			ModifyResponse modifyResponse = new ModifyResponse();
-			
-			container.getBatchResponse().addResponse( modifyResponse );
-			
-			LdapResult ldapResult = new LdapResult();
-			
-			modifyResponse.setLdapResult( ldapResult );
-            
-			XmlPullParser xpp = container.getParser();
-			
+            ModifyResponse modifyResponse = new ModifyResponse();
+
+            container.getBatchResponse().addResponse( modifyResponse );
+
+            LdapResult ldapResult = new LdapResult();
+
+            modifyResponse.setLdapResult( ldapResult );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -951,45 +1065,46 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	modifyResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    modifyResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
             if ( attributeValue != null )
             {
                 try
                 {
-					ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
-        }			
-	};
-	
+        }
+    };
+
     /**
      * GrammarAction that creates the Mod DN Response
      */
-	private final GrammarAction modDNResponseCreation = new GrammarAction( "Create Mod DN Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction modDNResponseCreation = new GrammarAction( "Create Mod DN Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			ModifyDNResponse modifyDNResponse = new ModifyDNResponse();
-			
-			container.getBatchResponse().addResponse( modifyDNResponse );
-			
-			LdapResult ldapResult = new LdapResult();
-			
-			modifyDNResponse.setLdapResult( ldapResult );
-            
-			XmlPullParser xpp = container.getParser();
-			
+            ModifyDNResponse modifyDNResponse = new ModifyDNResponse();
+
+            container.getBatchResponse().addResponse( modifyDNResponse );
+
+            LdapResult ldapResult = new LdapResult();
+
+            modifyDNResponse.setLdapResult( ldapResult );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -998,45 +1113,46 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	modifyDNResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    modifyDNResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
             if ( attributeValue != null )
             {
                 try
                 {
-					ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
-        }			
-	};
-	
+        }
+    };
+
     /**
      * GrammarAction that creates the Extended Response
      */
-	private final GrammarAction extendedResponseCreation = new GrammarAction( "Create Extended Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction extendedResponseCreation = new GrammarAction( "Create Extended Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			ExtendedResponse extendedResponse = new ExtendedResponse();
-			
-			container.getBatchResponse().addResponse( extendedResponse );
-			
-			LdapResult ldapResult = new LdapResult();
-			
-			extendedResponse.setLdapResult( ldapResult );
-			
-			XmlPullParser xpp = container.getParser();
-            
+            ExtendedResponse extendedResponse = new ExtendedResponse();
+
+            container.getBatchResponse().addResponse( extendedResponse );
+
+            LdapResult ldapResult = new LdapResult();
+
+            extendedResponse.setLdapResult( ldapResult );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -1045,9 +1161,10 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	extendedResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    extendedResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1057,29 +1174,29 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-					ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    ldapResult.setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
-        }			
-	};
-	
+        }
+    };
+
     /**
      * GrammarAction that creates the Error Response
      */
-	private final GrammarAction errorResponseCreation = new GrammarAction( "Create Error Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction errorResponseCreation = new GrammarAction( "Create Error Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			ErrorResponse errorResponse = new ErrorResponse();
-			
-			container.getBatchResponse().addResponse( errorResponse );
-			
-			XmlPullParser xpp = container.getParser();
-            
+            ErrorResponse errorResponse = new ErrorResponse();
+
+            container.getBatchResponse().addResponse( errorResponse );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -1088,9 +1205,10 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	errorResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    errorResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1100,37 +1218,38 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.NOT_ATTEMPTED ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.NOT_ATTEMPTED );
-				}
+                    errorResponse.setType( ErrorResponseType.NOT_ATTEMPTED );
+                }
                 else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.COULD_NOT_CONNECT ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.COULD_NOT_CONNECT );
-				}
+                    errorResponse.setType( ErrorResponseType.COULD_NOT_CONNECT );
+                }
                 else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.CONNECTION_CLOSED ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.CONNECTION_CLOSED );
-				}
+                    errorResponse.setType( ErrorResponseType.CONNECTION_CLOSED );
+                }
                 else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.MALFORMED_REQUEST ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.MALFORMED_REQUEST );
-				}
-                else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.GATEWAY_INTERNAL_ERROR ) ) )
+                    errorResponse.setType( ErrorResponseType.MALFORMED_REQUEST );
+                }
+                else if ( attributeValue
+                    .equals( errorResponse.getTypeDescr( ErrorResponseType.GATEWAY_INTERNAL_ERROR ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.GATEWAY_INTERNAL_ERROR );
-				}
+                    errorResponse.setType( ErrorResponseType.GATEWAY_INTERNAL_ERROR );
+                }
                 else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.AUTHENTICATION_FAILED ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.AUTHENTICATION_FAILED );
-				}
+                    errorResponse.setType( ErrorResponseType.AUTHENTICATION_FAILED );
+                }
                 else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.UNRESOLVABLE_URI ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.UNRESOLVABLE_URI );
-				}
+                    errorResponse.setType( ErrorResponseType.UNRESOLVABLE_URI );
+                }
                 else if ( attributeValue.equals( errorResponse.getTypeDescr( ErrorResponseType.OTHER ) ) )
                 {
-					errorResponse.setType( ErrorResponseType.OTHER );
-				}
-                else 
+                    errorResponse.setType( ErrorResponseType.OTHER );
+                }
+                else
                 {
                     throw new XmlPullParserException( "Unknown type", xpp, null );
                 }
@@ -1139,20 +1258,20 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 throw new XmlPullParserException( "type attribute is required", xpp, null );
             }
-        }			
-	};
-    
-	/**
+        }
+    };
+
+    /**
      * GrammarAction that adds Message to an Error Response
      */
-	private final GrammarAction errorResponseAddMessage =  new GrammarAction( "Add Message to Error Response" )
+    private final GrammarAction errorResponseAddMessage = new GrammarAction( "Add Message to Error Response" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ErrorResponse errorResponse = (ErrorResponse) container.getBatchResponse().getCurrentResponse();
-            
+            ErrorResponse errorResponse = ( ErrorResponse ) container.getBatchResponse().getCurrentResponse();
+
             XmlPullParser xpp = container.getParser();
-                        
+
             int eventType = 0;
             try
             {
@@ -1162,7 +1281,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-                   
+
             if ( eventType == XmlPullParser.TEXT )
             {
                 errorResponse.setMessage( xpp.getText().trim() );
@@ -1170,26 +1289,26 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         }
     };
 
-	/**
+    /**
      * GrammarAction that adds Detail to an Error Response
      */
-	private final GrammarAction errorResponseAddDetail = null; // TODO Look for documentation about this Detail element (the DSML documentation doesn't give enough information)
-	
-	
-	/**
-	 * Creates a Control parsing the current node and adds it to the given parent 
-	 * @param container the DSMLv2Container
-	 * @param parent the parent 
-	 * @throws XmlPullParserException
-	 */
-	private void createAndAddControl( Dsmlv2Container container, LdapMessage parent ) throws XmlPullParserException
-	{
-		Control control = new Control();
-		
-		parent.addControl( control );
+    private final GrammarAction errorResponseAddDetail = null; // TODO Look for documentation about this Detail element (the DSML documentation doesn't give enough information)
 
-    	XmlPullParser xpp = container.getParser();
-        
+
+    /**
+     * Creates a Control parsing the current node and adds it to the given parent 
+     * @param container the DSMLv2Container
+     * @param parent the parent 
+     * @throws XmlPullParserException
+     */
+    private void createAndAddControl( Dsmlv2Container container, LdapMessage parent ) throws XmlPullParserException
+    {
+        Control control = new Control();
+
+        parent.addControl( control );
+
+        XmlPullParser xpp = container.getParser();
+
         // Checking and adding the Control's attributes
         String attributeValue;
         // TYPE
@@ -1198,7 +1317,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         {
             // TODO Add a verification for a match with NumericOid format (see
             // DSMLv2 specifications)
-        	control.setControlType( attributeValue ); // TODO LDAPString uses UTF8 bytes, so the charset must be verified before doing this.
+            control.setControlType( attributeValue ); // TODO LDAPString uses UTF8 bytes, so the charset must be verified before doing this.
         }
         else
         {
@@ -1221,63 +1340,68 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
                 throw new XmlPullParserException( "Incorrect value for 'criticality' attribute", xpp, null );
             }
         }
-	}
-	
-	/**
+    }
+
+    /**
      * GrammarAction that creates a Control for LDAP Result
      */
-	private final GrammarAction ldapResultControlCreation = new GrammarAction( "Create Control for LDAP Result" )
+    private final GrammarAction ldapResultControlCreation = new GrammarAction( "Create Control for LDAP Result" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
-        	// Search Response is a special case
-        	if (ldapResponse instanceof SearchResponse) 
-        	{
-				ldapResponse = ( (SearchResponse) ldapResponse ).getSearchResultDone();
-			}
-        		
-        	createAndAddControl(container, ldapResponse);
+            LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
+            // Search Response is a special case
+            if ( ldapResponse instanceof SearchResponse )
+            {
+                ldapResponse = ( ( SearchResponse ) ldapResponse ).getSearchResultDone();
+            }
+
+            createAndAddControl( container, ldapResponse );
         }
     };
-    
-	/**
+
+    /**
      * GrammarAction that creates a Control for Search Result Entry
      */
-	private final GrammarAction searchResultEntryControlCreation = new GrammarAction( "Create Control for Search Result Entry" )
+    private final GrammarAction searchResultEntryControlCreation = new GrammarAction(
+        "Create Control for Search Result Entry" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapMessage ldapMessage = ( (SearchResponse) container.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
-        	createAndAddControl(container, ldapMessage);
+            LdapMessage ldapMessage = ( ( SearchResponse ) container.getBatchResponse().getCurrentResponse() )
+                .getCurrentSearchResultEntry();
+            createAndAddControl( container, ldapMessage );
         }
     };
-    
-	/**
+
+    /**
      * GrammarAction that creates a Control for Search Result Entry
      */
-	private final GrammarAction searchResultReferenceControlCreation = new GrammarAction( "Create Control for Search Result Reference" )
+    private final GrammarAction searchResultReferenceControlCreation = new GrammarAction(
+        "Create Control for Search Result Reference" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapMessage ldapMessage = ( (SearchResponse) container.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        	createAndAddControl(container, ldapMessage);
+            LdapMessage ldapMessage = ( ( SearchResponse ) container.getBatchResponse().getCurrentResponse() )
+                .getCurrentSearchResultReference();
+            createAndAddControl( container, ldapMessage );
         }
     };
-	
-    
+
+
     /**
      * Creates a Control Value parsing the current node and adds it to the given parent 
-	 * @param container the DSMLv2Container
-	 * @param parent the parent 
+     * @param container the DSMLv2Container
+     * @param parent the parent 
      * @throws XmlPullParserException
      */
-    private void createAndAddControlValue( Dsmlv2Container container, LdapMessage parent ) throws XmlPullParserException
+    private void createAndAddControlValue( Dsmlv2Container container, LdapMessage parent )
+        throws XmlPullParserException
     {
-    	Control control = parent.getCurrentControl();
-        
+        Control control = parent.getCurrentControl();
+
         XmlPullParser xpp = container.getParser();
-                    
+
         int eventType = 0;
         try
         {
@@ -1287,7 +1411,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         {
             throw new XmlPullParserException( "name attribute is required", xpp, null );
         }
-               
+
         if ( eventType != XmlPullParser.TEXT )
         {
             // TODO we insert a blank value
@@ -1298,88 +1422,93 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             control.setControlValue( xpp.getText().trim() );
         }
     }
-    
-	/**
+
+    /**
      * GrammarAction that creates a Control Value for LDAP Result
      */
-	private final GrammarAction ldapResultControlValueCreation = new GrammarAction( "Add ControlValue to Control for LDAP Result" )
+    private final GrammarAction ldapResultControlValueCreation = new GrammarAction(
+        "Add ControlValue to Control for LDAP Result" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
-        	// Search Response is a special case
-        	if (ldapResponse instanceof SearchResponse) 
-        	{
-				ldapResponse = ( (SearchResponse) ldapResponse ).getSearchResultDone();
-			}
-        	
-        	createAndAddControlValue( container, ldapResponse );
-        }
-    };
-    
-	/**
-     * GrammarAction that creates a Control Value for Search Result Entry
-     */
-	private final GrammarAction searchResultEntryControlValueCreation = new GrammarAction( "Add ControlValue to Control for Search Result Entry" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-        	LdapMessage ldapMessage = ( (SearchResponse) container.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
-        	createAndAddControlValue( container, ldapMessage );
+            LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
+            // Search Response is a special case
+            if ( ldapResponse instanceof SearchResponse )
+            {
+                ldapResponse = ( ( SearchResponse ) ldapResponse ).getSearchResultDone();
+            }
+
+            createAndAddControlValue( container, ldapResponse );
         }
     };
 
-	/**
-     * GrammarAction that creates a Control Value for Search Result Reference
+    /**
+     * GrammarAction that creates a Control Value for Search Result Entry
      */
-	private final GrammarAction searchResultReferenceControlValueCreation = new GrammarAction( "Add ControlValue to Control for Search Result Entry" )
+    private final GrammarAction searchResultEntryControlValueCreation = new GrammarAction(
+        "Add ControlValue to Control for Search Result Entry" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapMessage ldapMessage = ( (SearchResponse) container.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        	createAndAddControlValue( container, ldapMessage );
+            LdapMessage ldapMessage = ( ( SearchResponse ) container.getBatchResponse().getCurrentResponse() )
+                .getCurrentSearchResultEntry();
+            createAndAddControlValue( container, ldapMessage );
         }
     };
-    
-	/**
-     * GrammarAction that adds a Result Code to a LDAP Result
+
+    /**
+     * GrammarAction that creates a Control Value for Search Result Reference
      */
-	private final GrammarAction ldapResultAddResultCode = new GrammarAction( "Add ResultCode to LDAP Result" )
+    private final GrammarAction searchResultReferenceControlValueCreation = new GrammarAction(
+        "Add ControlValue to Control for Search Result Entry" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
-        	
-        	LdapResult ldapResult = null;
-        	
-        	// Search Response is a special case
-        	// ResultCode can only occur in a case of Search Result Done in a Search Response
-        	if (ldapResponse instanceof SearchResponse) 
-        	{
-				SearchResponse searchResponse = (SearchResponse) ldapResponse;
-				ldapResult = searchResponse.getSearchResultDone().getLdapResult();
-			}
-        	else
-        	{
-        		ldapResult = ldapResponse.getLdapResult();
-        	}
-        	
-        	XmlPullParser xpp = container.getParser();
-        	
-        	// Checking and adding the request's attributes
+            LdapMessage ldapMessage = ( ( SearchResponse ) container.getBatchResponse().getCurrentResponse() )
+                .getCurrentSearchResultReference();
+            createAndAddControlValue( container, ldapMessage );
+        }
+    };
+
+    /**
+     * GrammarAction that adds a Result Code to a LDAP Result
+     */
+    private final GrammarAction ldapResultAddResultCode = new GrammarAction( "Add ResultCode to LDAP Result" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
+
+            LdapResult ldapResult = null;
+
+            // Search Response is a special case
+            // ResultCode can only occur in a case of Search Result Done in a Search Response
+            if ( ldapResponse instanceof SearchResponse )
+            {
+                SearchResponse searchResponse = ( SearchResponse ) ldapResponse;
+                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
+            }
+            else
+            {
+                ldapResult = ldapResponse.getLdapResult();
+            }
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
             String attributeValue;
             // code
             attributeValue = xpp.getAttributeValue( "", "code" );
             if ( attributeValue != null )
             {
-            	try
-            	{
-            		ldapResult.setResultCode( Integer.parseInt( attributeValue ) );
-            	}
-            	catch (NumberFormatException e)
-            	{
-            		throw new XmlPullParserException( "the given resultCode is not an integer", xpp, null );
-				}
+                try
+                {
+                    ldapResult.setResultCode( Integer.parseInt( attributeValue ) );
+                }
+                catch ( NumberFormatException e )
+                {
+                    throw new XmlPullParserException( "the given resultCode is not an integer", xpp, null );
+                }
             }
             else
             {
@@ -1389,133 +1518,134 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "descr" );
             if ( attributeValue != null )
             {
-            	if ( DSMLV2_DESCR_TAGS.contains( attributeValue ) == false )
-            	{
-            		throw new XmlPullParserException( "descr ('" + attributeValue + "') doesn't match with the possible values", xpp, null );
-            	}
-            		
+                if ( DSMLV2_DESCR_TAGS.contains( attributeValue ) == false )
+                {
+                    throw new XmlPullParserException( "descr ('" + attributeValue
+                        + "') doesn't match with the possible values", xpp, null );
+                }
+
             }
         }
     };
 
-	/**
+    /**
      * GrammarAction that adds a Error Message to a LDAP Result
      */
-	private final GrammarAction ldapResultAddErrorMessage = new GrammarAction( "Add Error Message to LDAP Result" )
+    private final GrammarAction ldapResultAddErrorMessage = new GrammarAction( "Add Error Message to LDAP Result" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
-        	
-        	LdapResult ldapResult = null;
-        	
-        	// Search Response is a special case
-        	// ResultCode can only occur in a case of Search Result Done in a Search Response
-        	if (ldapResponse instanceof SearchResponse) 
-        	{
-				SearchResponse searchResponse = (SearchResponse) ldapResponse;
-				ldapResult = searchResponse.getSearchResultDone().getLdapResult();
-			}
-        	else
-        	{
-        		ldapResult = ldapResponse.getLdapResult();
-        	}
-        	
-        	XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0 ;
+            LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
+
+            LdapResult ldapResult = null;
+
+            // Search Response is a special case
+            // ResultCode can only occur in a case of Search Result Done in a Search Response
+            if ( ldapResponse instanceof SearchResponse )
+            {
+                SearchResponse searchResponse = ( SearchResponse ) ldapResponse;
+                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
+            }
+            else
+            {
+                ldapResult = ldapResponse.getLdapResult();
+            }
+
+            XmlPullParser xpp = container.getParser();
+
+            int eventType = 0;
             try
             {
                 eventType = xpp.next();
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage() , xpp, null );
+                throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-                   
+
             if ( eventType != XmlPullParser.TEXT )
             {
-            	throw new XmlPullParserException( "An error has ocurred." , xpp, null );
+                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
             }
             else
             {
-            	ldapResult.setErrorMessage( xpp.getText().trim() );
+                ldapResult.setErrorMessage( xpp.getText().trim() );
             }
         }
     };
 
-	/**
+    /**
      * GrammarAction that adds a Referral to a LDAP Result
      */
-	private final GrammarAction ldapResultAddReferral = new GrammarAction( "Add Referral to LDAP Result" )
+    private final GrammarAction ldapResultAddReferral = new GrammarAction( "Add Referral to LDAP Result" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
-        	
-        	LdapResult ldapResult = null;
-        	
-        	// Search Response is a special case
-        	// ResultCode can only occur in a case of Search Result Done in a Search Response
-        	if (ldapResponse instanceof SearchResponse) 
-        	{
-				SearchResponse searchResponse = (SearchResponse) ldapResponse;
-				ldapResult = searchResponse.getSearchResultDone().getLdapResult();
-			}
-        	else
-        	{
-        		ldapResult = ldapResponse.getLdapResult();
-        	}
-        	
-        	// Initialization of the Referrals if needed
-        	if ( ldapResult.getReferrals() == null )
-        	{
-        		ldapResult.initReferrals();
-        	}
-        	
-        	XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0 ;
+            LdapResponse ldapResponse = container.getBatchResponse().getCurrentResponse();
+
+            LdapResult ldapResult = null;
+
+            // Search Response is a special case
+            // ResultCode can only occur in a case of Search Result Done in a Search Response
+            if ( ldapResponse instanceof SearchResponse )
+            {
+                SearchResponse searchResponse = ( SearchResponse ) ldapResponse;
+                ldapResult = searchResponse.getSearchResultDone().getLdapResult();
+            }
+            else
+            {
+                ldapResult = ldapResponse.getLdapResult();
+            }
+
+            // Initialization of the Referrals if needed
+            if ( ldapResult.getReferrals() == null )
+            {
+                ldapResult.initReferrals();
+            }
+
+            XmlPullParser xpp = container.getParser();
+
+            int eventType = 0;
             try
             {
                 eventType = xpp.next();
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage() , xpp, null );
+                throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-                   
+
             if ( eventType != XmlPullParser.TEXT )
             {
-            	throw new XmlPullParserException( "An error has ocurred." , xpp, null );
+                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
             }
             else
             {
-        		try
-        		{
-					ldapResult.addReferral( new LdapURL( xpp.getText().trim() ) );
-				}
-        		catch (LdapURLEncodingException e)
-        		{
-                	throw new XmlPullParserException( e.getMessage() , xpp, null );
-				} 
+                try
+                {
+                    ldapResult.addReferral( new LdapURL( xpp.getText().trim() ) );
+                }
+                catch ( LdapURLEncodingException e )
+                {
+                    throw new XmlPullParserException( e.getMessage(), xpp, null );
+                }
             }
         }
     };
-    
-	/**
+
+    /**
      * GrammarAction that creates the Search Response
      */
     private final GrammarAction searchResponseCreation = new GrammarAction( "Create Search Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			SearchResponse searchResponse = new SearchResponse();
-			
-			container.getBatchResponse().addResponse( searchResponse );
-			
-			XmlPullParser xpp = container.getParser();
-			
+            SearchResponse searchResponse = new SearchResponse();
+
+            container.getBatchResponse().addResponse( searchResponse );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -1524,31 +1654,33 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	searchResponse.setMessageId( Integer.parseInt( attributeValue ) );
+                    searchResponse.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
-        }			
-	};
+        }
+    };
 
-	/**
+    /**
      * GrammarAction that creates a Search Result Entry
      */
-	private final GrammarAction searchResultEntryCreation = new GrammarAction( "Add Search Result Entry to Search Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction searchResultEntryCreation = new GrammarAction(
+        "Add Search Result Entry to Search Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			SearchResultEntry searchResultEntry = new SearchResultEntry();
-			
-			SearchResponse searchResponse = (SearchResponse) container.getBatchResponse().getCurrentResponse();
-			
-			searchResponse.addSearchResultEntry( searchResultEntry );
-			
-			XmlPullParser xpp = container.getParser();
-        	
-        	// Checking and adding the request's attributes
+            SearchResultEntry searchResultEntry = new SearchResultEntry();
+
+            SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
+
+            searchResponse.addSearchResultEntry( searchResultEntry );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
             String attributeValue;
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
@@ -1556,48 +1688,50 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	searchResultEntry.setMessageId( Integer.parseInt( attributeValue ) );
+                    searchResultEntry.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
             if ( attributeValue != null )
             {
-            	try
-            	{
-            		searchResultEntry.setObjectName( new LdapDN( attributeValue ) );
-            	}
-            	catch (InvalidNameException e)
-            	{
-            		throw new XmlPullParserException( e.getMessage(), xpp, null );
-				}
+                try
+                {
+                    searchResultEntry.setObjectName( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( e.getMessage(), xpp, null );
+                }
             }
             else
             {
                 throw new XmlPullParserException( "dn attribute is required", xpp, null );
             }
         }
-	};
+    };
 
-	/**
+    /**
      * GrammarAction that creates a Search Result Reference
      */
-	private final GrammarAction searchResultReferenceCreation = new GrammarAction( "Add Search Result Reference to Search Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction searchResultReferenceCreation = new GrammarAction(
+        "Add Search Result Reference to Search Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			SearchResultReference searchResultReference = new SearchResultReference();
-			
-			SearchResponse searchResponse = (SearchResponse) container.getBatchResponse().getCurrentResponse();
-			
-			searchResponse.addSearchResultReference( searchResultReference );
-			
-			XmlPullParser xpp = container.getParser();
-        	
-        	// Checking and adding the request's attributes
+            SearchResultReference searchResultReference = new SearchResultReference();
+
+            SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
+
+            searchResponse.addSearchResultReference( searchResultReference );
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
             String attributeValue;
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
@@ -1605,32 +1739,34 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	searchResultReference.setMessageId( Integer.parseInt( attributeValue ) );
+                    searchResultReference.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
         }
-	};
+    };
 
-	/**
+    /**
      * GrammarAction that creates a Search Result Done
      */
-	private final GrammarAction searchResultDoneCreation = new GrammarAction( "Add Search Result Done to Search Response" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction searchResultDoneCreation = new GrammarAction(
+        "Add Search Result Done to Search Response" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			SearchResultDone searchResultDone = new SearchResultDone();
-			
-			searchResultDone.setLdapResult( new LdapResult() );
-			
-			SearchResponse searchResponse = (SearchResponse) container.getBatchResponse().getCurrentResponse();
-			
-			searchResponse.setSearchResultDone( searchResultDone );
-			
-			XmlPullParser xpp = container.getParser();
-			
+            SearchResultDone searchResultDone = new SearchResultDone();
+
+            searchResultDone.setLdapResult( new LdapResult() );
+
+            SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
+
+            searchResponse.setSearchResultDone( searchResultDone );
+
+            XmlPullParser xpp = container.getParser();
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -1639,218 +1775,222 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                	searchResultDone.setMessageId( Integer.parseInt( attributeValue ) );
+                    searchResultDone.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
-            }	
+            }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
             if ( attributeValue != null )
             {
                 try
                 {
-					searchResultDone.getLdapResult().setMatchedDN( new LdapDN( attributeValue ) );
-				}
-                catch (InvalidNameException e)
-				{
-                	throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-				}
+                    searchResultDone.getLdapResult().setMatchedDN( new LdapDN( attributeValue ) );
+                }
+                catch ( InvalidNameException e )
+                {
+                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                }
             }
         }
-	};
+    };
 
-	/**
+    /**
      * GrammarAction that adds an Attr to a Search Result Entry
      */
-	private final GrammarAction searchResultEntryAddAttr = new GrammarAction( "Add Attr to Search Result Entry" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction searchResultEntryAddAttr = new GrammarAction( "Add Attr to Search Result Entry" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			SearchResponse searchResponse = (SearchResponse) container.getBatchResponse().getCurrentResponse();
-			
-			SearchResultEntry searchResultEntry = searchResponse.getCurrentSearchResultEntry();
-			
-			XmlPullParser xpp = container.getParser();
-			
-			// Checking and adding the request's attributes
-		    String attributeValue;
-		    // name
-		    attributeValue = xpp.getAttributeValue( "", "name" );
-		    if ( attributeValue != null )
-		    {
-		    	searchResultEntry.addAttributeValues( attributeValue  );
-		    }
-		    else
-		    {
-		        throw new XmlPullParserException( "name attribute is required", xpp, null );
-		    }
+            SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
+
+            SearchResultEntry searchResultEntry = searchResponse.getCurrentSearchResultEntry();
+
+            XmlPullParser xpp = container.getParser();
+
+            // Checking and adding the request's attributes
+            String attributeValue;
+            // name
+            attributeValue = xpp.getAttributeValue( "", "name" );
+            if ( attributeValue != null )
+            {
+                searchResultEntry.addAttributeValues( attributeValue );
+            }
+            else
+            {
+                throw new XmlPullParserException( "name attribute is required", xpp, null );
+            }
         }
-	};
-	
-	/**
+    };
+
+    /**
      * GrammarAction that adds a Value to an Attr of a Search Result Entry
      */
-	private final GrammarAction searchResultEntryAddValue = new GrammarAction( "Add a Value to an Attr of a Search Result Entry" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction searchResultEntryAddValue = new GrammarAction(
+        "Add a Value to an Attr of a Search Result Entry" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			SearchResponse searchResponse = (SearchResponse) container.getBatchResponse().getCurrentResponse();
-			
-			SearchResultEntry searchResultEntry = searchResponse.getCurrentSearchResultEntry();
-			
-			XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0 ;
+            SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
+
+            SearchResultEntry searchResultEntry = searchResponse.getCurrentSearchResultEntry();
+
+            XmlPullParser xpp = container.getParser();
+
+            int eventType = 0;
             try
             {
                 eventType = xpp.next();
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage() , xpp, null );
+                throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-                   
+
             if ( eventType != XmlPullParser.TEXT )
             {
-            	throw new XmlPullParserException( "An error has ocurred." , xpp, null );
+                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
             }
             else
             {
-        		searchResultEntry.addAttributeValue( xpp.getText() );
+                searchResultEntry.addAttributeValue( xpp.getText() );
             }
         }
-	};
+    };
 
-	/**
+    /**
      * GrammarAction that adds a Ref to a Search Result Reference
      */
-	private final GrammarAction searchResultReferenceAddRef = new GrammarAction( "Add a Ref to a Search Result Reference" )
-	{
-		public void action( Dsmlv2Container container ) throws XmlPullParserException
+    private final GrammarAction searchResultReferenceAddRef = new GrammarAction(
+        "Add a Ref to a Search Result Reference" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-			SearchResponse searchResponse = (SearchResponse) container.getBatchResponse().getCurrentResponse();
-			
-			SearchResultReference searchResultReference = searchResponse.getCurrentSearchResultReference();
-			
-			XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0 ;
+            SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
+
+            SearchResultReference searchResultReference = searchResponse.getCurrentSearchResultReference();
+
+            XmlPullParser xpp = container.getParser();
+
+            int eventType = 0;
             try
             {
                 eventType = xpp.next();
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage() , xpp, null );
+                throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-                   
+
             if ( eventType != XmlPullParser.TEXT )
             {
-            	throw new XmlPullParserException( "An error has ocurred." , xpp, null );
+                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
             }
             else
             {
-        		try 
-        		{
-					searchResultReference.addSearchResultReference( new LdapURL( xpp.getText() ) );
-				}
-        		catch (LdapURLEncodingException e) 
-        		{
-        			throw new XmlPullParserException( e.getMessage() , xpp, null );
-				}
+                try
+                {
+                    searchResultReference.addSearchResultReference( new LdapURL( xpp.getText() ) );
+                }
+                catch ( LdapURLEncodingException e )
+                {
+                    throw new XmlPullParserException( e.getMessage(), xpp, null );
+                }
             }
         }
-	};
-	
-	/**
+    };
+
+    /**
      * GrammarAction that adds Result Code to an Extended Response
      */
-	private final GrammarAction extendedResponseAddResultCode = ldapResultAddResultCode;
+    private final GrammarAction extendedResponseAddResultCode = ldapResultAddResultCode;
 
-	/**
+    /**
      * GrammarAction that creates the Search Response
      */
-	private final GrammarAction extendedResponseAddErrorMessage = ldapResultAddErrorMessage;
+    private final GrammarAction extendedResponseAddErrorMessage = ldapResultAddErrorMessage;
 
-	/**
+    /**
      * GrammarAction that adds a Referral to an Extended Response
      */
-	private final GrammarAction extendedResponseAddReferral = ldapResultAddReferral;
+    private final GrammarAction extendedResponseAddReferral = ldapResultAddReferral;
 
-	/**
+    /**
      * GrammarAction that adds a Response Name to an Extended Response
      */
-	private final GrammarAction extendedResponseAddResponseName = new GrammarAction( "Add Response Name to Extended Response" )
+    private final GrammarAction extendedResponseAddResponseName = new GrammarAction(
+        "Add Response Name to Extended Response" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	ExtendedResponse extendedResponse = (ExtendedResponse) container.getBatchResponse().getCurrentResponse();
-        	
-        	XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0 ;
+            ExtendedResponse extendedResponse = ( ExtendedResponse ) container.getBatchResponse().getCurrentResponse();
+
+            XmlPullParser xpp = container.getParser();
+
+            int eventType = 0;
             try
             {
                 eventType = xpp.next();
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage() , xpp, null );
+                throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-                   
+
             if ( eventType != XmlPullParser.TEXT )
             {
-            	throw new XmlPullParserException( "An error has ocurred." , xpp, null );
+                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
             }
             else
             {
-        		try
-        		{
-					extendedResponse.setResponseName( new OID( xpp.getText().trim() ) );
-				}
-        		catch (DecoderException e)
-        		{
-                	throw new XmlPullParserException( e.getMessage() , xpp, null );
-				}
+                try
+                {
+                    extendedResponse.setResponseName( new OID( xpp.getText().trim() ) );
+                }
+                catch ( DecoderException e )
+                {
+                    throw new XmlPullParserException( e.getMessage(), xpp, null );
+                }
             }
         }
     };
 
-	/**
+    /**
      * GrammarAction that adds a Response to an Extended Response
      */
-	private final GrammarAction extendedResponseAddResponse = new GrammarAction( "Add Response to Extended Response" )
+    private final GrammarAction extendedResponseAddResponse = new GrammarAction( "Add Response to Extended Response" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-        	ExtendedResponse extendedResponse = (ExtendedResponse) container.getBatchResponse().getCurrentResponse();
-        	
-        	XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0 ;
+            ExtendedResponse extendedResponse = ( ExtendedResponse ) container.getBatchResponse().getCurrentResponse();
+
+            XmlPullParser xpp = container.getParser();
+
+            int eventType = 0;
             try
             {
                 eventType = xpp.next();
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage() , xpp, null );
+                throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-                   
+
             if ( eventType != XmlPullParser.TEXT )
             {
-            	throw new XmlPullParserException( "An error has ocurred." , xpp, null );
+                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
             }
             else
             {
-            	extendedResponse.setResponse( xpp.getText().trim() );
+                extendedResponse.setResponse( xpp.getText().trim() );
             }
         }
     };
-    
-    
+
+
     /**
      * Get the instance of this grammar
      * 

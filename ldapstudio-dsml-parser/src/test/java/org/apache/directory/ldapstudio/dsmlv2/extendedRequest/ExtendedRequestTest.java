@@ -20,11 +20,13 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.extendedRequest;
 
+
 import org.apache.directory.ldapstudio.dsmlv2.AbstractTest;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedRequest;
 import org.apache.directory.shared.ldap.util.StringTools;
+
 
 /**
  * Tests for the Extended Request parsing
@@ -40,21 +42,22 @@ public class ExtendedRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 456, extendedRequest.getMessageId() );
     }
-    
+
 
     /**
      * Test parsing of a request with a (optional) Control element
@@ -65,29 +68,63 @@ public class ExtendedRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_1_control.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 1, extendedRequest.getControls().size() );
-        
+
         Control control = extendedRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-        
+
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
+    /**
+     * Test parsing of a request with a (optional) Control element with empty value
+     */
+    public void testRequestWith1ControlEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_1_control_empty_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( 1, extendedRequest.getControls().size() );
+
+        Control control = extendedRequest.getCurrentControl();
+
+        assertTrue( control.getCriticality() );
+
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+
+        assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
+    }
+
 
     /**
      * Test parsing of a request with 2 (optional) Control elements
@@ -98,29 +135,30 @@ public class ExtendedRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_2_controls.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 2, extendedRequest.getControls().size() );
-        
+
         Control control = extendedRequest.getCurrentControl();
-        
+
         assertFalse( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-        
+
         assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with 3 (optional) Control elements without value
      */
@@ -130,29 +168,31 @@ public class ExtendedRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_3_controls_without_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 3, extendedRequest.getControls().size() );
-        
+
         Control control = extendedRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-        
+
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
-    
+
+
     /**
      * Test parsing of a request with a RequestValue element
      */
@@ -162,27 +202,28 @@ public class ExtendedRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_requestValue.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
-        
-        String s1 = StringTools.dumpBytes( StringTools.getBytesUtf8( "RFNNTHYyLjAgcm9ja3MhIQ==" ) );
-        String s2 = StringTools.dumpBytes( extendedRequest.getRequestValue() );
-        
+
+        //        String s1 = StringTools.dumpBytes( StringTools.getBytesUtf8( "RFNNTHYyLjAgcm9ja3MhIQ==" ) );
+        //        String s2 = StringTools.dumpBytes( extendedRequest.getRequestValue() );
+
         //assertTrue( Arrays.equals( StringTools.getBytesUtf8( "RFNNTHYyLjAgcm9ja3MhIQ==" ), extendedRequest.getRequestValue() ) );
-        
-//        assertEquals( s1, s2 );
+
+        //        assertEquals( s1, s2 );
         assertEquals( StringTools.getBytesUtf8( "RFNNTHYyLjAgcm9ja3MhIQ==" ), extendedRequest.getRequestValue() );
     }
-    
+
+
     /**
      * Test parsing of a request with 2 requestValue Elements
      */
@@ -190,12 +231,47 @@ public class ExtendedRequestTest extends AbstractTest
     {
         testParsingFail( ExtendedRequestTest.class, "request_with_2_requestValue.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with 2 requestName Elements
      */
     public void testRequestWith2RequestName()
     {
         testParsingFail( ExtendedRequestTest.class, "request_with_2_requestName.xml" );
+    }
+
+
+    /**
+     * Test parsing of a request with an empty requestName
+     */
+    public void testRequestWithEmptyRequestName()
+    {
+        testParsingFail( ExtendedRequestTest.class, "request_with_empty_requestName.xml" );
+    }
+
+
+    /**
+     * Test parsing of a request with an empty RequestValue
+     */
+    public void testRequestWithEmptyRequestValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_empty_requestValue.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
+        assertNull( extendedRequest.getRequestValue() );
     }
 }

@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.searchResponse.searchResultEntry;
 
+
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -32,6 +33,7 @@ import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.apache.directory.shared.ldap.util.StringTools;
 
+
 /**
  * Tests for the Search Result Entry Response parsing
  */
@@ -42,13 +44,13 @@ public class SearchResultEntryTest extends AbstractResponseTest
      */
     public void testResponseWith1Control()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_control.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
@@ -56,64 +58,68 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
-        
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+
         assertEquals( 1, searchResultEntry.getControls().size() );
-        
+
         Control control = searchResultEntry.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-        
+
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
 
     /**
      * Test parsing of a response with 2 (optional) Control elements
      */
     public void testResponseWith2Controls()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_2_controls.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
-        
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+
         assertEquals( 2, searchResultEntry.getControls().size() );
-        
+
         Control control = searchResultEntry.getCurrentControl();
-        
+
         assertFalse( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-        
+
         assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a response with 3 (optional) Control elements without value
      */
     public void testResponseWith3ControlsWithoutValue()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_3_controls_without_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_3_controls_without_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
@@ -121,61 +127,65 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
-        
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+
         assertEquals( 3, searchResultEntry.getControls().size() );
-        
+
         Control control = searchResultEntry.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-        
+
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
-       
+
+
     /**
      * Test parsing of a response without dn Attribute
      */
     public void testResponseWithoutDnAttribute()
     {
-        testParsingFail( SearchResultEntryTest.class, "response_without_dn_attribute.xml");
+        testParsingFail( SearchResultEntryTest.class, "response_without_dn_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a response with wrong dn Attribute
      */
     public void testResponseWithWrongDnAttribute()
     {
-        testParsingFail( SearchResultEntryTest.class, "response_with_wrong_dn_attribute.xml");
+        testParsingFail( SearchResultEntryTest.class, "response_with_wrong_dn_attribute.xml" );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with dn Attribute
      */
     public void testResponseWithDnAttribute()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_dn_attribute.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
 
-       	assertEquals( "dc=example,dc=com", searchResultEntry.getObjectName().toString() );
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+
+        assertEquals( "dc=example,dc=com", searchResultEntry.getObjectName().toString() );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute
      */
@@ -185,254 +195,264 @@ public class SearchResultEntryTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
-        
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+
         assertEquals( 456, searchResultEntry.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 0 Attr
      */
     public void testResponseWith0Attr()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_0_attr.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         assertTrue( true );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 1 Attr 0 Value
      */
     public void testResponseWith1Attr0Value()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_0_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_0_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
 
         Attributes attributes = searchResultEntry.getPartialAttributeList();
-        
+
         assertEquals( 1, attributes.size() );
-        
+
         NamingEnumeration ne = attributes.getAll();
-        
-        Attribute attribute = (Attribute) ne.nextElement();
-        
+
+        Attribute attribute = ( Attribute ) ne.nextElement();
+
         assertEquals( "dc", attribute.getID() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 1 Attr 1 Value
      */
     public void testResponseWith1Attr1Value()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
 
         Attributes attributes = searchResultEntry.getPartialAttributeList();
-        
+
         assertEquals( 1, attributes.size() );
-        
+
         NamingEnumeration ne = attributes.getAll();
-        
-        Attribute attribute = (Attribute) ne.nextElement();
-        
+
+        Attribute attribute = ( Attribute ) ne.nextElement();
+
         assertEquals( "dc", attribute.getID() );
-        
-        assertEquals( 1, attribute.size());
-       
+
+        assertEquals( 1, attribute.size() );
+
         NamingEnumeration ne2 = null;
         try
         {
-			ne2 = attribute.getAll();
-		} 
-        catch (NamingException e)
+            ne2 = attribute.getAll();
+        }
+        catch ( NamingException e )
         {
-			fail();
-		}
-        
-        String value = (String) ne2.nextElement();
-        
-        assertEquals( "example", value);
+            fail();
+        }
+
+        String value = ( String ) ne2.nextElement();
+
+        assertEquals( "example", value );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 1 Attr 2 Value
      */
     public void testResponseWith1Attr2Value()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_2_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_2_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
 
         Attributes attributes = searchResultEntry.getPartialAttributeList();
-        
+
         assertEquals( 1, attributes.size() );
-        
+
         NamingEnumeration ne = attributes.getAll();
-        
-        Attribute attribute = (Attribute) ne.nextElement();
-        
+
+        Attribute attribute = ( Attribute ) ne.nextElement();
+
         assertEquals( "objectclass", attribute.getID() );
-        
-        assertEquals( 2, attribute.size());
-       
+
+        assertEquals( 2, attribute.size() );
+
         NamingEnumeration ne2 = null;
         try
         {
-			ne2 = attribute.getAll();
-		} 
-        catch (NamingException e)
+            ne2 = attribute.getAll();
+        }
+        catch ( NamingException e )
         {
-			fail();
-		}
-        
-        String value = (String) ne2.nextElement();
-        
-        assertEquals( "top", value);
-        
-        value = (String) ne2.nextElement();
-        
-        assertEquals( "domain", value);
+            fail();
+        }
+
+        String value = ( String ) ne2.nextElement();
+
+        assertEquals( "top", value );
+
+        value = ( String ) ne2.nextElement();
+
+        assertEquals( "domain", value );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 2 Attr 1 Value
      */
     public void testResponseWith2Attr1Value()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_2_attr_1_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_2_attr_1_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultEntry();
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
 
         Attributes attributes = searchResultEntry.getPartialAttributeList();
-        
+
         assertEquals( 2, attributes.size() );
-        
+
         NamingEnumeration ne = attributes.getAll();
-        
-        Attribute attribute = (Attribute) ne.nextElement();
-        
+
+        Attribute attribute = ( Attribute ) ne.nextElement();
+
         assertEquals( "dc", attribute.getID() );
-        
-        assertEquals( 1, attribute.size());
-       
+
+        assertEquals( 1, attribute.size() );
+
         NamingEnumeration ne2 = null;
         try
         {
-			ne2 = attribute.getAll();
-		} 
-        catch (NamingException e)
+            ne2 = attribute.getAll();
+        }
+        catch ( NamingException e )
         {
-			fail();
-		}
-        
-        String value = (String) ne2.nextElement();
-        
-        assertEquals( "example", value);
-        
-        attribute = (Attribute) ne.nextElement();
-        
+            fail();
+        }
+
+        String value = ( String ) ne2.nextElement();
+
+        assertEquals( "example", value );
+
+        attribute = ( Attribute ) ne.nextElement();
+
         assertEquals( "objectclass", attribute.getID() );
-        
-        assertEquals( 1, attribute.size());
-       
+
+        assertEquals( 1, attribute.size() );
+
         ne2 = null;
         try
         {
-			ne2 = attribute.getAll();
-		} 
-        catch (NamingException e)
+            ne2 = attribute.getAll();
+        }
+        catch ( NamingException e )
         {
-			fail();
-		}
-        
-        value = (String) ne2.nextElement();
-        
-        assertEquals( "top", value);
+            fail();
+        }
+
+        value = ( String ) ne2.nextElement();
+
+        assertEquals( "top", value );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 1 Attr without name Attribute
      */
     public void testResponseWith1AttrWithoutNameAttribute()
     {
-    	testParsingFail( SearchResultEntryTest.class, "response_with_1_attr_without_name_attribute.xml" );
+        testParsingFail( SearchResultEntryTest.class, "response_with_1_attr_without_name_attribute.xml" );
     }
 }

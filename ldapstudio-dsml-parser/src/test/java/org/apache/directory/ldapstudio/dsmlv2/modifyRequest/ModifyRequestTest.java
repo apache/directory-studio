@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.modifyRequest;
 
+
 import java.util.ArrayList;
 
 import javax.naming.NamingException;
@@ -32,6 +33,7 @@ import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
 import org.apache.directory.shared.ldap.util.StringTools;
+
 
 /**
  * Tests for the Modify Request parsing
@@ -47,21 +49,22 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 456, modifyRequest.getMessageId() );
     }
-    
+
 
     /**
      * Test parsing of a request with a (optional) Control element
@@ -72,29 +75,63 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_control.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 1, modifyRequest.getControls().size() );
-        
+
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-        
+
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
+    /**
+     * Test parsing of a request with a (optional) Control element with empty value
+     */
+    public void testRequestWith1ControlEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_control_empty_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( 1, modifyRequest.getControls().size() );
+
+        Control control = modifyRequest.getCurrentControl();
+
+        assertTrue( control.getCriticality() );
+
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+
+        assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
+    }
+
 
     /**
      * Test parsing of a request with 2 (optional) Control elements
@@ -105,29 +142,30 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_2_controls.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 2, modifyRequest.getControls().size() );
-        
+
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertFalse( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-        
+
         assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with 3 (optional) Control elements without value
      */
@@ -137,29 +175,31 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_3_controls_without_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 3, modifyRequest.getControls().size() );
-        
+
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-        
+
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
-    
+
+
     /**
      * Test parsing of a request without dn attribute
      */
@@ -167,7 +207,8 @@ public class ModifyRequestTest extends AbstractTest
     {
         testParsingFail( ModifyRequestTest.class, "request_without_dn_attribute.xml" );
     }
-  
+
+
     /**
      * Test parsing of a request with a Modification element
      * @throws NamingException 
@@ -178,33 +219,34 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_modification.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.OPERATION_ADD, modifyRequest.getCurrentOperation() );
-        
+
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
-        
+
         ArrayList modifications = modifyRequest.getModifications();
-        
-        assertEquals(1, modifications.size() );
-        
+
+        assertEquals( 1, modifications.size() );
+
         ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        
+
         Attribute attribute = modification.getAttribute();
-        
+
         assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ) );
     }
-    
+
+
     /**
      * Test parsing of a request with 2 Modification elements
      * @throws NamingException 
@@ -215,33 +257,34 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_2_modifications.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.OPERATION_REPLACE, modifyRequest.getCurrentOperation() );
-        
+
         assertEquals( "sn", modifyRequest.getCurrentAttributeType() );
-        
+
         ArrayList modifications = modifyRequest.getModifications();
-        
-        assertEquals(2, modifications.size() );
-        
+
+        assertEquals( 2, modifications.size() );
+
         ModificationItem modification = ( ModificationItem ) modifications.get( 1 );
-        
+
         Attribute attribute = modification.getAttribute();
-        
+
         assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get( 0 ) );
     }
-    
+
+
     /**
      * Test parsing of a request without name attribute to the Modification element
      */
@@ -249,7 +292,8 @@ public class ModifyRequestTest extends AbstractTest
     {
         testParsingFail( ModifyRequestTest.class, "request_without_name_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request without operation attribute to the Modification element
      */
@@ -257,7 +301,8 @@ public class ModifyRequestTest extends AbstractTest
     {
         testParsingFail( ModifyRequestTest.class, "request_without_operation_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with operation attribute to Add value
      * @throws NamingException 
@@ -268,21 +313,22 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_operation_add.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.OPERATION_ADD, modifyRequest.getCurrentOperation() );
     }
-    
+
+
     /**
      * Test parsing of a request with operation attribute to Delete value
      * @throws NamingException 
@@ -293,20 +339,21 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_operation_delete.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.OPERATION_DELETE, modifyRequest.getCurrentOperation() );
     }
+
 
     /**
      * Test parsing of a request with operation attribute to Replace value
@@ -318,21 +365,22 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_operation_replace.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.OPERATION_REPLACE, modifyRequest.getCurrentOperation() );
     }
-    
+
+
     /**
      * Test parsing of a request without operation attribute to the Modification element
      */
@@ -340,7 +388,8 @@ public class ModifyRequestTest extends AbstractTest
     {
         testParsingFail( ModifyRequestTest.class, "request_with_operation_error.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with a Modification element without Value element
      * @throws NamingException 
@@ -351,31 +400,33 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_modification_without_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_modification_without_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.OPERATION_ADD, modifyRequest.getCurrentOperation() );
-        
+
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
-        
+
         ArrayList modifications = modifyRequest.getModifications();
 
         ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        
+
         Attribute attribute = modification.getAttribute();
-        
+
         assertEquals( 0, attribute.size() );
     }
-    
+
+
     /**
      * Test parsing of a request with a Modification element
      * @throws NamingException 
@@ -386,32 +437,73 @@ public class ModifyRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_modification_with_2_values.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_modification_with_2_values.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.OPERATION_ADD, modifyRequest.getCurrentOperation() );
-        
+
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
-        
+
         ArrayList modifications = modifyRequest.getModifications();
-        
+
         assertEquals( 1, modifications.size() );
-        
+
         ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        
+
         Attribute attribute = modification.getAttribute();
-        
-        assertEquals( 2, attribute.size() );        
+
+        assertEquals( 2, attribute.size() );
         assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ) );
         assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get( 1 ) );
+    }
+
+
+    /**
+     * Test parsing of a request with a Modification element with an empty value
+     * @throws NamingException 
+     */
+    public void testRequestWithModificationWithEmptyValue() throws NamingException
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_modification_with_empty_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( LdapConstants.OPERATION_ADD, modifyRequest.getCurrentOperation() );
+
+        assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
+
+        ArrayList modifications = modifyRequest.getModifications();
+
+        assertEquals( 1, modifications.size() );
+
+        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
+
+        Attribute attribute = modification.getAttribute();
+
+        assertEquals( 1, attribute.size() );
+        assertEquals( "", attribute.get( 0 ) );
     }
 }

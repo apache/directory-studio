@@ -20,10 +20,12 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import junit.framework.TestCase;
 
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
 import org.xmlpull.v1.XmlPullParserException;
+
 
 public class AbstractResponseTest extends TestCase
 {
@@ -32,14 +34,14 @@ public class AbstractResponseTest extends TestCase
         try
         {
             Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
-        
+
             parser.setInput( testClass.getResource( filename ).getFile() );
-        
-            parser.parse( );
+
+            parser.parse();
         }
         catch ( XmlPullParserException e )
         {
-            assertTrue(e.getMessage(), true );
+            assertTrue( e.getMessage(), true );
             return;
         }
         catch ( Exception e )

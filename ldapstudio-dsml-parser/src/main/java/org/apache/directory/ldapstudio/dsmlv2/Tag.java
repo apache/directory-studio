@@ -20,40 +20,47 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 public class Tag
 {
 
     private String name;
     private int type;
-    
+
     public static int START = 0;
     public static int END = 1;
-    
+
+
     public Tag( String name, int type )
     {
         setName( name );
         setType( type );
     }
 
+
     public String getName()
     {
         return name;
     }
+
 
     public void setName( String name )
     {
         this.name = name.toLowerCase();
     }
 
+
     public int getType()
     {
         return type;
     }
 
+
     public void setType( int type )
     {
         this.type = type;
     }
+
 
     @Override
     public boolean equals( Object obj )
@@ -62,7 +69,7 @@ public class Tag
         {
             Tag tag = ( Tag ) obj;
             return ( ( this.name.equals( tag.getName() ) ) && ( this.type == tag.getType() ) );
-            
+
         }
         else
         {
@@ -70,24 +77,26 @@ public class Tag
         }
     }
 
+
     @Override
     public int hashCode()
     {
-        
-        return name.hashCode() + type<<24;
+
+        return name.hashCode() + type << 24;
     }
+
 
     @Override
     public String toString()
     {
-        if (name != null)
+        if ( name != null )
         {
-            return "<" + ( (type == Tag.END) ? "/" : "" ) + name + ">";
+            return "<" + ( ( type == Tag.END ) ? "/" : "" ) + name + ">";
         }
         else
         {
             return "Unknown tag";
         }
     }
-    
+
 }

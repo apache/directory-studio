@@ -20,11 +20,13 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.modDNRequest;
 
+
 import org.apache.directory.ldapstudio.dsmlv2.AbstractTest;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequest;
 import org.apache.directory.shared.ldap.util.StringTools;
+
 
 /**
  * Tests for the Modify DN Request parsing
@@ -40,21 +42,22 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 456, modifyDNRequest.getMessageId() );
     }
-    
+
 
     /**
      * Test parsing of a request with a (optional) Control element
@@ -65,29 +68,63 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_1_control.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 1, modifyDNRequest.getControls().size() );
-        
+
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-        
+
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
+    /**
+     * Test parsing of a request with a (optional) Control element with empty value
+     */
+    public void testRequestWith1ControlEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_1_control_empty_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( 1, modifyDNRequest.getControls().size() );
+
+        Control control = modifyDNRequest.getCurrentControl();
+
+        assertTrue( control.getCriticality() );
+
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+
+        assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
+    }
+
 
     /**
      * Test parsing of a request with 2 (optional) Control elements
@@ -98,29 +135,30 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_2_controls.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 2, modifyDNRequest.getControls().size() );
-        
+
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertFalse( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-        
+
         assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with 3 (optional) Control elements without value
      */
@@ -130,29 +168,31 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_3_controls_without_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 3, modifyDNRequest.getControls().size() );
-        
+
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-        
+
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
-    
+
+
     /**
      * Test parsing of a request without dn attribute
      */
@@ -160,7 +200,8 @@ public class ModifyDNRequestTest extends AbstractTest
     {
         testParsingFail( ModifyDNRequestTest.class, "request_without_dn_attribute.xml" );
     }
-  
+
+
     /**
      * Test parsing of a request without newrdn attribute
      */
@@ -168,7 +209,8 @@ public class ModifyDNRequestTest extends AbstractTest
     {
         testParsingFail( ModifyDNRequestTest.class, "request_without_newrdn_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request without dn and newrdn attributes
      */
@@ -178,23 +220,25 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_dn_and_newrdn_attributes.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_dn_and_newrdn_attributes.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", modifyDNRequest.getEntry().toString() );
-        
+
         assertEquals( "cn=Steve Jobs", modifyDNRequest.getNewRDN().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with deleteoldrdn to true
      */
@@ -204,22 +248,23 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_deleteoldrdn_true.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_deleteoldrdn_true.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertTrue( modifyDNRequest.isDeleteOldRDN() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with deleteoldrdn to 1
      */
@@ -229,21 +274,22 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_deleteoldrdn_1.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertTrue( modifyDNRequest.isDeleteOldRDN() );
     }
-    
+
+
     /**
      * Test parsing of a request with deleteoldrdn to false
      */
@@ -253,21 +299,22 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_deleteoldrdn_false.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_deleteoldrdn_false.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertFalse( modifyDNRequest.isDeleteOldRDN() );
     }
-    
+
 
     /**
      * Test parsing of a request with deleteoldrdn to 0
@@ -278,21 +325,22 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_deleteoldrdn_0.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertFalse( modifyDNRequest.isDeleteOldRDN() );
     }
-    
+
+
     /**
      * Test parsing of a request with deleteoldrdn to an error value
      */
@@ -300,7 +348,8 @@ public class ModifyDNRequestTest extends AbstractTest
     {
         testParsingFail( ModifyDNRequestTest.class, "request_with_deleteoldrdn_error.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with newSuperior attribute
      */
@@ -310,19 +359,20 @@ public class ModifyDNRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_newSuperior_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_newSuperior_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( "cn=Steve Jobs,ou=Dev,dc=apple,dc=com", modifyDNRequest.getNewSuperior().toString() );
     }
-    
+
 }

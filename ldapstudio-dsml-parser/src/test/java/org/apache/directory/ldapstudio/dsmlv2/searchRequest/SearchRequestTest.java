@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.searchRequest;
 
+
 import java.util.ArrayList;
 
 import javax.naming.NamingEnumeration;
@@ -43,11 +44,12 @@ import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.util.StringTools;
 
+
 /**
  * Tests for the Del Request parsing
  */
 public class SearchRequestTest extends AbstractTest
-{ 
+{
     /**
      * Test parsing of a request without the dn attribute
      */
@@ -55,7 +57,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_without_dn_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with the dn attribute
      */
@@ -65,21 +68,22 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_dn_attribute.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( "ou=marketing,dc=microsoft,dc=com", searchRequest.getBaseObject().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute
      */
@@ -89,21 +93,22 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 456, searchRequest.getMessageId() );
     }
-    
+
 
     /**
      * Test parsing of a request with a (optional) Control element
@@ -114,29 +119,63 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_1_control.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 1, searchRequest.getControls().size() );
-        
+
         Control control = searchRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-        
+
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
+    /**
+     * Test parsing of a request with a (optional) Control element with empty value
+     */
+    public void testRequestWith1ControlEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_1_control_empty_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( 1, searchRequest.getControls().size() );
+
+        Control control = searchRequest.getCurrentControl();
+
+        assertTrue( control.getCriticality() );
+
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+
+        assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
+    }
+
 
     /**
      * Test parsing of a request with 2 (optional) Control elements
@@ -147,29 +186,30 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_2_controls.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 2, searchRequest.getControls().size() );
-        
+
         Control control = searchRequest.getCurrentControl();
-        
+
         assertFalse( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-        
+
         assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with 3 (optional) Control elements without value
      */
@@ -179,29 +219,31 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_3_controls_without_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 3, searchRequest.getControls().size() );
-        
+
         Control control = searchRequest.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-        
+
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
-    
+
+
     /**
      * Test parsing of a request without the Filter element
      */
@@ -209,7 +251,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_without_filter.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request without scope attribute
      */
@@ -217,7 +260,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_without_scope_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with scope attribute to BaseObject value
      * @throws NamingException 
@@ -228,21 +272,22 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_scope_baseObject.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.SCOPE_BASE_OBJECT, searchRequest.getScope() );
     }
-    
+
+
     /**
      * Test parsing of a request with scope attribute to SingleLevel value
      * @throws NamingException 
@@ -253,21 +298,22 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_scope_singleLevel.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.SCOPE_SINGLE_LEVEL, searchRequest.getScope() );
     }
-    
+
+
     /**
      * Test parsing of a request with scope attribute to WholeSubtree value
      * @throws NamingException 
@@ -278,21 +324,23 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_scope_wholeSubtree.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( SearchRequestTest.class.getResource( "request_with_scope_wholeSubtree.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.SCOPE_WHOLE_SUBTREE, searchRequest.getScope() );
     }
-    
+
+
     /**
      * Test parsing of a request with scope attribute to Error value
      */
@@ -300,7 +348,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_scope_error.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request without derefAliases attribute
      */
@@ -308,7 +357,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_without_derefAliases_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with derefAliases attribute to derefAlways value
      * @throws NamingException 
@@ -319,21 +369,23 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_derefAliases_derefAlways.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_derefAliases_derefAlways.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.DEREF_ALWAYS, searchRequest.getDerefAliases() );
     }
-    
+
+
     /**
      * Test parsing of a request with derefAliases attribute to derefFindingBaseObj value
      * @throws NamingException 
@@ -344,21 +396,23 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_derefAliases_derefFindingBaseObj.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "request_with_derefAliases_derefFindingBaseObj.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.DEREF_FINDING_BASE_OBJ, searchRequest.getDerefAliases() );
     }
-    
+
+
     /**
      * Test parsing of a request with derefAliases attribute to derefinSearching value
      * @throws NamingException 
@@ -369,21 +423,23 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_derefAliases_derefInSearching.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_derefAliases_derefInSearching.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.DEREF_IN_SEARCHING, searchRequest.getDerefAliases() );
     }
-    
+
+
     /**
      * Test parsing of a request with derefAliases attribute to neverDerefAliases value
      * @throws NamingException 
@@ -394,21 +450,23 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_derefAliases_neverDerefAliases.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class
+                .getResource( "request_with_derefAliases_neverDerefAliases.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( LdapConstants.NEVER_DEREF_ALIASES, searchRequest.getDerefAliases() );
     }
-    
+
+
     /**
      * Test parsing of a request with derefAliases attribute to Error value
      * @throws NamingException 
@@ -417,7 +475,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_derefAliases_error.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with the sizeLimit (optional) attribute
      * @throws NamingException 
@@ -428,21 +487,23 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_sizeLimit_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_sizeLimit_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 1000, searchRequest.getSizeLimit() );
     }
-    
+
+
     /**
      * Test parsing of a request with sizeLimit attribute to Error value
      * @throws NamingException 
@@ -451,8 +512,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_sizeLimit_error.xml" );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with the timeLimit (optional) attribute
      * @throws NamingException 
@@ -463,21 +524,23 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_timeLimit_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_timeLimit_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertEquals( 60, searchRequest.getTimeLimit() );
     }
-    
+
+
     /**
      * Test parsing of a request with timeLimit attribute to Error value
      * @throws NamingException 
@@ -486,7 +549,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_timeLimit_error.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with typesOnly to true
      */
@@ -496,22 +560,22 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_typesOnly_true.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertTrue( searchRequest.isTypesOnly() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with typesOnly to 1
      */
@@ -521,21 +585,22 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_typesOnly_1.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertTrue( searchRequest.isTypesOnly() );
     }
-    
+
+
     /**
      * Test parsing of a request with typesOnly to false
      */
@@ -545,21 +610,21 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_typesOnly_false.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertFalse( searchRequest.isTypesOnly() );
     }
-    
+
 
     /**
      * Test parsing of a request with typesOnly to 0
@@ -570,21 +635,22 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "request_with_typesOnly_0.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         assertFalse( searchRequest.isTypesOnly() );
     }
-    
+
+
     /**
      * Test parsing of a request with typesOnly to an error value
      */
@@ -592,7 +658,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_typesOnly_error.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with 2 Filter elements
      */
@@ -600,7 +667,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_2_filters.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with Attibutes Element but not any Attribute element
      */
@@ -610,19 +678,21 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_attributes_but_no_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_attributes_but_no_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         assertTrue( true );
     }
-    
+
+
     /**
      * Test parsing of a request with 2 Attributes elements
      */
@@ -630,7 +700,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_2_attributes_elements.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an Attributes element with 1 Attribute element
      * @throws NamingException 
@@ -641,29 +712,31 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_attributes_1_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_attributes_1_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Attributes attributes = searchRequest.getAttributes();
-        
+
         assertEquals( 1, attributes.size() );
-        
+
         NamingEnumeration ne = attributes.getAll();
-        
+
         Attribute attribute = ( Attribute ) ne.next();
-        
+
         assertEquals( "sn", attribute.getID() );
     }
-    
+
+
     /**
      * Test parsing of a request with an Attributes element with 2 Attribute elements
      * @throws NamingException 
@@ -674,33 +747,35 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_attributes_2_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_attributes_2_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Attributes attributes = searchRequest.getAttributes();
-        
+
         assertEquals( 2, attributes.size() );
-        
+
         NamingEnumeration ne = attributes.getAll();
-        
+
         Attribute attribute = ( Attribute ) ne.next();
-        
+
         assertEquals( "givenname", attribute.getID() );
-        
+
         attribute = ( Attribute ) ne.next();
-        
+
         assertEquals( "sn", attribute.getID() );
     }
-    
+
+
     /**
      * Test parsing of a request with 1 Attribute without name attribute
      */
@@ -708,7 +783,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_attribute_without_name_attribute.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with empty Filter element
      */
@@ -716,7 +792,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "request_with_empty_filter.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an And Filter
      */
@@ -726,23 +803,24 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_and.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
-        assertTrue( filter instanceof AndFilter);
+        assertTrue( filter instanceof AndFilter );
     }
-    
+
+
     /**
      * Test parsing of a request with an Or Filter
      */
@@ -752,23 +830,24 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_or.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
-        assertTrue( filter instanceof OrFilter);
+        assertTrue( filter instanceof OrFilter );
     }
-    
+
+
     /**
      * Test parsing of a request with an Or Filter
      */
@@ -778,23 +857,24 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_not.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
-        assertTrue( filter instanceof NotFilter);
+        assertTrue( filter instanceof NotFilter );
     }
-    
+
+
     /**
      * Test parsing of a request with empty Filter element
      */
@@ -802,7 +882,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_not_with_2_children.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an approxMatch Filter
      */
@@ -812,34 +893,73 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_approxMatch.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_approxMatch.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof AttributeValueAssertionFilter );
-        
+
         AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
-        
+
         assertEquals( LdapConstants.APPROX_MATCH_FILTER, approxMatchFilter.getFilterType() );
-        
+
         AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
-        
+
         assertEquals( "sn", assertion.getAttributeDesc() );
-        
+
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
-    
+
+
+    /**
+     * Test parsing of a request with an approxMatch Filter with empty value
+     */
+    public void testRequestWithApproxMatchFilterEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_approxMatch_with_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.APPROX_MATCH_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertNull( assertion.getAssertionValue() );
+    }
+
+
     /**
      * Test parsing of a request with approxMatch Filter but no name attribute
      */
@@ -847,7 +967,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_approxMatch_without_name.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with approxMatch Filter but no value element
      */
@@ -855,7 +976,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_approxMatch_without_value.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with approxMatch Filter with 2 Value elements
      */
@@ -863,7 +985,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_approxMatch_with_2_values.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an greaterOrEqual Filter
      */
@@ -873,33 +996,73 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_greaterOrEqual.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_greaterOrEqual.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof AttributeValueAssertionFilter );
-        
+
         AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
-        
+
         assertEquals( LdapConstants.GREATER_OR_EQUAL_FILTER, approxMatchFilter.getFilterType() );
-        
+
         AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
-        
+
         assertEquals( "sn", assertion.getAttributeDesc() );
-        
+
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
+
+
+    /**
+     * Test parsing of a request with an greaterOrEqual Filter with an empty value
+     */
+    public void testRequestWithGreaterOrEqualFilterEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_greaterOrEqual_with_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.GREATER_OR_EQUAL_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertNull( assertion.getAssertionValue() );
+    }
+
+
     /**
      * Test parsing of a request with greaterOrEqual Filter but no name attribute
      */
@@ -907,7 +1070,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_greaterOrEqual_without_name.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with greaterOrEqual Filter but no value element
      */
@@ -915,7 +1079,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_greaterOrEqual_without_value.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with greaterOrEqual Filter with 2 Value elements
      */
@@ -923,7 +1088,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_greaterOrEqual_with_2_values.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an lessOrEqual Filter
      */
@@ -933,33 +1099,73 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_lessOrEqual.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_lessOrEqual.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof AttributeValueAssertionFilter );
-        
+
         AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
-        
+
         assertEquals( LdapConstants.LESS_OR_EQUAL_FILTER, approxMatchFilter.getFilterType() );
-        
+
         AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
-        
+
         assertEquals( "sn", assertion.getAttributeDesc() );
-        
+
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
+
+
+    /**
+     * Test parsing of a request with an lessOrEqual Filter
+     */
+    public void testRequestWithLessOrEqualFilterEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_lessOrEqual_with_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.LESS_OR_EQUAL_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertNull( assertion.getAssertionValue() );
+    }
+
+
     /**
      * Test parsing of a request with lessOrEqual Filter but no name attribute
      */
@@ -967,7 +1173,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_lessOrEqual_without_name.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with lessOrEqual Filter but no value element
      */
@@ -975,7 +1182,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_lessOrEqual_without_value.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with lessOrEqual Filter with 2 Value elements
      */
@@ -983,7 +1191,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_lessOrEqual_with_2_values.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an Equality Filter
      */
@@ -993,33 +1202,73 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_equalityMatch.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_equalityMatch.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof AttributeValueAssertionFilter );
-        
+
         AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
-        
+
         assertEquals( LdapConstants.EQUALITY_MATCH_FILTER, approxMatchFilter.getFilterType() );
-        
+
         AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
-        
+
         assertEquals( "sn", assertion.getAttributeDesc() );
-        
+
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
+
+
+    /**
+     * Test parsing of a request with an Equality Filter with an empty value
+     */
+    public void testRequestWithEqualityMatchFilterWithEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_equalityMatch_with_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.EQUALITY_MATCH_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertNull( assertion.getAssertionValue() );
+    }
+
+
     /**
      * Test parsing of a request with EqualityMatch Filter but no name attribute
      */
@@ -1027,7 +1276,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_equalityMatch_without_name.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with EqualityMatch Filter but no value element
      */
@@ -1035,7 +1285,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_equalityMatch_without_value.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with EqualityMatch Filter with 2 Value elements
      */
@@ -1043,7 +1294,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_equalityMatch_with_2_values.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an Present Filter
      */
@@ -1053,27 +1305,28 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_present.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof PresentFilter );
-        
+
         PresentFilter presentFilter = ( PresentFilter ) filter;
-                
+
         assertEquals( "givenName", presentFilter.getAttributeDescription().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with Present Filter without name attribute
      */
@@ -1081,7 +1334,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_present_without_name.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with an ExtensibleMatch Filter
      */
@@ -1091,29 +1345,65 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof ExtensibleMatchFilter );
-        
+
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-                
+
         assertEquals( "A Value", extensibleMatchFilter.getMatchValue() );
-        
+
         assertEquals( false, extensibleMatchFilter.isDnAttributes() );
     }
-    
+
+
+    /**
+     * Test parsing of a request with an ExtensibleMatch Filter with empty value
+     */
+    public void testRequestWithExtensibleMatchWithEmptyValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_with_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof ExtensibleMatchFilter );
+
+        ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
+
+        assertNull( extensibleMatchFilter.getMatchValue() );
+
+        assertEquals( false, extensibleMatchFilter.isDnAttributes() );
+    }
+
+
     /**
      * Test parsing of a request with ExtensibleMatch Filter without Value element
      */
@@ -1121,7 +1411,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_extensibleMatch_without_value.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with ExtensibleMatch Filter with 2 Value elements
      */
@@ -1129,7 +1420,7 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_extensibleMatch_with_2_values.xml" );
     }
-    
+
 
     /**
      * Test parsing of a request with typesOnly to true
@@ -1140,28 +1431,29 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_with_dnAttributes_true.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_with_dnAttributes_true.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof ExtensibleMatchFilter );
-        
+
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-        
+
         assertTrue( extensibleMatchFilter.isDnAttributes() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with typesOnly to 1
      */
@@ -1171,27 +1463,29 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_with_dnAttributes_1.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_with_dnAttributes_1.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof ExtensibleMatchFilter );
-        
+
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-        
+
         assertTrue( extensibleMatchFilter.isDnAttributes() );
     }
-    
+
+
     /**
      * Test parsing of a request with typesOnly to false
      */
@@ -1201,27 +1495,28 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_with_dnAttributes_false.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_with_dnAttributes_false.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof ExtensibleMatchFilter );
-        
+
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-        
+
         assertFalse( extensibleMatchFilter.isDnAttributes() );
     }
-    
+
 
     /**
      * Test parsing of a request with typesOnly to 0
@@ -1232,27 +1527,29 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_with_dnAttributes_0.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_with_dnAttributes_0.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof ExtensibleMatchFilter );
-        
+
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-        
+
         assertFalse( extensibleMatchFilter.isDnAttributes() );
     }
-    
+
+
     /**
      * Test parsing of a request with typesOnly to an error value
      */
@@ -1260,7 +1557,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_extensibleMatch_with_dnAttributes_error.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with a matchingRule attribute
      */
@@ -1270,27 +1568,29 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_with_matchingRule.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_with_matchingRule.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof ExtensibleMatchFilter );
-        
+
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-        
+
         assertEquals( "AMatchingRuleName", extensibleMatchFilter.getMatchingRule().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with a name attribute
      */
@@ -1300,27 +1600,29 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_with_name.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_with_name.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof ExtensibleMatchFilter );
-        
+
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-        
+
         assertEquals( "givenName", extensibleMatchFilter.getType().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with an Substrings Filter
      */
@@ -1330,27 +1632,29 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-                
+
         assertEquals( "sn", substringFilter.getType().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with Substrings Filter without name
      */
@@ -1358,7 +1662,8 @@ public class SearchRequestTest extends AbstractTest
     {
         testParsingFail( SearchRequestTest.class, "filters/request_with_substrings_without_name.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Initial element
      */
@@ -1368,27 +1673,61 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_initial.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_initial.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-        
+
         assertEquals( "jack", substringFilter.getInitialSubstrings().toString() );
     }
-    
+
+
+    /**
+     * Test parsing of a request with a Substrings Filter with 1 emptyInitial element
+     */
+    public void testRequestWithSubstrings1EmptyInitial()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_empty_initial.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof SubstringFilter );
+
+        SubstringFilter substringFilter = ( SubstringFilter ) filter;
+
+        assertNull( substringFilter.getInitialSubstrings() );
+    }
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Initial and 1 Any elements
      */
@@ -1398,33 +1737,35 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_initial_1_any.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_initial_1_any.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-        
+
         assertEquals( "jack", substringFilter.getInitialSubstrings().toString() );
-        
+
         ArrayList initials = substringFilter.getAnySubstrings();
-        
+
         assertEquals( 1, initials.size() );
-        
+
         assertEquals( "kate", initials.get( 0 ).toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Initial and 1 Final elements
      */
@@ -1434,29 +1775,31 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_initial_1_final.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_initial_1_final.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-        
+
         assertEquals( "jack", substringFilter.getInitialSubstrings().toString() );
 
         assertEquals( "john", substringFilter.getFinalSubstrings().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Any element
      */
@@ -1466,31 +1809,67 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_any.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_any.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-        
+
         ArrayList initials = substringFilter.getAnySubstrings();
-        
+
         assertEquals( 1, initials.size() );
-        
+
         assertEquals( "kate", initials.get( 0 ).toString() );
     }
-    
+
+
+    /**
+     * Test parsing of a request with a Substrings Filter with 1 empty Any element
+     */
+    public void testRequestWithSubstrings1EmptyAny()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class
+                .getResource( "filters/request_with_substrings_1_empty_any.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof SubstringFilter );
+
+        SubstringFilter substringFilter = ( SubstringFilter ) filter;
+
+        ArrayList initials = substringFilter.getAnySubstrings();
+
+        assertEquals( 0, initials.size() );
+    }
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Any element
      */
@@ -1500,33 +1879,35 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_2_any.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_2_any.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-        
+
         ArrayList initials = substringFilter.getAnySubstrings();
-        
+
         assertEquals( 2, initials.size() );
-        
+
         assertEquals( "kate", initials.get( 0 ).toString() );
-        
+
         assertEquals( "sawyer", initials.get( 1 ).toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Any and 1 Final elements
      */
@@ -1536,33 +1917,35 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_any_1_final.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_any_1_final.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-        
+
         ArrayList initials = substringFilter.getAnySubstrings();
-        
+
         assertEquals( 1, initials.size() );
-        
+
         assertEquals( "kate", initials.get( 0 ).toString() );
-        
+
         assertEquals( "john", substringFilter.getFinalSubstrings().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Final element
      */
@@ -1572,24 +1955,92 @@ public class SearchRequestTest extends AbstractTest
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_final.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_final.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-        
+
         Filter filter = searchRequest.getFilter();
 
         assertTrue( filter instanceof SubstringFilter );
-        
+
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
-        
+
         assertEquals( "john", substringFilter.getFinalSubstrings().toString() );
+    }
+
+
+    /**
+     * Test parsing of a request with a Substrings Filter with 1 empty Final element
+     */
+    public void testRequestWithSubstrings1EmptyFinal()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_empty_final.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof SubstringFilter );
+
+        SubstringFilter substringFilter = ( SubstringFilter ) filter;
+
+        assertNull( substringFilter.getFinalSubstrings() );
+    }
+
+
+    /**
+     * Test parsing of a request with a SubEntries Control
+     */
+    public void testRequestWithSubEntriesControl()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser
+                .setInputFile( SearchRequestTest.class.getResource( "request_with_subentries_control.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( 1, searchRequest.getControls().size() );
+
+        Control control = searchRequest.getCurrentControl();
+
+        assertTrue( control.getCriticality() );
+
+        assertEquals( "1.3.6.1.4.1.4203.1.10.1", control.getControlType() );
+
+        assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
+
     }
 }

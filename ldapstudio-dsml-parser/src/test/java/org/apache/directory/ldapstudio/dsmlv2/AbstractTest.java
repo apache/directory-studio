@@ -20,10 +20,12 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import junit.framework.TestCase;
 
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Parser;
 import org.xmlpull.v1.XmlPullParserException;
+
 
 /**
  * This is the Abstract TestCase that each test should extend.
@@ -40,14 +42,14 @@ public class AbstractTest extends TestCase
         try
         {
             Dsmlv2Parser parser = new Dsmlv2Parser();
-        
+
             parser.setInputFile( testClass.getResource( filename ).getFile() );
-        
-            parser.parse( );
+
+            parser.parse();
         }
         catch ( XmlPullParserException e )
         {
-            assertTrue(e.getMessage(), true );
+            assertTrue( e.getMessage(), true );
             return;
         }
         catch ( Exception e )

@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.batchRequest;
 
+
 import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.AbstractTest;
@@ -36,6 +37,7 @@ import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
 import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequest;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 
+
 /**
  * Tests for the Compare Response parsing
  */
@@ -46,693 +48,715 @@ public class BatchRequestTest extends AbstractTest
      */
     public void testResponseWithRequestId()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( BatchRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( BatchRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1234567890, batchRequest.getRequestID() );
     }
-    
+
+
     /**
      * Test parsing of a Request with the (optional) requestID attribute
      */
     public void testResponseWith0Request()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( BatchRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( BatchRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 0, batchRequest.getRequests().size() );
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 AuthRequest
      */
     public void testResponseWith1AuthRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_AuthRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof BindRequest ) 
+
+        if ( request instanceof BindRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 AddRequest
      */
     public void testResponseWith1AddRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_AddRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof AddRequest ) 
+
+        if ( request instanceof AddRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 CompareRequest
      */
     public void testResponseWith1CompareRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_CompareRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof CompareRequest ) 
+
+        if ( request instanceof CompareRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 AbandonRequest
      */
     public void testResponseWith1AbandonRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_AbandonRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof AbandonRequest ) 
+
+        if ( request instanceof AbandonRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 DelRequest
      */
     public void testResponseWith1DelRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_DelRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof DelRequest ) 
+
+        if ( request instanceof DelRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 ExtendedRequest
      */
     public void testResponseWith1ExtendedRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_ExtendedRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof ExtendedRequest ) 
+
+        if ( request instanceof ExtendedRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 ModDNRequest
      */
     public void testResponseWith1ModDNRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_ModDNRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof ModifyDNRequest ) 
+
+        if ( request instanceof ModifyDNRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 ModifyRequest
      */
     public void testResponseWith1ModifyRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_ModifyRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof ModifyRequest ) 
+
+        if ( request instanceof ModifyRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 SearchRequest
      */
     public void testResponseWith1SearchRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_SearchRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 1, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof SearchRequest ) 
+
+        if ( request instanceof SearchRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
-    
+
+
     /**
      * Test parsing of a Request with 2 AddRequest
      */
     public void testResponseWith2AddRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_AddRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof AddRequest ) 
+
+        if ( request instanceof AddRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 2 CompareRequest
      */
     public void testResponseWith2CompareRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_CompareRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof CompareRequest ) 
+
+        if ( request instanceof CompareRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 2 AbandonRequest
      */
     public void testResponseWith2AbandonRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_AbandonRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof AbandonRequest ) 
+
+        if ( request instanceof AbandonRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 2 DelRequest
      */
     public void testResponseWith2DelRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_DelRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof DelRequest ) 
+
+        if ( request instanceof DelRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 2 ExtendedRequest
      */
     public void testResponseWith2ExtendedRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_ExtendedRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof ExtendedRequest ) 
+
+        if ( request instanceof ExtendedRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 2 ModDNRequest
      */
     public void testResponseWith2ModDNRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_ModDNRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof ModifyDNRequest ) 
+
+        if ( request instanceof ModifyDNRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 2 ModifyRequest
      */
     public void testResponseWith2ModifyRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_ModifyRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof ModifyRequest ) 
+
+        if ( request instanceof ModifyRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 2 SearchRequest
      */
     public void testResponseWith2SearchRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
+
             parser.setInputFile( BatchRequestTest.class.getResource( "request_with_2_SearchRequest.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         assertEquals( 2, batchRequest.getRequests().size() );
-        
+
         LdapMessage request = batchRequest.getCurrentRequest();
-        
-        if ( request instanceof SearchRequest ) 
+
+        if ( request instanceof SearchRequest )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Request with 1 AuthRequest and 1 AddRequest
      */
     public void testResponseWith1AuthRequestAnd1AddRequest()
     {
-    	Dsmlv2Parser parser = null;
+        Dsmlv2Parser parser = null;
         try
         {
             parser = new Dsmlv2Parser();
-            
-            parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_AuthRequest_1_AddRequest.xml" ).getFile() );
-        
+
+            parser.setInputFile( BatchRequestTest.class.getResource( "request_with_1_AuthRequest_1_AddRequest.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchRequest batchRequest = parser.getBatchRequest();
-        
+
         List requests = batchRequest.getRequests();
-        
+
         assertEquals( 2, requests.size() );
-        
-        LdapMessage request = (LdapMessage) requests.get( 0 );
-        
-        if ( request instanceof BindRequest ) 
+
+        LdapMessage request = ( LdapMessage ) requests.get( 0 );
+
+        if ( request instanceof BindRequest )
         {
-        	assertTrue( true );
-		}
-        else
-        {
-        	fail();
+            assertTrue( true );
         }
-        
-        request = (LdapMessage) requests.get( 1 );
-        
-        if ( request instanceof AddRequest ) 
-        {
-        	assertTrue( true );
-		}
         else
         {
-        	fail();
+            fail();
+        }
+
+        request = ( LdapMessage ) requests.get( 1 );
+
+        if ( request instanceof AddRequest )
+        {
+            assertTrue( true );
+        }
+        else
+        {
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a request with 1 wrong placed AuthRequest
      */

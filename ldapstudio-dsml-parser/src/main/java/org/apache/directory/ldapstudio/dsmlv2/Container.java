@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 public interface Container
 {
     // ~ Methods
@@ -42,6 +43,7 @@ public interface Container
      */
     void setState( int state );
 
+
     /**
      * Get the transition
      * 
@@ -63,6 +65,5 @@ public interface Container
      * @return Returns the states.
      */
     public IStates getStates();
-
 
 }

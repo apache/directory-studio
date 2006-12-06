@@ -20,93 +20,118 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 
+
 public class BatchRequest
 {
     private List<LdapMessage> requests;
-    
+
     private int requestID;
-    
-    public enum Processing { SEQUENTIAL, PARALLEL };
-    
+
+    public enum Processing
+    {
+        SEQUENTIAL, PARALLEL
+    };
+
     private Processing processing;
-    
-    public enum OnError { RESUME, EXIT };
-    
+
+    public enum OnError
+    {
+        RESUME, EXIT
+    };
+
     private OnError onError;
-    
-    public enum ResponseOrder { SEQUENTIAL, UNORDERED };
-    
+
+    public enum ResponseOrder
+    {
+        SEQUENTIAL, UNORDERED
+    };
+
     private ResponseOrder responseOrder;
-    
+
+
     public BatchRequest()
     {
         requests = new ArrayList<LdapMessage>();
     }
-    
-    public boolean addRequest(LdapMessage request)
+
+
+    public boolean addRequest( LdapMessage request )
     {
         return requests.add( request );
     }
-    
+
+
     public LdapMessage getCurrentRequest()
     {
         return requests.get( requests.size() - 1 );
     }
+
 
     public int getRequestID()
     {
         return requestID;
     }
 
+
     public void setRequestID( int requestID )
     {
         this.requestID = requestID;
     }
+
 
     public Processing getProcessing()
     {
         return processing;
     }
 
+
     public void setProcessing( Processing processing )
     {
         this.processing = processing;
     }
+
 
     public OnError getOnError()
     {
         return onError;
     }
 
+
     public void setOnError( OnError onError )
     {
         this.onError = onError;
     }
+
 
     public ResponseOrder getResponseOrder()
     {
         return responseOrder;
     }
 
+
     public void setResponseOrder( ResponseOrder responseOrder )
     {
         this.responseOrder = responseOrder;
     }
-    
-	public List getRequests() {
-		return requests;
-	}
+
+
+    public List getRequests()
+    {
+        return requests;
+    }
+
 
     @Override
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        
+
         sb.append( "[" );
         sb.append( "processing: " + processing );
         sb.append( " - " );

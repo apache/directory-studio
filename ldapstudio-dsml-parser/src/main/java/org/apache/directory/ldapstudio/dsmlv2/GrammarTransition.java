@@ -55,7 +55,7 @@ public class GrammarTransition
      * @param action
      *            The action to execute. It could be null.
      */
-    public GrammarTransition(int currentState, int nextState, GrammarAction action)
+    public GrammarTransition( int currentState, int nextState, GrammarAction action )
     {
         this.currentState = currentState;
         this.nextState = nextState;
@@ -106,9 +106,9 @@ public class GrammarTransition
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append( "Transition from <" ).append( statesEnum.getState( currentState ) ).append( "> to <" )
-            .append( statesEnum.getState( nextState ) ).append( ">, action : " ).append(
-                ( ( action == null ) ? "no action" : action.toString() ) ).append( ">" );
+        sb.append( "Transition from <" ).append( statesEnum.getState( currentState ) ).append( "> to <" ).append(
+            statesEnum.getState( nextState ) ).append( ">, action : " ).append(
+            ( ( action == null ) ? "no action" : action.toString() ) ).append( ">" );
 
         return sb.toString();
     }

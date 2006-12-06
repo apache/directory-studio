@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.searchResponse.searchResultReference;
 
+
 import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.AbstractResponseTest;
@@ -31,6 +32,7 @@ import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.util.StringTools;
 
+
 /**
  * Tests for the Search Result Reference Response parsing
  */
@@ -41,13 +43,14 @@ public class SearchResultReferenceTest extends AbstractResponseTest
      */
     public void testResponseWith1Control()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_control.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_control.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
@@ -55,64 +58,34 @@ public class SearchResultReferenceTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
         assertEquals( 1, searchResultReference.getControls().size() );
-        
+
         Control control = searchResultReference.getCurrentControl();
-        
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-        
+
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
 
     /**
      * Test parsing of a response with 2 (optional) Control elements
      */
     public void testResponseWith2Controls()
     {
-    	Dsmlv2ResponseParser parser = null;
+        Dsmlv2ResponseParser parser = null;
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_2_controls.xml" ).getFile() );
-        
-            parser.parse();
-        }
-        catch ( Exception e )
-        {
-            fail( e.getMessage() );
-        }
-        
-        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        
-        assertEquals( 2, searchResultReference.getControls().size() );
-        
-        Control control = searchResultReference.getCurrentControl();
-        
-        assertFalse( control.getCriticality() );
-        
-        assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
-        
-        assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
-    }
-    
-    /**
-     * Test parsing of a response with 3 (optional) Control elements without value
-     */
-    public void testResponseWith3ControlsWithoutValue()
-    {
-    	Dsmlv2ResponseParser parser = null;
-        try
-        {
-            parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_3_controls_without_value.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_2_controls.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
@@ -120,20 +93,56 @@ public class SearchResultReferenceTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        
-        assertEquals( 3, searchResultReference.getControls().size() );
-        
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
+        assertEquals( 2, searchResultReference.getControls().size() );
+
         Control control = searchResultReference.getCurrentControl();
-        
+
+        assertFalse( control.getCriticality() );
+
+        assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
+
+        assertEquals( "Some other text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
+    }
+
+
+    /**
+     * Test parsing of a response with 3 (optional) Control elements without value
+     */
+    public void testResponseWith3ControlsWithoutValue()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( SearchResultReferenceTest.class.getResource(
+                "response_with_3_controls_without_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
+        assertEquals( 3, searchResultReference.getControls().size() );
+
+        Control control = searchResultReference.getCurrentControl();
+
         assertTrue( control.getCriticality() );
-        
+
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
-        
+
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute
      */
@@ -143,31 +152,33 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        
+
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
         assertEquals( 456, searchResultReference.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 0 Ref
      */
     public void testResponseWith0Ref()
     {
-        testParsingFail( SearchResultReferenceTest.class, "response_with_0_ref.xml");
+        testParsingFail( SearchResultReferenceTest.class, "response_with_0_ref.xml" );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with 1 Ref
      */
@@ -177,33 +188,34 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_ref.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        
+
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
         List references = searchResultReference.getSearchResultReferences();
-        
+
         assertEquals( 1, references.size() );
-        
-        try 
+
+        try
         {
-			assertEquals( new LdapURL( "ldap://localhost" ).toString() , references.get( 0 ).toString() );
-		}
-        catch (LdapURLEncodingException e) 
+            assertEquals( new LdapURL( "ldap://localhost" ).toString(), references.get( 0 ).toString() );
+        }
+        catch ( LdapURLEncodingException e )
         {
-			fail();
-		}
+            fail();
+        }
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with 2 Ref
      */
@@ -213,46 +225,48 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_2_ref.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
-        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() ).getCurrentSearchResultReference();
-        
+
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
         List references = searchResultReference.getSearchResultReferences();
-        
+
         assertEquals( 2, references.size() );
-        
-        try 
+
+        try
         {
-			assertEquals( new LdapURL( "ldap://localhost" ).toString() , references.get( 0 ).toString() );
-		}
-        catch (LdapURLEncodingException e) 
+            assertEquals( new LdapURL( "ldap://localhost" ).toString(), references.get( 0 ).toString() );
+        }
+        catch ( LdapURLEncodingException e )
         {
-			fail();
-		}
-        
-        try 
+            fail();
+        }
+
+        try
         {
-			assertEquals( new LdapURL( "ldap://www.apache.org" ).toString() , references.get( 1 ).toString() );
-		}
-        catch (LdapURLEncodingException e) 
+            assertEquals( new LdapURL( "ldap://www.apache.org" ).toString(), references.get( 1 ).toString() );
+        }
+        catch ( LdapURLEncodingException e )
         {
-			fail();
-		}
+            fail();
+        }
     }
-    
+
+
     /**
      * Test parsing of a response with 1 wrong Ref
      */
     public void testResponseWith1WrongRef()
     {
-        testParsingFail( SearchResultReferenceTest.class, "response_with_1_wrong_ref.xml");
+        testParsingFail( SearchResultReferenceTest.class, "response_with_1_wrong_ref.xml" );
     }
 }

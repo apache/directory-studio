@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.batchResponse;
 
+
 import org.apache.directory.ldapstudio.dsmlv2.AbstractResponseTest;
 import org.apache.directory.ldapstudio.dsmlv2.BatchResponse;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
@@ -33,6 +34,7 @@ import org.apache.directory.shared.ldap.codec.del.DelResponse;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedResponse;
 import org.apache.directory.shared.ldap.codec.modify.ModifyResponse;
 import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNResponse;
+
 
 /**
  * Tests for the Compare Response parsing
@@ -48,21 +50,23 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_requestID_attribute.xml" ).getFile() );
-        
+
+            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1234567890, batchResponse.getRequestID() );
     }
-    
+
+
     /**
      * Test parsing of a Response with 0 Response
      */
@@ -72,22 +76,22 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_0_response.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 0, batchResponse.getResponses().size() );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with the 1 AddResponse
      */
@@ -97,32 +101,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_AddResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof AddResponse ) 
+
+        if ( response instanceof AddResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 AuthResponse
      */
@@ -132,32 +137,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_AuthResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof BindResponse ) 
+
+        if ( response instanceof BindResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 CompareResponse
      */
@@ -167,32 +173,34 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_CompareResponse.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( BatchResponseTest.class.getResource( "response_with_1_CompareResponse.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof CompareResponse ) 
+
+        if ( response instanceof CompareResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 DelResponse
      */
@@ -202,32 +210,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_DelResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof DelResponse ) 
+
+        if ( response instanceof DelResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 ErrorResponse
      */
@@ -237,32 +246,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_ErrorResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ErrorResponse ) 
+
+        if ( response instanceof ErrorResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 ExtendedResponse
      */
@@ -272,32 +282,34 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_ExtendedResponse.xml" ).getFile() );
-        
+
+            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_ExtendedResponse.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ExtendedResponse ) 
+
+        if ( response instanceof ExtendedResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 ModDNResponse
      */
@@ -307,32 +319,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_ModDNResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ModifyDNResponse ) 
+
+        if ( response instanceof ModifyDNResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 ModifyResponse
      */
@@ -342,32 +355,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_ModifyResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ModifyResponse ) 
+
+        if ( response instanceof ModifyResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 1 SearchResponse
      */
@@ -377,32 +391,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_1_SearchResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 1, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof SearchResponse ) 
+
+        if ( response instanceof SearchResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 AddResponse
      */
@@ -412,32 +427,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_AddResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof AddResponse ) 
+
+        if ( response instanceof AddResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 AuthResponse
      */
@@ -447,32 +463,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_AuthResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof BindResponse ) 
+
+        if ( response instanceof BindResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 CompareResponse
      */
@@ -482,32 +499,34 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_CompareResponse.xml" ).getFile() );
-        
+
+            parser
+                .setInputFile( BatchResponseTest.class.getResource( "response_with_2_CompareResponse.xml" ).getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof CompareResponse ) 
+
+        if ( response instanceof CompareResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 DelResponse
      */
@@ -517,32 +536,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_DelResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof DelResponse ) 
+
+        if ( response instanceof DelResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 ErrorResponse
      */
@@ -552,32 +572,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_ErrorResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ErrorResponse ) 
+
+        if ( response instanceof ErrorResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 ExtendedResponse
      */
@@ -587,32 +608,34 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
-            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_ExtendedResponse.xml" ).getFile() );
-        
+
+            parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_ExtendedResponse.xml" )
+                .getFile() );
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ExtendedResponse ) 
+
+        if ( response instanceof ExtendedResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 ModDNResponse
      */
@@ -622,32 +645,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_ModDNResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ModifyDNResponse ) 
+
+        if ( response instanceof ModifyDNResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 ModifyResponse
      */
@@ -657,32 +681,33 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_ModifyResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof ModifyResponse ) 
+
+        if ( response instanceof ModifyResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with the 2 SearchResponse
      */
@@ -692,29 +717,29 @@ public class BatchResponseTest extends AbstractResponseTest
         try
         {
             parser = new Dsmlv2ResponseParser();
-            
+
             parser.setInputFile( BatchResponseTest.class.getResource( "response_with_2_SearchResponse.xml" ).getFile() );
-        
+
             parser.parse();
         }
         catch ( Exception e )
         {
             fail( e.getMessage() );
         }
-        
+
         BatchResponse batchResponse = parser.getBatchResponse();
-        
+
         assertEquals( 2, batchResponse.getResponses().size() );
-        
+
         LdapResponse response = batchResponse.getCurrentResponse();
-        
-        if ( response instanceof SearchResponse ) 
+
+        if ( response instanceof SearchResponse )
         {
-        	assertTrue( true );
-		}
+            assertTrue( true );
+        }
         else
         {
-        	fail();
+            fail();
         }
     }
 }

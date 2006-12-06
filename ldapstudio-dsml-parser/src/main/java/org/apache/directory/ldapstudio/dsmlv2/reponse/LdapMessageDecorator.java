@@ -370,7 +370,7 @@ public abstract class LdapMessageDecorator extends LdapMessage
     {
         return instance.getUnBindRequest();
     }
-    
+
 
     /* (non-Javadoc)
      * @see org.apache.directory.shared.ldap.codec.LdapMessage#setMessageId(int)

@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 /**
  * A top level grammar class that store meta informations about the actions.
  * Those informations are not mandatory, but they can be usefull for debugging.
@@ -44,7 +45,7 @@ public abstract class GrammarAction implements IAction
      * @param name
      *            The name of the create daction
      */
-    public GrammarAction(String name)
+    public GrammarAction( String name )
     {
         this.name = name;
     }

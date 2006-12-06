@@ -56,6 +56,7 @@ import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -69,6 +70,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     /** The instance of grammar. Dsmlv2Grammar is a singleton */
     private static Dsmlv2Grammar instance = new Dsmlv2Grammar();
 
+
     @SuppressWarnings("unchecked")
     private Dsmlv2Grammar()
     {
@@ -76,8 +78,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         statesEnum = Dsmlv2StatesEnum.getInstance();
 
         // Create the transitions table
-        super.transitions =  (HashMap<Tag, GrammarTransition>[]) Array.newInstance( HashMap.class, 200 );; // TODO Change this value
-                
+        super.transitions = ( HashMap<Tag, GrammarTransition>[] ) Array.newInstance( HashMap.class, 200 );; // TODO Change this value
+
         //====================================================
         //  Transitions concerning : BATCH REQUEST
         //====================================================
@@ -85,255 +87,267 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // ** OPEN BATCH REQUEST **
         // State: [INIT_GRAMMAR_STATE] - Tag: <batchRequest>
-        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE].put( new Tag( "batchRequest", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, batchRequestCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE].put( new Tag( "batchRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.BATCHREQUEST_START_TAG,
+                batchRequestCreation ) );
+
         // ** CLOSE BATCH REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: </batchRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "batchRequest", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_END_TAG, null ) );
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG]
+            .put( new Tag( "batchRequest", Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG,
+                Dsmlv2StatesEnum.BATCHREQUEST_END_TAG, null ) );
         //state: [BATCHREQUEST_LOOP] - Tag: </batchRequest>
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "batchRequest", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.END_STATE, null ) );
-        
+
         // ** ABANDON REQUEST **
         // State: [BATCHREQUEST_START_TAG] - Tag: <abandonRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "abandonRequest", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG, abandonRequestCreation ));
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "abandonRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG,
+                abandonRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <abandonRequest>
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "abandonRequest", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG, abandonRequestCreation ) );
- 
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG,
+                abandonRequestCreation ) );
+
         // ** ADD REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <addRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "addRequest", Tag.START),  new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_START_TAG, addRequestCreation ));
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "addRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_START_TAG,
+                addRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <addRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "addRequest", Tag.START),  new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.ADD_REQUEST_START_TAG, addRequestCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "addRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.ADD_REQUEST_START_TAG,
+                addRequestCreation ) );
+
         // ** AUTH REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <authRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "authRequest", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG, authRequestCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "authRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG,
+                authRequestCreation ) );
+
         // ** COMPARE REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <compareRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "compareRequest", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG, compareRequestCreation ));
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "compareRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG,
+                compareRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <compareRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "compareRequest", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG, compareRequestCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "compareRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG,
+                compareRequestCreation ) );
+
         // ** DEL REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <delRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "delRequest", Tag.START ), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.DEL_REQUEST_START_TAG, delRequestCreation ));
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "delRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.DEL_REQUEST_START_TAG,
+                delRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <delRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "delRequest", Tag.START ), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.DEL_REQUEST_START_TAG, delRequestCreation ));  
-        
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "delRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.DEL_REQUEST_START_TAG,
+                delRequestCreation ) );
+
         // ** EXTENDED REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <extendedRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "extendedRequest", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG, extendedRequestCreation ));  
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "extendedRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG, extendedRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <extendedRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "extendedRequest", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG, extendedRequestCreation ));  
-        
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "extendedRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG,
+                extendedRequestCreation ) );
+
         // ** MOD DN REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <modDNRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "modDNRequest", Tag.START ), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG, modDNRequestCreation ) );  
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "modDNRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG, modDNRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <modDNRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "modDNRequest", Tag.START ), new GrammarTransition(
-            Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG, modDNRequestCreation ) );  
-        
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "modDNRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG,
+                modDNRequestCreation ) );
+
         // ** MODIFY REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <modifyRequest>
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "modifyRequest", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG, modifyRequestCreation ) );
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG,
+                modifyRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <modifyRequest>
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "modifyRequest", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG, modifyRequestCreation ) );
-        
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG,
+                modifyRequestCreation ) );
+
         // ** SEARCH REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <searchRequest>
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG].put( new Tag( "searchRequest", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG, searchRequestCreation ) ); 
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG,
+                searchRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <searchRequest>
         super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_LOOP].put( new Tag( "searchRequest", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG, searchRequestCreation ) ); 
+            new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG,
+                searchRequestCreation ) );
 
-        
         //====================================================
         //  Transitions concerning : ABANDON REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [ABANDON_REQUEST_START_TAG] - Tag: </abandonRequest>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG].put( new Tag( "abandonRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG]
+            .put( new Tag( "abandonRequest", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         // State: [ABANDON_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [ABANDON_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [ABANDON_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG].put(
+            new Tag( "controlValue", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [ABANDON_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [ABANDON_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [ABANDON_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [ABANDON_REQUEST_CONTROL_END_TAG] - Tag: </abandonRequest>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG].put( new Tag( "abandonRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG].put( new Tag( "abandonRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : ADD REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_VALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_VALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // state: [ADD_REQUEST_START_TAG] -> Tag: </addRequest>
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_START_TAG].put( new Tag( "addRequest", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         // State: [ADD_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [ADD_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [ADD_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [ADD_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [ADD_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [ADD_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [ADD_REQUEST_CONTROL_END_TAG] - Tag: </addRequest>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG].put( new Tag( "addRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG].put( new Tag( "addRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
+                null ) );
+
         // State: [ADD_REQUEST_START_TAG] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_START_TAG].put( new Tag( "attr", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG,  addRequestAddAttribute ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_START_TAG].put( new Tag( "attr", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG,
+                addRequestAddAttribute ) );
+
         // State: [ADD_REQUEST_CONTROL_END_TAG] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG].put( new Tag( "attr", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG,  addRequestAddAttribute ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG].put( new Tag( "attr", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG, addRequestAddAttribute ) );
+
         // State: [ADD_REQUEST_ATTR_END_TAG] - Tag: <attr>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG].put( new Tag( "attr", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG, Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG,  addRequestAddAttribute ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG].put( new Tag( "attr", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG, addRequestAddAttribute ) );
+
         // State: [ADD_REQUEST_ATTR_START_TAG] - Tag: </attr>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG].put( new Tag( "attr", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG].put( new Tag( "attr", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG, null ) );
+
         // State: [ADD_REQUEST_ATTR_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_VALUE_START_TAG, addRequestAddValue ));
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG,
+                Dsmlv2StatesEnum.ADD_REQUEST_ATTR_START_TAG, addRequestAddValue ) );
 
-        // State: [ADD_REQUEST_VALUE_END_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_VALUE_END_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.ADD_REQUEST_VALUE_START_TAG, addRequestAddValue ));
-        
-        // State: [ADD_REQUEST_VALUE_START_TAG] - Tag: </value>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_VALUE_START_TAG].put( new Tag( "value", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_VALUE_START_TAG, Dsmlv2StatesEnum.ADD_REQUEST_VALUE_END_TAG, null ));
-
-        // State: [ADD_REQUEST_VALUE_END_TAG] - Tag: </attr>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_VALUE_END_TAG].put( new Tag( "attr", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG, null ));
-        
         // State: [ADD_REQUEST_ATTR_END_TAG] - Tag: </addRequest>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG].put( new Tag( "addRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-                
-        
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG]
+            .put( new Tag( "addRequest", Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_ATTR_END_TAG,
+                Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : AUTH REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // state: [AUTH_REQUEST_START_TAG] -> Tag: </authRequest>
         super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG].put( new Tag( "authRequest", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
+            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         // State: [AUTH_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [AUTH_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [AUTH_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [AUTH_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [AUTH_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [AUTH_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [AUTH_REQUEST_CONTROL_END_TAG] - Tag: </authRequest>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG].put( new Tag( "authRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG].put( new Tag( "authRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
+                null ) );
 
         //====================================================
         //  Transitions concerning : COMPARE REQUEST
@@ -341,364 +355,374 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
-        // State: [COMPARE_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
-        // State: [COMPARE_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [COMPARE_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
-        // State: [COMPARE_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG,  null ));
-        
-        // State: [COMPARE_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, null ));
-        
-        // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
-        // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: </compareRequest>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG].put( new Tag( "compareRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
-        // State: [COMPARE_REQUEST_START_TAG] - Tag: <assertion>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG].put( new Tag( "assertion", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG,  compareRequestAddAssertion ));
-        
-        // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: <assertion>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG].put( new Tag( "assertion", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG,  compareRequestAddAssertion ));
-        
-        // State: [COMPARE_REQUEST_ASSERTION_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_START_TAG, compareRequestAddValue ));
-        
-        // State: [COMPARE_REQUEST_VALUE_START_TAG] - Tag: </value>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_START_TAG].put( new Tag( "value", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG, null ));
 
-        // State: [COMPARE_REQUEST_VALUE_END_TAG] - Tag: </assertion>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG].put( new Tag( "assertion", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG, null ));
-        
+        // State: [COMPARE_REQUEST_START_TAG] - Tag: <control>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
+        // State: [COMPARE_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG].put(
+            new Tag( "controlValue", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
+        // State: [COMPARE_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, null ) );
+
+        // State: [COMPARE_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, null ) );
+
+        // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: <control>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
+        // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: </compareRequest>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG].put( new Tag( "compareRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
+        // State: [COMPARE_REQUEST_START_TAG] - Tag: <assertion>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG].put( new Tag( "assertion", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG, compareRequestAddAssertion ) );
+
+        // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: <assertion>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG].put( new Tag( "assertion", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG, compareRequestAddAssertion ) );
+
+        // State: [COMPARE_REQUEST_ASSERTION_START_TAG] - Tag: <value>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG, compareRequestAddValue ) );
+
+        //State: [COMPARE_REQUEST_VALUE_END_TAG] - Tag: </assertion>
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG].put( new Tag( "assertion", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG,
+                Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG, null ) );
+
         // State: [COMPARE_REQUEST_ASSERTION_END_TAG] - Tag: </compareRequest>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG].put( new Tag( "compareRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG].put(
+            new Tag( "compareRequest", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : DEL REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [DEL_REQUEST_START_TAG] - Tag: </delRequest>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_START_TAG].put( new Tag( "delRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_START_TAG].put( new Tag( "delRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         // State: [DEL_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_START_TAG, Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [DEL_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [DEL_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [DEL_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [DEL_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [DEL_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [DEL_REQUEST_CONTROL_END_TAG] - Tag: </delRequest>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG].put( new Tag( "delRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG].put( new Tag( "delRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
+                null ) );
+
         //====================================================
         //  Transitions concerning : EXTENDED REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-              
+
         // State: [EXTENDED_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [EXTENDED_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [EXTENDED_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG].put(
+            new Tag( "controlValue", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [EXTENDED_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [EXTENDED_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [EXTENDED_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [EXTENDED_REQUEST_CONTROL_END_TAG] - Tag: </extendedRequest>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG].put( new Tag( "extendedRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG].put(
+            new Tag( "extendedRequest", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         // State: [EXTENDED_REQUEST_START_TAG] - Tag: <requestName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG].put( new Tag( "requestName", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_START_TAG, extendedRequestAddName ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG].put( new Tag( "requestName", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG, extendedRequestAddName ) );
+
         // State: [EXTENDED_REQUEST_CONTROL_END_TAG] - Tag: <requestName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG].put( new Tag( "requestName", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_START_TAG, extendedRequestAddName ));
-        
-        // State: [EXTENDED_REQUEST_REQUESTNAME_START_TAG] - Tag: </requestName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_START_TAG].put( new Tag( "requestName", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG].put( new Tag( "requestName", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG, extendedRequestAddName ) );
+
         // State: [EXTENDED_REQUEST_REQUESTNAME_END_TAG] - Tag: </extendedRequest>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG].put( new Tag( "extendedRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG].put( new Tag( "extendedRequest",
+            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG,
+            Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         // State: [EXTENDED_REQUEST_REQUESTNAME_END_TAG] - Tag: <requestValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG].put( new Tag( "requestValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_START_TAG, extendedRequestAddValue ));
-        
-        // State: [EXTENDED_REQUEST_REQUESTVALUE_START_TAG] - Tag: </requestValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_START_TAG].put( new Tag( "requestValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_START_TAG, Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG].put( new Tag( "requestValue",
+            Tag.START ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG,
+            Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG, extendedRequestAddValue ) );
+
         // State: [EXTENDED_REQUEST_REQUESTVALUE_END_TAG] - Tag: </requestRequest>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG].put( new Tag( "extendedRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG].put( new Tag( "extendedRequest",
+            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG,
+            Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : MODIFY DN REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [MODIFY_DN_REQUEST_START_TAG] - Tag: </modDNRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG].put( new Tag( "modDNRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG].put( new Tag( "modDNRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
+                null ) );
+
         // State: [MODIFY_DN_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [MODIFY_DN_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [MODIFY_DN_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG].put(
+            new Tag( "controlValue", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [MODIFY_DN_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [MODIFY_DN_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [MODIFY_DN_REQUEST_CONTROL_END_TAG] - Tag: </modDNRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG].put( new Tag( "modDNRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-  
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG].put( new Tag( "modDNRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : MODIFY REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [MODIFY_REQUEST_START_TAG] - Tag: </modifyRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG].put( new Tag( "modifyRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG]
+            .put( new Tag( "modifyRequest", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         // State: [MODIFY_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [MODIFY_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [MODIFY_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [MODIFY_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [MODIFY_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [MODIFY_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [MODIFY_REQUEST_CONTROL_END_TAG] - Tag: </modifyRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG].put( new Tag( "modifyRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG].put( new Tag( "modifyRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
+                null ) );
+
         // State: [MODIFY_REQUEST_CONTROL_END_TAG] - Tag: <modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG].put( new Tag( "modification", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG,  modifyRequestAddModification ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG].put( new Tag( "modification", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG, modifyRequestAddModification ) );
+
         // State: [MODIFY_REQUEST_START_TAG] - Tag: <modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG].put( new Tag( "modification", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG,  modifyRequestAddModification ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG].put( new Tag( "modification", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG, modifyRequestAddModification ) );
+
         // State: [MODIFY_REQUEST_MODIFICATION_END_TAG] - Tag: <modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG].put( new Tag( "modification", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG,  modifyRequestAddModification ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG].put(
+            new Tag( "modification", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG, modifyRequestAddModification ) );
+
         // State: [MODIFY_REQUEST_MODIFICATION_START_TAG] - Tag: </modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG].put( new Tag( "modification", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG].put(
+            new Tag( "modification", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG, null ) );
+
         // State: [MODIFY_REQUEST_MODIFICATION_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_START_TAG,  modifyRequestAddValue ));
-        
-        // State: [MODIFY_REQUEST_VALUE_START_TAG] - Tag: </value>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_START_TAG].put( new Tag( "value", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG, modifyRequestAddValue ) );
+
         // State: [MODIFY_REQUEST_VALUE_END_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_START_TAG,  modifyRequestAddValue ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG, modifyRequestAddValue ) );
+
         // State: [MODIFY_REQUEST_VALUE_END_TAG] - Tag: </modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG].put( new Tag( "modification", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG].put( new Tag( "modification", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG,
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG, null ) );
+
         // State: [MODIFY_REQUEST_MODIFICATION_END_TAG] - Tag: </modifyRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG].put( new Tag( "modifyRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG].put(
+            new Tag( "modifyRequest", Tag.END ), new GrammarTransition(
+                Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : SEARCH REQUEST
         //====================================================
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [SEARCH_REQUEST_START_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, controlCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, controlCreation ) );
+
         // State: [SEARCH_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_START_TAG, controlValueCreation ));
-        
-        // State: [SEARCH_REQUEST_CONTROLVALUE_START_TAG] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_START_TAG].put( new Tag( "controlValue", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG].put( new Tag( "controlValue", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
+
         // State: [SEARCH_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [SEARCH_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, null ) );
+
         // State: [SEARCH_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, controlCreation ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG].put( new Tag( "control", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTES_START_TAG] - Tag: </attributes>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG].put( new Tag( "attributes", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG].put( new Tag( "attributes", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG, null ) );
+
         // State: [SEARCH_REQUEST_ATTRIBUTES_START_TAG] - Tag: <attribute>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG].put( new Tag( "attribute", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG,  searchRequestAddAttribute ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG].put( new Tag( "attribute", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG, searchRequestAddAttribute ) );
+
         // State: [SEARCH_REQUEST_ATTRIBUTE_START_TAG] - Tag: </attribute>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG].put( new Tag( "attribute", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG].put( new Tag( "attribute", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG, null ) );
+
         // State: [SEARCH_REQUEST_ATTRIBUTE_END_TAG] - Tag: <attribute>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG].put( new Tag( "attribute", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG,  searchRequestAddAttribute ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG].put( new Tag( "attribute", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG, searchRequestAddAttribute ) );
+
         // State: [SEARCH_REQUEST_ATTRIBUTE_END_TAG] - Tag: </attributes>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG].put( new Tag( "attributes", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG,  null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG].put( new Tag( "attributes", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG, null ) );
+
         // State: [SEARCH_REQUEST_ATTRIBUTES_END_TAG] - Tag: </searchRequest>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG].put( new Tag( "searchRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
-        
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG].put( new Tag( "searchRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG,
+                Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+
         //====================================================
         //  Transitions concerning : FILTER
         //====================================================
@@ -711,260 +735,285 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
-        
+
         // State: [SEARCH_REQUEST_START_TAG] - Tag: <filter>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG].put( new Tag( "filter", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG].put( new Tag( "filter", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, null ) );
+
         // State: [SEARCH_REQUEST_CONTROL_END_TAG] - Tag: <filter>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG].put( new Tag( "filter", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG].put( new Tag( "filter", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, null ) );
+
         //*** AND ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <and>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "and", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, andFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "and", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, andFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <and>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "and", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, andFilterCreation ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "and", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, andFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: </and>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "and", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, connectorFilterClose ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "and", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, connectorFilterClose ) );
 
         //*** OR ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <or>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "or", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, orFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "or", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, orFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <or>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "or", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, orFilterCreation ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "or", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, orFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: </or>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "or", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, connectorFilterClose ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "or", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, connectorFilterClose ) );
+
         //*** NOT ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <not>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "not", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, notFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "not", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, notFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <not>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "not", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, notFilterCreation ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "not", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, notFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: </not>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "not", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, connectorFilterClose ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "not", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, connectorFilterClose ) );
+
         //*** SUBSTRINGS ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "substrings", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, substringsFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "substrings", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, substringsFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "substrings", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, substringsFilterCreation ));  
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "substrings", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, substringsFilterCreation ) );
+
         //*** EQUALITY MATCH ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <equalityMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "equalityMatch", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG, equalityMatchFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "equalityMatch", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG, equalityMatchFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <equalityMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "equalityMatch", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG, equalityMatchFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "equalityMatch", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG, equalityMatchFilterCreation ) );
+
         // State: [SEARCH_REQUEST_EQUALITYMATCH_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_START_TAG, filterAddValue ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
+
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </equalityMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "equalityMatch", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ));
-         
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "equalityMatch", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
+
         //*** GREATER OR EQUAL ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <greaterOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "greaterOrEqual", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG, greaterOrEqualFilterCreation ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put(
+            new Tag( "greaterOrEqual", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG, greaterOrEqualFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <greaterOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "greaterOrEqual", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG, greaterOrEqualFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "greaterOrEqual", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG, greaterOrEqualFilterCreation ) );
+
         // State: [SEARCH_REQUEST_GREATEROREQUAL_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_START_TAG, filterAddValue ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
+
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </greaterOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "greaterOrEqual", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "greaterOrEqual", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
         //*** LESS OR EQUAL ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <lessOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "lessOrEqual", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG, lessOrEqualFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "lessOrEqual", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG, lessOrEqualFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <lessOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "lessOrEqual", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG, lessOrEqualFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "lessOrEqual", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG, lessOrEqualFilterCreation ) );
+
         // State: [SEARCH_REQUEST_LESSOREQUAL_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_START_TAG, filterAddValue ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
+
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </lessOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "lessOrEqual", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "lessOrEqual", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
         //*** LESS OR EQUAL ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <approxMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "approxMatch", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG, approxMatchFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "approxMatch", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG, approxMatchFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <approxMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "approxMatch", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG, approxMatchFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "approxMatch", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG, approxMatchFilterCreation ) );
+
         // State: [SEARCH_REQUEST_APPROXMATCH_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_START_TAG, filterAddValue ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG].put( new Tag( "value", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
+
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </approxMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "approxMatch", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ));
-        
-        //*** VALUE ***
-        // State: [SEARCH_REQUEST_VALUE_START_TAG] - Tag: </value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_START_TAG].put( new Tag( "value", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG].put( new Tag( "approxMatch", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
+
         //*** PRESENT ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <present>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "present", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG, presentFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "present", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG, presentFilterCreation ) );
+
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <present>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "present", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG, presentFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "present", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG, presentFilterCreation ) );
+
         // State: [SEARCH_REQUEST_PRESENT_START_TAG] - Tag: </present>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG].put( new Tag( "present", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG].put( new Tag( "present", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
+
         //*** EXTENSIBLE MATCH ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <extensibleMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put( new Tag( "extensibleMatch", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG, extensibleMatchFilterCreation ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG].put(
+            new Tag( "extensibleMatch", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG, extensibleMatchFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <extensibleMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "extensibleMatch", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG, extensibleMatchFilterCreation ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "extensibleMatch", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG, extensibleMatchFilterCreation ) );
+
         // State: [SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG].put( new Tag( "value", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_START_TAG, extensibleMatchAddValue ));
-        
-        // State: [SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_START_TAG] - Tag: </value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_START_TAG].put( new Tag( "value", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG].put(
+            new Tag( "value", Tag.START ), new GrammarTransition(
+                Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG, extensibleMatchAddValue ) );
+
         // State: [SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG] - Tag: </extensibleMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG].put( new Tag( "extensibleMatch", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG].put( new Tag(
+            "extensibleMatch", Tag.END ), new GrammarTransition(
+            Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_VALUE_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+            null ) );
+
         //*** Filter (end) ***
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: </filter>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "filter", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG, null ));  
-        
-        // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: <attributes>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG].put( new Tag( "attributes", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG,  null ));
-        
-        // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: </searchRequest>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG].put( new Tag( "searchRequest", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,  null ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP].put( new Tag( "filter", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG, null ) );
 
-        
+        // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: <attributes>
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG].put( new Tag( "attributes", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG, null ) );
+
+        // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: </searchRequest>
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG].put( new Tag( "searchRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
+                null ) );
+
         //====================================================
         //  Transitions concerning : SUBSTRING FILTER
         //====================================================
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_START_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_END_TAG] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: </substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "substrings", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterSetInitial ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "substrings", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
+
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: <initial>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "initial", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_START_TAG, substringsFilterSetInitial ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "initial", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG, substringsFilterSetInitial ) );
+
         // State: [SEARCH_REQUEST_INITIAL_END_TAG] - Tag: <any>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG].put( new Tag( "any", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_START_TAG, substringsFilterAddAny ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG].put( new Tag( "any", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, substringsFilterAddAny ) );
+
         // State: [SEARCH_REQUEST_INITIAL_END_TAG] - Tag: <final>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG].put( new Tag( "final", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_START_TAG, substringsFilterSetFinal ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG].put( new Tag( "final", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG, substringsFilterSetFinal ) );
+
         // State: [SEARCH_REQUEST_INITIAL_END_TAG] - Tag: </substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG].put( new Tag( "substrings", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ));
-        
-        // State: [SEARCH_REQUEST_INITIAL_START_TAG] - Tag: </initial>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_START_TAG].put( new Tag( "initial", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG, null )); 
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG].put( new Tag( "substrings", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ) );
+
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: <any>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "any", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_START_TAG, substringsFilterAddAny ));
-        
-        // State: [SEARCH_REQUEST_ANY_START_TAG] - Tag: </any>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_START_TAG].put( new Tag( "any", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "any", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, substringsFilterAddAny ) );
+
         // State: [SEARCH_REQUEST_ANY_END_TAG] - Tag: </any>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG].put( new Tag( "any", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_START_TAG, substringsFilterAddAny ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG].put( new Tag( "any", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, substringsFilterAddAny ) );
+
         // State: [SEARCH_REQUEST_ANY_END_TAG] - Tag: <final>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG].put( new Tag( "final", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_START_TAG, substringsFilterSetFinal ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG].put( new Tag( "final", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG, substringsFilterSetFinal ) );
+
         // State: [SEARCH_REQUEST_ANY_END_TAG] - Tag: </substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG].put( new Tag( "substrings", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG].put( new Tag( "substrings", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ) );
+
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: <final>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "final", Tag.START), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_START_TAG, substringsFilterSetFinal ));
-        
-        // State: [SEARCH_REQUEST_FINAL_START_TAG] - Tag: </final>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_START_TAG].put( new Tag( "final", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG, null ));
-        
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG].put( new Tag( "final", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG, substringsFilterSetFinal ) );
+
         // State: [SEARCH_REQUEST_FINAL_END_TAG] - Tag: </substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG].put( new Tag( "substrings", Tag.END), new GrammarTransition(
-            Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ));
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG].put( new Tag( "substrings", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG,
+                Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ) );
 
     } // End of the constructor
 
-    
     //*************************
     //*    GRAMMAR ACTIONS    *
     //*************************
@@ -977,11 +1026,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             BatchRequest batchRequest = new BatchRequest();
-            
+
             container.setBatchRequest( batchRequest );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the batchRequest's attributes
             String attributeValue;
             // requestID
@@ -992,7 +1041,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     batchRequest.setRequestID( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1061,7 +1111,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates an Abandon Request
      */
@@ -1071,9 +1121,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             AbandonRequest abandonRequest = new AbandonRequest();
             container.getBatchRequest().addRequest( abandonRequest );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1084,7 +1134,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     abandonRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1096,7 +1147,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     abandonRequest.setAbandonedMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given abandonID is not an integer", xpp, null );
                 }
             }
@@ -1106,7 +1158,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates an Add Request
      */
@@ -1117,9 +1169,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             AddRequest addRequest = new AddRequest();
             container.getBatchRequest().addRequest( addRequest );
             addRequest.initAttributes(); // TODO maybe delay that to the first attribute discovery
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1130,7 +1182,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     addRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1142,7 +1195,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     addRequest.setEntry( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1153,7 +1206,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that adds an attribute to an Add Request
      */
@@ -1162,9 +1215,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             AddRequest addRequest = ( AddRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // name
@@ -1179,7 +1232,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that adds a Value to an Attribute of an Add Request
      */
@@ -1188,31 +1241,23 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             AddRequest addRequest = ( AddRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0 ;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    addRequest.addAttributeValue( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage() , xpp, null );
-            }
-                   
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                addRequest.addAttributeValue( "" );
-            }
-            else
-            {
-                addRequest.addAttributeValue( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates an Auth Request
      */
@@ -1222,14 +1267,14 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             BindRequest authRequest = new BindRequest();
             container.getBatchRequest().addRequest( authRequest );
-            
+
             SimpleAuthentication simpleAuthentication = new SimpleAuthentication();
             simpleAuthentication.setSimple( StringTools.EMPTY_BYTES );
             authRequest.setAuthentication( simpleAuthentication );
             authRequest.setVersion( 3 );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1240,7 +1285,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     authRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1252,7 +1298,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     authRequest.setName( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1263,7 +1309,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates an Compare Request
      */
@@ -1273,9 +1319,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             CompareRequest compareRequest = new CompareRequest();
             container.getBatchRequest().addRequest( compareRequest );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1286,7 +1332,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     compareRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1298,7 +1345,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     compareRequest.setEntry( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1318,16 +1365,16 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             CompareRequest compareRequest = ( CompareRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	compareRequest.setAttributeDesc( attributeValue );
+                compareRequest.setAttributeDesc( attributeValue );
 
             }
             else
@@ -1345,27 +1392,19 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             CompareRequest compareRequest = ( CompareRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    compareRequest.setAssertionValue( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                compareRequest.setAssertionValue( "" );
-            }
-            else
-            {
-                compareRequest.setAssertionValue( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
@@ -1379,9 +1418,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             DelRequest delRequest = new DelRequest();
             container.getBatchRequest().addRequest( delRequest );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1392,7 +1431,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     delRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1404,7 +1444,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     delRequest.setEntry( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1425,9 +1465,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             ExtendedRequest extendedRequest = new ExtendedRequest();
             container.getBatchRequest().addRequest( extendedRequest );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1438,7 +1478,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     extendedRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1453,45 +1494,31 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             ExtendedRequest extendedRequest = ( ExtendedRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( nextText.equals( "" ) )
+                {
+                    throw new XmlPullParserException( "The request name can't be null", xpp, null );
+                }
+                else
+                {
+                    extendedRequest.setRequestName( new OID( nextText.trim() ) );
+                }
             }
             catch ( IOException e )
             {
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
+            }
+            catch ( DecoderException e )
+            {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                try
-                {
-                    extendedRequest.setRequestName( new OID("") );
-                }
-                catch ( DecoderException e )
-                {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
-                }
-            }
-            else
-            {
-                try
-                {
-                    extendedRequest.setRequestName( new OID( xpp.getText().trim() ) );
-                }
-                catch ( DecoderException e )
-                {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
-                }
             }
         }
     };
-    
+
     /**
      * GrammarAction that adds a Value to an Extended Request
      */
@@ -1500,31 +1527,23 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             ExtendedRequest extendedRequest = ( ExtendedRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    extendedRequest.setRequestValue( nextText.trim().getBytes() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                extendedRequest.setRequestValue( "".getBytes() );
-            }
-            else
-            {
-                //extendedRequest.setRequestValue( xpp.getText().trim().getBytes() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates a Modify DN Request
      */
@@ -1534,9 +1553,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             ModifyDNRequest modifyDNRequest = new ModifyDNRequest();
             container.getBatchRequest().addRequest( modifyDNRequest );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1547,7 +1566,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     modifyDNRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1559,7 +1579,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     modifyDNRequest.setEntry( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1576,7 +1596,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     modifyDNRequest.setNewRDN( new Rdn( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1614,7 +1634,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     modifyDNRequest.setNewSuperior( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1631,11 +1651,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             ModifyRequest modifyRequest = new ModifyRequest();
             container.getBatchRequest().addRequest( modifyRequest );
-            
+
             modifyRequest.initModifications();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1646,7 +1666,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     modifyRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1658,7 +1679,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     modifyRequest.setObject( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1678,10 +1699,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             ModifyRequest modifyRequest = ( ModifyRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // operation
@@ -1702,7 +1722,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 }
                 else
                 {
-                    throw new XmlPullParserException( "unknown operation. Operation can be 'add', 'delete' or 'replace'.", xpp, null );
+                    throw new XmlPullParserException(
+                        "unknown operation. Operation can be 'add', 'delete' or 'replace'.", xpp, null );
                 }
             }
             else
@@ -1713,7 +1734,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	modifyRequest.addAttributeTypeAndValues( attributeValue );
+                modifyRequest.addAttributeTypeAndValues( attributeValue );
             }
             else
             {
@@ -1721,40 +1742,29 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that adds a Value to a Modification of a Modify Request
      */
-    private final GrammarAction modifyRequestAddValue = new GrammarAction( "Add Value to Modification of Modify Request" )
+    private final GrammarAction modifyRequestAddValue = new GrammarAction(
+        "Add Value to Modification of Modify Request" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             ModifyRequest modifyRequest = ( ModifyRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                modifyRequest.addAttributeValue( nextText.trim() );
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                modifyRequest.addAttributeValue( "" );
-            }
-            else
-            {
-                modifyRequest.addAttributeValue( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
 
     /**
      * GrammarAction that creates a Search Request
@@ -1765,9 +1775,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             SearchRequest searchRequest = new SearchRequest();
             container.getBatchRequest().addRequest( searchRequest );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // requestID
@@ -1778,7 +1788,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     searchRequest.setMessageId( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
                 }
             }
@@ -1790,7 +1801,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     searchRequest.setBaseObject( new LdapDN( attributeValue ) );
                 }
-                catch (InvalidNameException e)
+                catch ( InvalidNameException e )
                 {
                     throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
                 }
@@ -1817,7 +1828,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 }
                 else
                 {
-                    throw new XmlPullParserException( "unknown scope. Scope must be 'baseObject', 'singleLevel' or 'wholeSubtree'.", xpp, null );
+                    throw new XmlPullParserException(
+                        "unknown scope. Scope must be 'baseObject', 'singleLevel' or 'wholeSubtree'.", xpp, null );
                 }
             }
             else
@@ -1846,7 +1858,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 }
                 else
                 {
-                    throw new XmlPullParserException( "unknown derefAliases value. derefAliases must be 'neverDerefAliases', 'derefInSearching', 'derefFindingBaseObj' or 'derefAlways'.", xpp, null );
+                    throw new XmlPullParserException(
+                        "unknown derefAliases value. derefAliases must be 'neverDerefAliases', 'derefInSearching', 'derefFindingBaseObj' or 'derefAlways'.",
+                        xpp, null );
                 }
             }
             else
@@ -1861,7 +1875,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     searchRequest.setSizeLimit( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given sizeLimit is not an integer", xpp, null );
                 }
             }
@@ -1877,7 +1892,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     searchRequest.setTimeLimit( Integer.parseInt( attributeValue ) );
                 }
-                catch (NumberFormatException e) {
+                catch ( NumberFormatException e )
+                {
                     throw new XmlPullParserException( "the given timeLimit is not an integer", xpp, null );
                 }
             }
@@ -1912,21 +1928,22 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     /**
      * GrammarAction that adds an Attribute to a Search Request
      */
-    private final GrammarAction searchRequestAddAttribute = new GrammarAction( "Add Value to Modification of Modify Request" )
+    private final GrammarAction searchRequestAddAttribute = new GrammarAction(
+        "Add Value to Modification of Modify Request" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the request's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	searchRequest.addAttribute( attributeValue );
+                searchRequest.addAttribute( attributeValue );
             }
             else
             {
@@ -1934,7 +1951,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that create a Substring Filter
      */
@@ -1943,11 +1960,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             SubstringFilter filter = new SubstringFilter();
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -1958,14 +1975,14 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
             searchRequest.setTerminalFilter( filter );
-            
+
             // Checking and adding the filter's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	filter.setType( attributeValue );
+                filter.setType( attributeValue );
             }
             else
             {
@@ -1973,7 +1990,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that sets the Initial value to a Substring Filter
      */
@@ -1982,33 +1999,24 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
             SubstringFilter substringFilter = ( SubstringFilter ) searchRequest.getTerminalFilter();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    substringFilter.setInitialSubstrings( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                substringFilter.setInitialSubstrings( "" );
-            }
-            else
-            {
-            	substringFilter.setInitialSubstrings( xpp.getText().trim() ); 
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
+
     /**
      * GrammarAction that adds a Any value to a Substring Filter
      */
@@ -2017,33 +2025,24 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
             SubstringFilter substringFilter = ( SubstringFilter ) searchRequest.getTerminalFilter();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    substringFilter.addAnySubstrings( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                substringFilter.addAnySubstrings( "" );
-            }
-            else
-            {
-            	substringFilter.addAnySubstrings( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
+
     /**
      * GrammarAction that sets the Final value to a Substring Filter
      */
@@ -2052,33 +2051,24 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
             SubstringFilter substringFilter = ( SubstringFilter ) searchRequest.getTerminalFilter();
-            
+
             XmlPullParser xpp = container.getParser();
-            
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    substringFilter.setFinalSubstrings( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                substringFilter.setFinalSubstrings( "" );
-            }
-            else
-            {
-                    substringFilter.setFinalSubstrings( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-            
+
     /**
      * GrammarAction that closes a Substring Filter
      */
@@ -2091,7 +2081,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             searchRequest.setTerminalFilter( null );
         }
     };
-        
+
     /**
      * GrammarAction that create a And Filter
      */
@@ -2100,11 +2090,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             AndFilter filter = new AndFilter();
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -2116,7 +2106,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that closes a Connector Filter (And, Or, Not)
      */
@@ -2125,11 +2115,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             Asn1Object parent = searchRequest.getCurrentFilter().getParent();
-            
+
             if ( parent instanceof Filter )
             {
                 Filter filter = ( Filter ) parent;
@@ -2156,7 +2146,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that create a Or Filter
      */
@@ -2165,11 +2155,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             OrFilter filter = new OrFilter();
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -2181,7 +2171,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that create a Not Filter
      */
@@ -2190,11 +2180,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             NotFilter filter = new NotFilter();
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -2215,28 +2205,29 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             AttributeValueAssertion assertion = new AttributeValueAssertion();
-            
+
             // Checking and adding the filter's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
+                assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
             }
             else
             {
                 throw new XmlPullParserException( "name attribute is required", xpp, null );
             }
-            
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter( LdapConstants.EQUALITY_MATCH_FILTER );
-            
+
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapConstants.EQUALITY_MATCH_FILTER );
+
             filter.setAssertion( assertion );
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -2249,7 +2240,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             searchRequest.setTerminalFilter( filter );
         }
     };
-    
+
     /**
      * GrammarAction that create a Greater Or Equal Filter
      */
@@ -2258,28 +2249,29 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             AttributeValueAssertion assertion = new AttributeValueAssertion();
-            
+
             // Checking and adding the filter's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
+                assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
             }
             else
             {
                 throw new XmlPullParserException( "name attribute is required", xpp, null );
             }
-            
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter( LdapConstants.GREATER_OR_EQUAL_FILTER );
+
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapConstants.GREATER_OR_EQUAL_FILTER );
 
             filter.setAssertion( assertion );
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -2292,7 +2284,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             searchRequest.setTerminalFilter( filter );
         }
     };
-    
+
     /**
      * GrammarAction that create a Less Or Equal Filter
      */
@@ -2301,28 +2293,29 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             AttributeValueAssertion assertion = new AttributeValueAssertion();
-            
+
             // Checking and adding the filter's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
+                assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
             }
             else
             {
                 throw new XmlPullParserException( "name attribute is required", xpp, null );
             }
-            
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter( LdapConstants.LESS_OR_EQUAL_FILTER );
-            
+
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapConstants.LESS_OR_EQUAL_FILTER );
+
             filter.setAssertion( assertion );
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -2335,7 +2328,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             searchRequest.setTerminalFilter( filter );
         }
     };
-    
+
     /**
      * GrammarAction that create an Approx Match Filter
      */
@@ -2344,28 +2337,28 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             AttributeValueAssertion assertion = new AttributeValueAssertion();
-            
+
             // Checking and adding the filter's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
+                assertion.setAttributeDesc( new String( attributeValue.getBytes() ) );
             }
             else
             {
                 throw new XmlPullParserException( "name attribute is required", xpp, null );
             }
-            
+
             AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter( LdapConstants.APPROX_MATCH_FILTER );
-            
+
             filter.setAssertion( assertion );
-            
+
             // Adding the filter to the Search Filter
             try
             {
@@ -2375,11 +2368,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-            
+
             searchRequest.setTerminalFilter( filter );
         }
     };
-    
+
     /**
      * GrammarAction that adds a Value to a Filter
      */
@@ -2388,36 +2381,25 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
             AttributeValueAssertionFilter filter = ( AttributeValueAssertionFilter ) searchRequest.getTerminalFilter();
-            
-            XmlPullParser xpp = container.getParser();
-            
             AttributeValueAssertion assertion = filter.getAssertion();
-            
-            // Steping to the next node, which should be a Text node
-            int eventType = 0;
+
+            XmlPullParser xpp = container.getParser();
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    assertion.setAssertionValue( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                assertion.setAssertionValue( "" );
-            }
-            else
-            {
-                assertion.setAssertionValue( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates a Present Filter
      */
@@ -2426,9 +2408,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             PresentFilter presentFilter = new PresentFilter();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Adding the filter to the Search Filter
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
             try
@@ -2439,14 +2421,14 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-            
+
             // Checking and adding the filter's attributes
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-            	presentFilter.setAttributeDescription( new String( attributeValue.getBytes() ) );
+                presentFilter.setAttributeDescription( new String( attributeValue.getBytes() ) );
             }
             else
             {
@@ -2454,7 +2436,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates an Extensible Match Filter
      */
@@ -2463,9 +2445,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             ExtensibleMatchFilter extensibleMatchFilter = new ExtensibleMatchFilter();
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Adding the filter to the Search Filter
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
             try
@@ -2477,9 +2459,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 throw new XmlPullParserException( "name attribute is required", xpp, null );
             }
             searchRequest.setTerminalFilter( extensibleMatchFilter );
-            
-            
-            
+
             // Checking and adding the filter's attributes
             String attributeValue;
             // dnAttributes
@@ -2507,17 +2487,17 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "matchingRule" );
             if ( attributeValue != null )
             {
-            	extensibleMatchFilter.setMatchingRule( attributeValue );
+                extensibleMatchFilter.setMatchingRule( attributeValue );
             }
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-                    extensibleMatchFilter.setType( attributeValue );
+                extensibleMatchFilter.setType( attributeValue );
             }
         }
     };
-    
+
     /**
      * GrammarAction that adds a Value to an Extensible Match Filter
      */
@@ -2526,33 +2506,24 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
-            
             ExtensibleMatchFilter filter = ( ExtensibleMatchFilter ) searchRequest.getTerminalFilter();
-            
-            XmlPullParser xpp = container.getParser();
 
-            int eventType = 0;
+            XmlPullParser xpp = container.getParser();
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    filter.setMatchValue( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( "name attribute is required", xpp, null );
-            }
-            
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                filter.setMatchValue( "" );
-            }
-            else
-            {
-                filter.setMatchValue( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
+
     /**
      * GrammarAction that creates a Control
      */
@@ -2562,9 +2533,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             Control control = new Control();
             container.getBatchRequest().getCurrentRequest().addControl( control );
-            
+
             XmlPullParser xpp = container.getParser();
-            
+
             // Checking and adding the Control's attributes
             String attributeValue;
             // TYPE
@@ -2573,7 +2544,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // TODO Add a verification for a match with NumericOid format (see
                 // DSMLv2 specifications)
-            	control.setControlType( attributeValue ); // TODO LDAPString uses UTF8 bytes, so the charset must be verified before doing this.  
+                control.setControlType( attributeValue ); // TODO LDAPString uses UTF8 bytes, so the charset must be verified before doing this.  
             }
             else
             {
@@ -2607,31 +2578,25 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             Control control = container.getBatchRequest().getCurrentRequest().getCurrentControl();
-            
+
             XmlPullParser xpp = container.getParser();
-                        
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                // Getting the value
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    control.setControlValue( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( "name attribute is required", xpp, null );
-            }
-                   
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                // TODO we insert a blank value
-                control.setControlValue( "" );
-            }
-            else
-            {
-                control.setControlValue( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
-    
+
+
     /**
      * Get the instance of this grammar
      * 
@@ -2641,6 +2606,4 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         return instance;
     }
-
-    
 }

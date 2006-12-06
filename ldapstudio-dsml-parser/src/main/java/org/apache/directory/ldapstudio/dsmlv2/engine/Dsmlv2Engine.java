@@ -96,13 +96,11 @@ public class Dsmlv2Engine
     private String user;
     private String password;
 
-
     private Asn1Decoder ldapDecoder = new LdapDecoder();
-    
+
     private IAsn1Container ldapMessageContainer = new LdapMessageContainer();
 
     private Dsmlv2Parser parser;
-    
 
     private boolean continueOnError;
     private boolean exit = false;
@@ -112,7 +110,8 @@ public class Dsmlv2Engine
     private int bbposition;
     private Document xmlResponse;
     private BatchRequest batchRequest;
-    
+
+
     /**
      * Default Constructor
      * 
@@ -128,7 +127,8 @@ public class Dsmlv2Engine
         this.user = user;
         this.password = password;
     }
-    
+
+
     /**
      * Processes the file given and return the result of the operations
      * @param fileName The path to the file
@@ -141,11 +141,11 @@ public class Dsmlv2Engine
         parser = new Dsmlv2Parser();
 
         parser.setInput( fileName );
-        
+
         return processDSML();
     }
-    
-    
+
+
     /**
      * Processes the file given and return the result of the operations
      * @param fileName The path to the file
@@ -158,10 +158,11 @@ public class Dsmlv2Engine
         parser = new Dsmlv2Parser();
 
         parser.setInputFile( fileName );
-        
+
         return processDSML();
     }
-    
+
+
     /**
      * Processes the file given and return the result of the operations
      * @param inputStream contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null).
@@ -170,14 +171,16 @@ public class Dsmlv2Engine
      * @throws XmlPullParserException
      * @throws FileNotFoundException
      */
-    public String processDSML( InputStream inputStream, String inputEncoding ) throws XmlPullParserException, FileNotFoundException
+    public String processDSML( InputStream inputStream, String inputEncoding ) throws XmlPullParserException,
+        FileNotFoundException
     {
         parser = new Dsmlv2Parser();
 
         parser.setInput( inputStream, inputEncoding );
-        
+
         return processDSML();
     }
+
 
     /**
      * Processes the Request document
@@ -188,7 +191,7 @@ public class Dsmlv2Engine
         // Creating XML Document and root Element 'batchResponse'
         xmlResponse = DocumentHelper.createDocument();
         xmlResponse.addElement( "batchResponse" );
-        
+
         // Binding to LDAP Server
         try
         {
@@ -199,11 +202,11 @@ public class Dsmlv2Engine
             // Unable to connect to server
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e.getMessage() );
-            
+
             errorResponse.toDsml( xmlResponse.getRootElement() );
             return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
         }
-        
+
         // Processing BatchRequest:
         //    - Parsing and Getting BatchRequest
         //    - Getting and registering options from BatchRequest
@@ -214,13 +217,13 @@ public class Dsmlv2Engine
         catch ( XmlPullParserException e )
         {
             // We create a new ErrorResponse and return the XML response.
-            ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage() 
-                + " - Line "+ e.getLineNumber() + " - Column " + e.getColumnNumber() );
-            
+            ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage()
+                + " - Line " + e.getLineNumber() + " - Column " + e.getColumnNumber() );
+
             errorResponse.toDsml( xmlResponse.getRootElement() );
             return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
         }
-        
+
         // Processing each request:
         //    - Getting a new request
         //    - Checking if the request is well formed
@@ -235,9 +238,9 @@ public class Dsmlv2Engine
         catch ( XmlPullParserException e )
         {
             // We create a new ErrorResponse and return the XML response.
-            ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage() 
-                + " - Line "+ e.getLineNumber() + " - Column " + e.getColumnNumber() );
-            
+            ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage()
+                + " - Line " + e.getLineNumber() + " - Column " + e.getColumnNumber() );
+
             errorResponse.toDsml( xmlResponse.getRootElement() );
             return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
         }
@@ -256,26 +259,27 @@ public class Dsmlv2Engine
                 errorResponse.toDsml( xmlResponse.getRootElement() );
                 return xmlResponse.asXML();
             }
-            
+
             try
             {
                 processRequest( request );
             }
             catch ( Exception e )
             {
-            	// We create a new ErrorResponse and return the XML response.
-                ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.GATEWAY_INTERNAL_ERROR, "Internal Error: " + e.getMessage()  );
-                
+                // We create a new ErrorResponse and return the XML response.
+                ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.GATEWAY_INTERNAL_ERROR,
+                    "Internal Error: " + e.getMessage() );
+
                 errorResponse.toDsml( xmlResponse.getRootElement() );
                 return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
             }
-            
+
             // Checking if we need to exit processing (if an error has ocurred if onError == Exit)
             if ( exit )
             {
                 break;
             }
-            
+
             // Getting next request
             try
             {
@@ -284,17 +288,18 @@ public class Dsmlv2Engine
             catch ( XmlPullParserException e )
             {
                 // We create a new ErrorResponse and return the XML response.
-                ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage() 
-                    + " - Line "+ e.getLineNumber() + " - Column " + e.getColumnNumber() );
-                
+                ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage()
+                    + " - Line " + e.getLineNumber() + " - Column " + e.getColumnNumber() );
+
                 errorResponse.toDsml( xmlResponse.getRootElement() );
                 return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
             }
         }
-        
+
         return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
     }
-    
+
+
     /**
      * Processes a single request
      * @param request the request to process
@@ -303,7 +308,8 @@ public class Dsmlv2Engine
      * @throws NamingException 
      * @throws DecoderException 
      */
-    private void processRequest(LdapMessage request) throws EncoderException, IOException, DecoderException, NamingException
+    private void processRequest( LdapMessage request ) throws EncoderException, IOException, DecoderException,
+        NamingException
     {
         LdapMessage message = new LdapMessage();
 
@@ -312,21 +318,20 @@ public class Dsmlv2Engine
         message.setMessageId( request.getMessageId() );
 
         ByteBuffer bb = null;
-        
+
         bb = message.encode( null );
-        
+
         bb.flip();
 
-        
         sendMessage( bb );
-        
+
         bb.clear();
         bb.position( bb.capacity() );
         // Get the response
         LdapMessage response = null;
-                   
+
         response = readResponse( bb );
-        
+
         if ( LdapConstants.ADD_RESPONSE == response.getMessageType() )
         {
             AddResponseDsml addResponseDsml = new AddResponseDsml( response );
@@ -362,7 +367,7 @@ public class Dsmlv2Engine
             ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( response );
             extendedResponseDsml.toDsml( xmlResponse.getRootElement() );
         }
-        else if ( ( LdapConstants.SEARCH_RESULT_ENTRY == response.getMessageType() ) 
+        else if ( ( LdapConstants.SEARCH_RESULT_ENTRY == response.getMessageType() )
             || ( LdapConstants.SEARCH_RESULT_REFERENCE == response.getMessageType() )
             || ( LdapConstants.SEARCH_RESULT_DONE == response.getMessageType() ) )
         {
@@ -372,14 +377,14 @@ public class Dsmlv2Engine
             //     - 1 (only) SearchResultDone
             // So we have to include those individual reponses in a "General" SearchResponse
             Element searchResponse = xmlResponse.getRootElement().addElement( "searchResponse" );
-            
+
             // RequestID
             int requestID = response.getMessageId();
             if ( requestID != 0 )
             {
                 searchResponse.addAttribute( "requestID", "" + requestID );
             }
-            
+
             while ( LdapConstants.SEARCH_RESULT_DONE != response.getMessageType() )
             {
                 if ( LdapConstants.SEARCH_RESULT_ENTRY == response.getMessageType() )
@@ -392,14 +397,14 @@ public class Dsmlv2Engine
                     SearchResultReferenceDsml searchResultReferenceDsml = new SearchResultReferenceDsml( response );
                     searchResultReferenceDsml.toDsml( searchResponse );
                 }
-                
+
                 response = readResponse( bb );
             }
-            
+
             SearchResultDoneDsml searchResultDoneDsml = new SearchResultDoneDsml( response );
             searchResultDoneDsml.toDsml( searchResponse );
         }
-        
+
         LdapResponse realResponse = response.getLdapResponse();
 
         if ( !continueOnError )
@@ -410,11 +415,12 @@ public class Dsmlv2Engine
                 && ( realResponse.getLdapResult().getResultCode() != LdapResultEnum.REFERRAL ) )
             {
                 // Turning on Exit flag
-                exit  = true;
+                exit = true;
             }
         }
-        
+
     }
+
 
     /**
      * Processes the BatchRequest
@@ -426,8 +432,7 @@ public class Dsmlv2Engine
     {
         // Parsing BatchRequest
         parser.parseBatchRequest();
-        
-        
+
         // Getting BatchRequest
         batchRequest = parser.getBatchRequest();
 
@@ -440,12 +445,12 @@ public class Dsmlv2Engine
             continueOnError = false;
         }
 
-        
         if ( batchRequest.getRequestID() != 0 )
         {
             xmlResponse.getRootElement().addAttribute( "requestID", "" + batchRequest.getRequestID() );
-        }        
+        }
     }
+
 
     /**
      * XML Pretty Printer XSLT Tranformation
@@ -453,15 +458,15 @@ public class Dsmlv2Engine
      * @param stylesheet
      * @return
      */
-    public Document styleDocument( Document document, String stylesheet ){
+    public Document styleDocument( Document document, String stylesheet )
+    {
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = null;
         try
         {
-            transformer = factory.newTransformer( 
-                new StreamSource( Dsmlv2Engine.class.getResourceAsStream( stylesheet ) ) 
-            );
+            transformer = factory
+                .newTransformer( new StreamSource( Dsmlv2Engine.class.getResourceAsStream( stylesheet ) ) );
         }
         catch ( TransformerConfigurationException e1 )
         {
@@ -502,40 +507,6 @@ public class Dsmlv2Engine
     {
         serverAddress = new InetSocketAddress( host, port );
         channel = SocketChannel.open( serverAddress );
-        
-//        SecurityManager security = System.getSecurityManager();
-//        security.checkConnect( host, port );
-//        channel = SocketChannel.open();
-//        channel.configureBlocking( false );
-//        channel.socket().setSoTimeout( 1 );
-//        channel.connect( serverAddress );
-        
-//        try
-//        {
-//            Socket sock = new Socket();
-//            System.out.println( sock.getSendBufferSize() );
-////            sock.setSoLinger( true, 20 );
-//            sock.connect( new InetSocketAddress( host, port ) );
-//        }
-//        catch( IOException ioe )
-//        {
-//            System.out.println( "error" );
-//        }
-        
-        
-//        while ( channel.isConnectionPending() )
-//        {
-//            System.out.println("pending" + channel.socket().getSoTimeout());   
-//            try
-//            {
-//                Thread.sleep( 1000 );
-//            }
-//            catch ( InterruptedException e )
-//            {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
 
         channel.configureBlocking( true );
     }
@@ -551,7 +522,8 @@ public class Dsmlv2Engine
         channel.write( bb );
         bb.clear();
     }
-    
+
+
     /**
      * Reads the response to a request
      * @param bb
@@ -564,7 +536,7 @@ public class Dsmlv2Engine
     {
 
         LdapMessage messageResp = null;
-                
+
         if ( bb.hasRemaining() )
         {
             bb.position( bbposition );
@@ -576,27 +548,26 @@ public class Dsmlv2Engine
         bb.flip();
         while ( ldapMessageContainer.getState() != TLVStateEnum.PDU_DECODED )
         {
-            
+
             int nbRead = channel.read( bb );
 
             if ( nbRead == -1 )
             {
-                System.err.println("fsdfsdfsdfsd");
+                System.err.println( "fsdfsdfsdfsd" );
             }
-            
+
             bb.flip();
             ldapDecoder.decode( bb, ldapMessageContainer );
             bbposition = bb.position();
             bbLimit = bb.limit();
             bb.flip();
         }
-        
+
         messageResp = ( ( LdapMessageContainer ) ldapMessageContainer ).getLdapMessage();
 
         if ( messageResp instanceof BindResponse )
         {
-            BindResponse resp = ( ( LdapMessageContainer ) ldapMessageContainer ).getLdapMessage()
-            .getBindResponse();
+            BindResponse resp = ( ( LdapMessageContainer ) ldapMessageContainer ).getLdapMessage().getBindResponse();
 
             if ( resp.getLdapResult().getResultCode() != 0 )
             {
@@ -606,7 +577,7 @@ public class Dsmlv2Engine
         else if ( messageResp instanceof ExtendedResponse )
         {
             ExtendedResponse resp = ( ( LdapMessageContainer ) ldapMessageContainer ).getLdapMessage()
-            .getExtendedResponse();
+                .getExtendedResponse();
 
             if ( resp.getLdapResult().getResultCode() != 0 )
             {
@@ -615,8 +586,7 @@ public class Dsmlv2Engine
         }
 
         ( ( LdapMessageContainer ) ldapMessageContainer ).clean();
-        
-    
+
         return messageResp;
     }
 
@@ -649,9 +619,9 @@ public class Dsmlv2Engine
         sendMessage( bb );
 
         bb.clear();
-        
+
         bb.position( bb.limit() );
-        
+
         readResponse( bb );
     }
 }

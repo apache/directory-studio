@@ -55,7 +55,8 @@ public class ErrorResponse extends LdapResponse implements DsmlDecorator
     public ErrorResponse()
     {
     }
-    
+
+
     /**
      * Default constructor
      * @param requestID The requestID of the response
@@ -145,27 +146,39 @@ public class ErrorResponse extends LdapResponse implements DsmlDecorator
         }
     }
 
-	public String getMessage() {
-		return message;
-	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public int getRequestID() {
-		return requestID;
-	}
 
-	public void setRequestID(int requestID) {
-		this.requestID = requestID;
-	}
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
-	public ErrorResponseType getType() {
-		return type;
-	}
 
-	public void setType(ErrorResponseType type) {
-		this.type = type;
-	}
+    public int getRequestID()
+    {
+        return requestID;
+    }
+
+
+    public void setRequestID( int requestID )
+    {
+        this.requestID = requestID;
+    }
+
+
+    public ErrorResponseType getType()
+    {
+        return type;
+    }
+
+
+    public void setType( ErrorResponseType type )
+    {
+        this.type = type;
+    }
 }

@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,23 +29,27 @@ import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
 
+
 public class SearchResponse extends LdapResponse
 {
-	private List<SearchResultEntry> searchResultEntryList;
-	private List<SearchResultReference> searchResultReferenceList;
-	private SearchResultDone searchResultDone;
-	
-	public SearchResponse()
-	{
-		searchResultEntryList = new ArrayList<SearchResultEntry>();
-		searchResultReferenceList = new ArrayList<SearchResultReference>();
-	}
-	
-	public boolean addSearchResultEntry(SearchResultEntry searchResultEntry)
+    private List<SearchResultEntry> searchResultEntryList;
+    private List<SearchResultReference> searchResultReferenceList;
+    private SearchResultDone searchResultDone;
+
+
+    public SearchResponse()
+    {
+        searchResultEntryList = new ArrayList<SearchResultEntry>();
+        searchResultReferenceList = new ArrayList<SearchResultReference>();
+    }
+
+
+    public boolean addSearchResultEntry( SearchResultEntry searchResultEntry )
     {
         return searchResultEntryList.add( searchResultEntry );
     }
-    
+
+
     public SearchResultEntry getCurrentSearchResultEntry()
     {
         if ( searchResultEntryList.size() > 0 )
@@ -56,31 +61,41 @@ public class SearchResponse extends LdapResponse
             return null;
         }
     }
-	
-	public boolean addSearchResultReference(SearchResultReference searchResultReference)
+
+
+    public boolean addSearchResultReference( SearchResultReference searchResultReference )
     {
         return searchResultReferenceList.add( searchResultReference );
     }
-    
+
+
     public SearchResultReference getCurrentSearchResultReference()
     {
         return searchResultReferenceList.get( searchResultReferenceList.size() - 1 );
     }
 
-	public SearchResultDone getSearchResultDone() {
-		return searchResultDone;
-	}
 
-	public void setSearchResultDone(SearchResultDone searchResultDone) {
-		this.searchResultDone = searchResultDone;
-	}
+    public SearchResultDone getSearchResultDone()
+    {
+        return searchResultDone;
+    }
 
-	public List<SearchResultEntry> getSearchResultEntryList() {
-		return searchResultEntryList;
-	}
 
-	public List<SearchResultReference> getSearchResultReferenceList() {
-		return searchResultReferenceList;
-	}
+    public void setSearchResultDone( SearchResultDone searchResultDone )
+    {
+        this.searchResultDone = searchResultDone;
+    }
+
+
+    public List<SearchResultEntry> getSearchResultEntryList()
+    {
+        return searchResultEntryList;
+    }
+
+
+    public List<SearchResultReference> getSearchResultReferenceList()
+    {
+        return searchResultReferenceList;
+    }
 
 }

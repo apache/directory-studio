@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2;
 
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,95 +33,102 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+
 public class Dsmlv2ResponseParser
-{    
+{
     private Dsmlv2Container container;
-    
-    public Dsmlv2ResponseParser() throws XmlPullParserException 
-    {  
+
+
+    public Dsmlv2ResponseParser() throws XmlPullParserException
+    {
         this.container = new Dsmlv2Container();
-        
+
         this.container.setGrammar( Dsmlv2ResponseGrammar.getInstance() );
-        
+
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         // factory.setNamespaceAware(true);
         XmlPullParser xpp = factory.newPullParser();
-        
+
         container.setParser( xpp );
     }
-    
+
+
     public void setInput( String str ) throws FileNotFoundException, XmlPullParserException
     {
-    	container.getParser().setInput( new StringReader( str ) );
+        container.getParser().setInput( new StringReader( str ) );
     }
-    
+
+
     public void setInputFile( String fileName ) throws FileNotFoundException, XmlPullParserException
     {
         Reader reader = new FileReader( fileName );
         container.getParser().setInput( reader );
     }
-    
+
+
     public void setInput( InputStream inputStream, String inputEncoding ) throws XmlPullParserException
     {
-        container.getParser().setInput( inputStream, inputEncoding);
+        container.getParser().setInput( inputStream, inputEncoding );
     }
-    
-    
+
+
     public void parse() throws Exception
-    {        
+    {
         Dsmlv2ResponseGrammar grammar = Dsmlv2ResponseGrammar.getInstance();
-        
+
         grammar.executeAction( container );
     }
-    
-    public void parseBatchResponse() throws XmlPullParserException
-    {      
-            XmlPullParser xpp = container.getParser();
-            
-            int eventType = xpp.getEventType();
-            do
-            {
-                if ( eventType == XmlPullParser.START_DOCUMENT )
-                {
-                    container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
-                }
-                else if ( eventType == XmlPullParser.END_DOCUMENT )
-                {
-                    container.setState( Dsmlv2StatesEnum.END_STATE );
-                }
-                else if ( eventType == XmlPullParser.START_TAG )
-                {
-                    processTag( container, Tag.START );
-                }
-                else if ( eventType == XmlPullParser.END_TAG )
-                {
-                    processTag( container, Tag.END );
-                }
-                try
-                {
-                    eventType = xpp.next();
-                }
-                catch ( IOException e )
-                {
-                    throw new XmlPullParserException( "An IOException ocurred during parsing : " + e.getMessage(), xpp, null );
-                }
-            }
-            while ( container.getState() != Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP );
-        }
 
-    
-    private void processTag( Dsmlv2Container container, int tagType ) throws XmlPullParserException
-    {        
+
+    public void parseBatchResponse() throws XmlPullParserException
+    {
         XmlPullParser xpp = container.getParser();
-        
+
+        int eventType = xpp.getEventType();
+        do
+        {
+            if ( eventType == XmlPullParser.START_DOCUMENT )
+            {
+                container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
+            }
+            else if ( eventType == XmlPullParser.END_DOCUMENT )
+            {
+                container.setState( Dsmlv2StatesEnum.END_STATE );
+            }
+            else if ( eventType == XmlPullParser.START_TAG )
+            {
+                processTag( container, Tag.START );
+            }
+            else if ( eventType == XmlPullParser.END_TAG )
+            {
+                processTag( container, Tag.END );
+            }
+            try
+            {
+                eventType = xpp.next();
+            }
+            catch ( IOException e )
+            {
+                throw new XmlPullParserException( "An IOException ocurred during parsing : " + e.getMessage(), xpp,
+                    null );
+            }
+        }
+        while ( container.getState() != Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP );
+    }
+
+
+    private void processTag( Dsmlv2Container container, int tagType ) throws XmlPullParserException
+    {
+        XmlPullParser xpp = container.getParser();
+
         String tagName = xpp.getName().toLowerCase();
-        
-        GrammarTransition transition = container.getTransition( container.getState(), new Tag( tagName, tagType) );
-        
-        if (transition != null)
+
+        GrammarTransition transition = container.getTransition( container.getState(), new Tag( tagName, tagType ) );
+
+        if ( transition != null )
         {
             container.setState( transition.getNextState() );
-            
+
             if ( transition.hasAction() )
             {
                 //                    System.out.println( transition.getAction().toString() );// TODO Suppress
@@ -129,15 +137,18 @@ public class Dsmlv2ResponseParser
         }
         else
         {
-            throw new XmlPullParserException( "The tag " + new Tag(tagName, tagType) + " can't be found at this position" , xpp, null );   
+            throw new XmlPullParserException( "The tag " + new Tag( tagName, tagType )
+                + " can't be found at this position", xpp, null );
         }
     }
-    
+
+
     public BatchResponse getBatchResponse()
     {
         return container.getBatchResponse();
     }
-    
+
+
     /**
      * Returns the next Request or null if there's no more request
      * @return the next Request or null if there's no more request
@@ -148,9 +159,10 @@ public class Dsmlv2ResponseParser
     {
         if ( container.getBatchResponse() == null )
         {
-            throw new XmlPullParserException( "The batch response needs to be parsed before parsing a response", container.getParser(), null );
+            throw new XmlPullParserException( "The batch response needs to be parsed before parsing a response",
+                container.getParser(), null );
         }
-        
+
         XmlPullParser xpp = container.getParser();
 
         int eventType = xpp.getEventType();
@@ -164,7 +176,8 @@ public class Dsmlv2ResponseParser
                 }
                 catch ( IOException e )
                 {
-                    throw new XmlPullParserException( "An IOException ocurred during parsing : " + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( "An IOException ocurred during parsing : " + e.getMessage(), xpp,
+                        null );
                 }
                 eventType = xpp.getEventType();
             }
@@ -192,17 +205,20 @@ public class Dsmlv2ResponseParser
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( "An IOException ocurred during parsing : " + e.getMessage(), xpp, null );
+                throw new XmlPullParserException( "An IOException ocurred during parsing : " + e.getMessage(), xpp,
+                    null );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP );
 
         return container.getBatchResponse().getCurrentResponse();
     }
-    
+
+
     public void parseAllResponses() throws Exception
     {
-        while ( getNextResponse() != null ) {
+        while ( getNextResponse() != null )
+        {
             continue;
         }
     }
