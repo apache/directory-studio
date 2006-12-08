@@ -46,7 +46,7 @@ public class Dsmlv2ResponseParser
         this.container.setGrammar( Dsmlv2ResponseGrammar.getInstance() );
 
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-        // factory.setNamespaceAware(true);
+        factory.setNamespaceAware(true);
         XmlPullParser xpp = factory.newPullParser();
 
         container.setParser( xpp );
@@ -131,7 +131,6 @@ public class Dsmlv2ResponseParser
 
             if ( transition.hasAction() )
             {
-                //                    System.out.println( transition.getAction().toString() );// TODO Suppress
                 transition.getAction().action( container );
             }
         }

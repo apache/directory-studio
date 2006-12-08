@@ -1,0 +1,14 @@
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core"
+              xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance"
+              xmlns:xsd="http://www.w3c.org/2001/XMLSchema">
+	<searchResponse>
+		<searchResultEntry dn="uid=elecharny,dc=example,dc=com">
+			<attr name="cn">
+				<value xsi:type="xsd:base64Binary">RW1tYW51ZWwgTMOpY2hhcm55</value>
+			</attr>
+		</searchResultEntry>
+		<searchResultDone>
+			<resultCode code="0" descr="success"/>
+		</searchResultDone>
+	</searchResponse>
+</batchResponse>

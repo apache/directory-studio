@@ -99,7 +99,35 @@ public class DelResponseTest extends AbstractResponseTest
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
 
+    /**
+     * Test parsing of a response with a (optional) Control element with empty value
+     */
+    public void testResponseWith1ControlemptyValue()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
 
+            parser.setInputFile( DelResponseTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        DelResponse delResponse = ( DelResponse ) parser.getBatchResponse().getCurrentResponse();
+        Control control = delResponse.getCurrentControl();
+        
+        assertEquals( 1, delResponse.getControls().size() );
+        assertTrue( control.getCriticality() );
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+        assertEquals( StringTools.EMPTY_BYTES, ( byte[] ) control.getControlValue() );
+    }
+
+    
     /**
      * Test parsing of a response with 2 (optional) Control elements
      */
@@ -238,6 +266,32 @@ public class DelResponseTest extends AbstractResponseTest
         assertEquals( "Unrecognized extended operation EXTENSION_OID: 1.2.6.1.4.1.18060.1.1.1.100.2", ldapResult
             .getErrorMessage() );
     }
+    
+    /**
+     * Test parsing of a response with empty Error Message
+     */
+    public void testResponseWithEmptyErrorMessage()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( DelResponseTest.class.getResource( "response_with_empty_error_message.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        DelResponse delResponse = ( DelResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        LdapResult ldapResult = delResponse.getLdapResult();
+
+        assertNull( ldapResult.getErrorMessage() );
+    }
 
 
     /**
@@ -277,6 +331,34 @@ public class DelResponseTest extends AbstractResponseTest
         {
             fail();
         }
+    }
+    
+    /**
+     * Test parsing of a response with an empty Referral
+     */
+    public void testResponseWith1EmptyReferral()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( DelResponseTest.class.getResource( "response_with_1_empty_referral.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        DelResponse delResponse = ( DelResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        LdapResult ldapResult = delResponse.getLdapResult();
+
+        List referrals = ldapResult.getReferrals();
+
+        assertEquals( 0, referrals.size() );
     }
 
 

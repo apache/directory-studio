@@ -100,6 +100,34 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
+    
+    /**
+     * Test parsing of a response with a (optional) Control element with empty value
+     */
+    public void testResponseWith1ControlEmptyValue()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ExtendedResponseTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedResponse extendedResponse = ( ExtendedResponse ) parser.getBatchResponse().getCurrentResponse();
+        Control control = extendedResponse.getCurrentControl();
+        
+        assertEquals( 1, extendedResponse.getControls().size() );
+        assertTrue( control.getCriticality() );
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+        assertEquals( StringTools.EMPTY_BYTES, ( byte[] ) control.getControlValue() );
+    }
 
 
     /**
@@ -240,6 +268,32 @@ public class ExtendedResponseTest extends AbstractResponseTest
         assertEquals( "Unrecognized extended operation EXTENSION_OID: 1.2.6.1.4.1.18060.1.1.1.100.2", ldapResult
             .getErrorMessage() );
     }
+    
+    /**
+     * Test parsing of a response with empty Error Message
+     */
+    public void testResponseWithEmptyErrorMessage()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ExtendedResponseTest.class.getResource( "response_with_empty_error_message.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedResponse extendedResponse = ( ExtendedResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        LdapResult ldapResult = extendedResponse.getLdapResult();
+
+        assertNull( ldapResult.getErrorMessage() );
+    }
 
 
     /**
@@ -279,6 +333,34 @@ public class ExtendedResponseTest extends AbstractResponseTest
         {
             fail();
         }
+    }
+    
+    /**
+     * Test parsing of a response with a empty Referral
+     */
+    public void testResponseWith1EmptyReferral()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ExtendedResponseTest.class.getResource( "response_with_1_empty_referral.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedResponse extendedResponse = ( ExtendedResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        LdapResult ldapResult = extendedResponse.getLdapResult();
+
+        List referrals = ldapResult.getReferrals();
+
+        assertEquals( 0, referrals.size() );
     }
 
 
@@ -441,6 +523,30 @@ public class ExtendedResponseTest extends AbstractResponseTest
             fail();
         }
     }
+    
+    /**
+     * Test parsing of a response with empty Response Name
+     */
+    public void testResponseWithEmptyResponseName()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ExtendedResponseTest.class.getResource( "response_with_empty_responseName.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedResponse extendedResponse = ( ExtendedResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        assertEquals( "", extendedResponse.getResponseName().toString() );
+    }
 
 
     /**
@@ -474,6 +580,54 @@ public class ExtendedResponseTest extends AbstractResponseTest
         ExtendedResponse extendedResponse = ( ExtendedResponse ) parser.getBatchResponse().getCurrentResponse();
 
         assertEquals( "This is a response", extendedResponse.getResponse() );
+    }
+    
+    /**
+     * Test parsing of a response with Base64 Response
+     */
+    public void testResponseWithBase64Response()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ExtendedResponseTest.class.getResource( "response_with_base64_response.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedResponse extendedResponse = ( ExtendedResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) extendedResponse.getResponse() ) );
+    }
+    
+    /**
+     * Test parsing of a response with empty Response
+     */
+    public void testResponseWithEmptyResponse()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ExtendedResponseTest.class.getResource( "response_with_empty_response.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedResponse extendedResponse = ( ExtendedResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        assertEquals( "", extendedResponse.getResponse() );
     }
 
 

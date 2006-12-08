@@ -131,7 +131,6 @@ public class Dsmlv2Parser
 
             if ( transition.hasAction() )
             {
-                //                    System.out.println( transition.getAction().toString() );// TODO Suppress
                 transition.getAction().action( container );
             }
         }

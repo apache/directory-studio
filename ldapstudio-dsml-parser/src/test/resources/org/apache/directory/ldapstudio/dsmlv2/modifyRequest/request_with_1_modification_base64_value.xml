@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core"
+              xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance"
+              xmlns:xsd="http://www.w3c.org/2001/XMLSchema">
+	<modifyRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
+		<modification name="directReport" operation="add">
+			<value xsi:type="xsd:base64Binary">Y249RW1tYW51ZWwgTMOpY2hhcm55LCBvdT1wZW9wbGUsIGRjPWV4YW1wbGUsIGRjPWNvbQ==</value>
+		</modification>
+	</modifyRequest>
+</batchRequest>

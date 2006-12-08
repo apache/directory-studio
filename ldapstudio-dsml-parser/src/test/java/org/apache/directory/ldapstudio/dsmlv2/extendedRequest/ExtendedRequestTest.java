@@ -226,13 +226,31 @@ public class ExtendedRequestTest extends AbstractTest
 
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        //        String s1 = StringTools.dumpBytes( StringTools.getBytesUtf8( "RFNNTHYyLjAgcm9ja3MhIQ==" ) );
-        //        String s2 = StringTools.dumpBytes( extendedRequest.getRequestValue() );
+        assertEquals( "foobar", new String ( extendedRequest.getRequestValue() ) );
+    }
+    
+    /**
+     * Test parsing of a request with a RequestValue element with Base64 value
+     */
+    public void testRequestWithBase64RequestValue()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
 
-        //assertTrue( Arrays.equals( StringTools.getBytesUtf8( "RFNNTHYyLjAgcm9ja3MhIQ==" ), extendedRequest.getRequestValue() ) );
+            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_base64_requestValue.xml" ).getFile() );
 
-        //        assertEquals( s1, s2 );
-        assertEquals( StringTools.getBytesUtf8( "RFNNTHYyLjAgcm9ja3MhIQ==" ), extendedRequest.getRequestValue() );
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( "DSMLv2.0 rocks!!", new String ( extendedRequest.getRequestValue() ) );
     }
 
 

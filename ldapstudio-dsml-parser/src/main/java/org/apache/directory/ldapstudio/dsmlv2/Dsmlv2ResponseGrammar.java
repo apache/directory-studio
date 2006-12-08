@@ -51,6 +51,7 @@ import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.Base64;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -188,22 +189,17 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         //  Transitions concerning : ERROR RESPONSE
         //====================================================
         super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.MESSAGE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.MESSAGE_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.DETAIL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.DETAIL_END] = new HashMap<Tag, GrammarTransition>();
 
         // State: [ERROR_RESPONSE] - Tag: <message>
         super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "message", Tag.START ), new GrammarTransition(
-            Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.MESSAGE_START, errorResponseAddMessage ) );
+            Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.MESSAGE_END, errorResponseAddMessage ) );
 
         // State: [ERROR_RESPONSE] - Tag: <detail>
         super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE].put( new Tag( "detail", Tag.START ), new GrammarTransition(
             Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.DETAIL_START, errorResponseAddDetail ) );
-
-        // State: [MESSAGE_START] - Tag: </message>
-        super.transitions[Dsmlv2StatesEnum.MESSAGE_START].put( new Tag( "message", Tag.END ), new GrammarTransition(
-            Dsmlv2StatesEnum.MESSAGE_START, Dsmlv2StatesEnum.MESSAGE_END, null ) );
 
         // State: [MESSAGE_END] - Tag: </errorResponse>
         super.transitions[Dsmlv2StatesEnum.MESSAGE_END].put( new Tag( "errorResponse", Tag.END ),
@@ -231,17 +227,12 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.RESPONSE_END] = new HashMap<Tag, GrammarTransition>();
 
         // State: [EXTENDED_RESPONSE] - Tag: <control>
@@ -252,13 +243,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         // State: [EXTENDED_RESPONSE_CONTROL_START] - Tag: <controlValue>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START].put( new Tag( "controlValue", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_START,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START, ldapResultControlValueCreation ) );
-
-        // State: [EXTENDED_RESPONSE_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START].put(
-            new Tag( "controlValue", Tag.END ), new GrammarTransition(
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_START,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END, null ) );
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END, ldapResultControlValueCreation ) );
 
         // State: [EXTENDED_RESPONSE_CONTROL_VALUE_END] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_CONTROL_VALUE_END].put( new Tag( "control", Tag.END ),
@@ -294,22 +279,22 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put(
             new Tag( "errorMessage", Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START, extendedResponseAddErrorMessage ) );
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, extendedResponseAddErrorMessage ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "referral", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ) );
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, extendedResponseAddReferral ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <responseName>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put(
             new Tag( "responseName", Tag.START ), new GrammarTransition(
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_NAME_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_NAME_END,
                 extendedResponseAddResponseName ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: <response>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END].put( new Tag( "response", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_START,
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.RESPONSE_END,
                 extendedResponseAddResponse ) );
 
         // State: [EXTENDED_RESPONSE_RESULT_CODE_END] - Tag: </extendedResponse>
@@ -317,56 +302,40 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             new Tag( "extendedResponse", Tag.END ), new GrammarTransition(
                 Dsmlv2StatesEnum.EXTENDED_RESPONSE_RESULT_CODE_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
-        // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_START] - Tag: </errorMessage>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START].put(
-            new Tag( "errorMessage", Tag.END ), new GrammarTransition(
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_START,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, null ) );
-
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "referral", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ) );
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, extendedResponseAddReferral ) );
 
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <responseName>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put(
             new Tag( "responseName", Tag.START ), new GrammarTransition(
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.RESPONSE_NAME_START,
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END, Dsmlv2StatesEnum.RESPONSE_NAME_END,
                 extendedResponseAddResponseName ) );
 
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: <response>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "response", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
-                Dsmlv2StatesEnum.RESPONSE_START, extendedResponseAddResponse ) );
+                Dsmlv2StatesEnum.RESPONSE_END, extendedResponseAddResponse ) );
 
         // State: [EXTENDED_RESPONSE_ERROR_MESSAGE_END] - Tag: </extendedResponse>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END].put( new Tag( "extendedResponse",
             Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_ERROR_MESSAGE_END,
             Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
-        // State: [EXTENDED_RESPONSE_REFERRAL_START] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START].put( new Tag( "referral", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, null ) );
-
-        // State: [EXTENDED_RESPONSE_REFERRAL_START] - Tag: <referral>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START].put( new Tag( "referral", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, null ) );
-
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "referral", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
-                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_START, extendedResponseAddReferral ) );
+                Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, extendedResponseAddReferral ) );
 
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <responseName>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "responseName", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
-                Dsmlv2StatesEnum.RESPONSE_NAME_START, extendedResponseAddResponseName ) );
+                Dsmlv2StatesEnum.RESPONSE_NAME_END, extendedResponseAddResponseName ) );
 
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: <reponse>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END].put( new Tag( "reponse", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.RESPONSE_START,
+            new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END, Dsmlv2StatesEnum.RESPONSE_END,
                 extendedResponseAddResponse ) );
 
         // State: [EXTENDED_RESPONSE_REFERRAL_END] - Tag: </extendedResponse>
@@ -374,22 +343,14 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_RESPONSE_REFERRAL_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
-        // State: [RESPONSE_NAME_START] - Tag: </responseName>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_START].put( new Tag( "responseName", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_START, Dsmlv2StatesEnum.RESPONSE_NAME_END, null ) );
-
         // State: [RESPONSE_NAME_END] - Tag: <response>
         super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END].put( new Tag( "response", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.RESPONSE_START,
+            new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.RESPONSE_END,
                 extendedResponseAddResponse ) );
 
         // State: [RESPONSE_NAME_END] - Tag: </extendedResponse>
         super.transitions[Dsmlv2StatesEnum.RESPONSE_NAME_END].put( new Tag( "extendedResponse", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.RESPONSE_NAME_END, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
-
-        // State: [RESPONSE_START] - Tag: </response>
-        super.transitions[Dsmlv2StatesEnum.RESPONSE_START].put( new Tag( "response", Tag.END ), new GrammarTransition(
-            Dsmlv2StatesEnum.RESPONSE_START, Dsmlv2StatesEnum.RESPONSE_END, null ) );
 
         // State: [RESPONSE_END] - Tag: </extendedResponse>
         super.transitions[Dsmlv2StatesEnum.RESPONSE_END].put( new Tag( "extendedResponse", Tag.END ),
@@ -401,13 +362,10 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END] = new HashMap<Tag, GrammarTransition>();
 
@@ -422,12 +380,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         // State: [LDAP_RESULT_CONTROL_START] - Tag: <controlValue>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START].put( new Tag( "controlValue", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_START,
-                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START, ldapResultControlValueCreation ) );
-
-        // State: [LDAP_RESULT_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START].put( new Tag( "controlValue", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_START,
-                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END, null ) );
+                Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END, ldapResultControlValueCreation ) );
 
         // State: [LDAP_RESULT_CONTROL_VALUE_END] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_CONTROL_VALUE_END].put( new Tag( "control", Tag.END ),
@@ -457,12 +410,12 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: <errorMessage>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "errorMessage", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
-                Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START, ldapResultAddErrorMessage ) );
+                Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, ldapResultAddErrorMessage ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "referral", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END,
-                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ) );
+                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, ldapResultAddReferral ) );
 
         // State: [LDAP_RESULT_RESULT_CODE_END] - Tag: </addResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_RESULT_CODE_END].put( new Tag( "addResponse", Tag.END ),
@@ -504,15 +457,10 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             .put( new Tag( "searchResponse", Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END,
                 Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP, null ) );
 
-        // State: [LDAP_RESULT_ERROR_MESSAGE_START] - Tag: </errorMessage>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START].put( new Tag( "errorMessage", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_START,
-                Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END, null ) );
-
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "referral", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
-                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ) );
+                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, ldapResultAddReferral ) );
 
         // State: [LDAP_RESULT_ERROR_MESSAGE_END] - Tag: </addResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END].put( new Tag( "addResponse", Tag.END ),
@@ -549,15 +497,10 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_ERROR_MESSAGE_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_DONE_END, null ) );
 
-        // State: [LDAP_RESULT_REFERRAL_START] - Tag: </referral>
-        super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START].put( new Tag( "referral", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START,
-                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, null ) );
-
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: <referral>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "referral", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END,
-                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_START, ldapResultAddReferral ) );
+                Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END, ldapResultAddReferral ) );
 
         // State: [LDAP_RESULT_REFERRAL_END] - Tag: </addResponse>
         super.transitions[Dsmlv2StatesEnum.LDAP_RESULT_REFERRAL_END].put( new Tag( "addResponse", Tag.END ),
@@ -620,11 +563,9 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END] = new HashMap<Tag, GrammarTransition>();
 
         // State: [SEARCH_RESULT_ENTRY] - Tag: <control>
@@ -646,12 +587,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START].put(
             new Tag( "controlValue", Tag.START ), new GrammarTransition(
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_START,
-                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START, searchResultEntryControlValueCreation ) );
-
-        // State: [SEARCH_RESULT_ENTRY_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START].put( new Tag( "controlValue",
-            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_START,
-            Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END, null ) );
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END, searchResultEntryControlValueCreation ) );
 
         // State: [SEARCH_RESULT_ENTRY_CONTROL_VALUE_END] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_CONTROL_VALUE_END].put( new Tag( "control", Tag.END ),
@@ -686,7 +622,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         // State: [SEARCH_RESULT_ENTRY_ATTR_START] - Tag: <value>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START].put( new Tag( "value", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_START,
-                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START, searchResultEntryAddValue ) );
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, searchResultEntryAddValue ) );
 
         // State: [SEARCH_RESULT_ENTRY_ATTR_END] - Tag: <attr>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END].put( new Tag( "attr", Tag.START ),
@@ -698,15 +634,10 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_ATTR_END,
                 Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_LOOP, null ) );
 
-        // State: [SEARCH_RESULT_ENTRY_VALUE_START] - Tag: </value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START].put( new Tag( "value", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START,
-                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, null ) );
-
         // State: [SEARCH_RESULT_ENTRY_VALUE_END] - Tag: <value>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END].put( new Tag( "value", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END,
-                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_START, searchResultEntryAddValue ) );
+                Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END, searchResultEntryAddValue ) );
 
         // State: [SEARCH_RESULT_ENTRY_VALUE_END] - Tag: </attr>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_ENTRY_VALUE_END].put( new Tag( "attr", Tag.END ),
@@ -740,9 +671,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END] = new HashMap<Tag, GrammarTransition>();
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END] = new HashMap<Tag, GrammarTransition>();
 
         // State: [SEARCH_RESULT_REFERENCE] - Tag: <control>
@@ -753,17 +682,12 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         // State: [SEARCH_RESULT_REFERENCE] - Tag: <ref>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE].put( new Tag( "ref", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE,
-                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ) );
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, searchResultReferenceAddRef ) );
 
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_START] - Tag: <controlValue>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START].put( new Tag( "controlValue",
             Tag.START ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_START,
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START, searchResultReferenceControlValueCreation ) );
-
-        // State: [SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START] - Tag: </controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START].put( new Tag( "controlValue",
-            Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_START,
-            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END, null ) );
+            Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END, searchResultReferenceControlValueCreation ) );
 
         // State: [sEARCH_RESULT_REFERENCE_CONTROL_VALUE_END] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_VALUE_END].put(
@@ -784,17 +708,12 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         // State: [SEARCH_RESULT_REFERENCE_CONTROL_END] - Tag: <ref>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END].put( new Tag( "ref", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_CONTROL_END,
-                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ) );
-
-        // State: [SEARCH_RESULT_REFERENCE_REF_START] - Tag: </ref>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START].put( new Tag( "ref", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START,
-                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, null ) );
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, searchResultReferenceAddRef ) );
 
         // State: [SEARCH_RESULT_REFERENCE_REF_END] - Tag: <ref>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END].put( new Tag( "ref", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END,
-                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_START, searchResultReferenceAddRef ) );
+                Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END, searchResultReferenceAddRef ) );
 
         // State: [SEARCH_RESULT_REFERENCE_REF_END] - Tag: </searchResultReference>
         super.transitions[Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_REF_END].put( new Tag( "searchResultReference",
@@ -1269,22 +1188,19 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             ErrorResponse errorResponse = ( ErrorResponse ) container.getBatchResponse().getCurrentResponse();
-
+            
             XmlPullParser xpp = container.getParser();
-
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    errorResponse.setMessage( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-
-            if ( eventType == XmlPullParser.TEXT )
-            {
-                errorResponse.setMessage( xpp.getText().trim() );
             }
         }
     };
@@ -1315,9 +1231,11 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         attributeValue = xpp.getAttributeValue( "", "type" );
         if ( attributeValue != null )
         {
-            // TODO Add a verification for a match with NumericOid format (see
-            // DSMLv2 specifications)
-            control.setControlType( attributeValue ); // TODO LDAPString uses UTF8 bytes, so the charset must be verified before doing this.
+            if ( !OID.isOID( attributeValue ) )
+            {
+                throw new XmlPullParserException( "Incorrect value for 'type' attribute. This is not an OID.", xpp, null );
+            }
+            control.setControlType( attributeValue );
         }
         else
         {
@@ -1401,25 +1319,28 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         Control control = parent.getCurrentControl();
 
         XmlPullParser xpp = container.getParser();
-
-        int eventType = 0;
         try
         {
-            eventType = xpp.next();
+            // We have to catch the type Attribute Value before going to the next Text node
+            String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+            
+            // Getting the value
+            String nextText = xpp.nextText();
+            if ( !nextText.equals( "" ) )
+            {
+                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                {
+                    control.setControlValue( Base64.decode( nextText.trim().toCharArray() ) );
+                }
+                else
+                {
+                    control.setControlValue( nextText.trim() );
+                }
+            }
         }
         catch ( IOException e )
         {
-            throw new XmlPullParserException( "name attribute is required", xpp, null );
-        }
-
-        if ( eventType != XmlPullParser.TEXT )
-        {
-            // TODO we insert a blank value
-            control.setControlValue( "" );
-        }
-        else
-        {
-            control.setControlValue( xpp.getText().trim() );
+            throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
         }
     }
 
@@ -1552,24 +1473,17 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             }
 
             XmlPullParser xpp = container.getParser();
-
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    ldapResult.setErrorMessage( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
-            }
-            else
-            {
-                ldapResult.setErrorMessage( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
@@ -1604,31 +1518,24 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             }
 
             XmlPullParser xpp = container.getParser();
-
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    try
+                    {
+                        ldapResult.addReferral( new LdapURL( nextText.trim() ) );
+                    }
+                    catch ( LdapURLEncodingException e )
+                    {
+                        throw new XmlPullParserException( e.getMessage(), xpp, null );
+                    }
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
-            }
-            else
-            {
-                try
-                {
-                    ldapResult.addReferral( new LdapURL( xpp.getText().trim() ) );
-                }
-                catch ( LdapURLEncodingException e )
-                {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
-                }
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
@@ -1835,28 +1742,28 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
-
             SearchResultEntry searchResultEntry = searchResponse.getCurrentSearchResultEntry();
 
             XmlPullParser xpp = container.getParser();
-
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
+                String nextText = xpp.nextText();
+                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                {
+                    searchResultEntry.addAttributeValue( Base64.decode( nextText.toCharArray() ) );
+                }
+                else
+                {
+                    searchResultEntry.addAttributeValue( nextText );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
-            }
-            else
-            {
-                searchResultEntry.addAttributeValue( xpp.getText() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };
@@ -1870,35 +1777,24 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
-
             SearchResultReference searchResultReference = searchResponse.getCurrentSearchResultReference();
 
             XmlPullParser xpp = container.getParser();
-
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    searchResultReference.addSearchResultReference( new LdapURL( nextText ) );
+                }
             }
             catch ( IOException e )
             {
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
+            }
+            catch ( LdapURLEncodingException e )
+            {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
-            }
-            else
-            {
-                try
-                {
-                    searchResultReference.addSearchResultReference( new LdapURL( xpp.getText() ) );
-                }
-                catch ( LdapURLEncodingException e )
-                {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
-                }
             }
         }
     };
@@ -1929,31 +1825,22 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             ExtendedResponse extendedResponse = ( ExtendedResponse ) container.getBatchResponse().getCurrentResponse();
 
             XmlPullParser xpp = container.getParser();
-
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                String nextText = xpp.nextText();
+                if ( !nextText.equals( "" ) )
+                {
+                    extendedResponse.setResponseName( new OID( nextText.trim() ) );
+                }
+                
             }
             catch ( IOException e )
             {
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
+            }
+            catch ( DecoderException e )
+            {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
-            }
-            else
-            {
-                try
-                {
-                    extendedResponse.setResponseName( new OID( xpp.getText().trim() ) );
-                }
-                catch ( DecoderException e )
-                {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
-                }
             }
         }
     };
@@ -1968,24 +1855,25 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             ExtendedResponse extendedResponse = ( ExtendedResponse ) container.getBatchResponse().getCurrentResponse();
 
             XmlPullParser xpp = container.getParser();
-
-            int eventType = 0;
             try
             {
-                eventType = xpp.next();
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
+                String nextText = xpp.nextText();
+                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                {
+                    extendedResponse.setResponse( Base64.decode( nextText.trim().toCharArray() ) );
+                }
+                else
+                {
+                    extendedResponse.setResponse( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
-            }
-
-            if ( eventType != XmlPullParser.TEXT )
-            {
-                throw new XmlPullParserException( "An error has ocurred.", xpp, null );
-            }
-            else
-            {
-                extendedResponse.setResponse( xpp.getText().trim() );
+                throw new XmlPullParserException( "An unexpected error ocurred : " + e.getMessage(), xpp, null );
             }
         }
     };

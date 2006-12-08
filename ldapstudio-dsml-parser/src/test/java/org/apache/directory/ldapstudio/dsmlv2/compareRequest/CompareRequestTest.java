@@ -288,6 +288,34 @@ public class CompareRequestTest extends AbstractTest
         assertEquals( "Johnson", ( String ) compareRequest.getAssertionValue() );
     }
 
+    /**
+     * Test parsing of a request with a complete assertion with base64 value
+     */
+    public void testRequestWith1CompleteAssertionBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( CompareRequestTest.class.getResource( "request_with_1_complete_assertion_base64_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        CompareRequest compareRequest = ( CompareRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", ( String ) compareRequest.getEntry().toString() );
+
+        assertEquals( "sn", ( String ) compareRequest.getAttributeDesc() );
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) compareRequest.getAssertionValue() ) );
+    }
 
     /**
      * Test parsing of a request with an Attr elements with empty value

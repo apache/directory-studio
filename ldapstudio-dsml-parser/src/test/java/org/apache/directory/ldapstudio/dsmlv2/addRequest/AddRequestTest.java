@@ -358,7 +358,7 @@ public class AddRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with an Attr elements without value
+     * Test parsing of a request with an Attr elements with value
      */
     public void testRequestWith1AttrWithValue()
     {
@@ -419,6 +419,70 @@ public class AddRequestTest extends AbstractTest
         }
 
         assertEquals( "top", value );
+    }
+    
+    /**
+     * Test parsing of a request with an Attr elements with value
+     */
+    public void testRequestWith1AttrWithBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_with_base64_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Attributes attributes = addRequest.getAttributes();
+
+        assertEquals( 1, attributes.size() );
+
+        // Getting the Attribute       
+        NamingEnumeration ne = attributes.getAll();
+
+        Attribute attribute = null;
+        try
+        {
+            attribute = ( Attribute ) ne.next();
+        }
+        catch ( NamingException e )
+        {
+            fail( e.getMessage() );
+        }
+
+        assertEquals( "objectclass", attribute.getID() );
+
+        // Getting the Value
+        NamingEnumeration ne2 = null;
+        try
+        {
+            ne2 = attribute.getAll();
+        }
+        catch ( NamingException e )
+        {
+            fail( e.getMessage() );
+        }
+
+        Object value = null;
+        try
+        {
+            value = ne2.next();
+        }
+        catch ( NamingException e )
+        {
+            fail( e.getMessage() );
+        }
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) value ) );
     }
 
 

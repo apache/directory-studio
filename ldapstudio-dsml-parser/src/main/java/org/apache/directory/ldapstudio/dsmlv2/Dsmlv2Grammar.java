@@ -67,9 +67,6 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
 {
-    private static final String XML_SCHEMA_URI = "http://www.w3c.org/2001/XMLSchema";
-    private static final String XML_SCHEMA_INSTANCE_URI = "http://www.w3c.org/2001/XMLSchema-instance";
-
     /** The instance of grammar. Dsmlv2Grammar is a singleton */
     private static Dsmlv2Grammar instance = new Dsmlv2Grammar();
 
@@ -1248,10 +1245,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    addRequest.addAttributeValue( nextText.trim() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        addRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        addRequest.addAttributeValue( nextText.trim() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -1399,10 +1407,22 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    compareRequest.setAssertionValue( nextText.trim() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        compareRequest.setAssertionValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+
+                        compareRequest.setAssertionValue( nextText.trim() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -1534,10 +1554,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    extendedRequest.setRequestValue( nextText.trim().getBytes() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        extendedRequest.setRequestValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        extendedRequest.setRequestValue( nextText.trim().getBytes() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -1759,8 +1790,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
-                modifyRequest.addAttributeValue( nextText.trim() );
+                // We are testing if nextText equals "" since a modification can be "".
+                
+                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                {
+                    modifyRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                }
+                else
+                {
+                    modifyRequest.addAttributeValue( nextText.trim() );
+                }
             }
             catch ( IOException e )
             {
@@ -2007,10 +2051,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    substringFilter.setInitialSubstrings( nextText.trim() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        substringFilter.setInitialSubstrings( new String( Base64.decode( nextText.trim().toCharArray() ) ) );
+                    }
+                    else
+                    {
+                        substringFilter.setInitialSubstrings( nextText.trim() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -2033,10 +2088,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    substringFilter.addAnySubstrings( nextText.trim() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        substringFilter.addAnySubstrings( new String( Base64.decode( nextText.trim().toCharArray() ) ) );
+                    }
+                    else
+                    {
+                        substringFilter.addAnySubstrings( nextText.trim() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -2059,10 +2125,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    substringFilter.setFinalSubstrings( nextText.trim() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        substringFilter.setFinalSubstrings( new String( Base64.decode( nextText.trim().toCharArray() ) ) );
+                    }
+                    else
+                    {
+                        substringFilter.setFinalSubstrings( nextText.trim() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -2390,10 +2467,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    assertion.setAssertionValue( nextText.trim() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        assertion.setAssertionValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        assertion.setAssertionValue( nextText.trim() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -2514,10 +2602,21 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
+                
+                // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    filter.setMatchValue( nextText.trim() );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        filter.setMatchValue( Base64.decode( nextText.trim().toCharArray() ) );
+                    }
+                    else
+                    {
+                        filter.setMatchValue( nextText.trim() );
+                    }
                 }
             }
             catch ( IOException e )
@@ -2545,9 +2644,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "type" );
             if ( attributeValue != null )
             {
-                // TODO Add a verification for a match with NumericOid format (see
-                // DSMLv2 specifications)
-                control.setControlType( attributeValue ); // TODO LDAPString uses UTF8 bytes, so the charset must be verified before doing this.  
+                if ( !OID.isOID( attributeValue ) )
+                {
+                    throw new XmlPullParserException( "Incorrect value for 'type' attribute. This is not an OID.", xpp, null );
+                }
+                control.setControlType( attributeValue );
             }
             else
             {
@@ -2585,13 +2686,14 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
             try
             {
-                String typeValue = getXsiTypeAttributeValue( xpp );
+                // We have to catch the type Attribute Value before going to the next Text node
+                String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
                 
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    if ( isBase64BinaryValue( xpp, typeValue ) )
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
                         control.setControlValue( Base64.decode( nextText.trim().toCharArray() ) );
                     }
@@ -2617,48 +2719,5 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     public static Dsmlv2Grammar getInstance()
     {
         return instance;
-    }
-    
-    /**
-     * Returns the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
-     *
-     * @param xpp the XPP parser to use
-     * @return the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
-     */
-    private String getXsiTypeAttributeValue( XmlPullParser xpp )
-    {
-        String type = null;
-        int nbAttributes = xpp.getAttributeCount();
-        for ( int i = 0; i < nbAttributes; i++ )
-        {
-            // Checking if the attribute 'type' from XML Schema Instance namespace is used.
-            if ( xpp.getAttributeName( i ).equals( "type" ) && xpp.getNamespace( xpp.getAttributePrefix( i ) ).equals( XML_SCHEMA_INSTANCE_URI ))
-            {
-                type = xpp.getAttributeValue( i );
-                break;
-            }
-        }
-        return type;
-    }
-    
-    /**
-     * Returns true if the value of the current tag is Base64Binary encoded
-     *
-     * @param parser the XPP parser to use
-     * @param attrValue the attribute value
-     * @return true if the value of the current tag is Base64BinaryEncoded, false if not
-     */
-    private boolean isBase64BinaryValue( XmlPullParser parser, String attrValue )
-    {
-        if ( attrValue == null )
-        {
-            return false;
-        }
-        // We are looking for something that should look like that: "aNameSpace:base64Binary"
-        // We split the String. The first element should be the namespace prefix and the second "base64Binary"
-        String [] splitedString = attrValue.split( ":" );
-        return ( splitedString.length == 2 ) 
-                && ( XML_SCHEMA_URI.equals( parser.getNamespace( splitedString[0] ) ) ) 
-                && ( "base64Binary".equals( splitedString[1] ) );
     }
 }

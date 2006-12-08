@@ -98,6 +98,34 @@ public class ModifyResponseTest extends AbstractResponseTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
+    
+    /**
+     * Test parsing of a response with a (optional) Control element with empty value
+     */
+    public void testResponseWith1ControlEmptyValue()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ModifyResponseTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyResponse modifyResponse = ( ModifyResponse ) parser.getBatchResponse().getCurrentResponse();
+        Control control = modifyResponse.getCurrentControl();
+        
+        assertEquals( 1, modifyResponse.getControls().size() );
+        assertTrue( control.getCriticality() );
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+        assertEquals( StringTools.EMPTY_BYTES, ( byte[] ) control.getControlValue() );
+    }
 
 
     /**
@@ -238,6 +266,32 @@ public class ModifyResponseTest extends AbstractResponseTest
         assertEquals( "Unrecognized extended operation EXTENSION_OID: 1.2.6.1.4.1.18060.1.1.1.100.2", ldapResult
             .getErrorMessage() );
     }
+    
+    /**
+     * Test parsing of a response with empty Error Message
+     */
+    public void testResponseWithEmptyErrorMessage()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ModifyResponseTest.class.getResource( "response_with_empty_error_message.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyResponse modifyResponse = ( ModifyResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        LdapResult ldapResult = modifyResponse.getLdapResult();
+
+        assertNull( ldapResult.getErrorMessage() );
+    }
 
 
     /**
@@ -277,6 +331,34 @@ public class ModifyResponseTest extends AbstractResponseTest
         {
             fail();
         }
+    }
+    
+    /**
+     * Test parsing of a response with an empty Referral
+     */
+    public void testResponseWith1EmptyReferral()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ModifyResponseTest.class.getResource( "response_with_1_empty_referral.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyResponse modifyResponse = ( ModifyResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        LdapResult ldapResult = modifyResponse.getLdapResult();
+
+        List referrals = ldapResult.getReferrals();
+
+        assertEquals( 0, referrals.size() );
     }
 
 

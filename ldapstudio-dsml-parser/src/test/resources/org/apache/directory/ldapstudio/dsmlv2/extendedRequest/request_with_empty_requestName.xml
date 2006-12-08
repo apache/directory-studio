@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core"
+              xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance"
+              xmlns:xsd="http://www.w3c.org/2001/XMLSchema">
 	<extendedRequest>
 		<requestName></requestName>
-		<requestValue type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</requestValue>
+		<requestValue xsi:type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</requestValue>
 	</extendedRequest>
 </batchRequest>

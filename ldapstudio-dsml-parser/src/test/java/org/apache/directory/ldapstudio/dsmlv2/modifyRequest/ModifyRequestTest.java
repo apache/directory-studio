@@ -257,6 +257,43 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ) );
     }
+    
+    /**
+     * Test parsing of a request with a Modification element with Base64 Value
+     * @throws NamingException 
+     */
+    public void testRequestWith1ModificationBase64Value() throws NamingException
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_modification_base64_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        assertEquals( LdapConstants.OPERATION_ADD, modifyRequest.getCurrentOperation() );
+
+        assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
+
+        ArrayList modifications = modifyRequest.getModifications();
+
+        assertEquals( 1, modifications.size() );
+
+        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
+
+        Attribute attribute = modification.getAttribute();
+
+        assertEquals( "cn=Emmanuel Lécharny, ou=people, dc=example, dc=com", new String( (byte[]) attribute.get( 0 ) ) );
+    }
 
 
     /**

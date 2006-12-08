@@ -307,4 +307,28 @@ public class ErrorResponseTest extends AbstractResponseTest
 
         assertEquals( "Connection refused", errorResponse.getMessage() );
     }
+    
+    /**
+     * Test parsing of a response with empty Message
+     */
+    public void testResponseWithEmptyMessage()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_empty_message.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        ErrorResponse errorResponse = ( ErrorResponse ) parser.getBatchResponse().getCurrentResponse();
+
+        assertNull( errorResponse.getMessage() );
+    }
 }

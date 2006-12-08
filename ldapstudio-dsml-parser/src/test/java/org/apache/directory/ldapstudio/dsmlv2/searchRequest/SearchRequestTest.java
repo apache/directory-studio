@@ -932,6 +932,43 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
+    
+    /**
+     * Test parsing of a request with an approxMatch Filter with base64 value
+     */
+    public void testRequestWithApproxMatchFilterBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_approxMatch_base64_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.APPROX_MATCH_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
+    }
 
 
     /**
@@ -1034,6 +1071,43 @@ public class SearchRequestTest extends AbstractTest
         assertEquals( "sn", assertion.getAttributeDesc() );
 
         assertEquals( "foobar", assertion.getAssertionValue() );
+    }
+    
+    /**
+     * Test parsing of a request with an greaterOrEqual Filter with base64 value
+     */
+    public void testRequestWithGreaterOrEqualFilterBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_greaterOrEqual_base64_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.GREATER_OR_EQUAL_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
     }
 
 
@@ -1138,6 +1212,43 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
+    
+    /**
+     * Test parsing of a request with an lessOrEqual Filter with Base64 value
+     */
+    public void testRequestWithLessOrEqualFilterBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_lessOrEqual_base64_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.LESS_OR_EQUAL_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
+    }
 
 
     /**
@@ -1240,6 +1351,43 @@ public class SearchRequestTest extends AbstractTest
         assertEquals( "sn", assertion.getAttributeDesc() );
 
         assertEquals( "foobar", assertion.getAssertionValue() );
+    }
+    
+    /**
+     * Test parsing of a request with an Equality Filter with base64 value
+     */
+    public void testRequestWithEqualityMatchFilterBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_equalityMatch_base64_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AttributeValueAssertionFilter );
+
+        AttributeValueAssertionFilter approxMatchFilter = ( AttributeValueAssertionFilter ) filter;
+
+        assertEquals( LdapConstants.EQUALITY_MATCH_FILTER, approxMatchFilter.getFilterType() );
+
+        AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
     }
 
 
@@ -1377,6 +1525,39 @@ public class SearchRequestTest extends AbstractTest
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
 
         assertEquals( "A Value", extensibleMatchFilter.getMatchValue() );
+
+        assertEquals( false, extensibleMatchFilter.isDnAttributes() );
+    }
+    
+    /**
+     * Test parsing of a request with an ExtensibleMatch Filter
+     */
+    public void testRequestWithExtensibleMatchFilterBase64Value()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_base64_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof ExtensibleMatchFilter );
+
+        ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
+
+        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) extensibleMatchFilter.getMatchValue() ) );
 
         assertEquals( false, extensibleMatchFilter.isDnAttributes() );
     }
@@ -1706,6 +1887,37 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "jack", substringFilter.getInitialSubstrings().toString() );
     }
+    
+    /**
+     * Test parsing of a request with a Substrings Filter with 1 Initial element with Base64 value
+     */
+    public void testRequestWithSubstrings1Base64Initial()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_base64_initial.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof SubstringFilter );
+
+        SubstringFilter substringFilter = ( SubstringFilter ) filter;
+
+        assertEquals( "DSMLv2.0 rocks!!", substringFilter.getInitialSubstrings().toString() );
+    }
 
 
     /**
@@ -1843,8 +2055,41 @@ public class SearchRequestTest extends AbstractTest
         ArrayList initials = substringFilter.getAnySubstrings();
 
         assertEquals( 1, initials.size() );
-
         assertEquals( "kate", initials.get( 0 ).toString() );
+    }
+    
+    /**
+     * Test parsing of a request with a Substrings Filter with 1 Any element
+     */
+    public void testRequestWithSubstrings1Base64Any()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_base64_any.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof SubstringFilter );
+
+        SubstringFilter substringFilter = ( SubstringFilter ) filter;
+
+        ArrayList initials = substringFilter.getAnySubstrings();
+
+        assertEquals( 1, initials.size() );
+        assertEquals( "DSMLv2.0 rocks!!", initials.get( 0 ).toString() );
     }
 
 
@@ -1987,6 +2232,37 @@ public class SearchRequestTest extends AbstractTest
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
         assertEquals( "john", substringFilter.getFinalSubstrings().toString() );
+    }
+    
+    /**
+     * Test parsing of a request with a Substrings Filter with 1 Final element
+     */
+    public void testRequestWithSubstrings1Base64Final()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = new Dsmlv2Parser();
+
+            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_base64_final.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
+
+        Filter filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof SubstringFilter );
+
+        SubstringFilter substringFilter = ( SubstringFilter ) filter;
+
+        assertEquals( "DSMLv2.0 rocks!!", substringFilter.getFinalSubstrings().toString() );
     }
 
 

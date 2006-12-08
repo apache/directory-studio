@@ -71,6 +71,40 @@ public class SearchResultReferenceTest extends AbstractResponseTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
+    
+    /**
+     * Test parsing of a response with a (optional) Control element with empty value
+     */
+    public void testResponseWith1ControlEmptyValue()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser
+                .setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
+        assertEquals( 1, searchResultReference.getControls().size() );
+
+        Control control = searchResultReference.getCurrentControl();
+
+        assertTrue( control.getCriticality() );
+
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+
+        assertEquals( StringTools.EMPTY_BYTES, ( byte[] ) control.getControlValue() );
+    }
 
 
     /**
@@ -214,6 +248,34 @@ public class SearchResultReferenceTest extends AbstractResponseTest
             fail();
         }
     }
+    
+    /**
+     * Test parsing of a Response with 1 Ref
+     */
+    public void testResponseWith1EmptyRef()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_empty_ref.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchResultReference searchResultReference = ( ( SearchResponse ) parser.getBatchResponse()
+            .getCurrentResponse() ).getCurrentSearchResultReference();
+
+        List references = searchResultReference.getSearchResultReferences();
+
+        assertEquals( 0, references.size() );
+    }
+
 
 
     /**

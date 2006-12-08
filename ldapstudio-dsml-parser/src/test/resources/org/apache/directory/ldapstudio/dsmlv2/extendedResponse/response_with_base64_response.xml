@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core"
+               xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3c.org/2001/XMLSchema">
+	<extendedResponse requestID="10">
+		<resultCode code="0" descr="success"/>
+		<response xsi:type="xsd:base64Binary">RFNNTHYyLjAgcm9ja3MhIQ==</response>
+	</extendedResponse>
+</batchResponse>

@@ -71,6 +71,35 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
+    
+    /**
+     * Test parsing of a response with a (optional) Control element with empty value
+     */
+    public void testResponseWith1ControlEmptyValue()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+        Control control = searchResultEntry.getCurrentControl();
+        
+        assertEquals( 1, searchResultEntry.getControls().size() );
+        assertTrue( control.getCriticality() );
+        assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
+        assertEquals( StringTools.EMPTY_BYTES, ( byte[] ) control.getControlValue() );
+    }
 
 
     /**
@@ -319,6 +348,106 @@ public class SearchResultEntryTest extends AbstractResponseTest
         String value = ( String ) ne2.nextElement();
 
         assertEquals( "example", value );
+    }
+    
+    /**
+     * Test parsing of a response with 1 Attr 1 Base64 Value
+     */
+    public void testResponseWith1Attr1Base64Value()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_base64_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+
+        Attributes attributes = searchResultEntry.getPartialAttributeList();
+
+        assertEquals( 1, attributes.size() );
+
+        NamingEnumeration ne = attributes.getAll();
+
+        Attribute attribute = ( Attribute ) ne.nextElement();
+
+        assertEquals( "cn", attribute.getID() );
+
+        assertEquals( 1, attribute.size() );
+
+        NamingEnumeration ne2 = null;
+        try
+        {
+            ne2 = attribute.getAll();
+        }
+        catch ( NamingException e )
+        {
+            fail();
+        }
+
+        Object value = ne2.nextElement();
+        assertEquals( "Emmanuel Lécharny", new String( (byte[]) value ) );
+    }
+    
+    
+    /**
+     * Test parsing of a response with 1 Attr 1 empty Value
+     */
+    public void testResponseWith1Attr1EmptyValue()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser();
+
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_empty_value.xml" )
+                .getFile() );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
+            .getCurrentSearchResultEntry();
+
+        Attributes attributes = searchResultEntry.getPartialAttributeList();
+
+        assertEquals( 1, attributes.size() );
+
+        NamingEnumeration ne = attributes.getAll();
+
+        Attribute attribute = ( Attribute ) ne.nextElement();
+
+        assertEquals( "dc", attribute.getID() );
+
+        assertEquals( 1, attribute.size() );
+
+        NamingEnumeration ne2 = null;
+        try
+        {
+            ne2 = attribute.getAll();
+        }
+        catch ( NamingException e )
+        {
+            fail();
+        }
+
+        String value = ( String ) ne2.nextElement();
+
+        assertEquals( "", value );
     }
 
 
