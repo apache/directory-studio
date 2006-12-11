@@ -35,7 +35,7 @@ public class AbstractResponseTest extends TestCase
         {
             Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
-            parser.setInput( testClass.getResource( filename ).getFile() );
+            parser.setInputFile( testClass.getResource( filename ).getFile() );
 
             parser.parse();
         }
