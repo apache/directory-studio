@@ -26,9 +26,12 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
+import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 
 
 /**
@@ -78,15 +81,29 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
             Element attributeElement = element.addElement( "attr" );
             attributeElement.addAttribute( "name", attribute.getID() );
 
-            // Loopint on Values Enumeration
+            // Looping on Values Enumeration
             try
             {
                 NamingEnumeration ne2 = attribute.getAll();
 
                 while ( ne2.hasMoreElements() )
                 {
-                    String str = ne2.nextElement().toString();
-                    attributeElement.addElement( "value" ).addText( str );
+                    Object value = ne2.nextElement();
+                    
+                    if ( ParserUtils.needsBase64Encoding( value ) )
+                    {
+                        Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
+                        Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                        attributeElement.getDocument().getRootElement().add( xsdNamespace );
+                        attributeElement.getDocument().getRootElement().add( xsiNamespace );
+                        
+                        Element valueElement = attributeElement.addElement( "value" ).addText( ParserUtils.base64Encode( value ) );
+                        valueElement.addAttribute( new QName("type", xsiNamespace), "xsd:" + ParserUtils.BASE64BINARY );
+                    }
+                    else
+                    {
+                        attributeElement.addElement( "value" ).addText( value.toString() );
+                    }
                 }
             }
             catch ( NamingException e )
@@ -98,5 +115,4 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
 
         return element;
     }
-
 }

@@ -20,9 +20,12 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
-
+import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.extended.ExtendedResponse;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 
 
 /**
@@ -59,13 +62,39 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
     public Element toDsml( Element root )
     {
         Element element = root.addElement( "extendedResponse" );
+        ExtendedResponse extendedResponse = instance.getExtendedResponse();
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getExtendedResponse().getLdapResult(), instance );
+        // LDAP Result
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( extendedResponse.getLdapResult(), instance );
         ldapResultDsml.toDsml( element );
-
-        // TODO add management for ReponseName and Response Tag
-
+        
+        // ResponseName
+        String responseName = extendedResponse.getResponseName();
+        if ( responseName != null )
+        {
+            element.addElement( "responseName").addText( responseName );
+        }
+        
+        // Response
+        Object response = extendedResponse.getResponse();
+        if ( response != null )
+        {
+            if ( ParserUtils.needsBase64Encoding( response ) )
+            {
+                Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
+                Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                element.getDocument().getRootElement().add( xsdNamespace );
+                element.getDocument().getRootElement().add( xsiNamespace );
+                
+                Element responseElement = element.addElement( "response").addText( ParserUtils.base64Encode( response ) );
+                responseElement.addAttribute( new QName("type", xsiNamespace), "xsd:" + ParserUtils.BASE64BINARY );
+            }
+            else
+            {
+                element.addElement( "response").addText( response.toString() );
+            }
+        }
+        
         return element;
     }
-
 }

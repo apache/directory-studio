@@ -80,7 +80,7 @@ public class LdapResultDsml implements DsmlDecorator
 
         // ErrorMessage
         String errorMessage = ( result.getErrorMessage() );
-        if ( !errorMessage.equals( "" ) )
+        if ( ( errorMessage != null ) && ( !errorMessage.equals( "" ) ) )
         {
             Element errorMessageElement = root.addElement( "errorMessage" );
             errorMessageElement.addText( errorMessage );
