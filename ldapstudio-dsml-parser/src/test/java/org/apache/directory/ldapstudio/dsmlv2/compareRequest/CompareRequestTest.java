@@ -92,6 +92,14 @@ public class CompareRequestTest extends AbstractTest
         assertEquals( 456, compareRequest.getMessageId() );
     }
 
+    
+    /**
+     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     */
+    public void testRequestWithRequestIdEquals0()
+    {
+        testParsingFail( CompareRequestTest.class, "request_with_requestID_equals_0.xml" );
+    }
 
     /**
      * Test parsing of a request with a (optional) Control element

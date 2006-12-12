@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.AbstractResponseTest;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
+import org.apache.directory.ldapstudio.dsmlv2.batchResponse.BatchResponseTest;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
@@ -201,6 +202,14 @@ public class SearchResultReferenceTest extends AbstractResponseTest
             .getCurrentResponse() ).getCurrentSearchResultReference();
 
         assertEquals( 456, searchResultReference.getMessageId() );
+    }
+    
+    /**
+     * Test parsing of a Response with the (optional) requestID attribute equals 0
+     */
+    public void testResponseWithRequestIdEquals0()
+    {
+        testParsingFail( SearchResultReferenceTest.class, "response_with_requestID_equals_0.xml" );
     }
 
 

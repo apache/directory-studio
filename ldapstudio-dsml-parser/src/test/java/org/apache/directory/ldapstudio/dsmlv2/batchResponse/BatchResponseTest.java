@@ -65,6 +65,15 @@ public class BatchResponseTest extends AbstractResponseTest
 
         assertEquals( 1234567890, batchResponse.getRequestID() );
     }
+    
+    
+    /**
+     * Test parsing of a Response with the (optional) requestID attribute equals 0
+     */
+    public void testResponseWithRequestIdEquals0()
+    {
+        testParsingFail( BatchResponseTest.class, "response_with_requestID_equals_0.xml" );
+    }
 
 
     /**

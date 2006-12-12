@@ -90,6 +90,14 @@ public class DelRequestTest extends AbstractTest
 
         assertEquals( 456, delRequest.getMessageId() );
     }
+    
+    /**
+     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     */
+    public void testRequestWithRequestIdEquals0()
+    {
+        testParsingFail( DelRequestTest.class, "request_with_requestID_equals_0.xml" );
+    }
 
 
     /**

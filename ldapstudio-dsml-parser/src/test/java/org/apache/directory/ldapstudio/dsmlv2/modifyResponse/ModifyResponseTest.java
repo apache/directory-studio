@@ -65,6 +65,15 @@ public class ModifyResponseTest extends AbstractResponseTest
 
         assertEquals( 456, modifyResponse.getMessageId() );
     }
+    
+    
+    /**
+     * Test parsing of a Response with the (optional) requestID attribute equals 0
+     */
+    public void testResponseWithRequestIdEquals0()
+    {
+        testParsingFail( ModifyResponseTest.class, "response_with_requestID_equals_0.xml" );
+    }
 
 
     /**

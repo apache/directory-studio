@@ -755,14 +755,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    batchResponse.setRequestID( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	batchResponse.setRequestID( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
         }
     };
@@ -790,14 +783,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    addResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+                addResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
@@ -838,14 +824,8 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    bindResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	bindResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+               
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
@@ -886,14 +866,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    compareResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	compareResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
@@ -934,14 +907,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    delResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	delResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );        
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
@@ -982,14 +948,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    modifyResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	modifyResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
@@ -1030,14 +989,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    modifyDNResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	modifyDNResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );  
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
@@ -1078,14 +1030,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    extendedResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	extendedResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );
@@ -1122,14 +1067,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    errorResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	errorResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // type
             attributeValue = xpp.getAttributeValue( "", "type" );
@@ -1559,14 +1497,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    searchResponse.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	searchResponse.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
         }
     };
@@ -1593,14 +1524,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    searchResultEntry.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	searchResultEntry.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1644,14 +1568,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    searchResultReference.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	searchResultReference.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
         }
     };
@@ -1680,14 +1597,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                try
-                {
-                    searchResultDone.setMessageId( Integer.parseInt( attributeValue ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
-                }
+            	searchResultDone.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // MatchedDN
             attributeValue = xpp.getAttributeValue( "", "matchedDN" );

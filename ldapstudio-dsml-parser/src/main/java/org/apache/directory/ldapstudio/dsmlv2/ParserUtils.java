@@ -4,6 +4,7 @@ package org.apache.directory.ldapstudio.dsmlv2;
 import org.apache.directory.shared.ldap.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.util.Base64;
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 public class ParserUtils
 {
@@ -92,5 +93,31 @@ public class ParserUtils
         }
         
         return "";
+    }
+    
+    /**
+     * Parses and verify the parsed value of the requestID
+     * @param attributeValue the value of the attribute
+     * @param xpp the XmlPullParser
+     * @return the int value of the resquestID
+     * @throws XmlPullParserException if RequestID isn't an Integer and if requestID equals 0
+     */
+    public static int parseAndVerifyRequestID( String attributeValue, XmlPullParser xpp ) throws XmlPullParserException
+    {
+    	try
+    	{
+        	int requestID = Integer.parseInt( attributeValue );
+        	
+        	if ( requestID == 0 )
+        	{
+        		throw new XmlPullParserException( "The attribute requestID can't be equal to 0", xpp, null );
+        	}
+        	
+        	return requestID;
+    	}
+        catch ( NumberFormatException e )
+        {
+            throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
+        }
     }
 }

@@ -65,6 +65,15 @@ public class CompareResponseTest extends AbstractResponseTest
 
         assertEquals( 456, compareResponse.getMessageId() );
     }
+    
+    
+    /**
+     * Test parsing of a Response with the (optional) requestID attribute equals 0
+     */
+    public void testResponseWithRequestIdEquals0()
+    {
+        testParsingFail( CompareResponseTest.class, "response_with_requestID_equals_0.xml" );
+    }
 
 
     /**

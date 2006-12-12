@@ -57,6 +57,14 @@ public class ExtendedRequestTest extends AbstractTest
 
         assertEquals( 456, extendedRequest.getMessageId() );
     }
+    
+    /**
+     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     */
+    public void testRequestWithRequestIdEquals0()
+    {
+        testParsingFail( ExtendedRequestTest.class, "request_with_requestID_equals_0.xml" );
+    }
 
 
     /**

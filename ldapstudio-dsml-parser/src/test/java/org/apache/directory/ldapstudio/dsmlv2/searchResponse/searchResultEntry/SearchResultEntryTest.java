@@ -240,6 +240,15 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         assertEquals( 456, searchResultEntry.getMessageId() );
     }
+    
+    
+    /**
+     * Test parsing of a Response with the (optional) requestID attribute equals 0
+     */
+    public void testResponseWithRequestIdEquals0()
+    {
+        testParsingFail( SearchResultEntryTest.class, "response_with_requestID_equals_0.xml" );
+    }
 
 
     /**

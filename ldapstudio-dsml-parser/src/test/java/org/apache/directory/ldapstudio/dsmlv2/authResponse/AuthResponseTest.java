@@ -65,6 +65,15 @@ public class AuthResponseTest extends AbstractResponseTest
 
         assertEquals( 456, bindResponse.getMessageId() );
     }
+   
+    
+    /**
+     * Test parsing of a Response with the (optional) requestID attribute equals 0
+     */
+    public void testResponseWithRequestIdEquals0()
+    {
+        testParsingFail( AuthResponseTest.class, "response_with_requestID_equals_0.xml" );
+    }
 
 
     /**

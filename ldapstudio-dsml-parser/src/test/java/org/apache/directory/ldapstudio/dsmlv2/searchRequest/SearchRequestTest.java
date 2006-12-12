@@ -108,6 +108,15 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( 456, searchRequest.getMessageId() );
     }
+    
+    
+    /**
+     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     */
+    public void testRequestWithRequestIdEquals0()
+    {
+        testParsingFail( SearchRequestTest.class, "request_with_requestID_equals_0.xml" );
+    }
 
 
     /**
