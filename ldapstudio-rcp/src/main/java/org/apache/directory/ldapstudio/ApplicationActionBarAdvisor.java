@@ -26,6 +26,7 @@ import org.apache.directory.ldapstudio.actions.ManageExtensionsAction;
 import org.apache.directory.ldapstudio.actions.UpdateAction;
 import org.apache.directory.ldapstudio.view.ImageKeys;
 import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -37,6 +38,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -65,10 +67,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction importAction;
     private IWorkbenchAction exportAction;
     private IWorkbenchAction propertiesAction;
-    private IWorkbenchAction openPerspectiveAction;
     private IWorkbenchAction closePerspectiveAction;
     private IWorkbenchAction closeAllPerspectivesAction;
-    private IWorkbenchAction showViewAction;
     private IWorkbenchAction undoAction;
     private IWorkbenchAction redoAction;
     private IWorkbenchAction cutAction;
@@ -76,6 +76,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction pasteAction;
     private IWorkbenchAction deleteAction;
     private IWorkbenchAction selectAllAction;
+    private IContributionItem perspectivesList;
+    private IContributionItem viewsList;
 
 
     public ApplicationActionBarAdvisor( IActionBarConfigurer configurer )
@@ -148,12 +150,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         selectAllAction = ActionFactory.SELECT_ALL.create( window );
         register( selectAllAction );
         
-        openPerspectiveAction = ActionFactory.OPEN_PERSPECTIVE_DIALOG.create( window );
-        register( openPerspectiveAction );
-        
-        showViewAction = ActionFactory.SHOW_VIEW_MENU.create( window );
-        register( showViewAction );
-        
         closePerspectiveAction = ActionFactory.CLOSE_PERSPECTIVE.create( window );
         register( closePerspectiveAction );
         
@@ -179,6 +175,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         helpAction = ActionFactory.HELP_CONTENTS.create( window );
         register( helpAction );
+        
+        viewsList = ContributionItemFactory.VIEWS_SHORTLIST.create( window );
+        perspectivesList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create( window );
     }
 
 
@@ -228,8 +227,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         editMenu.add( selectAllAction );
         
         // Window 
-        windowMenu.add( openPerspectiveAction );
-        windowMenu.add( showViewAction );
+        MenuManager perspectiveMenu = new MenuManager("Open Perspective", "openPerspective");
+        perspectiveMenu.add(perspectivesList);
+        windowMenu.add(perspectiveMenu);
+        MenuManager viewMenu = new MenuManager("Show View");
+        viewMenu.add(viewsList);
+        windowMenu.add(viewMenu);
         windowMenu.add( new Separator() );
         windowMenu.add( closePerspectiveAction );
         windowMenu.add( closeAllPerspectivesAction );
