@@ -150,16 +150,19 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
+            icon="ressources/icons/schema_new.gif"
             id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
             name="%ldapstudio-schemas-plugin.wizards.createanewschema.name"/>
       <wizard
             class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjectClassWizard"
+            icon="ressources/icons/object_class_new.gif"
             id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjecClassWizard"
             name="%ldapstudio-schemas-plugin.wizards.createanewobjectclass.name"/>
       <wizard
             class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"
+            icon="ressources/icons/attribute_type_new.gif"
             id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"
-            name="%ldapstudio-schemas-plugin.wizards.createanewattributetype.namee"/>>
+            name="%ldapstudio-schemas-plugin.wizards.createanewattributetype.name"/>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
