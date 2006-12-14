@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Tasks" link_to="toc.xml#tasks"> 
+	<topic label="Running LDAP Studio" href="resources/help/html/tasks/running_LDAP_Studio.html" /> 
+	<topic label="Opening a schema" href="resources/help/html/tasks/opening_a_schema.html" />
+	<topic label="Creating a new schema" href="resources/help/html/tasks/creating_a_new_schema.html" />
+	<topic label="Removing a schema" href="resources/help/html/tasks/removing_a_schema.html" />
+	<topic label="Creating a new object class" href="resources/help/html/tasks/creating_a_new_object_class.html" />
+	<topic label="Creating a new attribute type" href="resources/help/html/tasks/creating_a_new_attribute_type.html" />
+</toc>

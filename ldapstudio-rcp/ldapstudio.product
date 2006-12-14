@@ -21,7 +21,7 @@
 <product name="LDAP Studio" id="org.apache.directory.ldapstudio.product" application="org.apache.directory.ldapstudio.application" useFeatures="true">
 
    <aboutInfo>
-      <image path="ressources/pictures/product_lg.gif"/>
+      <image path="resources/pictures/product_lg.gif"/>
       <text>
          %aboutText
       </text>
@@ -31,8 +31,6 @@
 
    <launcherArgs>
    </launcherArgs>
-
-   <windowImages i16="ressources/icons/sample.gif"/>
 
    <launcher name="LDAPStudio">
       <solaris/>

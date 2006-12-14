@@ -41,6 +41,16 @@ public class Perspective implements IPerspectiveFactory
 
         layout.addStandaloneView( WelcomeView.ID, false, IPageLayout.LEFT, 1.0f, editorArea );
         layout.getViewLayout( WelcomeView.ID ).setCloseable( false );
+        
+//        // Outline folder
+//        IFolderLayout outlineFolder = layout.createFolder( "outlineFolder", IPageLayout.RIGHT, ( float ) 0.75,
+//            editorArea );
+//        outlineFolder.addView( IPageLayout.ID_OUTLINE );
+//        
+//        // Progress folder
+//        IFolderLayout progessFolder = layout.createFolder( "progressFolder", IPageLayout.BOTTOM, ( float ) 0.75,
+//            IPageLayout.ID_OUTLINE );
+//        progessFolder.addView( IPageLayout.ID_PROGRESS_VIEW );
     }
 
 }

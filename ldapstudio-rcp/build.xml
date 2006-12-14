@@ -106,9 +106,9 @@
 				<include name="**" />
 			</fileset>
 		</copy>
-		<mkdir dir="${ldapstudio-rcp.build}/ressources" />
-		<copy todir="${ldapstudio-rcp.build}/ressources">
-			<fileset dir="${basedir}/ressources">
+		<mkdir dir="${ldapstudio-rcp.build}/resources" />
+		<copy todir="${ldapstudio-rcp.build}/resources">
+			<fileset dir="${basedir}/resources">
 				<include name="**" />
 			</fileset>
 		</copy>
@@ -208,7 +208,7 @@
 				<exclude name="plugin.properties" />
 				<exclude name="plugin.xml" />
 				<exclude name="product_lg.gif" />
-				<exclude name="ressources/**" />
+				<exclude name="resources/**" />
 				<exclude name="splash.bmp" />
 				<exclude name="src/**" />
 			</fileset>

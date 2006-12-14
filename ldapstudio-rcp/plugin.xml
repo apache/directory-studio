@@ -47,11 +47,8 @@
                name="aboutText"
                value="%aboutText"/>
          <property
-               name="windowImages"
-               value="ressources/icons/sample.gif"/>
-         <property
                name="aboutImage"
-               value="ressources/pictures/product_lg.gif"/>
+               value="resources/pictures/product_lg.gif"/>
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini"/>
@@ -70,6 +67,13 @@
             class="org.apache.directory.ldapstudio.view.WelcomeView"
             id="org.apache.directory.ldapstudio.view.WelcomeView"
             name="Welcome View"/>
+      <view
+            name="Progress"
+            icon="resources/icons/progress.gif"
+            category="org.eclipse.ui"
+            class="org.eclipse.ui.ExtensionFactory:progressView"
+            id="org.eclipse.ui.views.ProgressView">
+         </view>
    </extension>
 
 </plugin>

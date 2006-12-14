@@ -27,7 +27,5 @@ package org.apache.directory.ldapstudio.view;
 public class ImageKeys
 {
     // Images for Actions
-    public static final String ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$
-    public static final String EXIT = "ressources/icons/stop.png"; //$NON-NLS-1$
-    public static final String SHOW_PREFERENCES = "ressources/icons/preferences.png"; //$NON-NLS-1$
+    public static final String SHOW_PREFERENCES = "resources/icons/preferences.png"; //$NON-NLS-1$
 }

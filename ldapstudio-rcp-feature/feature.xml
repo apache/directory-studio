@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.ldapstudio.feature"
       label="LDAP Studio"
-      version="0.1"
+      version="1.0"
       provider-name="apache.org">
 
    <description url="http://www.example.com/description">
@@ -18,7 +18,7 @@
    </license>
 
    <url>
-      <update url="http://www"/>
+      <update label="LDAP Studio RCP Application Update Site" url="http://people.apache.org/~pajbam/ldapstudio/rcp"/>
    </url>
 
    <includes
@@ -38,6 +38,8 @@
       <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.update.configurator" version="3.1.0" match="compatible"/>
       <import plugin="org.eclipse.update.core" version="3.1.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.help" version="3.2.0" match="compatible"/>
    </requires>
 
    <plugin
@@ -109,6 +111,20 @@
 
    <plugin
          id="org.eclipse.update.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.views"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.jobs"
          download-size="0"
          install-size="0"
          version="0.0.0"
