@@ -64,7 +64,7 @@ public class ObjectClassTest extends TestCase
      */
     public void testCreateObjectClassFromLiteral() throws Exception
     {
-        ObjectClass oc = new ObjectClass( literal, schema );
+        new ObjectClass( literal, schema );
     }
 
 

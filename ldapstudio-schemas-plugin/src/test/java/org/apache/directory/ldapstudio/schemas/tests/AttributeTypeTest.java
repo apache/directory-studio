@@ -61,7 +61,7 @@ public class AttributeTypeTest extends TestCase
      */
     public void testCreateAttributeTypeFromLiteral() throws Exception
     {
-        AttributeType at = new AttributeType( literal, schema );
+        new AttributeType( literal, schema );
     }
 
 
