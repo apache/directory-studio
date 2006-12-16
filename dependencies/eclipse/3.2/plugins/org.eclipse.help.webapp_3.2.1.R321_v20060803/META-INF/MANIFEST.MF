@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-Activator: org.eclipse.help.internal.webapp.HelpWebappPlugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Export-Package: org.eclipse.help.internal.webapp;x-friends:="org.eclip
+ se.ua.tests"
+Bundle-Version: 3.2.1.R321_v20060803
+Eclipse-LazyStart: true
+Bundle-Name: %help_webapp_plugin_name
+Bundle-ClassPath: webapp.jar
+Bundle-ManifestVersion: 2
+Bundle-Vendor: %providerName
+Bundle-SymbolicName: org.eclipse.help.webapp; singleton:=true
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.help.base;bundle-version="[3.1.0,4.0.0)",o
+ rg.eclipse.core.runtime;bundle-version="[3.1.0,4.0.0)"
+

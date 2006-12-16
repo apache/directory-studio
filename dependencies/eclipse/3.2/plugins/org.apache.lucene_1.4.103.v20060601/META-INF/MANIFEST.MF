@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-Name: %lucene_plugin_name
+Bundle-ClassPath: lucene-1.4.3.jar,parser.jar
+Bundle-RequiredExecutionEnvironment: J2SE-1.3
+Bundle-Vendor: %providerName
+Bundle-ManifestVersion: 2
+Bundle-Localization: plugin
+Bundle-SymbolicName: org.apache.lucene
+Export-Package: org.apache.lucene.analysis,org.apache.lucene.analysis.
+ de,org.apache.lucene.analysis.ru,org.apache.lucene.analysis.standard,
+ org.apache.lucene.demo.html;x-friends:="org.eclipse.help.base,org.ecl
+ ipse.pde.ui",org.apache.lucene.document,org.apache.lucene.index,org.a
+ pache.lucene.queryParser,org.apache.lucene.search,org.apache.lucene.s
+ earch.spans,org.apache.lucene.store,org.apache.lucene.util
+Bundle-Version: 1.4.103.v20060601
+Eclipse-LazyStart: false
+
