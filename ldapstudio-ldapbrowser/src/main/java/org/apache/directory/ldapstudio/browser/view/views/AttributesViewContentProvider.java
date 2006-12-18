@@ -40,8 +40,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.PlatformUI;
 
-import sun.security.krb5.internal.util.o;
-
 
 /**
  * This class is the Content Provider for the Attributes View
