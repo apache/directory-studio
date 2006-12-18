@@ -20,90 +20,68 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
-
 /**
- * This class represent a XML Tag which consists of :
- *     - a name
- *     - a type (START, END) 
- *
+ * This class represent a XML Tag which consists of : - a name - a type (START,
+ * END)
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Tag
-{
+public class Tag {
 
     private String name;
+
     private int type;
 
     public static int START = 0;
+
     public static int END = 1;
 
-
-    public Tag( String name, int type )
-    {
-        setName( name );
-        setType( type );
+    public Tag(String name, int type) {
+	setName(name);
+	setType(type);
     }
 
-
-    public String getName()
-    {
-        return name;
+    public String getName() {
+	return name;
     }
 
-
-    public void setName( String name )
-    {
-        this.name = name.toLowerCase();
+    public void setName(String name) {
+	this.name = name.toLowerCase();
     }
 
-
-    public int getType()
-    {
-        return type;
+    public int getType() {
+	return type;
     }
 
-
-    public void setType( int type )
-    {
-        this.type = type;
+    public void setType(int type) {
+	this.type = type;
     }
-
 
     @Override
-    public boolean equals( Object obj )
-    {
-        if ( obj instanceof Tag )
-        {
-            Tag tag = ( Tag ) obj;
-            return ( ( this.name.equals( tag.getName() ) ) && ( this.type == tag.getType() ) );
+    public boolean equals(Object obj) {
+	if (obj instanceof Tag) {
+	    Tag tag = (Tag) obj;
+	    return ((this.name.equals(tag.getName())) && (this.type == tag
+		    .getType()));
 
-        }
-        else
-        {
-            return false;
-        }
+	} else {
+	    return false;
+	}
     }
 
-
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
 
-        return name.hashCode() + type << 24;
+	return name.hashCode() + type << 24;
     }
 
-
     @Override
-    public String toString()
-    {
-        if ( name != null )
-        {
-            return "<" + ( ( type == Tag.END ) ? "/" : "" ) + name + ">";
-        }
-        else
-        {
-            return "Unknown tag";
-        }
+    public String toString() {
+	if (name != null) {
+	    return "<" + ((type == Tag.END) ? "/" : "") + name + ">";
+	} else {
+	    return "Unknown tag";
+	}
     }
 
 }

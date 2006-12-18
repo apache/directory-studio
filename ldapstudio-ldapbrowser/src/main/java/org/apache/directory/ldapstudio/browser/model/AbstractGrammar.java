@@ -20,9 +20,7 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
-
 import java.util.HashMap;
-
 
 /**
  * The abstract IGrammar which is the Mother of all the grammars. It contains
@@ -30,63 +28,54 @@ import java.util.HashMap;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractGrammar implements IGrammar
-{
+public abstract class AbstractGrammar implements IGrammar {
 
     /**
-     * Table of transitions. It's a two dimension array, the first dimension
-     * indice the states, the second dimension indices the Tag value, so it is
-     * 256 wide.
-     */
+         * Table of transitions. It's a two dimension array, the first dimension
+         * indice the states, the second dimension indices the Tag value, so it
+         * is 256 wide.
+         */
     protected HashMap<Tag, GrammarTransition>[] transitions;
 
     /** The grammar name */
     protected String name;
 
-
-    public AbstractGrammar()
-    {
+    public AbstractGrammar() {
 
     }
-
 
     // ~ Methods
     // ------------------------------------------------------------------------------------
 
     /**
-     * Return the grammar's name
-     * 
-     * @return The grammar name
-     */
-    public String getName()
-    {
-        return name;
+         * Return the grammar's name
+         * 
+         * @return The grammar name
+         */
+    public String getName() {
+	return name;
     }
 
-
     /**
-     * Set the grammar's name
-     * 
-     * @param name
-     *            DOCUMENT ME!
-     */
-    public void setName( String name )
-    {
-        this.name = name;
+         * Set the grammar's name
+         * 
+         * @param name
+         *                DOCUMENT ME!
+         */
+    public void setName(String name) {
+	this.name = name;
     }
 
-
     /**
-     * Get the transition associated with the state and tag
-     * 
-     * @param state
-     *            The current state
-     * @param tag
-     *            The current tag
-     * @return A valid transition if any, or null.
-     */
-    public GrammarTransition getTransition( int state, Tag tag )
-    {
-        return transitions[state].get( tag );
+         * Get the transition associated with the state and tag
+         * 
+         * @param state
+         *                The current state
+         * @param tag
+         *                The current tag
+         * @return A valid transition if any, or null.
+         */
+    public GrammarTransition getTransition(int state, Tag tag) {
+	return transitions[state].get(tag);
     }
 }

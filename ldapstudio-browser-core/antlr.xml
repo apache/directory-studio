@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<project name="project" default="antlr">
+
+
+    <target name="antlr"  description="antlr" >
+        <antlr 
+    	    target="src/org/apache/directory/ldapstudio/browser/core/model/schema/parser/schemavalue.g" 
+    	    outputdirectory="src/org/apache/directory/ldapstudio/browser/core/model/schema/parser" 
+    	/>
+    	<antlr 
+    	    target="src/org/apache/directory/ldapstudio/browser/core/model/schema/parser/schema.g" 
+    	    outputdirectory="src/org/apache/directory/ldapstudio/browser/core/model/schema/parser" 
+    	/>
+    </target>
+
+
+</project>
+

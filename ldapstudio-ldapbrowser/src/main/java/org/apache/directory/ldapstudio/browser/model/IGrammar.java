@@ -20,40 +20,38 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
-
 /**
  * The interface which expose common behavior of a Gramar implementer.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface IGrammar
-{
+public interface IGrammar {
     // ~ Methods
     // ------------------------------------------------------------------------------------
 
     /**
-     * This method, when called, execute an action on the current data stored in
-     * the container.
-     * 
-     * @param asn1Container
-     *            Store the data being processed.
-     * @throws DecoderException
-     *             Thrown when an unrecoverable error occurs.
-     */
-    //void executeAction( ConnectionParserContainer container ) throws Exception;
+         * This method, when called, execute an action on the current data
+         * stored in the container.
+         * 
+         * @param asn1Container
+         *                Store the data being processed.
+         * @throws DecoderException
+         *                 Thrown when an unrecoverable error occurs.
+         */
+    // void executeAction( ConnectionParserContainer container ) throws
+        // Exception;
     /**
-     * Get the grammar name
-     * 
-     * @return Return the grammar's name
-     */
+         * Get the grammar name
+         * 
+         * @return Return the grammar's name
+         */
     String getName();
 
-
     /**
-     * Set the grammar's name
-     * 
-     * @param name
-     *            The grammar name
-     */
-    void setName( String name );
+         * Set the grammar's name
+         * 
+         * @param name
+         *                The grammar name
+         */
+    void setName(String name);
 }
