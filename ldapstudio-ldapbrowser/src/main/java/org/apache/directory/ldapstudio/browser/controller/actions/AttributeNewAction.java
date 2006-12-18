@@ -20,7 +20,6 @@
 
 package org.apache.directory.ldapstudio.browser.controller.actions;
 
-
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.AttributeAddWizard;
@@ -30,32 +29,28 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-
 /**
  * This class implements the Attribute New Action.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeNewAction extends Action
-{
+public class AttributeNewAction extends Action {
     private AttributesView view;
 
-
-    public AttributeNewAction( AttributesView view, String text )
-    {
-        super( text );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.ATTRIBUTE_NEW ) );
-        setToolTipText( "New attribute" );
-        this.view = view;
+    public AttributeNewAction(AttributesView view, String text) {
+	super(text);
+	setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
+		Activator.PLUGIN_ID, ImageKeys.ATTRIBUTE_NEW));
+	setToolTipText("New attribute");
+	this.view = view;
     }
 
-
-    public void run()
-    {
-        // Creating the Wizard and opening it
-        AttributeAddWizard wizard = new AttributeAddWizard();
-        WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
-        dialog.create();
-        dialog.open();
+    public void run() {
+	// Creating the Wizard and opening it
+	AttributeAddWizard wizard = new AttributeAddWizard();
+	WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench()
+		.getActiveWorkbenchWindow().getShell(), wizard);
+	dialog.create();
+	dialog.open();
     }
 }

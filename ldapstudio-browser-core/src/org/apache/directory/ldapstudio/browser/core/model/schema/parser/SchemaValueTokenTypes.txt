@@ -1,0 +1,13 @@
+// $ANTLR 2.7.5 (20050128): schemavalue.g -> SchemaValueTokenTypes.txt$
+SchemaValue    // output token vocab name
+WHSP=4
+LPAR=5
+RPAR=6
+QUOTE=7
+DOLLAR=8
+LBRACKET=9
+RBRACKET=10
+LEN=11
+DIGIT=12
+NUMERICOID=13
+DESCR=14

@@ -20,43 +20,42 @@
 
 package org.apache.directory.ldapstudio.browser.controller.actions;
 
-
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.AttributesView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-
 /**
  * This class implements the Attribute Edit Action.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeEditAction extends Action
-{
+public class AttributeEditAction extends Action {
     private AttributesView view;
 
-
     /**
-     * Creates a new instance of AttributeEditAction.
-     * @param view the associated view
-     * @param text the string used as the text for the action
-     */
-    public AttributeEditAction( AttributesView view, String text )
-    {
-        super( text );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.ATTRIBUTE_EDIT ) );
-        setToolTipText( "Edit attribute" );
-        this.view = view;
+         * Creates a new instance of AttributeEditAction.
+         * 
+         * @param view
+         *                the associated view
+         * @param text
+         *                the string used as the text for the action
+         */
+    public AttributeEditAction(AttributesView view, String text) {
+	super(text);
+	setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
+		Activator.PLUGIN_ID, ImageKeys.ATTRIBUTE_EDIT));
+	setToolTipText("Edit attribute");
+	this.view = view;
     }
 
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
-     */
-    public void run()
-    {
-        new RenameAttributeAction( view, "Rename attribute" ).run();
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.jface.action.Action#run()
+         */
+    public void run() {
+	new RenameAttributeAction(view, "Rename attribute").run();
     }
 }

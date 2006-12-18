@@ -20,7 +20,6 @@
 
 package org.apache.directory.ldapstudio.browser.controller;
 
-
 import org.apache.directory.ldapstudio.browser.controller.actions.ConnectionDeleteAction;
 import org.apache.directory.ldapstudio.browser.controller.actions.ConnectionEditAction;
 import org.apache.directory.ldapstudio.browser.controller.actions.ConnectionNewAction;
@@ -42,207 +41,190 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 
-
 /**
  * This class is the Controller for the Browser View.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BrowserViewController implements IMenuListener
-{
+public class BrowserViewController implements IMenuListener {
     private static final BrowserViewController instance;
 
     /** The controlled view */
     private BrowserView view;
 
     private static IAction connectionNewAction;
+
     private static IAction connectionEditAction;
+
     private static IAction connectionDeleteAction;
+
     private static IAction refreshAction;
+
     private static IAction entryNewAction;
+
     private static IAction entryDeleteAction;
 
     // Static thread-safe singleton initializer
-    static
-    {
-        try
-        {
-            instance = new BrowserViewController();
-        }
-        catch ( Throwable e )
-        {
-            throw new RuntimeException( e.getMessage() );
-        }
+    static {
+	try {
+	    instance = new BrowserViewController();
+	} catch (Throwable e) {
+	    throw new RuntimeException(e.getMessage());
+	}
     }
-
 
     /**
-     * Use this method to get the singleton instance of the controller
-     * @return
-     */
-    public static BrowserViewController getInstance()
-    {
-        return instance;
+         * Use this method to get the singleton instance of the controller
+         * 
+         * @return
+         */
+    public static BrowserViewController getInstance() {
+	return instance;
     }
 
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
-     */
-    public void menuAboutToShow( IMenuManager manager )
-    {
-        manager.add( connectionNewAction );
-        manager.add( connectionEditAction );
-        manager.add( connectionDeleteAction );
-        manager.add( new Separator() );
-        manager.add( refreshAction );
-        manager.add( new Separator() );
-        manager.add( entryNewAction );
-        manager.add( entryDeleteAction );
+    /*
+         * (non-Javadoc)
+         * 
+         * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+         */
+    public void menuAboutToShow(IMenuManager manager) {
+	manager.add(connectionNewAction);
+	manager.add(connectionEditAction);
+	manager.add(connectionDeleteAction);
+	manager.add(new Separator());
+	manager.add(refreshAction);
+	manager.add(new Separator());
+	manager.add(entryNewAction);
+	manager.add(entryDeleteAction);
     }
-
 
     /**
-     * Sets the controlled View
-     * @param view the controlled View
-     */
-    public void setView( final BrowserView view )
-    {
-        this.view = view;
+         * Sets the controlled View
+         * 
+         * @param view
+         *                the controlled View
+         */
+    public void setView(final BrowserView view) {
+	this.view = view;
 
-        // Adding DoubleClick behavior
-        view.getViewer().addDoubleClickListener( new IDoubleClickListener()
-        {
-            public void doubleClick( DoubleClickEvent event )
-            {
-                // What we get from the treeViewer is a StructuredSelection
-                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+	// Adding DoubleClick behavior
+	view.getViewer().addDoubleClickListener(new IDoubleClickListener() {
+	    public void doubleClick(DoubleClickEvent event) {
+		// What we get from the treeViewer is a StructuredSelection
+		StructuredSelection selection = (StructuredSelection) event
+			.getSelection();
 
-                // Here's the real object
-                Object objectSelection = selection.getFirstElement();
+		// Here's the real object
+		Object objectSelection = selection.getFirstElement();
 
-                view.getViewer().setExpandedState( objectSelection,
-                    !view.getViewer().getExpandedState( objectSelection ) );
-            }
-        } );
+		view.getViewer().setExpandedState(objectSelection,
+			!view.getViewer().getExpandedState(objectSelection));
+	    }
+	});
     }
 
-
     /**
-     * Creates all the actions
-     */
-    public void createActions()
-    {
-        connectionNewAction = new ConnectionNewAction( view, "New connection" );
-        connectionDeleteAction = new ConnectionDeleteAction( view, "Delete connection" );
-        connectionEditAction = new ConnectionEditAction( view, "Edit connection" );
-        refreshAction = new RefreshAction( view, "Refresh" );
-        entryNewAction = new EntryNewAction( view, "New entry" );
-        entryDeleteAction = new EntryDeleteAction( view, "Delete entry" );
+         * Creates all the actions
+         */
+    public void createActions() {
+	connectionNewAction = new ConnectionNewAction(view, "New connection");
+	connectionDeleteAction = new ConnectionDeleteAction(view,
+		"Delete connection");
+	connectionEditAction = new ConnectionEditAction(view, "Edit connection");
+	refreshAction = new RefreshAction(view, "Refresh");
+	entryNewAction = new EntryNewAction(view, "New entry");
+	entryDeleteAction = new EntryDeleteAction(view, "Delete entry");
 
-        registerUpdateActions();
+	registerUpdateActions();
     }
 
-
     /**
-     * Registers a Listener on the Browser View and enable/disable the Actions
-     * according to the selection
-     */
-    private void registerUpdateActions()
-    {
-        // Handling selection of the Browser View to enable/disable the Actions
-        view.getSite().getPage().addSelectionListener( BrowserView.ID, new ISelectionListener()
-        {
-            public void selectionChanged( IWorkbenchPart part, ISelection selection )
-            {
-                Object selectedObject = ( ( TreeSelection ) selection ).getFirstElement();
+         * Registers a Listener on the Browser View and enable/disable the
+         * Actions according to the selection
+         */
+    private void registerUpdateActions() {
+	// Handling selection of the Browser View to enable/disable the Actions
+	view.getSite().getPage().addSelectionListener(BrowserView.ID,
+		new ISelectionListener() {
+		    public void selectionChanged(IWorkbenchPart part,
+			    ISelection selection) {
+			Object selectedObject = ((TreeSelection) selection)
+				.getFirstElement();
 
-                if ( selectedObject == null )
-                {
-                    connectionEditAction.setEnabled( false );
-                    connectionDeleteAction.setEnabled( false );
-                    entryNewAction.setEnabled( false );
-                    entryDeleteAction.setEnabled( false );
-                }
-                else
-                {
-                    if ( selectedObject instanceof ConnectionWrapper )
-                    {
-                        connectionEditAction.setEnabled( true );
-                        connectionDeleteAction.setEnabled( true );
-                        entryNewAction.setEnabled( false );
-                        entryDeleteAction.setEnabled( false );
-                    }
-                    else if ( selectedObject instanceof EntryWrapper )
-                    {
-                        connectionEditAction.setEnabled( false );
-                        connectionDeleteAction.setEnabled( false );
-                        entryNewAction.setEnabled( true );
-                        entryDeleteAction.setEnabled( true );
-                    }
-                }
-            }
-        } );
+			if (selectedObject == null) {
+			    connectionEditAction.setEnabled(false);
+			    connectionDeleteAction.setEnabled(false);
+			    entryNewAction.setEnabled(false);
+			    entryDeleteAction.setEnabled(false);
+			} else {
+			    if (selectedObject instanceof ConnectionWrapper) {
+				connectionEditAction.setEnabled(true);
+				connectionDeleteAction.setEnabled(true);
+				entryNewAction.setEnabled(false);
+				entryDeleteAction.setEnabled(false);
+			    } else if (selectedObject instanceof EntryWrapper) {
+				connectionEditAction.setEnabled(false);
+				connectionDeleteAction.setEnabled(false);
+				entryNewAction.setEnabled(true);
+				entryDeleteAction.setEnabled(true);
+			    }
+			}
+		    }
+		});
     }
 
-
     /**
-     * Gets the ConnectionDeleteAction
-     * @return the ConnectionDeleteAction
-     */
-    public IAction getConnectionDeleteAction()
-    {
-        return connectionDeleteAction;
+         * Gets the ConnectionDeleteAction
+         * 
+         * @return the ConnectionDeleteAction
+         */
+    public IAction getConnectionDeleteAction() {
+	return connectionDeleteAction;
     }
 
-
     /**
-     * Gets the ConnectionNewAction
-     * @return the ConnectionNewAction
-     */
-    public IAction getConnectionNewAction()
-    {
-        return connectionNewAction;
+         * Gets the ConnectionNewAction
+         * 
+         * @return the ConnectionNewAction
+         */
+    public IAction getConnectionNewAction() {
+	return connectionNewAction;
     }
 
-
     /**
-     * Gets the ConnectionEditAction
-     * @return the ConnectionEditAction
-     */
-    public IAction getConnectionEditAction()
-    {
-        return connectionEditAction;
+         * Gets the ConnectionEditAction
+         * 
+         * @return the ConnectionEditAction
+         */
+    public IAction getConnectionEditAction() {
+	return connectionEditAction;
     }
 
-
     /**
-     * Gets the RefreshAction
-     * @return the RefreshAction
-     */
-    public IAction getRefreshAction()
-    {
-        return refreshAction;
+         * Gets the RefreshAction
+         * 
+         * @return the RefreshAction
+         */
+    public IAction getRefreshAction() {
+	return refreshAction;
     }
 
-
     /**
-     * Gets the EntryDeleteAction
-     * @return the EntryDeleteAction
-     */
-    public IAction getEntryDeleteAction()
-    {
-        return entryDeleteAction;
+         * Gets the EntryDeleteAction
+         * 
+         * @return the EntryDeleteAction
+         */
+    public IAction getEntryDeleteAction() {
+	return entryDeleteAction;
     }
 
-
     /**
-     * Gets the EntryNewAction
-     * @return the EntryNewAction
-     */
-    public IAction getEntryNewAction()
-    {
-        return entryNewAction;
+         * Gets the EntryNewAction
+         * 
+         * @return the EntryNewAction
+         */
+    public IAction getEntryNewAction() {
+	return entryNewAction;
     }
 
 }

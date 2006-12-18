@@ -20,7 +20,6 @@
 
 package org.apache.directory.ldapstudio.browser.view.views.wrappers;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,14 +32,12 @@ import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
-
 /**
  * This class represents the Root Node of the Browser View Table
- *
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TreeViewerRootNode implements DisplayableTreeViewerElement
-{
+public class TreeViewerRootNode implements DisplayableTreeViewerElement {
     private List<ConnectionWrapper> children;
 
     private static TreeViewerRootNode instance;
@@ -48,137 +45,111 @@ public class TreeViewerRootNode implements DisplayableTreeViewerElement
     private Connections connections;
 
     // Static thread-safe singleton initializer
-    static
-    {
-        try
-        {
-            instance = new TreeViewerRootNode();
-        }
-        catch ( Throwable e )
-        {
-            throw new RuntimeException( e.getMessage() );
-        }
+    static {
+	try {
+	    instance = new TreeViewerRootNode();
+	} catch (Throwable e) {
+	    throw new RuntimeException(e.getMessage());
+	}
     }
-
 
     /**
-     * Use this method to get the singleton instance of the Root Node
-     * @return
-     */
-    public static TreeViewerRootNode getInstance()
-    {
-        return instance;
+         * Use this method to get the singleton instance of the Root Node
+         * 
+         * @return
+         */
+    public static TreeViewerRootNode getInstance() {
+	return instance;
     }
 
-
-    private TreeViewerRootNode()
-    {
-        connections = Connections.getInstance();
+    private TreeViewerRootNode() {
+	connections = Connections.getInstance();
     }
 
+    public Object[] getChildren() {
+	if (children == null) {
+	    children = new ArrayList<ConnectionWrapper>();
 
-    public Object[] getChildren()
-    {
-        if ( children == null )
-        {
-            children = new ArrayList<ConnectionWrapper>();
+	    // Sorting the connections
+	    connections.sort();
 
-            // Sorting the connections
-            connections.sort();
+	    // Adding each Connection
+	    for (int i = 0; i < connections.size(); i++) {
+		ConnectionWrapper connectionWrapper = new ConnectionWrapper(
+			connections.getConnection(i));
 
-            // Adding each Connection
-            for ( int i = 0; i < connections.size(); i++ )
-            {
-                ConnectionWrapper connectionWrapper = new ConnectionWrapper( connections.getConnection( i ) );
+		connectionWrapper.setParent(this);
 
-                connectionWrapper.setParent( this );
+		children.add(connectionWrapper);
+	    }
+	}
 
-                children.add( connectionWrapper );
-            }
-        }
-
-        return children.toArray( new Object[0] );
+	return children.toArray(new Object[0]);
     }
 
+    public void updateChildren(ConnectionsEvent event) {
+	// Getting the Browser View
+	BrowserView browserView = (BrowserView) PlatformUI.getWorkbench()
+		.getActiveWorkbenchWindow().getActivePage().findView(
+			BrowserView.ID);
 
-    public void updateChildren( ConnectionsEvent event )
-    {
-        // Getting the Browser View
-        BrowserView browserView = ( BrowserView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-            .findView( BrowserView.ID );
+	// A CONNECTION HAS BEEN ADDED
+	if (event.getType().equals(ConnectionsEventType.ADD)) {
+	    // Adding the new connection
+	    children.add(new ConnectionWrapper(event.getConnection()));
 
-        // A CONNECTION HAS BEEN ADDED
-        if ( event.getType().equals( ConnectionsEventType.ADD ) )
-        {
-            // Adding the new connection
-            children.add( new ConnectionWrapper( event.getConnection() ) );
+	    // Sorting
+	    Collections.sort(children);
+	}
+	// A CONNECTION HAS BEEN UPDATED
+	else if (event.getType().equals(ConnectionsEventType.UPDATE)) {
+	    // Searching for the correct ConnectionWrapper Node.
+	    for (ConnectionWrapper connectionWrapper : children) {
+		if (event.getConnection().equals(
+			connectionWrapper.getConnection())) {
+		    // Updating the node
+		    browserView.getViewer().update(connectionWrapper, null);
+		}
+	    }
 
-            // Sorting
-            Collections.sort( children );
-        }
-        // A CONNECTION HAS BEEN UPDATED
-        else if ( event.getType().equals( ConnectionsEventType.UPDATE ) )
-        {
-            // Searching for the correct ConnectionWrapper Node.
-            for ( ConnectionWrapper connectionWrapper : children )
-            {
-                if ( event.getConnection().equals( connectionWrapper.getConnection() ) )
-                {
-                    // Updating the node
-                    browserView.getViewer().update( connectionWrapper, null );
-                }
-            }
-
-            // Sorting
-            Collections.sort( children );
-        }
-        // A CONNECTION HAS BEEN REMOVED
-        else if ( event.getType().equals( ConnectionsEventType.REMOVE ) )
-        {
-            // Searching for the correct ConnectionWrapper Node.
-            for ( ConnectionWrapper connectionWrapper : children )
-            {
-                if ( event.getConnection().equals( connectionWrapper.getConnection() ) )
-                {
-                    children.remove( connectionWrapper );
-                    break;
-                }
-            }
-        }
+	    // Sorting
+	    Collections.sort(children);
+	}
+	// A CONNECTION HAS BEEN REMOVED
+	else if (event.getType().equals(ConnectionsEventType.REMOVE)) {
+	    // Searching for the correct ConnectionWrapper Node.
+	    for (ConnectionWrapper connectionWrapper : children) {
+		if (event.getConnection().equals(
+			connectionWrapper.getConnection())) {
+		    children.remove(connectionWrapper);
+		    break;
+		}
+	    }
+	}
     }
 
-
-    public Connection getConnection()
-    {
-        // The root element is not linked to any connection
-        return null;
+    public Connection getConnection() {
+	// The root element is not linked to any connection
+	return null;
     }
 
-
-    public Image getDisplayImage()
-    {
-        // No image to display
-        return null;
+    public Image getDisplayImage() {
+	// No image to display
+	return null;
     }
 
-
-    public String getDisplayName()
-    {
-        // No name to display
-        return null;
+    public String getDisplayName() {
+	// No name to display
+	return null;
     }
 
-
-    public Object getParent()
-    {
-        // This is root element, so it has no parent
-        return null;
+    public Object getParent() {
+	// This is root element, so it has no parent
+	return null;
     }
 
-
-    public void setParent( Object parent )
-    {
-        // Nothing to do, since the root element has no parent
+    public void setParent(Object parent) {
+	// Nothing to do, since the root element has no parent
     }
 
 }

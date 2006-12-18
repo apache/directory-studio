@@ -54,7 +54,7 @@ public class ConnectionNewAction extends Action {
 	Connection newConnection = new Connection();
 
 	// Creating a new Connection Name with verification that a connection
-        // with
+	// with
 	// the same name doesn't exist yet.
 	String newConnectionString = "New Connection";
 	String testString = newConnectionString;
@@ -81,7 +81,7 @@ public class ConnectionNewAction extends Action {
 	int result = dialog.open();
 
 	// O is returned when "Finish" is clicked, 1 is returned when "Cancel"
-        // is clicked
+	// is clicked
 	if (result != 0) {
 	    return;
 	}

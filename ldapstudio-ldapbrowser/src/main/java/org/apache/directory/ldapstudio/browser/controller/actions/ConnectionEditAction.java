@@ -20,7 +20,6 @@
 
 package org.apache.directory.ldapstudio.browser.controller.actions;
 
-
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.model.Connection;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
@@ -36,55 +35,52 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-
 /**
  * This class implements the Connection Edit Action
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ConnectionEditAction extends Action
-{
+public class ConnectionEditAction extends Action {
     private BrowserView view;
 
-
-    public ConnectionEditAction( BrowserView view, String text )
-    {
-        super( text );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION_EDIT ) );
-        setToolTipText( "Edit connection" );
-        this.view = view;
+    public ConnectionEditAction(BrowserView view, String text) {
+	super(text);
+	setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
+		Activator.PLUGIN_ID, ImageKeys.CONNECTION_EDIT));
+	setToolTipText("Edit connection");
+	this.view = view;
     }
 
+    public void run() {
+	// Getting the selected connection
+	ConnectionWrapper connectionWrapper = (ConnectionWrapper) ((TreeSelection) view
+		.getViewer().getSelection()).getFirstElement();
+	Connection selectedConnection = connectionWrapper.getConnection();
 
-    public void run()
-    {
-        // Getting the selected connection
-        ConnectionWrapper connectionWrapper = ( ConnectionWrapper ) ( ( TreeSelection ) view.getViewer().getSelection() )
-            .getFirstElement();
-        Connection selectedConnection = connectionWrapper.getConnection();
+	// Creating the Connection Wizard
+	ConnectionWizard wizard = new ConnectionWizard();
+	wizard.init(PlatformUI.getWorkbench(), StructuredSelection.EMPTY);
+	wizard.setType(ConnectionWizardType.EDIT);
 
-        // Creating the Connection Wizard
-        ConnectionWizard wizard = new ConnectionWizard();
-        wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
-        wizard.setType( ConnectionWizardType.EDIT );
+	wizard.setConnection(selectedConnection);
 
-        wizard.setConnection( selectedConnection );
+	// Instantiates the wizard container with the wizard and opens it
+	WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench()
+		.getActiveWorkbenchWindow().getShell(), wizard);
+	dialog.create();
+	int result = dialog.open();
 
-        // Instantiates the wizard container with the wizard and opens it
-        WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
-        dialog.create();
-        int result = dialog.open();
+	// O is returned when "Finish" is clicked, 1 is returned when "Cancel"
+        // is clicked
+	if (result != 0) {
+	    return;
+	}
 
-        // O is returned when "Finish" is clicked, 1 is returned when "Cancel" is clicked
-        if ( result != 0 )
-        {
-            return;
-        }
+	// Updating the state of the Connection since it has changed (this
+        // causes the icon to change)
+	connectionWrapper.setState(ConnectionWrapperState.NONE);
+	connectionWrapper.connectionChanged();
 
-        // Updating the state of the Connection since it has changed (this causes the icon to change)
-        connectionWrapper.setState( ConnectionWrapperState.NONE );
-        connectionWrapper.connectionChanged();
-
-        selectedConnection.notifyListeners();
+	selectedConnection.notifyListeners();
     }
 }

@@ -76,7 +76,7 @@ public class EntryDeleteAction extends Action {
 		EntryWrapper entryWrapper = (EntryWrapper) items.next();
 
 		// Initialization of the DSML Engine and the DSML Response
-                // Parser
+		// Parser
 		Dsmlv2Engine engine = entryWrapper.getDsmlv2Engine();
 		Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
@@ -92,7 +92,7 @@ public class EntryDeleteAction extends Action {
 			+ "</batchRequest>";
 
 		// Executing the request and sending the result to the Response
-                // Parser
+		// Parser
 		parser.setInput(engine.processDSML(searchRequest));
 		parser.parse();
 
@@ -111,7 +111,7 @@ public class EntryDeleteAction extends Action {
 		} else if (ldapResponse instanceof SearchResponse) {
 
 		    // Getting the Search Result Entry List containing our
-                        // objects for the response
+		    // objects for the response
 		    SearchResponse searchResponse = ((SearchResponse) ldapResponse);
 		    List<SearchResultEntry> sreList = searchResponse
 			    .getSearchResultEntryList();
@@ -124,7 +124,7 @@ public class EntryDeleteAction extends Action {
 		    deleteRequest += "</batchRequest>";
 
 		    // Executing the request and sending the result to the
-                        // Response Parser
+		    // Response Parser
 		    parser.setInput(engine.processDSML(deleteRequest));
 		    parser.parse();
 

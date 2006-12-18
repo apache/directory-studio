@@ -143,7 +143,7 @@ public class RenameAttributeAction extends Action {
          */
     private void showEditor() {
 	// tableEditor.setEditor( textEditor,
-        // view.getViewer().getTable().getSelection()[0], COLUMN_TO_EDIT );
+	// view.getViewer().getTable().getSelection()[0], COLUMN_TO_EDIT );
 	textEditor.setText(getAttributeValue());
 	textEditor.selectAll();
 	textEditor.setFocus();
@@ -211,7 +211,7 @@ public class RenameAttributeAction extends Action {
 	    SearchResultEntry entry = entryWrapper.getEntry();
 
 	    // Initialization of the DSML Engine and the DSML Response
-                // Parser
+	    // Parser
 	    Dsmlv2Engine engine = entryWrapper.getDsmlv2Engine();
 	    Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
@@ -242,7 +242,7 @@ public class RenameAttributeAction extends Action {
 			    .add(textEditor.getText());
 
 		    // TableItem item =
-                        // view.getSelectedAttributeTableItem();
+		    // view.getSelectedAttributeTableItem();
 		    // item.setText( 1, textEditor.getText() );
 		    // view.getViewer().refresh( item );
 		} else {
