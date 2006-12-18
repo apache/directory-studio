@@ -20,12 +20,14 @@
 
 package org.apache.directory.ldapstudio.browser.view.views.wrappers;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
+
 
 /**
  * AttributeWrapper used to display an attribute and the number of its values in
@@ -34,99 +36,124 @@ import javax.naming.directory.Attribute;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeWrapper {
+public class AttributeWrapper
+{
     private Attribute attribute;
 
     private EntryWrapper entry;
 
     private List<AttributeValueWrapper> children;
 
-    /**
-         * Creates a new instance of AttributeWrapper.
-         * 
-         * @param attribute
-         *                the attribute to wrap
-         * @param entry
-         *                the associated EntryWrapper
-         */
-    public AttributeWrapper(Attribute attribute, EntryWrapper entry) {
-	this.attribute = attribute;
-	this.entry = entry;
-    }
 
     /**
-         * Gets the children of the object
-         * 
-         * @return the children of the object
-         */
-    public Object[] getChildren() {
-	if (children == null) {
-	    children = new ArrayList<AttributeValueWrapper>();
-
-	    try {
-		NamingEnumeration ne = attribute.getAll();
-
-		while (ne.hasMoreElements()) {
-		    AttributeValueWrapper avw = new AttributeValueWrapper(ne
-			    .nextElement(), this);
-		    children.add(avw);
-		}
-	    } catch (NamingException e) {
-		// TODO Add a log into Eclipse system
-		e.printStackTrace();
-	    }
-	}
-	return children.toArray();
+     * Creates a new instance of AttributeWrapper.
+     * 
+     * @param attribute
+     *                the attribute to wrap
+     * @param entry
+     *                the associated EntryWrapper
+     */
+    public AttributeWrapper( Attribute attribute, EntryWrapper entry )
+    {
+        this.attribute = attribute;
+        this.entry = entry;
     }
+
+
+    /**
+     * Gets the children of the object
+     * 
+     * @return the children of the object
+     */
+    public Object[] getChildren()
+    {
+        if ( children == null )
+        {
+            children = new ArrayList<AttributeValueWrapper>();
+
+            try
+            {
+                NamingEnumeration ne = attribute.getAll();
+
+                while ( ne.hasMoreElements() )
+                {
+                    AttributeValueWrapper avw = new AttributeValueWrapper( ne.nextElement(), this );
+                    children.add( avw );
+                }
+            }
+            catch ( NamingException e )
+            {
+                // TODO Add a log into Eclipse system
+                e.printStackTrace();
+            }
+        }
+        return children.toArray();
+    }
+
 
     /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
-         *      int)
-         */
-    public String getColumnText(Object element, int columnIndex) {
-	if (columnIndex == 0) {
-	    return attribute.getID();
-	} else if (columnIndex == 1) {
-	    int nb = getChildren().length;
-	    if (nb == 1) {
-		// If there's only one value we display it
-		try {
-		    Object value;
-		    value = attribute.get();
-		    if (value instanceof String) {
-			return (String) value;
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object,
+     *      int)
+     */
+    public String getColumnText( Object element, int columnIndex )
+    {
+        if ( columnIndex == 0 )
+        {
+            return attribute.getID();
+        }
+        else if ( columnIndex == 1 )
+        {
+            int nb = getChildren().length;
+            if ( nb == 1 )
+            {
+                // If there's only one value we display it
+                try
+                {
+                    Object value;
+                    value = attribute.get();
+                    if ( value instanceof String )
+                    {
+                        return ( String ) value;
 
-		    }
-		    return "(Binary value)";
+                    }
+                    return "(Binary value)";
 
-		} catch (NamingException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-	    } else {
-		return "(" + nb + " attributes)";
-	    }
-	}
-	return "";
+                }
+                catch ( NamingException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                return "(" + nb + " attributes)";
+            }
+        }
+        return "";
     }
 
-    /**
-         * Gets the HasChildren Flag
-         * 
-         * @return
-         */
-    public boolean hasChildren() {
-	return (getChildren().length > 1);
-    }
 
     /**
-         * Gets the name of the attribute
-         * 
-         * @return the name of the attribute
-         */
-    public String getName() {
-	return attribute.getID();
+     * Gets the HasChildren Flag
+     * 
+     * @return
+     */
+    public boolean hasChildren()
+    {
+        return ( getChildren().length > 1 );
+    }
+
+
+    /**
+     * Gets the name of the attribute
+     * 
+     * @return the name of the attribute
+     */
+    public String getName()
+    {
+        return attribute.getID();
     }
 }

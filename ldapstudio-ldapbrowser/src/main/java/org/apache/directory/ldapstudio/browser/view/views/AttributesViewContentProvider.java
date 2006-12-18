@@ -100,7 +100,7 @@ public class AttributesViewContentProvider implements IStructuredContentProvider
         if ( parentElement instanceof AttributeWrapper )
         {
             return ( ( AttributeWrapper ) parentElement ).getChildren();
-            
+
         }
         return null;
     }
@@ -120,8 +120,8 @@ public class AttributesViewContentProvider implements IStructuredContentProvider
     {
         if ( element instanceof AttributeWrapper )
         {
-            return ( ( AttributeWrapper ) element).hasChildren();
-            
+            return ( ( AttributeWrapper ) element ).hasChildren();
+
         }
         return false;
     }

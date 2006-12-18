@@ -80,7 +80,7 @@ public class AttributesView extends ViewPart
         tree.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
         tree.setLinesVisible( true );
         tree.setHeaderVisible( true );
-//        tree.setEnabled( false ); // The table is disabled by default since nothing is selected in the Browser View
+        //        tree.setEnabled( false ); // The table is disabled by default since nothing is selected in the Browser View
 
         viewer = new TreeViewer( tree );
         viewer.setUseHashlookup( true );
@@ -101,14 +101,14 @@ public class AttributesView extends ViewPart
 
         // Registering the view to the controller and creating the Actions
         controller.setView( this );
-//        controller.createActions();
+        //        controller.createActions();
 
         // Registering the Viewer, so other views can be notified when the viewer selection changes
         getSite().setSelectionProvider( viewer );
 
-//        createContextMenu();
+        //        createContextMenu();
 
-//        createToolbarButtons();
+        //        createToolbarButtons();
     }
 
 
@@ -126,7 +126,7 @@ public class AttributesView extends ViewPart
                 {
                     AttributeWrapper at1 = ( AttributeWrapper ) o1;
                     AttributeWrapper at2 = ( AttributeWrapper ) o2;
-                    
+
                     return at1.getName().compareTo( at2.getName() );
                 }
                 return 0;

@@ -20,7 +20,9 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
+
 import org.xmlpull.v1.XmlPullParserException;
+
 
 /**
  * IAction interface just contains the method 'action' which must be implemented
@@ -28,18 +30,18 @@ import org.xmlpull.v1.XmlPullParserException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface IAction {
+public interface IAction
+{
     // ~ Methods
     // ------------------------------------------------------------------------------------
 
     /**
-         * The action to be executed.
-         * 
-         * @param container
-         *                The container which stores the current data
-         * @throws DecoderException
-         *                 Thrown if something went wrong.
-         */
-    public void action(ConnectionParserContainer container)
-	    throws XmlPullParserException;
+     * The action to be executed.
+     * 
+     * @param container
+     *                The container which stores the current data
+     * @throws DecoderException
+     *                 Thrown if something went wrong.
+     */
+    public void action( ConnectionParserContainer container ) throws XmlPullParserException;
 }

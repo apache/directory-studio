@@ -20,21 +20,22 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
+
 /**
  * Interface that has to be implemented by each Class that wants to listen on
  * changes on Connections
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface ConnectionsListener {
+public interface ConnectionsListener
+{
     /**
-         * This method is called if the Connections have changed
-         * 
-         * @param connections
-         *                the Connections
-         * @param event
-         *                the event associated
-         */
-    public void connectionsChanged(Connections connections,
-	    ConnectionsEvent event);
+     * This method is called if the Connections have changed
+     * 
+     * @param connections
+     *                the Connections
+     * @param event
+     *                the event associated
+     */
+    public void connectionsChanged( Connections connections, ConnectionsEvent event );
 }

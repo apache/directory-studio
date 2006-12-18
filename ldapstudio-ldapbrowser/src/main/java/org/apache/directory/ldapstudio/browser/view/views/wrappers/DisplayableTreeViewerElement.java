@@ -20,8 +20,10 @@
 
 package org.apache.directory.ldapstudio.browser.view.views.wrappers;
 
+
 import org.apache.directory.ldapstudio.browser.model.Connection;
 import org.eclipse.swt.graphics.Image;
+
 
 /**
  * All objects that want to be displayed in the JFace TreeViewer should
@@ -29,40 +31,45 @@ import org.eclipse.swt.graphics.Image;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface DisplayableTreeViewerElement {
+public interface DisplayableTreeViewerElement
+{
     /**
-         * Get the image that should be displayed in the TreeViewer
-         * 
-         * @return the display image
-         */
+     * Get the image that should be displayed in the TreeViewer
+     * 
+     * @return the display image
+     */
     public Image getDisplayImage();
 
+
     /**
-         * Get the name that should be displayed in the TreeViewer
-         * 
-         * @return the display name
-         */
+     * Get the name that should be displayed in the TreeViewer
+     * 
+     * @return the display name
+     */
     public String getDisplayName();
 
+
     /**
-         * Get parent object in the TreeViewer Hierarchy
-         * 
-         * @return the parent
-         */
+     * Get parent object in the TreeViewer Hierarchy
+     * 
+     * @return the parent
+     */
     public Object getParent();
 
-    /**
-         * Set the parent object in the TreeViewer Hierarchy
-         * 
-         * @param parent
-         *                the parent element
-         */
-    public void setParent(Object parent);
 
     /**
-         * Gets the children of the object
-         * 
-         * @return the children of the object
-         */
+     * Set the parent object in the TreeViewer Hierarchy
+     * 
+     * @param parent
+     *                the parent element
+     */
+    public void setParent( Object parent );
+
+
+    /**
+     * Gets the children of the object
+     * 
+     * @return the children of the object
+     */
     public Object[] getChildren();
 }

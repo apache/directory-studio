@@ -20,12 +20,14 @@
 
 package org.apache.directory.ldapstudio.browser.view;
 
+
 /**
  * This class is used to define path for images
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImageKeys {
+public class ImageKeys
+{
     // Images for Views
     public static final String CONNECTION = "resources/icons/connection.gif"; //$NON-NLS-1$
 

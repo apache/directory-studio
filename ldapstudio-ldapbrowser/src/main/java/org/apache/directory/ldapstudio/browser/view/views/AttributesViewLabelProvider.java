@@ -40,7 +40,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributesViewLabelProvider extends LabelProvider implements ITableLabelProvider, ITableFontProvider, ITableColorProvider
+public class AttributesViewLabelProvider extends LabelProvider implements ITableLabelProvider, ITableFontProvider,
+    ITableColorProvider
 {
 
     /* (non-Javadoc)
@@ -68,14 +69,14 @@ public class AttributesViewLabelProvider extends LabelProvider implements ITable
         // Default return (should never be used)
         return "";
     }
-    
+
 
     public Font getFont( Object element, int columnIndex )
     {
-        if ( ( element instanceof AttributeWrapper ) && ( columnIndex == 1 )  )
-        {   
+        if ( ( element instanceof AttributeWrapper ) && ( columnIndex == 1 ) )
+        {
             AttributeWrapper attributeWrapper = ( AttributeWrapper ) element;
-            
+
             if ( attributeWrapper.getChildren().length > 1 )
             {
                 return new Font( null, "Geneva", 9, SWT.ITALIC );
@@ -94,13 +95,13 @@ public class AttributesViewLabelProvider extends LabelProvider implements ITable
 
     public Color getForeground( Object element, int columnIndex )
     {
-        if ( ( element instanceof AttributeWrapper ) && ( columnIndex == 1 )  )
-        {   
+        if ( ( element instanceof AttributeWrapper ) && ( columnIndex == 1 ) )
+        {
             AttributeWrapper attributeWrapper = ( AttributeWrapper ) element;
-            
+
             if ( attributeWrapper.getChildren().length > 1 )
             {
-                return PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_GRAY);
+                return PlatformUI.getWorkbench().getDisplay().getSystemColor( SWT.COLOR_GRAY );
             }
         }
         return null;

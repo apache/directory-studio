@@ -20,13 +20,15 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
+
 /**
  * Define a transition between two states of a grammar. It stores the next
  * state, and the action to execute while transiting.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GrammarTransition {
+public class GrammarTransition
+{
     // ~ Instance fields
     // ----------------------------------------------------------------------------
 
@@ -39,50 +41,57 @@ public class GrammarTransition {
     /** The current state */
     private int currentState;
 
+
     // ~ Constructors
     // -------------------------------------------------------------------------------
 
     /**
-         * Creates a new GrammarTransition object.
-         * 
-         * @param currentState
-         *                The current transition
-         * @param nextState
-         *                The target state
-         * @param action
-         *                The action to execute. It could be null.
-         */
-    public GrammarTransition(int currentState, int nextState,
-	    GrammarAction action) {
-	this.currentState = currentState;
-	this.nextState = nextState;
-	this.action = action;
+     * Creates a new GrammarTransition object.
+     * 
+     * @param currentState
+     *                The current transition
+     * @param nextState
+     *                The target state
+     * @param action
+     *                The action to execute. It could be null.
+     */
+    public GrammarTransition( int currentState, int nextState, GrammarAction action )
+    {
+        this.currentState = currentState;
+        this.nextState = nextState;
+        this.action = action;
     }
+
 
     // ~ Methods
     // ------------------------------------------------------------------------------------
 
     /**
-         * @return Returns the target state.
-         */
-    public int getNextState() {
-	return nextState;
+     * @return Returns the target state.
+     */
+    public int getNextState()
+    {
+        return nextState;
     }
 
-    /**
-         * Tells if the transition has an associated action.
-         * 
-         * @return <code>true</code> if an action has been asociated to the
-         *         transition
-         */
-    public boolean hasAction() {
-	return action != null;
-    }
 
     /**
-         * @return Returns the action associated with the transition
-         */
-    public GrammarAction getAction() {
-	return action;
+     * Tells if the transition has an associated action.
+     * 
+     * @return <code>true</code> if an action has been asociated to the
+     *         transition
+     */
+    public boolean hasAction()
+    {
+        return action != null;
+    }
+
+
+    /**
+     * @return Returns the action associated with the transition
+     */
+    public GrammarAction getAction()
+    {
+        return action;
     }
 }

@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
+
 /**
  * This class is used to represent the events related to modifications on the
  * Connections Class, such as : - "Add", - "Update" or - "Remove" of a
@@ -27,36 +28,44 @@ package org.apache.directory.ldapstudio.browser.model;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ConnectionsEvent {
+public class ConnectionsEvent
+{
     /**
-         * This enum represents the different types of a ConnectionEvent
-         */
-    public enum ConnectionsEventType {
-	ADD, UPDATE, REMOVE
+     * This enum represents the different types of a ConnectionEvent
+     */
+    public enum ConnectionsEventType
+    {
+        ADD, UPDATE, REMOVE
     };
 
     private ConnectionsEventType type;
 
     private Connection connection;
 
+
     /**
-         * Default constructor
-         * 
-         * @param type
-         *                the type of the event
-         * @param connection
-         *                the connection associated with the event
-         */
-    public ConnectionsEvent(ConnectionsEventType type, Connection connection) {
-	this.type = type;
-	this.connection = connection;
+     * Default constructor
+     * 
+     * @param type
+     *                the type of the event
+     * @param connection
+     *                the connection associated with the event
+     */
+    public ConnectionsEvent( ConnectionsEventType type, Connection connection )
+    {
+        this.type = type;
+        this.connection = connection;
     }
 
-    public Connection getConnection() {
-	return connection;
+
+    public Connection getConnection()
+    {
+        return connection;
     }
 
-    public ConnectionsEventType getType() {
-	return type;
+
+    public ConnectionsEventType getType()
+    {
+        return type;
     }
 }

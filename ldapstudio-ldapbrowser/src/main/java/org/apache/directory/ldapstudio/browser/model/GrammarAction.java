@@ -20,41 +20,47 @@
 
 package org.apache.directory.ldapstudio.browser.model;
 
+
 /**
  * A top level grammar class that store meta informations about the actions.
  * Those informations are not mandatory, but they can be usefull for debugging.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class GrammarAction implements IAction {
+public abstract class GrammarAction implements IAction
+{
     // ~ Instance fields
     // ----------------------------------------------------------------------------
 
     /** The action's name */
     protected String name;
 
+
     // ~ Constructors
     // -------------------------------------------------------------------------------
 
     /**
-         * Creates a new GrammarAction object.
-         * 
-         * @param name
-         *                The name of the create daction
-         */
-    public GrammarAction(String name) {
-	this.name = name;
+     * Creates a new GrammarAction object.
+     * 
+     * @param name
+     *                The name of the create daction
+     */
+    public GrammarAction( String name )
+    {
+        this.name = name;
     }
+
 
     // ~ Methods
     // ------------------------------------------------------------------------------------
 
     /**
-         * Print the action's name
-         * 
-         * @return The action's name
-         */
-    public String toString() {
-	return name;
+     * Print the action's name
+     * 
+     * @return The action's name
+     */
+    public String toString()
+    {
+        return name;
     }
 }
