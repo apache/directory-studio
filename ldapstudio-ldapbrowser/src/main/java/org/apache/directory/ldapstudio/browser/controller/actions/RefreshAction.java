@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.browser.controller.actions;
 
+
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.AttributesView;
@@ -32,49 +33,55 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+
 /**
  * This class implements the Refresh Action
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class RefreshAction extends Action {
+public class RefreshAction extends Action
+{
     private BrowserView view;
 
-    public RefreshAction(BrowserView view, String text) {
-	super(text);
-	setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-		Activator.PLUGIN_ID, ImageKeys.REFRESH));
-	setToolTipText("Refresh");
-	this.view = view;
+
+    public RefreshAction( BrowserView view, String text )
+    {
+        super( text );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.REFRESH ) );
+        setToolTipText( "Refresh" );
+        this.view = view;
     }
 
-    public void run() {
-	TreeViewer viewer = view.getViewer();
 
-	Object selection = ((TreeSelection) viewer.getSelection())
-		.getFirstElement();
+    public void run()
+    {
+        TreeViewer viewer = view.getViewer();
 
-	boolean isExpanded = viewer.getExpandedState(selection);
+        Object selection = ( ( TreeSelection ) viewer.getSelection() ).getFirstElement();
 
-	// Clearing the children of the selected node
-	if (selection instanceof ConnectionWrapper) {
-	    ConnectionWrapper connectionWrapper = (ConnectionWrapper) selection;
-	    connectionWrapper.clearChildren();
-	    isExpanded = true;
-	} else if (selection instanceof EntryWrapper) {
-	    EntryWrapper entryWrapper = (EntryWrapper) selection;
-	    entryWrapper.clearChildren();
-	    entryWrapper.refreshAttributes();
-	}
+        boolean isExpanded = viewer.getExpandedState( selection );
 
-	// Refreshing the Browser View
-	viewer.refresh(selection);
-	viewer.setExpandedState(selection, isExpanded);
+        // Clearing the children of the selected node
+        if ( selection instanceof ConnectionWrapper )
+        {
+            ConnectionWrapper connectionWrapper = ( ConnectionWrapper ) selection;
+            connectionWrapper.clearChildren();
+            isExpanded = true;
+        }
+        else if ( selection instanceof EntryWrapper )
+        {
+            EntryWrapper entryWrapper = ( EntryWrapper ) selection;
+            entryWrapper.clearChildren();
+            entryWrapper.refreshAttributes();
+        }
 
-	// Refreshing the Attributes View
-	AttributesView attributesView = (AttributesView) PlatformUI
-		.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-		.findView(AttributesView.ID);
-	attributesView.refresh();
+        // Refreshing the Browser View
+        viewer.refresh( selection );
+        viewer.setExpandedState( selection, isExpanded );
+
+        // Refreshing the Attributes View
+        AttributesView attributesView = ( AttributesView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+            .getActivePage().findView( AttributesView.ID );
+        attributesView.refresh();
     }
 }

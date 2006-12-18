@@ -20,24 +20,27 @@
 
 package org.apache.directory.ldapstudio.browser.controller;
 
+
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.views.ConnectionWizard;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+
 
 /**
  * This class initializes the preferences on the first start up of the plugin
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PreferenceInitializer extends AbstractPreferenceInitializer {
+public class PreferenceInitializer extends AbstractPreferenceInitializer
+{
 
     @Override
-    public void initializeDefaultPreferences() {
-	IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+    public void initializeDefaultPreferences()
+    {
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-	store.setDefault(ConnectionWizard.CONNECTIONS_PREFS,
-		"<connections></connections>");
+        store.setDefault( ConnectionWizard.CONNECTIONS_PREFS, "<connections></connections>" );
     }
 
 }

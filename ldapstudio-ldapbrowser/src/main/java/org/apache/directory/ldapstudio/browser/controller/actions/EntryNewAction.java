@@ -20,29 +20,35 @@
 
 package org.apache.directory.ldapstudio.browser.controller.actions;
 
+
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+
 /**
  * This class implements the Entry New Action
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EntryNewAction extends Action {
+public class EntryNewAction extends Action
+{
     private BrowserView view;
 
-    public EntryNewAction(BrowserView view, String text) {
-	super(text);
-	setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-		Activator.PLUGIN_ID, ImageKeys.ENTRY_NEW));
-	setToolTipText("New entry");
-	this.view = view;
+
+    public EntryNewAction( BrowserView view, String text )
+    {
+        super( text );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.ENTRY_NEW ) );
+        setToolTipText( "New entry" );
+        this.view = view;
     }
 
-    public void run() {
-	System.out.println("New entry");
+
+    public void run()
+    {
+        System.out.println( "New entry" );
     }
 }
