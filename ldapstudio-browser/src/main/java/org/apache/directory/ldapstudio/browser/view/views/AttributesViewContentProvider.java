@@ -30,12 +30,17 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 
+import org.apache.directory.ldapstudio.browser.view.views.wrappers.AttributeValueWrapper;
+import org.apache.directory.ldapstudio.browser.view.views.wrappers.AttributeWrapper;
 import org.apache.directory.ldapstudio.browser.view.views.wrappers.EntryWrapper;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.PlatformUI;
+
+import sun.security.krb5.internal.util.o;
 
 
 /**
@@ -43,7 +48,7 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributesViewContentProvider implements IStructuredContentProvider
+public class AttributesViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
 
     /* (non-Javadoc)
@@ -54,7 +59,7 @@ public class AttributesViewContentProvider implements IStructuredContentProvider
         if ( inputElement instanceof EntryWrapper )
         {
             // Initializing the retun list
-            List<List<String>> returnList = new ArrayList<List<String>>();
+            List<AttributeWrapper> returnList = new ArrayList<AttributeWrapper>();
 
             // Getting the entry and looping on its attributes
             SearchResultEntry entry = ( ( EntryWrapper ) inputElement ).getEntry();
@@ -62,40 +67,8 @@ public class AttributesViewContentProvider implements IStructuredContentProvider
 
             while ( ne.hasMoreElements() )
             {
-                Attribute attribute = ( Attribute ) ne.nextElement();
-                for ( int i = 0; i < attribute.size(); i++ )
-                {
-                    try
-                    {
-                        // A List is constructed  : {Attribute ID, Attribute Value}
-                        List<String> list = new ArrayList<String>( 2 );
-                        list.add( 0, attribute.getID() );
-                        list.add( 1, ( String ) attribute.get( i ) );
-
-                        returnList.add( list );
-                    }
-                    catch ( NamingException e )
-                    {
-                        // Displaying an error
-                        MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            "Error !", "An error has ocurred.\n" + e.getMessage() );
-                        return null;
-                    }
-                }
+                returnList.add( new AttributeWrapper( ( Attribute ) ne.nextElement(), ( EntryWrapper ) inputElement ) );
             }
-
-            // Sorting the attributes
-            Collections.sort( returnList, new Comparator<List<String>>()
-            {
-                public int compare( List<String> l1, List<String> l2 )
-                {
-                    String s1 = l1.get( 0 );
-                    String s2 = l2.get( 0 );
-
-                    return s1.compareTo( s2 );
-                }
-            } );
-
             return returnList.toArray();
         }
 
@@ -121,6 +94,38 @@ public class AttributesViewContentProvider implements IStructuredContentProvider
     {
         // Nothing to do here but the method is needed 
         // by IContentProvider Interface
+    }
+
+
+    public Object[] getChildren( Object parentElement )
+    {
+        if ( parentElement instanceof AttributeWrapper )
+        {
+            return ( ( AttributeWrapper ) parentElement ).getChildren();
+            
+        }
+        return null;
+    }
+
+
+    public Object getParent( Object element )
+    {
+        if ( element instanceof AttributeValueWrapper )
+        {
+            return ( ( AttributeValueWrapper ) element ).getParent();
+        }
+        return null;
+    }
+
+
+    public boolean hasChildren( Object element )
+    {
+        if ( element instanceof AttributeWrapper )
+        {
+            return ( ( AttributeWrapper ) element).hasChildren();
+            
+        }
+        return false;
     }
 
 }

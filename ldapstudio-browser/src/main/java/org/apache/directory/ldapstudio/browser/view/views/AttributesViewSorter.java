@@ -23,12 +23,12 @@ package org.apache.directory.ldapstudio.browser.view.views;
 
 import java.util.Comparator;
 
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TreeColumn;
 
 
 /**
@@ -50,7 +50,7 @@ public class AttributesViewSorter extends ViewerSorter
     }
 
     /** The associated viewer */
-    private TableViewer viewer;
+    private TreeViewer viewer;
 
     /** The information on the sortable columns */
     private SortableColumnInfo[] infos;
@@ -66,7 +66,7 @@ public class AttributesViewSorter extends ViewerSorter
      * @param columns the array containing the sortable columns
      * @param comparators the array containing the associated comparators
      */
-    public AttributesViewSorter( TableViewer viewer, TableColumn[] columns, Comparator[] comparators )
+    public AttributesViewSorter( TreeViewer viewer, TreeColumn[] columns, Comparator[] comparators )
     {
         this.viewer = viewer;
         infos = new SortableColumnInfo[columns.length];
@@ -108,7 +108,7 @@ public class AttributesViewSorter extends ViewerSorter
      * @param column
      * @param info
      */
-    private void createSelectionListener( TableColumn column, final SortableColumnInfo info )
+    private void createSelectionListener( TreeColumn column, final SortableColumnInfo info )
     {
         column.addSelectionListener( new SelectionAdapter()
         {

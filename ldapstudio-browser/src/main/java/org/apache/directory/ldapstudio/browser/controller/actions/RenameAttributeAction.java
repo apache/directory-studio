@@ -71,7 +71,7 @@ public class RenameAttributeAction extends Action
     {
         super( text );
         this.view = view;
-        this.table = view.getViewer().getTable();
+//        this.table = view.getViewer().getTable();
     }
 
 
@@ -90,52 +90,52 @@ public class RenameAttributeAction extends Action
      */
     private void createEditor()
     {
-        // Creating the Table Editor
-        tableEditor = new TableEditor( table );
-        tableEditor.horizontalAlignment = SWT.LEFT;
-        tableEditor.grabHorizontal = true;
-        tableEditor.minimumWidth = 50;
-
-        // Creating the Text Widget that will be used by the user 
-        // to enter the new value
-        textEditor = new Text( view.getViewer().getTable(), SWT.NONE );
-
-        // Adding Traverse Listener used to handle event when the 'return'
-        // or 'escape' key is pressed
-        textEditor.addListener( SWT.Traverse, new Listener()
-        {
-            public void handleEvent( Event event )
-            {
-                // Workaround for bug 20214 due to extra traverse events
-                switch ( event.detail )
-                {
-                    case SWT.TRAVERSE_ESCAPE: // Escape Key
-                        // Do nothing in this case
-                        disposeEditor();
-                        event.doit = true;
-                        event.detail = SWT.TRAVERSE_NONE;
-                        break;
-                    case SWT.TRAVERSE_RETURN: // Return Key
-                        saveChangesAndDisposeEditor();
-                        event.doit = true;
-                        event.detail = SWT.TRAVERSE_NONE;
-                        break;
-                }
-            }
-        } );
-
-        // Adding Focus Listener used to handle event when the user
-        // clicks on the elsewhere
-        textEditor.addFocusListener( new FocusAdapter()
-        {
-            public void focusLost( FocusEvent fe )
-            {
-                if ( !done )
-                {
-                    saveChangesAndDisposeEditor();
-                }
-            }
-        } );
+//        // Creating the Table Editor
+//        tableEditor = new TableEditor( table );
+//        tableEditor.horizontalAlignment = SWT.LEFT;
+//        tableEditor.grabHorizontal = true;
+//        tableEditor.minimumWidth = 50;
+//
+//        // Creating the Text Widget that will be used by the user 
+//        // to enter the new value
+//        textEditor = new Text( view.getViewer().getTable(), SWT.NONE );
+//
+//        // Adding Traverse Listener used to handle event when the 'return'
+//        // or 'escape' key is pressed
+//        textEditor.addListener( SWT.Traverse, new Listener()
+//        {
+//            public void handleEvent( Event event )
+//            {
+//                // Workaround for bug 20214 due to extra traverse events
+//                switch ( event.detail )
+//                {
+//                    case SWT.TRAVERSE_ESCAPE: // Escape Key
+//                        // Do nothing in this case
+//                        disposeEditor();
+//                        event.doit = true;
+//                        event.detail = SWT.TRAVERSE_NONE;
+//                        break;
+//                    case SWT.TRAVERSE_RETURN: // Return Key
+//                        saveChangesAndDisposeEditor();
+//                        event.doit = true;
+//                        event.detail = SWT.TRAVERSE_NONE;
+//                        break;
+//                }
+//            }
+//        } );
+//
+//        // Adding Focus Listener used to handle event when the user
+//        // clicks on the elsewhere
+//        textEditor.addFocusListener( new FocusAdapter()
+//        {
+//            public void focusLost( FocusEvent fe )
+//            {
+//                if ( !done )
+//                {
+//                    saveChangesAndDisposeEditor();
+//                }
+//            }
+//        } );
     }
 
 
@@ -144,7 +144,7 @@ public class RenameAttributeAction extends Action
      */
     private void showEditor()
     {
-        tableEditor.setEditor( textEditor, view.getViewer().getTable().getSelection()[0], COLUMN_TO_EDIT );
+//        tableEditor.setEditor( textEditor, view.getViewer().getTable().getSelection()[0], COLUMN_TO_EDIT );
         textEditor.setText( getAttributeValue() );
         textEditor.selectAll();
         textEditor.setFocus();
@@ -175,7 +175,7 @@ public class RenameAttributeAction extends Action
 
         // Resizing Columns and resetting the focus on the Table
         view.resizeColumsToFit();
-        view.getViewer().getTable().setFocus();
+//        view.getViewer().getTable().setFocus();
     }
 
 
@@ -185,8 +185,9 @@ public class RenameAttributeAction extends Action
      */
     private String getAttributeName()
     {
-        TableItem item = view.getSelectedAttributeTableItem();
-        return item.getText( 0 );
+//        TableItem item = view.getSelectedAttributeTableItem();
+//        return item.getText( 0 );
+        return "";
     }
 
 
@@ -196,8 +197,9 @@ public class RenameAttributeAction extends Action
      */
     private String getAttributeValue()
     {
-        TableItem item = view.getSelectedAttributeTableItem();
-        return item.getText( 1 );
+//        TableItem item = view.getSelectedAttributeTableItem();
+//        return item.getText( 1 );
+        return "";
     }
 
 
@@ -242,9 +244,9 @@ public class RenameAttributeAction extends Action
                     entry.getPartialAttributeList().get( getAttributeName() ).remove( getAttributeValue() );
                     entry.getPartialAttributeList().get( getAttributeName() ).add( textEditor.getText() );
                     
-                    TableItem item = view.getSelectedAttributeTableItem();
-                    item.setText( 1, textEditor.getText() );
-                    view.getViewer().refresh( item );
+//                    TableItem item = view.getSelectedAttributeTableItem();
+//                    item.setText( 1, textEditor.getText() );
+//                    view.getViewer().refresh( item );
                 }
                 else
                 {

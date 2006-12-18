@@ -48,13 +48,6 @@ public interface DisplayableTreeViewerElement
 
 
     /**
-     * Get the Connection associated
-     * @return the connection
-     */
-    public Connection getConnection();
-
-
-    /**
      * Get parent object in the TreeViewer Hierarchy
      * @return the parent
      */

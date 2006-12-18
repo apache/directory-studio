@@ -26,16 +26,23 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.controller.AttributesViewController;
+import org.apache.directory.ldapstudio.browser.view.views.wrappers.AttributeWrapper;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -49,12 +56,12 @@ public class AttributesView extends ViewPart
 {
     /** The Attributes View's ID */
     public static final String ID = Activator.PLUGIN_ID + ".AttributesView";
-    private Table table;
-    private TableViewer viewer;
+    private Tree tree;
+    private TreeViewer viewer;
     private AttributesViewController controller;
     private AttributesViewSorter sorter;
-    private TableColumn attributeColumn;
-    private TableColumn valueColumn;
+    private TreeColumn attributeColumn;
+    private TreeColumn valueColumn;
 
 
     /**
@@ -69,19 +76,19 @@ public class AttributesView extends ViewPart
     @Override
     public void createPartControl( Composite parent )
     {
-        table = new Table( parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL );
-        table.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
-        table.setLinesVisible( true );
-        table.setHeaderVisible( true );
-        table.setEnabled( false ); // The table is disabled by default since nothing is selected in the Browser View
+        tree = new Tree( parent, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL );
+        tree.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        tree.setLinesVisible( true );
+        tree.setHeaderVisible( true );
+//        tree.setEnabled( false ); // The table is disabled by default since nothing is selected in the Browser View
 
-        viewer = new TableViewer( table );
+        viewer = new TreeViewer( tree );
         viewer.setUseHashlookup( true );
 
         // Adding columns headers
-        attributeColumn = new TableColumn( table, SWT.NONE );
+        attributeColumn = new TreeColumn( tree, SWT.NONE );
         attributeColumn.setText( "Attribute" );
-        valueColumn = new TableColumn( table, SWT.NONE );
+        valueColumn = new TreeColumn( tree, SWT.NONE );
         valueColumn.setText( "Value" );
 
         // Initializing ContentProvider and LabelProvider
@@ -94,14 +101,14 @@ public class AttributesView extends ViewPart
 
         // Registering the view to the controller and creating the Actions
         controller.setView( this );
-        controller.createActions();
+//        controller.createActions();
 
         // Registering the Viewer, so other views can be notified when the viewer selection changes
         getSite().setSelectionProvider( viewer );
 
-        createContextMenu();
+//        createContextMenu();
 
-        createToolbarButtons();
+//        createToolbarButtons();
     }
 
 
@@ -115,10 +122,14 @@ public class AttributesView extends ViewPart
             @SuppressWarnings("unchecked")
             public int compare( Object o1, Object o2 )
             {
-                List<String> list1 = ( List<String> ) o1;
-                List<String> list2 = ( List<String> ) o2;
-
-                return list1.get( 0 ).compareTo( list2.get( 0 ) );
+                if ( o1 instanceof AttributeWrapper )
+                {
+                    AttributeWrapper at1 = ( AttributeWrapper ) o1;
+                    AttributeWrapper at2 = ( AttributeWrapper ) o2;
+                    
+                    return at1.getName().compareTo( at2.getName() );
+                }
+                return 0;
             }
         };
 
@@ -127,14 +138,11 @@ public class AttributesView extends ViewPart
             @SuppressWarnings("unchecked")
             public int compare( Object o1, Object o2 )
             {
-                List<String> list1 = ( List<String> ) o1;
-                List<String> list2 = ( List<String> ) o2;
-
-                return list1.get( 1 ).compareTo( list2.get( 1 ) );
+                return 0;
             }
         };
 
-        sorter = new AttributesViewSorter( viewer, new TableColumn[]
+        sorter = new AttributesViewSorter( viewer, new TreeColumn[]
             { attributeColumn, valueColumn }, new Comparator[]
             { nameComparator, valueComparator } );
 
@@ -179,7 +187,7 @@ public class AttributesView extends ViewPart
     @Override
     public void setFocus()
     {
-        table.setFocus();
+        tree.setFocus();
     }
 
 
@@ -199,11 +207,11 @@ public class AttributesView extends ViewPart
     public void resizeColumsToFit()
     {
         // Resizing the first column
-        table.getColumn( 0 ).pack();
+        tree.getColumn( 0 ).pack();
         // Adding a little space to the first column
-        table.getColumn( 0 ).setWidth( table.getColumn( 0 ).getWidth() + 5 );
+        tree.getColumn( 0 ).setWidth( tree.getColumn( 0 ).getWidth() + 5 );
         // Resizing the second column
-        table.getColumn( 1 ).pack();
+        tree.getColumn( 1 ).pack();
     }
 
 
@@ -211,13 +219,13 @@ public class AttributesView extends ViewPart
      * Gets the currently selected Attribute TableItem 
      * @return the currently selected Attribute TableItem
      */
-    public TableItem getSelectedAttributeTableItem()
+    public TreeItem getSelectedAttributeTableItem()
     {
-        return table.getSelection()[0];
+        return tree.getSelection()[0];
     }
 
 
-    public TableViewer getViewer()
+    public TreeViewer getViewer()
     {
         return viewer;
     }

@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -104,7 +105,7 @@ public class AttributesViewController implements IMenuListener
         } );
 
         // Handling the double click modification
-        view.getViewer().getTable().addSelectionListener( new SelectionAdapter()
+        view.getViewer().getTree().addSelectionListener( new SelectionAdapter()
         {
             public void widgetDefaultSelected( SelectionEvent e )
             {
@@ -156,30 +157,30 @@ public class AttributesViewController implements IMenuListener
             public void selectionChanged( IWorkbenchPart part, ISelection selection )
             {
                 Object selectedObject = ( ( TreeSelection ) selection ).getFirstElement();
-                Table table = view.getViewer().getTable();
+                Tree tree = view.getViewer().getTree();
 
                 if ( selectedObject == null )
                 {
                     attributeNewAction.setEnabled( false );
-                    table.setEnabled( false );
+                    tree.setEnabled( false );
                 }
                 else
                 {
                     if ( selectedObject instanceof ConnectionWrapper )
                     {
                         attributeNewAction.setEnabled( false );
-                        table.setEnabled( false );
+                        tree.setEnabled( false );
                     }
                     else if ( selectedObject instanceof EntryWrapper )
                     {
                         attributeNewAction.setEnabled( true );
-                        table.setEnabled( true );
+                        tree.setEnabled( true );
                     }
                 }
             }
         } );
 
-        // Handling selection of the Attributes View to enable/disable the Actions
+        // Handling selection of thencoree Attributes View to enable/disable the Actions
         view.getSite().getPage().addSelectionListener( AttributesView.ID, new ISelectionListener()
         {
             public void selectionChanged( IWorkbenchPart part, ISelection selection )
