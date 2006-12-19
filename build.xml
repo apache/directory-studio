@@ -123,6 +123,8 @@
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="javadoc" />
+        <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
+        <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
     </target>
 
     <!-- ================================== -->
@@ -136,6 +138,7 @@
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
     </target>
 
     <!-- ================================== -->
@@ -149,6 +152,8 @@
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
         <delete dir="${ldapstudio-complete.output}" />
     </target>
 </project>
