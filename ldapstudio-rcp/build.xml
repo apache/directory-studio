@@ -17,49 +17,46 @@
   under the License.
 -->
 <project name="ldapstudio-rcp" default="product" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
-	<property name="project.name" value="org.apache.directory.ldapstudio" />
-	<property name="project.version" value="0.1" />
+    <property name="project.name" value="org.apache.directory.ldapstudio" />
+    <property name="project.version" value="0.1" />
 
-	<property name="ldapstudio-rcp.output" value="${basedir}/target" />
-	<property name="ldapstudio-rcp.build" value="${ldapstudio-rcp.output}/build" />
-	<property name="ldapstudio-rcp.src" value="${basedir}/src/main/java" />
-	<property name="lib.dir" value="lib" />
+    <property name="ldapstudio-rcp.output" value="${basedir}/target" />
+    <property name="ldapstudio-rcp.build" value="${ldapstudio-rcp.output}/build" />
+    <property name="ldapstudio-rcp.src" value="${basedir}/src/main/java" />
+    <property name="lib.dir" value="lib" />
 
+    <property name="repository.dir" location="../dependencies/externals/" />
 
-	<property name="repository.dir" location="../dependencies/externals/" />
+    <!-- Configuring Ivy (Needs to be AFTER the $repository.dir declaration) -->
+    <ivy:configure file="../tools/ivyconf.xml" />
 
-	<!-- Configuring Ivy (Needs to be AFTER the $repository.dir declaration) -->
-	<ivy:configure file="../tools/ivyconf.xml" />
+    <property name="ldapstudio-rcp.eclipse.dir" value="../dependencies/eclipse" />
+    <property name="ldapstudio-rcp.eclipse.version" value="3.2" />
 
-	<property name="ldapstudio-rcp.eclipse.dir" value="../dependencies/eclipse" />
-	<property name="ldapstudio-rcp.eclipse.version" value="3.2" />
-	<condition property="ldapstudio-rcp.os.name" value="macosx">
-		<and>
-			<os family="unix" />
-			<os name="Mac OS X" />
-		</and>
-	</condition>
-	<condition property="ldapstudio-rcp.os.extension" value=".app">
-		<and>
-			<os family="unix" />
-			<os name="Mac OS X" />
-		</and>
-	</condition>
-	<condition property="ldapstudio-rcp.os.name" value="linux">
-		<os family="unix" />
-	</condition>
-	<condition property="ldapstudio-rcp.os.extension" value="">
-		<os family="unix" />
-	</condition>
-	<condition property="ldapstudio-rcp.os.name" value="win32">
-			<os family="windows" />
-	</condition>
-	<condition property="ldapstudio-rcp.os.extension" value=".exe">
-		<os family="windows" />
-	</condition>
+	    <!-- Setting up OS Name-->
+    <condition property="ldapstudio-rcp.os.name" value="macosx" >
+            <os name="Mac OS X"/>
+    </condition>
+    <condition property="ldapstudio-rcp.os.name" value="linux" >
+            <os family="unix" />
+    </condition>
+    <condition property="ldapstudio-rcp.os.name" value="win32">
+            <os family="windows" />
+    </condition>
 
-	<property name="ldapstudio-rcp.os.arch" value="${os.arch}" />
+    <!-- Setting up OS Extension-->
+    <condition property="ldapstudio-rcp.os.extension" value=".app" >
+        <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
+    </condition>
+    <condition property="ldapstudio-rcp.os.extension" value="" >
+        <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
+    </condition>
+    <condition property="ldapstudio-rcp.os.extension" value=".exe">
+        <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
+    </condition>
 
+    <!-- Setting up OS Architecture-->
+    <property name="ldapstudio-rcp.os.arch" value="${os.arch}" />
 
 	<!-- ================================== -->
 	<!--              RESOLVE               -->
@@ -190,7 +187,7 @@
 	</target>
 	
 	<target name="setPermission_win32" description="Sets the right permissions on windows">
-			<chmod file="${ldapstudio-rcp.application}/LDAP Studio${ldapstudio-rcp.os.extension}" perm="755" />
+			<chmod file="${ldapstudio-rcp.application}/LDAP Studio.exe" perm="755" />
 	</target>
 
 	<!-- ================================== -->

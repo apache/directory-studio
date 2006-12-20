@@ -1,33 +1,47 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
 <project name="ldapstudio-complete" default="bundle">
     <property name="project.name" value="ldapstudio-complete" />
     <property name="project.version" value="1.0.0" />
-    
     <property name="ldapstudio-complete.output" value="${basedir}/target" />
     <property name="ldapstudio-complete.build" value="${ldapstudio-complete.output}/LDAP Studio" />    
     
+    <!-- Setting up OS Name-->
     <condition property="ldapstudio-rcp.os.name" value="macosx" >
-        <and>
-            <os family="unix" />
             <os name="Mac OS X"/>
-        </and>
-    </condition>
-    <condition property="ldapstudio-rcp.os.extension" value=".app" >
-        <and>
-            <os family="unix" />
-            <os name="Mac OS X"/>
-        </and>
     </condition>
     <condition property="ldapstudio-rcp.os.name" value="linux" >
-        <os family="unix" />
-    </condition>
-    <condition property="ldapstudio-rcp.os.extension" value="" >
-        <os family="unix" />
+            <os family="unix" />
     </condition>
     <condition property="ldapstudio-rcp.os.name" value="win32">
-        <os family="windows" />
+            <os family="windows" />
+    </condition>
+
+    <!-- Setting up OS Extension-->
+    <condition property="ldapstudio-rcp.os.extension" value=".app" >
+        <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
+    </condition>
+    <condition property="ldapstudio-rcp.os.extension" value="" >
+        <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
     </condition>
     <condition property="ldapstudio-rcp.os.extension" value=".exe">
-        <os family="windows" />
+        <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
     </condition>
 
     <!-- ================================== -->
@@ -35,10 +49,17 @@
     <!-- ================================== -->
     <target name="help" description="Shows help">
         <echo>Available commands:</echo>
-	<echo>    bundle - Generate and bundles a complete version of LDAP Studio</echo>
-        <echo>    clean - Deletes any generated file (javadoc, classes, jars, distribution)</echo>
-        <echo>    javadoc - Generate Javadoc files</echo>
-	<echo>    resolve - Resolves the library dependencies using Ivy</echo>
+	<echo>  bundle - Generate and bundles a complete version of LDAP Studio</echo>
+	<echo>      When bundling you can specify the target operating system using this option:</echo>
+	<echo>          o -Dldapstudio-rcp.os.name=macosx for Mac OS X</echo>
+	<echo>          o -Dldapstudio-rcp.os.name=linux for Linux</echo>
+	<echo>          o -Dldapstudio-rcp.os.name=win32 for Windows</echo>
+	<echo>      and the target architecture using this option:</echo>
+	<echo>          o -Dldapstudio-rcp.os.arch=i386 for i386 architecture</echo>
+	<echo>          o -Dldapstudio-rcp.os.arch=ppc for PowerPC architecture</echo>
+        <echo>  clean - Delete any generated file (javadoc, classes, jars, distribution)</echo>
+        <echo>  javadoc - Generate Javadoc files</echo>
+	<echo>  resolve - Resolves the library dependencies using Ivy</echo>
     </target>
 
     <!-- ================================== -->
@@ -109,7 +130,7 @@
     </target>
 
     <target name="setPermission_win32" description="Sets the right permissions on Windows">
-        <chmod file="${ldapstudio-rcp.application}/LDAP Studio${ldapstudio-rcp.os.extension}" perm="755" />
+        <chmod file="${ldapstudio-complete.build}/LDAP Studio.exe" perm="755" />
     </target>
 
     <!-- ================================== -->
