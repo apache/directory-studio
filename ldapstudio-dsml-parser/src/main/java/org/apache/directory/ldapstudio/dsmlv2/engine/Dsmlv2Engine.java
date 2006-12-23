@@ -131,16 +131,16 @@ public class Dsmlv2Engine
 
     /**
      * Processes the file given and return the result of the operations
-     * @param fileName The path to the file
+     * @param dsmlInput The path to the file
      * @return The XML reponse in DSMLv2 Format
      * @throws XmlPullParserException
      * @throws FileNotFoundException
      */
-    public String processDSML( String fileName ) throws XmlPullParserException, FileNotFoundException
+    public String processDSML( String dsmlInput ) throws XmlPullParserException, FileNotFoundException
     {
         parser = new Dsmlv2Parser();
 
-        parser.setInput( fileName );
+        parser.setInput( dsmlInput );
 
         return processDSML();
     }
