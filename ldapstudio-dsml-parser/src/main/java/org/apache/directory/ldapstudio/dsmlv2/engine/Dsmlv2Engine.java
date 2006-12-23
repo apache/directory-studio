@@ -131,8 +131,8 @@ public class Dsmlv2Engine
 
     /**
      * Processes the file given and return the result of the operations
-     * @param dsmlInput The path to the file
-     * @return The XML reponse in DSMLv2 Format
+     * @param dsmlInput The DSMLv2 formatted request input
+     * @return The XML response in DSMLv2 Format
      * @throws XmlPullParserException
      * @throws FileNotFoundException
      */
@@ -149,7 +149,7 @@ public class Dsmlv2Engine
     /**
      * Processes the file given and return the result of the operations
      * @param fileName The path to the file
-     * @return The XML reponse in DSMLv2 Format
+     * @return The XML response in DSMLv2 Format
      * @throws XmlPullParserException
      * @throws FileNotFoundException
      */
@@ -167,7 +167,7 @@ public class Dsmlv2Engine
      * Processes the file given and return the result of the operations
      * @param inputStream contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null).
      * @param inputEncoding if not null it MUST be used as encoding for inputStream
-     * @return The XML reponse in DSMLv2 Format
+     * @return The XML response in DSMLv2 Format
      * @throws XmlPullParserException
      * @throws FileNotFoundException
      */
@@ -184,7 +184,7 @@ public class Dsmlv2Engine
 
     /**
      * Processes the Request document
-     * @return The XML reponse in DSMLv2 Format
+     * @return The XML response in DSMLv2 Format
      */
     private String processDSML()
     {
