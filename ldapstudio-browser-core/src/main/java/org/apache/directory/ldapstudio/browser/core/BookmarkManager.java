@@ -23,13 +23,13 @@ package org.apache.directory.ldapstudio.browser.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.eclipse.osgi.util.NLS;
 
 
 public class BookmarkManager implements Serializable
@@ -37,7 +37,7 @@ public class BookmarkManager implements Serializable
 
     private static final long serialVersionUID = 7605293576518974531L;
 
-    private List bookmarkList;
+    private List<IBookmark> bookmarkList;
 
     private IConnection connection;
 
@@ -45,36 +45,38 @@ public class BookmarkManager implements Serializable
     public BookmarkManager( IConnection connection )
     {
         this.connection = connection;
-        this.bookmarkList = new ArrayList();
+        bookmarkList = new ArrayList<IBookmark>();
     }
 
 
     public IConnection getConnection()
     {
-        return this.connection;
+        return connection;
     }
 
 
     public void addBookmark( IBookmark bookmark )
     {
-        this.addBookmark( this.bookmarkList.size(), bookmark );
+        addBookmark( bookmarkList.size(), bookmark );
     }
 
 
     public void addBookmark( int index, IBookmark bookmark )
     {
-        if ( this.getBookmark( bookmark.getName() ) != null )
+        if ( getBookmark( bookmark.getName() ) != null )
         {
-            String newBookmarkName = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, "", bookmark.getName() ); //$NON-NLS-1$
+            String newBookmarkName = NLS.bind( BrowserCoreMessages.copy_n_of_s, "", bookmark.getName() ); //$NON-NLS-1$
+            
             for ( int i = 2; this.getBookmark( newBookmarkName ) != null; i++ )
             {
-                newBookmarkName = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s,
+                newBookmarkName = NLS.bind( BrowserCoreMessages.copy_n_of_s,
                     i + " ", bookmark.getName() ); //$NON-NLS-1$
             }
+            
             bookmark.setName( newBookmarkName );
         }
 
-        this.bookmarkList.add( index, bookmark );
+        bookmarkList.add( index, bookmark );
         EventRegistry.fireBookmarkUpdated( new BookmarkUpdateEvent( bookmark, BookmarkUpdateEvent.BOOKMARK_ADDED ),
             this );
     }
@@ -82,27 +84,27 @@ public class BookmarkManager implements Serializable
 
     public IBookmark getBookmark( String name )
     {
-        for ( Iterator it = this.bookmarkList.iterator(); it.hasNext(); )
+        for ( IBookmark bookmark:bookmarkList )
         {
-            IBookmark bookmark = ( IBookmark ) it.next();
             if ( bookmark.getName().equals( name ) )
             {
                 return bookmark;
             }
         }
+
         return null;
     }
 
 
     public int indexOf( IBookmark bookmark )
     {
-        return this.bookmarkList.indexOf( bookmark );
+        return bookmarkList.indexOf( bookmark );
     }
 
 
     public void removeBookmark( IBookmark bookmark )
     {
-        this.bookmarkList.remove( bookmark );
+        bookmarkList.remove( bookmark );
         EventRegistry.fireBookmarkUpdated( new BookmarkUpdateEvent( bookmark, BookmarkUpdateEvent.BOOKMARK_REMOVED ),
             this );
     }
@@ -116,13 +118,13 @@ public class BookmarkManager implements Serializable
 
     public IBookmark[] getBookmarks()
     {
-        return ( IBookmark[] ) this.bookmarkList.toArray( new IBookmark[0] );
+        return bookmarkList.toArray( new IBookmark[0] );
     }
 
 
     public int getBookmarkCount()
     {
-        return this.bookmarkList.size();
+        return bookmarkList.size();
     }
 
 }
