@@ -44,7 +44,6 @@ import org.apache.directory.shared.ldap.codec.LdapResponse;
  */
 public class ImportDsmlJob extends AbstractEclipseJob
 {
-
     /** The connection to use */
     private IConnection connection;
 

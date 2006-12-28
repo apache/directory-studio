@@ -280,6 +280,12 @@ public class BrowserCoreMessages extends NLS
     public static String jobs__export_ldif_task;
 
     public static String jobs__export_ldif_error;
+    
+    public static String jobs__export_dsml_name;
+
+    public static String jobs__export_dsml_task;
+
+    public static String jobs__export_dsml_error;
 
     public static String jobs__export_progress;
 

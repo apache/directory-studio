@@ -27,6 +27,7 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportCsvWizard;
+import org.apache.directory.ldapstudio.browser.ui.wizards.ExportDsmlWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportExcelWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportLdifWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ImportDsmlWizard;
@@ -49,6 +50,8 @@ public class ImportExportAction extends BrowserAction
     public static final int TYPE_EXPORT_EXCEL = 3;
     
     public static final int TYPE_IMPORT_DSML = 4;
+    
+    public static final int TYPE_EXPORT_DSML = 5;
 
     private int type;
 
@@ -82,6 +85,10 @@ public class ImportExportAction extends BrowserAction
         {
             return "DSML Import...";
         }
+        else if ( this.type == TYPE_EXPORT_DSML )
+        {
+            return "DSML Export...";
+        }
         else
         {
             return "Export...";
@@ -110,6 +117,10 @@ public class ImportExportAction extends BrowserAction
         else if ( this.type == TYPE_IMPORT_DSML )
         {
             return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_DSML );
+        }
+        else if ( this.type == TYPE_EXPORT_DSML )
+        {
+            return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPORT_DSML );
         }
         else
         {
@@ -184,6 +195,10 @@ public class ImportExportAction extends BrowserAction
         else if ( this.type == TYPE_EXPORT_EXCEL )
         {
             wizard = new ExportExcelWizard();
+        }
+        else if ( this.type == TYPE_EXPORT_DSML )
+        {
+            wizard = new ExportDsmlWizard();
         }
 
         if ( wizard != null )

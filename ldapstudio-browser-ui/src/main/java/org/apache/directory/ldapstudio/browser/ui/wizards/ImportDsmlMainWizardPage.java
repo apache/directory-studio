@@ -37,6 +37,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
+/**
+ * This class implements the Main Page of the DSML Import Wizard
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ImportDsmlMainWizardPage extends WizardPage
 {    
     /** The wizard the page is attached to */
@@ -56,6 +62,14 @@ public class ImportDsmlMainWizardPage extends WizardPage
     
     private String customResponseFileName;
     
+    /**
+     * Creates a new instance of ImportDsmlMainWizardPage.
+     *
+     * @param pageName
+     *          the name of the page
+     * @param wizard
+     *          the wizard the page is attached to
+     */
     public ImportDsmlMainWizardPage( String pageName, ImportDsmlWizard wizard )
     {
         super( pageName );
@@ -66,6 +80,9 @@ public class ImportDsmlMainWizardPage extends WizardPage
         this.wizard = wizard;
     }
     
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+     */
     public void createControl( Composite parent )
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
@@ -177,6 +194,9 @@ public class ImportDsmlMainWizardPage extends WizardPage
         setControl( composite );
     }
     
+    /**
+     * Validates the page. This method is responsible for displaying errors, as well as enabling/disabling the "Finish" button
+     */
     private void validate()
     {
         boolean ok = true;

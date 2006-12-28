@@ -41,12 +41,13 @@ import org.eclipse.ui.actions.ActionFactory;
 
 public class ConnectionViewActionGroup extends ConnectionActionGroup
 {
-
     private ConnectionView view;
 
     private static final String selectAllAction = "selectAllAction";
 
     private static final String importDsmlAction = "importDsmlAction";
+    
+    private static final String exportDsmlAction = "exportDsmlAction";
 
     private static final String importLdifAction = "importLdifAction";
 
@@ -72,7 +73,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         this.connectionActionMap.put( selectAllAction, new ConnectionViewActionProxy( viewer, new SelectAllAction(
             viewer ) ) );
         this.connectionActionMap.put( importDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
-                ImportExportAction.TYPE_IMPORT_DSML ) ) );
+            ImportExportAction.TYPE_IMPORT_DSML ) ) );
+        this.connectionActionMap.put( exportDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+            ImportExportAction.TYPE_EXPORT_DSML ) ) );
         this.connectionActionMap.put( importLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_LDIF ) ) );
         this.connectionActionMap.put( exportLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
@@ -139,11 +142,12 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         // import/export
         MenuManager importMenuManager = new MenuManager( "Import" );
         importMenuManager.add( ( IAction ) this.connectionActionMap.get( importLdifAction ) );
-        importMenuManager.add( new Separator() );
         importMenuManager.add( ( IAction ) this.connectionActionMap.get( importDsmlAction ) );
+        importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
         MenuManager exportMenuManager = new MenuManager( "Export" );
         exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportLdifAction ) );
+        exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportDsmlAction ) );
         exportMenuManager.add( new Separator() );
         exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportCsvAction ) );
         exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportExcelAction ) );

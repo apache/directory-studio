@@ -154,11 +154,11 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
      * Returns the real data:
      * <ul>
      * <li>The unfolded String if value is a safe value.
-     * </ul>
+     * </li>
      * <li>A byte array if value is base64 encoded.
-     * </ul>
+     * </li>
      * <li>A byte array if value references an URL.
-     * </ul>
+     * </li>
      * </ul>
      * 
      * @return the real value or null

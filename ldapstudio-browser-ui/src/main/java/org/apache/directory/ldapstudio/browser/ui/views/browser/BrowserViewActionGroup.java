@@ -109,6 +109,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     private static final String importLdifAction = "importLdifAction";
 
     private static final String exportLdifAction = "exportLdifAction";
+    
+    private static final String exportDsmlAction = "exportDsmlAction";
 
     private static final String exportCsvAction = "exportCsvAction";
 
@@ -165,6 +167,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         this.browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
                 ImportExportAction.TYPE_IMPORT_DSML ) ) );
+        this.browserActionMap.put( exportDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+            ImportExportAction.TYPE_EXPORT_DSML ) ) );
         this.browserActionMap.put( importLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_LDIF ) ) );
         this.browserActionMap.put( exportLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
@@ -266,12 +270,13 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         // import/export
         MenuManager importMenuManager = new MenuManager( "Import" );
         importMenuManager.add( ( IAction ) this.browserActionMap.get( importLdifAction ) );
-        importMenuManager.add( new Separator() );
         importMenuManager.add( ( IAction ) this.browserActionMap.get( importDsmlAction ) );
+        importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
 
         MenuManager exportMenuManager = new MenuManager( "Export" );
         exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportLdifAction ) );
+        exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportDsmlAction ) );
         exportMenuManager.add( new Separator() );
         exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportCsvAction ) );
         exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportExcelAction ) );

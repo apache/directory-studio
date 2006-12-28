@@ -169,6 +169,17 @@
        <selection class="org.apache.directory.ldapstudio.browser.core.model.IEntry"/>
     </wizard>
     <wizard
+          class="org.apache.directory.ldapstudio.browser.ui.wizards.ExportDsmlWizard"
+          icon="icons/export_dsml.gif"
+          id="org.apache.directory.ldapstudio.browser.ui.wizards.ExportDdsmlWizard"
+          name="LDAP to DSML">
+       <description>
+          Exports a DSML file from a LDAP directory
+       </description>
+       <selection class="org.apache.directory.ldapstudio.browser.core.model.IConnection"/>
+       <selection class="org.apache.directory.ldapstudio.browser.core.model.IEntry"/>
+    </wizard>
+    <wizard
           class="org.apache.directory.ldapstudio.browser.ui.wizards.ExportCsvWizard"
           icon="icons/export_csv.gif"
           id="org.apache.directory.ldapstudio.browser.ui.wizards.ExportCsvWizard"
