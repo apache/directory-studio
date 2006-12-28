@@ -43,7 +43,7 @@ public class SortHierarchicalViewAction extends Action
     public enum SortType
     {
         alphabetical, unalphabetical
-    };
+    }
 
     private SortType type;
 

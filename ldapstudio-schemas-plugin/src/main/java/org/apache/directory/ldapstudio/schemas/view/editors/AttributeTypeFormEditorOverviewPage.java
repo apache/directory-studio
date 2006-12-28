@@ -112,7 +112,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
 
         // Getting the input and the attributeType
         AttributeTypeFormEditorInput input = ( AttributeTypeFormEditorInput ) getEditorInput();
-        attributeType = ( AttributeType ) input.getAttributeType();
+        attributeType = input.getAttributeType();
 
         // General Information Section
         Section section_general_information = toolkit.createSection( form.getBody(), Section.DESCRIPTION

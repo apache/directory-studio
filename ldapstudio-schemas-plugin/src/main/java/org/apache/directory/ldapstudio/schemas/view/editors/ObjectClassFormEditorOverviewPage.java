@@ -112,7 +112,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
 
         // Getting the input and the objectClass
         ObjectClassFormEditorInput input = ( ObjectClassFormEditorInput ) getEditorInput();
-        objectClass = ( ObjectClass ) input.getObjectClass();
+        objectClass = input.getObjectClass();
 
         // General Information Section
         Section section_general_information = toolkit.createSection( form.getBody(), Section.DESCRIPTION
@@ -325,7 +325,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private void createOptionnalAttributesSection( Composite parent, FormToolkit toolkit )
     {
         // OPTIONNAL ATTRIBUTES Section
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.DESCRIPTION |  Section.TITLE_BAR );
         section.setText( Messages.getString( "ObjectClassFormEditorOverviewPage.Optionnal_Attributes_Section_Text" ) ); //$NON-NLS-1$
         section.setDescription( Messages
             .getString( "ObjectClassFormEditorOverviewPage.Optionnal_Attributes_Section_Description" ) ); //$NON-NLS-1$

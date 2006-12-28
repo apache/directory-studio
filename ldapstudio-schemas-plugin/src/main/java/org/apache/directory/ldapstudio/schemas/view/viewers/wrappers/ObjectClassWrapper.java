@@ -41,7 +41,7 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     public enum State
     {
         resolved, unResolved
-    };
+    }
 
     private State state;
     private IntermediateNode parent;

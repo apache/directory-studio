@@ -67,7 +67,7 @@ public class Schema implements SchemaElementListener
     public enum SchemaType
     {
         userSchema, coreSchema
-    };
+    }
 
     /**
      * The type of this schema

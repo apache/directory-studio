@@ -114,7 +114,7 @@ public class PoolManagerContentProvider implements SortableContentProvider, IStr
         else if ( parentElement instanceof SchemaWrapper )
         {
             //we are looking for the childrens of the contained objectClass
-            Schema schema = ( Schema ) ( ( ( SchemaWrapper ) parentElement ).getMySchema() );
+            Schema schema = ( ( ( SchemaWrapper ) parentElement ).getMySchema() );
 
             IntermediateNode attributeTypes = new IntermediateNode(
                 "Attribute Types", ( SchemaWrapper ) parentElement, this ); //$NON-NLS-1$

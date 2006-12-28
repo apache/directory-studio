@@ -104,7 +104,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
         if ( parentElement instanceof ObjectClassWrapper )
         {
             //we are looking for the childrens of the contained objectClass
-            ObjectClass objectClass = ( ObjectClass ) ( ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass() );
+            ObjectClass objectClass =  ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
 
             IntermediateNode sub = new IntermediateNode( "Sub-types", ( ObjectClassWrapper ) parentElement, this ); //$NON-NLS-1$
             IntermediateNode may = new IntermediateNode(

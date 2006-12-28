@@ -67,7 +67,7 @@ public class AttributeTypeFormEditorSourceCodePage extends FormPage
 
         // Getting the input and the objectClass
         AttributeTypeFormEditorInput input = ( AttributeTypeFormEditorInput ) getEditorInput();
-        attributeType = ( AttributeType ) input.getAttributeType();
+        attributeType = input.getAttributeType();
 
         // SOURCE CODE Field
         sourceCode_text = toolkit.createText( form.getBody(), "", SWT.MULTI ); //$NON-NLS-1$

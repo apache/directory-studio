@@ -36,7 +36,7 @@ public class LDAPModelEvent
     public enum Reason
     {
         SchemaAdded, SchemaRemoved, multipleSchemaRemoved, multipleSchemaAdded, SchemaSaved, OCAdded, OCRemoved, ATAdded, ATRemoved, OCModified, ATModified, poolCleared
-    };
+    }
 
     private Reason reason = null;
     private Object element = null;

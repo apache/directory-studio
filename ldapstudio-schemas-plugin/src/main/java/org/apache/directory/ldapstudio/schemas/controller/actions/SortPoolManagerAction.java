@@ -42,7 +42,7 @@ public class SortPoolManagerAction extends Action
     public enum SortType
     {
         alphabetical, unalphabetical
-    };
+    }
 
     private SortType type;
 

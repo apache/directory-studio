@@ -61,7 +61,7 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
     private enum ItemType
     {
         attributeType, objectClass
-    };
+    }
 
 
     /**

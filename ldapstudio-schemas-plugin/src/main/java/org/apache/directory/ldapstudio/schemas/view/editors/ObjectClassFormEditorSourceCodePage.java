@@ -67,7 +67,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
 
         // Getting the input and the objectClass
         ObjectClassFormEditorInput input = ( ObjectClassFormEditorInput ) getEditorInput();
-        objectClass = ( ObjectClass ) input.getObjectClass();
+        objectClass = input.getObjectClass();
 
         // SOURCE CODE Field
         sourceCode_text = toolkit.createText( form.getBody(), "", SWT.MULTI ); //$NON-NLS-1$

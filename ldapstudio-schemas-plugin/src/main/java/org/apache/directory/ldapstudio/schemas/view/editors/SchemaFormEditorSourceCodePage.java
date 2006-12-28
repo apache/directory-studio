@@ -69,7 +69,7 @@ public class SchemaFormEditorSourceCodePage extends FormPage
 
         // Getting the input and the objectClass
         SchemaFormEditorInput input = ( SchemaFormEditorInput ) getEditorInput();
-        schema = ( Schema ) input.getSchema();
+        schema = input.getSchema();
 
         // SOURCE CODE Field
         sourceCode_text = toolkit.createText( form.getBody(), "", SWT.MULTI ); //$NON-NLS-1$
