@@ -114,6 +114,33 @@
             </fileset>
         </copy>
 
+	<!-- Creation of the Browser Core Plugin -->
+        <ant dir="ldapstudio-browser-core" inheritAll="no" />
+        <!-- Copy of the Browser Core Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-browser-core/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+	<!-- Creation of the Browser UI Plugin -->
+        <ant dir="ldapstudio-browser-ui" inheritAll="no" />
+        <!-- Copy of the Browser UI Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-browser-ui/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+	<!-- Creation of the Jars Plugin -->
+        <ant dir="ldapstudio-jars" inheritAll="no" />
+        <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-jars/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
         <!-- Setting Permissions -->
         <antcall target="setPermission_${ldapstudio-rcp.os.name}" />
     </target>
@@ -146,6 +173,7 @@
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
+        <ant dir="ldapstudio-jars" inheritAll="no" target="javadoc" />
     </target>
 
     <!-- ================================== -->
@@ -160,6 +188,7 @@
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-jars" inheritAll="no" target="resolve" />
     </target>
 
     <!-- ================================== -->
@@ -175,6 +204,7 @@
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-jars" inheritAll="no" target="clean" />
         <delete dir="${ldapstudio-complete.output}" />
     </target>
 </project>

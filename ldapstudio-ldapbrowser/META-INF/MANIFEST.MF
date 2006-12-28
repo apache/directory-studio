@@ -7,11 +7,11 @@ Bundle-Activator: org.apache.directory.ldapstudio.browser.Activator
 Bundle-Vendor: apache.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.apache.directory.ldapstudio.jars
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/xpp3-1.1.3_8.jar,
- lib/antlr-2.7.6.jar,
  lib/commons-collections-3.1.jar,
  lib/shared-asn1-0.9.6-SNAPSHOT.jar,
  lib/shared-ldap-0.9.6-SNAPSHOT.jar,

@@ -58,6 +58,8 @@
 		<copy todir="${project.build}">
 			<fileset dir="${basedir}">
 				<include name="plugin.xml" />
+				<include name="plugin.properties" />
+				<include name="about.html" />
 			</fileset>
 		</copy>
 		<mkdir dir="${project.build}/${lib.dir}" />
@@ -72,6 +74,18 @@
 				<include name="**" />
 			</fileset>
 		</copy>
+		<mkdir dir="${project.build}/about_files" />
+		<copy todir="${project.build}/about_files">
+			<fileset dir="${basedir}/about_files">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<mkdir dir="${project.build}/ressources" />
+		<copy todir="${project.build}">
+			<fileset dir="${basedir}/src/main/resources">
+				<include name="**" />
+			</fileset>
+		</copy>		
 		<javac
 			source="1.5"
 			debug="yes"

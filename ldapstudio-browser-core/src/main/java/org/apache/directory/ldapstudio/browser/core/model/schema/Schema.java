@@ -72,7 +72,7 @@ public class Schema implements Serializable
         try
         {
             URL url = Schema.class.getClassLoader().getResource(
-                "org/apache/directory/ldapstudio/browser/core/model/schema/default_schema.ldif" );
+                "default_schema.ldif" );
             InputStream is = url.openStream();
             Reader reader = new InputStreamReader( is );
 
