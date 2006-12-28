@@ -42,6 +42,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * This class implements the DSMLv2 Command Line.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class DsmlCommand
 {
