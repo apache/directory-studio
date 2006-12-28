@@ -104,6 +104,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
     private static final String copyEntryAsCsvOperationalAction = "copyEntryAsCsvOperationalAction";
 
+    private static final String importDsmlAction = "importDsmlAction";
+
     private static final String importLdifAction = "importLdifAction";
 
     private static final String exportLdifAction = "exportLdifAction";
@@ -161,6 +163,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         this.browserActionMap.put( copyEntryAsCsvOperationalAction, new BrowserViewActionProxy( viewer,
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
 
+        this.browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+                ImportExportAction.TYPE_IMPORT_DSML ) ) );
         this.browserActionMap.put( importLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_LDIF ) ) );
         this.browserActionMap.put( exportLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
@@ -263,6 +267,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         MenuManager importMenuManager = new MenuManager( "Import" );
         importMenuManager.add( ( IAction ) this.browserActionMap.get( importLdifAction ) );
         importMenuManager.add( new Separator() );
+        importMenuManager.add( ( IAction ) this.browserActionMap.get( importDsmlAction ) );
         menuManager.add( importMenuManager );
 
         MenuManager exportMenuManager = new MenuManager( "Export" );

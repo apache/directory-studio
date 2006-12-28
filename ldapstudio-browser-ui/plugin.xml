@@ -143,6 +143,17 @@
        <selection class="org.apache.directory.ldapstudio.browser.core.model.IConnection"/>
        <selection class="org.apache.directory.ldapstudio.browser.core.model.IEntry"/>
     </wizard>
+    <wizard
+          class="org.apache.directory.ldapstudio.browser.ui.wizards.ImportDsmlWizard"
+          icon="icons/import_dsml.gif"
+          id="org.apache.directory.ldapstudio.browser.ui.wizards.ImportDsmlWizard"
+          name="DSML into LDAP">
+       <description>
+          Imports a DSML file into a LDAP directory
+       </description>
+       <selection class="org.apache.directory.ldapstudio.browser.core.model.IConnection"/>
+       <selection class="org.apache.directory.ldapstudio.browser.core.model.IEntry"/>
+    </wizard>
  </extension>
  <extension
        point="org.eclipse.ui.exportWizards">

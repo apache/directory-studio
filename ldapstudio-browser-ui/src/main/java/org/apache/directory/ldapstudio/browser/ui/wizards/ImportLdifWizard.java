@@ -114,8 +114,8 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
         mainPage = new ImportLdifMainWizardPage( ImportLdifMainWizardPage.class.getName(), this );
         addPage( mainPage );
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( getContainer().getShell(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_ldifimport_wizard" );
+//        PlatformUI.getWorkbench().getHelpSystem().setHelp( getContainer().getShell(),
+//            BrowserUIPlugin.PLUGIN_ID + "." + "tools_ldifimport_wizard" );
     }
 
 

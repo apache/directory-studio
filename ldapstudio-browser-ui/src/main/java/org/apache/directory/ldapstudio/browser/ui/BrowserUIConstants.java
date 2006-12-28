@@ -255,6 +255,8 @@ public interface BrowserUIConstants
     public static final String IMG_IMPORT = "icons/import.gif";
 
     public static final String IMG_EXPORT = "icons/export.gif";
+    
+    public static final String IMG_IMPORT_DSML_WIZARD = "icons/import_dsml_wizard.gif";
 
     public static final String IMG_IMPORT_LDIF_WIZARD = "icons/import_ldif_wizard.gif";
 
@@ -268,6 +270,8 @@ public interface BrowserUIConstants
 
     public static final String IMG_EXPORT_XLS_WIZARD = "icons/export_xls_wizard.gif";
 
+    public static final String IMG_IMPORT_DSML = "icons/import_dsml.gif";
+    
     public static final String IMG_IMPORT_LDIF = "icons/import_ldif.gif";
 
     public static final String IMG_EXPORT_LDIF = "icons/export_ldif.gif";

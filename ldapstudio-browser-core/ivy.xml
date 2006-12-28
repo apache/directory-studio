@@ -22,5 +22,6 @@
 		<dependency org="antlr" name="antlr" rev="2.7.5"/>
 		<dependency org="commons-codec" name="commons-codec" rev="1.3"/>
 		<dependency org="org.apache.poi" name="poi" rev="2.5.1-final-20040804"/>
+    	<dependency org="org.apache.directory.ldapstudio" name="ldapstudio-dsml-parser" rev="0.1"/>
     </dependencies>
 </ivy-module>

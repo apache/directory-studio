@@ -166,6 +166,8 @@ public class BrowserCoreMessages extends NLS
     public static String ldif__import_into_host_port_failed_on_date;
 
     public static String ldif__error_msg;
+    
+    public static String dsml__n_errors_see_responsefile;
 
     public static String model__no_connection;
 
@@ -296,6 +298,12 @@ public class BrowserCoreMessages extends NLS
     public static String jobs__import_ldif_task;
 
     public static String jobs__import_ldif_error;
+    
+    public static String jobs__import_dsml_name;
+
+    public static String jobs__import_dsml_task;
+
+    public static String jobs__import_dsml_error;
 
     public static String jobs__init_entries_title_attandsub;
 

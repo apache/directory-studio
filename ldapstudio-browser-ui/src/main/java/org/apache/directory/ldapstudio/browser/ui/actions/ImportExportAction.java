@@ -29,6 +29,7 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportCsvWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportExcelWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportLdifWizard;
+import org.apache.directory.ldapstudio.browser.ui.wizards.ImportDsmlWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ImportLdifWizard;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -46,6 +47,8 @@ public class ImportExportAction extends BrowserAction
     public static final int TYPE_EXPORT_CSV = 2;
 
     public static final int TYPE_EXPORT_EXCEL = 3;
+    
+    public static final int TYPE_IMPORT_DSML = 4;
 
     private int type;
 
@@ -75,6 +78,10 @@ public class ImportExportAction extends BrowserAction
         {
             return "Excel Export...";
         }
+        else if ( this.type == TYPE_IMPORT_DSML )
+        {
+            return "DSML Import...";
+        }
         else
         {
             return "Export...";
@@ -99,6 +106,10 @@ public class ImportExportAction extends BrowserAction
         else if ( this.type == TYPE_EXPORT_EXCEL )
         {
             return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPORT_XLS );
+        }
+        else if ( this.type == TYPE_IMPORT_DSML )
+        {
+            return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_DSML );
         }
         else
         {
@@ -141,6 +152,25 @@ public class ImportExportAction extends BrowserAction
             else if ( getConnection() != null )
             {
                 wizard = new ImportLdifWizard( getConnection() );
+            }
+        }
+        else if ( this.type == TYPE_IMPORT_DSML )
+        {
+            if ( getEntry() != null )
+            {
+                wizard = new ImportDsmlWizard( getEntry().getConnection() );
+            }
+            else if ( getSearch() != null )
+            {
+                wizard = new ImportDsmlWizard( getSearch().getConnection() );
+            }
+            else if ( getConnectionInput() != null )
+            {
+                wizard = new ImportDsmlWizard( getConnectionInput() );
+            }
+            else if ( getConnection() != null )
+            {
+                wizard = new ImportDsmlWizard( getConnection() );
             }
         }
         else if ( this.type == TYPE_EXPORT_LDIF )
