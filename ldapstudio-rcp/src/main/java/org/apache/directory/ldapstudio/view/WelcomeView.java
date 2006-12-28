@@ -43,7 +43,9 @@ import org.eclipse.ui.part.ViewPart;
 
 /**
  * This class defines the Welcome View.
- */
+ * 
+  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+*/
 public class WelcomeView extends ViewPart
 {
     public static final String ID = "org.apache.directory.ldapstudio.view.WelcomeView"; //$NON-NLS-1$

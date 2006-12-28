@@ -31,6 +31,8 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * This class controls all aspects of the application's execution
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Application implements IPlatformRunnable
 {
@@ -48,13 +50,16 @@ public class Application implements IPlatformRunnable
         PropertyConfigurator.configure( Platform.getBundle( Application.PLUGIN_ID ).getResource( "log4j.conf" ) ); //$NON-NLS-1$
         logger.info( "Entering LDAP Studio." ); //$NON-NLS-1$
         Display display = PlatformUI.createDisplay();
+        
         try
         {
             int returnCode = PlatformUI.createAndRunWorkbench( display, new ApplicationWorkbenchAdvisor() );
+        
             if ( returnCode == PlatformUI.RETURN_RESTART )
             {
                 return IPlatformRunnable.EXIT_RESTART;
             }
+            
             return IPlatformRunnable.EXIT_OK;
         }
         finally

@@ -34,6 +34,7 @@ import org.eclipse.update.ui.UpdateManagerUI;
  * It uses Eclipse Plugin Manager to allow user to 
  * manager their plugin configuration.
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ManageExtensionsAction extends Action implements IAction
 {

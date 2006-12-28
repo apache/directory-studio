@@ -41,7 +41,9 @@ import org.eclipse.update.ui.UpdateManagerUI;
  * This class implements the Add Extension Action.
  * It uses Eclipse built-in extension system to allow users
  * to add extensions to LDAP Studio.
- */
+ * 
+  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+*/
 public class AddExtensionAction extends Action implements IAction
 {
     private IWorkbenchWindow window;

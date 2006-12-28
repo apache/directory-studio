@@ -40,7 +40,9 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  * other windows.<br /> 	 
  * - preShutdown 		Called after the event loop has terminated but before any windows 
  * have been closed. 	 <br />
- * - postShutdown 	Called after all windows are closed during Workbench shutdown. This can 
+ * - postShutdown 	Called after all windows are closed during Workbench shutdown. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
 {

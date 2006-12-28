@@ -48,6 +48,8 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  *  etc.<br />
  *  - preWindowShellClose - called when the window's shell is closed by the user; use to 
  *  pre-screen window closings
+ *  
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 {

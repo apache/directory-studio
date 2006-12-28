@@ -28,6 +28,8 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Activator extends AbstractUIPlugin
 {
