@@ -83,6 +83,9 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * This is the DSMLv2Engine. It can be use to execute operations on a LDAP Server and get the results of these operations.
  * The format used for request and responses is the DSMLv2 format.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class Dsmlv2Engine
 {
@@ -113,12 +116,16 @@ public class Dsmlv2Engine
 
 
     /**
-     * Default Constructor
+     * Creates a new instance of Dsmlv2Engine.
      * 
-     * @param host the server host
-     * @param port the server port
-     * @param user the server admin DN
-     * @param password the server admin DN's password
+     * @param host 
+     *      the server host
+     * @param port 
+     *      the server port
+     * @param user 
+     *      the server admin DN
+     * @param password 
+     *      the server admin's password
      */
     public Dsmlv2Engine( String host, int port, String user, String password )
     {
@@ -131,60 +138,67 @@ public class Dsmlv2Engine
 
     /**
      * Processes the file given and return the result of the operations
-     * @param dsmlInput The DSMLv2 formatted request input
-     * @return The XML response in DSMLv2 Format
+     * 
+     * @param dsmlInput 
+     *      the DSMLv2 formatted request input
+     * @return
+     *      the XML response in DSMLv2 Format
      * @throws XmlPullParserException
-     * @throws FileNotFoundException
+     *      if an error occurs in the parser
      */
-    public String processDSML( String dsmlInput ) throws XmlPullParserException, FileNotFoundException
+    public String processDSML( String dsmlInput ) throws XmlPullParserException
     {
         parser = new Dsmlv2Parser();
-
         parser.setInput( dsmlInput );
-
         return processDSML();
     }
 
 
     /**
      * Processes the file given and return the result of the operations
-     * @param fileName The path to the file
-     * @return The XML response in DSMLv2 Format
+     * 
+     * @param fileName 
+     *      the path to the file
+     * @return 
+     *      the XML response in DSMLv2 Format
      * @throws XmlPullParserException
+     *      if an error occurs in the parser
      * @throws FileNotFoundException
+     *      if the file does not exist
      */
     public String processDSMLFile( String fileName ) throws XmlPullParserException, FileNotFoundException
     {
         parser = new Dsmlv2Parser();
-
         parser.setInputFile( fileName );
-
         return processDSML();
     }
 
 
     /**
      * Processes the file given and return the result of the operations
-     * @param inputStream contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null).
-     * @param inputEncoding if not null it MUST be used as encoding for inputStream
-     * @return The XML response in DSMLv2 Format
+     * 
+     * @param inputStream 
+     *      contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null).
+     * @param inputEncoding 
+     *      if not null it MUST be used as encoding for inputStream
+     * @return 
+     *      the XML response in DSMLv2 Format
      * @throws XmlPullParserException
-     * @throws FileNotFoundException
+     *      if an error occurs in the parser
      */
-    public String processDSML( InputStream inputStream, String inputEncoding ) throws XmlPullParserException,
-        FileNotFoundException
+    public String processDSML( InputStream inputStream, String inputEncoding ) throws XmlPullParserException
     {
         parser = new Dsmlv2Parser();
-
         parser.setInput( inputStream, inputEncoding );
-
         return processDSML();
     }
 
 
     /**
      * Processes the Request document
-     * @return The XML response in DSMLv2 Format
+     * 
+     * @return 
+     *      the XML response in DSMLv2 Format
      */
     private String processDSML()
     {
@@ -302,14 +316,15 @@ public class Dsmlv2Engine
 
     /**
      * Processes a single request
-     * @param request the request to process
+     * 
+     * @param request 
+     *      the request to process
      * @throws EncoderException 
      * @throws IOException 
      * @throws NamingException 
      * @throws DecoderException 
      */
-    private void processRequest( LdapMessage request ) throws EncoderException, IOException, DecoderException,
-        NamingException
+    private void processRequest( LdapMessage request ) throws EncoderException, IOException, DecoderException, NamingException
     {
         LdapMessage message = new LdapMessage();
 
@@ -424,9 +439,13 @@ public class Dsmlv2Engine
 
     /**
      * Processes the BatchRequest
-     *     - Parsing and Getting BatchRequest
-     *     - Getting and registering options from BatchRequest
+     * <ul>
+     *     <li>Parsing and Getting BatchRequest</li>
+     *     <li>Getting and registering options from BatchRequest</li>
+     * </ul>
+     *     
      * @throws XmlPullParserException
+     *      if an error occurs in the parser
      */
     private void processBatchRequest() throws XmlPullParserException
     {
@@ -454,8 +473,11 @@ public class Dsmlv2Engine
 
     /**
      * XML Pretty Printer XSLT Tranformation
+     * 
      * @param document
+     *      the Dom4j Document
      * @param stylesheet
+     *      the stylesheet to use
      * @return
      */
     public Document styleDocument( Document document, String stylesheet )
@@ -499,23 +521,25 @@ public class Dsmlv2Engine
      * in the options from the command line, or the default values.
      * 
      * @throws UnknownHostException
-     *             The hostname or the Address of server could not be found
+     *      if the hostname or the Address of server could not be found
      * @throws IOException
-     *             There was a error opening or establishing the socket
+     *      if there was a error opening or establishing the socket
      */
     private void connect() throws UnknownHostException, IOException
     {
         serverAddress = new InetSocketAddress( host, port );
         channel = SocketChannel.open( serverAddress );
-
         channel.configureBlocking( true );
     }
 
 
     /**
      * Sends a message
+     * 
      * @param bb
+     *      the message as a byte buffer
      * @throws IOException
+     *      if the message could not be sent
      */
     private void sendMessage( ByteBuffer bb ) throws IOException
     {
@@ -526,8 +550,11 @@ public class Dsmlv2Engine
 
     /**
      * Reads the response to a request
+     * 
      * @param bb
+     *      the response as a byte buffer
      * @return the response
+     *      the response as a LDAP message
      * @throws IOException
      * @throws DecoderException
      * @throws NamingException
@@ -592,10 +619,14 @@ public class Dsmlv2Engine
 
 
     /**
-     * Bind to the ldap server
+     * Binds to the ldap server
      * 
-     * @param messageId The message Id
-     * @throws NamingException 
+     * @param messageId 
+     *      the message Id
+     * @throws EncoderException
+     * @throws DecoderException
+     * @throws IOException
+     * @throws NamingException
      */
     private void bind( int messageId ) throws EncoderException, DecoderException, IOException, NamingException
     {

@@ -30,17 +30,26 @@ import org.dom4j.Element;
 
 /**
  * DSML Decorator for the LdapResult class.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class LdapResultDsml implements DsmlDecorator
 {
-    private LdapMessage message;
+    /** The LDAP Result to decorate */
     private LdapResult result;
 
+    /** The associated LDAP Message */
+    private LdapMessage message;
 
-    /** 
-     * Default Constructor
-     * @param result the LdapResult to decorate
-     * @param message the message associated
+
+    /**
+     * Creates a new instance of LdapResultDsml.
+     *
+     * @param result
+     *      the LdapResult to decorate
+     * @param message
+     *      the associated message
      */
     public LdapResultDsml( LdapResult result, LdapMessage message )
     {
@@ -49,10 +58,8 @@ public class LdapResultDsml implements DsmlDecorator
     }
 
 
-    /**
-     * Convert the request to its XML representation in the DSMLv2 format.
-     * @param root the root dom4j Element
-     * @return the dom4j Element corresponding to the entry.
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
      */
     public Element toDsml( Element root )
     {

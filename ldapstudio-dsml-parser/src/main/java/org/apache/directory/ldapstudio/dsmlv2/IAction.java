@@ -29,6 +29,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * in all the implementong classes.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public interface IAction
 {
@@ -39,9 +40,9 @@ public interface IAction
      * The action to be executed.
      * 
      * @param container
-     *            The container which stores the current data
-     * @throws DecoderException
-     *             Thrown if something went wrong.
+     *      the container which stores the current data
+     * @throws XmlPullParserException
+     *      thrown if something went wrong.
      */
     public void action( Dsmlv2Container container ) throws XmlPullParserException;
 }

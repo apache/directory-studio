@@ -21,12 +21,14 @@
 package org.apache.directory.ldapstudio.dsmlv2;
 
 
+/**
+ * This interface represents a container that can be used by the parser to store parsed information
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface Container
 {
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
-    // State accessors
     /**
      * Get the current grammar state
      * 

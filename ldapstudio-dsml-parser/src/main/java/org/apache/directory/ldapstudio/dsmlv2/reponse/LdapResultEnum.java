@@ -23,9 +23,13 @@ package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 /**
  * This Class helps to get resultCodeDesc for a ResultCode of a LdapResult.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class LdapResultEnum
 {
+    /** All the possible result value as string */
     private static String[] resultStrings;
 
     static
@@ -140,9 +144,12 @@ public class LdapResultEnum
 
 
     /**
-     * Return the String description of a given result code 
-     * @param resultCode a result code
-     * @return the String description corresponding to the result code
+     * Gets the String description of a given result code 
+     * 
+     * @param resultCode 
+     *      a result code
+     * @return 
+     *      the String description corresponding to the result code
      */
     public static String getResultCodeDescr( int resultCode )
     {

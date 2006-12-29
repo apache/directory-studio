@@ -24,6 +24,9 @@ package org.apache.directory.ldapstudio.dsmlv2;
 /**
  * This class store the Dsml grammar's constants. It is also used for debugging
  * purpose
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class Dsmlv2StatesEnum implements IStates
 {

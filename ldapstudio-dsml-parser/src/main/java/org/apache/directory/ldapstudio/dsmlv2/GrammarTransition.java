@@ -26,12 +26,10 @@ package org.apache.directory.ldapstudio.dsmlv2;
  * state, and the action to execute while transiting.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class GrammarTransition
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The next state in the grammar */
     private int nextState;
 
@@ -41,19 +39,16 @@ public class GrammarTransition
     /** The current state */
     private int currentState;
 
-
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
-
+    
     /**
      * Creates a new GrammarTransition object.
      * 
      * @param currentState
-     *            The current transition
+     *      The current transition
      * @param nextState
-     *            The target state
+     *      The target state
      * @param action
-     *            The action to execute. It could be null.
+     *      The action to execute. It could be null.
      */
     public GrammarTransition( int currentState, int nextState, GrammarAction action )
     {
@@ -62,12 +57,11 @@ public class GrammarTransition
         this.action = action;
     }
 
-
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
-     * @return Returns the target state.
+     * Gets the target state
+     * 
+     * @return
+     *      the target state.
      */
     public int getNextState()
     {
@@ -78,7 +72,8 @@ public class GrammarTransition
     /**
      * Tells if the transition has an associated action.
      * 
-     * @return <code>true</code> if an action has been asociated to the
+     * @return 
+     *      <code>true</code> if an action has been asociated to the
      *         transition
      */
     public boolean hasAction()
@@ -88,7 +83,10 @@ public class GrammarTransition
 
 
     /**
-     * @return Returns the action associated with the transition
+     * Gets the action associated with the transition
+     * 
+     * @return
+     *      the action associated with the transition
      */
     public GrammarAction getAction()
     {
@@ -97,9 +95,14 @@ public class GrammarTransition
 
 
     /**
+     * Returns a representation of the transition as a string
+     * 
      * @param grammar
-     *            The grammar which state we want a String from
-     * @return A representation of the transition as a string.
+     *      the grammar which state we want a String from
+     * @param statesEnum
+     *      the states enum that contains the states' names
+     * @return 
+     *      a representation of the transition as a string.
      */
     public String toString( int grammar, IStates statesEnum )
     {

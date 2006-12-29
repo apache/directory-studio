@@ -26,42 +26,63 @@ import org.dom4j.Element;
 
 
 /**
- * Class representing Error Response.
- * 
+ * Class representing Error Response. <br>
+ * <br>
  * An Error Response has a requestID, a message, and a type which can be :
- *     - NOT_ATTEMPTED,
- *     - COULD_NOT_CONNECT,
- *     - CONNECTION_CLOSED,
- *     - MALFORMED_REQUEST,
- *     - GATEWAY_INTERNAL_ERROR,
- *     - AUTHENTICATION_FAILED,
- *     - UNRESOLVABLE_URI,
- *     - OTHER
+ * <ul> 
+ *     <li>NOT_ATTEMPTED,</li>
+ *     <li>COULD_NOT_CONNECT,</li>
+ *     <li>CONNECTION_CLOSED,</li>
+ *     <li>MALFORMED_REQUEST,</li>
+ *     <li>GATEWAY_INTERNAL_ERROR,</li>
+ *     <li>AUTHENTICATION_FAILED,</li>
+ *     <li>UNRESOLVABLE_URI,</li>
+ *     <li>OTHER</li>
+ * </ul>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ErrorResponse extends LdapResponse implements DsmlDecorator
 {
+    /**
+     * This enum represents the different types of error response
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     public enum ErrorResponseType
     {
         NOT_ATTEMPTED, COULD_NOT_CONNECT, CONNECTION_CLOSED, MALFORMED_REQUEST, GATEWAY_INTERNAL_ERROR, AUTHENTICATION_FAILED, UNRESOLVABLE_URI, OTHER
     };
 
+    /** The type of error response */
     private ErrorResponseType type;
 
+    /** The associated message */
     private String message;
 
+    /** The request ID */
     private int requestID;
 
 
+    /**
+     * Creates a new instance of ErrorResponse.
+     */
     public ErrorResponse()
     {
     }
 
 
     /**
-     * Default constructor
-     * @param requestID The requestID of the response
-     * @param type The type of the response
-     * @param message The associated message
+     * Creates a new instance of ErrorResponse.
+     *
+     * @param requestID
+     *      the requestID of the response
+     * @param type 
+     *      the type of the response
+     * @param message
+     *      the associated message
      */
     public ErrorResponse( int requestID, ErrorResponseType type, String message )
     {
@@ -71,10 +92,8 @@ public class ErrorResponse extends LdapResponse implements DsmlDecorator
     }
 
 
-    /**
-     * Convert the request to its XML representation in the DSMLv2 format.
-     * @param root the root dom4j Element
-     * @return the dom4j Element corresponding to the entry.
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
      */
     public Element toDsml( Element root )
     {
@@ -103,8 +122,11 @@ public class ErrorResponse extends LdapResponse implements DsmlDecorator
 
     /**
      * Returns the String associated to the error response type
-     * @param type the error response type
-     * @return the corresponding String
+     * 
+     * @param type 
+     *      the error response type
+     * @return 
+     *      the corresponding String
      */
     public String getTypeDescr( ErrorResponseType type )
     {
@@ -147,36 +169,72 @@ public class ErrorResponse extends LdapResponse implements DsmlDecorator
     }
 
 
+    /**
+     * Gets the message
+     *
+     * @return
+     *      the message
+     */
     public String getMessage()
     {
         return message;
     }
 
 
+    /**
+     * Sets the message
+     *
+     * @param message
+     *      the message to set
+     */
     public void setMessage( String message )
     {
         this.message = message;
     }
 
 
+    /**
+     * Gets the request ID
+     *
+     * @return
+     *      the request ID
+     */
     public int getRequestID()
     {
         return requestID;
     }
 
 
+    /**
+     * Sets the request ID
+     *
+     * @param requestID
+     *      the request ID to set
+     */
     public void setRequestID( int requestID )
     {
         this.requestID = requestID;
     }
 
 
+    /**
+     * Gets the type of error response
+     *
+     * @return
+     *      the type of error response
+     */
     public ErrorResponseType getType()
     {
         return type;
     }
 
 
+    /**
+     * Sets the type of error response
+     *
+     * @param type
+     *      the type of error response to set
+     */
     public void setType( ErrorResponseType type )
     {
         this.type = type;

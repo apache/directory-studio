@@ -26,14 +26,19 @@ import org.dom4j.Element;
 
 /**
  * This interface defines the methods that must be implemented to define a DSML Decorator
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public interface DsmlDecorator
 {
     /**
-     * Convert the request to its XML representation in the DSMLv2 format.
-     * @param root the root dom4j Element
-     * @return the dom4j Element corresponding to the entry.
+     * Converts the request/reponse to its XML representation in the DSMLv2 format
+     * 
+     * @param root 
+     *      the root dom4j Element
+     * @return 
+     *      the dom4j Element corresponding to the entry.
      */
     public Element toDsml( Element root );
-
 }

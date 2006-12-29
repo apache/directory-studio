@@ -24,6 +24,13 @@ package org.apache.directory.ldapstudio.dsmlv2;
 import org.xmlpull.v1.XmlPullParser;
 
 
+/**
+ * This class represents the DSML Container.
+ * It used by the DSML Parser to store information.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Dsmlv2Container implements Container
 {
     /** The current state of the decoding */
@@ -44,19 +51,15 @@ public class Dsmlv2Container implements Container
     /** The BatchResponse of the parsing */
     private BatchResponse batchResponse;
 
+    /**  The associated grammar */
     private AbstractGrammar grammar;
 
 
-    public Dsmlv2Container()
-    {
-        //grammar = Dsmlv2Grammar.getInstance();
-    }
-
-
     /**
-     * Get the DSML Batch Request
+     * Gets the DSML Batch Request
      * 
-     * @return Returns the Batch Request
+     * @return
+     *      Returns the Batch Request
      */
     public BatchRequest getBatchRequest()
     {
@@ -66,7 +69,9 @@ public class Dsmlv2Container implements Container
 
     /**
      * Sets the DSML Batch Request
+     * 
      * @param batchRequest
+     *      the Batch Request to set
      */
     public void setBatchRequest( BatchRequest batchRequest )
     {
@@ -75,9 +80,10 @@ public class Dsmlv2Container implements Container
 
 
     /**
-     * Get the DSML Batch Response
+     * Gets the DSML Batch Response
      * 
-     * @return Returns the Batch Response
+     * @return
+     *      Returns the Batch Response
      */
     public BatchResponse getBatchResponse()
     {
@@ -87,7 +93,9 @@ public class Dsmlv2Container implements Container
 
     /**
      * Sets the DSML Batch Request
+     * 
      * @param batchRequest
+     *      the Batch Response to set
      */
     public void setBatchResponse( BatchResponse batchResponse )
     {
@@ -96,9 +104,10 @@ public class Dsmlv2Container implements Container
 
 
     /**
-     * Get the parser
+     * Gets the parser
      * 
-     * @return Returns the parser
+     * @return
+     *      the parser
      */
     public XmlPullParser getParser()
     {
@@ -107,10 +116,10 @@ public class Dsmlv2Container implements Container
 
 
     /**
-     * Set the parser
+     * Sets the parser
      * 
-     * @param state
-     *            The parser
+     * @param parser
+     *      the parser to set
      */
     public void setParser( XmlPullParser parser )
     {
@@ -121,7 +130,8 @@ public class Dsmlv2Container implements Container
     /**
      * Get the current grammar state
      * 
-     * @return Returns the current grammar state
+     * @return
+     *      the current grammar state
      */
     public int getState()
     {
@@ -133,7 +143,7 @@ public class Dsmlv2Container implements Container
      * Set the new current state
      * 
      * @param state
-     *            The new state
+     *      the new state
      */
     public void setState( int state )
     {
@@ -144,7 +154,8 @@ public class Dsmlv2Container implements Container
     /**
      * Get the transition
      * 
-     * @return Returns the transition from the previous state to the new state
+     * @return
+     *      the transition from the previous state to the new state
      */
     public int getTransition()
     {
@@ -156,7 +167,7 @@ public class Dsmlv2Container implements Container
      * Update the transition from a state to another
      * 
      * @param transition
-     *            The transition to set
+     *      the transition to set
      */
     public void setTransition( int transition )
     {
@@ -167,7 +178,8 @@ public class Dsmlv2Container implements Container
     /**
      * Get the states for this container's grammars
      * 
-     * @return Returns the states.
+     * @return
+     *      the states.
      */
     public IStates getStates()
     {
@@ -175,12 +187,24 @@ public class Dsmlv2Container implements Container
     }
 
 
+    /**
+     * Gets the grammar
+     *
+     * @return
+     *      the grammar
+     */
     public AbstractGrammar getGrammar()
     {
         return grammar;
     }
 
 
+    /**
+     * Sets the Grammar
+     * 
+     * @param grammar
+     *      the grammar to set
+     */
     public void setGrammar( AbstractGrammar grammar )
     {
         this.grammar = grammar;
@@ -191,10 +215,11 @@ public class Dsmlv2Container implements Container
      * Get the transition associated with the state and tag
      * 
      * @param state
-     *            The current state
+     *      the current state
      * @param tag
-     *            The current tag
-     * @return A valid transition if any, or null.
+     *      the current tag
+     * @return
+     *      a valid transition if any, or null.
      */
     public GrammarTransition getTransition( int state, Tag tag )
     {

@@ -64,6 +64,9 @@ import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * This Class represents the DSMLv2 Request Grammar
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
 {
@@ -71,6 +74,9 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     private static Dsmlv2Grammar instance = new Dsmlv2Grammar();
 
 
+    /**
+     * Creates a new instance of Dsmlv2Grammar.
+     */
     @SuppressWarnings("unchecked")
     private Dsmlv2Grammar()
     {
@@ -1123,7 +1129,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	abandonRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                abandonRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // abandonID
             attributeValue = xpp.getAttributeValue( "", "abandonID" );
@@ -1164,7 +1170,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-                    addRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                addRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1226,7 +1232,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
@@ -1271,7 +1277,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	authRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                authRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // principal
             attributeValue = xpp.getAttributeValue( "", "principal" );
@@ -1311,7 +1317,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	compareRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                compareRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1374,7 +1380,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
@@ -1415,7 +1421,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	delRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                delRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1455,7 +1461,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	extendedRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                extendedRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
         }
     };
@@ -1507,7 +1513,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
@@ -1547,7 +1553,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	modifyDNRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                modifyDNRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1640,7 +1646,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	modifyRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                modifyRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1729,11 +1735,11 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 // We are testing if nextText equals "" since a modification can be "".
-                
+
                 if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                 {
                     modifyRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
@@ -1768,7 +1774,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "requestID" );
             if ( attributeValue != null )
             {
-            	searchRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                searchRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1983,14 +1989,15 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        substringFilter.setInitialSubstrings( new String( Base64.decode( nextText.trim().toCharArray() ) ) );
+                        substringFilter
+                            .setInitialSubstrings( new String( Base64.decode( nextText.trim().toCharArray() ) ) );
                     }
                     else
                     {
@@ -2020,7 +2027,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
@@ -2057,14 +2064,15 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        substringFilter.setFinalSubstrings( new String( Base64.decode( nextText.trim().toCharArray() ) ) );
+                        substringFilter
+                            .setFinalSubstrings( new String( Base64.decode( nextText.trim().toCharArray() ) ) );
                     }
                     else
                     {
@@ -2399,7 +2407,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
@@ -2534,7 +2542,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
@@ -2576,7 +2584,8 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 if ( !OID.isOID( attributeValue ) )
                 {
-                    throw new XmlPullParserException( "Incorrect value for 'type' attribute. This is not an OID.", xpp, null );
+                    throw new XmlPullParserException( "Incorrect value for 'type' attribute. This is not an OID.", xpp,
+                        null );
                 }
                 control.setControlType( attributeValue );
             }
@@ -2618,7 +2627,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 // We have to catch the type Attribute Value before going to the next Text node
                 String typeValue = ParserUtils.getXsiTypeAttributeValue( xpp );
-                
+
                 // Getting the value
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
@@ -2642,9 +2651,10 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
 
 
     /**
-     * Get the instance of this grammar
+     * Gets an instance of this grammar
      * 
-     * @return An instance on the Dsmlv2Grammar
+     * @return
+     *      an instance of this grammar
      */
     public static Dsmlv2Grammar getInstance()
     {

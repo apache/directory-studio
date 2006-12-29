@@ -26,24 +26,19 @@ package org.apache.directory.ldapstudio.dsmlv2;
  * Those informations are not mandatory, but they can be usefull for debugging.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public abstract class GrammarAction implements IAction
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The action's name */
     protected String name;
 
-
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
 
     /**
      * Creates a new GrammarAction object.
      * 
      * @param name
-     *            The name of the create daction
+     *      the name of the create daction
      */
     public GrammarAction( String name )
     {
@@ -51,13 +46,11 @@ public abstract class GrammarAction implements IAction
     }
 
 
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
      * Print the action's name
      * 
-     * @return The action's name
+     * @return 
+     *      the action's name
      */
     public String toString()
     {

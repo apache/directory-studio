@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.dsmlv2;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -30,6 +31,9 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * The abstract IGrammar which is the Mother of all the grammars. It contains
  * the transitions table.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public abstract class AbstractGrammar implements IGrammar
 {
@@ -48,15 +52,6 @@ public abstract class AbstractGrammar implements IGrammar
     protected IStates statesEnum;
 
 
-    public AbstractGrammar()
-    {
-
-    }
-
-
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
-
     /**
      * Return the grammar's name
      * 
@@ -72,7 +67,7 @@ public abstract class AbstractGrammar implements IGrammar
      * Set the grammar's name
      * 
      * @param name
-     *            DOCUMENT ME!
+     *      the name to set
      */
     public void setName( String name )
     {
@@ -98,7 +93,8 @@ public abstract class AbstractGrammar implements IGrammar
     /**
      * Get the states of the current grammar
      * 
-     * @return Returns the statesEnum.
+     * @return 
+     *      Returns the statesEnum.
      */
     public IStates getStatesEnum()
     {
@@ -110,7 +106,7 @@ public abstract class AbstractGrammar implements IGrammar
      * Set the states for this grammar
      * 
      * @param statesEnum
-     *            The statesEnum to set.
+     *      The statesEnum to set.
      */
     public void setStatesEnum( IStates statesEnum )
     {
@@ -118,7 +114,10 @@ public abstract class AbstractGrammar implements IGrammar
     }
 
 
-    public void executeAction( Dsmlv2Container container ) throws Exception
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.IGrammar#executeAction(org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Container)
+     */
+    public void executeAction( Dsmlv2Container container ) throws XmlPullParserException, IOException
     {
         XmlPullParser xpp = container.getParser();
 
@@ -147,7 +146,17 @@ public abstract class AbstractGrammar implements IGrammar
     }
 
 
-    private void processTag( Dsmlv2Container container, int tagType ) throws Exception
+    /**
+     * Processes the task required in the grammar to the given tag type
+     *
+     * @param container
+     *      the DSML container
+     * @param tagType
+     *      the tag type
+     * @throws XmlPullParserException 
+     *      when an error occurs during the parsing
+     */
+    private void processTag( Dsmlv2Container container, int tagType ) throws XmlPullParserException
     {
         XmlPullParser xpp = container.getParser();
 

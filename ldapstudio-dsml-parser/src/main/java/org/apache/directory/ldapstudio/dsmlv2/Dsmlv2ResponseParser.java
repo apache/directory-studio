@@ -34,11 +34,25 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 
+/**
+ * This class represents the DSMLv2 Parser.
+ * It can be used to parse a DSMLv2 Response input.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Dsmlv2ResponseParser
 {
+    /** The associated DSMLv2 container */
     private Dsmlv2Container container;
 
 
+    /**
+     * Creates a new instance of Dsmlv2ResponseParser.
+     *
+     * @throws XmlPullParserException
+     *      if an error occurs while the initialization of the parser
+     */
     public Dsmlv2ResponseParser() throws XmlPullParserException
     {
         this.container = new Dsmlv2Container();
@@ -46,19 +60,37 @@ public class Dsmlv2ResponseParser
         this.container.setGrammar( Dsmlv2ResponseGrammar.getInstance() );
 
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-        factory.setNamespaceAware(true);
+        factory.setNamespaceAware( true );
         XmlPullParser xpp = factory.newPullParser();
 
         container.setParser( xpp );
     }
 
 
+    /**
+     * Sets the input string the parser is going to parse
+     *
+     * @param str
+     *      the string the parser is going to parse
+     * @throws XmlPullParserException
+     *      if an error occurs in the parser
+     */
     public void setInput( String str ) throws FileNotFoundException, XmlPullParserException
     {
         container.getParser().setInput( new StringReader( str ) );
     }
 
 
+    /**
+     * Sets the input file the parser is going to parse
+     *
+     * @param fileName
+     *      the name of the file
+     * @throws FileNotFoundException
+     *      if the file does not exist
+     * @throws XmlPullParserException
+     *      if an error occurs in the parser
+     */
     public void setInputFile( String fileName ) throws FileNotFoundException, XmlPullParserException
     {
         Reader reader = new FileReader( fileName );
@@ -66,13 +98,30 @@ public class Dsmlv2ResponseParser
     }
 
 
+    /**
+     * Sets the input stream the parser is going to process
+     *
+     * @param inputStream
+     *      contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null)
+     * @param inputEncoding
+     *      if not null it MUST be used as encoding for inputStream
+     * @throws XmlPullParserException
+     *      if an error occurs in the parser
+     */
     public void setInput( InputStream inputStream, String inputEncoding ) throws XmlPullParserException
     {
         container.getParser().setInput( inputStream, inputEncoding );
     }
 
 
-    public void parse() throws Exception
+    /**
+     * Launches the parsing on the input
+     * 
+     * @throws XmlPullParserException 
+     *      when an unrecoverable error occurs
+     * @throws IOException
+     */
+    public void parse() throws XmlPullParserException, IOException
     {
         Dsmlv2ResponseGrammar grammar = Dsmlv2ResponseGrammar.getInstance();
 
@@ -80,6 +129,12 @@ public class Dsmlv2ResponseParser
     }
 
 
+    /**
+     * Launches the parsing of the Batch Response only
+     *
+     * @throws XmlPullParserException
+     *      if an error occurs in the parser
+     */
     public void parseBatchResponse() throws XmlPullParserException
     {
         XmlPullParser xpp = container.getParser();
@@ -117,6 +172,16 @@ public class Dsmlv2ResponseParser
     }
 
 
+    /**
+     * Processes the task required in the grammar to the given tag type
+     *
+     * @param container
+     *      the DSML container
+     * @param tagType
+     *      the tag type
+     * @throws XmlPullParserException 
+     *      when an error occurs during the parsing
+     */
     private void processTag( Dsmlv2Container container, int tagType ) throws XmlPullParserException
     {
         XmlPullParser xpp = container.getParser();
@@ -142,6 +207,12 @@ public class Dsmlv2ResponseParser
     }
 
 
+    /**
+     * Gets the Batch Response or null if the it has not been parsed yet
+     *
+     * @return 
+     *      the Batch Response or null if the it has not been parsed yet
+     */
     public BatchResponse getBatchResponse()
     {
         return container.getBatchResponse();
@@ -150,9 +221,10 @@ public class Dsmlv2ResponseParser
 
     /**
      * Returns the next Request or null if there's no more request
-     * @return the next Request or null if there's no more request
+     * @return
+     *      the next Request or null if there's no more request
      * @throws XmlPullParserException 
-     * @throws Exception
+     *      when an error occurs during the parsing
      */
     public LdapResponse getNextResponse() throws XmlPullParserException
     {
@@ -214,7 +286,13 @@ public class Dsmlv2ResponseParser
     }
 
 
-    public void parseAllResponses() throws Exception
+    /**
+     * Parses all the responses
+     *
+     * @throws XmlPullParserException
+     *      when an error occurs during the parsing
+     */
+    public void parseAllResponses() throws XmlPullParserException
     {
         while ( getNextResponse() != null )
         {

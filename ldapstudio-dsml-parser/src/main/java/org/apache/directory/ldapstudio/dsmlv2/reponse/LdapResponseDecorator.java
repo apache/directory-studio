@@ -28,12 +28,17 @@ import org.apache.directory.shared.ldap.codec.LdapResult;
 
 /**
  * Decorator abstract class for LdapResponse
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public abstract class LdapResponseDecorator extends LdapMessageDecorator
 {
     /**
-     * Default constructor
-     * @param ldapMessage the message to decorate
+     * Creates a new instance of LdapResponseDecorator.
+     *
+     * @param ldapMessage
+     *      the message to decorate
      */
     public LdapResponseDecorator( LdapMessage ldapMessage )
     {

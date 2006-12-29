@@ -27,106 +27,219 @@ import java.util.List;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 
 
+/**
+ * This class represents the Batch Request of a DSML Request
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BatchRequest
 {
+    /**
+     * The requests contained in the Batch Request
+     */
     private List<LdapMessage> requests;
 
+    /**
+     * The ID of the request
+     */
     private int requestID;
 
+    /**
+     * This enum represents the different types of processing for a Batch Request 
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     public enum Processing
     {
         SEQUENTIAL, PARALLEL
     };
 
+    /**
+     * The type of processing of the Batch Request
+     */
     private Processing processing;
 
+    /**
+     * This enum represents the different types of on error handling for a BatchRequest
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     public enum OnError
     {
         RESUME, EXIT
     };
 
+    /**
+     * The type of on error handling
+     */
     private OnError onError;
 
+    /**
+     * This enum represents the different types of response order for a Batch Request
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     public enum ResponseOrder
     {
         SEQUENTIAL, UNORDERED
     };
 
+    /**
+     * The response order
+     */
     private ResponseOrder responseOrder;
 
 
+    /**
+     * Creates a new instance of BatchRequest.
+     */
     public BatchRequest()
     {
         requests = new ArrayList<LdapMessage>();
     }
 
 
+    /**
+     * Adds a request
+     *
+     * @param request
+     *      the resquest to add
+     * @return
+     *      true (as per the general contract of the Collection.add method)
+     */
     public boolean addRequest( LdapMessage request )
     {
         return requests.add( request );
     }
 
 
+    /**
+     * Gets the current request
+     *
+     * @return
+     *      the current request
+     */
     public LdapMessage getCurrentRequest()
     {
         return requests.get( requests.size() - 1 );
     }
 
 
+    /**
+     * Gets the ID of the request
+     *
+     * @return
+     *      the ID of the request
+     */
     public int getRequestID()
     {
         return requestID;
     }
 
 
+    /**
+     * Sets the ID of the request
+     *
+     * @param requestID
+     *      the ID to set
+     */
     public void setRequestID( int requestID )
     {
         this.requestID = requestID;
     }
 
 
+    /**
+     * Gets the processing type of the request
+     *
+     * @return
+     *      the processing type of the request
+     */
     public Processing getProcessing()
     {
         return processing;
     }
 
 
+    /**
+     * Sets the processing type of the request
+     *
+     * @param processing
+     *      the processing type to set
+     */
     public void setProcessing( Processing processing )
     {
         this.processing = processing;
     }
 
 
+    /**
+     * Gets the on error handling type of the request
+     *
+     * @return
+     *      the on error handling type of the request
+     */
     public OnError getOnError()
     {
         return onError;
     }
 
 
+    /**
+     * Sets the on error handling type of the request
+     *
+     * @param onError
+     *      the on error handling type to set
+     */
     public void setOnError( OnError onError )
     {
         this.onError = onError;
     }
 
 
+    /**
+     * Gets the reponse order type of the request
+     *
+     * @return
+     *      the reponse order type of the request
+     */
     public ResponseOrder getResponseOrder()
     {
         return responseOrder;
     }
 
 
+    /**
+     * Sets the reponse order type of the request
+     *
+     * @param responseOrder
+     *      the reponse order type to set
+     */
     public void setResponseOrder( ResponseOrder responseOrder )
     {
         this.responseOrder = responseOrder;
     }
 
 
+    /**
+     * Gets the List of all the requests in the Batch Request
+     *
+     * @return
+     *      the List of all the requests in the Batch Request
+     */
     public List getRequests()
     {
         return requests;
     }
 
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString()
     {
@@ -142,5 +255,4 @@ public class BatchRequest
 
         return sb.toString();
     }
-
 }

@@ -21,7 +21,9 @@
 package org.apache.directory.ldapstudio.dsmlv2;
 
 
-import org.apache.directory.shared.asn1.codec.DecoderException;
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 
 /**
@@ -36,12 +38,13 @@ public interface IGrammar
      * This method, when called, execute an action on the current data stored in
      * the container.
      * 
-     * @param asn1Container
-     *            Store the data being processed.
-     * @throws DecoderException
-     *             Thrown when an unrecoverable error occurs.
+     * @param container
+     *            the DSML container
+     * @throws XmlPullParserException
+     *      Thrown when an unrecoverable error occurs.
+     * @throws IOException
      */
-    void executeAction( Dsmlv2Container container ) throws Exception;
+    void executeAction( Dsmlv2Container container ) throws XmlPullParserException, IOException;
 
 
     /**

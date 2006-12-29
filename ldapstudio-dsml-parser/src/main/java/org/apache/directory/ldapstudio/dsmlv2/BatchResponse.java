@@ -27,44 +27,90 @@ import java.util.List;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
 
 
+/**
+ * This class represents the Batch Response of a DSML Response
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BatchResponse
 {
 
+    /**
+     * The responses contained in the Batch Response
+     */
     private List<LdapResponse> responses;
 
+    /**
+     * The ID of the response
+     */
     private int requestID;
 
 
+    /**
+     * Creates a new instance of BatchResponse.
+     */
     public BatchResponse()
     {
         responses = new ArrayList<LdapResponse>();
     }
 
 
+    /**
+     * Adds a reponse
+     *
+     * @param response
+     *      the response to add
+     * @return
+     *      true (as per the general contract of the Collection.add method)
+     */
     public boolean addResponse( LdapResponse response )
     {
         return responses.add( response );
     }
 
 
+    /**
+     * Gets the current reponse
+     *
+     * @return
+     *      the current response
+     */
     public LdapResponse getCurrentResponse()
     {
         return responses.get( responses.size() - 1 );
     }
 
 
+    /**
+     * Gets the ID of the response
+     * @return
+     *      the ID of the response
+     */
     public int getRequestID()
     {
         return requestID;
     }
 
 
+    /**
+     * Sets the ID of the response
+     *
+     * @param requestID
+     *      the ID to set
+     */
     public void setRequestID( int requestID )
     {
         this.requestID = requestID;
     }
 
 
+    /**
+     * Gets the List of all the reponses
+     *
+     * @return
+     *      the List of all the responses
+     */
     public List getResponses()
     {
         return responses;

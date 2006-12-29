@@ -36,12 +36,17 @@ import org.dom4j.QName;
 
 /**
  * DSML Decorator for SearchResultEntry
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class SearchResultEntryDsml extends LdapResponseDecorator implements DsmlDecorator
 {
     /**
-     * Default constructor
-     * @param ldapMessage the message to decorate
+     * Creates a new instance of SearchResultEntryDsml.
+     *
+     * @param ldapMessage
+     *      the message to decorate
      */
     public SearchResultEntryDsml( LdapMessage ldapMessage )
     {
@@ -49,9 +54,8 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
     }
 
 
-    /**
-     * Get the message type
-     * @return Returns the type.
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.LdapMessageDecorator#getMessageType()
      */
     public int getMessageType()
     {
@@ -59,10 +63,8 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
     }
 
 
-    /**
-     * Convert the request to its XML representation in the DSMLv2 format.
-     * @param root the root dom4j Element
-     * @return the dom4j Element corresponding to the entry.
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
      */
     public Element toDsml( Element root )
     {
@@ -89,16 +91,18 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
                 while ( ne2.hasMoreElements() )
                 {
                     Object value = ne2.nextElement();
-                    
+
                     if ( ParserUtils.needsBase64Encoding( value ) )
                     {
                         Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
                         Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
                         attributeElement.getDocument().getRootElement().add( xsdNamespace );
                         attributeElement.getDocument().getRootElement().add( xsiNamespace );
-                        
-                        Element valueElement = attributeElement.addElement( "value" ).addText( ParserUtils.base64Encode( value ) );
-                        valueElement.addAttribute( new QName("type", xsiNamespace), "xsd:" + ParserUtils.BASE64BINARY );
+
+                        Element valueElement = attributeElement.addElement( "value" ).addText(
+                            ParserUtils.base64Encode( value ) );
+                        valueElement
+                            .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                     }
                     else
                     {

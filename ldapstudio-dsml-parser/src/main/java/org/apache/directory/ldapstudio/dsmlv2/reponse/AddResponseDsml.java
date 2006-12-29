@@ -27,12 +27,17 @@ import org.dom4j.Element;
 
 /**
  * DSML Decorator for AddResponse
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AddResponseDsml extends LdapResponseDecorator implements DsmlDecorator
 {
     /**
-     * Default constructor
-     * @param ldapMessage the message to decorate
+     * Creates a new instance of AddResponseDsml.
+     *
+     * @param ldapMessage
+     *      the message to decorate
      */
     public AddResponseDsml( LdapMessage ldapMessage )
     {
@@ -40,9 +45,8 @@ public class AddResponseDsml extends LdapResponseDecorator implements DsmlDecora
     }
 
 
-    /**
-     * Get the message type
-     * @return Returns the type.
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.LdapMessageDecorator#getMessageType()
      */
     public int getMessageType()
     {
@@ -50,10 +54,8 @@ public class AddResponseDsml extends LdapResponseDecorator implements DsmlDecora
     }
 
 
-    /**
-     * Convert the request to its XML representation in the DSMLv2 format.
-     * @param root the root dom4j Element
-     * @return the dom4j Element corresponding to the entry.
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
      */
     public Element toDsml( Element root )
     {

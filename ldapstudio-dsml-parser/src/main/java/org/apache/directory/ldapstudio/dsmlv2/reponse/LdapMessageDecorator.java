@@ -55,6 +55,9 @@ import org.apache.directory.shared.ldap.codec.unbind.UnBindRequest;
 /**
  * Decorator class for LDAP Message. This is the top level class, the one 
  * that holds the instance.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public abstract class LdapMessageDecorator extends LdapMessage
 {
@@ -63,8 +66,10 @@ public abstract class LdapMessageDecorator extends LdapMessage
 
 
     /**
-     * Default constructor
-     * @param ldapMessage the message to decorate
+     * Creates a new instance of LdapMessageDecorator.
+     *
+     * @param ldapMessage
+     *      the message to decorate
      */
     public LdapMessageDecorator( LdapMessage ldapMessage )
     {

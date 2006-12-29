@@ -23,6 +23,9 @@ package org.apache.directory.ldapstudio.dsmlv2;
 
 /**
  * This interface is used to store the different states of a grammar.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public interface IStates
 {
@@ -36,6 +39,13 @@ public interface IStates
     static int END_STATE = -1;
 
 
-    /** Get the current state for a specified grammar */
+    /** 
+     * Gets the specified state
+     * 
+     * @param state
+     *      the identifier of the state
+     * @return
+     *      the specified state
+     */
     String getState( int state );
 }
