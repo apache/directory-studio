@@ -28,6 +28,8 @@ import org.apache.log4j.Logger;
 
 /**
  * This class is used to get Strings to display in the User Interface
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Messages
 {

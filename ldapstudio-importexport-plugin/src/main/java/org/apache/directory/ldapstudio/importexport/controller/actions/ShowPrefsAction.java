@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 /**
  * This class implements the Show Preferences Action. It launches the Preferences Window
  * and displays the LDAP Server Configuration preference page.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ShowPrefsAction implements IWorkbenchWindowActionDelegate
 {

@@ -36,6 +36,8 @@ import org.slf4j.LoggerFactory;
 /**
  * This class implements the preference page for LDAP Server configuration
  * Host, Base DN, Port, User DN and Password are stored into preferences
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ServerPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage
 {

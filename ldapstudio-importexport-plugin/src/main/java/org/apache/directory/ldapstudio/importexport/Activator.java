@@ -31,6 +31,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The activator class controls the plug-in life cycle
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Activator extends AbstractUIPlugin {
 

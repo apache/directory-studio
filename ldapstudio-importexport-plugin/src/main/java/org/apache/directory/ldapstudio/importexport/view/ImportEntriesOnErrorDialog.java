@@ -46,6 +46,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * It shows all the entries successfully imported and the entries that
  * could not be imported.
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ImportEntriesOnErrorDialog extends Dialog
 {

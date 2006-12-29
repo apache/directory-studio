@@ -57,6 +57,8 @@ import org.slf4j.LoggerFactory;
 /**
  * This class implements the Import Action. It uses the Apache DS Tools
  * library to import entries from a LDIF file.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ImportAction implements IWorkbenchWindowActionDelegate, IRunnableWithProgress
 {

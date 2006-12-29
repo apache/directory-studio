@@ -22,6 +22,8 @@ package org.apache.directory.ldapstudio.importexport.view;
 
 /**
  * This class is used to define path for images
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ImageKeys
 {

@@ -59,6 +59,9 @@ import org.slf4j.LoggerFactory;
  * This class implements the Export Wizards.
  * Export Wizard is composed of two pages : one for general settings of the export,
  * and one that is a preview of entries that are going to be exported
+ * 
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExportWizard extends Wizard implements INewWizard
 {

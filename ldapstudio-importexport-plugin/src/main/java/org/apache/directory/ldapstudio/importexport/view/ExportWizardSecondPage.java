@@ -49,6 +49,8 @@ import org.slf4j.LoggerFactory;
  * This class implements the second page of the Export Wizard.
  * On this page, the user can see which Entries are going to be exported,
  * according to the information entered in the previous page. 
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExportWizardSecondPage extends WizardPage
 {

@@ -22,7 +22,8 @@ package org.apache.directory.ldapstudio.importexport;
 
 /**
  * This class stores the Plugin informations.
- *
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Plugin
 {

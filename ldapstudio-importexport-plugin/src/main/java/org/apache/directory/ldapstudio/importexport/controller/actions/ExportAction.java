@@ -33,6 +33,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class implements the Export Action
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExportAction implements IWorkbenchWindowActionDelegate
 {

@@ -47,6 +47,8 @@ import org.slf4j.LoggerFactory;
  * This class implements the first page of the Export Wizard
  * On this page, the user provides all the information about the export, 
  * such as: Base DN, Scope and destination file
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ExportWizardFirstPage extends WizardPage
 {  
