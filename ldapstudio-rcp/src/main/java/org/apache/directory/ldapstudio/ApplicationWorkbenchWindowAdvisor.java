@@ -56,7 +56,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
 
     /**
      * Default constructor
-     * @param configurer
+     * @param configurer 
+     *          an object for configuring the workbench window
      */
     public ApplicationWorkbenchWindowAdvisor( IWorkbenchWindowConfigurer configurer )
     {

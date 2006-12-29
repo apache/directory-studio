@@ -35,6 +35,7 @@ import org.eclipse.update.ui.UpdateManagerUI;
  * manager their plugin configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ManageExtensionsAction extends Action implements IAction
 {
@@ -44,6 +45,7 @@ public class ManageExtensionsAction extends Action implements IAction
     /**
      * Default constructor
      * @param window
+     *          the window it is attached to
      */
     public ManageExtensionsAction( IWorkbenchWindow window )
     {

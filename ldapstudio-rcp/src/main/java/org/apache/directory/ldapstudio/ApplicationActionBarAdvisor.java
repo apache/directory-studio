@@ -51,6 +51,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * new actions.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 {
@@ -82,6 +83,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IContributionItem viewsList;
 
 
+    /**
+     * Creates a new instance of ApplicationActionBarAdvisor.
+     *
+     * @param configurer
+     *          the action bar configurer
+     */
     public ApplicationActionBarAdvisor( IActionBarConfigurer configurer )
     {
         super( configurer );

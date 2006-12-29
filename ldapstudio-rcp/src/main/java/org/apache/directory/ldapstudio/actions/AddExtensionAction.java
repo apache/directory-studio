@@ -42,8 +42,9 @@ import org.eclipse.update.ui.UpdateManagerUI;
  * It uses Eclipse built-in extension system to allow users
  * to add extensions to LDAP Studio.
  * 
-  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-*/
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AddExtensionAction extends Action implements IAction
 {
     private IWorkbenchWindow window;
@@ -52,6 +53,7 @@ public class AddExtensionAction extends Action implements IAction
     /**
      * Default constructor
      * @param window
+     *          the window it is attached to
      */
     public AddExtensionAction( IWorkbenchWindow window )
     {
@@ -100,5 +102,4 @@ public class AddExtensionAction extends Action implements IAction
             }
         } );
     }
-
 }

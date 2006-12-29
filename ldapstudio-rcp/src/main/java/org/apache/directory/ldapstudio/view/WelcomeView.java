@@ -44,16 +44,15 @@ import org.eclipse.ui.part.ViewPart;
 /**
  * This class defines the Welcome View.
  * 
-  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-*/
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class WelcomeView extends ViewPart
 {
     public static final String ID = "org.apache.directory.ldapstudio.view.WelcomeView"; //$NON-NLS-1$
 
-
-    /**
-     * This is a callback that will allow us
-     * to create the viewer and initialize it.
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl( Composite parent )
     {
@@ -145,12 +144,12 @@ public class WelcomeView extends ViewPart
         copyrightLabel.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false, 2, 1 ) );
     }
 
-
-    /**
-     * Passing the focus request to the viewer's control.
+    
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
      */
     public void setFocus()
     {
-        // Does nothing
+        // Does nothing but needed
     }
 }
