@@ -28,14 +28,20 @@ import org.xmlpull.v1.XmlPullParserException;
 
 
 /**
- * This is the Abstract TestCase that each test should extend.
+ * This class had to be used to create a Request TestCase
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AbstractTest extends TestCase
 {
     /**
      * Asserts that parsing throws a correct XmlPullParserException due to an incorrect file
-     * @param testClass The orignal Test Class
-     * @param filename The filename of file to be parsed
+     *
+     * @param testClass
+     *      the Class of the TestCase
+     * @param filename
+     *      the path of the xml file to parse 
      */
     public void testParsingFail( Class testClass, String filename )
     {

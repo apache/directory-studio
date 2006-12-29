@@ -51,12 +51,17 @@ import org.apache.directory.ldapstudio.dsmlv2.searchResponse.searchResultReferen
 
 /**
  * This is the complete Test Suite for DSMLv2 Parser (Request and Response)
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AllTests
 {
     /**
      * Lauches the Test Suite
+     * 
      * @return
+     *      the test
      */
     public static Test suite()
     {

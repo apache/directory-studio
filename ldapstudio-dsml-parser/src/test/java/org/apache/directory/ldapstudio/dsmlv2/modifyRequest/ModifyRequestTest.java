@@ -37,6 +37,9 @@ import org.apache.directory.shared.ldap.util.StringTools;
 
 /**
  * Tests for the Modify Request parsing
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ModifyRequestTest extends AbstractTest
 {

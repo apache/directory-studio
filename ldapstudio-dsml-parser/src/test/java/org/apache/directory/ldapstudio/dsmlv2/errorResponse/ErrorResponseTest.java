@@ -29,6 +29,9 @@ import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse.ErrorRespons
 
 /**
  * Tests for the Error Response parsing
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ErrorResponseTest extends AbstractResponseTest
 {

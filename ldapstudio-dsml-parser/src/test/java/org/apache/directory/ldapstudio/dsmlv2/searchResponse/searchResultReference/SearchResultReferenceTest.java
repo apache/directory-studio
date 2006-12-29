@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.AbstractResponseTest;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.ldapstudio.dsmlv2.batchResponse.BatchResponseTest;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
@@ -36,6 +35,9 @@ import org.apache.directory.shared.ldap.util.StringTools;
 
 /**
  * Tests for the Search Result Reference Response parsing
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class SearchResultReferenceTest extends AbstractResponseTest
 {

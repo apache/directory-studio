@@ -37,6 +37,9 @@ import com.sun.jndi.ldap.LdapURL;
 
 /**
  * Tests for the Add Response parsing
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AddResponseTest extends AbstractResponseTest
 {

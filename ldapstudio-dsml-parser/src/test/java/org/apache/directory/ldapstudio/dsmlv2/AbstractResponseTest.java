@@ -27,8 +27,22 @@ import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 
+/**
+ * This class had to be used to create a Response TestCase
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AbstractResponseTest extends TestCase
 {
+    /**
+     * Asserts that parsing throws a correct XmlPullParserException due to an incorrect file
+     *
+     * @param testClass
+     *      the Class of the TestCase
+     * @param filename
+     *      the path of the xml file to parse 
+     */
     public void testParsingFail( Class testClass, String filename )
     {
         try

@@ -37,6 +37,9 @@ import com.sun.jndi.ldap.LdapURL;
 
 /**
  * Tests for the Modify DN Response parsing
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ModifyDNResponseTest extends AbstractResponseTest
 {

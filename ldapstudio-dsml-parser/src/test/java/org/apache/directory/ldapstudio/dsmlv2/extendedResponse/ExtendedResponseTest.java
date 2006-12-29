@@ -39,6 +39,9 @@ import com.sun.jndi.ldap.LdapURL;
 
 /**
  * Tests for the Extended Response parsing
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ExtendedResponseTest extends AbstractResponseTest
 {
