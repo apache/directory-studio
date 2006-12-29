@@ -33,7 +33,7 @@ import org.apache.directory.ldapstudio.browser.core.events.ValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueModifiedEvent;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
@@ -65,7 +65,7 @@ public class MultivaluedDialog extends Dialog implements ModelModifier
 
     public static final int MAX_HEIGHT = 250;
 
-    private AttributeHierachie attributeHierarchie;
+    private AttributeHierarchy attributeHierarchie;
 
     private EntryEditorWidgetConfiguration configuration;
 
@@ -76,7 +76,7 @@ public class MultivaluedDialog extends Dialog implements ModelModifier
     private MultiValuedEntryEditorUniversalListener universalListener;
 
 
-    public MultivaluedDialog( Shell parentShell, AttributeHierachie attributeHierarchie )
+    public MultivaluedDialog( Shell parentShell, AttributeHierarchy attributeHierarchie )
     {
         super( parentShell );
         setShellStyle( getShellStyle() | SWT.RESIZE );

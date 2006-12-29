@@ -24,37 +24,37 @@ package org.apache.directory.ldapstudio.browser.ui.editors.ldif.actions;
 import java.util.Arrays;
 
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 
 
 public class OpenValueEditorAction extends AbstractOpenValueEditorAction
 {
 
-    public OpenValueEditorAction( LdifEditor editor, ValueProvider valueProvider )
+    public OpenValueEditorAction( LdifEditor editor, IValueEditor valueEditor )
     {
         super( editor );
-        super.valueProvider = valueProvider;
+        super.valueEditor = valueEditor;
     }
 
 
     public void update()
     {
         String attributeDescription = getAttributeDescription();
-        Object rawValue = getValueProviderRawValue();
+        Object rawValue = getValueEditorRawValue();
 
         if ( isEditableLineSelected() )
         {
-            ValueProvider[] alternativeVps = this.editor.getValueProviderManager().getAlternativeValueProvider(
-                getSchema(), attributeDescription );
-            super.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueProvider ) && rawValue != null );
+            IValueEditor[] alternativeVps = this.editor.getValueEditorManager().getAlternativeValueEditors(
+                getConnection().getSchema(), attributeDescription );
+            super.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueEditor ) && rawValue != null );
         }
         else
         {
             super.setEnabled( false );
         }
 
-        setText( valueProvider.getCellEditorName() );
-        setImageDescriptor( valueProvider.getCellEditorImageDescriptor() );
+        setText( valueEditor.getValueEditorName() );
+        setImageDescriptor( valueEditor.getValueEditorImageDescriptor() );
     }
 
 }

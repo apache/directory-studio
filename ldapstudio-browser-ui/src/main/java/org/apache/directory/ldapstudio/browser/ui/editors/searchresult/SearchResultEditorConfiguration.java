@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.TableViewer;
@@ -46,7 +46,7 @@ public class SearchResultEditorConfiguration
 
     protected SearchResultEditorCellModifier cellModifier;
 
-    protected ValueProviderManager valueProviderManager;
+    protected ValueEditorManager valueEditorManager;
 
     protected MenuManager contextMenuManager;
 
@@ -74,9 +74,9 @@ public class SearchResultEditorConfiguration
                 this.cellModifier.dispose();
             this.cellModifier = null;
 
-            if ( this.valueProviderManager != null )
-                this.valueProviderManager.dispose();
-            this.valueProviderManager = null;
+            if ( this.valueEditorManager != null )
+                this.valueEditorManager.dispose();
+            this.valueEditorManager = null;
 
             if ( this.contextMenuManager != null )
                 this.contextMenuManager.dispose();
@@ -133,7 +133,7 @@ public class SearchResultEditorConfiguration
     public SearchResultEditorLabelProvider getLabelProvider( TableViewer viewer )
     {
         if ( this.labelProvider == null )
-            this.labelProvider = new SearchResultEditorLabelProvider( viewer, this.getValueProviderManager( viewer ) );
+            this.labelProvider = new SearchResultEditorLabelProvider( viewer, this.getValueEditorManager( viewer ) );
 
         return labelProvider;
     }
@@ -142,7 +142,7 @@ public class SearchResultEditorConfiguration
     public SearchResultEditorCellModifier getCellModifier( TableViewer viewer )
     {
         if ( this.cellModifier == null )
-            this.cellModifier = new SearchResultEditorCellModifier( viewer, this.getValueProviderManager( viewer ) );
+            this.cellModifier = new SearchResultEditorCellModifier( viewer, this.getValueEditorManager( viewer ) );
 
         return cellModifier;
     }
@@ -157,12 +157,12 @@ public class SearchResultEditorConfiguration
     }
 
 
-    public ValueProviderManager getValueProviderManager( TableViewer viewer )
+    public ValueEditorManager getValueEditorManager( TableViewer viewer )
     {
-        if ( this.valueProviderManager == null )
-            this.valueProviderManager = new ValueProviderManager( viewer.getTable() );
+        if ( this.valueEditorManager == null )
+            this.valueEditorManager = new ValueEditorManager( viewer.getTable() );
 
-        return valueProviderManager;
+        return valueEditorManager;
     }
 
 }

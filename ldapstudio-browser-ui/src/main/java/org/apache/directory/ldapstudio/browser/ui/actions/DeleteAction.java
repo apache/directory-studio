@@ -36,7 +36,7 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.DeleteEntriesJob;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -490,7 +490,7 @@ public class DeleteAction extends BrowserAction implements ModelModifier
         {
             // check if a non-modifyable, must or objectClass attribute is
             // selected
-            AttributeHierachie ah = getSelectedAttributeHierarchies()[i];
+            AttributeHierarchy ah = getSelectedAttributeHierarchies()[i];
             for ( Iterator it = ah.iterator(); it.hasNext(); )
             {
                 IAttribute attribute = ( IAttribute ) it.next();
@@ -519,7 +519,7 @@ public class DeleteAction extends BrowserAction implements ModelModifier
         {
             // check if a operational, must or objectClass attribute is
             // selected
-            AttributeHierachie ah = getSelectedAttributeHierarchies()[i];
+            AttributeHierarchy ah = getSelectedAttributeHierarchies()[i];
             for ( Iterator it = ah.iterator(); it.hasNext(); )
             {
                 IAttribute attribute = ( IAttribute ) it.next();

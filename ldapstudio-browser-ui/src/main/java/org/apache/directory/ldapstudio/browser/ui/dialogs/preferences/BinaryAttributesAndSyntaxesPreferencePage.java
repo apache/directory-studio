@@ -357,7 +357,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
     protected void addAttribute()
     {
         AttributeDialog dialog = new AttributeDialog( getShell(), null, this.attributeNamesAndOids );
-        if ( dialog.open() == AttributeValueProviderDialog.OK )
+        if ( dialog.open() == AttributeValueEditorDialog.OK )
         {
             this.attributeList.add( dialog.getAttribute() );
             this.attributeViewer.refresh();
@@ -380,7 +380,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         {
             BinaryAttribute attribute = ( BinaryAttribute ) sel.getFirstElement();
             AttributeDialog dialog = new AttributeDialog( getShell(), attribute, this.attributeNamesAndOids );
-            if ( dialog.open() == AttributeValueProviderDialog.OK )
+            if ( dialog.open() == AttributeValueEditorDialog.OK )
             {
                 int index = this.attributeList.indexOf( attribute );
                 this.attributeList.set( index, dialog.getAttribute() );
@@ -393,7 +393,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
     protected void addSyntax()
     {
         SyntaxDialog dialog = new SyntaxDialog( getShell(), null, this.syntaxOids );
-        if ( dialog.open() == SyntaxValueProviderDialog.OK )
+        if ( dialog.open() == SyntaxValueEditorDialog.OK )
         {
             this.syntaxList.add( dialog.getSyntax() );
             this.syntaxViewer.refresh();
@@ -416,7 +416,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         {
             BinarySyntax syntax = ( BinarySyntax ) sel.getFirstElement();
             SyntaxDialog dialog = new SyntaxDialog( getShell(), syntax, this.syntaxOids );
-            if ( dialog.open() == SyntaxValueProviderDialog.OK )
+            if ( dialog.open() == SyntaxValueEditorDialog.OK )
             {
                 int index = this.syntaxList.indexOf( syntax );
                 this.syntaxList.set( index, dialog.getSyntax() );

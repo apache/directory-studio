@@ -29,7 +29,7 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEven
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
@@ -148,7 +148,7 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
     }
 
 
-    public AttributeHierachie getSelectedAttributeHierarchie()
+    public AttributeHierarchy getSelectedAttributeHierarchie()
     {
         if ( !this.isDisposed() && this.getRow() != null && this.viewer != null
             && this.viewer.getColumnProperties() != null
@@ -159,13 +159,13 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
             if ( o instanceof ISearchResult && !BrowserUIConstants.DN.equals( property ) )
             {
                 ISearchResult sr = ( ISearchResult ) o;
-                AttributeHierachie ah = sr.getAttributeWithSubtypes( property );
+                AttributeHierarchy ah = sr.getAttributeWithSubtypes( property );
 
                 if ( ah == null )
                 {
                     try
                     {
-                        ah = new AttributeHierachie( sr.getEntry(), property, new IAttribute[]
+                        ah = new AttributeHierarchy( sr.getEntry(), property, new IAttribute[]
                             { new Attribute( sr.getEntry(), property ) } );
                     }
                     catch ( ModelModificationException e )
@@ -209,7 +209,7 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
     public ISelection getSelection()
     {
         ISearchResult searchResult = this.getSelectedSearchResult();
-        AttributeHierachie ah = this.getSelectedAttributeHierarchie();
+        AttributeHierarchy ah = this.getSelectedAttributeHierarchie();
         String property = this.getSelectedProperty();
         // String attributeName = this.getSelectedAttributeName();
 

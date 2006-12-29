@@ -23,33 +23,33 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 import java.util.Arrays;
 
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
 public class OpenEditorAction extends AbstractOpenEditorAction
 {
 
-    private ValueProvider valueProvider;
+    private IValueEditor valueEditor;
 
 
     public OpenEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
-        ValueProviderManager valueProviderManager, ValueProvider valueProvider )
+        ValueEditorManager valueEditorManager, IValueEditor valueEditor )
     {
-        super( viewer, actionGroup, valueProviderManager );
-        super.cellEditor = valueProvider.getCellEditor();
-        this.valueProvider = valueProvider;
+        super( viewer, actionGroup, valueEditorManager );
+        super.cellEditor = valueEditor.getCellEditor();
+        this.valueEditor = valueEditor;
 
-        this.setText( "" + this.valueProvider.getCellEditorName() );
-        this.setToolTipText( "" + this.valueProvider.getCellEditorName() );
-        this.setImageDescriptor( this.valueProvider.getCellEditorImageDescriptor() );
+        this.setText( "" + this.valueEditor.getValueEditorName() );
+        this.setToolTipText( "" + this.valueEditor.getValueEditorName() );
+        this.setImageDescriptor( this.valueEditor.getValueEditorImageDescriptor() );
     }
 
 
-    public ValueProvider getValueProvider()
+    public IValueEditor getValueEditor()
     {
-        return this.valueProvider;
+        return this.valueEditor;
     }
 
 
@@ -60,10 +60,10 @@ public class OpenEditorAction extends AbstractOpenEditorAction
             && this.viewer.getCellModifier().canModify( this.selectedValues[0],
                 EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
         {
-            ValueProvider[] alternativeVps = this.valueProviderManager
-                .getAlternativeValueProvider( this.selectedValues[0] );
-            this.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueProvider )
-                && this.valueProvider.getRawValue( this.selectedValues[0] ) != null );
+            IValueEditor[] alternativeVps = this.valueEditorManager
+                .getAlternativeValueEditors( this.selectedValues[0] );
+            this.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueEditor )
+                && this.valueEditor.getRawValue( this.selectedValues[0] ) != null );
         }
         else
         {
@@ -75,14 +75,14 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
     public void run()
     {
-        this.valueProviderManager.setUserSelectedValueProvider( this.valueProvider );
+        this.valueEditorManager.setUserSelectedValueEditor( this.valueEditor );
         super.run();
     }
 
 
     public void dispose()
     {
-        this.valueProvider = null;
+        this.valueEditor = null;
         super.dispose();
     }
 

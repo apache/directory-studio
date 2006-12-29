@@ -21,27 +21,27 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
 public class OpenBestEditorAction extends AbstractOpenEditorAction
 {
 
-    private ValueProvider bestValueProvider;
+    private IValueEditor bestValueEditor;
 
 
     public OpenBestEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
-        ValueProviderManager valueProviderManager )
+        ValueEditorManager valueEditorManager )
     {
-        super( viewer, actionGroup, valueProviderManager );
+        super( viewer, actionGroup, valueEditorManager );
     }
 
 
-    public ValueProvider getBestValueProvider()
+    public IValueEditor getBestValueEditor()
     {
-        return this.bestValueProvider;
+        return this.bestValueEditor;
     }
 
 
@@ -53,12 +53,12 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             && this.viewer.getCellModifier().canModify( this.selectedValues[0],
                 EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
         {
-            this.bestValueProvider = this.valueProviderManager.getCurrentValueProvider( this.selectedValues[0] );
-            super.cellEditor = this.bestValueProvider.getCellEditor();
+            this.bestValueEditor = this.valueEditorManager.getCurrentValueEditor( this.selectedValues[0] );
+            super.cellEditor = this.bestValueEditor.getCellEditor();
             this.setEnabled( true );
-            this.setText( "" + this.bestValueProvider.getCellEditorName() );
-            this.setToolTipText( "" + this.bestValueProvider.getCellEditorName() );
-            this.setImageDescriptor( this.bestValueProvider.getCellEditorImageDescriptor() );
+            this.setText( "" + this.bestValueEditor.getValueEditorName() );
+            this.setToolTipText( "" + this.bestValueEditor.getValueEditorName() );
+            this.setImageDescriptor( this.bestValueEditor.getValueEditorImageDescriptor() );
         }
         else
         {
@@ -73,7 +73,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
     public void dispose()
     {
-        this.bestValueProvider = null;
+        this.bestValueEditor = null;
         super.dispose();
     }
 

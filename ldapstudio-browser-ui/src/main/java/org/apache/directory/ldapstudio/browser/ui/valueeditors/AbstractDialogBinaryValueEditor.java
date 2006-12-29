@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.browser.ui.valueproviders;
+package org.apache.directory.ldapstudio.browser.ui.valueeditors;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
@@ -27,92 +27,42 @@ import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.jobs.CreateValuesJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.ModifyValueJob;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.HexDialog;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.TextDialog;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 
-public class HexValueProvider extends AbstractDialogCellEditor implements ValueProvider, ModelModifier
+/**
+ * 
+ * Abstract base class for value editors that handle binary values
+ * in a dialog. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValueEditor implements ModelModifier
 {
 
-    public HexValueProvider( Composite parent )
+    protected AbstractDialogBinaryValueEditor()
     {
-        super( parent );
+        super();
     }
 
 
-    public CellEditor getCellEditor()
-    {
-        return this;
-    }
-
-
-    public String getCellEditorName()
-    {
-        return "Hex Editor";
-    }
-
-
-    public ImageDescriptor getCellEditorImageDescriptor()
-    {
-        return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_HEXEDITOR );
-    }
-
-
-    protected Object openDialogBox( Control cellEditorWindow )
-    {
-        Object value = getValue();
-        if ( value != null && value instanceof byte[] )
-        {
-            byte[] initialData = ( byte[] ) value;
-            HexDialog dialog = new HexDialog( cellEditorWindow.getShell(), initialData );
-            if ( dialog.open() == TextDialog.OK && dialog.getData() != null )
-            {
-                return dialog.getData();
-            }
-        }
-        return null;
-    }
-
-
-    public String getDisplayValue( AttributeHierachie ah )
-    {
-        if ( ah == null )
-        {
-            return "NULL";
-        }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 1 )
-        {
-            return getDisplayValue( ah.getAttribute().getValues()[0] );
-        }
-        else
-        {
-            return "not displayable";
-        }
-    }
-
-
+    /**
+     * This implementation of getDisplayValue just returns a note,
+     * that the value is binary and the size of the data.
+     */
     public String getDisplayValue( IValue value )
     {
-        if ( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_SHOW_RAW_VALUES ) )
+        if ( showRawValues() )
         {
-            return getPlainTextValue( value );
+            return getPrintableString( value );
         }
         else
         {
@@ -133,7 +83,11 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    String getPlainTextValue( IValue value )
+    /**
+     * Help method, returns a printable string if the value 
+     * is binary.
+     */
+    public static String getPrintableString( IValue value )
     {
         if ( value == null )
         {
@@ -163,10 +117,13 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    public Object getEmptyRawValue( IEntry entry, String attributeDescription )
+    /**
+     * This implementation returns IValue.EMPTY_BINARY_VALUE if
+     * the attribute is binary.
+     */
+    protected Object getEmptyRawValue( IAttribute attribute )
     {
-        if ( entry.getConnection().getSchema().getAttributeTypeDescription( attributeDescription )
-            .getSyntaxDescription().isBinary() )
+        if ( attribute.isBinary() )
         {
             return IValue.EMPTY_BINARY_VALUE;
         }
@@ -177,27 +134,10 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    public Object getRawValue( AttributeHierachie ah )
-    {
-        if ( ah == null )
-        {
-            return null;
-        }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 0 )
-        {
-            return getEmptyRawValue( ah.getAttribute().getEntry(), ah.getAttribute().getDescription() );
-        }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 1 )
-        {
-            return getRawValue( ah.getAttribute().getValues()[0] );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
+    /**
+     * This implementation returns the binary (byte[]) value 
+     * of the given value. 
+     */
     public Object getRawValue( IValue value )
     {
         if ( value == null )
@@ -219,7 +159,12 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    public Object getRawValue( IConnection connection, Schema schema, Object value )
+    /**
+     * This implementation returns the value itself if it is
+     * of type byte[] or a byte[] with the UTF-8 encoded string 
+     * value if it is of type String.  
+     */
+    public Object getRawValue( IConnection connection, Object value )
     {
         if ( value == null )
         {
@@ -240,7 +185,31 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    public void create( IEntry entry, String attributeDescription, Object newRawValue )
+    /**
+     * This implementation always return the binary value
+     * as byte[].
+     */
+    public Object getStringOrBinaryValue( Object rawValue )
+    {
+        if ( rawValue == null )
+        {
+            return null;
+        }
+        else if ( rawValue instanceof byte[] )
+        {
+            return rawValue;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public final void createValue( IEntry entry, String attributeDescription, Object newRawValue )
         throws ModelModificationException
     {
         if ( entry != null && attributeDescription != null && newRawValue != null && newRawValue instanceof byte[] )
@@ -273,7 +242,10 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    private void modify( IAttribute attribute, Object newRawValue ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    private final void modify( IAttribute attribute, Object newRawValue ) throws ModelModificationException
     {
         if ( attribute != null && newRawValue != null && newRawValue instanceof byte[] )
         {
@@ -284,13 +256,16 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
             }
             else if ( attribute.getValueSize() == 1 )
             {
-                this.modify( attribute.getValues()[0], newRawValue );
+                this.modifyValue( attribute.getValues()[0], newRawValue );
             }
         }
     }
 
 
-    public void modify( IValue oldValue, Object newRawValue ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    public final void modifyValue( IValue oldValue, Object newRawValue ) throws ModelModificationException
     {
         if ( oldValue != null && newRawValue != null && newRawValue instanceof byte[] )
         {
@@ -314,7 +289,10 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    public void delete( AttributeHierachie ah ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    public final void deleteAttribute( AttributeHierarchy ah ) throws ModelModificationException
     {
         if ( ah != null )
         {
@@ -323,7 +301,10 @@ public class HexValueProvider extends AbstractDialogCellEditor implements ValueP
     }
 
 
-    public void delete( IValue oldValue ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    public final void deleteValue( IValue oldValue ) throws ModelModificationException
     {
         if ( oldValue != null )
         {

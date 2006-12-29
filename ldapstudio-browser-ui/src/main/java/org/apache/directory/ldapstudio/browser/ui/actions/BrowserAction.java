@@ -25,7 +25,7 @@ import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -70,7 +70,7 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
 
     private IAttribute[] selectedAttributes;
 
-    private AttributeHierachie[] selectedAttributeHierarchies;
+    private AttributeHierarchy[] selectedAttributeHierarchies;
 
     private IValue[] selectedValues;
 
@@ -150,7 +150,7 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
         this.selectedBrowserSearchResultPages = new BrowserSearchResultPage[0];
         this.selectedBookmarks = new IBookmark[0];
         this.selectedAttributes = new IAttribute[0];
-        this.selectedAttributeHierarchies = new AttributeHierachie[0];
+        this.selectedAttributeHierarchies = new AttributeHierarchy[0];
         this.selectedValues = new IValue[0];
 
         this.selectedLdifModel = null;
@@ -172,7 +172,7 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
         this.selectedBrowserSearchResultPages = new BrowserSearchResultPage[0];
         this.selectedBookmarks = new IBookmark[0];
         this.selectedAttributes = new IAttribute[0];
-        this.selectedAttributeHierarchies = new AttributeHierachie[0];
+        this.selectedAttributeHierarchies = new AttributeHierarchy[0];
         this.selectedValues = new IValue[0];
 
         this.selectedLdifModel = null;
@@ -377,13 +377,13 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
     }
 
 
-    public AttributeHierachie[] getSelectedAttributeHierarchies()
+    public AttributeHierarchy[] getSelectedAttributeHierarchies()
     {
         return selectedAttributeHierarchies;
     }
 
 
-    public void setSelectedAttributeHierarchies( AttributeHierachie[] ahs )
+    public void setSelectedAttributeHierarchies( AttributeHierarchy[] ahs )
     {
         this.selectedAttributeHierarchies = ahs;
     }

@@ -42,9 +42,9 @@ import org.apache.directory.ldapstudio.browser.ui.editors.ldif.actions.OpenBestV
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.actions.OpenDefaultValueEditorAction;
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.actions.OpenValueEditorAction;
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.text.LdifPartitionScanner;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.AbstractDialogCellEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 
 import org.eclipse.core.resources.IFile;
@@ -121,7 +121,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     private LdifOutlinePage outlinePage;
 
-    private ValueProviderManager valueProviderManager;
+    private ValueEditorManager valueEditorManager;
 
     private OpenBestValueEditorAction openBestValueEditorAction;
 
@@ -214,14 +214,14 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         EventRegistry.addConnectionUpdateListener( this );
         getSite().getPage().addPartListener( this );
 
-        this.valueProviderManager = new ValueProviderManager( getSite().getShell() );
+        this.valueEditorManager = new ValueEditorManager( getSite().getShell() );
     }
 
 
     public void dispose()
     {
 
-        this.valueProviderManager.dispose();
+        this.valueEditorManager.dispose();
 
         deactivateGlobalActionHandlers();
 
@@ -328,9 +328,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         {
             this.openValueEditorActions[i].update();
             if ( this.openValueEditorActions[i].isEnabled()
-                && this.openValueEditorActions[i].getValueProvider().getClass() != this.openBestValueEditorAction
-                    .getValueProvider().getClass()
-                && this.openValueEditorActions[i].getValueProvider() instanceof AbstractDialogCellEditor )
+                && this.openValueEditorActions[i].getValueEditor().getClass() != this.openBestValueEditorAction
+                    .getValueEditor().getClass()
+                && this.openValueEditorActions[i].getValueEditor() instanceof AbstractDialogValueEditor )
             {
                 valueEditorMenuManager.add( this.openValueEditorActions[i] );
             }
@@ -371,11 +371,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         setAction( EditLdifAttributeAction.class.getName(), editLdifAttributeAction );
 
         this.openBestValueEditorAction = new OpenBestValueEditorAction( this );
-        ValueProvider[] valueProviders = valueProviderManager.getAllValueProviders();
-        this.openValueEditorActions = new OpenValueEditorAction[valueProviders.length];
+        IValueEditor[] valueEditors = valueEditorManager.getAllValueEditors();
+        this.openValueEditorActions = new OpenValueEditorAction[valueEditors.length];
         for ( int i = 0; i < this.openValueEditorActions.length; i++ )
         {
-            this.openValueEditorActions[i] = new OpenValueEditorAction( this, valueProviders[i] );
+            this.openValueEditorActions[i] = new OpenValueEditorAction( this, valueEditors[i] );
         }
         this.valueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
@@ -694,9 +694,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
-    public ValueProviderManager getValueProviderManager()
+    public ValueEditorManager getValueEditorManager()
     {
-        return valueProviderManager;
+        return valueEditorManager;
     }
 
 }

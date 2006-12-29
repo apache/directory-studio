@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
@@ -42,7 +42,7 @@ public class EntryEditorWidgetConfiguration
 
     protected EntryEditorWidgetCellModifier cellModifier;
 
-    protected ValueProviderManager valueProviderManager;
+    protected ValueEditorManager valueEditorManager;
 
 
     public EntryEditorWidgetConfiguration()
@@ -79,9 +79,9 @@ public class EntryEditorWidgetConfiguration
                 this.cellModifier.dispose();
             this.cellModifier = null;
 
-            if ( this.valueProviderManager != null )
-                this.valueProviderManager.dispose();
-            this.valueProviderManager = null;
+            if ( this.valueEditorManager != null )
+                this.valueEditorManager.dispose();
+            this.valueEditorManager = null;
 
             this.disposed = true;
         }
@@ -100,7 +100,7 @@ public class EntryEditorWidgetConfiguration
     public EntryEditorWidgetLabelProvider getLabelProvider( TreeViewer viewer )
     {
         if ( this.labelProvider == null )
-            this.labelProvider = new EntryEditorWidgetLabelProvider( this.getValueProviderManager( viewer ) );
+            this.labelProvider = new EntryEditorWidgetLabelProvider( this.getValueEditorManager( viewer ) );
 
         return labelProvider;
     }
@@ -109,18 +109,18 @@ public class EntryEditorWidgetConfiguration
     public EntryEditorWidgetCellModifier getCellModifier( TreeViewer viewer )
     {
         if ( this.cellModifier == null )
-            this.cellModifier = new EntryEditorWidgetCellModifier( this.getValueProviderManager( viewer ) );
+            this.cellModifier = new EntryEditorWidgetCellModifier( this.getValueEditorManager( viewer ) );
 
         return cellModifier;
     }
 
 
-    public ValueProviderManager getValueProviderManager( TreeViewer viewer )
+    public ValueEditorManager getValueEditorManager( TreeViewer viewer )
     {
-        if ( this.valueProviderManager == null )
-            this.valueProviderManager = new ValueProviderManager( viewer.getTree() );
+        if ( this.valueEditorManager == null )
+            this.valueEditorManager = new ValueEditorManager( viewer.getTree() );
 
-        return valueProviderManager;
+        return valueEditorManager;
     }
 
 

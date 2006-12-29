@@ -21,16 +21,14 @@
 package org.apache.directory.ldapstudio.browser.ui;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeValueProviderRelation;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SyntaxValueProviderRelation;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.AddressValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.DnValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ImageValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.InPlaceGeneralizedTimeValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ObjectClassValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.PasswordValueProvider;
-
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager.ValueEditorExtension;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -91,20 +89,27 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
         store.setDefault( BrowserUIConstants.PREFERENCE_SHOW_RAW_VALUES, false );
 
         // Value Editors
-        AttributeValueProviderRelation[] attributeValueProviderRelations = new AttributeValueProviderRelation[]
-            { new AttributeValueProviderRelation( "objectClass", ObjectClassValueProvider.class.getName() ),
-                new AttributeValueProviderRelation( "userPassword", PasswordValueProvider.class.getName() ) };
-        BrowserUIPlugin.getDefault().getUIPreferences().setDefaultAttributeValueProviderRelations(
-            attributeValueProviderRelations );
-        SyntaxValueProviderRelation[] syntaxValueProviderRelations = new SyntaxValueProviderRelation[]
+        Collection<AttributeValueProviderRelation> avprs = new ArrayList<AttributeValueProviderRelation>();
+        Collection<SyntaxValueProviderRelation> svprs = new ArrayList<SyntaxValueProviderRelation>();
+        Collection<ValueEditorExtension> valueEditorProxys = ValueEditorManager.getValueEditorProxys();
+        for ( ValueEditorExtension proxy : valueEditorProxys )
+        {
+            for ( String attributeType : proxy.attributeTypes )
             {
-                new SyntaxValueProviderRelation( "1.3.6.1.4.1.1466.115.121.1.24",
-                    InPlaceGeneralizedTimeValueProvider.class.getName() ),
-                new SyntaxValueProviderRelation( "1.3.6.1.4.1.1466.115.121.1.28", ImageValueProvider.class.getName() ),
-                new SyntaxValueProviderRelation( "1.3.6.1.4.1.1466.115.121.1.12", DnValueProvider.class.getName() ),
-                new SyntaxValueProviderRelation( "1.3.6.1.4.1.1466.115.121.1.41", AddressValueProvider.class.getName() ) };
+                AttributeValueProviderRelation avpr = new AttributeValueProviderRelation( attributeType,
+                    proxy.className );
+                avprs.add( avpr );
+            }
+            for ( String syntaxOid : proxy.syntaxOids )
+            {
+                SyntaxValueProviderRelation svpr = new SyntaxValueProviderRelation( syntaxOid, proxy.className );
+                svprs.add( svpr );
+            }
+        }
+        BrowserUIPlugin.getDefault().getUIPreferences().setDefaultAttributeValueProviderRelations(
+            avprs.toArray( new AttributeValueProviderRelation[0] ) );
         BrowserUIPlugin.getDefault().getUIPreferences().setDefaultSyntaxValueProviderRelations(
-            syntaxValueProviderRelations );
+            svprs.toArray( new SyntaxValueProviderRelation[0] ) );
 
         // Browser
         store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_EXPAND_BASE_ENTRIES, false );

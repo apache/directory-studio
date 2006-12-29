@@ -25,8 +25,8 @@ import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeValueProviderRelation;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
+import org.apache.directory.ldapstudio.browser.core.model.schema.SyntaxValueProviderRelation;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager.ValueEditorExtension;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -39,39 +39,39 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
-public class AttributeValueProviderDialog extends Dialog
+public class SyntaxValueEditorDialog extends Dialog
 {
 
-    private AttributeValueProviderRelation relation;
+    private SyntaxValueProviderRelation relation;
 
-    private SortedMap class2ValueProviderMap;
+    private SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap;
 
-    private String[] attributeTypesAndOids;
+    private String[] syntaxOids;
 
-    private SortedMap vpName2classMap;
+    private SortedMap<String, String> vpName2classMap;
 
-    private AttributeValueProviderRelation returnRelation;
+    private SyntaxValueProviderRelation returnRelation;
 
-    private Combo typeOrOidCombo;
+    private Combo oidCombo;
 
     private Combo valueEditorCombo;
 
 
-    public AttributeValueProviderDialog( Shell parentShell, AttributeValueProviderRelation relation,
-        SortedMap class2ValueProviderMap, String[] attributeTypesAndOids )
+    public SyntaxValueEditorDialog( Shell parentShell, SyntaxValueProviderRelation relation,
+        SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap, String[] syntaxOids )
     {
         super( parentShell );
         this.relation = relation;
-        this.class2ValueProviderMap = class2ValueProviderMap;
-        this.attributeTypesAndOids = attributeTypesAndOids;
+        this.class2ValueEditorProxyMap = class2ValueEditorProxyMap;
+        this.syntaxOids = syntaxOids;
 
         this.returnRelation = null;
 
-        this.vpName2classMap = new TreeMap();
-        for ( Iterator it = this.class2ValueProviderMap.values().iterator(); it.hasNext(); )
+        this.vpName2classMap = new TreeMap<String, String>();
+        for ( Iterator<ValueEditorExtension> it = this.class2ValueEditorProxyMap.values().iterator(); it.hasNext(); )
         {
-            ValueProvider vp = ( ValueProvider ) it.next();
-            vpName2classMap.put( vp.getCellEditorName(), vp.getClass().getName() );
+            ValueEditorExtension vp = it.next();
+            vpName2classMap.put( vp.name, vp.className );
         }
     }
 
@@ -85,8 +85,8 @@ public class AttributeValueProviderDialog extends Dialog
 
     protected void okPressed()
     {
-        this.returnRelation = new AttributeValueProviderRelation( this.typeOrOidCombo.getText(),
-            ( String ) this.vpName2classMap.get( this.valueEditorCombo.getText() ) );
+        this.returnRelation = new SyntaxValueProviderRelation( this.oidCombo.getText(), ( String ) this.vpName2classMap
+            .get( this.valueEditorCombo.getText() ) );
         super.okPressed();
     }
 
@@ -97,13 +97,13 @@ public class AttributeValueProviderDialog extends Dialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        BaseWidgetUtils.createLabel( c, "Attribute Type or OID:", 1 );
-        this.typeOrOidCombo = BaseWidgetUtils.createCombo( c, this.attributeTypesAndOids, -1, 1 );
-        if ( this.relation != null && this.relation.getAttributeNumericOidOrType() != null )
+        BaseWidgetUtils.createLabel( c, "Syntax OID:", 1 );
+        this.oidCombo = BaseWidgetUtils.createCombo( c, this.syntaxOids, -1, 1 );
+        if ( this.relation != null && this.relation.getSyntaxOID() != null )
         {
-            this.typeOrOidCombo.setText( this.relation.getAttributeNumericOidOrType() );
+            this.oidCombo.setText( this.relation.getSyntaxOID() );
         }
-        this.typeOrOidCombo.addModifyListener( new ModifyListener()
+        this.oidCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -112,13 +112,13 @@ public class AttributeValueProviderDialog extends Dialog
         } );
 
         BaseWidgetUtils.createLabel( c, "Value Editor:", 1 );
-        this.valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, ( String[] ) vpName2classMap.keySet().toArray(
-            new String[0] ), -1, 1 );
+        this.valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, vpName2classMap.keySet()
+            .toArray( new String[0] ), -1, 1 );
         if ( this.relation != null && this.relation.getValueProviderClassname() != null
-            && this.class2ValueProviderMap.containsKey( this.relation.getValueProviderClassname() ) )
+            && this.class2ValueEditorProxyMap.containsKey( this.relation.getValueProviderClassname() ) )
         {
-            this.valueEditorCombo.setText( ( ( ValueProvider ) this.class2ValueProviderMap.get( this.relation
-                .getValueProviderClassname() ) ).getCellEditorName() );
+            this.valueEditorCombo.setText( ( this.class2ValueEditorProxyMap.get( this.relation
+                .getValueProviderClassname() ) ).name );
         }
         this.valueEditorCombo.addModifyListener( new ModifyListener()
         {
@@ -135,11 +135,11 @@ public class AttributeValueProviderDialog extends Dialog
     private void validate()
     {
         super.getButton( IDialogConstants.OK_ID ).setEnabled(
-            !"".equals( this.valueEditorCombo.getText() ) && !"".equals( this.typeOrOidCombo.getText() ) );
+            !"".equals( this.valueEditorCombo.getText() ) && !"".equals( this.oidCombo.getText() ) );
     }
 
 
-    public AttributeValueProviderRelation getRelation()
+    public SyntaxValueProviderRelation getRelation()
     {
         return returnRelation;
     }

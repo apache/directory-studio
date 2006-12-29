@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -35,18 +35,18 @@ import org.eclipse.swt.widgets.Item;
 public class EntryEditorWidgetCellModifier implements ICellModifier
 {
 
-    private ValueProviderManager valueProviderManager;
+    private ValueEditorManager valueEditorManager;
 
 
-    public EntryEditorWidgetCellModifier( ValueProviderManager valueProviderManager )
+    public EntryEditorWidgetCellModifier( ValueEditorManager valueEditorManager )
     {
-        this.valueProviderManager = valueProviderManager;
+        this.valueEditorManager = valueEditorManager;
     }
 
 
     public void dispose()
     {
-        this.valueProviderManager = null;
+        this.valueEditorManager = null;
     }
 
 
@@ -70,7 +70,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             }
             if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
-                return this.valueProviderManager.getCurrentValueProvider( attributeValue ).getRawValue( attributeValue ) != null;
+                return this.valueEditorManager.getCurrentValueEditor( attributeValue ).getRawValue( attributeValue ) != null;
             }
         }
 
@@ -90,7 +90,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             }
             else if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
-                returnValue = this.valueProviderManager.getCurrentValueProvider( attributeValue ).getRawValue(
+                returnValue = this.valueEditorManager.getCurrentValueEditor( attributeValue ).getRawValue(
                     attributeValue );
             }
             else
@@ -126,7 +126,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             {
                 try
                 {
-                    this.valueProviderManager.getCurrentValueProvider( attributeValue ).modify( attributeValue,
+                    this.valueEditorManager.getCurrentValueEditor( attributeValue ).modifyValue( attributeValue,
                         newRawValue );
                 }
                 catch ( ModelModificationException mme )

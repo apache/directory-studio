@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.jobs.InitializeAttributesJob;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
@@ -62,9 +62,9 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             IEntry entry = ( IEntry ) newInput;
             dn = "DN: " + entry.getDn().toString();
         }
-        else if ( newInput != null && newInput instanceof AttributeHierachie )
+        else if ( newInput != null && newInput instanceof AttributeHierarchy )
         {
-            AttributeHierachie ah = ( AttributeHierachie ) newInput;
+            AttributeHierarchy ah = ( AttributeHierarchy ) newInput;
             dn = "DN: " + ah.getAttribute().getEntry().getDn().toString();
         }
         else
@@ -117,9 +117,9 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
                 return values;
             }
         }
-        else if ( inputElement != null && inputElement instanceof AttributeHierachie )
+        else if ( inputElement != null && inputElement instanceof AttributeHierarchy )
         {
-            AttributeHierachie ah = ( AttributeHierachie ) inputElement;
+            AttributeHierarchy ah = ( AttributeHierarchy ) inputElement;
             IAttribute[] attributes = ah.getAttributes();
             Object[] values = getValues( attributes );
             return values;

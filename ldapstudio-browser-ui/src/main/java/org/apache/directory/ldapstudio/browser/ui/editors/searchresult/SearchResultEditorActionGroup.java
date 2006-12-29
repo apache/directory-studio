@@ -47,7 +47,7 @@ import org.apache.directory.ldapstudio.browser.ui.actions.ShowRawValuesAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.ValueEditorPreferencesAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.SearchResultEditorActionProxy;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -165,16 +165,16 @@ public class SearchResultEditorActionGroup implements IMenuListener
             .getQuickFilterWidget() );
 
         this.openBestEditorAction = new OpenBestEditorAction( viewer, searchResultEditor.getConfiguration().getCursor(
-            viewer ), this, searchResultEditor.getConfiguration().getValueProviderManager( viewer ) );
+            viewer ), this, searchResultEditor.getConfiguration().getValueEditorManager( viewer ) );
         this.openDefaultEditorAction = new OpenDefaultEditorAction( this.openBestEditorAction );
-        ValueProvider[] valueProviders = searchResultEditor.getConfiguration().getValueProviderManager( viewer )
-            .getAllValueProviders();
-        this.openEditorActions = new OpenEditorAction[valueProviders.length];
+        IValueEditor[] valueEditors = searchResultEditor.getConfiguration().getValueEditorManager( viewer )
+            .getAllValueEditors();
+        this.openEditorActions = new OpenEditorAction[valueEditors.length];
         for ( int i = 0; i < this.openEditorActions.length; i++ )
         {
             this.openEditorActions[i] = new OpenEditorAction( viewer, searchResultEditor.getConfiguration().getCursor(
-                viewer ), this, searchResultEditor.getConfiguration().getValueProviderManager( viewer ),
-                valueProviders[i] );
+                viewer ), this, searchResultEditor.getConfiguration().getValueEditorManager( viewer ),
+                valueEditors[i] );
         }
         this.openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
@@ -400,8 +400,8 @@ public class SearchResultEditorActionGroup implements IMenuListener
         for ( int i = 0; i < this.openEditorActions.length; i++ )
         {
             if ( this.openEditorActions[i].isEnabled()
-                && this.openEditorActions[i].getValueProvider().getClass() != this.openBestEditorAction
-                    .getBestValueProvider().getClass() )
+                && this.openEditorActions[i].getValueEditor().getClass() != this.openBestEditorAction
+                    .getBestValueEditor().getClass() )
             {
                 editorMenuManager.add( this.openEditorActions[i] );
             }

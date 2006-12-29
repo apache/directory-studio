@@ -37,7 +37,7 @@ public class BrowserUIPreferences
     private Map attributeValueProviderRelationCache;
 
 
-    public Map getAttributeValueProviderMap()
+    public Map getAttributeValueEditorMap()
     {
         if ( this.attributeValueProviderRelationCache == null )
         {
@@ -86,7 +86,7 @@ public class BrowserUIPreferences
     private Map syntaxValueProviderCache;
 
 
-    public Map getSyntaxValueProviderMap()
+    public Map getSyntaxValueEditorMap()
     {
         if ( this.syntaxValueProviderCache == null )
         {

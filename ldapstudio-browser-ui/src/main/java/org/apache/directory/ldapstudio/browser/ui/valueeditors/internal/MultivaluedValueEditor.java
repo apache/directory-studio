@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.browser.ui.valueproviders;
+package org.apache.directory.ldapstudio.browser.ui.valueeditors.internal;
 
 
 import java.util.ArrayList;
@@ -27,38 +27,44 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.dialogs.MultivaluedDialog;
-
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 
-public class MultivaluedValueProvider extends CellEditor implements ValueProvider, ModelModifier
+public class MultivaluedValueEditor extends CellEditor implements IValueEditor, ModelModifier
 {
 
-    protected Object value;
+    /** The value to handle */
+    private Object value;
 
-    protected Composite parent;
+    /** The parent composite, used to instanciate a new control */
+    private Composite parent;
 
-    protected ValueProviderManager valueProviderManager;
+    /** The name of this value editor */
+    private String name;
+
+    /** The image of this value editor */
+    private ImageDescriptor imageDescriptor;
+
+    /** The value editor manager, used to get proper value editor */
+    protected ValueEditorManager valueEditorManager;
 
 
-    public MultivaluedValueProvider( Composite parent, ValueProviderManager valueProviderManager )
+    public MultivaluedValueEditor( Composite parent, ValueEditorManager valueEditorManager )
     {
         super( parent );
         this.parent = parent;
-        this.valueProviderManager = valueProviderManager;
+        this.valueEditorManager = valueEditorManager;
     }
 
 
@@ -87,9 +93,9 @@ public class MultivaluedValueProvider extends CellEditor implements ValueProvide
 
     public void activate()
     {
-        if ( this.getValue() != null && this.getValue() instanceof AttributeHierachie )
+        if ( this.getValue() != null && this.getValue() instanceof AttributeHierarchy )
         {
-            AttributeHierachie ah = ( AttributeHierachie ) this.getValue();
+            AttributeHierarchy ah = ( AttributeHierarchy ) this.getValue();
             if ( ah != null )
             {
                 MultivaluedDialog dialog = new MultivaluedDialog( this.parent.getShell(), ah );
@@ -107,22 +113,10 @@ public class MultivaluedValueProvider extends CellEditor implements ValueProvide
     }
 
 
-    public String getCellEditorName()
-    {
-        return "Multivalued Editor";
-    }
-
-
-    public ImageDescriptor getCellEditorImageDescriptor()
-    {
-        return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_MULTIVALUEDEDITOR );
-    }
-
-
-    public String getDisplayValue( AttributeHierachie ah )
+    public String getDisplayValue( AttributeHierarchy ah )
     {
 
-        List valueList = new ArrayList();
+        List<IValue> valueList = new ArrayList<IValue>();
         for ( Iterator it = ah.iterator(); it.hasNext(); )
         {
             IAttribute attribute = ( IAttribute ) it.next();
@@ -135,7 +129,7 @@ public class MultivaluedValueProvider extends CellEditor implements ValueProvide
         for ( Iterator it = valueList.iterator(); it.hasNext(); )
         {
             IValue value = ( IValue ) it.next();
-            ValueProvider vp = this.valueProviderManager.getCurrentValueProvider( value );
+            IValueEditor vp = this.valueEditorManager.getCurrentValueEditor( value );
             sb.append( vp.getDisplayValue( value ) );
             if ( it.hasNext() )
                 sb.append( ", " );
@@ -150,7 +144,7 @@ public class MultivaluedValueProvider extends CellEditor implements ValueProvide
     }
 
 
-    public Object getRawValue( AttributeHierachie ah )
+    public Object getRawValue( AttributeHierarchy ah )
     {
         return ah;
     }
@@ -162,29 +156,59 @@ public class MultivaluedValueProvider extends CellEditor implements ValueProvide
     }
 
 
-    public Object getRawValue( IConnection connection, Schema schema, Object value )
+    public Object getRawValue( IConnection connection, Object value )
     {
         return null;
     }
 
 
-    public void modify( IValue oldValue, Object newRawValue ) throws ModelModificationException
+    public void modifyValue( IValue oldValue, Object newRawValue ) throws ModelModificationException
     {
     }
 
 
-    public void create( IEntry entry, String attributeName, Object newRawValue ) throws ModelModificationException
+    public void createValue( IEntry entry, String attributeName, Object newRawValue ) throws ModelModificationException
     {
     }
 
 
-    public void delete( AttributeHierachie ah ) throws ModelModificationException
+    public void deleteAttribute( AttributeHierarchy ah ) throws ModelModificationException
     {
     }
 
 
-    public void delete( IValue oldValue ) throws ModelModificationException
+    public void deleteValue( IValue oldValue ) throws ModelModificationException
     {
+    }
+
+
+    public Object getStringOrBinaryValue( Object rawValue )
+    {
+        return null;
+    }
+
+
+    public void setValueEditorName( String name )
+    {
+        this.name = name;
+    }
+
+
+    public String getValueEditorName()
+    {
+        return name;
+    }
+
+
+    public void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor )
+    {
+        this.imageDescriptor = imageDescriptor;
+    }
+
+
+    public ImageDescriptor getValueEditorImageDescriptor()
+    {
+        return imageDescriptor;
     }
 
 }

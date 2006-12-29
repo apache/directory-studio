@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.ldapstudio.browser.core.internal.model.AttributeComparator;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
@@ -244,7 +244,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
             {
 
                 AttributeComparator comparator = new AttributeComparator( entries[e] );
-                AttributeHierachie ah = entries[e].getAttributeWithSubtypes( returningAttributes[a] );
+                AttributeHierarchy ah = entries[e].getAttributeWithSubtypes( returningAttributes[a] );
                 if ( ah != null )
                 {
 

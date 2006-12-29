@@ -21,14 +21,14 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.ITableColorProvider;
@@ -46,16 +46,16 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
     ITableColorProvider
 {
 
-    private ValueProviderManager valueProviderManager;
+    private ValueEditorManager valueEditorManager;
 
     private ISearch search;
 
     private boolean showDn;
 
 
-    public SearchResultEditorLabelProvider( TableViewer viewer, ValueProviderManager valueProviderManager )
+    public SearchResultEditorLabelProvider( TableViewer viewer, ValueEditorManager valueEditorManager )
     {
-        this.valueProviderManager = valueProviderManager;
+        this.valueEditorManager = valueEditorManager;
     }
 
 
@@ -95,7 +95,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
                 }
                 else
                 {
-                    AttributeHierachie ah = result.getAttributeWithSubtypes( property );
+                    AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
                     return getDisplayValue( ah );
                 }
 
@@ -124,10 +124,10 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
     }
 
 
-    private String getDisplayValue( AttributeHierachie ah )
+    private String getDisplayValue( AttributeHierarchy ah )
     {
 
-        ValueProvider vp = this.valueProviderManager.getCurrentValueProvider( ah );
+        IValueEditor vp = this.valueEditorManager.getCurrentValueEditor( ah );
         if ( vp == null )
         {
             return "";
@@ -169,7 +169,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
             }
             else if ( property != null )
             {
-                AttributeHierachie ah = result.getAttributeWithSubtypes( property );
+                AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
                 if ( ah != null )
                 {
                     for ( int i = 0; i < ah.getAttributes().length; i++ )

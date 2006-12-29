@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.ldif.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
+import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.AbstractDialogCellEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 
 
 public class OpenBestValueEditorAction extends AbstractOpenValueEditorAction
@@ -41,31 +41,31 @@ public class OpenBestValueEditorAction extends AbstractOpenValueEditorAction
 
         super.setEnabled( isEditableLineSelected() );
 
-        // determine value provider
-        Schema schema = getSchema();
+        // determine value editor
+        IConnection connection = getConnection();
         String attributeDescription = getAttributeDescription();
         Object oldValue = getValue();
 
         if ( attributeDescription != null )
         {
-            valueProvider = manager.getCurrentValueProvider( schema, attributeDescription );
-            Object rawValue = valueProvider.getRawValue( null, schema, oldValue );
-            if ( !( valueProvider instanceof AbstractDialogCellEditor ) || rawValue == null )
+            valueEditor = valueEditorManager.getCurrentValueEditor( connection.getSchema(), attributeDescription );
+            Object rawValue = valueEditor.getRawValue( connection, oldValue );
+            if ( !( valueEditor instanceof AbstractDialogValueEditor ) || rawValue == null )
             {
-                ValueProvider[] vps = manager.getAlternativeValueProvider( schema, attributeDescription );
+                IValueEditor[] vps = valueEditorManager.getAlternativeValueEditors( connection.getSchema(), attributeDescription );
                 for ( int i = 0; i < vps.length
-                    && ( !( valueProvider instanceof AbstractDialogCellEditor ) || rawValue == null ); i++ )
+                    && ( !( valueEditor instanceof AbstractDialogValueEditor ) || rawValue == null ); i++ )
                 {
-                    valueProvider = vps[i];
-                    rawValue = valueProvider.getRawValue( null, schema, oldValue );
+                    valueEditor = vps[i];
+                    rawValue = valueEditor.getRawValue( connection, oldValue );
                 }
             }
         }
 
-        if ( valueProvider != null )
+        if ( valueEditor != null )
         {
-            setText( valueProvider.getCellEditorName() );
-            setImageDescriptor( valueProvider.getCellEditorImageDescriptor() );
+            setText( valueEditor.getValueEditorName() );
+            setImageDescriptor( valueEditor.getValueEditorImageDescriptor() );
         }
     }
 

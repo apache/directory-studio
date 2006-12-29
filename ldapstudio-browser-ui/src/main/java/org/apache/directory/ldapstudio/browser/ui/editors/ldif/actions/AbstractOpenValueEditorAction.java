@@ -21,6 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.ldif.actions;
 
 
+import org.apache.directory.ldapstudio.browser.core.internal.model.DummyConnection;
+import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifPart;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifAttrValLine;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifControlLine;
@@ -31,10 +33,9 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifNewsupe
 import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifValueLineBase;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.AbstractDialogCellEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
-
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 
@@ -42,21 +43,21 @@ import org.eclipse.jface.text.IDocument;
 public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 {
 
-    protected ValueProviderManager manager;
+    protected ValueEditorManager valueEditorManager;
 
-    protected ValueProvider valueProvider;
+    protected IValueEditor valueEditor;
 
 
     public AbstractOpenValueEditorAction( LdifEditor editor )
     {
         super( "Edit Value", editor );
-        manager = editor.getValueProviderManager();
+        valueEditorManager = editor.getValueEditorManager();
     }
 
 
-    public Object getValueProvider()
+    public Object getValueEditor()
     {
-        return valueProvider;
+        return valueEditor;
     }
 
 
@@ -69,11 +70,11 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
             LdifValueLineBase line = ( LdifValueLineBase ) parts[0];
 
             String attributeDescription = getAttributeDescription();
-            Object rawValue = getValueProviderRawValue();
+            Object rawValue = getValueEditorRawValue();
 
-            if ( valueProvider instanceof AbstractDialogCellEditor )
+            if ( valueEditor instanceof AbstractDialogValueEditor )
             {
-                AbstractDialogCellEditor cellEditor = ( AbstractDialogCellEditor ) valueProvider;
+                AbstractDialogValueEditor cellEditor = ( AbstractDialogValueEditor ) valueEditor;
                 cellEditor.setValue( rawValue );
                 cellEditor.activate();
                 Object newValue = cellEditor.getValue();
@@ -124,20 +125,20 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
     }
 
 
-    protected Schema getSchema()
+    protected IConnection getConnection()
     {
-        return editor.getConnection() != null ? editor.getConnection().getSchema() : Schema.DEFAULT_SCHEMA;
+        return editor.getConnection() != null ? editor.getConnection() : new DummyConnection( Schema.DEFAULT_SCHEMA );
     }
 
 
-    protected Object getValueProviderRawValue()
+    protected Object getValueEditorRawValue()
     {
         Object rawValue = null;
         Object value = getValue();
         if ( value != null )
         {
-            Schema schema = getSchema();
-            rawValue = valueProvider.getRawValue( null, schema, value );
+            IConnection connection = getConnection();
+            rawValue = valueEditor.getRawValue( connection, value );
         }
 
         return rawValue;

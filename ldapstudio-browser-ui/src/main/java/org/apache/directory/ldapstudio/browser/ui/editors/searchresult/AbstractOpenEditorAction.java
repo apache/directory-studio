@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TableViewer;
@@ -40,7 +40,7 @@ public abstract class AbstractOpenEditorAction extends AbstractSearchResultListe
 
     protected SearchResultEditorActionGroup actionGroup;
 
-    protected ValueProviderManager valueProviderManager;
+    protected ValueEditorManager valueEditorManager;
 
     protected TableViewer viewer;
 
@@ -52,13 +52,13 @@ public abstract class AbstractOpenEditorAction extends AbstractSearchResultListe
 
 
     protected AbstractOpenEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        SearchResultEditorActionGroup actionGroup, ValueProviderManager valueProviderManager )
+        SearchResultEditorActionGroup actionGroup, ValueEditorManager valueEditorManager )
     {
         super( cursor, "Editor", null, null );
         this.actionGroup = actionGroup;
         this.viewer = viewer;
         this.cursor = cursor;
-        this.valueProviderManager = valueProviderManager;
+        this.valueEditorManager = valueEditorManager;
         this.isActive = false;
     }
 
@@ -129,7 +129,7 @@ public abstract class AbstractOpenEditorAction extends AbstractSearchResultListe
         }
         else
         {
-            this.valueProviderManager.setUserSelectedValueProvider( null );
+            this.valueEditorManager.setUserSelectedValueEditor( null );
         }
     }
 
@@ -171,7 +171,7 @@ public abstract class AbstractOpenEditorAction extends AbstractSearchResultListe
         // activate global actions
         this.actionGroup.activateGlobalActionHandlers();
 
-        this.valueProviderManager.setUserSelectedValueProvider( null );
+        this.valueEditorManager.setUserSelectedValueEditor( null );
 
         // activate cursor
         cursor.setVisible( true );

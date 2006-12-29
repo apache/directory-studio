@@ -25,8 +25,8 @@ import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
@@ -44,19 +44,19 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
     IColorProvider
 {
 
-    private ValueProviderManager valueProviderManager;
+    private ValueEditorManager valueEditorManager;
 
 
-    public EntryEditorWidgetLabelProvider( ValueProviderManager valueProviderManager )
+    public EntryEditorWidgetLabelProvider( ValueEditorManager valueEditorManager )
     {
-        this.valueProviderManager = valueProviderManager;
+        this.valueEditorManager = valueEditorManager;
     }
 
 
     public void dispose()
     {
         super.dispose();
-        this.valueProviderManager = null;
+        this.valueEditorManager = null;
     }
 
 
@@ -71,7 +71,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
                 case EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX:
                     return value.getAttribute().getDescription();
                 case EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX:
-                    ValueProvider vp = this.valueProviderManager.getCurrentValueProvider( value );
+                    IValueEditor vp = this.valueEditorManager.getCurrentValueEditor( value );
                     String dv = vp.getDisplayValue( value );
                     return dv;
                 default:

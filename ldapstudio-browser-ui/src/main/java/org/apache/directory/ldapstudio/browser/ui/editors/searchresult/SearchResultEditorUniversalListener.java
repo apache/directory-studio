@@ -27,7 +27,7 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
@@ -248,7 +248,7 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
                 {
 
                     if ( startEditAction.isEnabled()
-                        && startEditAction.getBestValueProvider().getCellEditor() instanceof TextCellEditor )
+                        && startEditAction.getBestValueEditor().getCellEditor() instanceof TextCellEditor )
                     {
                         startEditAction.run();
                         CellEditor editor = viewer.getCellEditors()[cursor.getColumn()];
@@ -304,7 +304,7 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
         {
             EmptyValueAddedEvent evae = ( EmptyValueAddedEvent ) event;
             IAttribute att = evae.getAddedValue().getAttribute();
-            AttributeHierachie ah = cursor.getSelectedAttributeHierarchie();
+            AttributeHierarchy ah = cursor.getSelectedAttributeHierarchie();
             if ( ah != null && ah.contains( att ) )
             {
                 viewer.setSelection( null, true );

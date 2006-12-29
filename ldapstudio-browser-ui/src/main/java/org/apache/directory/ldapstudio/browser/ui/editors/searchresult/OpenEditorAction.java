@@ -23,33 +23,33 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 import java.util.Arrays;
 
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.viewers.TableViewer;
 
 
 public class OpenEditorAction extends AbstractOpenEditorAction
 {
 
-    private ValueProvider valueProvider;
+    private IValueEditor valueEditor;
 
 
     public OpenEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        SearchResultEditorActionGroup actionGroup, ValueProviderManager valueProviderManager,
-        ValueProvider valueProvider )
+        SearchResultEditorActionGroup actionGroup, ValueEditorManager valueEditorManager,
+        IValueEditor valueEditor )
     {
-        super( viewer, cursor, actionGroup, valueProviderManager );
-        super.cellEditor = valueProvider.getCellEditor();
-        this.valueProvider = valueProvider;
-        this.setText( "" + this.valueProvider.getCellEditorName() );
-        this.setToolTipText( "" + this.valueProvider.getCellEditorName() );
-        this.setImageDescriptor( this.valueProvider.getCellEditorImageDescriptor() );
+        super( viewer, cursor, actionGroup, valueEditorManager );
+        super.cellEditor = valueEditor.getCellEditor();
+        this.valueEditor = valueEditor;
+        this.setText( "" + this.valueEditor.getValueEditorName() );
+        this.setToolTipText( "" + this.valueEditor.getValueEditorName() );
+        this.setImageDescriptor( this.valueEditor.getValueEditorImageDescriptor() );
     }
 
 
-    public ValueProvider getValueProvider()
+    public IValueEditor getValueEditor()
     {
-        return this.valueProvider;
+        return this.valueEditor;
     }
 
 
@@ -59,17 +59,17 @@ public class OpenEditorAction extends AbstractOpenEditorAction
         if ( viewer.getCellModifier().canModify( this.selectedSearchResult, this.selectedProperty ) )
         {
 
-            ValueProvider[] alternativeVps;
+            IValueEditor[] alternativeVps;
             if ( this.selectedAttributeHierarchie == null )
             {
                 this.setEnabled( false );
             }
             else
             {
-                alternativeVps = this.valueProviderManager
-                    .getAlternativeValueProvider( this.selectedAttributeHierarchie );
-                this.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueProvider )
-                    && this.valueProvider.getRawValue( this.selectedAttributeHierarchie ) != null );
+                alternativeVps = this.valueEditorManager
+                    .getAlternativeValueEditors( this.selectedAttributeHierarchie );
+                this.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueEditor )
+                    && this.valueEditor.getRawValue( this.selectedAttributeHierarchie ) != null );
             }
         }
         else
@@ -81,7 +81,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
     public void run()
     {
-        this.valueProviderManager.setUserSelectedValueProvider( this.valueProvider );
+        this.valueEditorManager.setUserSelectedValueEditor( this.valueEditor );
         super.run();
     }
 

@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.browser.ui.valueproviders;
+package org.apache.directory.ldapstudio.browser.ui.valueeditors;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
@@ -27,73 +27,35 @@ import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.jobs.CreateValuesJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.ModifyValueJob;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.TextDialog;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 
-public class TextValueProvider extends AbstractDialogCellEditor implements ValueProvider, ModelModifier
+/**
+ * 
+ * Abstract base class for value editors that handle string values
+ * in a dialog. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public abstract class AbstractDialogStringValueEditor extends AbstractDialogValueEditor implements ModelModifier
 {
 
-    public TextValueProvider( Composite parent )
+    protected AbstractDialogStringValueEditor()
     {
-        super( parent );
+        super();
     }
 
 
-    public CellEditor getCellEditor()
-    {
-        return this;
-    }
-
-
-    public String getCellEditorName()
-    {
-        return "Text Editor";
-    }
-
-
-    public ImageDescriptor getCellEditorImageDescriptor()
-    {
-        return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_TEXTEDITOR );
-    }
-
-
-    public Object openDialogBox( Control cellEditorWindow )
-    {
-        Object value = getValue();
-        if ( value != null && value instanceof String )
-        {
-            TextDialog dialog = new TextDialog( cellEditorWindow.getShell(), ( String ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getText() ) )
-            {
-                return dialog.getText();
-            }
-        }
-        return null;
-    }
-
-
-    public String getDisplayValue( AttributeHierachie ah )
-    {
-        Object obj = this.getRawValue( ah );
-        return obj == null ? "NULL" : obj.toString();
-    }
-
-
+    /**
+     * This implementation just returns the raw value
+     */
     public String getDisplayValue( IValue value )
     {
         Object obj = this.getRawValue( value );
@@ -101,46 +63,27 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
     }
 
 
-    public Object getEmptyRawValue( IEntry entry, String attributeDescription )
+    /**
+     * This implementation returns IValue.EMPTY_STRING_VALUE if
+     * the attribute is string.
+     */
+    protected Object getEmptyRawValue( IAttribute attribute )
     {
-        if ( entry == null || attributeDescription == null )
-        {
-            return null;
-        }
-        if ( entry.getConnection().getSchema().getAttributeTypeDescription( attributeDescription )
-            .getSyntaxDescription().isString() )
+        if ( attribute.isString() )
         {
             return IValue.EMPTY_STRING_VALUE;
         }
         else
         {
-            // return LdifUtils.utf8decode(IValue.EMPTY_BINARY_VALUE);
             return IValue.EMPTY_BINARY_VALUE;
         }
     }
 
 
-    public Object getRawValue( AttributeHierachie ah )
-    {
-        if ( ah == null )
-        {
-            return null;
-        }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 0 )
-        {
-            return getEmptyRawValue( ah.getAttribute().getEntry(), ah.getAttribute().getDescription() );
-        }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 1 )
-        {
-            return getRawValue( ah.getAttribute().getValues()[0] );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
+    /**
+     * This implementation returns the string value 
+     * of the given value. 
+     */
     public Object getRawValue( IValue value )
     {
         if ( value == null )
@@ -162,7 +105,12 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
     }
 
 
-    public Object getRawValue( IConnection connection, Schema schema, Object value )
+    /**
+     * This implementation returns the value itself if it is
+     * of type byte[] or a byte[] with the UTF-8 encoded string
+     * value if it is of type String.  
+     */
+    public Object getRawValue( IConnection connection, Object value )
     {
         if ( value == null )
         {
@@ -183,8 +131,6 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
                 }
             }
             return s;
-            // return isEditable((byte[])value) ?
-            // LdifUtils.utf8decode((byte[])this.value) : null;
         }
         else
         {
@@ -193,9 +139,11 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
     }
 
 
+    /**
+     * Small helper.
+     */
     private boolean isEditable( byte[] b )
     {
-
         if ( b == null )
         {
             return false;
@@ -213,7 +161,31 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
     }
 
 
-    public void create( IEntry entry, String attributeDescription, Object newRawValue )
+    /**
+     * This implementation always return the string value
+     * as String.
+     */
+    public Object getStringOrBinaryValue( Object rawValue )
+    {
+        if ( rawValue == null )
+        {
+            return null;
+        }
+        else if ( rawValue instanceof String )
+        {
+            return rawValue;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public final void createValue( IEntry entry, String attributeDescription, Object newRawValue )
         throws ModelModificationException
     {
         if ( entry != null && attributeDescription != null && newRawValue != null && newRawValue instanceof String )
@@ -246,7 +218,10 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
     }
 
 
-    private void modify( IAttribute attribute, Object newRawValue ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    private final void modify( IAttribute attribute, Object newRawValue ) throws ModelModificationException
     {
         if ( attribute != null && newRawValue != null && newRawValue instanceof String )
         {
@@ -257,13 +232,16 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
             }
             else if ( attribute.getValueSize() == 1 )
             {
-                this.modify( attribute.getValues()[0], newRawValue );
+                this.modifyValue( attribute.getValues()[0], newRawValue );
             }
         }
     }
 
 
-    public void modify( IValue oldValue, Object newRawValue ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    public final void modifyValue( IValue oldValue, Object newRawValue ) throws ModelModificationException
     {
         if ( oldValue != null && newRawValue != null && newRawValue instanceof String )
         {
@@ -288,7 +266,10 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
     }
 
 
-    public void delete( AttributeHierachie ah ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    public final void deleteAttribute( AttributeHierarchy ah ) throws ModelModificationException
     {
         if ( ah != null )
         {
@@ -297,7 +278,10 @@ public class TextValueProvider extends AbstractDialogCellEditor implements Value
     }
 
 
-    public void delete( IValue oldValue ) throws ModelModificationException
+    /**
+     * {@inheritDoc}
+     */
+    public final void deleteValue( IValue oldValue ) throws ModelModificationException
     {
         if ( oldValue != null )
         {

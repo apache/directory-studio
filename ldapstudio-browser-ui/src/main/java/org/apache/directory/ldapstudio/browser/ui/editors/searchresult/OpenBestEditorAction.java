@@ -21,27 +21,27 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.viewers.TableViewer;
 
 
 public class OpenBestEditorAction extends AbstractOpenEditorAction
 {
 
-    private ValueProvider valueProvider;
+    private IValueEditor valueEditor;
 
 
     public OpenBestEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        SearchResultEditorActionGroup actionGroup, ValueProviderManager valueProviderManager )
+        SearchResultEditorActionGroup actionGroup, ValueEditorManager valueEditorManager )
     {
-        super( viewer, cursor, actionGroup, valueProviderManager );
+        super( viewer, cursor, actionGroup, valueEditorManager );
     }
 
 
-    public ValueProvider getBestValueProvider()
+    public IValueEditor getBestValueEditor()
     {
-        return this.valueProvider;
+        return this.valueEditor;
     }
 
 
@@ -53,20 +53,20 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
             if ( this.selectedAttributeHierarchie == null )
             {
-                this.valueProvider = this.valueProviderManager.getCurrentValueProvider( this.selectedSearchResult
+                this.valueEditor = this.valueEditorManager.getCurrentValueEditor( this.selectedSearchResult
                     .getEntry(), this.selectedProperty );
             }
             else
             {
-                this.valueProvider = this.valueProviderManager
-                    .getCurrentValueProvider( this.selectedAttributeHierarchie );
+                this.valueEditor = this.valueEditorManager
+                    .getCurrentValueEditor( this.selectedAttributeHierarchie );
             }
 
-            super.cellEditor = this.valueProvider.getCellEditor();
+            super.cellEditor = this.valueEditor.getCellEditor();
             this.setEnabled( true );
-            this.setText( "" + this.valueProvider.getCellEditorName() );
-            this.setToolTipText( "" + this.valueProvider.getCellEditorName() );
-            this.setImageDescriptor( this.valueProvider.getCellEditorImageDescriptor() );
+            this.setText( "" + this.valueEditor.getValueEditorName() );
+            this.setToolTipText( "" + this.valueEditor.getValueEditorName() );
+            this.setImageDescriptor( this.valueEditor.getValueEditorImageDescriptor() );
 
         }
         else

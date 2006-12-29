@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.core.internal.model.Search;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -84,11 +84,11 @@ public abstract class SelectionUtils
                     {
                         return 1;
                     }
-                    else if ( ( o1 instanceof AttributeHierachie ) && !( o2 instanceof AttributeHierachie ) )
+                    else if ( ( o1 instanceof AttributeHierarchy ) && !( o2 instanceof AttributeHierarchy ) )
                     {
                         return -1;
                     }
-                    else if ( !( o1 instanceof AttributeHierachie ) && ( o2 instanceof AttributeHierachie ) )
+                    else if ( !( o1 instanceof AttributeHierarchy ) && ( o2 instanceof AttributeHierarchy ) )
                     {
                         return 1;
                     }
@@ -123,7 +123,7 @@ public abstract class SelectionUtils
                 exampleSearch.setSearchBase( bookmark.getDn() );
             }
 
-            else if ( obj instanceof AttributeHierachie || obj instanceof IAttribute || obj instanceof IValue )
+            else if ( obj instanceof AttributeHierarchy || obj instanceof IAttribute || obj instanceof IValue )
             {
 
                 IEntry entry = null;
@@ -131,9 +131,9 @@ public abstract class SelectionUtils
                 for ( int i = 0; i < objects.length; i++ )
                 {
                     Object object = objects[i];
-                    if ( object instanceof AttributeHierachie )
+                    if ( object instanceof AttributeHierarchy )
                     {
-                        AttributeHierachie ah = ( AttributeHierachie ) object;
+                        AttributeHierarchy ah = ( AttributeHierarchy ) object;
                         for ( Iterator it = ah.iterator(); it.hasNext(); )
                         {
                             IAttribute attribute = ( IAttribute ) it.next();
@@ -233,10 +233,10 @@ public abstract class SelectionUtils
     }
 
 
-    public static AttributeHierachie[] getAttributeHierarchie( ISelection selection )
+    public static AttributeHierarchy[] getAttributeHierarchie( ISelection selection )
     {
-        List list = getTypes( selection, AttributeHierachie.class );
-        return ( AttributeHierachie[] ) list.toArray( new AttributeHierachie[list.size()] );
+        List list = getTypes( selection, AttributeHierarchy.class );
+        return ( AttributeHierarchy[] ) list.toArray( new AttributeHierarchy[list.size()] );
     }
 
 

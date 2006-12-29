@@ -19,3 +19,4 @@ Require-Bundle: org.apache.directory.ldapstudio.browser.core,
  org.eclipse.jface.text
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
+Export-Package: org.apache.directory.ldapstudio.browser.ui.valueeditors

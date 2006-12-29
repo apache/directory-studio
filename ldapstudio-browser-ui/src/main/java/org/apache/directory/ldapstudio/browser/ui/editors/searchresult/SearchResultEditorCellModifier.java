@@ -25,13 +25,13 @@ import java.util.Iterator;
 
 import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -44,20 +44,20 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
 
     private TableViewer viewer;
 
-    private ValueProviderManager valueProviderManager;
+    private ValueEditorManager valueEditorManager;
 
 
-    public SearchResultEditorCellModifier( TableViewer viewer, ValueProviderManager valueProviderManager )
+    public SearchResultEditorCellModifier( TableViewer viewer, ValueEditorManager valueEditorManager )
     {
         this.viewer = viewer;
-        this.valueProviderManager = valueProviderManager;
+        this.valueEditorManager = valueEditorManager;
     }
 
 
     public void dispose()
     {
         this.viewer = null;
-        this.valueProviderManager = null;
+        this.valueEditorManager = null;
     }
 
 
@@ -67,7 +67,7 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
         if ( element != null && element instanceof ISearchResult && property != null )
         {
             ISearchResult result = ( ISearchResult ) element;
-            AttributeHierachie ah = result.getAttributeWithSubtypes( property );
+            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
             // check DN
             if ( BrowserUIConstants.DN.equals( property ) )
@@ -80,7 +80,7 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
             {
                 try
                 {
-                    ah = new AttributeHierachie( result.getEntry(), property, new IAttribute[]
+                    ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
                         { new Attribute( result.getEntry(), property ) } );
                 }
                 catch ( ModelModificationException e )
@@ -122,8 +122,8 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
                 return false;
             }
 
-            // call value provider
-            return this.valueProviderManager.getCurrentValueProvider( ah ).getRawValue( ah ) != null;
+            // call value editor
+            return this.valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah ) != null;
         }
         else
         {
@@ -138,7 +138,7 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
         if ( element != null && element instanceof ISearchResult && property != null )
         {
             ISearchResult result = ( ISearchResult ) element;
-            AttributeHierachie ah = result.getAttributeWithSubtypes( property );
+            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
             if ( !this.canModify( element, property ) )
             {
@@ -149,7 +149,7 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
             {
                 try
                 {
-                    ah = new AttributeHierachie( result.getEntry(), property, new IAttribute[]
+                    ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
                         { new Attribute( result.getEntry(), property ) } );
                 }
                 catch ( ModelModificationException e )
@@ -159,7 +159,7 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
                 }
             }
 
-            return this.valueProviderManager.getCurrentValueProvider( ah ).getRawValue( ah );
+            return this.valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah );
         }
         else
         {
@@ -179,23 +179,23 @@ public class SearchResultEditorCellModifier implements ICellModifier, ModelModif
         if ( element != null && element instanceof ISearchResult && property != null )
         {
             ISearchResult result = ( ISearchResult ) element;
-            AttributeHierachie ah = result.getAttributeWithSubtypes( property );
+            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
             try
             {
                 // switch operation:
                 if ( ah == null && newRawValue != null )
                 {
-                    this.valueProviderManager.getCurrentValueProvider( result.getEntry(), property ).create(
+                    this.valueEditorManager.getCurrentValueEditor( result.getEntry(), property ).createValue(
                         result.getEntry(), property, newRawValue );
                 }
                 else if ( ah != null && newRawValue == null )
                 {
-                    this.valueProviderManager.getCurrentValueProvider( ah ).delete( ah );
+                    this.valueEditorManager.getCurrentValueEditor( ah ).deleteAttribute( ah );
                 }
                 else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
                 {
-                    this.valueProviderManager.getCurrentValueProvider( ah ).modify( ah.getAttribute().getValues()[0],
+                    this.valueEditorManager.getCurrentValueEditor( ah ).modifyValue( ah.getAttribute().getValues()[0],
                         newRawValue );
                 }
             }

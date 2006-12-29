@@ -42,7 +42,7 @@ import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.browser.core.utils.ModelConverter;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.apache.directory.ldapstudio.browser.ui.wizards.AttributeWizard;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -55,7 +55,7 @@ import org.eclipse.swt.widgets.Display;
 public class EditLdifAttributeAction extends AbstractLdifAction
 {
 
-    ValueProviderManager manager;
+    ValueEditorManager manager;
 
 
     public EditLdifAttributeAction( LdifEditor editor )
@@ -63,7 +63,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
         super( "Edit Attribute Description", editor );
         super.setActionDefinitionId( BrowserUIConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
 
-        manager = new ValueProviderManager( editor.getSite().getShell() );
+        manager = new ValueEditorManager( editor.getSite().getShell() );
     }
 
 

@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.browser.ui.dialogs.preferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -36,8 +37,8 @@ import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescr
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SyntaxValueProviderRelation;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager.ValueEditorExtension;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 
 import org.eclipse.jface.preference.PreferencePage;
@@ -65,7 +66,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ValueEditorsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private SortedMap class2ValueProviderMap;
+    private SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap;
 
     private SortedMap attributeOid2AtdMap;
 
@@ -119,13 +120,14 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         // init available value providers
-        this.class2ValueProviderMap = new TreeMap();
+        this.class2ValueEditorProxyMap = new TreeMap<String, ValueEditorExtension>();
         Composite dummyComposite = new Composite( composite, SWT.NONE );
         dummyComposite.setLayoutData( new GridData( 1, 1 ) );
-        ValueProvider[] valueProviders = ValueProviderManager.getValueProviders( dummyComposite );
-        for ( int i = 0; i < valueProviders.length; i++ )
+        
+        Collection<ValueEditorExtension> valueEditorProxys = ValueEditorManager.getValueEditorProxys();
+        for ( ValueEditorExtension proxy : valueEditorProxys )
         {
-            this.class2ValueProviderMap.put( valueProviders[i].getClass().getName(), valueProviders[i] );
+            this.class2ValueEditorProxyMap.put( proxy.className, proxy );
         }
 
         // init available attribute types
@@ -379,9 +381,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     protected void addAttribute()
     {
-        AttributeValueProviderDialog dialog = new AttributeValueProviderDialog( getShell(), null,
-            this.class2ValueProviderMap, this.attributeTypesAndOids );
-        if ( dialog.open() == AttributeValueProviderDialog.OK )
+        AttributeValueEditorDialog dialog = new AttributeValueEditorDialog( getShell(), null,
+            this.class2ValueEditorProxyMap, this.attributeTypesAndOids );
+        if ( dialog.open() == AttributeValueEditorDialog.OK )
         {
             this.attributeList.add( dialog.getRelation() );
             this.attributeViewer.refresh();
@@ -403,9 +405,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         if ( !sel.isEmpty() )
         {
             AttributeValueProviderRelation relation = ( AttributeValueProviderRelation ) sel.getFirstElement();
-            AttributeValueProviderDialog dialog = new AttributeValueProviderDialog( getShell(), relation,
-                this.class2ValueProviderMap, this.attributeTypesAndOids );
-            if ( dialog.open() == AttributeValueProviderDialog.OK )
+            AttributeValueEditorDialog dialog = new AttributeValueEditorDialog( getShell(), relation,
+                this.class2ValueEditorProxyMap, this.attributeTypesAndOids );
+            if ( dialog.open() == AttributeValueEditorDialog.OK )
             {
                 int index = this.attributeList.indexOf( relation );
                 this.attributeList.set( index, dialog.getRelation() );
@@ -417,9 +419,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     protected void addSyntax()
     {
-        SyntaxValueProviderDialog dialog = new SyntaxValueProviderDialog( getShell(), null,
-            this.class2ValueProviderMap, this.syntaxDescsAndOids );
-        if ( dialog.open() == SyntaxValueProviderDialog.OK )
+        SyntaxValueEditorDialog dialog = new SyntaxValueEditorDialog( getShell(), null,
+            this.class2ValueEditorProxyMap, this.syntaxDescsAndOids );
+        if ( dialog.open() == SyntaxValueEditorDialog.OK )
         {
             this.syntaxList.add( dialog.getRelation() );
             this.syntaxViewer.refresh();
@@ -441,9 +443,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         if ( !sel.isEmpty() )
         {
             SyntaxValueProviderRelation relation = ( SyntaxValueProviderRelation ) sel.getFirstElement();
-            SyntaxValueProviderDialog dialog = new SyntaxValueProviderDialog( getShell(), relation,
-                this.class2ValueProviderMap, this.syntaxDescsAndOids );
-            if ( dialog.open() == SyntaxValueProviderDialog.OK )
+            SyntaxValueEditorDialog dialog = new SyntaxValueEditorDialog( getShell(), relation,
+                this.class2ValueEditorProxyMap, this.syntaxDescsAndOids );
+            if ( dialog.open() == SyntaxValueEditorDialog.OK )
             {
                 int index = this.syntaxList.indexOf( relation );
                 this.syntaxList.set( index, dialog.getRelation() );
@@ -521,9 +523,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 }
                 else if ( index == 2 )
                 {
-                    ValueProvider vp = ( ValueProvider ) class2ValueProviderMap.get( relation
-                        .getValueProviderClassname() );
-                    return vp != null ? vp.getCellEditorName() : null;
+                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
+                    return vp != null ? vp.name : null;
                 }
             }
             return null;
@@ -537,9 +538,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 AttributeValueProviderRelation relation = ( AttributeValueProviderRelation ) obj;
                 if ( index == 2 )
                 {
-                    ValueProvider vp = ( ValueProvider ) class2ValueProviderMap.get( relation
-                        .getValueProviderClassname() );
-                    return vp != null ? vp.getCellEditorImageDescriptor().createImage() : null;
+                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
+                    return vp != null ? vp.icon.createImage() : null;
                 }
             }
 
@@ -572,9 +572,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 }
                 else if ( index == 2 )
                 {
-                    ValueProvider vp = ( ValueProvider ) class2ValueProviderMap.get( relation
-                        .getValueProviderClassname() );
-                    return vp != null ? vp.getCellEditorName() : null;
+                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
+                    return vp != null ? vp.name : null;
                 }
             }
             return null;
@@ -588,9 +587,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 SyntaxValueProviderRelation relation = ( SyntaxValueProviderRelation ) obj;
                 if ( index == 2 )
                 {
-                    ValueProvider vp = ( ValueProvider ) class2ValueProviderMap.get( relation
-                        .getValueProviderClassname() );
-                    return vp != null ? vp.getCellEditorImageDescriptor().createImage() : null;
+                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
+                    return vp != null ? vp.icon.createImage() : null;
                 }
             }
 

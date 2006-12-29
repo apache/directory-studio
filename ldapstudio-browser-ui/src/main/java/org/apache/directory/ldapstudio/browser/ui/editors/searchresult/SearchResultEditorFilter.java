@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 import java.util.ArrayList;
 
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
@@ -102,7 +102,7 @@ public class SearchResultEditorFilter extends ViewerFilter
             for ( int r = 0; r < returningAttributes.length; r++ )
             {
                 String ra = returningAttributes[r];
-                AttributeHierachie ah = searchResult.getAttributeWithSubtypes( ra );
+                AttributeHierarchy ah = searchResult.getAttributeWithSubtypes( ra );
                 if ( ah != null )
                 {
                     IAttribute[] attributes = ah.getAttributes();

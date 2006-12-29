@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
@@ -47,7 +47,7 @@ public abstract class AbstractSearchResultListenerAction extends Action implemen
 
     protected ISearchResult selectedSearchResult;
 
-    protected AttributeHierachie selectedAttributeHierarchie;
+    protected AttributeHierarchy selectedAttributeHierarchie;
 
     protected String selectedProperty;
 
@@ -93,7 +93,7 @@ public abstract class AbstractSearchResultListenerAction extends Action implemen
         ISelection selection = event.getSelection();
 
         ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
-        AttributeHierachie[] ah = SelectionUtils.getAttributeHierarchie( selection );
+        AttributeHierarchy[] ah = SelectionUtils.getAttributeHierarchie( selection );
         String[] selectedProperties = SelectionUtils.getProperties( selection );
 
         if ( searchResults.length == 1 )

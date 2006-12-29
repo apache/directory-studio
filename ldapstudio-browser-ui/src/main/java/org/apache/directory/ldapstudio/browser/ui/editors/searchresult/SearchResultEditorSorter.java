@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
@@ -267,8 +267,8 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         }
         else
         {
-            AttributeHierachie ah1 = entry1.getAttributeWithSubtypes( attributeName );
-            AttributeHierachie ah2 = entry2.getAttributeWithSubtypes( attributeName );
+            AttributeHierarchy ah1 = entry1.getAttributeWithSubtypes( attributeName );
+            AttributeHierarchy ah2 = entry2.getAttributeWithSubtypes( attributeName );
             if ( ah1 == null && ah2 == null )
             {
                 return this.equal();

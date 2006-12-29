@@ -38,7 +38,7 @@ import org.apache.directory.ldapstudio.browser.ui.actions.ValueEditorPreferences
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.EntryEditorActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.editors.entry.ShowQuickFilterAction;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProvider;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -101,14 +101,14 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
         this.showQuickFilterAction = new ShowQuickFilterAction( mainWidget.getQuickFilterWidget() );
 
         this.openBestEditorAction = new OpenBestEditorAction( viewer, this, configuration
-            .getValueProviderManager( viewer ) );
+            .getValueEditorManager( viewer ) );
         this.openDefaultEditorAction = new OpenDefaultEditorAction( viewer, this.openBestEditorAction );
-        ValueProvider[] valueProviders = configuration.getValueProviderManager( viewer ).getAllValueProviders();
-        this.openEditorActions = new OpenEditorAction[valueProviders.length];
+        IValueEditor[] valueEditors = configuration.getValueEditorManager( viewer ).getAllValueEditors();
+        this.openEditorActions = new OpenEditorAction[valueEditors.length];
         for ( int i = 0; i < this.openEditorActions.length; i++ )
         {
             this.openEditorActions[i] = new OpenEditorAction( viewer, this, configuration
-                .getValueProviderManager( viewer ), valueProviders[i] );
+                .getValueEditorManager( viewer ), valueEditors[i] );
         }
         this.openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
@@ -246,8 +246,8 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
         for ( int i = 0; i < this.openEditorActions.length; i++ )
         {
             if ( this.openEditorActions[i].isEnabled()
-                && this.openEditorActions[i].getValueProvider().getClass() != this.openBestEditorAction
-                    .getBestValueProvider().getClass() )
+                && this.openEditorActions[i].getValueEditor().getClass() != this.openBestEditorAction
+                    .getBestValueEditor().getClass() )
             {
                 editorMenuManager.add( this.openEditorActions[i] );
             }

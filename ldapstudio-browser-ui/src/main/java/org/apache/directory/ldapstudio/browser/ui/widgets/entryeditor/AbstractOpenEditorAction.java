@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
-import org.apache.directory.ldapstudio.browser.ui.valueproviders.ValueProviderManager;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -39,7 +39,7 @@ public abstract class AbstractOpenEditorAction extends AbstractEntryEditorListen
 
     protected EntryEditorWidgetActionGroup actionGroup;
 
-    protected ValueProviderManager valueProviderManager;
+    protected ValueEditorManager valueEditorManager;
 
     protected TreeViewer viewer;
 
@@ -47,18 +47,18 @@ public abstract class AbstractOpenEditorAction extends AbstractEntryEditorListen
 
 
     protected AbstractOpenEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
-        ValueProviderManager valueProviderManager )
+        ValueEditorManager valueEditorManager )
     {
         super( viewer, "Editor", null, null );
         this.viewer = viewer;
         this.actionGroup = actionGroup;
-        this.valueProviderManager = valueProviderManager;
+        this.valueEditorManager = valueEditorManager;
     }
 
 
     public void dispose()
     {
-        this.valueProviderManager = null;
+        this.valueEditorManager = null;
         this.actionGroup = null;
         this.viewer = null;
         this.cellEditor = null;
@@ -112,7 +112,7 @@ public abstract class AbstractOpenEditorAction extends AbstractEntryEditorListen
         }
         else
         {
-            this.valueProviderManager.setUserSelectedValueProvider( null );
+            this.valueEditorManager.setUserSelectedValueEditor( null );
         }
     }
 
@@ -137,10 +137,10 @@ public abstract class AbstractOpenEditorAction extends AbstractEntryEditorListen
         if ( this.actionGroup != null )
             this.actionGroup.activateGlobalActionHandlers();
 
-        // reset custom value provider and set selection to notify all
+        // reset custom value editor and set selection to notify all
         // openeditoractions to update their
         // enabled state.
-        this.valueProviderManager.setUserSelectedValueProvider( null );
+        this.valueEditorManager.setUserSelectedValueEditor( null );
         this.viewer.setSelection( this.viewer.getSelection() );
     }
 
