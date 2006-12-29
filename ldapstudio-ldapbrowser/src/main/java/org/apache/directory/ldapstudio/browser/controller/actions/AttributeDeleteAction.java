@@ -49,6 +49,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Attribute Delete Action.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AttributeDeleteAction extends Action
 {
@@ -59,9 +60,9 @@ public class AttributeDeleteAction extends Action
      * Creates a new instance of AttributeDeleteAction.
      * 
      * @param view
-     *                the associated view
+     *      the associated view
      * @param text
-     *                the associated text
+     *      the associated text
      */
     public AttributeDeleteAction( AttributesView view, String text )
     {
@@ -73,6 +74,9 @@ public class AttributeDeleteAction extends Action
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
     @SuppressWarnings("unchecked")
     public void run()
     {

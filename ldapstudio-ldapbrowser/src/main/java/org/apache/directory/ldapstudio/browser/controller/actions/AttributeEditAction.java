@@ -32,6 +32,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Attribute Edit Action.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AttributeEditAction extends Action
 {
@@ -42,9 +43,9 @@ public class AttributeEditAction extends Action
      * Creates a new instance of AttributeEditAction.
      * 
      * @param view
-     *                the associated view
+     *      the associated view
      * @param text
-     *                the string used as the text for the action
+     *      the string used as the text for the action
      */
     public AttributeEditAction( AttributesView view, String text )
     {

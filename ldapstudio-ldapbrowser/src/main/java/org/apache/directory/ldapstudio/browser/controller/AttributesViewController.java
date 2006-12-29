@@ -37,7 +37,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -47,6 +46,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * This class is the Controller for the Attributes View.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AttributesViewController implements IMenuListener
 {
@@ -79,6 +79,7 @@ public class AttributesViewController implements IMenuListener
      * Use this method to get the singleton instance of the controller
      * 
      * @return
+     *      an instance of the controller
      */
     public static AttributesViewController getInstance()
     {
@@ -90,7 +91,7 @@ public class AttributesViewController implements IMenuListener
      * Sets the controlled View
      * 
      * @param view
-     *                the controlled View
+     *      the controlled View
      */
     public void setView( final AttributesView view )
     {
@@ -139,7 +140,7 @@ public class AttributesViewController implements IMenuListener
     public void createActions()
     {
         // Creating Actions
-        attributeNewAction = new AttributeNewAction( view, "New attribute" );
+        attributeNewAction = new AttributeNewAction( "New attribute" );
         attributeEditAction = new AttributeEditAction( view, "Edit attribute" );
         attributeDeleteAction = new AttributeDeleteAction( view, "Delete attribute" );
 
@@ -229,7 +230,8 @@ public class AttributesViewController implements IMenuListener
     /**
      * Gets the AttibuteNewAction
      * 
-     * @return the AttibuteNewAction
+     * @return
+     *      the AttibuteNewAction
      */
     public IAction getAttributeNewAction()
     {
@@ -240,7 +242,8 @@ public class AttributesViewController implements IMenuListener
     /**
      * Gets the AttributeEditAction
      * 
-     * @return the AttributeEditAction
+     * @return 
+     *      the AttributeEditAction
      */
     public IAction getAttributeEditAction()
     {
@@ -251,7 +254,8 @@ public class AttributesViewController implements IMenuListener
     /**
      * Gets the AttributeDeleteAction
      * 
-     * @return the AttributeDeleteAction
+     * @return 
+     *      the AttributeDeleteAction
      */
     public IAction getAttributeDeleteAction()
     {

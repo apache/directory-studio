@@ -41,12 +41,21 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Connection Edit Action
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ConnectionEditAction extends Action
 {
     private BrowserView view;
 
-
+    
+    /**
+     * Creates a new instance of ConnectionEditAction.
+     *
+     * @param view
+     *      the attached view
+     * @param text
+     *      the string used as the text for the action, or null if there is no text
+     */
     public ConnectionEditAction( BrowserView view, String text )
     {
         super( text );
@@ -56,6 +65,9 @@ public class ConnectionEditAction extends Action
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
     public void run()
     {
         // Getting the selected connection

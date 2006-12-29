@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.controller.actions;
 import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
 import org.apache.directory.ldapstudio.browser.view.views.AttributeAddWizard;
-import org.apache.directory.ldapstudio.browser.view.views.AttributesView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
@@ -35,21 +34,27 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Attribute New Action.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AttributeNewAction extends Action
 {
-    private AttributesView view;
-
-
-    public AttributeNewAction( AttributesView view, String text )
+    /**
+     * Creates a new instance of AttributeNewAction.
+     *
+     * @param text
+     *      the string used as the text for the action, or null if there is no text
+     */
+    public AttributeNewAction( String text )
     {
         super( text );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.ATTRIBUTE_NEW ) );
         setToolTipText( "New attribute" );
-        this.view = view;
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
     public void run()
     {
         // Creating the Wizard and opening it

@@ -25,7 +25,6 @@ import org.apache.directory.ldapstudio.browser.Activator;
 import org.apache.directory.ldapstudio.browser.model.Connection;
 import org.apache.directory.ldapstudio.browser.model.Connections;
 import org.apache.directory.ldapstudio.browser.view.ImageKeys;
-import org.apache.directory.ldapstudio.browser.view.views.BrowserView;
 import org.apache.directory.ldapstudio.browser.view.views.ConnectionWizard;
 import org.apache.directory.ldapstudio.browser.view.views.ConnectionWizard.ConnectionWizardType;
 import org.eclipse.jface.action.Action;
@@ -39,21 +38,27 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Connection New Action
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ConnectionNewAction extends Action
 {
-    private BrowserView view;
-
-
-    public ConnectionNewAction( BrowserView view, String text )
+    /**
+     * Creates a new instance of ConnectionNewAction.
+     *
+     * @param text
+     *       the string used as the text for the action, or null if there is no text
+     */
+    public ConnectionNewAction( String text )
     {
         super( text );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, ImageKeys.CONNECTION_NEW ) );
         setToolTipText( "New connection" );
-        this.view = view;
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
     public void run()
     {
         // Creating the new Connection

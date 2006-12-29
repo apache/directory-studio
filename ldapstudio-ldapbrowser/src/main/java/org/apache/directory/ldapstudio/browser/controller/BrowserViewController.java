@@ -47,6 +47,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * This class is the Controller for the Browser View.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class BrowserViewController implements IMenuListener
 {
@@ -85,6 +86,7 @@ public class BrowserViewController implements IMenuListener
      * Use this method to get the singleton instance of the controller
      * 
      * @return
+     *          an instance of the controller
      */
     public static BrowserViewController getInstance()
     {
@@ -114,7 +116,7 @@ public class BrowserViewController implements IMenuListener
      * Sets the controlled View
      * 
      * @param view
-     *                the controlled View
+     *          the controlled View
      */
     public void setView( final BrowserView view )
     {
@@ -143,11 +145,11 @@ public class BrowserViewController implements IMenuListener
      */
     public void createActions()
     {
-        connectionNewAction = new ConnectionNewAction( view, "New connection" );
+        connectionNewAction = new ConnectionNewAction( "New connection" );
         connectionDeleteAction = new ConnectionDeleteAction( view, "Delete connection" );
         connectionEditAction = new ConnectionEditAction( view, "Edit connection" );
         refreshAction = new RefreshAction( view, "Refresh" );
-        entryNewAction = new EntryNewAction( view, "New entry" );
+        entryNewAction = new EntryNewAction( "New entry" );
         entryDeleteAction = new EntryDeleteAction( view, "Delete entry" );
 
         registerUpdateActions();
@@ -199,7 +201,8 @@ public class BrowserViewController implements IMenuListener
     /**
      * Gets the ConnectionDeleteAction
      * 
-     * @return the ConnectionDeleteAction
+     * @return
+     *          the ConnectionDeleteAction
      */
     public IAction getConnectionDeleteAction()
     {
@@ -210,7 +213,8 @@ public class BrowserViewController implements IMenuListener
     /**
      * Gets the ConnectionNewAction
      * 
-     * @return the ConnectionNewAction
+     * @return
+     *          the ConnectionNewAction
      */
     public IAction getConnectionNewAction()
     {
@@ -221,7 +225,8 @@ public class BrowserViewController implements IMenuListener
     /**
      * Gets the ConnectionEditAction
      * 
-     * @return the ConnectionEditAction
+     * @return
+     *          the ConnectionEditAction
      */
     public IAction getConnectionEditAction()
     {
@@ -232,7 +237,8 @@ public class BrowserViewController implements IMenuListener
     /**
      * Gets the RefreshAction
      * 
-     * @return the RefreshAction
+     * @return
+     *          the RefreshAction
      */
     public IAction getRefreshAction()
     {
@@ -243,7 +249,8 @@ public class BrowserViewController implements IMenuListener
     /**
      * Gets the EntryDeleteAction
      * 
-     * @return the EntryDeleteAction
+     * @return
+     *          the EntryDeleteAction
      */
     public IAction getEntryDeleteAction()
     {
@@ -254,7 +261,8 @@ public class BrowserViewController implements IMenuListener
     /**
      * Gets the EntryNewAction
      * 
-     * @return the EntryNewAction
+     * @return
+     *          the EntryNewAction
      */
     public IAction getEntryNewAction()
     {

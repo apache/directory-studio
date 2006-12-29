@@ -33,14 +33,8 @@ import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
@@ -49,6 +43,7 @@ import org.eclipse.ui.PlatformUI;
  * This class implements the Rename Attribute Action.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class RenameAttributeAction extends Action
 {
@@ -56,6 +51,7 @@ public class RenameAttributeAction extends Action
 
     private AttributesView view;
 
+    @SuppressWarnings("unused")
     private Table table;
 
     private TableEditor tableEditor;
@@ -63,6 +59,7 @@ public class RenameAttributeAction extends Action
     private Text textEditor;
 
     // A flag to not update twice the server
+    @SuppressWarnings("unused")
     private boolean done = false;
 
 
@@ -70,9 +67,9 @@ public class RenameAttributeAction extends Action
      * Creates a new instance of RenameAttributeAction.
      * 
      * @param view
-     *                the associated view
+     *      the associated view
      * @param text
-     *                the string used as the text for the action
+     *      the string used as the text for the action
      */
     public RenameAttributeAction( AttributesView view, String text )
     {
@@ -164,6 +161,7 @@ public class RenameAttributeAction extends Action
     /**
      * Saves the changes made in the editor and disposes the editor
      */
+    @SuppressWarnings("unused")
     private void saveChangesAndDisposeEditor()
     {
         if ( !getAttributeValue().equals( textEditor.getText() ) )
@@ -192,7 +190,8 @@ public class RenameAttributeAction extends Action
     /**
      * Gets the name of the selected attribute
      * 
-     * @return the name of the selected attribute
+     * @return
+     *      the name of the selected attribute
      */
     private String getAttributeName()
     {
@@ -205,7 +204,8 @@ public class RenameAttributeAction extends Action
     /**
      * Gets the value of the selected attribute
      * 
-     * @return the value of the selected attribute
+     * @return
+     *      the value of the selected attribute
      */
     private String getAttributeValue()
     {
@@ -217,8 +217,6 @@ public class RenameAttributeAction extends Action
 
     /**
      * Saves the changes made in the editor on the server
-     * 
-     * @param newText
      */
     private void saveChanges()
     {

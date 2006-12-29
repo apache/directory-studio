@@ -46,12 +46,21 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Entry Delete Action
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class EntryDeleteAction extends Action
 {
     private BrowserView view;
 
 
+    /**
+     * Creates a new instance of EntryDeleteAction.
+     *
+     * @param view
+     *      the attached view
+     * @param text
+     *      the string used as the text for the action, or null if there is no text
+     */
     public EntryDeleteAction( BrowserView view, String text )
     {
         super( text );
@@ -61,6 +70,9 @@ public class EntryDeleteAction extends Action
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
     public void run()
     {
         boolean answer = MessageDialog.openConfirm( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),

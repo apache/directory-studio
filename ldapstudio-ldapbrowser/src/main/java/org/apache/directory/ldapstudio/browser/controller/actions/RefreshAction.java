@@ -38,12 +38,21 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Refresh Action
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class RefreshAction extends Action
 {
     private BrowserView view;
 
 
+    /**
+     * Creates a new instance of RefreshAction.
+     *
+     * @param view
+     *      the attached view
+     * @param text
+     *      the string used as the text for the action, or null if there is no text
+     */
     public RefreshAction( BrowserView view, String text )
     {
         super( text );
@@ -53,6 +62,9 @@ public class RefreshAction extends Action
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
     public void run()
     {
         TreeViewer viewer = view.getViewer();
