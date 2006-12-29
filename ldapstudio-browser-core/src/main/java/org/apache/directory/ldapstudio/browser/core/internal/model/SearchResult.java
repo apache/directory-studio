@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.browser.core.internal.model;
 import java.util.ArrayList;
 
 import org.apache.directory.ldapstudio.browser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -82,7 +82,7 @@ public class SearchResult implements ISearchResult
     }
 
 
-    public AttributeHierachie getAttributeWithSubtypes( String attributeDescription )
+    public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
         return this.entry.getAttributeWithSubtypes( attributeDescription );
     }

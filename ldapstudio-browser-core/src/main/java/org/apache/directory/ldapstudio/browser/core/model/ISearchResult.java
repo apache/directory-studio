@@ -65,7 +65,7 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      *                the description of the attribute to return
      * @return the AttributeHierachie with the given description or null.
      */
-    public AttributeHierachie getAttributeWithSubtypes( String attributeDescription );
+    public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription );
 
 
     /**

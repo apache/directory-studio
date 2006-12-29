@@ -195,7 +195,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @return The attributes of the entry or null if the attribute doesn't
      *         exist or if the attributes arn't initialized.
      */
-    public abstract AttributeHierachie getAttributeWithSubtypes( String attributeDescription );
+    public abstract AttributeHierarchy getAttributeWithSubtypes( String attributeDescription );
 
 
     /**

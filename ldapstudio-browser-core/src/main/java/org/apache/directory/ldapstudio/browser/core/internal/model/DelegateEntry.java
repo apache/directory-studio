@@ -37,7 +37,7 @@ import org.apache.directory.ldapstudio.browser.core.events.ValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueModifiedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueRenamedEvent;
 import org.apache.directory.ldapstudio.browser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -192,7 +192,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public AttributeHierachie getAttributeWithSubtypes( String attributeDescription )
+    public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
         if ( this.getDelegate() != null )
             return getDelegate().getAttributeWithSubtypes( attributeDescription );

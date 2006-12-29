@@ -33,7 +33,7 @@ import org.apache.directory.ldapstudio.browser.core.events.AttributeAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.AttributeDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -118,7 +118,7 @@ public class DummyEntry implements IEntry
     }
 
 
-    public AttributeHierachie getAttributeWithSubtypes( String attributeDescription )
+    public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
 
         AttributeDescription ad = new AttributeDescription( attributeDescription );
@@ -142,7 +142,7 @@ public class DummyEntry implements IEntry
         }
         else
         {
-            AttributeHierachie ah = new AttributeHierachie( this, attributeDescription, ( IAttribute[] ) attributeList
+            AttributeHierarchy ah = new AttributeHierarchy( this, attributeDescription, ( IAttribute[] ) attributeList
                 .toArray( new IAttribute[attributeList.size()] ) );
             return ah;
         }

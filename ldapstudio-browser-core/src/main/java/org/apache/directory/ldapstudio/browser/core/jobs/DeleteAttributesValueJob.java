@@ -29,7 +29,7 @@ import org.apache.directory.ldapstudio.browser.core.events.AttributeDeletedEvent
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.ValueDeletedEvent;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
@@ -72,7 +72,7 @@ public class DeleteAttributesValueJob extends AbstractModificationJob
     }
 
 
-    public DeleteAttributesValueJob( AttributeHierachie ah )
+    public DeleteAttributesValueJob( AttributeHierarchy ah )
     {
         this( ah.getAttributes(), new IValue[0] );
     }

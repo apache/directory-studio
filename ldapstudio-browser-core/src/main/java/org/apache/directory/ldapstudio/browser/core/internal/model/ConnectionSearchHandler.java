@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.jobs.ExtendedProgressMonitor;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.Control;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
@@ -490,7 +490,7 @@ public class ConnectionSearchHandler
                         }
                     }
 
-                    AttributeHierachie ah = entry.getAttributeWithSubtypes( ra );
+                    AttributeHierarchy ah = entry.getAttributeWithSubtypes( ra );
                     if ( ah != null )
                     {
                         for ( Iterator it = ah.iterator(); it.hasNext(); )

@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 
-public class AttributeHierachie
+public class AttributeHierarchy
 {
 
     private IEntry entry;
@@ -35,7 +35,7 @@ public class AttributeHierachie
     private IAttribute[] attributes;
 
 
-    public AttributeHierachie( IEntry entry, String attributeDescription, IAttribute[] attributes )
+    public AttributeHierarchy( IEntry entry, String attributeDescription, IAttribute[] attributes )
     {
         if ( entry == null || attributeDescription == null || attributes == null || attributes.length < 1
             || attributes[0] == null )

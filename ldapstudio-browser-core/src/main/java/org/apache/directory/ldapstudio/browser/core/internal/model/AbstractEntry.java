@@ -40,7 +40,7 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEven
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierachie;
+import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
@@ -422,7 +422,7 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    public AttributeHierachie getAttributeWithSubtypes( String attributeDescription )
+    public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
 
         AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
@@ -461,7 +461,7 @@ public abstract class AbstractEntry implements IEntry
             else
             {
                 IAttribute[] attributes = ( IAttribute[] ) attributeList.toArray( new IAttribute[attributeList.size()] );
-                AttributeHierachie ah = new AttributeHierachie( this, attributeDescription, attributes );
+                AttributeHierarchy ah = new AttributeHierarchy( this, attributeDescription, attributes );
                 return ah;
             }
         }
