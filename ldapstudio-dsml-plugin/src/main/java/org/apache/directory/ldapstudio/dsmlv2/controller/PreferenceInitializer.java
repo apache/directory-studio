@@ -29,9 +29,15 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * This class initializes the preferences of the LDAP Studio Import/Export Plugin
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer
 {
+    /* (non-Javadoc)
+     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
+     */
     @Override
     public void initializeDefaultPreferences()
     {

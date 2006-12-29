@@ -27,11 +27,21 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 
+/**
+ * This class implements the Execute Wizard used to execute a DSML request file on a LDAP server
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExecuteWizard extends Wizard implements INewWizard
 {
+    /** The wizard page*/
     ExecuteWizardPage executeWizardPage;
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+     */
     @Override
     public boolean performFinish()
     {
@@ -39,21 +49,12 @@ public class ExecuteWizard extends Wizard implements INewWizard
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         executeWizardPage = new ExecuteWizardPage();
         addPage( executeWizardPage );
     }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
-     */
-    @Override
-    public void addPages()
-    {
-        // TODO Auto-generated method stub
-        super.addPages();
-    }
-
 }

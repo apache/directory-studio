@@ -23,6 +23,9 @@ package org.apache.directory.ldapstudio.dsmlv2.view;
 
 /**
  * This class is used to define path for images
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ImageKeys
 {

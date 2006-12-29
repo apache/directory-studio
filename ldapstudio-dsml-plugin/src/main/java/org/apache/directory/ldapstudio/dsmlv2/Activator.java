@@ -27,19 +27,22 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class Activator extends AbstractUIPlugin
 {
-
-    // The plug-in ID
+    /** The plug-in ID */
     public static final String PLUGIN_ID = "org.apache.directory.ldapstudio.dsmlv2plugin"; //$NON-NLS-1$
 
-    // The shared instance
+    /** The shared instance*/
     private static Activator plugin;
 
 
     /**
-     * The constructor
+     * Creates a new instance of Activator.
+     *
      */
     public Activator()
     {
@@ -71,11 +74,11 @@ public class Activator extends AbstractUIPlugin
     /**
      * Returns the shared instance
      *
-     * @return the shared instance
+     * @return
+     *      the shared instance
      */
     public static Activator getDefault()
     {
         return plugin;
     }
-
 }

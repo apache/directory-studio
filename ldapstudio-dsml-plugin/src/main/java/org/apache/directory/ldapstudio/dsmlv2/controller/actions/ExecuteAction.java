@@ -33,11 +33,15 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * This class implements the Execute Action
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ExecuteAction implements IWorkbenchWindowActionDelegate
 {
-    /**
-     * This method is run when the menu item is clicked
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     public void run( IAction action )
     {
@@ -50,18 +54,27 @@ public class ExecuteAction implements IWorkbenchWindowActionDelegate
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+     */
     public void dispose()
     {
         // This method does nothing, but is needed by the IWorkbenchWindowActionDelegate Interface
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+     */
     public void init( IWorkbenchWindow window )
     {
         // This method does nothing, but is needed by the IWorkbenchWindowActionDelegate Interface
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+     */
     public void selectionChanged( IAction action, ISelection selection )
     {
         // This method does nothing, but is needed by the IWorkbenchWindowActionDelegate Interface

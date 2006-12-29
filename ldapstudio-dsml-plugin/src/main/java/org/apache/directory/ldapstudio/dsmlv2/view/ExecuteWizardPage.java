@@ -51,8 +51,10 @@ import org.xmlpull.v1.XmlPullParserException;
 
 
 /**
- * This class implements the 
+ * This class implements the Execute Wizard Page
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ExecuteWizardPage extends WizardPage
 {
@@ -81,7 +83,8 @@ public class ExecuteWizardPage extends WizardPage
 
 
     /**
-     * Default constructor
+     * Creates a new instance of ExecuteWizardPage.
+     *
      */
     protected ExecuteWizardPage()
     {

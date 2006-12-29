@@ -32,11 +32,26 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * This class implements the Console Dialog used to display the response of a DSML request
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConsoleDialog extends Dialog
 {
+    /** The text to display */
     private String text;
 
 
+    /**
+     * Creates a new instance of ConsoleDialog.
+     *
+     * @param parentShell
+     *      the parent Shell
+     * @param text
+     *      the text to display
+     */
     protected ConsoleDialog( Shell parentShell, String text )
     {
         super( parentShell );
