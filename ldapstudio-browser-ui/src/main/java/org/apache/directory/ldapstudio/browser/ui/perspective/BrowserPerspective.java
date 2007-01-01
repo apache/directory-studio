@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.perspective;
 
 
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
 import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
 import org.apache.directory.ldapstudio.browser.ui.views.modificationlogs.ModificationLogsView;
@@ -66,11 +67,8 @@ public class BrowserPerspective implements IPerspectiveFactory
         layout.addShowViewShortcut( ConnectionView.getId() );
         layout.addShowViewShortcut( BrowserView.getId() );
         layout.addShowViewShortcut( ModificationLogsView.getId() );
-        layout.addShowViewShortcut( IPageLayout.ID_RES_NAV );
         layout.addShowViewShortcut( IPageLayout.ID_OUTLINE );
         layout.addShowViewShortcut( "org.eclipse.ui.views.ProgressView" );
-        // layout.addShowViewShortcut(IPageLayout.ID_PROGRESS_VIEW);
-        // layout.addShowViewShortcut("org.eclipse.pde.runtime.LogView");
     }
 
 
@@ -84,7 +82,6 @@ public class BrowserPerspective implements IPerspectiveFactory
         IFolderLayout browserFolder = layout.createFolder( "browserFolder", IPageLayout.LEFT, ( float ) 0.25,
             editorArea );
         browserFolder.addView( BrowserView.getId() );
-        browserFolder.addView( IPageLayout.ID_RES_NAV );
 
         // Connection folder
         IFolderLayout connectionFolder = layout.createFolder( "connectionFolder", IPageLayout.BOTTOM, ( float ) 0.75,
@@ -100,13 +97,22 @@ public class BrowserPerspective implements IPerspectiveFactory
         IFolderLayout progessFolder = layout.createFolder( "progressFolder", IPageLayout.BOTTOM, ( float ) 0.75,
             "outlineFolder" );
         progessFolder.addView( "org.eclipse.ui.views.ProgressView" );
-        // progessFolder.addView(IPageLayout.ID_PROGRESS_VIEW);
 
         // Log folder
         IFolderLayout logFolder = layout.createFolder( "logFolder", IPageLayout.BOTTOM, ( float ) 0.75, editorArea );
         logFolder.addView( ModificationLogsView.getId() );
-        // logFolder.addView("org.eclipse.pde.runtime.LogView");
         logFolder.addPlaceholder( "*" );
+
+        // non-closable?
+        boolean isIDE = BrowserUIPlugin.isIDEEnvironment();
+        if ( !isIDE )
+        {
+            layout.getViewLayout( BrowserView.getId() ).setCloseable( false );
+            layout.getViewLayout( ConnectionView.getId() ).setCloseable( false );
+            layout.getViewLayout( IPageLayout.ID_OUTLINE ).setCloseable( false );
+            layout.getViewLayout( "org.eclipse.ui.views.ProgressView" ).setCloseable( false );
+            layout.getViewLayout( ModificationLogsView.getId() ).setCloseable( false );
+        }
     }
 
 }
