@@ -28,8 +28,11 @@ import java.util.ResourceBundle;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -435,4 +438,42 @@ public class BrowserUIPlugin extends AbstractUIPlugin
         return this.uiPreferences;
     }
 
+    
+    /**
+     * Checks, if this plugins runs in the Eclipse IDE or in RCP environment.
+     * This is done by looking for the Resource perspective extensions.
+     *
+     * @return true if this plugin runs in IDE environment
+     */
+    public static boolean isIDEEnvironment()
+    {
+        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+            "org.eclipse.ui.perspectives" );
+        if ( extensionPoint != null )
+        {
+            IExtension[] extensions = extensionPoint.getExtensions();
+            if ( extensions != null )
+            {
+                for ( int i = 0; i < extensions.length; i++ )
+                {
+                    IExtension extension = extensions[i];
+                    IConfigurationElement[] elements = extension.getConfigurationElements();
+                    for ( int j = 0; j < elements.length; j++ )
+                    {
+                        IConfigurationElement element = elements[j];
+                        if ( element.getName().equals( "perspective" ) )
+                        {
+                            if ( "org.eclipse.ui.resourcePerspective".equals( element.getAttribute( "id" ) ) )
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
 }
