@@ -60,7 +60,7 @@ public class JNDIConnectionContext
 
     private String credentials;
 
-    private Hashtable environment;
+    private Hashtable<String, String> environment;
 
     private InitialLdapContext context;
 
@@ -78,7 +78,7 @@ public class JNDIConnectionContext
         ExtendedProgressMonitor monitor ) throws NamingException
     {
 
-        this.environment = new Hashtable();
+        this.environment = new Hashtable<String, String>();
         this.environment.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" ); //$NON-NLS-1$
         this.environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -95,9 +95,7 @@ public class JNDIConnectionContext
         {
             environment.put( Context.PROVIDER_URL, "ldaps://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
             environment.put( Context.SECURITY_PROTOCOL, "ssl" ); //$NON-NLS-1$
-            environment
-                .put(
-                    "java.naming.ldap.factory.socket", "org.apache.directory.ldapstudio.browser.internal.model.DummySSLSocketFactory" ); //$NON-NLS-1$ //$NON-NLS-2$
+            environment.put( "java.naming.ldap.factory.socket", DummySSLSocketFactory.class.getName() ); //$NON-NLS-1$
         }
         else
         {
@@ -533,23 +531,7 @@ public class JNDIConnectionContext
                                     return true;
                                 }
                             } );
-                            // SSLSession session = tls.negotiate(new
-                            // DummySSLSocketFactory());
-
-                            // System.out.println("Session: " +
-                            // session.toString());
-                            // System.out.println("Protocol: " +
-                            // session.getProtocol());
-                            // System.out.println("PeerHost: " +
-                            // session.getPeerHost());
-                            // System.out.println("CipherSuite: " +
-                            // session.getCipherSuite());
-                            // System.out.println("PeerCerts: " +
-                            // Arrays.asList(session.getPeerCertificates()));
-                            // //System.out.println("LocalCerts: " +
-                            // Arrays.asList(session.getLocalCertificates()));
-                            // System.out.println("SessionContext: " +
-                            // session.getSessionContext());
+                            tls.negotiate( new DummySSLSocketFactory() );
 
                         }
                         catch ( Exception e )
@@ -618,10 +600,15 @@ public class JNDIConnectionContext
                 {
                     try
                     {
-                        environment.put( Context.SECURITY_AUTHENTICATION, authMethod );
-                        environment.put( Context.SECURITY_PRINCIPAL, principal );
-                        environment.put( Context.SECURITY_CREDENTIALS, credentials );
-                        context = new InitialLdapContext( environment, connCtls );
+                        context.removeFromEnvironment( Context.SECURITY_AUTHENTICATION );
+                        context.removeFromEnvironment( Context.SECURITY_PRINCIPAL );
+                        context.removeFromEnvironment( Context.SECURITY_CREDENTIALS );
+
+                        context.addToEnvironment( Context.SECURITY_PRINCIPAL, principal );
+                        context.addToEnvironment( Context.SECURITY_CREDENTIALS, credentials );
+                        context.addToEnvironment( Context.SECURITY_AUTHENTICATION, authMethod );
+
+                        context.reconnect( context.getConnectControls() );
                     }
                     catch ( NamingException ne )
                     {
