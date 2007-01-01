@@ -32,15 +32,19 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStr
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Implementation of IValueEditor for syntax 1.3.6.1.4.1.1466.115.121.1.12 
+ * (Distinguished Name). 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DnValueEditor extends AbstractDialogStringValueEditor
 {
 
-    public DnValueEditor()
-    {
-        super();
-    }
-
-
+    /**
+     * This implementation opens the DnDialog.
+     */
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
@@ -58,30 +62,39 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
     }
 
 
-    public Object getRawValue( AttributeHierarchy ah )
+    /**
+     * Returns a DnValueEditorRawValueWrapper with the connection of 
+     * the attribute hierarchy and a null DN if there are no values
+     * in attributeHierarchy.
+     * 
+     * Returns a DnValueEditorRawValueWrapper with the connection of 
+     * the attribute hierarchy and a DN if there is one value
+     * in attributeHierarchy.
+     */
+    public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
-        if ( ah == null )
+        if ( attributeHierarchy == null )
         {
             return null;
         }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 0 )
+        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
         {
-            IConnection connection = ah.getAttribute().getEntry().getConnection();
+            IConnection connection = attributeHierarchy.getAttribute().getEntry().getConnection();
             DN dn = null;
             return new DnValueEditorRawValueWrapper( connection, dn );
         }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 1 )
+        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
         {
-            IConnection connection = ah.getAttribute().getEntry().getConnection();
-            DN dn = null;
+            IConnection connection = attributeHierarchy.getAttribute().getEntry().getConnection();
             try
             {
-                dn = new DN( getDisplayValue( ah ) );
+                DN dn = new DN( getDisplayValue( attributeHierarchy ) );
+                return new DnValueEditorRawValueWrapper( connection, dn );
             }
             catch ( NameException e )
             {
+                return new DnValueEditorRawValueWrapper( connection, null );
             }
-            return new DnValueEditorRawValueWrapper( connection, dn );
         }
         else
         {
@@ -90,30 +103,41 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
     }
 
 
+    /**
+     * Returns a DnValueEditorRawValueWrapper with the connection of 
+     * the value and a DN build from the given value. 
+     * 
+     * If the value doesn't contain a valid DN a DnValueEditorRawValueWrapper
+     * with a null DN is returned.
+     */
     public Object getRawValue( IValue value )
     {
-        IConnection connection = value.getAttribute().getEntry().getConnection();
-
-        DN dn = null;
-        if ( value.isEmpty() )
+        Object o = super.getRawValue( value );
+        if ( o != null && o instanceof String )
         {
-            dn = null;
-        }
-        else
-        {
+            IConnection connection = value.getAttribute().getEntry().getConnection();
             try
             {
-                dn = new DN( getDisplayValue( value ) );
+                DN dn = new DN( ( String ) o );
+                return new DnValueEditorRawValueWrapper( connection, dn );
             }
             catch ( NameException e )
             {
+                return new DnValueEditorRawValueWrapper( connection, null );
             }
         }
 
-        return new DnValueEditorRawValueWrapper( connection, dn );
+        return null;
     }
 
 
+    /**
+     * Returns a DnValueEditorRawValueWrapper with the given 
+     * connection and a DN build from the given value.
+     * 
+     * If the value doesn't contain a valid DN a DnValueEditorRawValueWrapper
+     * with a null DN is returned.
+     */
     public Object getRawValue( IConnection connection, Object value )
     {
         Object o = super.getRawValue( connection, value );
@@ -126,6 +150,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
             }
             catch ( NameException e )
             {
+                return new DnValueEditorRawValueWrapper( connection, null );
             }
         }
 
@@ -133,6 +158,12 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
     }
 
 
+    /**
+     * Returns always the string value.
+     * 
+     * Reimplementation, because getRawValue() returns a 
+     * DnValueEditorRawValueWrapper.
+     */
     public String getDisplayValue( IValue value )
     {
         if ( value == null )
@@ -144,14 +175,29 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         return displayValue;
     }
 
-    class DnValueEditorRawValueWrapper
+    /**
+     * The DnValueEditorRawValueWrapper is used to pass contextual 
+     * information to the opened DnDialog.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    private class DnValueEditorRawValueWrapper
     {
-        IConnection connection;
+        /** The connection, used in DnDialog to browse for an entry */
+        private IConnection connection;
 
-        DN dn;
+        /** The DN, used as initial value in DnDialog */
+        private DN dn;
 
 
-        public DnValueEditorRawValueWrapper( IConnection connection, DN dn )
+        /**
+         * Creates a new instance of DnValueEditorRawValueWrapper.
+         *
+         * @param connection the connection
+         * @param dn the DN
+         */
+        private DnValueEditorRawValueWrapper( IConnection connection, DN dn )
         {
             this.connection = connection;
             this.dn = dn;

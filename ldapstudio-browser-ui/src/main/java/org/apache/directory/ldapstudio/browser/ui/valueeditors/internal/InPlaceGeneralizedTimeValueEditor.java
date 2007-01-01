@@ -26,37 +26,33 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractInPlaceStringValueEditor;
 
 
+/**
+ * Implementation of IValueEditor for syntax 1.3.6.1.4.1.1466.115.121.1.24 
+ * (Generalized Time). 
+ * 
+ * Currently only the getDisplayXXX() methods are implemented.
+ * For modification the raw string must be edited.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class InPlaceGeneralizedTimeValueEditor extends AbstractInPlaceStringValueEditor
 {
 
-    public InPlaceGeneralizedTimeValueEditor()
-    {
-        super();
-    }
-
-
-    public String getDisplayValue( AttributeHierarchy ah )
-    {
-        if ( ah == null )
-        {
-            return "NULL";
-        }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 1 )
-        {
-            return getDisplayValue( ah.getAttribute().getValues()[0] );
-        }
-        else
-        {
-            return "not displayable";
-        }
-    }
-
-
+    /**
+     * Returns the proper formatted date and time, Timezone is 
+     * convertet to the default locale. 
+     * 
+     * Can handle 
+     * <ul>
+     * <li>default LDAP format: yyyyMMddHHmmssZ
+     * <li>Active Directory format: yyyyMMddHHmmss.SSSZ
+     * </ul>  
+     */
     public String getDisplayValue( IValue value )
     {
         String displayValue = super.getDisplayValue( value );

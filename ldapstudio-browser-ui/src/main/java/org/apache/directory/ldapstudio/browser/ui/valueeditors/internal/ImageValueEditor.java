@@ -29,15 +29,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Implementation of IValueEditor for syntax 1.3.6.1.4.1.1466.115.121.1.28 
+ * (JPEG). 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ImageValueEditor extends AbstractDialogBinaryValueEditor
 {
 
-    public ImageValueEditor()
-    {
-        super();
-    }
-
-
+    /**
+     * This implementation opens the ImageDialog.
+     */
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
@@ -57,6 +61,10 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
     }
 
 
+    /**
+     * Returns the image info text created by 
+     * ImageDialog.getImageInfo().
+     */
     public String getDisplayValue( IValue value )
     {
         if ( showRawValues() )
@@ -69,7 +77,7 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
             {
                 return "NULL";
             }
-            if ( value.isBinary() )
+            else if ( value.isBinary() )
             {
                 byte[] data = value.getBinaryValue();
                 String text = ImageDialog.getImageInfo( data );

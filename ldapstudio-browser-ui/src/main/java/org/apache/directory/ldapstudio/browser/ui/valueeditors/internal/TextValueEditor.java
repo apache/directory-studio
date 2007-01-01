@@ -26,15 +26,18 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStr
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * The default editor for string values.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class TextValueEditor extends AbstractDialogStringValueEditor
 {
 
-    public TextValueEditor()
-    {
-        super();
-    }
-
-
+    /**
+     * This implementation opens the TextDialog.
+     */
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();

@@ -28,15 +28,21 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStr
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Implementation of IValueEditor for syntax 1.3.6.1.4.1.1466.115.121.1.41 
+ * (Postal Address). In the displayed value the $ separators are replaced
+ * by commas. In the opened AddressDialog the $ separators are recplaced by 
+ * line breaks.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AddressValueEditor extends AbstractDialogStringValueEditor
 {
 
-    public AddressValueEditor()
-    {
-        super();
-    }
-
-
+    /**
+     * This implementation opens the AddressDialog.
+     */
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
@@ -53,6 +59,9 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
     }
 
 
+    /**
+     * This implementatiosn replaces the $ separators by commas.
+     */
     public String getDisplayValue( IValue value )
     {
         String displayValue = super.getDisplayValue( value );

@@ -397,7 +397,7 @@ public class ValueEditorManager
      * Returns alternative value editors for the given value. For now these
      * are the three default editors.
      *
-     * @param value the value
+     * @param objectClass the value
      * @return lternative value editors
      */
     public IValueEditor[] getAlternativeValueEditors( AttributeHierarchy ah )

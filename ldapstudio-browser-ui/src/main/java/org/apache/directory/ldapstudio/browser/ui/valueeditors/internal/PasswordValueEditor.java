@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.browser.ui.valueeditors.internal;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
@@ -32,15 +31,18 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogBin
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Implementation of IValueEditor for attribute userPassword.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 {
 
-    public PasswordValueEditor()
-    {
-        super();
-    }
-
-
+    /**
+     * This implementation opens the PasswordDialog.
+     */
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
@@ -62,6 +64,12 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
     }
 
 
+    /**
+     * This implementation returns information about the 
+     * used hash algorithm. The value stored in directory
+     * is only display when the showRawValues option is 
+     * active.
+     */
     public String getDisplayValue( IValue value )
     {
         if ( showRawValues() )
@@ -100,21 +108,21 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
             }
         }
     }
- 
-    
+
+
+    /**
+     * Returns a PasswordValueEditorRawValueWrapper with empty 
+     * password.
+     */
     protected Object getEmptyRawValue( IAttribute attribute )
     {
         return new PasswordValueEditorRawValueWrapper( new byte[0], attribute.getEntry() );
     }
 
 
-    public Object getRawValue( AttributeHierarchy ah )
-    {
-        Object wrapper = super.getRawValue( ah );
-        return wrapper;
-    }
-
-
+    /**
+     * Returns a PasswordValueEditorRawValueWrapper.
+     */
     public Object getRawValue( IValue value )
     {
         Object password = super.getRawValue( value );
@@ -122,19 +130,39 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
     }
 
 
+    /**
+     * Returns a PasswordValueEditorRawValueWrapper with 
+     * null entry.
+     */
     public Object getRawValue( IConnection connection, Object value )
     {
         Object password = super.getRawValue( connection, value );
         return new PasswordValueEditorRawValueWrapper( password, null );
     }
 
-    class PasswordValueEditorRawValueWrapper
+    /**
+     * The PasswordValueEditorRawValueWrapper is used to pass contextual 
+     * information to the opened PasswordDialog.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    private class PasswordValueEditorRawValueWrapper
     {
-        Object password;
-        IEntry entry;
+        /** The password, used as initial value in PasswordDialog */
+        private Object password;
+
+        /** The entry, used for the bind operation in PasswordDialog */
+        private IEntry entry;
 
 
-        public PasswordValueEditorRawValueWrapper( Object password, IEntry entry )
+        /**
+         * Creates a new instance of PasswordValueEditorRawValueWrapper.
+         *
+         * @param password the password
+         * @param entry the entry
+         */
+        private PasswordValueEditorRawValueWrapper( Object password, IEntry entry )
         {
             this.password = password;
             this.entry = entry;

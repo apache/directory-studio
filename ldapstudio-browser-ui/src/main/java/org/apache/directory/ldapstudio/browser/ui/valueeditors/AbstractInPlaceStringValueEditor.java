@@ -58,12 +58,13 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      *             createValue(), deleteValue() and modifyValue().
      */
     private TextValueEditor delegate;
-    
+
     /** The name of this value editor */
     private String name;
 
     /** The image of this value editor */
     private ImageDescriptor imageDescriptor;
+
 
     protected AbstractInPlaceStringValueEditor()
     {
@@ -182,8 +183,8 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
             return null;
         }
     }
-    
-    
+
+
     /**
      * Small helper.
      */
@@ -239,7 +240,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
         }
     }
 
-    
+
     /**
      * This implementation always return the string value
      * as String.
@@ -259,6 +260,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
             return null;
         }
     }
+
 
     public CellEditor getCellEditor()
     {
@@ -290,6 +292,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
         this.name = name;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -298,6 +301,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
         return name;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -305,6 +309,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     {
         this.imageDescriptor = imageDescriptor;
     }
+
 
     /**
      * {@inheritDoc}
@@ -342,6 +347,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
         delegate.deleteValue( oldValue );
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -349,5 +355,5 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     {
         delegate.modifyValue( oldValue, newRawValue );
     }
-    
+
 }

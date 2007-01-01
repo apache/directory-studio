@@ -24,12 +24,13 @@ package org.apache.directory.ldapstudio.browser.ui.valueeditors.internal;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractInPlaceStringValueEditor;
 
 
+/**
+ * The default editor for string values.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class InPlaceTextValueEditor extends AbstractInPlaceStringValueEditor
 {
-
-    public InPlaceTextValueEditor()
-    {
-        super();
-    }
 
 }

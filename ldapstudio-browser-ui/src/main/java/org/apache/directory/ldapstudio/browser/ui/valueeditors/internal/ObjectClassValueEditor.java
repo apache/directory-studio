@@ -32,23 +32,25 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStr
 import org.eclipse.swt.widgets.Shell;
 
 
-public class ObjectClassValueEditor extends AbstractDialogStringValueEditor 
+/**
+ * Implementation of IValueEditor for attribute objectClass.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
 {
 
-    public ObjectClassValueEditor()
-    {
-        super();
-    }
-
-
+    /**
+     * This implementation opens the ObjectClassDialog.
+     */
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
         if ( value != null && value instanceof ObjectClassValueEditorRawValueWrapper )
         {
             ObjectClassValueEditorRawValueWrapper wrapper = ( ObjectClassValueEditorRawValueWrapper ) value;
-            ObjectClassDialog dialog = new ObjectClassDialog( shell, wrapper.schema,
-                wrapper.value );
+            ObjectClassDialog dialog = new ObjectClassDialog( shell, wrapper.schema, wrapper.objectClass );
             if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getObjectClass() ) )
             {
                 setValue( dialog.getObjectClass() );
@@ -59,16 +61,23 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     }
 
 
+    /**
+     * This implementation appends the kind of object class,
+     * on of structural, abstract, auxiliary or obsolete. 
+     * 
+     * Reimplementation, because getRawValue() returns a 
+     * ObjectClassValueEditorRawValueWrapper.
+     */
     public String getDisplayValue( IValue value )
     {
-        if(getRawValue( value ) == null)
+        if ( getRawValue( value ) == null )
         {
             return "NULL";
         }
-        
+
         String displayValue = value.getStringValue();
-        
-        if(!showRawValues())
+
+        if ( !showRawValues() )
         {
             Schema schema = value.getAttribute().getEntry().getConnection().getSchema();
             ObjectClassDescription ocd = schema.getObjectClassDescription( displayValue );
@@ -89,17 +98,24 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
                 displayValue = displayValue + " (obsolete)";
             }
         }
-        
+
         return displayValue;
     }
 
 
-    public Object getRawValue( AttributeHierarchy ah )
+    /**
+     * Returns null.
+     * Modification in search result editor not supported.
+     */
+    public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
         return null;
     }
 
 
+    /**
+     * Returns a ObjectClassValueEditorRawValueWrapper.
+     */
     public Object getRawValue( IValue value )
     {
         if ( value == null || !value.isString() || !value.getAttribute().isObjectClassAttribute() )
@@ -113,6 +129,9 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     }
 
 
+    /**
+     * Returns a ObjectClassValueEditorRawValueWrapper.
+     */
     public Object getRawValue( IConnection connection, Object value )
     {
         Schema schema = null;
@@ -130,19 +149,36 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
         return wrapper;
     }
 
-
-    class ObjectClassValueEditorRawValueWrapper
+    /**
+     * The ObjectClassValueEditorRawValueWrapper is used to pass contextual 
+     * information to the opened ObjectClassDialog.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    private class ObjectClassValueEditorRawValueWrapper
     {
-        Schema schema;
+        /** 
+         * The schema, used in ObjectClassDialog to build the list
+         * with possible object classes.
+         */
+        private Schema schema;
 
-        String value;
+        /** The object class, used as initial value in ObjectClassDialog. */
+        private String objectClass;
 
 
-        public ObjectClassValueEditorRawValueWrapper( Schema schema, String value )
+        /**
+         * Creates a new instance of ObjectClassValueEditorRawValueWrapper.
+         *
+         * @param schema the schema
+         * @param objectClass the object class
+         */
+        private ObjectClassValueEditorRawValueWrapper( Schema schema, String objectClass )
         {
             super();
             this.schema = schema;
-            this.value = value;
+            this.objectClass = objectClass;
         }
     }
 

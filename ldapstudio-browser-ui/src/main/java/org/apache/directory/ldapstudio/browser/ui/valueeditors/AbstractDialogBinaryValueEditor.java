@@ -205,7 +205,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

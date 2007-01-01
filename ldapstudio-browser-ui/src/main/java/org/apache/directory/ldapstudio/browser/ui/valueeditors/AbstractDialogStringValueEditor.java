@@ -107,8 +107,8 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
 
     /**
      * This implementation returns the value itself if it is
-     * of type byte[] or a byte[] with the UTF-8 encoded string
-     * value if it is of type String.  
+     * of type String. If the value is of type byte[] then the binary
+     * data is converted to a String using UTF-8 encoding.  
      */
     public Object getRawValue( IConnection connection, Object value )
     {

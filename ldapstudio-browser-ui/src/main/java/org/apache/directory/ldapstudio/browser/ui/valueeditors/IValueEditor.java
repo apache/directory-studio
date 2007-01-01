@@ -124,10 +124,10 @@ public interface IValueEditor
      */
     public abstract Object getRawValue( IConnection connecton, Object stringOrBinaryValue );
 
-    
+
     /**
      * Returns the String or binary byte[] value of the given raw value. 
-     * The return value is used to create or modify the value
+     * The return value is used to create,  modify or delete the value
      * in directory.
      * <p>
      * This method is called after editing has been finished. The 
@@ -146,8 +146,8 @@ public interface IValueEditor
      * @return the editors name
      */
     public abstract String getValueEditorName();
-    
-    
+
+
     /**
      * Sets the editors name. 
      * 
@@ -167,8 +167,8 @@ public interface IValueEditor
      * @return the editors image
      */
     public abstract ImageDescriptor getValueEditorImageDescriptor();
-    
-    
+
+
     /**
      * Sets the editors image.
      * 
@@ -180,7 +180,7 @@ public interface IValueEditor
      */
     public abstract void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor );
 
-    
+
     /**
      * Creates the attribute with the given value at the entry.
      * 
@@ -193,7 +193,8 @@ public interface IValueEditor
      * @throws ModelModificationException
      * @deprecated This functionality will be removed from IValueEditor soon.
      */
-    public abstract void createValue( IEntry entry, String attributeDescription, Object newRawValue ) throws ModelModificationException;
+    public abstract void createValue( IEntry entry, String attributeDescription, Object newRawValue )
+        throws ModelModificationException;
 
 
     /**
@@ -242,8 +243,8 @@ public interface IValueEditor
      * @param parent the parent control
      */
     public abstract void create( Composite parent );
-    
-    
+
+
     /**
      * Disposes of this value editor and frees any associated SWT resources.
      */

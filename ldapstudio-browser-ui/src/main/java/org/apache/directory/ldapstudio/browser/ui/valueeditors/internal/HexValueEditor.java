@@ -8,6 +8,10 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * The default editor for binary values. Uses the HexDialog.
+ * 
+ * The HexDialog is currently only able to save and load binary data
+ * to and from file. It is not possible to edit the data in the dialog
+ * directly.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -15,12 +19,9 @@ import org.eclipse.swt.widgets.Shell;
 public class HexValueEditor extends AbstractDialogBinaryValueEditor
 {
 
-    public HexValueEditor()
-    {
-        super();
-    }
-
-
+    /**
+     * This implementation opens the HexDialog.
+     */
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();

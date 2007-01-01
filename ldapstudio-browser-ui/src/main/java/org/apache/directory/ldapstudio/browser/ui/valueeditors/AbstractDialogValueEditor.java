@@ -248,6 +248,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
         this.name = name;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -256,6 +257,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
         return name;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -263,6 +265,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
     {
         this.imageDescriptor = imageDescriptor;
     }
+
 
     /**
      * {@inheritDoc}
