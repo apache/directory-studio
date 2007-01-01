@@ -132,7 +132,7 @@ public class LdifUtils
 
         for ( int i = 0; i < b.length; i++ )
         {
-            if ( b[i] == '\n' || b[i] == '\r' || b[i] == '\u0000' || b[i] > '\u007F' )
+            if ( b[i] == '\n' || b[i] == '\r' || b[i] == '\u0000' || ( ( b[i] & 0x7F ) != 0x7F ) )
             {
                 return true;
             }
