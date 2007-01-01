@@ -80,13 +80,14 @@
 				<include name="**" />
 			</fileset>
 		</copy>
-		<mkdir dir="${project.build}/ressources" />
+
 		<copy todir="${project.build}">
 			<fileset dir="${basedir}/src/main/resources">
 				<include name="**" />
 			</fileset>
 		</copy>		
-		<javac
+		
+			<javac
 			source="1.5"
 			debug="yes"
 			srcdir="${project.src}"
