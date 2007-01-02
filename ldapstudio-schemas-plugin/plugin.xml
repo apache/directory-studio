@@ -27,6 +27,13 @@
             name="%ldapstudio-schemas-plugin.perspective.schemas.name"/>
    </extension>
    <extension
+           point="org.eclipse.ui.perspectiveExtensions">
+       <perspectiveExtension 
+               targetID="org.apache.directory.ldapstudio.schemas.perspective">
+           <actionSet id="org.apache.directory.ldapstudio.schemas.actionSet"/>
+       </perspectiveExtension>
+   </extension>   
+   <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
@@ -193,7 +200,7 @@
       <actionSet
             id="org.apache.directory.ldapstudio.schemas.actionSet"
             label="%ldapstudio-schemas-plugin.actionsets.actionset.label"
-            visible="true">
+            visible="false">
          <menu
                id="org.apache.directory.ldapstudio.schemas.schemas.menu"
                label="%ldapstudio-schemas-plugin.actionsets.menu.schemas.label">
@@ -226,7 +233,7 @@
                 class="org.apache.directory.ldapstudio.schemas.controller.actions.SaveAllAction"
                 icon="ressources/icons/save_all.png"
                 id="org.apache.directory.ldapstudio.schemas.actions.SampleAction"
-                label="Save all schemas"
+                label="%ldapstudio-schemas-plugin.actionsets.action.saveallschemas.label"
                 menubarPath="org.apache.directory.ldapstudio.schemas.schemas.menu/ManageSaveGroup"
                 toolbarPath="org.apache.directory.ldapstudio.schemas.schemas.toolbar"
                 tooltip="Saves all the schemas"/>
