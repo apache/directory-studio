@@ -6,10 +6,10 @@ Bundle-Version: 0.1
 Bundle-Activator: org.apache.directory.ldapstudio.Activator
 Bundle-Vendor: apache.org
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.update.core,
- org.eclipse.update.ui
+ org.eclipse.update.ui,
+ org.eclipse.ui
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/nlog4j-1.2.24.jar

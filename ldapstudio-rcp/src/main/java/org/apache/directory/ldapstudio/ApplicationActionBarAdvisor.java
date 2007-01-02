@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio;
 
 import org.apache.directory.ldapstudio.actions.AddExtensionAction;
 import org.apache.directory.ldapstudio.actions.ManageExtensionsAction;
+import org.apache.directory.ldapstudio.actions.OpenFileAction;
 import org.apache.directory.ldapstudio.actions.UpdateAction;
 import org.apache.directory.ldapstudio.view.ImageKeys;
 import org.eclipse.jface.action.GroupMarker;
@@ -55,10 +56,16 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 {
+    private OpenFileAction openFileAction;
     private IWorkbenchAction closeAction;
     private IWorkbenchAction closeAllAction;
     private IWorkbenchAction saveAction;
+    private IWorkbenchAction saveAsAction;
     private IWorkbenchAction saveAllAction;
+    private IWorkbenchAction printAction;
+    private IWorkbenchAction refreshAction;
+    private IWorkbenchAction renameAction;
+    private IWorkbenchAction moveAction;
     private IWorkbenchAction exitAction;
     private IWorkbenchAction aboutAction;
     private IWorkbenchAction preferencesAction;
@@ -79,8 +86,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction pasteAction;
     private IWorkbenchAction deleteAction;
     private IWorkbenchAction selectAllAction;
+    private IWorkbenchAction findAction;
     private IContributionItem perspectivesList;
     private IContributionItem viewsList;
+    private IContributionItem reopenEditorsList;
 
 
     /**
@@ -114,17 +123,35 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         register( newAction );
         newAction.setText( "New..." );
         
+        openFileAction = new OpenFileAction( window );
+        register(openFileAction);
+        
         closeAction = ActionFactory.CLOSE.create( window );
         register( closeAction );
-
+        
         closeAllAction = ActionFactory.CLOSE_ALL.create( window );
         register( closeAllAction );
 
         saveAction = ActionFactory.SAVE.create( window );
         register( saveAction );
+        
+        saveAsAction = ActionFactory.SAVE_AS.create( window );
+        register( saveAsAction );
 
         saveAllAction = ActionFactory.SAVE_ALL.create( window );
         register( saveAllAction );
+        
+        printAction = ActionFactory.PRINT.create( window );
+        register( printAction );
+        
+        moveAction = ActionFactory.MOVE.create( window );
+        register( moveAction );
+        
+        renameAction = ActionFactory.RENAME.create( window );
+        register( renameAction );
+        
+        refreshAction = ActionFactory.REFRESH.create( window );
+        register( refreshAction );
         
         importAction = ActionFactory.IMPORT.create( window );
         register( importAction );
@@ -159,6 +186,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         selectAllAction = ActionFactory.SELECT_ALL.create( window );
         register( selectAllAction );
         
+        findAction = ActionFactory.FIND.create( window );
+        register( findAction );
+        
         closePerspectiveAction = ActionFactory.CLOSE_PERSPECTIVE.create( window );
         register( closePerspectiveAction );
         
@@ -187,6 +217,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         
         viewsList = ContributionItemFactory.VIEWS_SHORTLIST.create( window );
         perspectivesList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create( window );
+        reopenEditorsList = ContributionItemFactory.REOPEN_EDITORS.create( window );
     }
 
 
@@ -210,17 +241,31 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         // Populating File Menu
         fileMenu.add( newAction );
+        fileMenu.add( new GroupMarker( IWorkbenchActionConstants.NEW_EXT ) );
+        fileMenu.add( openFileAction );
+        fileMenu.add( new GroupMarker( IWorkbenchActionConstants.OPEN_EXT ) );
         fileMenu.add( new Separator() );
         fileMenu.add( closeAction );
         fileMenu.add( closeAllAction );
+        fileMenu.add( new GroupMarker( IWorkbenchActionConstants.CLOSE_EXT ) );
         fileMenu.add( new Separator() );
         fileMenu.add( saveAction );
+        fileMenu.add( saveAsAction );
         fileMenu.add( saveAllAction );
+        fileMenu.add( new GroupMarker( IWorkbenchActionConstants.SAVE_EXT ) );
+        fileMenu.add( new Separator() );
+        fileMenu.add( refreshAction );
+        fileMenu.add( new Separator() );
+        fileMenu.add( printAction );
+        fileMenu.add( new GroupMarker( IWorkbenchActionConstants.PRINT_EXT ) );
         fileMenu.add( new Separator() );
         fileMenu.add( importAction );
         fileMenu.add( exportAction );
+        fileMenu.add( new GroupMarker( IWorkbenchActionConstants.IMPORT_EXT ) );
         fileMenu.add( new Separator() );
         fileMenu.add( propertiesAction );
+        fileMenu.add( reopenEditorsList );
+        fileMenu.add( new GroupMarker( IWorkbenchActionConstants.MRU ) );
         fileMenu.add( new Separator() );
         fileMenu.add( exitAction );
         
@@ -234,6 +279,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         editMenu.add( new Separator() );
         editMenu.add( deleteAction );
         editMenu.add( selectAllAction );
+        editMenu.add( new Separator() );
+        editMenu.add( moveAction );
+        editMenu.add( renameAction );
+        editMenu.add( new Separator() );
+        editMenu.add( findAction );
+        
         
         // Window 
         MenuManager perspectiveMenu = new MenuManager("Open Perspective", "openPerspective");
@@ -267,6 +318,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     {
         IToolBarManager toolbar = new ToolBarManager( SWT.FLAT | SWT.RIGHT );
         coolBar.add( new ToolBarContributionItem( toolbar, Application.PLUGIN_ID + ".toolbar" ) ); //$NON-NLS-1$
+        
+        toolbar.add( newAction );
         toolbar.add( preferencesAction );
     }
 }
