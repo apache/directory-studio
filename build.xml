@@ -132,6 +132,15 @@
             </fileset>
         </copy>
 
+	<!-- Creation of the ACIItem Editor Plugin -->
+        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" />
+        <!-- Copy of the ACI Item Editor Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-aciitemeditor/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
 	<!-- Creation of the Jars Plugin -->
         <ant dir="ldapstudio-jars" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
@@ -173,6 +182,7 @@
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
+        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-jars" inheritAll="no" target="javadoc" />
     </target>
 
@@ -188,6 +198,8 @@
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-browser-ui" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-jars" inheritAll="no" target="resolve" />
     </target>
 
@@ -204,6 +216,7 @@
         <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-jars" inheritAll="no" target="clean" />
         <delete dir="${ldapstudio-complete.output}" />
     </target>
