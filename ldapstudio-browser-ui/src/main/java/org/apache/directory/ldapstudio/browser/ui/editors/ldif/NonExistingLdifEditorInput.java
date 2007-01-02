@@ -21,78 +21,133 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.ldif;
 
 
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.editors.text.ILocationProvider;
 
 
-public class NonExistingLdifEditorInput implements IEditorInput, ILocationProvider
+/**
+ * This EditorInput is used to create a LDIF file that isn't saved yet.
+ * It is used from File->New, but also from the embedded LDIF editors
+ * in modification view, in batch operation wizard and the LDIF preference page.
+ * 
+ * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class NonExistingLdifEditorInput implements IPathEditorInput, ILocationProvider
 {
-
+    /** The counter to create unique names */
     private static int counter = 0;
 
+    /** The name, displayed in Editor tab */
     private String name;
 
 
+    /**
+     * Creates a new instance of NonExistingLdifEditorInput.
+     */
     public NonExistingLdifEditorInput()
     {
-        ++counter;
+        counter++;
         name = "LDIF " + counter; //$NON-NLS-1$
     }
 
 
+    /**
+     * As the name says, this implementations always returns false.
+     */
     public boolean exists()
     {
         return false;
     }
 
 
+    /**
+     * Returns the LDIF file image.
+     */
     public ImageDescriptor getImageDescriptor()
     {
-        return null;
+        return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_BROWSER_LDIFEDITOR );
     }
 
 
+    /**
+     * Returns the name.
+     */
     public String getName()
     {
         return name;
     }
 
 
+    /**
+     * As the name says, this implementations always returns false.
+     */
     public IPersistableElement getPersistable()
     {
         return null;
     }
 
 
+    /**
+     * Returns the name.
+     */
     public String getToolTipText()
     {
         return name;
     }
 
 
+    /**
+     * An EditorInput must return a good ILocationProvider, otherwise
+     * the editor is not editable.
+     */
     public Object getAdapter( Class adapter )
     {
         if ( ILocationProvider.class.equals( adapter ) )
+        {
             return this;
+        }
+        
         return Platform.getAdapterManager().getAdapter( this, adapter );
     }
 
 
+    /**
+     * This implementation returns a path that point to the plugin's
+     * state location. 
+     * 
+     * A valid, writeable path must be returned, otherwise the editor
+     * is not editable.
+     */
     public IPath getPath( Object element )
     {
-        return BrowserUIPlugin.getDefault().getStateLocation().append( name + ".ldif" );
+        if ( element instanceof NonExistingLdifEditorInput )
+        {
+            NonExistingLdifEditorInput input = ( NonExistingLdifEditorInput ) element;
+            return input.getPath();
+        }
+        
+        return null;
     }
 
 
+    /** 
+     * This implemention just compares the names
+     */
     public boolean equals( Object o )
     {
         if ( o == this )
+        {
             return true;
+        }
 
         if ( o instanceof NonExistingLdifEditorInput )
         {
@@ -104,8 +159,26 @@ public class NonExistingLdifEditorInput implements IEditorInput, ILocationProvid
     }
 
 
+    /**
+     * Returns hash code of the name string.
+     */
     public int hashCode()
     {
         return name.hashCode();
     }
+
+
+    /**
+     * This implementation returns a path that point to the plugin's
+     * state location. The state location is a platform indepentend 
+     * location that is writeable.
+     * 
+     * A valid, writeable path must be returned, otherwise the editor
+     * is not editable.
+     */
+    public IPath getPath()
+    {
+        return BrowserUIPlugin.getDefault().getStateLocation().append( name + ".ldif" );
+    }
+
 }

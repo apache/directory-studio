@@ -46,11 +46,11 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogVal
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -60,6 +60,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.commands.ActionHandler;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.ITextHover;
@@ -70,6 +71,7 @@ import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ViewForm;
 import org.eclipse.swt.events.ModifyEvent;
@@ -79,11 +81,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
@@ -93,7 +98,6 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.eclipse.ui.texteditor.ContentAssistAction;
@@ -154,10 +158,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
             ISourceViewer sourceViewer = getSourceViewer();
             if ( sourceViewer == null )
+            {
                 return;
-
-            // ((LdifSourceViewerConfiguration)
-            // getSourceViewerConfiguration()).handlePropertyChangeEvent(event);
+            }
 
             int topIndex = getSourceViewer().getTopIndex();
             getSourceViewer().getDocument().set( getSourceViewer().getDocument().get() );
@@ -192,12 +195,10 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
-
-        if ( input instanceof FileEditorInput )
+        if ( input instanceof IPathEditorInput )
         {
-            FileEditorInput fei = ( FileEditorInput ) input;
-            IFile file = fei.getFile();
-            IPath path = file.getLocation();
+            IPathEditorInput pei = ( IPathEditorInput ) input;
+            IPath path = pei.getPath();
             File javaIoFile = path.toFile();
             long fileLength = javaIoFile.length();
             if ( fileLength > ( 1 * 1024 * 1024 ) )
@@ -290,7 +291,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         IContributionItem[] items = menu.getItems();
         for ( int i = 0; i < items.length; i++ )
         {
-
             if ( items[i] instanceof ActionContributionItem )
             {
                 ActionContributionItem aci = ( ActionContributionItem ) items[i];
@@ -302,15 +302,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
                 {
                     menu.remove( items[i] );
                 }
-                // if(aci.getAction() instanceof TextOperationAction) {
-                // TextOperationAction toa =
-                // (TextOperationAction)aci.getAction();
-                // String id = toa.getActionDefinitionId();
-                // IAction referenceAction =
-                // getAction(ITextEditorActionConstants.CUT);
-                // boolean equal = toa==referenceAction;
-                // System.out.println(equal);
-                // }
             }
         }
 
@@ -503,38 +494,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
-    protected void configureSourceViewerDecorationSupport()
-    {
-
-        // Iterator e=
-        // fAnnotationPreferences.getAnnotationPreferences().iterator();
-        // while (e.hasNext())
-        // fSourceViewerDecorationSupport.setAnnotationPreference((AnnotationPreference)
-        // e.next());
-        // fSourceViewerDecorationSupport.setAnnotationPainterPreferenceKeys(DefaultMarkerAnnotationAccess.UNKNOWN,
-        // UNKNOWN_INDICATION_COLOR, UNKNOWN_INDICATION,
-        // UNKNOWN_INDICATION_IN_OVERVIEW_RULER, 0);
-        //			
-        // fSourceViewerDecorationSupport.setCursorLinePainterPreferenceKeys(CURRENT_LINE,
-        // CURRENT_LINE_COLOR);
-        // fSourceViewerDecorationSupport.setMarginPainterPreferenceKeys(PRINT_MARGIN,
-        // PRINT_MARGIN_COLOR, PRINT_MARGIN_COLUMN);
-        // fSourceViewerDecorationSupport.setSymbolicFontName(getFontPropertyPreferenceKey());
-    }
-
-
-    protected void doSetInput( IEditorInput input ) throws CoreException
-    {
-        // this.ldifModel = null;
-        super.doSetInput( input );
-
-        // setOutlinePageInput();
-        // if (fFoldingStructureProvider != null) {
-        // fFoldingStructureProvider.setDocument(getDocumentProvider().getDocument(input));
-        // }
-    }
-
-
     public LdifFile getLdifModel()
     {
         IDocumentProvider provider = getDocumentProvider();
@@ -588,13 +547,123 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * This implementation checks if the input is of type
+     * NonExistingLdifEditorInput. In that case doSaveAs() is 
+     * called to prompt for a new file name and location.
+     */
+    public void doSave( IProgressMonitor progressMonitor )
+    {
+        final IEditorInput input = getEditorInput();
+        if ( input instanceof NonExistingLdifEditorInput )
+        {
+            super.doSaveAs();
+            return;
+        }
+
+        super.doSave( progressMonitor );
+    }
+
+
+    /**
+     * The input could be one of the following types:
+     * - NonExistingLdifEditorInput: New file, not yet saved
+     * - PathEditorInput: file opened with our internal "Open File.." action
+     * - FileEditorInput: file is within workspace
+     * - JavaFileEditorInput: file opend with "Open File..." action from org.eclipse.ui.editor 
+     * 
+     * In RCP the FileDialog appears.
+     * In IDE the super implementation is called.
+     * To detect if this plugin runs in IDE the org.eclipse.ui.ide extension point is checked.
+     * 
+     */
     protected void performSaveAs( IProgressMonitor progressMonitor )
     {
+        // detect IDE or RCP: 
+        // check if perspective org.eclipse.ui.resourcePerspective is available
+        boolean isIDE = BrowserUIPlugin.isIDEEnvironment();
 
-        IPreferenceStore store = EditorsUI.getPreferenceStore();
-        String key = getEditorSite().getId() + ".internal.delegateSaveAs"; // $NON-NLS-1$
-        store.setValue( key, true );
-        super.performSaveAs( progressMonitor );
+        if ( isIDE )
+        {
+            // Just call super implementation for now
+            IPreferenceStore store = EditorsUI.getPreferenceStore();
+            String key = getEditorSite().getId() + ".internal.delegateSaveAs"; // $NON-NLS-1$
+            store.setValue( key, true );
+            super.performSaveAs( progressMonitor );
+        }
+        else
+        {
+            // Open FileDialog
+            Shell shell = getSite().getShell();
+            final IEditorInput input = getEditorInput();
+
+            IDocumentProvider provider = getDocumentProvider();
+            final IEditorInput newInput;
+
+            FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+
+            String path = dialog.open();
+            if ( path == null )
+            {
+                if ( progressMonitor != null )
+                {
+                    progressMonitor.setCanceled( true );
+                }
+                return;
+            }
+
+            // Check whether file exists and if so, confirm overwrite
+            final File externalFile = new File( path );
+            if ( externalFile.exists() )
+            {
+                MessageDialog overwriteDialog = new MessageDialog( shell, "Overwrite", null, "Overwrite?",
+                    MessageDialog.WARNING, new String[]
+                        { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
+                if ( overwriteDialog.open() != Window.OK )
+                {
+                    if ( progressMonitor != null )
+                    {
+                        progressMonitor.setCanceled( true );
+                        return;
+                    }
+                }
+            }
+
+            IPath iPath = new Path( path );
+            newInput = new PathEditorInput( iPath );
+
+            boolean success = false;
+            try
+            {
+                provider.aboutToChange( newInput );
+                provider.saveDocument( progressMonitor, newInput, provider.getDocument( input ), true );
+                success = true;
+            }
+            catch ( CoreException x )
+            {
+                final IStatus status = x.getStatus();
+                if ( status == null || status.getSeverity() != IStatus.CANCEL )
+                {
+                    String title = "Error in Save As...";
+                    String msg = "Error in Save As... " + x.getMessage();
+                    MessageDialog.openError( shell, title, msg );
+                }
+            }
+            finally
+            {
+                provider.changed( newInput );
+                if ( success )
+                {
+                    setInput( newInput );
+                }
+            }
+
+            if ( progressMonitor != null )
+            {
+                progressMonitor.setCanceled( !success );
+            }
+        }
+
     }
 
     private IContextActivation contextActivation;
