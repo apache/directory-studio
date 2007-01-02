@@ -45,7 +45,10 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
         {
             URL url = RootDSE.class.getClassLoader().getResource(
                 "org/apache/directory/ldapstudio/browser/core/model/ldap_oids.txt" ); //$NON-NLS-1$
-            oidMap.load( url.openStream() );
+            if(url != null)
+            {
+                oidMap.load( url.openStream() );
+            }
         }
         catch ( Exception e )
         {
