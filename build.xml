@@ -105,15 +105,6 @@
             </fileset>
         </copy>
 
-	<!-- Creation of the Browser Plugin -->
-        <ant dir="ldapstudio-ldapbrowser" inheritAll="no" />
-        <!-- Copy of the DSML Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-ldapbrowser/target">
-                <include name="*.jar" />
-            </fileset>
-        </copy>
-
 	<!-- Creation of the Browser Core Plugin -->
         <ant dir="ldapstudio-browser-core" inheritAll="no" />
         <!-- Copy of the Browser Core Plugin in the "plugins" folder of the RCP app -->
@@ -179,7 +170,6 @@
         <ant dir="ldapstudio-dsml-plugin" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="javadoc" />
@@ -196,7 +186,6 @@
         <ant dir="ldapstudio-dsml-plugin" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="resolve" />
@@ -213,7 +202,6 @@
         <ant dir="ldapstudio-dsml-plugin" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-dsml-command" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-ldapbrowser" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="clean" />
