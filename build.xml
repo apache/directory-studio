@@ -173,7 +173,6 @@
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-jars" inheritAll="no" target="javadoc" />
     </target>
 
     <!-- ================================== -->
