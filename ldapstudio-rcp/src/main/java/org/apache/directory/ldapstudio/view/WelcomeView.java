@@ -78,7 +78,7 @@ public class WelcomeView extends ViewPart
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
                     PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(
-                        "org.apache.directory.ldapstudio.browser.perspective" ) ); //$NON-NLS-1$
+                        "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" ) ); //$NON-NLS-1$
             }
         } );
 
