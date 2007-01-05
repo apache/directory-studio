@@ -29,17 +29,29 @@ import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
 
 
+/**
+ * This class implements the IDocumentSetupParticipant interface for LDIF document
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifDocumentSetupParticipant implements IDocumentSetupParticipant
 {
+    /** The LDIF Partitioning ID */
+    public final static String LDIF_PARTITIONING = "org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifPartitioning"; //$NON-NLS-1$
 
-    public final static String LDIF_PARTITIONING = "new.sf.browser.ui.editors.ldif.LdifPartitioning"; //$NON-NLS-1$
 
-
+    /**
+     * Creates a new instance of LdifDocumentSetupParticipant.
+     */
     public LdifDocumentSetupParticipant()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setup( IDocument document )
     {
 
@@ -56,11 +68,16 @@ public class LdifDocumentSetupParticipant implements IDocumentSetupParticipant
     }
 
 
+    /**
+     * Creates the Document Partitioner
+     *
+     * @return
+     *      the Document Partitioner
+     */
     private IDocumentPartitioner createDocumentPartitioner()
     {
         IDocumentPartitioner partitioner = new FastPartitioner( new LdifPartitionScanner(), new String[]
             { LdifPartitionScanner.LDIF_RECORD } );
         return partitioner;
     }
-
 }
