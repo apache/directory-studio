@@ -58,6 +58,13 @@ import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.texteditor.AbstractDocumentProvider;
 
 
+/**
+ * This class implements the LDIF Document Provider.
+ * This class is used to share a LDIF Document and listen on document modifications.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifDocumentProvider extends AbstractDocumentProvider implements IDocumentListener
 {
 
@@ -68,6 +75,9 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
     private LdifFile ldifModel;
 
 
+    /**
+     * Creates a new instance of LdifDocumentProvider.
+     */
     public LdifDocumentProvider()
     {
         super();
@@ -76,6 +86,9 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IDocument getDocument( Object element )
     {
         IDocument document = super.getDocument( element );
@@ -83,12 +96,21 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
     }
 
 
+    /**
+     * Gets the LDIF Model
+     *
+     * @return
+     *      the LDIF Model
+     */
     public LdifFile getLdifModel()
     {
         return ldifModel;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void documentAboutToBeChanged( DocumentEvent event )
     {
     }
@@ -444,5 +466,4 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
     {
         return true;
     }
-
 }

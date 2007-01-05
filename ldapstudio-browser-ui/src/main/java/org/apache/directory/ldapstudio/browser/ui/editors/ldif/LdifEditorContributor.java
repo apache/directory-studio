@@ -31,6 +31,12 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 
 
+/**
+ * This class manages the installation and removal of global actions for the LDIF Editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifEditorContributor extends BasicTextEditorActionContributor
 {
 
@@ -39,6 +45,9 @@ public class LdifEditorContributor extends BasicTextEditorActionContributor
     private RetargetTextEditorAction contentAssist;
 
 
+    /**
+     * Creates a new instance of LdifEditorContributor.
+     */
     public LdifEditorContributor()
     {
         super();
@@ -49,6 +58,9 @@ public class LdifEditorContributor extends BasicTextEditorActionContributor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setActiveEditor( IEditorPart part )
     {
         super.setActiveEditor( part );
@@ -57,6 +69,9 @@ public class LdifEditorContributor extends BasicTextEditorActionContributor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IActionBars bars, IWorkbenchPage page )
     {
         super.init( bars, page );
@@ -64,10 +79,12 @@ public class LdifEditorContributor extends BasicTextEditorActionContributor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         setActiveEditor( null );
         super.dispose();
     }
-
 }

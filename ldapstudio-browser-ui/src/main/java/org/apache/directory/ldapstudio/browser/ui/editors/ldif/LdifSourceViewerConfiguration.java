@@ -51,10 +51,14 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.RGB;
 
-
+/**
+ * This class enables the features of the editor (Syntax coloring, code completion, etc.)
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
 {
-
     private ILdifEditor editor;
 
     // Error hover and annotations
@@ -84,28 +88,49 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     private IAutoEditStrategy[] autoEditStrategies;
 
 
+    /**
+     * Creates a new instance of LdifSourceViewerConfiguration.
+     *
+     * @param editor
+     * @param contentAssistEnabled
+     */
     public LdifSourceViewerConfiguration( ILdifEditor editor, boolean contentAssistEnabled )
     {
         super();
         this.editor = editor;
 
         this.contentAssistEnabled = contentAssistEnabled;
-
     }
 
 
+    /**
+     * Overwrites the style set in preference store
+     *
+     * @param key
+     *      the key
+     * @param rgb
+     *      the color
+     * @param style
+     *      the stule
+     */
     public void setTextAttribute( String key, RGB rgb, int style )
     {
         damagerRepairer.setTextAttribute( key, rgb, style );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getConfiguredDocumentPartitioning( ISourceViewer sourceViewer )
     {
         return LdifDocumentSetupParticipant.LDIF_PARTITIONING;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getConfiguredContentTypes( ISourceViewer sourceViewer )
     {
         return new String[]
@@ -113,6 +138,9 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ITextDoubleClickStrategy getDoubleClickStrategy( ISourceViewer sourceViewer, String contentType )
     {
         if ( this.doubleClickStrategy == null )
@@ -123,6 +151,9 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IPresentationReconciler getPresentationReconciler( ISourceViewer sourceViewer )
     {
 
@@ -144,6 +175,9 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IReconciler getReconciler( ISourceViewer sourceViewer )
     {
         if ( this.reconciler == null )
@@ -169,6 +203,9 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IContentAssistant getContentAssistant( ISourceViewer sourceViewer )
     {
         if ( this.contentAssistEnabled )
@@ -208,6 +245,9 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAnnotationHover getAnnotationHover( ISourceViewer sourceViewer )
     {
         if ( this.annotationHover == null )
@@ -218,6 +258,9 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ITextHover getTextHover( ISourceViewer sourceViewer, String contentType )
     {
         if ( this.textHover == null )
@@ -228,6 +271,9 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAutoEditStrategy[] getAutoEditStrategies( ISourceViewer sourceViewer, String contentType )
     {
         if ( autoEditStrategies == null )
@@ -239,5 +285,4 @@ public class LdifSourceViewerConfiguration extends SourceViewerConfiguration
 
         return autoEditStrategies;
     }
-
 }

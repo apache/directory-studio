@@ -108,9 +108,14 @@ import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 
+/**
+ * This class implements the LDIF editor
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpdateListener, IPartListener2
 {
-
     protected ViewForm control;
 
     protected Combo connectionCombo;
@@ -134,6 +139,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     private ValueEditorPreferencesAction valueEditorPreferencesAction;
 
 
+    /**
+     * Creates a new instance of LdifEditor.
+     */
     public LdifEditor()
     {
         super();
@@ -151,6 +159,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void handlePreferenceStoreChanged( PropertyChangeEvent event )
     {
         try
@@ -174,6 +185,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String[] collectContextMenuPreferencePages()
     {
         String[] ids = super.collectContextMenuPreferencePages();
@@ -187,12 +201,21 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * Gets the ID of the LDIF Editor
+     *
+     * @return
+     *      the ID of the LDIF Editor
+     */
     public static String getId()
     {
         return LdifEditor.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         if ( input instanceof IPathEditorInput )
@@ -219,6 +242,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
 
@@ -233,6 +259,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class required )
     {
         if ( IShowInTargetList.class.equals( required ) )
@@ -284,6 +313,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void editorContextMenuAboutToShow( IMenuManager menu )
     {
         super.editorContextMenuAboutToShow( menu );
@@ -341,6 +373,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void createActions()
     {
         super.createActions();
@@ -408,6 +443,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createPartControl( Composite parent )
     {
 
@@ -477,6 +515,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected ISourceViewer createSourceViewer( Composite parent, IVerticalRuler ruler, int styles )
     {
         getAnnotationAccess();
@@ -488,12 +529,18 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void configureSourceViewerDecorationSupport( SourceViewerDecorationSupport support )
     {
         super.configureSourceViewerDecorationSupport( support );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public LdifFile getLdifModel()
     {
         IDocumentProvider provider = getDocumentProvider();
@@ -508,6 +555,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * This method is used to notify the LDIF Editor that the Outline Page has been closed.
+     */
     public void outlinePageClosed()
     {
         projectionSupport.dispose();
@@ -515,12 +565,21 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IConnection getConnection()
     {
         return this.connection;
     }
 
 
+    /**
+     * Sets the Connection
+     *
+     * @param connection
+     *      the Connection to set
+     */
     private void setConnection( IConnection connection )
     {
         this.connection = connection;
@@ -530,6 +589,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
         IConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getConnections();
@@ -669,6 +731,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     private IContextActivation contextActivation;
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partDeactivated( IWorkbenchPartReference partRef )
     {
         if ( partRef.getPart( false ) == this && contextActivation != null )
@@ -684,6 +749,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partActivated( IWorkbenchPartReference partRef )
     {
         if ( partRef.getPart( false ) == this )
@@ -699,39 +767,59 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partBroughtToTop( IWorkbenchPartReference partRef )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partClosed( IWorkbenchPartReference partRef )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partHidden( IWorkbenchPartReference partRef )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partInputChanged( IWorkbenchPartReference partRef )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partOpened( IWorkbenchPartReference partRef )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void partVisible( IWorkbenchPartReference partRef )
     {
     }
 
 
+    /**
+     * Activates global action handlers
+     */
     public void activateGlobalActionHandlers()
     {
-
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
         if ( commandService != null )
@@ -746,9 +834,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * Deactivates global action handlers
+     */
     public void deactivateGlobalActionHandlers()
     {
-
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
         if ( commandService != null )
@@ -763,9 +853,14 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    /**
+     * Gets the Value Editor Manager
+     *
+     * @return
+     *      the Value Editor Manager
+     */
     public ValueEditorManager getValueEditorManager()
     {
         return valueEditorManager;
     }
-
 }

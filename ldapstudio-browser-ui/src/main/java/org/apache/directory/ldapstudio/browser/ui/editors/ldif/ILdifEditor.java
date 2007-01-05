@@ -27,12 +27,28 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
 import org.eclipse.core.runtime.IAdaptable;
 
 
+/**
+ * This interface represents the LDIF Editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface ILdifEditor extends IAdaptable
 {
-
+    /**
+     * Gets the LDIF Model
+     *
+     * @return
+     *      the LDIF Model
+     */
     public LdifFile getLdifModel();
 
 
+    /**
+     * Gets the Connection
+     * 
+     * @return
+     *      the Connection
+     */
     public IConnection getConnection();
-
 }
