@@ -46,7 +46,6 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsLdifAction;
 import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor;
-
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -63,18 +62,34 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
 
+/**
+ * This class implements the Outline Page for LDIF. 
+ * It used to display LDIF files, records, and even LDAP entries.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifOutlinePage extends ContentOutlinePage
 {
-
+    /** The editor it is attached to */
     private IEditorPart editorPart;
 
 
+    /**
+     * Creates a new instance of LdifOutlinePage.
+     *
+     * @param editorPart
+     *      the editor the Outline page is attached to
+     */
     public LdifOutlinePage( IEditorPart editorPart )
     {
         this.editorPart = editorPart;
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.views.contentoutline.ContentOutlinePage#createControl(org.eclipse.swt.widgets.Composite)
+     */
     public void createControl( Composite parent )
     {
         super.createControl( parent );
@@ -221,6 +236,12 @@ public class LdifOutlinePage extends ContentOutlinePage
     }
 
 
+    /**
+     * Refreshes this viewer starting with the given element.
+     *
+     * @param element
+     *      the element
+     */
     public void refresh( Object element )
     {
         final TreeViewer treeViewer = getTreeViewer();
@@ -231,16 +252,22 @@ public class LdifOutlinePage extends ContentOutlinePage
     }
 
 
+    /**
+     * Refreshes this viewer completely with information freshly obtained from this viewer's model.
+     */
     public void refresh()
     {
-
         final TreeViewer treeViewer = getTreeViewer();
 
         if ( treeViewer != null )
         {
-
             // ISelection selection = treeViewer.getSelection();
             // Object[] expandedElements = treeViewer.getExpandedElements();
+
+            if ( !treeViewer.getTree().isEnabled() )
+            {
+                treeViewer.getTree().setEnabled( true );
+            }
 
             if ( this.editorPart != null && this.editorPart instanceof LdifEditor )
             {
@@ -252,15 +279,24 @@ public class LdifOutlinePage extends ContentOutlinePage
             else if ( this.editorPart != null && this.editorPart instanceof EntryEditor )
             {
                 Object o = ( ( EntryEditor ) this.editorPart ).getMainWidget().getViewer().getInput();
-                if ( o != null && o instanceof IEntry )
+
+                if ( o == null )
                 {
-                    StringBuffer sb = new StringBuffer();
-                    new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES )
-                        .serialializeEntries( new IEntry[]
-                            { ( IEntry ) o }, sb );
-                    LdifFile model = new LdifParser().parse( sb.toString() );
-                    treeViewer.setInput( model );
-                    treeViewer.expandToLevel( 2 );
+                    treeViewer.setInput( null );
+                    treeViewer.getTree().setEnabled( false );
+                }
+                else
+                {
+                    if ( o instanceof IEntry )
+                    {
+                        StringBuffer sb = new StringBuffer();
+                        new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES )
+                            .serialializeEntries( new IEntry[]
+                                { ( IEntry ) o }, sb );
+                        LdifFile model = new LdifParser().parse( sb.toString() );
+                        treeViewer.setInput( model );
+                        treeViewer.expandToLevel( 2 );
+                    }
                 }
             }
 
@@ -272,6 +308,9 @@ public class LdifOutlinePage extends ContentOutlinePage
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.part.Page#dispose()
+     */
     public void dispose()
     {
         super.dispose();
@@ -282,11 +321,19 @@ public class LdifOutlinePage extends ContentOutlinePage
         }
     }
 
+    /**
+     * This class implements the ContentProvider used for the LDIF Outline View
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     private static class LdifContentProvider implements ITreeContentProvider
     {
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+         */
         public Object[] getChildren( Object element )
         {
-
             // file --> records
             if ( element instanceof LdifFile )
             {
@@ -338,6 +385,14 @@ public class LdifOutlinePage extends ContentOutlinePage
         }
 
 
+        /**
+         * Returns a unique line of attribute values from an array of attribute value lines
+         *
+         * @param lines
+         *      the attribute value lines
+         * @return 
+         *      a unique line of attribute values from an array of attribute values lines
+         */
         private Object[] getUniqueAttrValLineArray( LdifAttrValLine[] lines )
         {
             Map uniqueAttrMap = new LinkedHashMap();
@@ -353,39 +408,62 @@ public class LdifOutlinePage extends ContentOutlinePage
         }
 
 
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+         */
         public Object getParent( Object element )
         {
             return null;
         }
 
 
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+         */
         public boolean hasChildren( Object element )
         {
             return getChildren( element ) != null && getChildren( element ).length > 0;
         }
 
 
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+         */
         public Object[] getElements( Object inputElement )
         {
             return getChildren( inputElement );
         }
 
 
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+         */
         public void dispose()
         {
         }
 
 
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+         */
         public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
         {
         }
     }
 
+    /**
+     * This class implements the LabelProvider used for the LDIF Outline View
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     private static class LdifLabelProvider extends LabelProvider
     {
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+         */
         public String getText( Object element )
         {
-
             // Record
             if ( element instanceof LdifRecord )
             {
@@ -421,9 +499,11 @@ public class LdifOutlinePage extends ContentOutlinePage
         }
 
 
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+         */
         public Image getImage( Object element )
         {
-
             // Record
             if ( element instanceof LdifContentRecord )
             {
@@ -476,5 +556,4 @@ public class LdifOutlinePage extends ContentOutlinePage
             }
         }
     }
-
 }
