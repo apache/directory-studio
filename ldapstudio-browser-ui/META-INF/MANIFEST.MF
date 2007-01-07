@@ -18,4 +18,5 @@ Require-Bundle: org.apache.directory.ldapstudio.browser.core,
  org.eclipse.jface.text
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
-Export-Package: org.apache.directory.ldapstudio.browser.ui.valueeditors
+Export-Package: org.apache.directory.ldapstudio.browser.ui.valueeditors,
+ org.apache.directory.ldapstudio.browser.ui.valueeditors.internal;x-friends:="org.apache.directory.ldapstudio.aciitemeditor"

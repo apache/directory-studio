@@ -153,6 +153,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
         //doSetValue( newValue );
         if ( !save || this.value == null )
         {
+            this.value = null;
             fireCancelEditor();
         }
         else
