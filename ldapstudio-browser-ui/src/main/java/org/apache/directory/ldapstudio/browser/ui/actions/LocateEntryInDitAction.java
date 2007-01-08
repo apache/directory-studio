@@ -27,7 +27,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 
 /**
- * TODO DOCUMENT ME! LocateEntryInDitAction.
+ * This action is used within the browser view to locate and open the selected 
+ * search result or bookmark in DIT.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -90,7 +91,8 @@ public class LocateEntryInDitAction extends LocateInDitAction
 
 
     /**
-     * {@inheritDoc}
+     * This implementation returns a connection and DN if the a search result or bookmark
+     * is selected.
      */
     protected Object[] getConnectionAndDn()
     {

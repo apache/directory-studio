@@ -35,7 +35,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * TODO DOCUMENT ME! LocateInDitAction.
+ * This action is used to locate and open an entry by its DN in DIT.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -106,9 +106,11 @@ public abstract class LocateInDitAction extends BrowserAction
 
 
     /**
-     * TODO DOCUMENT ME! getConnectionAndDn.
-     *
-     * @return
+     * Get the connection and DN to open. It must be an array of size 2.
+     * The first element must be the IConnection object. The second
+     * element must be the DN.
+     * 
+     * @return an array with the connection and DN to open, or null.
      */
     protected abstract Object[] getConnectionAndDn();
 

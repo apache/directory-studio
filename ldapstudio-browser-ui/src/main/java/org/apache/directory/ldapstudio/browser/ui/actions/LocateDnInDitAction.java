@@ -32,7 +32,11 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 
 /**
- * TODO DOCUMENT ME! LocateDnInDitAction.
+ * This action is used within the entry editor and search result editor 
+ * to locate and open the entry identified by the DN under the cursor. 
+ * 
+ * Example: Attribute "seeAlso" with value "ou=test" is selected in entry edtor. 
+ * Then this action is enabled and opens entry "ou=test" in DIT. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -66,7 +70,8 @@ public class LocateDnInDitAction extends LocateInDitAction
 
 
     /**
-     * {@inheritDoc}
+     * This implementation returns a connection and DN if the selected attribute or value
+     * contains a valid DN.
      */
     protected Object[] getConnectionAndDn()
     {
