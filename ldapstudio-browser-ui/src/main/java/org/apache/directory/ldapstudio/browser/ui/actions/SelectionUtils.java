@@ -43,25 +43,36 @@ import org.apache.directory.ldapstudio.browser.core.utils.LdapFilterUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserEntryPage;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserSearchResultPage;
-
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 
 /**
- * TODO DOCUMENT ME! SelectionUtils.
+ * The SelectionUtils are used to extract specific beans from the current
+ * selection (org.eclipse.jface.viewers.ISelection).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
 public abstract class SelectionUtils
 {
+
     /**
-     * TODO DOCUMENT ME! getExampleSearch.
-     *
-     * @param selection
-     * @return
+     * This method creates a prototype search from the given selection.
+     * 
+     * Dependend on the selected element it determines the best connection,
+     * search base and filter:
+     * <ul>
+     *   <li>ISearch: all parameters are copied to the prototype search (clone)
+     *   <li>IEntry or ISearchResult or IBookmark: DN is used as search base
+     *   <li>IAttribute or IValue: the entry's DN is used as search base, 
+     *       the filter is built using the name-value-pairs (query by example). 
+     * </ul>
+     * 
+     * 
+     * @param selection the current selection
+     * @return a prototype search
      */
     public static ISearch getExampleSearch( ISelection selection )
     {
@@ -75,7 +86,7 @@ public abstract class SelectionUtils
         {
 
             Object[] objects = ( ( IStructuredSelection ) selection ).toArray();
-            Comparator comparator = new Comparator()
+            Comparator<Object> comparator = new Comparator<Object>()
             {
                 public int compare( Object o1, Object o2 )
                 {
@@ -138,7 +149,7 @@ public abstract class SelectionUtils
             {
 
                 IEntry entry = null;
-                Set filterSet = new LinkedHashSet();
+                Set<String> filterSet = new LinkedHashSet<String>();
                 for ( int i = 0; i < objects.length; i++ )
                 {
                     Object object = objects[i];
@@ -180,7 +191,7 @@ public abstract class SelectionUtils
                 if ( filterSet.size() > 1 )
                 {
                     filter.append( "(&" );
-                    for ( Iterator filterIterator = filterSet.iterator(); filterIterator.hasNext(); )
+                    for ( Iterator<String> filterIterator = filterSet.iterator(); filterIterator.hasNext(); )
                     {
                         filter.append( filterIterator.next() );
                     }
@@ -224,132 +235,132 @@ public abstract class SelectionUtils
 
 
     /**
-     * TODO DOCUMENT ME! getBrowserViewCategories.
+     * Gets the BrowserCategory beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with BrowserCategory beans, may be empty.
      */
     public static BrowserCategory[] getBrowserViewCategories( ISelection selection )
     {
-        List list = getTypes( selection, BrowserCategory.class );
-        return ( BrowserCategory[] ) list.toArray( new BrowserCategory[list.size()] );
+        List<Object> list = getTypes( selection, BrowserCategory.class );
+        return list.toArray( new BrowserCategory[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getValues.
+     * Gets the IValue beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with IValue beans, may be empty.
      */
     public static IValue[] getValues( ISelection selection )
     {
-        List list = getTypes( selection, IValue.class );
-        return ( IValue[] ) list.toArray( new IValue[list.size()] );
+        List<Object> list = getTypes( selection, IValue.class );
+        return list.toArray( new IValue[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getAttributes.
+     * Gets the IAttribute beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with IAttribute beans, may be empty.
      */
     public static IAttribute[] getAttributes( ISelection selection )
     {
-        List list = getTypes( selection, IAttribute.class );
-        return ( IAttribute[] ) list.toArray( new IAttribute[list.size()] );
+        List<Object> list = getTypes( selection, IAttribute.class );
+        return list.toArray( new IAttribute[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getAttributeHierarchie.
+     * Gets the AttributeHierarchy beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with AttributeHierarchy beans, may be empty.
      */
     public static AttributeHierarchy[] getAttributeHierarchie( ISelection selection )
     {
-        List list = getTypes( selection, AttributeHierarchy.class );
-        return ( AttributeHierarchy[] ) list.toArray( new AttributeHierarchy[list.size()] );
+        List<Object> list = getTypes( selection, AttributeHierarchy.class );
+        return list.toArray( new AttributeHierarchy[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getProperties.
+     * Gets the Strings contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with Strings, may be empty.
      */
     public static String[] getProperties( ISelection selection )
     {
-        List list = getTypes( selection, String.class );
-        return ( String[] ) list.toArray( new String[list.size()] );
+        List<Object> list = getTypes( selection, String.class );
+        return list.toArray( new String[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getAttributeTypeDescription.
+     * Gets the AttributeTypeDescription beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with AttributeTypeDescription beans, may be empty.
      */
     public static AttributeTypeDescription[] getAttributeTypeDescription( ISelection selection )
     {
-        List list = getTypes( selection, AttributeTypeDescription.class );
-        return ( AttributeTypeDescription[] ) list.toArray( new AttributeTypeDescription[list.size()] );
+        List<Object> list = getTypes( selection, AttributeTypeDescription.class );
+        return list.toArray( new AttributeTypeDescription[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getEntries.
+     * Gets the IEntry beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with IEntry beans, may be empty.
      */
     public static IEntry[] getEntries( ISelection selection )
     {
-        List list = getTypes( selection, IEntry.class );
-        return ( IEntry[] ) list.toArray( new IEntry[list.size()] );
+        List<Object> list = getTypes( selection, IEntry.class );
+        return list.toArray( new IEntry[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getBookmarks.
+     * Gets the IBookmark beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with IBookmark beans, may be empty.
      */
     public static IBookmark[] getBookmarks( ISelection selection )
     {
-        List list = getTypes( selection, IBookmark.class );
-        return ( IBookmark[] ) list.toArray( new IBookmark[list.size()] );
+        List<Object> list = getTypes( selection, IBookmark.class );
+        return list.toArray( new IBookmark[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getSearchResults.
+     * Gets the ISearchResult beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with ISearchResult beans, may be empty.
      */
     public static ISearchResult[] getSearchResults( ISelection selection )
     {
-        List list = getTypes( selection, ISearchResult.class );
-        return ( ISearchResult[] ) list.toArray( new ISearchResult[list.size()] );
+        List<Object> list = getTypes( selection, ISearchResult.class );
+        return list.toArray( new ISearchResult[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getTypes.
+     * Gets all beans of the requested type contained in the given selection.
      *
-     * @param selection
-     * @param type
-     * @return
+     * @param selection the selection
+     * @param type the requested type
+     * @return a list containg beans of the requesten type
      */
-    private static List getTypes( ISelection selection, Class type )
+    private static List<Object> getTypes( ISelection selection, Class type )
     {
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<Object>();
         if ( selection instanceof IStructuredSelection )
         {
             IStructuredSelection structuredSelection = ( IStructuredSelection ) selection;
@@ -368,54 +379,54 @@ public abstract class SelectionUtils
 
 
     /**
-     * TODO DOCUMENT ME! getSearches.
+     * Gets the ISearch beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with ISearch beans, may be empty.
      */
     public static ISearch[] getSearches( ISelection selection )
     {
-        List list = getTypes( selection, ISearch.class );
-        return ( ISearch[] ) list.toArray( new ISearch[list.size()] );
+        List<Object> list = getTypes( selection, ISearch.class );
+        return list.toArray( new ISearch[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getConnections.
+     * Gets the IConnection beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with IConnection beans, may be empty.
      */
     public static IConnection[] getConnections( ISelection selection )
     {
-        List list = getTypes( selection, IConnection.class );
-        return ( IConnection[] ) list.toArray( new IConnection[list.size()] );
+        List<Object> list = getTypes( selection, IConnection.class );
+        return list.toArray( new IConnection[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getBrowserEntryPages.
+     * Gets the BrowserEntryPage beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with BrowserEntryPage beans, may be empty.
      */
     public static BrowserEntryPage[] getBrowserEntryPages( ISelection selection )
     {
-        List list = getTypes( selection, BrowserEntryPage.class );
-        return ( BrowserEntryPage[] ) list.toArray( new BrowserEntryPage[list.size()] );
+        List<Object> list = getTypes( selection, BrowserEntryPage.class );
+        return list.toArray( new BrowserEntryPage[list.size()] );
     }
 
 
     /**
-     * TODO DOCUMENT ME! getBrowserSearchResultPages.
+     * Gets the BrowserSearchResultPage beans contained in the given selection.
      *
-     * @param selection
-     * @return
+     * @param selection the selection
+     * @return an array with BrowserSearchResultPage beans, may be empty.
      */
     public static BrowserSearchResultPage[] getBrowserSearchResultPages( ISelection selection )
     {
-        List list = getTypes( selection, BrowserSearchResultPage.class );
-        return ( BrowserSearchResultPage[] ) list.toArray( new BrowserSearchResultPage[list.size()] );
+        List<Object> list = getTypes( selection, BrowserSearchResultPage.class );
+        return list.toArray( new BrowserSearchResultPage[list.size()] );
     }
 
 }
