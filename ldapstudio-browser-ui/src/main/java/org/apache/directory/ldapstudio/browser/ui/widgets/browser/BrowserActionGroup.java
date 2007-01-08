@@ -27,10 +27,10 @@ import java.util.Map;
 
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.actions.CollapseAllAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.FilterSubtreeAction;
+import org.apache.directory.ldapstudio.browser.ui.actions.FilterChildrenAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.PropertiesAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.RefreshAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.UnfilterSubtreeAction;
+import org.apache.directory.ldapstudio.browser.ui.actions.UnfilterChildrenAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.UpAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserViewActionProxy;
 
@@ -58,9 +58,9 @@ public class BrowserActionGroup implements IMenuListener
 
     protected static final String refreshAction = "refreshAction";
 
-    protected static final String filterSubtreeAction = "filterSubtreeAction";
+    protected static final String filterChildrenAction = "filterChildrenAction";
 
-    protected static final String unfilterSubtreeAction = "unfilterSubtreeAction";
+    protected static final String unfilterChildrenAction = "unfilterChildrenAction";
 
     protected static final String propertyDialogAction = "propertyDialogAction";
 
@@ -83,9 +83,9 @@ public class BrowserActionGroup implements IMenuListener
         this.browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
         this.browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
         this.browserActionMap
-            .put( filterSubtreeAction, new BrowserViewActionProxy( viewer, new FilterSubtreeAction() ) );
-        this.browserActionMap.put( unfilterSubtreeAction, new BrowserViewActionProxy( viewer,
-            new UnfilterSubtreeAction() ) );
+            .put( filterChildrenAction, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
+        this.browserActionMap.put( unfilterChildrenAction, new BrowserViewActionProxy( viewer,
+            new UnfilterChildrenAction() ) );
         this.browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, new PropertiesAction() ) );
     }
 
@@ -159,10 +159,10 @@ public class BrowserActionGroup implements IMenuListener
         menuManager.add( new Separator() );
 
         // filter
-        menuManager.add( ( IAction ) this.browserActionMap.get( filterSubtreeAction ) );
-        if ( ( ( IAction ) this.browserActionMap.get( unfilterSubtreeAction ) ).isEnabled() )
+        menuManager.add( ( IAction ) this.browserActionMap.get( filterChildrenAction ) );
+        if ( ( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) this.browserActionMap.get( unfilterSubtreeAction ) );
+            menuManager.add( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) );
         }
         menuManager.add( new Separator() );
 

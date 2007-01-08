@@ -25,25 +25,27 @@ import org.apache.directory.ldapstudio.browser.core.jobs.InitializeChildrenJob;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.FilterSubtreeDialog;
+import org.apache.directory.ldapstudio.browser.ui.dialogs.FilterChildrenDialog;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
 /**
- * TODO DOCUMENT ME! FilterSubtreeAction.
+ * This action opens the Filter Children Dialog and sets the children filter to the
+ * currently selected entry. It is useful when browsing the DIT and entries with 
+ * many child nodes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class FilterSubtreeAction extends BrowserAction
+public class FilterChildrenAction extends BrowserAction
 {
 
     /**
-     * Creates a new instance of FilterSubtreeAction.
+     * Creates a new instance of FilterChildrenAction.
      */
-    public FilterSubtreeAction()
+    public FilterChildrenAction()
     {
         super();
     }
@@ -56,10 +58,7 @@ public class FilterSubtreeAction extends BrowserAction
     {
         if ( getSelectedEntries().length == 1 )
         {
-            // InputDialog dialog = new
-            // InputDialog(this.part.getSite().getShell(), "Filter", "Enter
-            // filter:", this.selectedEntry.getFilter(), null);
-            FilterSubtreeDialog dialog = new FilterSubtreeDialog( getShell(), getSelectedEntries()[0]
+            FilterChildrenDialog dialog = new FilterChildrenDialog( getShell(), getSelectedEntries()[0]
                 .getChildrenFilter(), getSelectedEntries()[0].getConnection() );
             if ( dialog.open() == Dialog.OK )
             {
@@ -86,7 +85,7 @@ public class FilterSubtreeAction extends BrowserAction
      */
     public String getText()
     {
-        return "Filter Subtree...";
+        return "Filter Children...";
     }
 
 

@@ -34,19 +34,37 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
-public class FilterSubtreeDialog extends Dialog
+/**
+ * This dialog is used to enter a LDAP filter to filter the child nodes
+ * of an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class FilterChildrenDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "Filter Subtree";
+    /** The title */
+    public static final String DIALOG_TITLE = "Filter Children";
 
+    /** The connection, used for attribute completion. */
     private IConnection connection;
 
+    /** The filter widget. */
     private FilterWidget filterWidget;
 
+    /** The filter. */
     private String filter;
 
 
-    public FilterSubtreeDialog( Shell parentShell, String filter, IConnection connection )
+    /**
+     * Creates a new instance of FilterChildrenDialog.
+     *
+     * @param parentShell the parent shell
+     * @param filter the inital filter
+     * @param connection the connection, used for attribute completion
+     */
+    public FilterChildrenDialog( Shell parentShell, String filter, IConnection connection )
     {
         super( parentShell );
         this.filter = filter;
@@ -55,12 +73,20 @@ public class FilterSubtreeDialog extends Dialog
     }
 
 
+    /**
+     * Gets the filter.
+     * 
+     * @return the filter
+     */
     public String getFilter()
     {
         return this.filter;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
@@ -68,6 +94,9 @@ public class FilterSubtreeDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
@@ -81,21 +110,14 @@ public class FilterSubtreeDialog extends Dialog
     }
 
 
-    protected Control createButtonBar( Composite parent )
-    {
-        Composite composite = ( Composite ) super.createButtonBar( parent );
-        return composite;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
-        // Composite composite = parent;
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        // gd.heightHint =
-        // convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH)/2;
         composite.setLayoutData( gd );
 
         Composite inner = new Composite( composite, SWT.NONE );
@@ -107,22 +129,9 @@ public class FilterSubtreeDialog extends Dialog
 
         filterWidget = new FilterWidget( connection, filter != null ? filter : "" );
         filterWidget.createWidget( inner );
-        // filterWidget.addWidgetModifyListener(new WidgetModifyListener(){
-        // public void widgetModified(WidgetModifyEvent event) {
-        // wizard.setExportFilter(filterWidget.getFilter());
-        // validate();
-        // }
-        // });
         filterWidget.setFocus();
 
         return composite;
-    }
-
-
-    protected boolean canHandleShellCloseEvent()
-    {
-        // proposal popup is opened, don't close dialog!
-        return super.canHandleShellCloseEvent();
     }
 
 }

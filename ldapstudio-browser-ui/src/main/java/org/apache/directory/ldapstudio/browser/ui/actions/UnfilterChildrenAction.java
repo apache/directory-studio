@@ -30,17 +30,17 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 
 /**
- * TODO DOCUMENT ME! UnfilterSubtreeAction.
+ * This action removes the children filter from the currently selected entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class UnfilterSubtreeAction extends BrowserAction
+public class UnfilterChildrenAction extends BrowserAction
 {
     /**
-     * Creates a new instance of UnfilterSubtreeAction.
+     * Creates a new instance of UnfilterChildrenAction.
      */
-    public UnfilterSubtreeAction()
+    public UnfilterChildrenAction()
     {
         super();
     }
@@ -65,7 +65,7 @@ public class UnfilterSubtreeAction extends BrowserAction
      */
     public String getText()
     {
-        return "Remove Subtree Filter";
+        return "Remove Children Filter";
     }
 
 

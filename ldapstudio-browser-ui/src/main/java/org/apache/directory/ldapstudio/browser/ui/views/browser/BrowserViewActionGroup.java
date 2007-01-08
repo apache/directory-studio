@@ -260,10 +260,10 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( new Separator() );
 
         // filter, batch
-        menuManager.add( ( IAction ) this.browserActionMap.get( filterSubtreeAction ) );
-        if ( ( ( IAction ) this.browserActionMap.get( unfilterSubtreeAction ) ).isEnabled() )
+        menuManager.add( ( IAction ) this.browserActionMap.get( filterChildrenAction ) );
+        if ( ( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) this.browserActionMap.get( unfilterSubtreeAction ) );
+            menuManager.add( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) );
         }
         menuManager.add( new Separator() );
 
