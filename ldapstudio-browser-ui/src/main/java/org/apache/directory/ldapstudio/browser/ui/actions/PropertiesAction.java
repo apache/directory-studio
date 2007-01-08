@@ -31,33 +31,53 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
+/**
+ * This Action opens the Property Dialog for a given object.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class PropertiesAction extends BrowserAction
 {
-
+    /**
+     * Creates a new instance of PropertiesAction.
+     */
     public PropertiesAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Properties";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return IWorkbenchActionDefinitionIds.PROPERTIES;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
 
@@ -69,6 +89,9 @@ public class PropertiesAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
 
@@ -135,7 +158,5 @@ public class PropertiesAction extends BrowserAction
             dialog.open();
 
         }
-
     }
-
 }

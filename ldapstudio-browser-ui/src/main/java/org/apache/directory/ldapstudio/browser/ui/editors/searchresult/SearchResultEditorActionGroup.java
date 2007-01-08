@@ -250,8 +250,6 @@ public class SearchResultEditorActionGroup implements IMenuListener
 
         if ( this.searchResultEditor != null )
         {
-
-            this.showRawValuesAction.dispose();
             this.showRawValuesAction = null;
             this.showDNAction.dispose();
             this.showDNAction = null;
@@ -270,7 +268,6 @@ public class SearchResultEditorActionGroup implements IMenuListener
                 this.openEditorActions[i].dispose();
                 this.openEditorActions[i] = null;
             }
-            this.openValueEditorPreferencesAction.dispose();
             this.openValueEditorPreferencesAction = null;
 
             for ( Iterator it = this.searchResultEditorActionMap.keySet().iterator(); it.hasNext(); )

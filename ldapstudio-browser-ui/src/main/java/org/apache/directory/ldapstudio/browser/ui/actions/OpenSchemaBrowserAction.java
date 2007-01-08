@@ -32,26 +32,55 @@ import org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser.SchemaBr
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This Action opens the Schema Browser 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenSchemaBrowserAction extends BrowserAction
 {
-
+    /**
+     * None Mode
+     */
     public static final int MODE_NONE = 0;
 
+    /**
+     * Object Class Mode
+     */
     public static final int MODE_OBJECTCLASS = 10;
 
+    /**
+     * Attribute Type Mode
+     */
     public static final int MODE_ATTRIBUTETYPE = 20;
 
+    /**
+     * Equality Matching Rule Mode
+     */
     public static final int MODE_EQUALITYMATCHINGRULE = 30;
 
+    /**
+     * Substring Matching Rule Mode
+     */
     public static final int MODE_SUBSTRINGMATCHINGRULE = 31;
 
+    /**
+     * Ordering Matching Rule Mode
+     */
     public static final int MODE_ORDERINGMATCHINGRULE = 32;
 
+    /**
+     * Syntax Mode
+     */
     public static final int MODE_SYNTAX = 40;
 
     protected int mode;
 
 
+    /**
+     * Creates a new instance of OpenSchemaBrowserAction.
+     */
     public OpenSchemaBrowserAction()
     {
         super();
@@ -59,6 +88,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * Creates a new instance of OpenSchemaBrowserAction.
+     *
+     * @param mode
+     *      the display mode
+     */
     public OpenSchemaBrowserAction( int mode )
     {
         super();
@@ -66,6 +101,9 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         if ( mode == MODE_NONE )
@@ -103,6 +141,9 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( mode == MODE_NONE )
@@ -140,6 +181,9 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         if ( mode == MODE_NONE )
@@ -177,12 +221,18 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
 
@@ -221,6 +271,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the LDAP Syntax Description.
+     *
+     * @return
+     *      the LDAP Syntax Description
+     */
     private LdapSyntaxDescription getLsd()
     {
         AttributeTypeDescription atd = getAtd();
@@ -235,6 +291,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Object Class Description.
+     *
+     * @return
+     *      the Object Class Drescription
+     */
     private ObjectClassDescription getOcd()
     {
         if ( getSelectedAttributes().length == 0 && getSelectedValues().length == 1
@@ -254,6 +316,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Attribute Type Description.
+     *
+     * @return
+     *      the Attribute Type Description
+     */
     private AttributeTypeDescription getAtd()
     {
         if ( ( getSelectedValues().length + getSelectedAttributes().length ) + getSelectedAttributeHierarchies().length == 1 )
@@ -279,6 +347,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Equality Matching Rule Description.
+     *
+     * @return
+     *      the Equality Matching Rule Description
+     */
     private MatchingRuleDescription getEmrd()
     {
         AttributeTypeDescription atd = getAtd();
@@ -293,6 +367,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Substring Matching Rule Description.
+     *
+     * @return
+     *      the Substring Matching Rule Description
+     */
     private MatchingRuleDescription getSmrd()
     {
         AttributeTypeDescription atd = getAtd();
@@ -307,6 +387,12 @@ public class OpenSchemaBrowserAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Ordering Matching Rule Description.
+     *
+     * @return
+     *      the Ordering Matching Rule Description
+     */
     private MatchingRuleDescription getOmrd()
     {
         AttributeTypeDescription atd = getAtd();

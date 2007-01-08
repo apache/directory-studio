@@ -56,38 +56,38 @@ import org.osgi.framework.BundleContext;
 public class BrowserUIPlugin extends AbstractUIPlugin
 {
 
-    // The plugin ID
+    /** The plugin ID */
     public static final String PLUGIN_ID = "org.apache.directory.ldapstudio.browser.ui";
 
-    // The shared instance.
+    /** The shared instance */
     private static BrowserUIPlugin plugin;
 
-    // Resource bundle.
+    /** Resource bundle */
     private ResourceBundle resourceBundle;
 
-    // The event dispatcher
+    /** The event dispatcher */
     private ExceptionHandler exceptionHandler;
 
-    // The font registry
+    /** The font registry */
     private FontRegistry fontRegistry;
 
-    // The color registry
+    /** The color registry */
     private ColorRegistry colorRegistry;
 
-    // The template store
+    /** The template store */
     private ContributionTemplateStore ldifTemplateStore;
 
     private ContributionTemplateStore filterTemplateStore;
 
-    // The context type registry
+    /** The context type registry */
     private ContributionContextTypeRegistry ldifTemplateContextTypeRegistry;
 
     private ContributionContextTypeRegistry filterTemplateContextTypeRegistry;
 
-    // The event dispatcher
+    /** The event dispatcher */
     private EventDispatcherSync eventDispatcher;
 
-    // The preferences
+    /** The preferences */
     private BrowserUIPreferences uiPreferences;
 
 

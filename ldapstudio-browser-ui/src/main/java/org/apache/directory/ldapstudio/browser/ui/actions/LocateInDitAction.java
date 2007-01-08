@@ -34,9 +34,17 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * TODO DOCUMENT ME! LocateInDitAction.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class LocateInDitAction extends BrowserAction
 {
-
+    /**
+     * {@inheritDoc}
+     */
     public final void run()
     {
         Object[] connectionAndDn = getConnectionAndDn();
@@ -79,18 +87,29 @@ public abstract class LocateInDitAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return "org.apache.directory.ldapstudio.browser.action.locateInDit";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public final boolean isEnabled()
     {
         return getConnectionAndDn() != null;
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getConnectionAndDn.
+     *
+     * @return
+     */
     protected abstract Object[] getConnectionAndDn();
 
 }

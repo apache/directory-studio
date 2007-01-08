@@ -31,15 +31,27 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * TODO DOCUMENT ME! FilterSubtreeAction.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FilterSubtreeAction extends BrowserAction
 {
 
+    /**
+     * Creates a new instance of FilterSubtreeAction.
+     */
     public FilterSubtreeAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         if ( getSelectedEntries().length == 1 )
@@ -69,29 +81,40 @@ public class FilterSubtreeAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Filter Subtree...";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_FILTER_DIT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getSelectedSearches().length + getSelectedSearchResults().length + getSelectedBookmarks().length == 0
             && getSelectedEntries().length == 1
             && ( getSelectedEntries()[0].hasChildren() || getSelectedEntries()[0].getChildrenFilter() != null );
     }
-
 }

@@ -21,6 +21,12 @@
 package org.apache.directory.ldapstudio.browser.ui;
 
 
+/**
+ * This class contains all the constants used by the Browser UI Plugin
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface BrowserUIConstants
 {
 
@@ -509,5 +515,4 @@ public interface BrowserUIConstants
     public static final int SHOW_RDN = 1;
 
     public static final int SHOW_RDN_VALUE = 2;
-
 }

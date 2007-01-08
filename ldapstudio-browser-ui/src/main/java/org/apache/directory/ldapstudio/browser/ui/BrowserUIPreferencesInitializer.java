@@ -38,15 +38,17 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 
+/**
+ * This class is used to set default preference values.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializer
 {
-
-    public BrowserUIPreferencesInitializer()
-    {
-        super();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void initializeDefaultPreferences()
     {
 
@@ -210,7 +212,6 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
         // blue
         store.setDefault( BrowserUIConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN
             + BrowserUIConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-
     }
 
 }

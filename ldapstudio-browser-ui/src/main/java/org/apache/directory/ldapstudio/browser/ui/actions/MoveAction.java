@@ -39,15 +39,26 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
+/**
+ * This Action moves Entries from on node of the Tree to another.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class MoveAction extends BrowserAction implements ModelModifier
 {
-
+    /**
+     * Creates a new instance of MoveAction.
+     */
     public MoveAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
 
@@ -75,18 +86,27 @@ public class MoveAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return IWorkbenchActionDefinitionIds.MOVE;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
 
@@ -109,6 +129,9 @@ public class MoveAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
 
@@ -128,15 +151,19 @@ public class MoveAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Entries.
+     *
+     * @return
+     *      the Entries
+     */
     protected IEntry[] getEntries()
     {
-
         if ( getSelectedConnections().length + getSelectedBookmarks().length + getSelectedSearches().length
             + getSelectedAttributes().length + getSelectedValues().length == 0
             && getSelectedEntries().length + getSelectedSearchResults().length > 0 )
         {
-
-            LinkedHashSet entriesSet = new LinkedHashSet();
+            LinkedHashSet<IEntry> entriesSet = new LinkedHashSet<IEntry>();
             for ( int i = 0; i < getSelectedEntries().length; i++ )
             {
                 entriesSet.add( getSelectedEntries()[i] );
@@ -160,10 +187,15 @@ public class MoveAction extends BrowserAction implements ModelModifier
         {
             return new IEntry[0];
         }
-
     }
 
 
+    /**
+     * Opens a Move Entries Dialog and lauches the Move Entries Jobs.
+     *
+     * @param entries
+     *      the entries to move
+     */
     protected void moveEntries( final IEntry[] entries )
     {
         MoveEntriesDialog moveDialog = new MoveEntriesDialog( getShell(), entries );
@@ -182,6 +214,12 @@ public class MoveAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the searches.
+     *
+     * @return
+     *      the searches
+     */
     protected ISearch[] getSearches()
     {
         if ( getSelectedSearches().length == 1 )
@@ -195,6 +233,12 @@ public class MoveAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Bookmarks
+     *
+     * @return
+     *      the Bookmarks
+     */
     protected IBookmark[] getBookmarks()
     {
         if ( getSelectedBookmarks().length == 1 )
@@ -206,5 +250,4 @@ public class MoveAction extends BrowserAction implements ModelModifier
             return new IBookmark[0];
         }
     }
-
 }

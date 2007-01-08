@@ -28,9 +28,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * This Action opens the Value Editors Preference Page.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ValueEditorPreferencesAction extends Action
 {
-
+    /**
+     * Creates a new instance of ValueEditorPreferencesAction.
+     */
     public ValueEditorPreferencesAction()
     {
         super.setText( "Preferences..." );
@@ -39,6 +47,9 @@ public class ValueEditorPreferencesAction extends Action
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         Shell shell = Display.getCurrent().getActiveShell();
@@ -46,10 +57,4 @@ public class ValueEditorPreferencesAction extends Action
         PreferencesUtil.createPreferenceDialogOn( shell, pageId, new String[]
             { pageId }, null ).open();
     }
-
-
-    public void dispose()
-    {
-    }
-
 }

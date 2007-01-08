@@ -38,15 +38,32 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 
 
+/**
+ * This abstract class must be extended by each Action that <em>"Copies an Entry as..."</em>.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class CopyEntryAsAction extends BrowserAction
 {
-
+    /**
+     * Returns DN only Mode.
+     */
     public static final int MODE_DN_ONLY = 1;
 
+    /**
+     * Returns Attributes only Mode.
+     */
     public static final int MODE_RETURNING_ATTRIBUTES_ONLY = 2;
 
+    /**
+     * Normal Mode
+     */
     public static final int MODE_NORMAL = 3;
 
+    /**
+     * Includes Operational Attributes Mode.
+     */
     public static final int MODE_INCLUDE_OPERATIONAL_ATTRIBUTES = 4;
 
     protected int mode;
@@ -56,6 +73,14 @@ public abstract class CopyEntryAsAction extends BrowserAction
     protected String appendix;
 
 
+    /**
+     * Creates a new instance of CopyEntryAsAction.
+     *
+     * @param type
+     *      the type of the target
+     * @param mode
+     *      the copy Mode 
+     */
     public CopyEntryAsAction( String type, int mode )
     {
         super();
@@ -84,6 +109,9 @@ public abstract class CopyEntryAsAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length > 0
@@ -108,17 +136,22 @@ public abstract class CopyEntryAsAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-
         // entries to copy
-        List entryList = new ArrayList();
+        List<IEntry> entryList = new ArrayList<IEntry>();
         for ( int i = 0; i < getSelectedEntries().length; i++ )
         {
             entryList.add( getSelectedEntries()[i] );
@@ -151,7 +184,7 @@ public abstract class CopyEntryAsAction extends BrowserAction
         IEntry[] entries = ( IEntry[] ) entryList.toArray( new IEntry[entryList.size()] );
 
         // check uninitialized entries
-        List uninitializedEntryList = new ArrayList();
+        List<IEntry> uninitializedEntryList = new ArrayList<IEntry>();
         for ( int i = 0; entries != null && i < entries.length; i++ )
         {
             if ( !entries[i].isAttributesInitialized() )
@@ -181,9 +214,20 @@ public abstract class CopyEntryAsAction extends BrowserAction
     }
 
 
+    /**
+     * Serializes Entries.
+     *
+     * @param entries
+     *      the Entries to serialize
+     * @param text
+     *      the StringBuffer to serialize to
+     */
     protected abstract void serialializeEntries( IEntry[] entries, StringBuffer text );
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         boolean showOperational = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -210,6 +254,12 @@ public abstract class CopyEntryAsAction extends BrowserAction
     }
 
 
+    /**
+     * Copies text to Clipboard
+     * 
+     * @param text
+     *      the Text to copy
+     */
     protected void copyToClipboard( String text )
     {
         Clipboard clipboard = null;
@@ -226,5 +276,4 @@ public abstract class CopyEntryAsAction extends BrowserAction
                 clipboard.dispose();
         }
     }
-
 }

@@ -26,14 +26,26 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * TODO DOCUMENT ME! LocateEntryInDitAction.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LocateEntryInDitAction extends LocateInDitAction
 {
 
+    /**
+     * Creates a new instance of LocateEntryInDitAction.
+     */
     public LocateEntryInDitAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( getSelectedSearchResults().length == 1
@@ -54,6 +66,9 @@ public class LocateEntryInDitAction extends LocateInDitAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         if ( getSelectedSearchResults().length == 1
@@ -74,6 +89,9 @@ public class LocateEntryInDitAction extends LocateInDitAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Object[] getConnectionAndDn()
     {
         if ( getSelectedSearchResults().length == 1
@@ -95,5 +113,4 @@ public class LocateEntryInDitAction extends LocateInDitAction
             return null;
         }
     }
-
 }

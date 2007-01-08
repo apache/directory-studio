@@ -26,9 +26,17 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.action.Action;
 
 
+/**
+ * This Action toggles the Show Raw Values Preference.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ShowRawValuesAction extends Action
 {
-
+    /**
+     * Creates a new instance of ShowRawValuesAction.
+     */
     public ShowRawValuesAction()
     {
         super( "Show Raw Values", AS_CHECK_BOX );
@@ -40,6 +48,9 @@ public class ShowRawValuesAction extends Action
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         BrowserUIPlugin.getDefault().getPreferenceStore().setValue( BrowserUIConstants.PREFERENCE_SHOW_RAW_VALUES,
@@ -47,20 +58,20 @@ public class ShowRawValuesAction extends Action
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setChecked( boolean checked )
     {
         super.setChecked( checked );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isChecked()
     {
         return super.isChecked();
     }
-
-
-    public void dispose()
-    {
-    }
-
 }

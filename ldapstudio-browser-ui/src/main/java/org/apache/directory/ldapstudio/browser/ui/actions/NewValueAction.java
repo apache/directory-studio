@@ -29,21 +29,35 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This Action adds a new Value to an Attribute.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewValueAction extends BrowserAction implements ModelModifier
 {
-
+    /**
+     * Creates a new instance of NewValueAction.
+     */
     public NewValueAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         if ( getSelectedValues().length == 1 )
@@ -66,27 +80,38 @@ public class NewValueAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "New Value";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_VALUE_ADD );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return "org.apache.directory.ldapstudio.browser.action.addValue";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
-
         // System.out.println(getSelectedAttributeArrays());
         // System.out.print("==> ");
         // IAttribute[][] attArr = getSelectedAttributeArrays();
@@ -110,5 +135,4 @@ public class NewValueAction extends BrowserAction implements ModelModifier
                 && getSelectedAttributes().length == 0 && getSelectedAttributeHierarchies().length == 1 && SchemaUtils
                 .isModifyable( getSelectedAttributeHierarchies()[0].getAttribute().getAttributeTypeDescription() ) );
     }
-
 }

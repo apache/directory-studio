@@ -30,17 +30,31 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 
 
+/**
+ * This Action lauches the New Entry Wizard.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewEntryAction extends BrowserAction
 {
-
     private IWorkbenchWindow window;
 
 
+    /**
+     * Creates a new instance of NewEntryAction.
+     */
     public NewEntryAction()
     {
     }
 
 
+    /**
+     * Creates a new instance of NewEntryAction.
+     *
+     * @param window
+     *      the associated Window
+     */
     public NewEntryAction( IWorkbenchWindow window )
     {
         super();
@@ -48,6 +62,9 @@ public class NewEntryAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
@@ -55,6 +72,9 @@ public class NewEntryAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbenchWindow window )
     {
         super.init( window );
@@ -62,6 +82,9 @@ public class NewEntryAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         NewEntryWizard wizard = new NewEntryWizard();
@@ -75,24 +98,36 @@ public class NewEntryAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "New Entry...";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_ADD );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return this.getSelectedEntries().length + this.getSelectedSearchResults().length

@@ -135,7 +135,6 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
             this.openSortDialogAction = null;
             this.showQuickFilterAction.dispose();
             this.showQuickFilterAction = null;
-            this.showRawValuesAction.dispose();
             this.showRawValuesAction = null;
 
             this.openDefaultEditorAction.dispose();
@@ -147,7 +146,6 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
                 this.openEditorActions[i].dispose();
                 this.openEditorActions[i] = null;
             }
-            this.openValueEditorPreferencesAction.dispose();
             this.openValueEditorPreferencesAction = null;
 
             for ( Iterator it = this.entryEditorActionMap.keySet().iterator(); it.hasNext(); )

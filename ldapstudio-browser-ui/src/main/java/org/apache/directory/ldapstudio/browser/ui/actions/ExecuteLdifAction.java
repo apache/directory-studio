@@ -30,12 +30,23 @@ import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifEditor;
 import org.eclipse.jface.action.Action;
 
 
+/**
+ * This Action executes LDIF code.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExecuteLdifAction extends Action
 {
-
     private LdifEditor editor;
 
 
+    /**
+     * Creates a new instance of ExecuteLdifAction.
+     *
+     * @param editor
+     *      the attached editor
+     */
     public ExecuteLdifAction( LdifEditor editor )
     {
         super( "Execute LDIF", BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXECUTE ) );
@@ -43,7 +54,9 @@ public class ExecuteLdifAction extends Action
         this.editor = editor;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
 
@@ -54,10 +67,11 @@ public class ExecuteLdifAction extends Action
 
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return editor != null && editor.getConnection() != null;
     }
-
 }

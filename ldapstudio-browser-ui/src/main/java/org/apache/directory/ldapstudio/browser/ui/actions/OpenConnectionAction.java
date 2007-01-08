@@ -28,15 +28,26 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This Action opens a Connection.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenConnectionAction extends BrowserAction
 {
-
+    /**
+     * Creates a new instance of OpenConnectionAction.
+     */
     public OpenConnectionAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         OpenConnectionsJob ocj = new OpenConnectionsJob( getSelectedConnections() );
@@ -44,24 +55,36 @@ public class OpenConnectionAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return getSelectedConnections().length > 1 ? "Open Connections" : "Open Connection";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_CONNECTION_CONNECT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         boolean canOpen = false;
@@ -75,5 +98,4 @@ public class OpenConnectionAction extends BrowserAction
         }
         return getSelectedConnections().length > 0 && canOpen;
     }
-
 }

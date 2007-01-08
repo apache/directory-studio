@@ -41,15 +41,30 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This Action copies entry(ies) as LDIF.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyEntryAsLdifAction extends CopyEntryAsAction
 {
 
+    /**
+     * Creates a new instance of CopyEntryAsLdifAction.
+     *
+     * @param mode
+     *      the copy Mode
+     */
     public CopyEntryAsLdifAction( int mode )
     {
         super( "LDIF", mode );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         if ( this.mode == MODE_DN_ONLY )
@@ -71,6 +86,9 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void serialializeEntries( IEntry[] entries, StringBuffer text )
     {
 
@@ -136,15 +154,30 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
     }
 
 
+    /**
+     * Serializes a Value.
+     *
+     * @param value
+     *      the Value to serialize
+     * @param text
+     *      the StringBuffer to serialize to
+     */
     protected void serializeValue( IValue value, StringBuffer text )
     {
         text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString() );
     }
 
 
+    /**
+     * Serialize a DN.
+     *
+     * @param dn
+     *      the DN to serialize
+     * @param text
+     *      the StringBuffer to serialize to
+     */
     protected void serializeDn( DN dn, StringBuffer text )
     {
         text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString() );
     }
-
 }

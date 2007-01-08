@@ -35,42 +35,63 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
+/**
+ * This class implements the Select All Action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SelectAllAction extends BrowserAction
 {
-
     private Viewer viewer;
 
 
+    /**
+     * Creates a new instance of SelectAllAction.
+     *
+     * @param viewer
+     *      the attached viewer
+     */
     public SelectAllAction( Viewer viewer )
     {
         this.viewer = viewer;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Select All";
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return null;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return IWorkbenchActionDefinitionIds.SELECT_ALL;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return true;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         if ( getInput() != null && getInput() instanceof IEntry )
@@ -101,5 +122,4 @@ public class SelectAllAction extends BrowserAction
             this.viewer.setSelection( selection );
         }
     }
-
 }

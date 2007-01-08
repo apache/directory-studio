@@ -29,45 +29,66 @@ import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This Action opens a new Search Dialog.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewSearchAction extends BrowserAction
 {
-
+    /**
+     * Creates a new instance of NewSearchAction.
+     */
     public NewSearchAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         NewSearchUI.openSearchDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow(), SearchPage.getId() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "New Search...";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_SEARCH_NEW );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return "org.eclipse.search.ui.openSearchDialog";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getSelectedEntries().length + getSelectedSearchResults().length + getSelectedSearches().length
             + getSelectedBookmarks().length + getSelectedConnections().length + getSelectedAttributes().length
             + getSelectedAttributeHierarchies().length + getSelectedValues().length > 0;
-
     }
-
 }

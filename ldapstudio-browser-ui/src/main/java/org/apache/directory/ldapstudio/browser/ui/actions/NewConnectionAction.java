@@ -28,15 +28,26 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardDialog;
 
 
+/**
+ * This Action launches the New Connection Wizard.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewConnectionAction extends BrowserAction
 {
-
+    /**
+     * Creates a new instance of NewConnectionAction.
+     */
     public NewConnectionAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         NewConnectionWizard wizard = new NewConnectionWizard();
@@ -47,24 +58,36 @@ public class NewConnectionAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "New Connection...";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_CONNECTION_ADD );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return true;

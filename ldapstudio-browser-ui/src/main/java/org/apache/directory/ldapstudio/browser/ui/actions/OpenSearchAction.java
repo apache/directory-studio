@@ -33,9 +33,17 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This Action opens the Search Dialog.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenSearchAction extends Action implements IWorkbenchWindowActionDelegate
 {
-
+    /**
+     * Creates a new instance of OpenSearchAction.
+     */
     public OpenSearchAction()
     {
         super( "Search...", Action.AS_PUSH_BUTTON );
@@ -46,30 +54,44 @@ public class OpenSearchAction extends Action implements IWorkbenchWindowActionDe
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         NewSearchUI.openSearchDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow(), SearchPage.getId() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbenchWindow window )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run( IAction action )
     {
         this.run();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void selectionChanged( IAction action, ISelection selection )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
     }
-
 }

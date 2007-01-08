@@ -30,14 +30,26 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 
 
+/**
+ * This Action copies the URL of the selected Entry to the Clipboard.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyUrlAction extends BrowserAction
 {
 
+    /**
+     * Creates a new instance of CopyUrlAction.
+     */
     public CopyUrlAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         URL url = null;
@@ -79,29 +91,40 @@ public class CopyUrlAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Copy URL";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_COPY_URL );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getSelectedSearches().length + getSelectedEntries().length + getSelectedSearchResults().length
             + getSelectedBookmarks().length == 1
             || getSelectedAttributes().length + getSelectedValues().length > 0;
     }
-
 }

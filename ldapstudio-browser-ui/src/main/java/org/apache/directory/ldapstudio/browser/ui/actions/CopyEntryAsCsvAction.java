@@ -42,18 +42,35 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This Action copies entry(ies) as CSV.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyEntryAsCsvAction extends CopyEntryAsAction
 {
-
+    /**
+     * Table Mode.
+     */
     public static final int MODE_TABLE = 5;
 
 
+    /**
+     * Creates a new instance of CopyEntryAsCsvAction.
+     *
+     * @param mode
+     *      the copy Mode
+     */
     public CopyEntryAsCsvAction( int mode )
     {
         super( "CSV", mode );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         if ( this.mode == MODE_DN_ONLY )
@@ -83,6 +100,9 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( this.mode == MODE_TABLE )
@@ -94,6 +114,9 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         if ( this.mode == MODE_TABLE )
@@ -107,6 +130,9 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
 
@@ -116,7 +142,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
                 && ( ( ISearch ) getInput() ).getSearchResults() != null
                 && ( ( ISearch ) getInput() ).getSearchResults().length > 0 )
             {
-                List entryList = new ArrayList();
+                List<IEntry> entryList = new ArrayList<IEntry>();
                 ISearchResult[] results = ( ( ISearch ) getInput() ).getSearchResults();
                 for ( int k = 0; k < results.length; k++ )
                 {
@@ -137,6 +163,9 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void serialializeEntries( IEntry[] entries, StringBuffer text )
     {
 
@@ -173,7 +202,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
         }
         else
         {
-            Map attributeMap = new HashMap();
+            Map<String, IAttribute> attributeMap = new HashMap<String, IAttribute>();
             for ( int e = 0; entries != null && e < entries.length; e++ )
             {
                 IAttribute[] attributes = entries[e].getAttributes();
@@ -321,5 +350,4 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
             }
         }
     }
-
 }

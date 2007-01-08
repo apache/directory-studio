@@ -49,9 +49,20 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 
+/**
+ * TODO DOCUMENT ME! SelectionUtils.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class SelectionUtils
 {
-
+    /**
+     * TODO DOCUMENT ME! getExampleSearch.
+     *
+     * @param selection
+     * @return
+     */
     public static ISearch getExampleSearch( ISelection selection )
     {
 
@@ -212,6 +223,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getBrowserViewCategories.
+     *
+     * @param selection
+     * @return
+     */
     public static BrowserCategory[] getBrowserViewCategories( ISelection selection )
     {
         List list = getTypes( selection, BrowserCategory.class );
@@ -219,6 +236,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getValues.
+     *
+     * @param selection
+     * @return
+     */
     public static IValue[] getValues( ISelection selection )
     {
         List list = getTypes( selection, IValue.class );
@@ -226,6 +249,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getAttributes.
+     *
+     * @param selection
+     * @return
+     */
     public static IAttribute[] getAttributes( ISelection selection )
     {
         List list = getTypes( selection, IAttribute.class );
@@ -233,6 +262,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getAttributeHierarchie.
+     *
+     * @param selection
+     * @return
+     */
     public static AttributeHierarchy[] getAttributeHierarchie( ISelection selection )
     {
         List list = getTypes( selection, AttributeHierarchy.class );
@@ -240,6 +275,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getProperties.
+     *
+     * @param selection
+     * @return
+     */
     public static String[] getProperties( ISelection selection )
     {
         List list = getTypes( selection, String.class );
@@ -247,6 +288,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getAttributeTypeDescription.
+     *
+     * @param selection
+     * @return
+     */
     public static AttributeTypeDescription[] getAttributeTypeDescription( ISelection selection )
     {
         List list = getTypes( selection, AttributeTypeDescription.class );
@@ -254,6 +301,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getEntries.
+     *
+     * @param selection
+     * @return
+     */
     public static IEntry[] getEntries( ISelection selection )
     {
         List list = getTypes( selection, IEntry.class );
@@ -261,6 +314,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getBookmarks.
+     *
+     * @param selection
+     * @return
+     */
     public static IBookmark[] getBookmarks( ISelection selection )
     {
         List list = getTypes( selection, IBookmark.class );
@@ -268,6 +327,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getSearchResults.
+     *
+     * @param selection
+     * @return
+     */
     public static ISearchResult[] getSearchResults( ISelection selection )
     {
         List list = getTypes( selection, ISearchResult.class );
@@ -275,6 +340,13 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getTypes.
+     *
+     * @param selection
+     * @param type
+     * @return
+     */
     private static List getTypes( ISelection selection, Class type )
     {
         List list = new ArrayList();
@@ -295,6 +367,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getSearches.
+     *
+     * @param selection
+     * @return
+     */
     public static ISearch[] getSearches( ISelection selection )
     {
         List list = getTypes( selection, ISearch.class );
@@ -302,6 +380,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getConnections.
+     *
+     * @param selection
+     * @return
+     */
     public static IConnection[] getConnections( ISelection selection )
     {
         List list = getTypes( selection, IConnection.class );
@@ -309,6 +393,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getBrowserEntryPages.
+     *
+     * @param selection
+     * @return
+     */
     public static BrowserEntryPage[] getBrowserEntryPages( ISelection selection )
     {
         List list = getTypes( selection, BrowserEntryPage.class );
@@ -316,6 +406,12 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * TODO DOCUMENT ME! getBrowserSearchResultPages.
+     *
+     * @param selection
+     * @return
+     */
     public static BrowserSearchResultPage[] getBrowserSearchResultPages( ISelection selection )
     {
         List list = getTypes( selection, BrowserSearchResultPage.class );

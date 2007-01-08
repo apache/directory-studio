@@ -37,15 +37,26 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This Action refreshes the selected item.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RefreshAction extends BrowserAction implements ModelModifier
 {
-
+    /**
+     * Creates a new instance of RefreshAction.
+     */
     public RefreshAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         IEntry[] entries = getEntries();
@@ -92,18 +103,27 @@ public class RefreshAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_REFRESH );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return "org.eclipse.ui.file.refresh";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         IEntry[] entries = getEntries();
@@ -133,10 +153,12 @@ public class RefreshAction extends BrowserAction implements ModelModifier
             new SearchJob( new ISearch[]
                 { searchInput } ).execute();
         }
-
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         IEntry[] entries = getEntries();
@@ -148,9 +170,15 @@ public class RefreshAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Entries
+     *
+     * @return
+     *      the entries
+     */
     protected IEntry[] getEntries()
     {
-        List entriesList = new ArrayList();
+        List<IEntry> entriesList = new ArrayList<IEntry>();
         entriesList.addAll( Arrays.asList( getSelectedEntries() ) );
         for ( int i = 0; i < getSelectedSearchResults().length; i++ )
         {
@@ -164,12 +192,24 @@ public class RefreshAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Searches.
+     *
+     * @return
+     *      the Searches
+     */
     protected ISearch[] getSearches()
     {
         return getSelectedSearches();
     }
 
 
+    /**
+     * Gets the Entry Input.
+     *
+     * @return
+     *      the Entry Input
+     */
     private IEntry getEntryInput()
     {
         if ( getInput() != null && getInput() instanceof IEntry )
@@ -183,6 +223,12 @@ public class RefreshAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Search Input.
+     *
+     * @return
+     *      the Search Input
+     */
     private ISearch getSearchInput()
     {
         if ( getInput() != null && getInput() instanceof ISearch )
@@ -194,5 +240,4 @@ public class RefreshAction extends BrowserAction implements ModelModifier
             return null;
         }
     }
-
 }

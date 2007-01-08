@@ -36,26 +36,53 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 
 
+/**
+ * This Action copies the Search Filter
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopySearchFilterAction extends BrowserAction
 {
 
+    /**
+     * Equals Mode.
+     */
     public static final int MODE_EQUALS = 0;
 
+    /**
+     * Not Mode.
+     */
     public static final int MODE_NOT = 1;
 
+    /**
+     * And Mode.
+     */
     public static final int MODE_AND = 2;
 
+    /**
+     * Or Mode.
+     */
     public static final int MODE_OR = 3;
 
     private int mode;
 
 
+    /**
+     * Creates a new instance of CopySearchFilterAction.
+     *
+     * @param mode
+     *      the copy Mode
+     */
     public CopySearchFilterAction( int mode )
     {
         this.mode = mode;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( mode == MODE_EQUALS )
@@ -81,6 +108,9 @@ public class CopySearchFilterAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         if ( mode == MODE_EQUALS )
@@ -106,12 +136,18 @@ public class CopySearchFilterAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         if ( mode == MODE_EQUALS || mode == MODE_NOT )
@@ -135,6 +171,9 @@ public class CopySearchFilterAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
 
@@ -167,6 +206,14 @@ public class CopySearchFilterAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the filter
+     *
+     * @param filterType
+     *      the filter type
+     * @return
+     *      the filter
+     */
     private String getFilter( String filterType )
     {
         Set filterSet = new LinkedHashSet();
@@ -213,5 +260,4 @@ public class CopySearchFilterAction extends BrowserAction
 
         return filter.toString();
     }
-
 }

@@ -31,15 +31,26 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This Action opens the Search Result View.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenSearchResultAction extends BrowserAction
 {
-
+    /**
+     * Creates a new instance of OpenSearchResultAction.
+     */
     public OpenSearchResultAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         if ( getSelectedSearchResults().length == 1 )
@@ -67,27 +78,38 @@ public class OpenSearchResultAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Open Search Result";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OPEN_SEARCHRESULT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return "org.apache.directory.ldapstudio.browser.action.openSearchResult";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getSelectedSearchResults().length == 1;
     }
-
 }

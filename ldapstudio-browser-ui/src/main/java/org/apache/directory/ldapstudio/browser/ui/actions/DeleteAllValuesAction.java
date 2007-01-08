@@ -30,20 +30,34 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This Action deletes all the values of an Attribute (a whole Attribute).
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DeleteAllValuesAction extends DeleteAction
 {
-
+    /**
+     * Creates a new instance of DeleteAllValuesAction.
+     */
     public DeleteAllValuesAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         super.run();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( getSelectedValues().length == 1 )
@@ -57,18 +71,27 @@ public class DeleteAllValuesAction extends DeleteAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_DELETE_ALL );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return super.isEnabled();
@@ -81,6 +104,9 @@ public class DeleteAllValuesAction extends DeleteAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected IAttribute[] getAttributes() throws Exception
     {
         if ( getSelectedAttributes().length == 0 && getSelectedValues().length == 1
@@ -101,9 +127,11 @@ public class DeleteAllValuesAction extends DeleteAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected IValue[] getValues() throws Exception
     {
         return new IValue[0];
     }
-
 }

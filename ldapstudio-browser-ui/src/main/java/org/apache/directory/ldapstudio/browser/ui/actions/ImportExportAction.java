@@ -38,24 +38,53 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 
 
+/**
+ * This class implements Import/Export Actions for LDIF, CSV, EXCEL and DSML.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ImportExportAction extends BrowserAction
 {
-
+    /**
+     * LDIF Import Type
+     */
     public static final int TYPE_IMPORT_LDIF = 0;
 
+    /**
+     * LDIF Export Type
+     */
     public static final int TYPE_EXPORT_LDIF = 1;
 
+    /**
+     * CSV Export Type
+     */
     public static final int TYPE_EXPORT_CSV = 2;
 
+    /**
+     * EXCEL Export Type
+     */
     public static final int TYPE_EXPORT_EXCEL = 3;
-    
+
+    /**
+     * DSML Import Type
+     */
     public static final int TYPE_IMPORT_DSML = 4;
-    
+
+    /**
+     * DSML Export Type
+     */
     public static final int TYPE_EXPORT_DSML = 5;
 
     private int type;
 
 
+    /**
+     * Creates a new instance of ImportExportAction.
+     *
+     * @param type
+     *      the type of Import/Export
+     */
     public ImportExportAction( int type )
     {
         super();
@@ -63,6 +92,9 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( this.type == TYPE_IMPORT_LDIF )
@@ -96,6 +128,9 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         if ( this.type == TYPE_IMPORT_LDIF )
@@ -129,12 +164,18 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getEntry() != null || getConnection() != null || getSearch() != null || getConnectionInput() != null;
@@ -142,6 +183,9 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         IWizard wizard = null;
@@ -212,6 +256,12 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the selected Entry.
+     *
+     * @return
+     *      the selected Entry
+     */
     protected IEntry getEntry()
     {
         IEntry entry = null;
@@ -232,6 +282,12 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Connection.
+     *
+     * @return
+     *      the Connection
+     */
     protected IConnection getConnection()
     {
         return getSelectedConnections().length > 0 && getSelectedConnections()[0].isOpened() ? getSelectedConnections()[0]
@@ -239,6 +295,12 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Search.
+     *
+     * @return
+     *      the Search
+     */
     protected ISearch getSearch()
     {
         return getSelectedSearches().length > 0 && getSelectedSearches()[0].getConnection().isOpened() ? getSelectedSearches()[0]
@@ -246,6 +308,12 @@ public class ImportExportAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the Connection Input.
+     *
+     * @return
+     *      the Connection Input
+     */
     protected IConnection getConnectionInput()
     {
 
@@ -258,5 +326,4 @@ public class ImportExportAction extends BrowserAction
             return null;
         }
     }
-
 }

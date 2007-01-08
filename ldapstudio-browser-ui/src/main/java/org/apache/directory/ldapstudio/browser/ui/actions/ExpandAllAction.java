@@ -27,12 +27,23 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
+/**
+ * This action expands all nodes of the viewer's tree, starting with the root.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExpandAllAction extends Action
 {
-
     protected TreeViewer viewer;
 
 
+    /**
+     * Creates a new instance of ExpandAllAction.
+     *
+     * @param viewer
+     *      the attached Viewer
+     */
     public ExpandAllAction( TreeViewer viewer )
     {
         super( "Expand All", BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPANDALL ) );
@@ -43,15 +54,20 @@ public class ExpandAllAction extends Action
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         this.viewer.expandAll();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         this.viewer = null;
     }
-
 }

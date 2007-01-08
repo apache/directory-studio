@@ -26,15 +26,17 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * This action closes the selected Connection(s).
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CloseConnectionAction extends BrowserAction
 {
-
-    public CloseConnectionAction()
-    {
-        super();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         for ( int i = 0; i < getSelectedConnections().length; i++ )
@@ -47,18 +49,27 @@ public class CloseConnectionAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return getSelectedConnections().length > 1 ? "Close Connections" : "Close Connection";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_CONNECTION_DISCONNECT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
@@ -78,5 +89,4 @@ public class CloseConnectionAction extends BrowserAction
         }
         return getSelectedConnections().length > 0 && canClose;
     }
-
 }

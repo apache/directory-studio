@@ -36,21 +36,35 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 
 
+/**
+ * This Action creates a new Attribute
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewAttributeAction extends BrowserAction implements ModelModifier
 {
-
+    /**
+     * Creates a new instance of NewAttributeAction.
+     */
     public NewAttributeAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
 
@@ -105,24 +119,36 @@ public class NewAttributeAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "New Attribute...";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ATTRIBUTE_ADD );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return "org.apache.directory.ldapstudio.browser.action.addAttribute";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
 
@@ -134,5 +160,4 @@ public class NewAttributeAction extends BrowserAction implements ModelModifier
         return ( ( getInput() != null && getInput() instanceof IEntry ) || getSelectedEntries().length == 1
             || getSelectedAttributes().length > 0 || getSelectedValues().length > 0 );
     }
-
 }

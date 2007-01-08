@@ -28,35 +28,55 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardDialog;
 
 
+/**
+ * This Action opens the New Batch Operation Dialog.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewBatchOperationAction extends BrowserAction
 {
 
+    /**
+     * Creates a new instance of NewBatchOperationAction.
+     */
     public NewBatchOperationAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "New Batch Operation...";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_BATCH );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
-
         return getSelectedSearches().length == 1
             && getSelectedSearches()[0].getSearchResults() != null
             || getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length
@@ -64,15 +84,15 @@ public class NewBatchOperationAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-
         BatchOperationWizard wizard = new BatchOperationWizard();
         WizardDialog dialog = new WizardDialog( getShell(), wizard );
         dialog.setBlockOnOpen( true );
         dialog.create();
         dialog.open();
-
     }
-
 }

@@ -45,12 +45,23 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
+/**
+ * This class implements the Copy Action
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyAction extends BrowserAction
 {
-
     protected BrowserActionProxy pasteActionProxy;
 
 
+    /**
+     * Creates a new instance of CopyAction.
+     *
+     * @param pasteActionProxy
+     *      the associated Paste Action
+     */
     public CopyAction( BrowserActionProxy pasteActionProxy )
     {
         super();
@@ -58,6 +69,9 @@ public class CopyAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
 
@@ -86,21 +100,29 @@ public class CopyAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_COPY );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return IWorkbenchActionDefinitionIds.COPY;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-
         IConnection[] connections = getConnections();
         IEntry[] entries = getEntries();
         IValue[] values = getValues();
@@ -169,6 +191,15 @@ public class CopyAction extends BrowserAction
     }
 
 
+    /**
+     * Copies data to Clipboard
+     *
+     * @param data
+     *      the data to be set in the clipboard
+     * @param dataTypes
+     *      the transfer agents that will convert the data to its platform specific format; 
+     *      each entry in the data array must have a corresponding dataType
+     */
     protected static void copyToClipboard( Object[] data, Transfer[] dataTypes )
     {
         Clipboard clipboard = null;
@@ -185,6 +216,9 @@ public class CopyAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
 
@@ -213,6 +247,12 @@ public class CopyAction extends BrowserAction
     }
 
 
+    /**
+     * Get the Connections
+     *
+     * @return
+     *      the Connections
+     */
     private IConnection[] getConnections()
     {
 
@@ -230,6 +270,12 @@ public class CopyAction extends BrowserAction
     }
 
 
+    /**
+     * Get the Entries
+     *
+     * @return
+     *      the Entries
+     */
     private IEntry[] getEntries()
     {
         if ( getSelectedConnections().length + getSelectedSearches().length + getSelectedAttributeHierarchies().length
@@ -259,6 +305,12 @@ public class CopyAction extends BrowserAction
     }
 
 
+    /**
+     * Get the Values
+     *
+     * @return
+     *      the Values
+     */
     private IValue[] getValues()
     {
         if ( getSelectedConnections().length + getSelectedBookmarks().length + getSelectedEntries().length
@@ -290,5 +342,4 @@ public class CopyAction extends BrowserAction
             return null;
         }
     }
-
 }

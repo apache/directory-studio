@@ -37,12 +37,23 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
+/**
+ * This class implements the Up Action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class UpAction extends BrowserAction implements ModelModifier
 {
-
     protected TreeViewer viewer;
 
 
+    /**
+     * Creates a new instance of UpAction.
+     *
+     * @param viewer
+     *      the attached TreeViewer
+     */
     public UpAction( TreeViewer viewer )
     {
         super();
@@ -50,24 +61,36 @@ public class UpAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Up";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_PARENT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return "org.apache.directory.ldapstudio.browser.action.openSearchResult";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         IEntry[] entries = getSelectedEntries();
@@ -111,10 +134,12 @@ public class UpAction extends BrowserAction implements ModelModifier
             viewer.reveal( newSelection );
             viewer.setSelection( new StructuredSelection( newSelection ), true );
         }
-
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         IEntry[] entries = getSelectedEntries();
@@ -127,5 +152,4 @@ public class UpAction extends BrowserAction implements ModelModifier
         return entries.length > 0 || searches.length > 0 || searchResults.length > 0 || bookmarks.length > 0
             || browserEntryPages.length > 0 || browserSearchResultPages.length > 0;
     }
-
 }

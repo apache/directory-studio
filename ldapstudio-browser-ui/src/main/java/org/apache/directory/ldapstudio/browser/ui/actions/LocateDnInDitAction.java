@@ -31,26 +31,43 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * TODO DOCUMENT ME! LocateDnInDitAction.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LocateDnInDitAction extends LocateInDitAction
 {
-
+    /**
+     * Creates a new instance of LocateDnInDitAction.
+     */
     public LocateDnInDitAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Locate DN in DIT";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_LOCATE_DN_IN_DIT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Object[] getConnectionAndDn()
     {
 
@@ -99,5 +116,4 @@ public class LocateDnInDitAction extends LocateInDitAction
 
         return null;
     }
-
 }

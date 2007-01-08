@@ -40,26 +40,52 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 
 
+/**
+ * This Action copies the value of the selecte Entry to the Clipboard.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyValueAction extends BrowserAction
 {
-
+    /**
+     * UTF8 Mode.
+     */
     public static final int MODE_UTF8 = 1;
 
+    /**
+     * Base64 Mode.
+     */
     public static final int MODE_BASE64 = 2;
 
+    /**
+     * Hexadecimal Mode. 
+     */
     public static final int MODE_HEX = 3;
 
+    /**
+     * LDIF Mode.
+     */
     public static final int MODE_LDIF = 4;
 
     private int mode;
 
 
+    /**
+     * Creates a new instance of CopyValueAction.
+     *
+     * @param mode
+     *      the copy Mode
+     */
     public CopyValueAction( int mode )
     {
         this.mode = mode;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( mode == MODE_UTF8 )
@@ -85,6 +111,9 @@ public class CopyValueAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         if ( mode == MODE_UTF8 )
@@ -110,18 +139,27 @@ public class CopyValueAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getValueSet().size() > 0 || getSelectedSearchResults().length > 0;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
 
@@ -186,10 +224,15 @@ public class CopyValueAction extends BrowserAction
                 { text.toString() }, new Transfer[]
                 { TextTransfer.getInstance() } );
         }
-
     }
 
 
+    /**
+     * Gets a Set containing all the Values
+     *
+     * @return
+     *      a Set containing all the Values
+     */
     protected Set getValueSet()
     {
         Set valueSet = new LinkedHashSet();
@@ -208,5 +251,4 @@ public class CopyValueAction extends BrowserAction
         valueSet.addAll( Arrays.asList( getSelectedValues() ) );
         return valueSet;
     }
-
 }

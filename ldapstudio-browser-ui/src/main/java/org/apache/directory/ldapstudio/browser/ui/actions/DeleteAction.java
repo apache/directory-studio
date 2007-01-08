@@ -55,15 +55,17 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
+/**
+ * This Action implements the Delete Action. It deletes Connections, Entries, Searches, Bookmarks, Attributes or Values.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DeleteAction extends BrowserAction implements ModelModifier
 {
-
-    public DeleteAction()
-    {
-        super();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         try
@@ -114,21 +116,29 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_DELETE );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return IWorkbenchActionDefinitionIds.DELETE;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-
         try
         {
             IConnection[] connections = getConnections();
@@ -351,9 +361,11 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
-
         try
         {
             IConnection[] connections = getConnections();
@@ -372,10 +384,17 @@ public class DeleteAction extends BrowserAction implements ModelModifier
             // e.printStackTrace();
             return false;
         }
-
     }
 
 
+    /**
+     * Gets the Connections 
+     *
+     * @return
+     *      the Connections
+     * @throws Exception
+     *      when a is opened
+     */
     protected IConnection[] getConnections() throws Exception
     {
         for ( int i = 0; i < getSelectedConnections().length; i++ )
@@ -390,6 +409,12 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Deletes Connections
+     *
+     * @param connections
+     *      the Connections to delete
+     */
     protected void deleteConnections( IConnection[] connections )
     {
         for ( int i = 0; i < connections.length; i++ )
@@ -399,6 +424,14 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Entries.
+     *
+     * @return
+     *      the Entries
+     * @throws Exception
+     *      when an Entry has parent Entries
+     */
     protected IEntry[] getEntries() throws Exception
     {
         LinkedHashSet entriesSet = new LinkedHashSet();
@@ -433,18 +466,37 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Deletes Entries
+     *
+     * @param entries
+     *      the Entries to delete
+     */
     protected void deleteEntries( IEntry[] entries )
     {
         new DeleteEntriesJob( entries ).execute();
     }
 
 
+    /**
+     * Gets the Searches
+     *
+     * @return
+     *      the Searches
+     * @throws Exception
+     */
     protected ISearch[] getSearches() throws Exception
     {
         return getSelectedSearches();
     }
 
 
+    /**
+     * Delete Searches
+     *
+     * @param searches
+     *      the Searches to delete
+     */
     protected void deleteSearches( ISearch[] searches )
     {
         for ( int i = 0; i < searches.length; i++ )
@@ -455,12 +507,24 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Get the Bookmarks
+     *
+     * @return
+     * @throws Exception
+     */
     protected IBookmark[] getBookmarks() throws Exception
     {
         return getSelectedBookmarks();
     }
 
 
+    /**
+     * Delete Bookmarks
+     *
+     * @param bookmarks
+     *      the Bookmarks to delete
+     */
     protected void deleteBookmarks( IBookmark[] bookmarks )
     {
         for ( int i = 0; i < bookmarks.length; i++ )
@@ -471,6 +535,13 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Attributes
+     *
+     * @return
+     *      the Attributes
+     * @throws Exception
+     */
     protected IAttribute[] getAttributes() throws Exception
     {
 
@@ -559,6 +630,13 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Values
+     *
+     * @return
+     *      the Values
+     * @throws Exception
+     */
     protected IValue[] getValues() throws Exception
     {
 
@@ -662,9 +740,16 @@ public class DeleteAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Deletes Attributes and Values
+     *
+     * @param attributes
+     *      the Attributes to delete
+     * @param values
+     *      the Values to delete
+     */
     protected void deleteAttributesAndValues( IAttribute[] attributes, IValue[] values )
     {
         new DeleteAttributesValueJob( attributes, values ).execute();
     }
-
 }

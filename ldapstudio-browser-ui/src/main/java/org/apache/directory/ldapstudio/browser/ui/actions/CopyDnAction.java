@@ -28,14 +28,26 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 
 
+/**
+ * This class implements the Copy Drag'n'Drop Action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyDnAction extends BrowserAction
 {
 
+    /**
+     * Creates a new instance of CopyDnAction.
+     */
     public CopyDnAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         String dn = null;
@@ -73,28 +85,39 @@ public class CopyDnAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Copy DN";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_COPY_DN );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length == 1
             || getSelectedAttributes().length + getSelectedValues().length > 0;
     }
-
 }

@@ -44,18 +44,28 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
+/**
+ * This class implements the Paste Action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class PasteAction extends BrowserAction
 {
-
+    /**
+     * Creates a new instance of PasteAction.
+     */
     public PasteAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
-
         // connection
         IConnection[] connections = getConnectionsToPaste();
         if ( connections != null )
@@ -86,18 +96,27 @@ public class PasteAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor( ISharedImages.IMG_TOOL_PASTE );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return IWorkbenchActionDefinitionIds.PASTE;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
 
@@ -127,9 +146,11 @@ public class PasteAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-
         // connection
         IConnection[] connections = getConnectionsToPaste();
         if ( connections != null )
@@ -167,6 +188,14 @@ public class PasteAction extends BrowserAction
     }
 
 
+    /**
+     * Pastes the given entries
+     *
+     * @param parent
+     *      the parent Entry
+     * @param entriesToPaste
+     *      the Entries to paste
+     */
     private void pasteEntries( final IEntry parent, final IEntry[] entriesToPaste )
     {
 
@@ -198,6 +227,12 @@ public class PasteAction extends BrowserAction
     }
 
 
+    /**
+     * Paste Values
+     *
+     * @param values
+     *      the Values to paste
+     */
     private void pasteValues( IValue[] values )
     {
         IEntry entry = null;
@@ -343,6 +378,14 @@ public class PasteAction extends BrowserAction
     }
 
 
+    /**
+     * Retrieve the data of the specified type currently available on the system clipboard.
+     *
+     * @param dataType
+     *      the transfer agent for the type of data being requested
+     * @return
+     *      the data obtained from the clipboard or null if no data of this type is available
+     */
     protected Object getFromClipboard( Transfer dataType )
     {
         Clipboard clipboard = null;
@@ -357,5 +400,4 @@ public class PasteAction extends BrowserAction
                 clipboard.dispose();
         }
     }
-
 }

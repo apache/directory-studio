@@ -41,15 +41,27 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
+/**
+ * This Action renames Connections, Entries, Searches, or Bookmarks.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RenameAction extends BrowserAction implements ModelModifier
 {
-
+    /**
+     * Creates a new instance of RenameAction.
+     *
+     */
     public RenameAction()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
 
@@ -81,21 +93,29 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return IWorkbenchActionDefinitionIds.RENAME;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-
         IConnection[] connections = getConnections();
         IEntry[] entries = getEntries();
         ISearch[] searches = getSearches();
@@ -120,9 +140,11 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
-
         try
         {
             IConnection[] connections = getConnections();
@@ -140,6 +162,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Connections
+     * 
+     * @return
+     *      the Connections
+     */
     protected IConnection[] getConnections()
     {
         if ( getSelectedConnections().length == 1 )
@@ -153,6 +181,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Renames a Connection.
+     *
+     * @param connection
+     *      the Connection to rename
+     */
     protected void renameConnection( final IConnection connection )
     {
         IInputValidator validator = new IInputValidator()
@@ -180,6 +214,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Gets the Entries
+     *
+     * @return
+     *      the Entries
+     */
     protected IEntry[] getEntries()
     {
 
@@ -211,6 +251,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Renames an Entry.
+     *
+     * @param entry
+     *      the Entry to rename
+     */
     protected void renameEntry( final IEntry entry )
     {
         RenameEntryDialog renameDialog = new RenameEntryDialog( getShell(), entry );
@@ -226,6 +272,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Get the Searches.
+     *
+     * @return
+     *      the Searches
+     */
     protected ISearch[] getSearches()
     {
         if ( getSelectedSearches().length == 1 )
@@ -239,6 +291,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Renames a Search.
+     *
+     * @param search
+     *      the Search to rename
+     */
     protected void renameSearch( final ISearch search )
     {
         IInputValidator validator = new IInputValidator()
@@ -265,6 +323,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Get the Bookmarks
+     *
+     * @return
+     *      the Bookmarks
+     */
     protected IBookmark[] getBookmarks()
     {
         if ( getSelectedBookmarks().length == 1 )
@@ -278,6 +342,12 @@ public class RenameAction extends BrowserAction implements ModelModifier
     }
 
 
+    /**
+     * Renames a Bookmark
+     *
+     * @param bookmark
+     *      the Bookmark to rename
+     */
     protected void renameBookmark( final IBookmark bookmark )
     {
         IInputValidator validator = new IInputValidator()
@@ -302,5 +372,4 @@ public class RenameAction extends BrowserAction implements ModelModifier
             bookmark.setName( newName );
         }
     }
-
 }

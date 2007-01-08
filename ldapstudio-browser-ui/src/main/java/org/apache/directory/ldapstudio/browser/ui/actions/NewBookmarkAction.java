@@ -33,14 +33,25 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This Action creates a new Bookmark.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewBookmarkAction extends BrowserAction
 {
-
+    /**
+     * Creates a new instance of NewBookmarkAction.
+     */
     public NewBookmarkAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         NewBookmarkWizard wizard = new NewBookmarkWizard();
@@ -53,9 +64,14 @@ public class NewBookmarkAction extends BrowserAction
     }
 
 
+    /**
+     * Gets the entry associated with the Bookmark
+     *
+     * @return
+     *      the entry associated with the Bookmark
+     */
     private IEntry getEntry()
     {
-
         if ( this.getSelectedEntries().length + this.getSelectedSearchResults().length
             + this.getSelectedBookmarks().length != 1 )
         {
@@ -79,27 +95,38 @@ public class NewBookmarkAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "New Bookmark...";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_BOOKMARK_ADD );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getEntry() != null && getEntry().getConnection() != null && getEntry().getConnection().isOpened();
     }
-
 }

@@ -35,14 +35,26 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 
 
+/**
+ * This class implements the Copy Attribute Description Action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyAttributeDescriptionAction extends BrowserAction
 {
 
+    /**
+     * Creates a new instance of CopyAttributeDescriptionAction.
+     */
     public CopyAttributeDescriptionAction()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         StringBuffer text = new StringBuffer();
@@ -62,9 +74,15 @@ public class CopyAttributeDescriptionAction extends BrowserAction
     }
 
 
+    /**
+     * Gets a Set containing all the Attribute Names.
+     *
+     * @return
+     *      a Set containing all the Attribute Names
+     */
     private Set getAttributeNameSet()
     {
-        Set attributeNameSet = new LinkedHashSet();
+        Set<String> attributeNameSet = new LinkedHashSet<String>();
         for ( int i = 0; i < getSelectedAttributeHierarchies().length; i++ )
         {
             for ( Iterator it = getSelectedAttributeHierarchies()[i].iterator(); it.hasNext(); )
@@ -85,6 +103,9 @@ public class CopyAttributeDescriptionAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         if ( getAttributeNameSet().size() > 1 )
@@ -98,21 +119,29 @@ public class CopyAttributeDescriptionAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_COPY_ATT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getAttributeNameSet().size() > 0;
     }
-
 }
