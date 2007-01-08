@@ -58,12 +58,20 @@ import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
 import org.eclipse.core.runtime.IPath;
 
 
+/**
+ * This class is used to manage Connections.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionManager implements ConnectionUpdateListener, SearchUpdateListener, BookmarkUpdateListener
 {
-
     private List connectionList;
 
 
+    /**
+     * Creates a new instance of ConnectionManager.
+     */
     public ConnectionManager()
     {
         this.connectionList = new ArrayList();
@@ -74,6 +82,14 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Gets the Schema Cache filename for the corresponding Connection name.
+     *
+     * @param connectionName
+     *      the connection name
+     * @return
+     *      the Schema Cache filename for the corresponding Connection name
+     */
     public static final String getSchemaCacheFileName( String connectionName )
     {
         return BrowserCorePlugin.getDefault().getStateLocation().append(
@@ -81,6 +97,14 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Gets the Modification Log filename for the corresponding Connection name.
+     *
+     * @param connectionName
+     *      the connection name
+     * @return
+     *      the Modification Log filename
+     */
     public static final String getModificationLogFileName( String connectionName )
     {
         IPath p = BrowserCorePlugin.getDefault().getStateLocation().append( "logs" ); //$NON-NLS-1$
@@ -93,17 +117,32 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Gets the filename of the Connection Store.
+     *
+     * @return
+     *      the filename of the Connection Store
+     */
     public static final String getConnectionStoreFileName()
     {
         return BrowserCorePlugin.getDefault().getStateLocation().append( "connections.xml" ).toOSString(); //$NON-NLS-1$
     }
 
 
+    /**
+     * Converts a String into a Saveable String.
+     *
+     * @param s
+     *      the String to convert
+     * @return
+     *      the converted String
+     */
     private static String toSaveString( String s )
     {
-
         if ( s == null )
+        {
             return null;
+        }
 
         byte[] b = LdifUtils.utf8encode( s );
         StringBuffer sb = new StringBuffer();
@@ -171,6 +210,14 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Gets a connection from its name.
+     *
+     * @param name
+     *      the name of the Connection
+     * @return
+     *      the corresponding Connection
+     */
     public IConnection getConnection( String name )
     {
         for ( Iterator it = this.connectionList.iterator(); it.hasNext(); )
@@ -185,12 +232,26 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Gets the index in the Connection list of the first occurrence of the specified Connection.
+     *
+     * @param connection
+     *      the Connection to search for
+     * @return
+     *      the index in the Connection list of the first occurrence of the specified Connection
+     */
     public int indexOf( IConnection connection )
     {
         return this.connectionList.indexOf( connection );
     }
 
 
+    /**
+     * Removes the given Connection from the Connection list.
+     *
+     * @param conn
+     *      the connection to remove
+     */
     public void removeConnection( IConnection conn )
     {
         this.connectionList.remove( conn );
@@ -199,18 +260,33 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Gets an array containing all the Connections.
+     *
+     * @return
+     *      an array containing all the Connections
+     */
     public IConnection[] getConnections()
     {
         return ( IConnection[] ) this.connectionList.toArray( new IConnection[0] );
     }
 
 
+    /**
+     * Gets the number of Connections.
+     *
+     * @return
+     *      the number of Connections
+     */
     public int getConnectionCount()
     {
         return this.connectionList.size();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
         if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_ADDED
@@ -249,6 +325,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
         if ( searchUpdateEvent.getDetail() == SearchUpdateEvent.SEARCH_ADDED
@@ -261,6 +340,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
     {
         if ( bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.BOOKMARK_ADDED
@@ -272,6 +354,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Saves the Connections
+     */
     private void saveConnections()
     {
         Object[][] object = new Object[connectionList.size()][3];
@@ -308,6 +393,12 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Saves the Schema of the Connection
+     *
+     * @param connection
+     *      the Connection
+     */
     private void saveSchema( IConnection connection )
     {
         try
@@ -326,6 +417,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Loads the Connections
+     */
     private void loadConnections()
     {
         try
@@ -399,6 +493,14 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Loads an Object from an XML file
+     *
+     * @param filename
+     *      the filename of the XML file
+     * @return
+     *      the deserialized Object
+     */
     private synchronized Object load( String filename )
     {
         try
@@ -421,6 +523,14 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     }
 
 
+    /**
+     * Saves an Object into a serialized XML file
+     *
+     * @param object
+     *      the object to save
+     * @param filename
+     *      the filename to save to
+     */
     private synchronized void save( Object object, String filename )
     {
         XMLEncoder encoder = null;
@@ -453,5 +563,4 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             }
         }
     }
-
 }

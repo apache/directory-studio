@@ -24,12 +24,21 @@ package org.apache.directory.ldapstudio.browser.core;
 import org.eclipse.osgi.util.NLS;
 
 
+/**
+ * This class contains most of the Strings used by the Plugin
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserCoreMessages extends NLS
 {
     private static final String BUNDLE_NAME = "org.apache.directory.ldapstudio.browser.core.browsercoremessages"; //$NON-NLS-1$
 
-
-    private BrowserCoreMessages()
+	
+	/**
+	 * Creates a new instance of BrowserCoreMessages.
+	 */
+	private BrowserCoreMessages()
     {
     }
 
@@ -410,6 +419,4 @@ public class BrowserCoreMessages extends NLS
     public static String model_filter_missing_closing_parenthesis;
 
     public static String model_filter_missing_filter_expression;
-
-    // BrowserCoreMessages.bind(BrowserCoreMessages.xxx, new String[]{});
 }

@@ -32,6 +32,12 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.eclipse.osgi.util.NLS;
 
 
+/**
+ * This class is used to manage Searches
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchManager implements Serializable
 {
 
@@ -42,11 +48,20 @@ public class SearchManager implements Serializable
     private IConnection connection;
 
 
+    /**
+     * Creates a new instance of SearchManager.
+     */
     protected SearchManager()
     {
     }
 
 
+    /**
+     * Creates a new instance of SearchManager.
+     *
+     * @param connection
+     *      the attached Connection
+     */
     public SearchManager( IConnection connection )
     {
         this.connection = connection;
@@ -54,18 +69,38 @@ public class SearchManager implements Serializable
     }
 
 
+    /**
+     * Gets the Connection.
+     *
+     * @return
+     *      the Connection
+     */
     public IConnection getConnection()
     {
         return this.connection;
     }
 
 
+    /**
+     * Adds a Search.
+     *
+     * @param search
+     *      the Search to add
+     */
     public void addSearch( ISearch search )
     {
         this.addSearch( this.searchList.size(), search );
     }
 
 
+    /**
+     * Adds a Search at a specified position.
+     *
+     * @param index
+     *      index at which the specified Search is to be inserted.
+     * @param search
+     *      the Search to be inserted
+     */
     public void addSearch( int index, ISearch search )
     {
         if ( getSearch( search.getName() ) != null )
@@ -85,6 +120,14 @@ public class SearchManager implements Serializable
     }
 
 
+    /**
+     * Gets a Search.
+     *
+     * @param name
+     *      the name of the Search
+     * @return
+     *      the corresponding Search
+     */
     public ISearch getSearch( String name )
     {
         for ( ISearch search:searchList )
@@ -99,12 +142,26 @@ public class SearchManager implements Serializable
     }
 
 
+    /**
+     * Returns the index in the Searches list of the first occurrence of the specified Search.
+     *
+     * @param search
+     *      the Search to search for
+     * @return
+     *      the index in the Searches list of the first occurrence of the specified Search
+     */
     public int indexOf( ISearch search )
     {
         return searchList.indexOf( search );
     }
 
 
+    /**
+     * Removes a Search
+     *
+     * @param search
+     *      the Search to remove
+     */
     public void removeSearch( ISearch search )
     {
         searchList.remove( search );
@@ -112,21 +169,38 @@ public class SearchManager implements Serializable
     }
 
 
+    /**
+     * Removes a Search
+     *
+     * @param name
+     *      the name of the Search to remove
+     */
     public void removeSearch( String name )
     {
         this.removeSearch( this.getSearch( name ) );
     }
 
 
+    /**
+     * Gets an array containing all the Searches
+     *
+     * @return
+     *      an array containing all the Searches
+     */
     public ISearch[] getSearches()
     {
         return searchList.toArray( new ISearch[0] );
     }
 
 
+    /**
+     * Gets the number of Searches
+     *
+     * @return
+     *      the number of Searches
+     */
     public int getSearchCount()
     {
         return searchList.size();
     }
-
 }

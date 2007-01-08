@@ -30,12 +30,25 @@ import org.apache.directory.ldapstudio.browser.core.utils.Utils;
 import org.eclipse.core.runtime.Preferences;
 
 
+/**
+ * This class is used to manage and access the preferences of the Browser Core Plugin
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserCorePreferences
 {
-
     private Set binaryAttributeCache;
 
+    private Set binarySyntaxCache;
 
+
+    /**
+     * Gets the oids and names of the binary attributes
+     *
+     * @return
+     *      the oids and names of the binary attributes
+     */
     public Set getBinaryAttributeOidsAndNames()
     {
         if ( this.binaryAttributeCache == null )
@@ -62,6 +75,12 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Gets an array containing the binary attributes
+     * 
+     * @return
+     *      an array containing the binary attributes
+     */
     public BinaryAttribute[] getBinaryAttributes()
     {
         BinaryAttribute[] binaryAttributes = ( BinaryAttribute[] ) load( BrowserCoreConstants.PREFERENCE_BINARY_ATTRIBUTES );
@@ -69,6 +88,12 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Sets the binary attributes
+     *
+     * @param binaryAttributes
+     *      the binary attributes to set
+     */
     public void setBinaryAttributes( BinaryAttribute[] binaryAttributes )
     {
         store( BrowserCoreConstants.PREFERENCE_BINARY_ATTRIBUTES, binaryAttributes );
@@ -76,6 +101,12 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Gets the default binary attributes
+     *
+     * @return
+     *      the default binary attributes
+     */
     public BinaryAttribute[] getDefaultBinaryAttributes()
     {
         BinaryAttribute[] binaryAttributes = ( BinaryAttribute[] ) loadDefault( BrowserCoreConstants.PREFERENCE_BINARY_ATTRIBUTES );
@@ -83,12 +114,16 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Sets the default binary attributes
+     *
+     * @param defaultBinaryAttributes
+     *      the default binary attributes to set
+     */
     public void setDefaultBinaryAttributes( BinaryAttribute[] defaultBinaryAttributes )
     {
         storeDefault( BrowserCoreConstants.PREFERENCE_BINARY_ATTRIBUTES, defaultBinaryAttributes );
     }
-
-    private Set binarySyntaxCache;
 
 
     public Set getBinarySyntaxOids()
@@ -109,6 +144,12 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Gets the binary syntaxes
+     *
+     * @return
+     *      the binary syntaxes
+     */
     public BinarySyntax[] getBinarySyntaxes()
     {
         BinarySyntax[] binarySyntaxes = ( BinarySyntax[] ) load( BrowserCoreConstants.PREFERENCE_BINARY_SYNTAXES );
@@ -116,6 +157,12 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Sets the binary syntaxes
+     *
+     * @param binarySyntaxes
+     *      the binary syntaxes to set
+     */
     public void setBinarySyntaxes( BinarySyntax[] binarySyntaxes )
     {
         store( BrowserCoreConstants.PREFERENCE_BINARY_SYNTAXES, binarySyntaxes );
@@ -123,6 +170,12 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Gets the default binary syntaxes
+     *
+     * @return
+     *      the default binary syntaxes
+     */
     public BinarySyntax[] getDefaultBinarySyntaxes()
     {
         BinarySyntax[] binarySyntaxes = ( BinarySyntax[] ) loadDefault( BrowserCoreConstants.PREFERENCE_BINARY_SYNTAXES );
@@ -130,12 +183,26 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Sets the default binary syntaxes
+     *
+     * @param defaultBinarySyntaxes
+     *      the default binary syntaxes to set
+     */
     public void setDefaultBinarySyntaxes( BinarySyntax[] defaultBinarySyntaxes )
     {
         storeDefault( BrowserCoreConstants.PREFERENCE_BINARY_SYNTAXES, defaultBinarySyntaxes );
     }
 
 
+    /**
+     * Loads the current value of the string-valued property with the given name.
+     *
+     * @param key
+     *      the name of the property
+     * @return
+     *      the corresponding object
+     */
     private static Object load( String key )
     {
         Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
@@ -144,6 +211,14 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Stores the current value of the string-valued property with the given name.
+     *
+     * @param key
+     *      the name of the property
+     * @param o
+     *      the new current value of the property
+     */
     private static void store( String key, Object o )
     {
         Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
@@ -153,6 +228,14 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Loads the default value for the string-valued property with the given name.
+     *
+     * @param key
+     *      the name of the property
+     * @return
+     *      the default value of the named property
+     */
     private static Object loadDefault( String key )
     {
         Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
@@ -161,6 +244,14 @@ public class BrowserCorePreferences
     }
 
 
+    /**
+     * Stores the default value for the string-valued property with the given name.
+     *
+     * @param key
+     *      the name of the property
+     * @param o
+     *      the new default value for the property
+     */
     private static void storeDefault( String key, Object o )
     {
         Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
@@ -168,5 +259,4 @@ public class BrowserCorePreferences
         store.setDefault( key, s );
         BrowserCorePlugin.getDefault().savePluginPreferences();
     }
-
 }

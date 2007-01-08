@@ -27,12 +27,19 @@ import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
 
+/**
+ * This class is used to set default preference values.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitializer
 {
-
+    /**
+     * {@inheritDoc}
+     */
     public void initializeDefaultPreferences()
     {
-
         Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
 
         store.setDefault( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, true );
@@ -113,7 +120,5 @@ public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitial
             // //$NON-NLS-1$
             };
         BrowserCorePlugin.getDefault().getCorePreferences().setDefaultBinarySyntaxes( defaultBinarySyntaxes );
-
     }
-
 }

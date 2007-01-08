@@ -32,9 +32,14 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.eclipse.osgi.util.NLS;
 
 
+/**
+ * This class is used to manage Bookmarks.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BookmarkManager implements Serializable
 {
-
     private static final long serialVersionUID = 7605293576518974531L;
 
     private List<IBookmark> bookmarkList;
@@ -42,6 +47,12 @@ public class BookmarkManager implements Serializable
     private IConnection connection;
 
 
+    /**
+     * Creates a new instance of BookmarkManager.
+     *
+     * @param connection
+     *      the attached Connection
+     */
     public BookmarkManager( IConnection connection )
     {
         this.connection = connection;
@@ -49,30 +60,49 @@ public class BookmarkManager implements Serializable
     }
 
 
+    /**
+     * Gets the Connection
+     *
+     * @return
+     *      the Connection
+     */
     public IConnection getConnection()
     {
         return connection;
     }
 
 
+    /**
+     * Adds a Bookmark
+     *
+     * @param bookmark
+     *      the Bookmark to add
+     */
     public void addBookmark( IBookmark bookmark )
     {
         addBookmark( bookmarkList.size(), bookmark );
     }
 
 
+    /**
+     * Adds a Bookmark at a specified position.
+     *
+     * @param index
+     *      the index at which the specified element is to be inserted.
+     * @param bookmark
+     *      the Bookmark to add
+     */
     public void addBookmark( int index, IBookmark bookmark )
     {
         if ( getBookmark( bookmark.getName() ) != null )
         {
             String newBookmarkName = NLS.bind( BrowserCoreMessages.copy_n_of_s, "", bookmark.getName() ); //$NON-NLS-1$
-            
+
             for ( int i = 2; this.getBookmark( newBookmarkName ) != null; i++ )
             {
-                newBookmarkName = NLS.bind( BrowserCoreMessages.copy_n_of_s,
-                    i + " ", bookmark.getName() ); //$NON-NLS-1$
+                newBookmarkName = NLS.bind( BrowserCoreMessages.copy_n_of_s, i + " ", bookmark.getName() ); //$NON-NLS-1$
             }
-            
+
             bookmark.setName( newBookmarkName );
         }
 
@@ -82,9 +112,17 @@ public class BookmarkManager implements Serializable
     }
 
 
+    /**
+     * Gets a Bookmark
+     *
+     * @param name
+     *      the name of the Bookmark
+     * @return
+     *      the corresponding Bookmark
+     */
     public IBookmark getBookmark( String name )
     {
-        for ( IBookmark bookmark:bookmarkList )
+        for ( IBookmark bookmark : bookmarkList )
         {
             if ( bookmark.getName().equals( name ) )
             {
@@ -96,12 +134,26 @@ public class BookmarkManager implements Serializable
     }
 
 
+    /**
+     * Returns the index in the Bookmarks list of the first occurrence of the specified Bookmark
+     *
+     * @param bookmark
+     *      the bookmark to search for
+     * @return
+     *      the index in the Bookmarks list of the first occurrence of the specified Bookmark
+     */
     public int indexOf( IBookmark bookmark )
     {
         return bookmarkList.indexOf( bookmark );
     }
 
 
+    /**
+     * Removes a Bookmark
+     *
+     * @param bookmark
+     *      the Bookmark to remove
+     */
     public void removeBookmark( IBookmark bookmark )
     {
         bookmarkList.remove( bookmark );
@@ -110,21 +162,38 @@ public class BookmarkManager implements Serializable
     }
 
 
+    /**
+     * Removes a Bookmark
+     *
+     * @param name
+     *      the name of the Bookmark to remove
+     */
     public void removeBookmark( String name )
     {
         this.removeBookmark( this.getBookmark( name ) );
     }
 
 
+    /**
+     * Gets an array containing all Bookmarks
+     *
+     * @return
+     *      an array containing all Bookmarks
+     */
     public IBookmark[] getBookmarks()
     {
         return bookmarkList.toArray( new IBookmark[0] );
     }
 
 
+    /**
+     * Gets the number of Bookmarks
+     *
+     * @return
+     *      the number of Bookmarjs
+     */
     public int getBookmarkCount()
     {
         return bookmarkList.size();
     }
-
 }

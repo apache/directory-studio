@@ -25,9 +25,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 
 
+/**
+ * This class contains all the constants used by the Browser Core Plugin
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface BrowserCoreConstants
 {
-
     public static final String PREFERENCE_BINARY_SYNTAXES = "binarySyntaxes"; //$NON-NLS-1$
 
     public static final String PREFERENCE_BINARY_ATTRIBUTES = "binaryAttributes"; //$NON-NLS-1$
@@ -89,5 +94,4 @@ public interface BrowserCoreConstants
     public static final int SORT_ORDER_ASCENDING = 1;
 
     public static final int SORT_ORDER_DESCENDING = 2;
-
 }

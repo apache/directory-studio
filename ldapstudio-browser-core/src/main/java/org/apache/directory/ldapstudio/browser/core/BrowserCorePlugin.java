@@ -34,28 +34,30 @@ import org.osgi.framework.BundleContext;
  */
 public class BrowserCorePlugin extends Plugin
 {
-
-    // The plugin ID
+    /** The plugin ID */
     public static final String PLUGIN_ID = "org.apache.directory.ldapstudio.browser.core"; //$NON-NLS-1$
 
-    // The shared instance.
+    /** The shared instance. */
     private static BrowserCorePlugin plugin;
 
-    // The connection manager
+    /** The connection manager */
     private ConnectionManager connectionManager;
 
-    // The credential provider
+    /** The credential provider */
     private IAuthHandler authHandler;
 
-    // The connection provider
+    /** The connection provider */
     private IReferralHandler referralHandler;
 
-    // The preferences
+    /** The preferences */
     private BrowserCorePreferences preferences;
 
     private EventPerformanceMeter eventPerformanceMeter;
 
 
+    /**
+     * Creates a new instance of BrowserCorePlugin.
+     */
     public BrowserCorePlugin()
     {
         super();
@@ -65,6 +67,9 @@ public class BrowserCorePlugin extends Plugin
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
@@ -78,6 +83,9 @@ public class BrowserCorePlugin extends Plugin
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void stop( BundleContext context ) throws Exception
     {
         super.stop( context );
@@ -108,7 +116,10 @@ public class BrowserCorePlugin extends Plugin
 
 
     /**
-     * @return The connection mamanger
+     * Gets the Connection Manager
+     * 
+     * @return 
+     *      the connection manager
      */
     public ConnectionManager getConnectionManager()
     {
@@ -126,27 +137,50 @@ public class BrowserCorePlugin extends Plugin
     }
 
 
+    /**
+     * Gets the AuthHandler
+     *
+     * @return
+     *      the AuthHandler
+     */
     public IAuthHandler getAuthHandler()
     {
         return authHandler;
     }
 
 
+    /**
+     * Sets the AuthHandler
+     *
+     * @param authHandler
+     *      the authHandler to set
+     */
     public void setAuthHandler( IAuthHandler authHandler )
     {
         this.authHandler = authHandler;
     }
 
 
+    /**
+     * Gets the ReferralHanlder
+     * 
+     * @return
+     *      the ReferralHandler
+     */
     public IReferralHandler getReferralHandler()
     {
         return referralHandler;
     }
 
 
+    /**
+     * Sets the ReferralHandler
+     * 
+     * @param referralHandler
+     *      the ReferralHandler to set
+     */
     public void setReferralHandler( IReferralHandler referralHandler )
     {
         this.referralHandler = referralHandler;
     }
-
 }
