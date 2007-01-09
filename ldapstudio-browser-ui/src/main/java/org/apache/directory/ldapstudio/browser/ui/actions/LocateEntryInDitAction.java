@@ -94,21 +94,19 @@ public class LocateEntryInDitAction extends LocateInDitAction
      * This implementation returns a connection and DN if the a search result or bookmark
      * is selected.
      */
-    protected Object[] getConnectionAndDn()
+    protected ConnectionAndDn getConnectionAndDn()
     {
         if ( getSelectedSearchResults().length == 1
             && getSelectedBookmarks().length + getSelectedEntries().length + getSelectedBrowserViewCategories().length == 0 )
         {
-            return new Object[]
-                { getSelectedSearchResults()[0].getEntry().getConnection(),
-                    getSelectedSearchResults()[0].getEntry().getDn() };
+            return new ConnectionAndDn( getSelectedSearchResults()[0].getEntry().getConnection(),
+                getSelectedSearchResults()[0].getEntry().getDn() );
         }
         else if ( getSelectedBookmarks().length == 1
             && getSelectedSearchResults().length + getSelectedEntries().length
                 + getSelectedBrowserViewCategories().length == 0 )
         {
-            return new Object[]
-                { getSelectedBookmarks()[0].getConnection(), getSelectedBookmarks()[0].getDn() };
+            return new ConnectionAndDn( getSelectedBookmarks()[0].getConnection(), getSelectedBookmarks()[0].getDn() );
         }
         else
         {

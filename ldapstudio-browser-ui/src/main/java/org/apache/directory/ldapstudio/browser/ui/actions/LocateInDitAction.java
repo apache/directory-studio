@@ -47,11 +47,11 @@ public abstract class LocateInDitAction extends BrowserAction
      */
     public final void run()
     {
-        Object[] connectionAndDn = getConnectionAndDn();
+        ConnectionAndDn connectionAndDn = getConnectionAndDn();
         if ( connectionAndDn != null )
         {
-            IConnection connection = ( IConnection ) connectionAndDn[0];
-            DN dn = ( DN ) connectionAndDn[1];
+            IConnection connection = connectionAndDn.connection;
+            DN dn = connectionAndDn.dn;
 
             IEntry entry = connection.getEntryFromCache( dn );
             if ( entry == null )
@@ -106,12 +106,38 @@ public abstract class LocateInDitAction extends BrowserAction
 
 
     /**
-     * Get the connection and DN to open. It must be an array of size 2.
-     * The first element must be the IConnection object. The second
-     * element must be the DN.
+     * Get the connection and DN to open.
      * 
-     * @return an array with the connection and DN to open, or null.
+     * @return a ConnectionAndDn bean, or null.
      */
-    protected abstract Object[] getConnectionAndDn();
+    protected abstract ConnectionAndDn getConnectionAndDn();
 
+    
+    /**
+     * Inner class to get connection and DN of the entry to locate.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    protected class ConnectionAndDn
+    {
+        /** The connection */
+        private IConnection connection;
+
+        /** The DN */
+        private DN dn;
+
+
+        /**
+         * Creates a new instance of ConnectionAndDn.
+         *
+         * @param connection the connection
+         * @param dn the DN
+         */
+        protected ConnectionAndDn( IConnection connection, DN dn )
+        {
+            this.connection = connection;
+            this.dn = dn;
+        }
+    }
 }

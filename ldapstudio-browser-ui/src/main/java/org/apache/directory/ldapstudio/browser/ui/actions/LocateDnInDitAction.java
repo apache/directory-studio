@@ -73,7 +73,7 @@ public class LocateDnInDitAction extends LocateInDitAction
      * This implementation returns a connection and DN if the selected attribute or value
      * contains a valid DN.
      */
-    protected Object[] getConnectionAndDn()
+    protected ConnectionAndDn getConnectionAndDn()
     {
 
         if ( getSelectedAttributeHierarchies().length == 1
@@ -85,8 +85,8 @@ public class LocateDnInDitAction extends LocateInDitAction
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
                 if ( value.isString() && new DN( value.getStringValue() ) != null )
                 {
-                    return new Object[]
-                        { value.getAttribute().getEntry().getConnection(), new DN( value.getStringValue() ) };
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getConnection(), new DN( value
+                        .getStringValue() ) );
                 }
             }
             catch ( NameException e )
@@ -102,8 +102,8 @@ public class LocateDnInDitAction extends LocateInDitAction
                 IValue value = getSelectedValues()[0];
                 if ( value.isString() && new DN( value.getStringValue() ) != null )
                 {
-                    return new Object[]
-                        { value.getAttribute().getEntry().getConnection(), new DN( value.getStringValue() ) };
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getConnection(), new DN( value
+                        .getStringValue() ) );
                 }
             }
             catch ( NameException e )
@@ -115,8 +115,7 @@ public class LocateDnInDitAction extends LocateInDitAction
         if ( getSelectedSearchResults().length == 1 && getSelectedAttributeHierarchies().length == 0 )
         {
             ISearchResult result = getSelectedSearchResults()[0];
-            return new Object[]
-                { result.getEntry().getConnection(), result.getEntry().getDn() };
+            return new ConnectionAndDn( result.getEntry().getConnection(), result.getEntry().getDn() );
         }
 
         return null;
