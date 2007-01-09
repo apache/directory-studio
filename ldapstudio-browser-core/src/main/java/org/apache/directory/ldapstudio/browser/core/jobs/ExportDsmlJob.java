@@ -33,6 +33,7 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.SearchParameter;
 import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
 
+
 /**
  * This class implements a Job for Exporting a part of a LDAP Server into a DSML File.
  *
@@ -67,7 +68,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
         this.connection = connection;
         this.searchParameter = searchParameter;
 
-        setName( BrowserCoreMessages.jobs__export_dsml_name ); 
+        setName( BrowserCoreMessages.jobs__export_dsml_name );
     }
 
 
@@ -86,7 +87,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
      */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<String> l = new ArrayList<String>();
         l.add( connection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
         return l.toArray();
     }
@@ -105,14 +106,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
         {
             // Getting and preparing each parameter for the request        
             String requestDN = searchParameter.getSearchBase().toString();
-            
+
             String requestScope = null;
             int scope = searchParameter.getScope();
             if ( scope == ISearch.SCOPE_OBJECT )
             {
                 requestScope = "baseObject";
             }
-            else if ( scope == ISearch.SCOPE_ONELEVEL)
+            else if ( scope == ISearch.SCOPE_ONELEVEL )
             {
                 requestScope = "singleLevel";
             }
@@ -120,14 +121,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
             {
                 requestScope = "wholeSubtree";
             }
-            
+
             String requestDerefAliases = null;
             int derefAliases = searchParameter.getAliasesDereferencingMethod();
             if ( derefAliases == IConnection.DEREFERENCE_ALIASES_ALWAYS )
             {
                 requestDerefAliases = "derefAlways";
             }
-            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_FINDING)
+            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_FINDING )
             {
                 requestDerefAliases = "derefFindingBaseObj";
             }
@@ -139,53 +140,56 @@ public class ExportDsmlJob extends AbstractEclipseJob
             {
                 requestDerefAliases = "derefInSearching";
             }
-            
+
             String requestTimeLimit = null;
             int timeLimit = searchParameter.getTimeLimit();
-            if ( timeLimit != 0);
+            if ( timeLimit != 0 )
+                ;
             {
                 requestTimeLimit = "" + timeLimit;
             }
-            
+
             String requestSizeLimit = null;
             int countLimit = searchParameter.getCountLimit();
-            if ( countLimit != 0);
+            if ( countLimit != 0 )
+                ;
             {
                 requestSizeLimit = "" + countLimit;
             }
-            
+
             // Constructing the request
-            String request = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-            request += "<batchRequest>";
-            request += "<searchRequest dn=\"" + requestDN + "\"";
-            request += " scope=\"" + requestScope + "\" ";
-            request += " derefAliases=\"" +requestDerefAliases + "\"";
+            StringBuffer sb = new StringBuffer();
+            sb.append( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" );
+            sb.append( "<batchRequest>" );
+            sb.append( "<searchRequest dn=\"" + requestDN + "\"" );
+            sb.append( " scope=\"" + requestScope + "\" " );
+            sb.append( " derefAliases=\"" + requestDerefAliases + "\"" );
             if ( requestTimeLimit != null )
             {
-                request += " timelimit=\"" +requestTimeLimit + "\"";
+                sb.append( " timeLimit=\"" + requestTimeLimit + "\"" );
             }
             if ( requestSizeLimit != null )
             {
-                request += " sizelimit=\"" +requestSizeLimit + "\"";
+                sb.append( " sizeLimit=\"" + requestSizeLimit + "\"" );
             }
-            request += ">";
-            request += "<filter><present name=\"objectclass\"></present></filter>";
-            request += "<attributes>";
+            sb.append( ">" );
+            sb.append( "<filter><present name=\"objectclass\"></present></filter>" );
+            sb.append( "<attributes>" );
             String[] returningAttributes = searchParameter.getReturningAttributes();
             for ( int i = 0; i < returningAttributes.length; i++ )
             {
-                request += "<attribute name=\"" + returningAttributes[i] + "\"/>";
+                sb.append( "<attribute name=\"" + returningAttributes[i] + "\"/>" );
             }
-            request += "</attributes>";
-            request += "</searchRequest>";
-            request += "</batchRequest>";
-            
-            System.out.println( request );
-            
+            sb.append( "</attributes>" );
+            sb.append( "</searchRequest>" );
+            sb.append( "</batchRequest>" );
+
             // Executing the request
-            Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection.getBindPrincipal(), connection.getBindPassword() );
-            String response = engine.processDSML( request );
-            
+            Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
+                .getBindPrincipal(), connection.getBindPassword() );
+            String response = engine.processDSML( sb.toString() );
+
+            // Saving the response
             FileOutputStream fout = new FileOutputStream( exportDsmlFilename );
             new PrintStream( fout ).println( response );
             fout.close();
@@ -195,6 +199,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             monitor.reportError( e );
         }
     }
+
 
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.browser.core.jobs.AbstractEclipseJob#getErrorMessage()
