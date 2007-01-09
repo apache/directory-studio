@@ -230,8 +230,7 @@ public class Dsmlv2Parser
     {
         if ( container.getBatchRequest() == null )
         {
-            throw new XmlPullParserException( "The batch request needs to be parsed before parsing a request",
-                container.getParser(), null );
+            parseBatchRequest();
         }
 
         XmlPullParser xpp = container.getParser();

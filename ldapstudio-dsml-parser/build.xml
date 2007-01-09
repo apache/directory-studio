@@ -18,7 +18,7 @@
 -->
 <project name="ldapstudio-dsml-parser" default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
 	<property name="project.name" value="ldapstudio-dsml-parser" />
-	<property name="project.version" value="0.1" />
+	<property name="project.version" value="0.2" />
 
 	<property name="project.output" value="${basedir}/target" />
 	<property name="project.build" value="${project.output}/build" />
@@ -95,7 +95,7 @@
 	<!--              JAR                   -->
 	<!-- ================================== -->
 	<target name="jar" description="Creates jar file" depends="compile">
-		<jar destfile="${project.output}/${project.name}_${project.version}.jar" manifest="${project.build}/META-INF/MANIFEST.MF">
+		<jar destfile="${project.output}/${project.name}-${project.version}.jar" manifest="${project.build}/META-INF/MANIFEST.MF">
 			<fileset dir="${project.build}" excludes="compile.timestamp" />
 		</jar>
 	</target>
@@ -124,15 +124,6 @@
 				<exclude name="ivy.xml" />
 				<exclude name="src/**" />
 				<exclude name="META-INF/**" />
-				<exclude name="CompleteBatchRequest.xml" />
-				<exclude name="BatchResponse.xml" />
-				<exclude name="document_dsml_test.xml" />
-				<exclude name="SimpleAddDSML.xml" />
-				<exclude name="SimpleAuthDSML.xml" />
-				<exclude name="SimpleDelDSML.xml" />
-				<exclude name="SimpleErrorResponseGeneratingDSML.xml" />
-				<exclude name="SimpleExtendedDSML.xml" />
-				<exclude name="SimpleSearchDSML.xml" />
 			</fileset>
 		</delete>
 	</target>
