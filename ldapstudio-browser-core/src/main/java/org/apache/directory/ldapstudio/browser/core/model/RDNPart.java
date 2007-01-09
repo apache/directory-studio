@@ -27,35 +27,55 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 
 
+/**
+ * A RDNPart represents a attribute type-value-pair, used in RDN. 
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RDNPart implements Serializable
 {
-
+    /** The generated serialVersionUID */
     private static final long serialVersionUID = 3250931604639940667L;
 
-    private String name;
+    /** The attribute type */
+    private String type;
 
+    /** The value */
     private String value;
 
 
+    /**
+     * Creates a new instance of RDNPart with an empty type an value 
+     *
+     */
     public RDNPart()
     {
-        this.name = ""; //$NON-NLS-1$
+        this.type = ""; //$NON-NLS-1$
         this.value = ""; //$NON-NLS-1$
     }
 
 
-    public RDNPart( String name, String value, boolean isValueEncoded ) throws NameException
+    /**
+     * Creates a new instance of RDNPart with the given type and value.
+     *
+     * @param type the attribute type
+     * @param value the value
+     * @param isValueEncoded true if the value is already encoded according RFC4514, Section 2.4
+     * @throws NameException if the type or value are invalid
+     */
+    public RDNPart( String type, String value, boolean isValueEncoded ) throws NameException
     {
-        if ( name == null || !name.matches( "([A-Za-z][A-Za-z0-9-]*)|([0-9]+(\\.[0-9]+)+)" ) ) { //$NON-NLS-1$
+        if ( type == null || !type.matches( "([A-Za-z][A-Za-z0-9-]*)|([0-9]+(\\.[0-9]+)+)" ) ) { //$NON-NLS-1$
             throw new NameException( BrowserCoreMessages.model__empty_attribute );
         }
         if ( value == null || value.length() < 1 )
         {
             throw new NameException( BrowserCoreMessages.model__empty_value );
         }
-        // this.name = name.trim();
+        // this.type = type.trim();
         // this.value = value.trim();
-        this.setName( name );
+        this.setType( type );
         if ( isValueEncoded )
         {
             this.setValue( value );
@@ -67,44 +87,46 @@ public class RDNPart implements Serializable
     }
 
 
+    /**
+     * Creates a clone of the given RDNPart.
+     *
+     * @param rdnPart the RDNPart.
+     */
     public RDNPart( RDNPart rdnPart )
     {
-        this.name = rdnPart.name;
+        this.type = rdnPart.type;
         this.value = rdnPart.value;
     }
 
 
-    public String getName()
+    /**
+     * Gets the type.
+     * 
+     * @return the type
+     */
+    public String getType()
     {
-        return name;
+        return type;
     }
 
 
-    public void setName( String name )
+    /**
+     * Sets the type.
+     * 
+     * @param type the type
+     */
+    public void setType( String type )
     {
-        this.name = name;
+        this.type = type;
     }
 
 
-    // If the UTF-8 string does not have any of the following characters
-    // which need escaping, then that string can be used as the string
-    // representation of the value.
-    //
-    // o a space or "#" character occurring at the beginning of the
-    // string
-    //
-    // o a space character occurring at the end of the string
-    //
-    // o one of the characters ",", "+", """, "\", "<", ">" or ";"
-    //
-    // Implementations MAY escape other characters.
-    //
-    // If a character to be escaped is one of the list shown above, then it
-    // is prefixed by a backslash ('\' ASCII 92).
-    //
-    // Otherwise the character to be escaped is replaced by a backslash and
-    // two hex digits, which form a single byte in the code of the
-    // character.
+    /**
+     * Gets the unencoded value. All escaped characters are unescaped
+     * before returning the vaue.
+     *
+     * @return the unencoded value.
+     */
     public String getUnencodedValue()
     {
         StringBuffer unencodedValue = new StringBuffer( this.value );
@@ -113,7 +135,6 @@ public class RDNPart implements Serializable
         {
             if ( unencodedValue.charAt( i ) == '\\' )
             {
-
                 if ( i == 0 && unencodedValue.length() > i + 1 && unencodedValue.charAt( i + 1 ) == ' ' )
                 {
                     unencodedValue.deleteCharAt( i );
@@ -135,7 +156,6 @@ public class RDNPart implements Serializable
                 {
                     unencodedValue.deleteCharAt( i );
                 }
-
             }
         }
 
@@ -143,9 +163,14 @@ public class RDNPart implements Serializable
     }
 
 
+    /**
+     * Sets the unencoded value. The unencoded value will be encoded 
+     * according RFC4514, Section 2.4.
+     * 
+     * @param unencodedValue the unencoded value
+     */
     public void setUnencodedValue( String unencodedValue )
     {
-
         unencodedValue = unencodedValue.replaceAll( "\\\\", "\\\\\\\\" ); //$NON-NLS-1$ //$NON-NLS-2$
         unencodedValue = unencodedValue.replaceAll( "\\+", "\\\\+" ); //$NON-NLS-1$ //$NON-NLS-2$
         unencodedValue = unencodedValue.replaceAll( ",", "\\\\," ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -155,34 +180,59 @@ public class RDNPart implements Serializable
         unencodedValue = unencodedValue.replaceAll( ";", "\\\\;" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         if ( unencodedValue.startsWith( " " ) ) //$NON-NLS-1$
+        {
             unencodedValue = "\\" + unencodedValue; //$NON-NLS-1$
-        if ( unencodedValue.startsWith( "#" ) ) //$NON-NLS-1$
+        }
+        else if ( unencodedValue.startsWith( "#" ) ) //$NON-NLS-1$
+        {
             unencodedValue = "\\" + unencodedValue; //$NON-NLS-1$
+        }
+
         if ( unencodedValue.endsWith( " " ) ) //$NON-NLS-1$
+        {
             unencodedValue = unencodedValue.substring( 0, unencodedValue.length() - 1 ) + "\\ "; //$NON-NLS-1$
+        }
 
         this.value = unencodedValue;
     }
 
 
+    /**
+     * Gets the value. Note that the value is encoded
+     * according RFC 4514, Section 2.4.
+     * 
+     * @return the value
+     */
     public String getValue()
     {
         return value;
     }
 
 
+    /**
+     * Sets the value. Note that the value must be encoded
+     * according RFC 4514, Section 2.4.
+     * 
+     * @param value the value
+     */
     public void setValue( String value )
     {
         this.value = value;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode()
     {
         return this.toString().hashCode();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o )
     {
         if ( o instanceof RDNPart )
@@ -193,15 +243,26 @@ public class RDNPart implements Serializable
     }
 
 
+    /**
+     * Returns the string representation of this RDNPart, namely
+     * &lt;type&gt;=&lt;value&gt;
+     */
     public String toString()
     {
-        return getName() + "=" + getValue(); //$NON-NLS-1$
+        return getType() + "=" + getValue(); //$NON-NLS-1$
     }
 
 
+    /**
+     * Returns the string representation of this RDNPart, but with
+     * the numerid OID instead of the type.
+     *
+     * @param schema the schema
+     * @return the OID-fizied string representation of this RDNPart
+     */
     public String toOidString( Schema schema )
     {
-        String oid = schema != null ? schema.getAttributeTypeDescription( getName() ).getNumericOID() : getName();
+        String oid = schema != null ? schema.getAttributeTypeDescription( getType() ).getNumericOID() : getType();
         return oid + "=" + getValue(); //$NON-NLS-1$
     }
 

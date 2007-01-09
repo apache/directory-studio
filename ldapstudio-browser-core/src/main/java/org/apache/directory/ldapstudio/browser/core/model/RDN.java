@@ -31,23 +31,40 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 
 
+/**
+ * A RDN represents a LDAP relative distinguished name.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RDN implements Serializable
 {
 
+    /** The generated serialVersionUID. */
     private static final long serialVersionUID = -4165959915339033047L;
 
+    /** The attribute type-value pairs */
     private RDNPart[] parts;
 
 
+    /**
+     * Creates an empty RDN.
+     *
+     */
     public RDN()
     {
         this.parts = new RDNPart[0];
     }
 
 
+    /**
+     * Creates a new instance of RDN. The given string is parsed.
+     *
+     * @param rdn the rdn
+     * @throws NameException if parsing fails.
+     */
     public RDN( String rdn ) throws NameException
     {
-
         if ( rdn == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_rdn );
@@ -58,9 +75,13 @@ public class RDN implements Serializable
     }
 
 
+    /**
+     * Creates a clone of the given RDN.
+     *
+     * @param rdn the RDN
+     */
     public RDN( RDN rdn )
     {
-
         if ( rdn == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_rdn );
@@ -75,15 +96,16 @@ public class RDN implements Serializable
 
 
     /**
-     * Create a single-valued RDN with the given name and value
+     * Create a single-valued RDN with the given type and value.
      * 
-     * @param name
-     * @param value
+     * @param type the attribute type
+     * @param value the value
+     * @param isValueEncoded true if the value is already encoded according RFC4514, Section 2.4
+     * @throws NameException if the type or value are invalid
      */
-    public RDN( String name, String value, boolean isValueEncoded ) throws NameException
+    public RDN( String type, String value, boolean isValueEncoded ) throws NameException
     {
-
-        if ( name == null )
+        if ( type == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_attribute );
         }
@@ -93,14 +115,22 @@ public class RDN implements Serializable
         }
 
         this.parts = new RDNPart[1];
-        this.parts[0] = new RDNPart( name, value, isValueEncoded );
+        this.parts[0] = new RDNPart( type, value, isValueEncoded );
     }
 
 
-    public RDN( String[] names, String[] values, boolean areValuesEncoded ) throws NameException
+    /**
+     * Creates a multi-values RDN with the given types and values.
+     *
+     * @param types the attribute types
+     * @param values the attribute values
+     * @param areValuesEncoded true if the values is already encoded according RFC4514, Section 2.4
+     * @throws NameException if the types or values are invalid
+     */
+    public RDN( String[] types, String[] values, boolean areValuesEncoded ) throws NameException
     {
 
-        if ( names == null || names.length < 1 )
+        if ( types == null || types.length < 1 )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_attribute );
         }
@@ -108,69 +138,104 @@ public class RDN implements Serializable
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_value );
         }
-        if ( names.length != values.length )
+        if ( types.length != values.length )
         {
-            throw new IllegalArgumentException( "Size of names and values is not equal" ); //$NON-NLS-1$
+            throw new IllegalArgumentException( "Size of types and values is not equal" ); //$NON-NLS-1$
         }
 
-        this.parts = new RDNPart[names.length];
+        this.parts = new RDNPart[types.length];
         for ( int i = 0; i < this.parts.length; i++ )
         {
-            this.parts[i] = new RDNPart( names[i], values[i], areValuesEncoded );
+            this.parts[i] = new RDNPart( types[i], values[i], areValuesEncoded );
         }
     }
 
 
+    /**
+     * Checks if the RDN is multi-valued.
+     * 
+     * @return true, if the RDN is multi-valued
+     */
     public boolean isMultivalued()
     {
         return this.parts.length > 1;
     }
 
 
-    public String getName()
+    /**
+     * Gets the first attribute type.
+     * 
+     * @return the first attribute type
+     */
+    public String getType()
     {
-        return this.parts.length > 0 ? this.parts[0].getName() : ""; //$NON-NLS-1$
+        return this.parts.length > 0 ? this.parts[0].getType() : ""; //$NON-NLS-1$
     }
 
 
+    /**
+     * Gets the first attribute value.
+     * 
+     * @return the first attribute value
+     */
     public String getValue()
     {
         return this.parts.length > 0 ? this.parts[0].getValue() : ""; //$NON-NLS-1$
     }
 
 
+    /**
+     * Gets the parts.
+     * 
+     * @return the parts
+     */
     public RDNPart[] getParts()
     {
         return this.parts;
     }
 
 
+    /**
+     * Sets the parts.
+     * 
+     * @param parts the parts
+     */
     public void setParts( RDNPart[] parts )
     {
         this.parts = parts;
     }
 
 
-    public String[] getNames()
+    /**
+     * Gets the attribute types.
+     * 
+     * @return the attribute types
+     */
+    public String[] getTypes()
     {
         if ( !isMultivalued() )
         {
             return new String[]
-                { getName() };
+                { getType() };
         }
         else
         {
-            Set nameSet = new LinkedHashSet();
+            Set<String> typeSet = new LinkedHashSet<String>();
             for ( int i = 0; i < this.parts.length; i++ )
             {
                 RDNPart entry = this.parts[i];
-                nameSet.add( entry.getName() );
+                typeSet.add( entry.getType() );
             }
-            return ( String[] ) nameSet.toArray( new String[nameSet.size()] );
+            return typeSet.toArray( new String[typeSet.size()] );
         }
     }
 
 
+    /**
+     * Gets the values.
+     * 
+     * @return the values
+     */
     public String[] getValues()
     {
         if ( !isMultivalued() )
@@ -180,23 +245,29 @@ public class RDN implements Serializable
         }
         else
         {
-            Set valueSet = new LinkedHashSet();
+            Set<String> valueSet = new LinkedHashSet<String>();
             for ( int i = 0; i < this.parts.length; i++ )
             {
                 RDNPart entry = this.parts[i];
                 valueSet.add( entry.getValue() );
             }
-            return ( String[] ) valueSet.toArray( new String[valueSet.size()] );
+            return valueSet.toArray( new String[valueSet.size()] );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode()
     {
         return this.toString().hashCode();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o )
     {
         if ( o instanceof RDN )
@@ -207,6 +278,10 @@ public class RDN implements Serializable
     }
 
 
+    /**
+     * Returns the string representation of this RDN, 
+     * for example &lt;type&gt;=&lt;value&gt;
+     */
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
@@ -217,9 +292,6 @@ public class RDN implements Serializable
             {
                 RDNPart part = this.parts[i];
                 sb.append( part.toString() );
-                // sb.append(part.getName());
-                // sb.append("="); //$NON-NLS-1$
-                // sb.append(part.getValue());
 
                 if ( i + 1 < this.parts.length )
                 {
@@ -231,15 +303,19 @@ public class RDN implements Serializable
         {
             RDNPart part = this.parts[0];
             sb.append( part.toString() );
-            // sb.append(part.getName());
-            // sb.append("="); //$NON-NLS-1$
-            // sb.append(part.getValue());
         }
 
         return sb.toString();
     }
 
 
+    /**
+     * Returns the string representation of this RDN, but with
+     * the numerid OIDs instead of the types.
+     *
+     * @param schema the schema
+     * @return the OID-fizied string representation of this RDN
+     */
     public String toOidString( Schema schema )
     {
         StringBuffer sb = new StringBuffer();
@@ -267,10 +343,15 @@ public class RDN implements Serializable
     }
 
 
+    /**
+     * Parses the RDN.
+     *
+     * @param multirdn the rdn
+     * @throws NameException if parsing fails
+     */
     private void parseMultiRdn( String multirdn ) throws NameException
     {
-
-        List partList = new ArrayList( 1 );
+        List<RDNPart> partList = new ArrayList<RDNPart>( 1 );
 
         boolean backslash = false;
         int start = 0;
@@ -298,10 +379,9 @@ public class RDN implements Serializable
                     {
                         throw new NameException( BrowserCoreMessages.model__invalid_rdn );
                     }
-                    String name = rdn.substring( 0, index );
+                    String type = rdn.substring( 0, index );
                     String value = rdn.substring( index + 1, rdn.length() );
-                    // partList.add(new RDNPart(name.trim(), value.trim()));
-                    partList.add( new RDNPart( name, value, true ) );
+                    partList.add( new RDNPart( type, value, true ) );
                     start = i + 1;
                 }
                 backslash = false;
@@ -313,8 +393,7 @@ public class RDN implements Serializable
 
         }
 
-        this.parts = ( RDNPart[] ) partList.toArray( new RDNPart[partList.size()] );
-
+        this.parts = partList.toArray( new RDNPart[partList.size()] );
     }
 
 }

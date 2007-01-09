@@ -329,16 +329,16 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             for ( int i = 0; i < rdnParts.length; i++ )
             {
                 RDNPart part = rdnParts[i];
-                if ( "cn".equals( part.getName() ) || "sn".equals( part.getName() ) || "uid".equals( part.getName() )
-                    || "userid".equals( part.getName() ) )
+                if ( "cn".equals( part.getType() ) || "sn".equals( part.getType() ) || "uid".equals( part.getType() )
+                    || "userid".equals( part.getType() ) )
                 {
                     return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ENTRY_PERSON );
                 }
-                else if ( "ou".equals( part.getName() ) || "o".equals( part.getName() ) )
+                else if ( "ou".equals( part.getType() ) || "o".equals( part.getType() ) )
                 {
                     return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ENTRY_ORG );
                 }
-                else if ( "dc".equals( part.getName() ) || "c".equals( part.getName() ) || "l".equals( part.getName() ) )
+                else if ( "dc".equals( part.getType() ) || "c".equals( part.getType() ) || "l".equals( part.getType() ) )
                 {
                     return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ENTRY_DC );
                 }

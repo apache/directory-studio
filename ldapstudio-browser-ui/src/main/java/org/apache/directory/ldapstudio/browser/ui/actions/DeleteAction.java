@@ -654,7 +654,7 @@ public class DeleteAction extends BrowserAction implements ModelModifier
             RDNPart[] parts = this.getSelectedValues()[i].getAttribute().getEntry().getRdn().getParts();
             for ( int p = 0; p < parts.length; p++ )
             {
-                if ( getSelectedValues()[i].getAttribute().getDescription().equals( parts[p].getName() )
+                if ( getSelectedValues()[i].getAttribute().getDescription().equals( parts[p].getType() )
                     && getSelectedValues()[i].getStringValue().equals( parts[p].getValue() ) )
                 {
                     throw new Exception();

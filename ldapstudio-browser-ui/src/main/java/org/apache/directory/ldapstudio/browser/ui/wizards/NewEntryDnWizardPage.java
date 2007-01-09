@@ -132,7 +132,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             RDNPart[] oldRdnParts = newEntry.getRdn().getParts();
             for ( int i = 0; i < oldRdnParts.length; i++ )
             {
-                IAttribute attribute = newEntry.getAttribute( oldRdnParts[i].getName() );
+                IAttribute attribute = newEntry.getAttribute( oldRdnParts[i].getType() );
                 if ( attribute != null )
                 {
                     IValue[] values = attribute.getValues();
@@ -154,10 +154,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             RDNPart[] newRdnParts = dn.getRdn().getParts();
             for ( int i = 0; i < newRdnParts.length; i++ )
             {
-                IAttribute rdnAttribute = newEntry.getAttribute( newRdnParts[i].getName() );
+                IAttribute rdnAttribute = newEntry.getAttribute( newRdnParts[i].getType() );
                 if ( rdnAttribute == null )
                 {
-                    rdnAttribute = new Attribute( newEntry, newRdnParts[i].getName() );
+                    rdnAttribute = new Attribute( newEntry, newRdnParts[i].getType() );
                     newEntry.addAttribute( rdnAttribute, wizard );
                 }
                 String rdnValue = newRdnParts[i].getUnencodedValue();

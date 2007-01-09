@@ -29,23 +29,40 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 
 
+/**
+ * A DN represents a LDAP distinguished name.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DN implements Serializable
 {
 
+    /** The generated serialVersionUID. */
     private static final long serialVersionUID = 2343676941769163982L;
 
+    /** The rdns */
     private RDN[] rdns;
 
 
+    /**
+     * Creates an empty DN.
+     *
+     */
     public DN()
     {
         this.rdns = new RDN[0];
     }
 
 
+    /**
+     * Creates a new instance of DN containing only on RDN.
+     * The given RDN is cloned.
+     *
+     * @param rdn the rdn
+     */
     public DN( RDN rdn )
     {
-
         if ( rdn == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_rdn );
@@ -56,9 +73,14 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Creates a new instance of DN. The given string is parsed.
+     *
+     * @param dn the dn
+     * @throws NameException if parsing fails.
+     */
     public DN( String dn ) throws NameException
     {
-
         if ( dn == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_dn );
@@ -69,9 +91,13 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Creates a clone of the given DN.
+     *
+     * @param dn the DN
+     */
     public DN( DN dn )
     {
-
         if ( dn == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_dn );
@@ -85,9 +111,15 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Creates a new instance of DN using the given RDN and parent.
+     * The given RDN and parent are cloned.
+     *
+     * @param rdn the RDN
+     * @param parent the parent DN
+     */
     public DN( RDN rdn, DN parent )
     {
-
         if ( rdn == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_rdn );
@@ -106,6 +138,13 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Creates a new instance of DN. The given strings are parsed.
+     *
+     * @param rdn the rdn
+     * @param parent the parent dn
+     * @throws NameException if parsing fails
+     */
     public DN( String rdn, String parent ) throws NameException
     {
 
@@ -128,6 +167,11 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Gets the RDN of this DN.
+     *
+     * @return the RDN
+     */
     public RDN getRdn()
     {
         if ( this.rdns.length > 0 )
@@ -141,6 +185,11 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Gets the parent DN.
+     * 
+     * @return the parent DN
+     */
     public DN getParentDn()
     {
         if ( this.rdns.length < 2 )
@@ -161,6 +210,9 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Returns the string representation of this DN.
+     */
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
@@ -178,6 +230,13 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Returns the string representation of this DN, but with
+     * the numerid OIDs instead of the types.
+     *
+     * @param schema the schema
+     * @return the OID-fizied string representation of this DN
+     */
     public String toOidString( Schema schema )
     {
         StringBuffer sb = new StringBuffer();
@@ -195,10 +254,15 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * Parses the dn.
+     *
+     * @param dn the dn
+     * @throws NameException if parsing fails
+     */
     private void parseDn( String dn ) throws NameException
     {
-
-        List rdnList = new ArrayList( 3 );
+        List<RDN> rdnList = new ArrayList<RDN>( 3 );
 
         boolean backslash = false;
         int start = 0;
@@ -234,22 +298,35 @@ public class DN implements Serializable
             }
         }
 
-        this.rdns = ( RDN[] ) rdnList.toArray( new RDN[rdnList.size()] );
+        this.rdns = rdnList.toArray( new RDN[rdnList.size()] );
     }
 
 
+    /**
+     * Gets the RDNs.
+     * 
+     * @return the RDNs
+     */
     public RDN[] getRdns()
     {
         return rdns;
     }
 
 
+    /**
+     * Sets the RDNs.
+     * 
+     * @param rdns the RDNs
+     */
     public void setRdns( RDN[] rdns )
     {
         this.rdns = rdns;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o ) throws ClassCastException
     {
         if ( o instanceof DN )
@@ -260,6 +337,9 @@ public class DN implements Serializable
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode()
     {
         return this.toString().hashCode();

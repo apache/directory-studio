@@ -125,7 +125,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 for ( int i = 0; i < parts.length; i++ )
                 {
                     addRdnLine( this.rdnComposite, i );
-                    ( ( RdnLine ) rdnLineList.get( i ) ).rdnNameCombo.setText( parts[i].getName() );
+                    ( ( RdnLine ) rdnLineList.get( i ) ).rdnNameCombo.setText( parts[i].getType() );
                     ( ( RdnLine ) rdnLineList.get( i ) ).rdnValueText.setText( parts[i].getUnencodedValue() );
                     if ( i == 0 )
                     {

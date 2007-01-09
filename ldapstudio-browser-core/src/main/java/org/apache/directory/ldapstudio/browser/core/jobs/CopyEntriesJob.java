@@ -198,7 +198,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                 for ( int i = 0; i < oldRdnParts.length; i++ )
                 {
                     RDNPart part = oldRdnParts[i];
-                    IAttribute rdnAttribute = newEntry.getAttribute( part.getName() );
+                    IAttribute rdnAttribute = newEntry.getAttribute( part.getType() );
                     if ( rdnAttribute != null )
                     {
                         IValue[] values = rdnAttribute.getValues();
@@ -219,10 +219,10 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                 for ( int i = 0; i < newRdnParts.length; i++ )
                 {
                     RDNPart part = newRdnParts[i];
-                    IAttribute rdnAttribute = newEntry.getAttribute( part.getName() );
+                    IAttribute rdnAttribute = newEntry.getAttribute( part.getType() );
                     if ( rdnAttribute == null )
                     {
-                        rdnAttribute = new Attribute( newEntry, part.getName() );
+                        rdnAttribute = new Attribute( newEntry, part.getType() );
                         newEntry.addAttribute( rdnAttribute, newEntry.getConnection() );
                         rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ), newEntry
                             .getConnection() );
@@ -303,7 +303,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
 
     private RDN getNewRdn( RDN rdn, String newRdnValue ) throws NameException
     {
-        String[] names = rdn.getNames();
+        String[] names = rdn.getTypes();
         String[] values = rdn.getValues();
         values[0] = newRdnValue;
         RDN newRdn = new RDN( names, values, true );

@@ -274,7 +274,7 @@ public class Value implements IValue
         RDNPart[] parts = getAttribute().getEntry().getRdn().getParts();
         for ( int p = 0; p < parts.length; p++ )
         {
-            if ( getAttribute().getDescription().equals( parts[p].getName() )
+            if ( getAttribute().getDescription().equals( parts[p].getType() )
                 && getStringValue().equals( parts[p].getValue() ) )
             {
                 return true;
