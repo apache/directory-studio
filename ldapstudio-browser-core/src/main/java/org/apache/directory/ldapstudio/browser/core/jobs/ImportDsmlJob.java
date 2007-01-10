@@ -34,6 +34,7 @@ import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 
 
 /**
@@ -145,7 +146,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
             while ( ldapResponse != null )
             {
                 if ( ( ldapResponse instanceof ErrorResponse ) 
-                     || ( ldapResponse.getLdapResult().getResultCode() != 0 ) )
+                     || ( ldapResponse.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS ) )
                 {
                     errorCount++;
                 }
