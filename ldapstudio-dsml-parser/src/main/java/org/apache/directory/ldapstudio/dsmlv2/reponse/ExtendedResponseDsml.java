@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
+import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedResponse;

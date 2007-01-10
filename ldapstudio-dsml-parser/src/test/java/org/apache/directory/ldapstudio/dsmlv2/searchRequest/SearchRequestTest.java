@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.dsmlv2.searchRequest;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -42,6 +43,7 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 
@@ -308,7 +310,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( LdapConstants.SCOPE_BASE_OBJECT, searchRequest.getScope() );
+        assertEquals( ScopeEnum.BASE_OBJECT, searchRequest.getScope() );
     }
 
 
@@ -334,7 +336,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( LdapConstants.SCOPE_SINGLE_LEVEL, searchRequest.getScope() );
+        assertEquals( ScopeEnum.SINGLE_LEVEL, searchRequest.getScope() );
     }
 
 
@@ -361,7 +363,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( LdapConstants.SCOPE_WHOLE_SUBTREE, searchRequest.getScope() );
+        assertEquals( ScopeEnum.WHOLE_SUBTREE, searchRequest.getScope() );
     }
 
 
@@ -792,11 +794,11 @@ public class SearchRequestTest extends AbstractTest
 
         Attribute attribute = ( Attribute ) ne.next();
 
-        assertEquals( "givenname", attribute.getID() );
+        assertEquals( "sn", attribute.getID() );
 
         attribute = ( Attribute ) ne.next();
 
-        assertEquals( "sn", attribute.getID() );
+        assertEquals( "givenName", attribute.getID() );
     }
 
 
@@ -1992,9 +1994,9 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        assertEquals( "jack", substringFilter.getInitialSubstrings().toString() );
+        assertEquals( "jack", substringFilter.getInitialSubstrings() );
 
-        ArrayList initials = substringFilter.getAnySubstrings();
+        List<String> initials = substringFilter.getAnySubstrings();
 
         assertEquals( 1, initials.size() );
 
@@ -2030,9 +2032,9 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        assertEquals( "jack", substringFilter.getInitialSubstrings().toString() );
+        assertEquals( "jack", substringFilter.getInitialSubstrings() );
 
-        assertEquals( "john", substringFilter.getFinalSubstrings().toString() );
+        assertEquals( "john", substringFilter.getFinalSubstrings() );
     }
 
 
@@ -2064,10 +2066,10 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        ArrayList initials = substringFilter.getAnySubstrings();
+        List<String>initials = substringFilter.getAnySubstrings();
 
         assertEquals( 1, initials.size() );
-        assertEquals( "kate", initials.get( 0 ).toString() );
+        assertEquals( "kate", initials.get( 0 ) );
     }
     
     /**
@@ -2098,10 +2100,10 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        ArrayList initials = substringFilter.getAnySubstrings();
+        List<String> initials = substringFilter.getAnySubstrings();
 
         assertEquals( 1, initials.size() );
-        assertEquals( "DSMLv2.0 rocks!!", initials.get( 0 ).toString() );
+        assertEquals( "DSMLv2.0 rocks!!", initials.get( 0 ) );
     }
 
 
@@ -2133,7 +2135,7 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        ArrayList initials = substringFilter.getAnySubstrings();
+        List<String> initials = substringFilter.getAnySubstrings();
 
         assertEquals( 0, initials.size() );
     }
@@ -2167,13 +2169,13 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        ArrayList initials = substringFilter.getAnySubstrings();
+        List<String> initials = substringFilter.getAnySubstrings();
 
         assertEquals( 2, initials.size() );
 
-        assertEquals( "kate", initials.get( 0 ).toString() );
+        assertEquals( "kate", initials.get( 0 ) );
 
-        assertEquals( "sawyer", initials.get( 1 ).toString() );
+        assertEquals( "sawyer", initials.get( 1 ) );
     }
 
 
@@ -2205,13 +2207,13 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        ArrayList initials = substringFilter.getAnySubstrings();
+        List<String> initials = substringFilter.getAnySubstrings();
 
         assertEquals( 1, initials.size() );
 
-        assertEquals( "kate", initials.get( 0 ).toString() );
+        assertEquals( "kate", initials.get( 0 ) );
 
-        assertEquals( "john", substringFilter.getFinalSubstrings().toString() );
+        assertEquals( "john", substringFilter.getFinalSubstrings() );
     }
 
 

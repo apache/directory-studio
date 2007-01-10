@@ -32,6 +32,7 @@ import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedResponse;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 import com.sun.jndi.ldap.LdapURL;
@@ -250,7 +251,7 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
         LdapResult ldapResult = extendedResponse.getLdapResult();
 
-        assertEquals( 2, ldapResult.getResultCode() );
+        assertEquals( ResultCodeEnum.PROTOCOL_ERROR, ldapResult.getResultCode() );
     }
 
 

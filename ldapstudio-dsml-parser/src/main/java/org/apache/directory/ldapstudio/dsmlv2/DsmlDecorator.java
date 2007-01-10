@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.dsmlv2.reponse;
+package org.apache.directory.ldapstudio.dsmlv2;
 
 
 import org.dom4j.Element;

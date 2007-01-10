@@ -21,10 +21,12 @@
 package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 
-import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.dom4j.Element;
 
 
@@ -66,7 +68,7 @@ public class SearchResultReferenceDsml extends LdapResponseDecorator implements 
         SearchResultReference searchResultReference = instance.getSearchResultReference();
 
         // Adding References
-        ArrayList refsList = searchResultReference.getSearchResultReferences();
+        List<LdapURL> refsList = searchResultReference.getSearchResultReferences();
         for ( int i = 0; i < refsList.size(); i++ )
         {
             element.addElement( "ref" ).addText( refsList.get( i ).toString() );

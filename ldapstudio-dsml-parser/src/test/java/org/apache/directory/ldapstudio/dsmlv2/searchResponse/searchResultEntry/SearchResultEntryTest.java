@@ -549,7 +549,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         Attribute attribute = ( Attribute ) ne.nextElement();
 
-        assertEquals( "dc", attribute.getID() );
+        assertEquals( "objectclass", attribute.getID() );
 
         assertEquals( 1, attribute.size() );
 
@@ -565,11 +565,11 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         String value = ( String ) ne2.nextElement();
 
-        assertEquals( "example", value );
+        assertEquals( "top", value );
 
         attribute = ( Attribute ) ne.nextElement();
 
-        assertEquals( "objectclass", attribute.getID() );
+        assertEquals( "dc", attribute.getID() );
 
         assertEquals( 1, attribute.size() );
 
@@ -585,7 +585,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         value = ( String ) ne2.nextElement();
 
-        assertEquals( "top", value );
+        assertEquals( "example", value );
     }
 
 

@@ -54,6 +54,7 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.util.Base64;
@@ -1799,15 +1800,15 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 if ( "baseObject".equals( attributeValue ) )
                 {
-                    searchRequest.setScope( LdapConstants.SCOPE_BASE_OBJECT );
+                    searchRequest.setScope( ScopeEnum.BASE_OBJECT );
                 }
                 else if ( "singleLevel".equals( attributeValue ) )
                 {
-                    searchRequest.setScope( LdapConstants.SCOPE_SINGLE_LEVEL );
+                    searchRequest.setScope( ScopeEnum.SINGLE_LEVEL );
                 }
                 else if ( "wholeSubtree".equals( attributeValue ) )
                 {
-                    searchRequest.setScope( LdapConstants.SCOPE_WHOLE_SUBTREE );
+                    searchRequest.setScope( ScopeEnum.WHOLE_SUBTREE );
                 }
                 else
                 {
@@ -2134,34 +2135,19 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             SearchRequest searchRequest = ( SearchRequest ) container.getBatchRequest().getCurrentRequest();
 
-            XmlPullParser xpp = container.getParser();
-
             Asn1Object parent = searchRequest.getCurrentFilter().getParent();
 
             if ( parent instanceof Filter )
             {
                 Filter filter = ( Filter ) parent;
 
-                try
-                {
-                    searchRequest.setCurrentFilter( filter );
-                }
-                catch ( DecoderException e )
-                {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
-                }
+                searchRequest.setCurrentFilter( filter );
             }
             else
             {
-                try
-                {
-                    searchRequest.setCurrentFilter( null );
-                }
-                catch ( DecoderException e )
-                {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
-                }
+                searchRequest.setCurrentFilter( null );
             }
+                
         }
     };
 

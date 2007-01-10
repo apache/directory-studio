@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 
+import org.apache.directory.ldapstudio.dsmlv2.LdapMessageDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
 import org.apache.directory.shared.ldap.codec.LdapResult;

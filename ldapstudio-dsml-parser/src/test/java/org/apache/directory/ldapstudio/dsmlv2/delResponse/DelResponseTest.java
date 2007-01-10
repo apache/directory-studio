@@ -30,6 +30,7 @@ import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.del.DelResponse;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 import com.sun.jndi.ldap.LdapURL;
@@ -248,7 +249,7 @@ public class DelResponseTest extends AbstractResponseTest
 
         LdapResult ldapResult = delResponse.getLdapResult();
 
-        assertEquals( 2, ldapResult.getResultCode() );
+        assertEquals( ResultCodeEnum.PROTOCOL_ERROR, ldapResult.getResultCode() );
     }
 
 

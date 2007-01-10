@@ -17,53 +17,67 @@
  *  under the License. 
  *  
  */
+package org.apache.directory.ldapstudio.dsmlv2.request;
 
-package org.apache.directory.ldapstudio.dsmlv2.reponse;
-
-
-import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.compare.CompareRequest;
 import org.dom4j.Element;
 
-
 /**
- * DSML Decorator for SearchResultDone
+ * DSML Decorator for CompareRequest
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SearchResultDoneDsml extends LdapResponseDecorator implements DsmlDecorator
+public class CompareRequestDsml extends AbstractRequestDsml
 {
     /**
-     * Creates a new instance of SearchResultDoneDsml.
+     * Creates a new instance of CompareRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchResultDoneDsml( LdapMessage ldapMessage )
+    public CompareRequestDsml( LdapMessage ldapMessage )
     {
         super( ldapMessage );
     }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.LdapMessageDecorator#getMessageType()
+    
+    
+    /**
+     * {@inheritDoc}
      */
     public int getMessageType()
     {
-        return instance.getSearchResultDone().getMessageType();
+        return instance.getCompareRequest().getMessageType();
     }
 
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
+    
+    /**
+     * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "searchResultDone" );
-
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getSearchResultDone().getLdapResult(), instance );
-        ldapResultDsml.toDsml( element );
+        Element element = super.toDsml( root );
+        
+        CompareRequest request = instance.getCompareRequest();
+        
+        // DN
+        if ( request.getEntry() != null )
+        {
+            element.addAttribute( "dn", request.getEntry().toString() );
+        }
+        
+        // Assertion
+        Element assertionElement = element.addElement( "assertion");
+        if ( request.getAttributeDesc() != null )
+        {
+            assertionElement.addAttribute( "name", request.getAttributeDesc() );
+        }
+        if ( request.getAssertionValue() != null )
+        {
+            assertionElement.addElement( "value").setText( (String) request.getAssertionValue() );
+        }
+        
         return element;
     }
 }

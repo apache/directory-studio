@@ -17,53 +17,56 @@
  *  under the License. 
  *  
  */
+package org.apache.directory.ldapstudio.dsmlv2.request;
 
-package org.apache.directory.ldapstudio.dsmlv2.reponse;
-
-
-import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.del.DelRequest;
 import org.dom4j.Element;
 
-
 /**
- * DSML Decorator for SearchResultDone
+ * DSML Decorator for DelRequest
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SearchResultDoneDsml extends LdapResponseDecorator implements DsmlDecorator
+public class DelRequestDsml extends AbstractRequestDsml
 {
     /**
-     * Creates a new instance of SearchResultDoneDsml.
+     * Creates a new instance of DelRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchResultDoneDsml( LdapMessage ldapMessage )
+    public DelRequestDsml( LdapMessage ldapMessage )
     {
         super( ldapMessage );
     }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.LdapMessageDecorator#getMessageType()
+    
+    
+    /**
+     * {@inheritDoc}
      */
     public int getMessageType()
     {
-        return instance.getSearchResultDone().getMessageType();
+        return instance.getDelRequest().getMessageType();
     }
 
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
+    
+    /**
+     * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "searchResultDone" );
-
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getSearchResultDone().getLdapResult(), instance );
-        ldapResultDsml.toDsml( element );
+        Element element = super.toDsml( root );
+        
+        DelRequest request = instance.getDelRequest();
+        
+        // DN
+        if ( request.getEntry() != null )
+        {
+            element.addAttribute( "dn", request.getEntry().toString() );
+        }
+        
         return element;
     }
 }

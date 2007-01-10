@@ -50,6 +50,7 @@ import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.Base64;
 import org.xmlpull.v1.XmlPullParser;
@@ -1365,7 +1366,7 @@ public class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                    ldapResult.setResultCode( Integer.parseInt( attributeValue ) );
+                    ldapResult.setResultCode( ResultCodeEnum.getResultCode( Integer.parseInt( attributeValue ) ) );
                 }
                 catch ( NumberFormatException e )
                 {

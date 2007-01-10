@@ -70,6 +70,7 @@ import org.apache.directory.shared.ldap.codec.bind.LdapAuthentication;
 import org.apache.directory.shared.ldap.codec.bind.SimpleAuthentication;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedResponse;
 import org.apache.directory.shared.ldap.codec.util.LdapResultEnum;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.dom4j.Document;
@@ -424,10 +425,10 @@ public class Dsmlv2Engine
 
         if ( !continueOnError )
         {
-            if ( ( realResponse.getLdapResult().getResultCode() != LdapResultEnum.SUCCESS )
-                && ( realResponse.getLdapResult().getResultCode() != LdapResultEnum.COMPARE_TRUE )
-                && ( realResponse.getLdapResult().getResultCode() != LdapResultEnum.COMPARE_FALSE )
-                && ( realResponse.getLdapResult().getResultCode() != LdapResultEnum.REFERRAL ) )
+            if ( ( realResponse.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS )
+                && ( realResponse.getLdapResult().getResultCode() != ResultCodeEnum.COMPARE_TRUE )
+                && ( realResponse.getLdapResult().getResultCode() != ResultCodeEnum.COMPARE_FALSE )
+                && ( realResponse.getLdapResult().getResultCode() != ResultCodeEnum.REFERRAL ) )
             {
                 // Turning on Exit flag
                 exit = true;
@@ -596,7 +597,7 @@ public class Dsmlv2Engine
         {
             BindResponse resp = ( ( LdapMessageContainer ) ldapMessageContainer ).getLdapMessage().getBindResponse();
 
-            if ( resp.getLdapResult().getResultCode() != 0 )
+            if ( resp.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS )
             {
                 System.err.println( "Error : " + resp.getLdapResult().getErrorMessage() );
             }
@@ -606,7 +607,7 @@ public class Dsmlv2Engine
             ExtendedResponse resp = ( ( LdapMessageContainer ) ldapMessageContainer ).getLdapMessage()
                 .getExtendedResponse();
 
-            if ( resp.getLdapResult().getResultCode() != 0 )
+            if ( resp.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS )
             {
                 System.err.println( "Error : " + resp.getLdapResult().getErrorMessage() );
             }

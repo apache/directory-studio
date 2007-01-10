@@ -17,53 +17,27 @@
  *  under the License. 
  *  
  */
+package org.apache.directory.ldapstudio.dsmlv2.request;
 
-package org.apache.directory.ldapstudio.dsmlv2.reponse;
-
-
-import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
+import org.apache.directory.ldapstudio.dsmlv2.LdapMessageDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
-import org.dom4j.Element;
-
 
 /**
- * DSML Decorator for SearchResultDone
+ * Decorator abstract class for LdapRequest
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SearchResultDoneDsml extends LdapResponseDecorator implements DsmlDecorator
+public class LdapRequestDecorator extends LdapMessageDecorator
 {
     /**
-     * Creates a new instance of SearchResultDoneDsml.
+     * Creates a new instance of LdapRequestDecorator.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchResultDoneDsml( LdapMessage ldapMessage )
+    public LdapRequestDecorator( LdapMessage ldapMessage )
     {
         super( ldapMessage );
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.LdapMessageDecorator#getMessageType()
-     */
-    public int getMessageType()
-    {
-        return instance.getSearchResultDone().getMessageType();
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
-     */
-    public Element toDsml( Element root )
-    {
-        Element element = root.addElement( "searchResultDone" );
-
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getSearchResultDone().getLdapResult(), instance );
-        ldapResultDsml.toDsml( element );
-        return element;
     }
 }

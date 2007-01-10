@@ -18,12 +18,13 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.dsmlv2.reponse;
+package org.apache.directory.ldapstudio.dsmlv2;
 
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.directory.shared.asn1.AbstractAsn1Object;
 import org.apache.directory.shared.asn1.Asn1Object;
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.asn1.codec.EncoderException;
@@ -181,7 +182,7 @@ public abstract class LdapMessageDecorator extends LdapMessage
      * @see org.apache.directory.shared.ldap.codec.LdapMessage#getControls()
      */
     @Override
-    public ArrayList getControls()
+    public List<Control> getControls()
     {
         return instance.getControls();
     }
@@ -441,7 +442,7 @@ public abstract class LdapMessageDecorator extends LdapMessage
      * @see org.apache.directory.shared.asn1.Asn1Object#getParent()
      */
     @Override
-    public Asn1Object getParent()
+    public AbstractAsn1Object getParent()
     {
         return instance.getParent();
     }
@@ -471,9 +472,8 @@ public abstract class LdapMessageDecorator extends LdapMessage
      * @see org.apache.directory.shared.asn1.Asn1Object#setParent(org.apache.directory.shared.asn1.Asn1Object)
      */
     @Override
-    public void setParent( Asn1Object parent )
+    public void setParent( AbstractAsn1Object parent )
     {
         instance.setParent( parent );
     }
-
 }

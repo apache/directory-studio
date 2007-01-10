@@ -21,10 +21,12 @@
 package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 
-import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapResult;
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.dom4j.Element;
 
 
@@ -94,7 +96,7 @@ public class LdapResultDsml implements DsmlDecorator
         }
 
         // Referals
-        ArrayList referals = result.getReferrals();
+        List<LdapURL> referals = result.getReferrals();
         if ( referals != null )
         {
             for ( int i = 0; i < referals.size(); i++ )
