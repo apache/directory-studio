@@ -10,7 +10,7 @@
 	<classpathentry kind="lib" path="lib/shared-asn1-0.9.6-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/shared-ldap-0.9.6-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/xpp3-1.1.3_8.jar"/>
-	<classpathentry kind="lib" path="lib/ldapstudio-dsml-parser-0.2.jar"/>
+	<classpathentry kind="lib" path="lib/ldapstudio-dsml-parser-0.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="target/classes"/>
