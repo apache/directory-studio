@@ -18,7 +18,7 @@
 -->
 <project name="ldapstudio-dsml-parser" default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
 	<property name="project.name" value="ldapstudio-dsml-parser" />
-	<property name="project.version" value="0.2" />
+	<property name="project.version" value="0.3" />
 
 	<property name="project.output" value="${basedir}/target" />
 	<property name="project.build" value="${project.output}/build" />

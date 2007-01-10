@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.dsmlv2.searchRequest;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;

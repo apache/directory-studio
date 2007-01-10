@@ -32,7 +32,7 @@ import org.dom4j.Element;
 public class AbandonRequestDsml extends AbstractRequestDsml
 {
     /**
-     * Creates a new instance of AddRequestDsml.
+     * Creates a new instance of AbandonRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate

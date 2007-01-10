@@ -20,12 +20,11 @@
 package org.apache.directory.ldapstudio.dsmlv2.request;
 
 import org.apache.directory.shared.ldap.codec.LdapMessage;
-import org.apache.directory.shared.ldap.codec.abandon.AbandonRequest;
 import org.apache.directory.shared.ldap.codec.bind.BindRequest;
 import org.dom4j.Element;
 
 /**
- * DSML Decorator for AbandonRequest
+ * DSML Decorator for BindRequest
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -33,7 +32,7 @@ import org.dom4j.Element;
 public class AuthRequestDsml extends AbstractRequestDsml
 {
     /**
-     * Creates a new instance of AddRequestDsml.
+     * Creates a new instance of AuthRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
