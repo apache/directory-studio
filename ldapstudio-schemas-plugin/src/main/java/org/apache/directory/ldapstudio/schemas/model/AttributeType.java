@@ -445,19 +445,19 @@ public class AttributeType implements SchemaElement
         UsageEnum usage = literal.getUsage();
         if ( usage != null )
         {
-            if ( usage == UsageEnum.DIRECTORYOPERATION )
+            if ( usage == UsageEnum.DIRECTORY_OPERATION )
             {
                 sb.append( "\tUSAGE directoryOperation \n" ); //$NON-NLS-1$
             }
-            else if ( usage == UsageEnum.DISTRIBUTEDOPERATION )
+            else if ( usage == UsageEnum.DISTRIBUTED_OPERATION )
             {
                 sb.append( "\tUSAGE distributedOperation \n" ); //$NON-NLS-1$
             }
-            else if ( usage == UsageEnum.DSAOPERATION )
+            else if ( usage == UsageEnum.DSA_OPERATION )
             {
                 sb.append( "\tUSAGE dSAOperation \n" ); //$NON-NLS-1$
             }
-            else if ( usage == UsageEnum.USERAPPLICATIONS )
+            else if ( usage == UsageEnum.USER_APPLICATIONS )
             {
                 // There's nothing to write, this is the default option
             }

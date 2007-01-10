@@ -358,19 +358,19 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         usage_combo.add( "distributedOperation", 1 ); //$NON-NLS-1$
         usage_combo.add( "DSAOperation", 2 ); //$NON-NLS-1$
         usage_combo.add( "userApplications", 3 ); //$NON-NLS-1$
-        if ( attributeType.getUsage() == UsageEnum.DIRECTORYOPERATION )
+        if ( attributeType.getUsage() == UsageEnum.DIRECTORY_OPERATION )
         {
             usage_combo.select( 0 );
         }
-        else if ( attributeType.getUsage() == UsageEnum.DISTRIBUTEDOPERATION )
+        else if ( attributeType.getUsage() == UsageEnum.DISTRIBUTED_OPERATION )
         {
             usage_combo.select( 1 );
         }
-        else if ( attributeType.getUsage() == UsageEnum.DSAOPERATION )
+        else if ( attributeType.getUsage() == UsageEnum.DSA_OPERATION )
         {
             usage_combo.select( 2 );
         }
-        else if ( attributeType.getUsage() == UsageEnum.USERAPPLICATIONS )
+        else if ( attributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
         {
             usage_combo.select( 3 );
         }
@@ -809,19 +809,19 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         // USAGE
         if ( usage_combo.getSelectionIndex() == 0 )
         {
-            attributeType.setUsage( UsageEnum.DIRECTORYOPERATION );
+            attributeType.setUsage( UsageEnum.DIRECTORY_OPERATION );
         }
         else if ( usage_combo.getSelectionIndex() == 1 )
         {
-            attributeType.setUsage( UsageEnum.DISTRIBUTEDOPERATION );
+            attributeType.setUsage( UsageEnum.DISTRIBUTED_OPERATION );
         }
         else if ( usage_combo.getSelectionIndex() == 2 )
         {
-            attributeType.setUsage( UsageEnum.DSAOPERATION );
+            attributeType.setUsage( UsageEnum.DSA_OPERATION );
         }
         else if ( usage_combo.getSelectionIndex() == 3 )
         {
-            attributeType.setUsage( UsageEnum.USERAPPLICATIONS );
+            attributeType.setUsage( UsageEnum.USER_APPLICATIONS );
         }
 
         // SYNTAX
