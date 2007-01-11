@@ -1,10 +1,16 @@
 package org.apache.directory.ldapstudio.dsmlv2.request;
 
 
+import java.util.List;
+
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
+import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
+import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 
 
 public abstract class AbstractRequestDsml extends LdapRequestDecorator implements DsmlDecorator
@@ -41,8 +47,49 @@ public abstract class AbstractRequestDsml extends LdapRequestDecorator implement
             element.addAttribute( "requestID", "" + requestID );
         }
 
-        // Control(s)
-        // TODO Handle Control(s)
+        // Controls
+        List<Control> controls = instance.getControls();
+        
+        if ( controls != null )
+        {
+            for ( int i = 0; i < controls.size(); i++ )
+            {
+                Control control = controls.get( i );
+                
+                Element controlElement = element.addElement( "control" );
+                
+                if ( control.getControlType() != null )
+                {
+                    controlElement.addAttribute( "type", control.getControlType() );
+                }
+                
+                if ( control.getCriticality() )
+                {
+                    controlElement.addAttribute( "criticality", "true" );
+                }
+                
+                Object value = control.getControlValue();
+                if ( value != null )
+                {
+                    if ( ParserUtils.needsBase64Encoding( value ) )
+                    {
+                        Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
+                        Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                        element.getDocument().getRootElement().add( xsdNamespace );
+                        element.getDocument().getRootElement().add( xsiNamespace );
+    
+                        Element valueElement = 
+                            controlElement.addElement( "controlValue" ).addText(  ParserUtils.base64Encode( value ) );
+                        valueElement
+                            .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                    }
+                    else
+                    {
+                        controlElement.addElement( "controlValue" ).setText( (String)  value );
+                    }
+                }
+            }
+        }
         
         return element;
     }
