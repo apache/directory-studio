@@ -1,8 +1,14 @@
 package org.apache.directory.ldapstudio.dsmlv2;
 
 
+import java.util.List;
+
+import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.util.Base64;
+import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -18,6 +24,8 @@ public class ParserUtils
     public static final String XML_SCHEMA_URI = "http://www.w3c.org/2001/XMLSchema";
     public static final String XML_SCHEMA_INSTANCE_URI = "http://www.w3c.org/2001/XMLSchema-instance";
     public static final String BASE64BINARY = "base64Binary";
+    public static final String XSI = "xsi";
+    public static final String XSD = "xsd";
 
 
     /**
@@ -143,6 +151,59 @@ public class ParserUtils
         catch ( NumberFormatException e )
         {
             throw new XmlPullParserException( "the given requestID is not an integer", xpp, null );
+        }
+    }
+
+
+    /**
+     * Adds Controls to the given Element.
+     *
+     * @param element
+     *      the element to add the Controls to
+     * @param controls
+     *      a List of Controls
+     */
+    public static void addControls( Element element, List<Control> controls )
+    {
+        if ( controls != null )
+        {
+            for ( int i = 0; i < controls.size(); i++ )
+            {
+                Control control = controls.get( i );
+
+                Element controlElement = element.addElement( "control" );
+
+                if ( control.getControlType() != null )
+                {
+                    controlElement.addAttribute( "type", control.getControlType() );
+                }
+
+                if ( control.getCriticality() )
+                {
+                    controlElement.addAttribute( "criticality", "true" );
+                }
+
+                Object value = control.getControlValue();
+                if ( value != null )
+                {
+                    if ( ParserUtils.needsBase64Encoding( value ) )
+                    {
+                        Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                        Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                        element.getDocument().getRootElement().add( xsdNamespace );
+                        element.getDocument().getRootElement().add( xsiNamespace );
+
+                        Element valueElement = controlElement.addElement( "controlValue" ).addText(
+                            ParserUtils.base64Encode( value ) );
+                        valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
+                            + ParserUtils.BASE64BINARY );
+                    }
+                    else
+                    {
+                        controlElement.addElement( "controlValue" ).setText( ( String ) value );
+                    }
+                }
+            }
         }
     }
 }

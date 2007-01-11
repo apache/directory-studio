@@ -83,13 +83,13 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
         {
             if ( ParserUtils.needsBase64Encoding( response ) )
             {
-                Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
                 element.getDocument().getRootElement().add( xsdNamespace );
                 element.getDocument().getRootElement().add( xsiNamespace );
                 
                 Element responseElement = element.addElement( "response").addText( ParserUtils.base64Encode( response ) );
-                responseElement.addAttribute( new QName("type", xsiNamespace), "xsd:" + ParserUtils.BASE64BINARY );
+                responseElement.addAttribute( new QName("type", xsiNamespace), ParserUtils.XSD + ":" + ParserUtils.BASE64BINARY );
             }
             else
             {

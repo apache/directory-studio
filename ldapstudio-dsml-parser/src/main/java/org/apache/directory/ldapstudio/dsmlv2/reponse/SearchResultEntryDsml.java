@@ -95,15 +95,15 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
 
                     if ( ParserUtils.needsBase64Encoding( value ) )
                     {
-                        Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                        Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                        Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                        Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
                         attributeElement.getDocument().getRootElement().add( xsdNamespace );
                         attributeElement.getDocument().getRootElement().add( xsiNamespace );
 
                         Element valueElement = attributeElement.addElement( "value" ).addText(
                             ParserUtils.base64Encode( value ) );
                         valueElement
-                            .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                            .addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":" + ParserUtils.BASE64BINARY );
                     }
                     else
                     {
@@ -113,8 +113,6 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
             }
             catch ( NamingException e )
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
         }
 

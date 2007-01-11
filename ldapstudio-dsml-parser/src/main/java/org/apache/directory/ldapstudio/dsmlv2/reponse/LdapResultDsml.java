@@ -24,6 +24,7 @@ package org.apache.directory.ldapstudio.dsmlv2.reponse;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
+import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
@@ -65,14 +66,14 @@ public class LdapResultDsml implements DsmlDecorator
      */
     public Element toDsml( Element root )
     {
-
+        
         // RequestID
         int requestID = message.getMessageId();
         if ( requestID != 0 )
         {
             root.addAttribute( "requestID", "" + requestID );
         }
-
+        
         // Matched DN
         String matchedDN = result.getMatchedDN();
         if ( !matchedDN.equals( "" ) )
@@ -80,7 +81,8 @@ public class LdapResultDsml implements DsmlDecorator
             root.addAttribute( "matchedDN", matchedDN );
         }
 
-        // TODO Add Control values
+        // Controls
+        ParserUtils.addControls( root, message.getControls() );
 
         // ResultCode
         Element resultCodeElement = root.addElement( "resultCode" );
