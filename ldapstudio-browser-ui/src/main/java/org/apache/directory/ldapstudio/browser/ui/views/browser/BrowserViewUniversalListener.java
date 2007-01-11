@@ -279,12 +279,9 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
     public void entryUpdated( EntryModificationEvent event )
     {
-
-        // Don't handle attribute initalization, could cause double
-        // retrieval of children
         if ( event instanceof AttributesInitializedEvent )
         {
-            return;
+            this.viewer.refresh(); // This was added to fix the DIRSTUDIO-27 Jira.
         }
 
         if ( event instanceof EntryAddedEvent )
