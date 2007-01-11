@@ -86,7 +86,7 @@ public class LdapResultDsml implements DsmlDecorator
 
         // ResultCode
         Element resultCodeElement = root.addElement( "resultCode" );
-        resultCodeElement.addAttribute( "code", "" + result.getResultCode() );
+        resultCodeElement.addAttribute( "code", "" + result.getResultCode().getResultCode() );
         resultCodeElement.addAttribute( "descr", LdapResultEnum.getResultCodeDescr( result.getResultCode() ) );
 
         // ErrorMessage
