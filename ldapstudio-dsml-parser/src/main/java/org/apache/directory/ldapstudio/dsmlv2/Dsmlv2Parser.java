@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest;
+import org.apache.directory.ldapstudio.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.dsmlv2;
+package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 
 import java.util.ArrayList;

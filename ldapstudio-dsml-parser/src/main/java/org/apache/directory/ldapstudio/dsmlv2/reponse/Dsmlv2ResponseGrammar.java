@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.dsmlv2;
+package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 
 import java.io.IOException;
@@ -29,8 +29,14 @@ import java.util.Set;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
-import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
+import org.apache.directory.ldapstudio.dsmlv2.AbstractGrammar;
+import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Container;
+import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2StatesEnum;
+import org.apache.directory.ldapstudio.dsmlv2.GrammarAction;
+import org.apache.directory.ldapstudio.dsmlv2.GrammarTransition;
+import org.apache.directory.ldapstudio.dsmlv2.IGrammar;
+import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
+import org.apache.directory.ldapstudio.dsmlv2.Tag;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.asn1.primitives.OID;

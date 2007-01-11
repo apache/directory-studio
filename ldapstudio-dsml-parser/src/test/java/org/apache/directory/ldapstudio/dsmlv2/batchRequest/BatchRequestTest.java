@@ -24,8 +24,8 @@ package org.apache.directory.ldapstudio.dsmlv2.batchRequest;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.AbstractTest;
-import org.apache.directory.ldapstudio.dsmlv2.BatchRequest;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.abandon.AbandonRequest;
 import org.apache.directory.shared.ldap.codec.add.AddRequest;

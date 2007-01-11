@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.dsmlv2;
+package org.apache.directory.ldapstudio.dsmlv2.request;
 
 
 import java.io.IOException;
@@ -27,9 +27,17 @@ import java.util.HashMap;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.ldapstudio.dsmlv2.BatchRequest.OnError;
-import org.apache.directory.ldapstudio.dsmlv2.BatchRequest.Processing;
-import org.apache.directory.ldapstudio.dsmlv2.BatchRequest.ResponseOrder;
+import org.apache.directory.ldapstudio.dsmlv2.AbstractGrammar;
+import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Container;
+import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2StatesEnum;
+import org.apache.directory.ldapstudio.dsmlv2.GrammarAction;
+import org.apache.directory.ldapstudio.dsmlv2.GrammarTransition;
+import org.apache.directory.ldapstudio.dsmlv2.IGrammar;
+import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
+import org.apache.directory.ldapstudio.dsmlv2.Tag;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.OnError;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.Processing;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.ResponseOrder;
 import org.apache.directory.shared.asn1.Asn1Object;
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.asn1.primitives.OID;

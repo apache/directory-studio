@@ -21,6 +21,8 @@
 package org.apache.directory.ldapstudio.dsmlv2;
 
 
+import org.apache.directory.ldapstudio.dsmlv2.reponse.BatchResponse;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest;
 import org.xmlpull.v1.XmlPullParser;
 
 

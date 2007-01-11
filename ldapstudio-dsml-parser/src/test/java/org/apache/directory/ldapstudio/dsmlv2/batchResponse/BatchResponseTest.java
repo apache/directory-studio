@@ -22,8 +22,8 @@ package org.apache.directory.ldapstudio.dsmlv2.batchResponse;
 
 
 import org.apache.directory.ldapstudio.dsmlv2.AbstractResponseTest;
-import org.apache.directory.ldapstudio.dsmlv2.BatchResponse;
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.BatchResponse;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
