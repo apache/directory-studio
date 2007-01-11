@@ -279,9 +279,20 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
     public void entryUpdated( EntryModificationEvent event )
     {
+        
+        // Don't handle attribute initalization, could cause double
+        // retrieval of children. 
+        //
+        // When double-clicking an entry two Jobs/Threads are started:
+        // - InitializeAttributesJob and
+        // - InitializeChildrenJob
+        // If the InitializeAttributesJob is finished first the
+        // AttributesInitializedEvent is fired. If this causes
+        // a refresh of the tree before the children are initialized
+        // another InitializeChildrenJob is executed.
         if ( event instanceof AttributesInitializedEvent )
         {
-            this.viewer.refresh(); // This was added to fix the DIRSTUDIO-27 Jira.
+            return;
         }
 
         if ( event instanceof EntryAddedEvent )
