@@ -144,7 +144,8 @@ public class SearchRequestDsml extends AbstractRequestDsml
         }
 
         // Filter
-        toDsml( element, request.getFilter() );
+        Element filterElement =  element.addElement( "filter" );
+        toDsml( filterElement, request.getFilter() );
 
         // Attributes
         Attributes attributes = request.getAttributes();
