@@ -32,26 +32,53 @@ import org.eclipse.core.runtime.IAdaptable;
 
 
 /**
- * A wrapper for raw LDAP values.
+ * An IValue represents a value of a LDAP attribute.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvider, AttributePropertyPageProvider,
     EntryPropertyPageProvider, ConnectionPropertyPageProvider
 {
 
+    /**
+     * EmptyValue is used to indicate an empty value.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     interface EmptyValue
     {
-        public String toString();
 
-
+        /**
+         * Gets the string value.
+         *
+         * @return the string value
+         */
         public String getStringValue();
 
 
+        /**
+         * Gets the binary value.
+         * 
+         * @return the binary value
+         */
         public byte[] getBinaryValue();
 
 
+        /**
+         * Checks if is string.
+         * 
+         * @return true, if is string
+         */
         public boolean isString();
 
 
+        /**
+         * Checks if is binary.
+         * 
+         * @return true, if is binary
+         */
         public boolean isBinary();
     }
 
@@ -60,30 +87,46 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      */
     public static final EmptyValue EMPTY_STRING_VALUE = new EmptyValue()
     {
+
+        /**
+         * {@inheritDoc}
+         */
         public String toString()
         {
             return BrowserCoreMessages.model__empty_string_value;
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean isString()
         {
             return true;
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean isBinary()
         {
             return false;
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public byte[] getBinaryValue()
         {
             return new byte[0];
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public String getStringValue()
         {
             return ""; //$NON-NLS-1$
@@ -95,30 +138,46 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      */
     public static final EmptyValue EMPTY_BINARY_VALUE = new EmptyValue()
     {
+
+        /**
+         * {@inheritDoc}
+         */
         public String toString()
         {
             return BrowserCoreMessages.model__empty_binary_value;
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean isString()
         {
             return false;
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean isBinary()
         {
             return true;
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public byte[] getBinaryValue()
         {
             return new byte[0];
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public String getStringValue()
         {
             return ""; //$NON-NLS-1$
@@ -135,7 +194,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
 
 
     /**
-     * Returns the raw value or an EmptyValue
+     * Gets the raw value or an EmptyValue
      * 
      * @return The raw value or an EmptyValue, never null.
      */
@@ -143,7 +202,10 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
 
 
     /**
-     * Returns the String value of this value.
+     * Gets the string value of this value.
+     * 
+     * If the value is binary a String with UTF-8 decoded
+     * byte[] is returned. 
      * 
      * @return the String value
      */
@@ -151,7 +213,10 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
 
 
     /**
-     * Returns the binary value of this value.
+     * Gets the binary value of this value.
+     * 
+     * If the value is string a byte[] with the 
+     * UTF-8 encoded String is returned. 
      * 
      * @return the binary value
      */
@@ -159,9 +224,11 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
 
 
     /**
-     * Return true if the value is empty.
+     * Returns true if the value is empty.
      * 
-     * @return true if the value is the empty.
+     * A value is empty if its raw value is an EmptyValue.
+     * 
+     * @return true if the value is empty.
      */
     public abstract boolean isEmpty();
 
@@ -183,9 +250,9 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
 
 
     /**
-     * Returns true if this value is part of its entries RDN.
+     * Returns true if this value is part of its entry's RDN.
      * 
-     * @return true if this value is part of its entries RDN.
+     * @return true if this value is part of its entry's RDN.
      */
     public abstract boolean isRdnPart();
 

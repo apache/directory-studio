@@ -22,7 +22,6 @@ package org.apache.directory.ldapstudio.browser.core.internal.model;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,31 +45,36 @@ import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
+/**
+ * Default implementation of IAttribute.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Attribute implements IAttribute
 {
 
+    /** The serialVersionUID. */
     private static final long serialVersionUID = -5679384884002589786L;
 
+    /** The attribute description */
     private AttributeDescription attributeDescription;
 
+    /** The entry this attribute belongs to */
     private IEntry entry;
 
-    private List valueList;
-
-
-    protected Attribute()
-    {
-    }
+    /** The values */
+    private List<IValue> valueList;
 
 
     /**
-     * Creates an Attribute with the given description and no value for the
-     * given entry.
+     * Creates an new instance of Attribute with the given description
+     * and no value.
      * 
      * @param entry
      *                The entry of this attribute, mustn't be null
      * @param description
-     *                The attribute descrption, mustn't be null or empty.
+     *                The attribute descrption, mustn't be null.
      * @throws ModelModificationException
      *                 if the attribute name is null or empty.
      */
@@ -80,33 +84,38 @@ public class Attribute implements IAttribute
         {
             throw new ModelModificationException( BrowserCoreMessages.model__empty_entry );
         }
-        if ( description == null /* || "".equals(description) */)
-        { //$NON-NLS-1$
+        if ( description == null )
+        {
             throw new ModelModificationException( BrowserCoreMessages.model__empty_attribute );
         }
 
         this.entry = entry;
         this.attributeDescription = new AttributeDescription( description );
-        this.valueList = new ArrayList();
-        // this.valueList = new LinkedHashSet();
+        this.valueList = new ArrayList<IValue>();
 
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IEntry getEntry()
     {
-        return this.entry;
+        return entry;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isConsistent()
     {
-        if ( this.valueList.isEmpty() )
+        if ( valueList.isEmpty() )
         {
             return false;
         }
 
-        for ( Iterator it = this.valueList.iterator(); it.hasNext(); )
+        for ( Iterator it = valueList.iterator(); it.hasNext(); )
         {
             IValue value = ( IValue ) it.next();
             if ( value.isEmpty() )
@@ -119,19 +128,22 @@ public class Attribute implements IAttribute
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isMustAttribute()
     {
-        if ( this.isObjectClassAttribute() )
+        if ( isObjectClassAttribute() )
         {
             return true;
         }
         else
         {
-            String[] mustAttributeNames = this.entry.getSubschema().getMustAttributeNames();
+            String[] mustAttributeNames = getEntry().getSubschema().getMustAttributeNames();
             for ( int i = 0; i < mustAttributeNames.length; i++ )
             {
                 String must = mustAttributeNames[i];
-                if ( must.equalsIgnoreCase( this.getType() ) )
+                if ( must.equalsIgnoreCase( getType() ) )
                 {
                     return true;
                 }
@@ -141,45 +153,61 @@ public class Attribute implements IAttribute
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isMayAttribute()
     {
-        // return
-        // Arrays.asList(this.entry.getSubschema().getMayAttributeNames()).contains(this.getType());
         return !isObjectClassAttribute() && !isMustAttribute() && !isOperationalAttribute();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isOperationalAttribute()
     {
         return getAttributeTypeDescription() == null || SchemaUtils.isOperational( getAttributeTypeDescription() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isObjectClassAttribute()
     {
-        return OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( this.getDescription() );
+        return OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( getDescription() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isString()
     {
-        return !this.isBinary();
+        return !isBinary();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBinary()
     {
-        return this.getAttributeTypeDescription().isBinary();
+        return getAttributeTypeDescription().isBinary();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addEmptyValue( ModelModifier source )
     {
         try
         {
             IValue emptyValue = new Value( this );
-            this.valueList.add( emptyValue );
-            this.attributeModified( new EmptyValueAddedEvent( this.entry.getConnection(), this.entry, this, emptyValue,
+            valueList.add( emptyValue );
+            this.attributeModified( new EmptyValueAddedEvent( getEntry().getConnection(), getEntry(), this, emptyValue,
                 source ) );
         }
         catch ( ModelModificationException mme )
@@ -189,6 +217,9 @@ public class Attribute implements IAttribute
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteEmptyValue( ModelModifier source )
     {
         for ( Iterator it = this.valueList.iterator(); it.hasNext(); )
@@ -197,20 +228,31 @@ public class Attribute implements IAttribute
             if ( value.isEmpty() )
             {
                 it.remove();
-                this.attributeModified( new EmptyValueDeletedEvent( this.entry.getConnection(), this.entry, this,
-                    value, source ) );
+                attributeModified( new EmptyValueDeletedEvent( getEntry().getConnection(), getEntry(), this, value,
+                    source ) );
                 return;
             }
         }
     }
 
 
+    /**
+     * Fires an EntryModificationEvent.
+     *
+     * @param event the EntryModificationEvent
+     */
     private void attributeModified( EntryModificationEvent event )
     {
-        EventRegistry.fireEntryUpdated( event, this.getEntry() );
+        EventRegistry.fireEntryUpdated( event, getEntry() );
     }
 
 
+    /**
+     * Checks if the given value is valid.
+     *
+     * @param value the value to check
+     * @throws ModelModificationException if the value is not valid
+     */
     private void checkValue( IValue value ) throws ModelModificationException
     {
         if ( value == null )
@@ -224,9 +266,15 @@ public class Attribute implements IAttribute
     }
 
 
+    /**
+     * Deletes the given value from value list.
+     *
+     * @param valueToDelete the value to delete
+     * @return true if deleted
+     */
     private boolean deleteValue( IValue valueToDelete )
     {
-        for ( Iterator it = this.valueList.iterator(); it.hasNext(); )
+        for ( Iterator it = valueList.iterator(); it.hasNext(); )
         {
             IValue value = ( IValue ) it.next();
             if ( value.equals( valueToDelete ) )
@@ -239,28 +287,36 @@ public class Attribute implements IAttribute
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addValue( IValue valueToAdd, ModelModifier source ) throws ModelModificationException
     {
         this.checkValue( valueToAdd );
 
-        this.valueList.add( valueToAdd );
-        this
-            .attributeModified( new ValueAddedEvent( this.entry.getConnection(), this.entry, this, valueToAdd, source ) );
+        valueList.add( valueToAdd );
+        attributeModified( new ValueAddedEvent( getEntry().getConnection(), getEntry(), this, valueToAdd, source ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteValue( IValue valueToDelete, ModelModifier source ) throws ModelModificationException
     {
         this.checkValue( valueToDelete );
 
         if ( this.deleteValue( valueToDelete ) )
         {
-            this.attributeModified( new ValueDeletedEvent( this.entry.getConnection(), this.entry, this, valueToDelete,
+            this.attributeModified( new ValueDeletedEvent( getEntry().getConnection(), getEntry(), this, valueToDelete,
                 source ) );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void modifyValue( IValue oldValue, IValue newValue, ModelModifier source ) throws ModelModificationException
     {
         this.checkValue( oldValue );
@@ -268,41 +324,59 @@ public class Attribute implements IAttribute
 
         this.deleteValue( oldValue );
         this.valueList.add( newValue );
-        this.attributeModified( new ValueModifiedEvent( this.entry.getConnection(), this.entry, this, oldValue,
+        this.attributeModified( new ValueModifiedEvent( getEntry().getConnection(), getEntry(), this, oldValue,
             newValue, source ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IValue[] getValues()
     {
-        return ( IValue[] ) this.valueList.toArray( new IValue[0] );
+        return ( IValue[] ) valueList.toArray( new IValue[0] );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getValueSize()
     {
         return this.valueList.size();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getDescription()
     {
-        return this.attributeDescription.getDescription();
+        return getAttributeDescription().getDescription();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getType()
     {
-        return this.attributeDescription.getParsedAttributeType();
+        return getAttributeDescription().getParsedAttributeType();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
-        return this.getDescription();
+        return getDescription();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o )
     {
         // check argument
@@ -313,41 +387,50 @@ public class Attribute implements IAttribute
         IAttribute a = ( IAttribute ) o;
 
         // compare entries
-        if ( !this.getEntry().equals( a.getEntry() ) )
+        if ( !getEntry().equals( a.getEntry() ) )
         {
             return false;
         }
 
         // compare attribute description
-        return this.getDescription().equals( a.getDescription() );
+        return getDescription().equals( a.getDescription() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode()
     {
-        return this.getDescription().hashCode();
+        return getDescription().hashCode();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public byte[][] getBinaryValues()
     {
-        List binaryValueList = new ArrayList();
+        List<byte[]> binaryValueList = new ArrayList<byte[]>();
 
-        IValue[] values = this.getValues();
+        IValue[] values = getValues();
         for ( int i = 0; i < values.length; i++ )
         {
             binaryValueList.add( values[i].getBinaryValue() );
         }
 
-        return ( byte[][] ) binaryValueList.toArray( new byte[0][] );
+        return binaryValueList.toArray( new byte[0][] );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getStringValue()
     {
         if ( getValueSize() > 0 )
         {
-            return ( ( IValue ) this.valueList.get( 0 ) ).getStringValue();
+            return ( ( IValue ) valueList.get( 0 ) ).getStringValue();
         }
         else
         {
@@ -356,42 +439,52 @@ public class Attribute implements IAttribute
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getStringValues()
     {
-        List stringValueList = new ArrayList();
+        List<String> stringValueList = new ArrayList<String>();
 
-        IValue[] values = this.getValues();
+        IValue[] values = getValues();
         for ( int i = 0; i < values.length; i++ )
         {
             stringValueList.add( values[i].getStringValue() );
         }
 
-        return ( String[] ) stringValueList.toArray( new String[stringValueList.size()] );
+        return stringValueList.toArray( new String[stringValueList.size()] );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public AttributeTypeDescription getAttributeTypeDescription()
     {
-        return getEntry().getConnection().getSchema().getAttributeTypeDescription( this.getType() );
+        return getEntry().getConnection().getSchema().getAttributeTypeDescription( getType() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class adapter )
     {
 
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+        Class<?> clazz = ( Class<?> ) adapter;
+        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( clazz.isAssignableFrom( IConnection.class ) )
         {
-            return this.getConnection();
+            return getEntry().getConnection();
         }
-        if ( adapter == IEntry.class )
+        if ( clazz.isAssignableFrom( IEntry.class ) )
         {
-            return this.getEntry();
+            return getEntry();
         }
-        if ( adapter == IAttribute.class )
+        if ( clazz.isAssignableFrom( IAttribute.class ) )
         {
             return this;
         }
@@ -400,18 +493,9 @@ public class Attribute implements IAttribute
     }
 
 
-    public IConnection getConnection()
-    {
-        return this.entry.getConnection();
-    }
-
-
-    public IAttribute getAttribute()
-    {
-        return this;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public AttributeDescription getAttributeDescription()
     {
         return attributeDescription;

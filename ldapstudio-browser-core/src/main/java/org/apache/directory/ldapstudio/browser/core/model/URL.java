@@ -23,12 +23,17 @@ package org.apache.directory.ldapstudio.browser.core.model;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Arrays;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
 
 
+/**
+ * An URL represents a LDAP URL.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class URL
 {
 
@@ -51,23 +56,37 @@ public class URL
     // token = oid from section 4.1 of [3]
     // xtoken = ("X-" / "x-") token
 
+    /** The protocoll, ldap or ldaps */
     private String protocol = null;
 
+    /** The host */
     private String host = null;
 
+    /** The port */
     private String port = null;
 
+    /** The dn */
     private String dn = null;
 
+    /** The attributes */
     private String attributes = null;
 
+    /** The scope */
     private String scope = null;
 
+    /** The filter */
     private String filter = null;
 
+    /** The extensions */
     private String extensions = null;
 
 
+    /**
+     * Creates a new instance of URL. The given string is 
+     * parsed to an URL.
+     *
+     * @param url the URL
+     */
     public URL( String url )
     {
         if ( url == null )
@@ -79,6 +98,13 @@ public class URL
     }
 
 
+    /**
+     * Creates a new instance of URL, based on the given connection and DN. 
+     * Only the fields protocol, host, port and dn exists when using this constructor.
+     *
+     * @param connection the connection
+     * @param dn the DN
+     */
     public URL( IConnection connection, DN dn )
     {
         this( connection );
@@ -92,6 +118,12 @@ public class URL
     }
 
 
+    /**
+     * Creates a new instance of URL, based on the given connection. Only
+     * the fields protocol, host and port exists when using this constructor.
+     *
+     * @param connection the connection
+     */
     public URL( IConnection connection )
     {
         if ( connection == null )
@@ -112,6 +144,12 @@ public class URL
     }
 
 
+    /**
+     * Creates a new instance of URL, based on the given search. Initializes
+     * the fields protocol, host, port, dn, attributes, scope and filter.
+     *
+     * @param search the search
+     */
     public URL( ISearch search )
     {
         this( search.getConnection(), search.getSearchBase() );
@@ -129,6 +167,9 @@ public class URL
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o ) throws ClassCastException
     {
         if ( o instanceof URL )
@@ -139,12 +180,18 @@ public class URL
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode()
     {
         return this.toString().hashCode();
     }
 
 
+    /**
+     * Returns the string representation of this LDAP URL.
+     */
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
@@ -188,6 +235,11 @@ public class URL
     }
 
 
+    /**
+     * Parses the given string represntation of the URL.
+     *
+     * @param url the URL
+     */
     private void parseUrl( String url )
     {
 
@@ -286,25 +338,11 @@ public class URL
     }
 
 
-    public static final void main( String[] args )
-    {
-        // String url = "ldap://";
-        // String url = "ldap://localhost";
-        // String url = "ldap://:389";
-        // String url = "ldap://localhost:389";
-        // String url = "ldap:///??one";
-        // String url = "ldap://localhost:389/cn=abc??sub";
-
-        // String url =
-        // "ldap://localhost:389/cn=abc?givenName,sn,mail?sub?(objectClass=*)?ext";
-
-        String url = "cn=abc"; //$NON-NLS-1$
-        String[] protocolAndRest = url.split( "\\?", 2 ); //$NON-NLS-1$
-        System.out.println( Arrays.asList( protocolAndRest ) );
-        System.out.println( protocolAndRest.length );
-    }
-
-
+    /**
+     * Checks for protocol.
+     * 
+     * @return true, if has protocol
+     */
     public boolean hasProtocol()
     {
         try
@@ -319,6 +357,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the protocol.
+     * 
+     * @return the protocol
+     * @throws NoSuchFieldException if not has protocol
+     */
     public String getProtocol() throws NoSuchFieldException
     {
         if ( protocol == null )
@@ -330,6 +374,11 @@ public class URL
     }
 
 
+    /**
+     * Checks for host.
+     * 
+     * @return true, if has host
+     */
     public boolean hasHost()
     {
         try
@@ -344,6 +393,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the host.
+     * 
+     * @return the host
+     * @throws NoSuchFieldException if not has host
+     */
     public String getHost() throws NoSuchFieldException
     {
         if ( host == null )
@@ -355,6 +410,11 @@ public class URL
     }
 
 
+    /**
+     * Checks for port.
+     * 
+     * @return true, if has port
+     */
     public boolean hasPort()
     {
         try
@@ -369,6 +429,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the port.
+     * 
+     * @return the port
+     * @throws NoSuchFieldException if not has port
+     */
     public String getPort() throws NoSuchFieldException
     {
         try
@@ -390,6 +456,11 @@ public class URL
     }
 
 
+    /**
+     * Checks for dn.
+     * 
+     * @return true, if has dn
+     */
     public boolean hasDn()
     {
         try
@@ -404,6 +475,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the dn.
+     * 
+     * @return the dn
+     * @throws NoSuchFieldException if not has dn
+     */
     public DN getDn() throws NoSuchFieldException
     {
         if ( dn == null )
@@ -422,6 +499,11 @@ public class URL
     }
 
 
+    /**
+     * Checks for attributes.
+     * 
+     * @return true, if has attributes
+     */
     public boolean hasAttributes()
     {
         try
@@ -436,6 +518,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the attributes.
+     * 
+     * @return the attributes
+     * @throws NoSuchFieldException if not has attributes
+     */
     public String[] getAttributes() throws NoSuchFieldException
     {
         if ( attributes == null )
@@ -448,6 +536,11 @@ public class URL
     }
 
 
+    /**
+     * Checks for scope.
+     * 
+     * @return true, if has scope
+     */
     public boolean hasScope()
     {
         try
@@ -462,6 +555,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the scope.
+     * 
+     * @return the scope
+     * @throws NoSuchFieldException if not has scope
+     */
     public int getScope() throws NoSuchFieldException
     {
         if ( scope == null )
@@ -485,6 +584,11 @@ public class URL
     }
 
 
+    /**
+     * Checks for filter.
+     * 
+     * @return true, if has filter
+     */
     public boolean hasFilter()
     {
         try
@@ -499,6 +603,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the filter.
+     * 
+     * @return the filter
+     * @throws NoSuchFieldException if not has filter
+     */
     public String getFilter() throws NoSuchFieldException
     {
         if ( filter == null )
@@ -510,6 +620,11 @@ public class URL
     }
 
 
+    /**
+     * Checks for extensions.
+     * 
+     * @return true, if has extensions
+     */
     public boolean hasExtensions()
     {
         try
@@ -524,6 +639,12 @@ public class URL
     }
 
 
+    /**
+     * Gets the extensions.
+     * 
+     * @return the extensions
+     * @throws NoSuchFieldException if not has extensions
+     */
     public String getExtensions() throws NoSuchFieldException
     {
         if ( extensions == null )

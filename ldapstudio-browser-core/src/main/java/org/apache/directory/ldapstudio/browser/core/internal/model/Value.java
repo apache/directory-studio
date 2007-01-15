@@ -36,22 +36,30 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 /**
  * Default implementation of IValue.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class Value implements IValue
 {
 
+    /** The serialVersionUID. */
     private static final long serialVersionUID = -9039209604742682740L;
 
+    /** The attribute this value belongs to */
     private IAttribute attribute;
 
+    /** The raw value, either a String or a byte[] */
     private Object rawValue;
 
 
-    protected Value()
-    {
-    }
-
-
+    /**
+     * Creates a new instance of Value.
+     *
+     * @param attribute the attribute this value belongs to 
+     * @param rawValue the raw value, either a String or a byte[]
+     * @throws ModelModificationException if one of the parameter is null
+     */
     public Value( IAttribute attribute, Object rawValue ) throws ModelModificationException
     {
         this.init( attribute, rawValue );
@@ -63,12 +71,25 @@ public class Value implements IValue
     }
 
 
+    /**
+     * Creates a new instance of Value with an empty value.
+     *
+     * @param attribute the attribute this value belongs to
+     * @throws ModelModificationException if one of the parameter is null
+     */
     public Value( IAttribute attribute ) throws ModelModificationException
     {
         this.init( attribute, null );
     }
 
 
+    /**
+     * Initializes this Value.
+     *
+     * @param attribute the attribute this value belongs to 
+     * @param rawValue the raw value, either a String or a byte[] or null 
+     * @throws ModelModificationException
+     */
     private void init( IAttribute attribute, Object rawValue ) throws ModelModificationException
     {
         if ( attribute == null )
@@ -96,18 +117,27 @@ public class Value implements IValue
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute getAttribute()
     {
         return this.attribute;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getRawValue()
     {
         return this.rawValue;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getStringValue()
     {
 
@@ -134,9 +164,11 @@ public class Value implements IValue
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public byte[] getBinaryValue()
     {
-
         if ( this.rawValue == EMPTY_STRING_VALUE )
         {
             return EMPTY_STRING_VALUE.getBinaryValue();
@@ -160,24 +192,36 @@ public class Value implements IValue
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isString()
     {
         return this.rawValue == EMPTY_STRING_VALUE || this.attribute.isString();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBinary()
     {
         return this.rawValue == EMPTY_BINARY_VALUE || this.attribute.isBinary();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEmpty()
     {
         return this.rawValue == EMPTY_STRING_VALUE || this.rawValue == EMPTY_BINARY_VALUE;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o )
     {
         // check argument
@@ -213,37 +257,47 @@ public class Value implements IValue
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode()
     {
         return rawValue.hashCode();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return attribute + ":" + ( this.isString() ? this.getStringValue() : "BINARY" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class adapter )
     {
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+        Class<?> clazz = ( Class<?> ) adapter;
+        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( clazz.isAssignableFrom( IConnection.class ) )
         {
-            return this.getConnection();
+            return getAttribute().getEntry().getConnection();
         }
-        if ( adapter == IEntry.class )
+        if ( clazz.isAssignableFrom( IEntry.class ) )
         {
-            return this.getEntry();
+            return getAttribute().getEntry();
         }
-        if ( adapter == IAttribute.class )
+        if ( clazz.isAssignableFrom( IAttribute.class ) )
         {
-            return this.getAttribute();
+            return getAttribute();
         }
-        if ( adapter == IValue.class )
+        if ( clazz.isAssignableFrom( IValue.class ) )
         {
             return this;
         }
@@ -251,24 +305,9 @@ public class Value implements IValue
     }
 
 
-    public IConnection getConnection()
-    {
-        return this.attribute.getEntry().getConnection();
-    }
-
-
-    public IEntry getEntry()
-    {
-        return this.attribute.getEntry();
-    }
-
-
-    public IValue getValue()
-    {
-        return this;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean isRdnPart()
     {
         RDNPart[] parts = getAttribute().getEntry().getRdn().getParts();
@@ -282,4 +321,5 @@ public class Value implements IValue
         }
         return false;
     }
+
 }

@@ -25,16 +25,38 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 
+/**
+ * An AttributeHierarchy is a container for an attribute including all its subtypes. 
+ * <p>
+ * Example:
+ * <ul>
+ * <li>attributeDescription is <code>name</code>
+ * <li>attributes contains <code>cn:test1</code>, <code>sn:test2</code> and <code>givenName:test3</code>
+ * </ul>
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeHierarchy
 {
 
+    /** The entry */
     private IEntry entry;
 
+    /** The attribute description */
     private String attributeDescription;
 
+    /** The attributes */
     private IAttribute[] attributes;
 
 
+    /**
+     * Creates a new instance of AttributeHierarchy.
+     *
+     * @param entry the entry
+     * @param attributeDescription the attribute description
+     * @param attributes the attributes
+     */
     public AttributeHierarchy( IEntry entry, String attributeDescription, IAttribute[] attributes )
     {
         if ( entry == null || attributeDescription == null || attributes == null || attributes.length < 1
@@ -48,42 +70,79 @@ public class AttributeHierarchy
     }
 
 
+    /**
+     * Gets the attributes.
+     *
+     * @return the attributes
+     */
     public IAttribute[] getAttributes()
     {
         return attributes;
     }
 
 
-    public boolean contains( IAttribute att )
+    /**
+     * Checks whether the given attribute is contained 
+     * in this attribute hierarchy. 
+     *
+     * @param attribute the attribute to check
+     * @return true if the attribute is contained in this attribute hierarchy
+     */
+    public boolean contains( IAttribute attribute )
     {
-        return Arrays.asList( attributes ).contains( att );
+        return Arrays.asList( attributes ).contains( attribute );
     }
 
 
-    public Iterator iterator()
+    /**
+     * Returns an iterator over the elements of this attribute hierarchy.
+     *
+     * @return an iterator over the elements of this attribute hierarchy
+     */
+    public Iterator<IAttribute> iterator()
     {
         return Arrays.asList( attributes ).iterator();
     }
 
 
+    /**
+     * Gets the first attribute.
+     *
+     * @return the first attribute
+     */
     public IAttribute getAttribute()
     {
         return attributes[0];
     }
 
 
+    /**
+     * Gets the number of attributes.
+     *
+     * @return the number of attributes
+     */
     public int size()
     {
         return attributes.length;
     }
 
 
+    /**
+     * Gets the attribute description.
+     *
+     * @return the attribute description
+     */
     public String getAttributeDescription()
     {
         return attributeDescription;
     }
 
 
+    /**
+     * Gets the entry.
+     *
+     * @return the entry
+     */
     public IEntry getEntry()
     {
         return entry;

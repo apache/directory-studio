@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.IAdaptable;
 
 
 /**
- * The IAttribute interface represents an LDAP attribute.
+ * An IAttribute represents an LDAP attribute.
  */
 public interface IAttribute extends Serializable, IAdaptable, AttributePropertyPageProvider, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider
@@ -134,39 +134,27 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      */
     public static final String OPERATIONAL_ATTRIBUTE_VENDOR_VERSION = "vendorVersion"; //$NON-NLS-1$
 
-    /**
-     * objectClass
-     */
+    /** The attribute type objectClass */
     public static final String OBJECTCLASS_ATTRIBUTE = "objectClass"; //$NON-NLS-1$
 
-    /**
-     * objectClass
-     */
+    /** The OID of the objectClass attribute, 2.5.4.0 */
     public static final String OBJECTCLASS_ATTRIBUTE_OID = "2.5.4.0"; //$NON-NLS-1$
 
-    /**
-     * ref
-     */
+    /** The attribute type ref */
     public static final String REFERRAL_ATTRIBUTE = "ref"; //$NON-NLS-1$
 
-    /**
-     * aliasedObjectName
-     */
+    /** The attribute type aliasedObjectName */
     public static final String ALIAS_ATTRIBUTE = "aliasedObjectName"; //$NON-NLS-1$
 
-    /**
-     * ;
-     */
+    /** The options delimiter ';' */
     public static final String OPTION_DELIMITER = ";"; //$NON-NLS-1$
 
-    /**
-     * lang-
-     */
+    /** The language tag prefix 'lang-' */
     public static final String OPTION_LANG_PREFIX = "lang-"; //$NON-NLS-1$
 
 
     /**
-     * Returns the entry of this attribute.
+     * Gets the entry of this attribute.
      * 
      * @return the entry of this attribute, never null
      */
@@ -178,8 +166,8 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * conditions must be fulfilled:
      * 
      * <ul>
-     * <li>There must be at least one value</li>
-     * <li>There mustn't be any empty value</li>
+     * <li>The attribute must contain at least one value</li>
+     * <li>The attribute mustn't contain any empty value</li>
      * </ul>
      * 
      * @return true if the attribute ist consistent
@@ -189,7 +177,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
     /**
      * Returns true if this attribute is a must attribute of its entry
-     * according to the entry's subschema.
+     * according to the schema and the entry's object classes.
      * 
      * @return true if this attribute is a must attribute of its entry.
      */
@@ -198,7 +186,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
     /**
      * Returns true if this attribute is a may attribute of its entry
-     * according to the entry's subschema.
+     * according to the schema and the entry's object classes.
      * 
      * @return true if this attribute is a may attribute of its entry.
      */
@@ -207,7 +195,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
     /**
      * Returns true if this attribute is an operational attribute according
-     * to the entry's subschema.
+     * to the schema.
      * 
      * @return true if this attribute is an operational attribute.
      */
@@ -215,9 +203,9 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Return true if this attribute is the objectclass attribute.
+     * Return true if this attribute is the objeCtclass attribute.
      * 
-     * @return true if this attribute is the objectclass attribute.
+     * @return true if this attribute is the objectClass attribute.
      */
     public abstract boolean isObjectClassAttribute();
 
@@ -303,16 +291,15 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns the values of this attribute, wrapped into IValue objects.
+     * Gets the values of this attribute.
      * 
-     * @return the values of this attribute, may be an empty array, never
-     *         null.
+     * @return the values of this attribute, may be an empty array, never null.
      */
     public abstract IValue[] getValues();
 
 
     /**
-     * Returns the number of values in this attribute.
+     * Gets the number of values in this attribute.
      * 
      * @return the number of values in this attribute.
      */
@@ -320,7 +307,8 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns the description of this attribute.
+     * Gets the description of this attribute. The description 
+     * consists of the attribute type and optional options.
      * 
      * @return the description of this attribute.
      */
@@ -328,7 +316,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns the type of this attribute (description without options).
+     * Gets the type of this attribute (description without options).
      * 
      * @return the attribute type.
      */
@@ -336,7 +324,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns all values as byte[]. If the values aren't binary they are
+     * Gets all values as byte[]. If the values aren't binary they are
      * converted to byte[] using UTF-8 encoding.
      * 
      * @return The binary values
@@ -345,7 +333,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns the first value as string if one is present, null otherwise
+     * Gets the first value as string if one is present, null otherwise
      * 
      * @return The first value if one present, null otherwise
      */
@@ -353,7 +341,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns all values as String. If the values aren't strings they are
+     * Gets all values as String. If the values aren't strings they are
      * converted using UTF-8 encoding.
      * 
      * @return The string values
@@ -376,7 +364,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns the AttributeTypeDescription of this attribute.
+     * Gets the AttributeTypeDescription of this attribute.
      * 
      * @return the AttributeTypeDescription of this attribute, may be the
      *         default or a dummy
@@ -385,7 +373,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
 
 
     /**
-     * Returns the AttributeDescription of this attribute.
+     * Gets the AttributeDescription of this attribute.
      * 
      * @return the AttributeDescription of this attribute,.
      */
