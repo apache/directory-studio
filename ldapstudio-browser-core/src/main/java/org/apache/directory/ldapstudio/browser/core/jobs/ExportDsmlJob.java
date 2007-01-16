@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
+import org.apache.directory.ldapstudio.browser.core.model.Control;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.SearchParameter;
@@ -187,8 +188,6 @@ public class ExportDsmlJob extends AbstractEclipseJob
             }
 
             // Filter
-            //            PresentFilter presentFilter = new PresentFilter();
-            //            presentFilter.setAttributeDescription( "objectclass" );
             searchRequest.setFilter( convertToSharedLdapFilter( searchParameter.getFilter() ) );
 
             // Attributes
@@ -196,6 +195,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
             for ( int i = 0; i < returningAttributes.length; i++ )
             {
                 searchRequest.addAttribute( returningAttributes[i] );
+            }
+
+            // Controls
+            List<org.apache.directory.shared.ldap.codec.Control> sharedLdapControls = convertToSharedLdapControls( searchParameter
+                .getControls() );
+            for ( int i = 0; i < sharedLdapControls.size(); i++ )
+            {
+                searchRequest.addControl( sharedLdapControls.get( i ) );
             }
 
             // Executing the request
@@ -414,5 +421,45 @@ public class ExportDsmlJob extends AbstractEclipseJob
         assertion.setAssertionValue( node.getValue() );
 
         return avaFilter;
+    }
+
+
+    /**
+     * Converts the given array of Controls into their corresponding representation in the Shared LDAP Model.
+     *
+     * @param controls
+     *      the array of Controls to convert
+     * @return
+     *      a List of Shared LDAP Control Objects corresponding to the given Controls
+     */
+    private List<org.apache.directory.shared.ldap.codec.Control> convertToSharedLdapControls( Control[] controls )
+    {
+        List<org.apache.directory.shared.ldap.codec.Control> returnList = new ArrayList<org.apache.directory.shared.ldap.codec.Control>();
+
+        for ( int i = 0; i < controls.length; i++ )
+        {
+            returnList.add( convertToSharedLDAP( controls[i] ) );
+        }
+
+        return returnList;
+    }
+
+
+    /**
+     * Converts the given Control into its corresponding representation in the Shared LDAP Model.
+     *
+     * @param control
+     *      the Control to convert
+     * @return
+     *      the corresponding Control in the Shared LDAP Model
+     */
+    private static org.apache.directory.shared.ldap.codec.Control convertToSharedLDAP( Control control )
+    {
+        org.apache.directory.shared.ldap.codec.Control sharedLdapControl = new org.apache.directory.shared.ldap.codec.Control();
+
+        sharedLdapControl.setControlType( control.getOid() );
+        sharedLdapControl.setControlValue( control.getControlValue() );
+
+        return sharedLdapControl;
     }
 }
