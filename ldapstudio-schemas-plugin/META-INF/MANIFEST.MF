@@ -11,8 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.apache.directory.ldapstudio.jars
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
- lib/apacheds-core-plugin-1.1.0-SNAPSHOT.jar,
- lib/apacheds-core-shared-1.1.0-SNAPSHOT.jar,
  lib/commons-collections-3.1.jar,
  lib/commons-configuration-1.2.jar,
  lib/commons-lang-2.1.jar,
@@ -20,4 +18,7 @@ Bundle-ClassPath: .,
  lib/nlog4j-1.2.24.jar,
  lib/shared-ldap-0.9.6-SNAPSHOT.jar,
  lib/ui-forms-3.2.0-v20060315.jar,
- lib/velocity-dep-1.4.jar
+ lib/velocity-dep-1.4.jar,
+ lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar,
+ lib/apacheds-core-shared-1.5.0-SNAPSHOT.jar,
+ lib/shared-asn1-0.9.6-SNAPSHOT.jar

@@ -159,7 +159,7 @@ public class SchemaParser
     {
         int size = parser.getAttributeTypes().size();
         setAttributeTypes( new AttributeTypeLiteral[size] );
-        setAttributeTypes( ( AttributeTypeLiteral[] ) parser.getAttributeTypes().values().toArray( getAttributeTypes() ) );
+        setAttributeTypes( ( AttributeTypeLiteral[] ) parser.getAttributeTypes().toArray( getAttributeTypes() ) );
     }
 
 
@@ -172,6 +172,6 @@ public class SchemaParser
     {
         int size = parser.getObjectClassTypes().size();
         setObjectClasses( new ObjectClassLiteral[size] );
-        setObjectClasses( ( ObjectClassLiteral[] ) parser.getObjectClassTypes().values().toArray( getObjectClasses() ) );
+        setObjectClasses( ( ObjectClassLiteral[] ) parser.getObjectClassTypes().toArray( getObjectClasses() ) );
     }
 }

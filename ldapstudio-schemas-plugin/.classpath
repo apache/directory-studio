@@ -10,8 +10,8 @@
 	<classpathentry kind="lib" path="lib/commons-configuration-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/apacheds-core-plugin-1.1.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/apacheds-core-shared-1.1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/apacheds-core-shared-1.5.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/shared-ldap-0.9.6-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/ui-forms-3.2.0-v20060315.jar"/>
 	<classpathentry kind="lib" path="lib/nlog4j-1.2.24.jar"/>

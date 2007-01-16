@@ -24,8 +24,8 @@
 		<dependency org="commons-lang" name="commons-lang" rev="2.1"/>
 		<dependency org="commons-logging" name="commons-logging" rev="1.1"/>
 		<dependency org="junit" name="junit" rev="3.8.2"/>
-		<dependency org="org.apache.directory.server" name="apacheds-core-plugin" rev="1.1.0-SNAPSHOT"/>
-		<dependency org="org.apache.directory.server" name="apacheds-core-shared" rev="1.1.0-SNAPSHOT"/>
+		<dependency org="org.apache.directory.server" name="apacheds-core-plugin" rev="1.5.0-SNAPSHOT"/>
+		<dependency org="org.apache.directory.server" name="apacheds-core-shared" rev="1.5.0-SNAPSHOT"/>
 		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.6-SNAPSHOT"/>
 		<dependency org="org.eclipse" name="ui-forms" rev="3.2.0-v20060315"/>
 		<dependency org="org.slf4j" name="nlog4j" rev="1.2.24"/>
