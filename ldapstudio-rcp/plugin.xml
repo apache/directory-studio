@@ -52,6 +52,9 @@
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini"/>
+         <property
+               name="windowImages"
+               value="resources/icons/window/ldapstudio_16x16.gif,resources/icons/window/ldapstudio_32x32.gif,resources/icons/window/ldapstudio_48x48.gif,resources/icons/window/ldapstudio_64x64.gif,resources/icons/window/ldapstudio_128x128.gif"/>
       </product>
    </extension>
    <extension
