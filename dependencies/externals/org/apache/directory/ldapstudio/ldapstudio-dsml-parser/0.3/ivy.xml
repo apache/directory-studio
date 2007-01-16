@@ -3,7 +3,7 @@
 		module="ldapstudio-dsml-parser"
 		revision="0.3"
 		status="release"
-		publication="20070112120000"
+		publication="20070116134400"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
