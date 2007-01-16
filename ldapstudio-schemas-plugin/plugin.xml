@@ -23,6 +23,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.apache.directory.ldapstudio.schemas.view.perspectives.StandardPerspective"
+            icon="ressources/icons/schema.gif"
             id="org.apache.directory.ldapstudio.schemas.perspective"
             name="%ldapstudio-schemas-plugin.perspective.schemas.name"/>
    </extension>
