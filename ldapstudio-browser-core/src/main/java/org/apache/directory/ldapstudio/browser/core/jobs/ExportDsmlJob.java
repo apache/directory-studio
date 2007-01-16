@@ -22,7 +22,9 @@ package org.apache.directory.ldapstudio.browser.core.jobs;
 
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,14 +33,6 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.SearchParameter;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapAndFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterItemComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapNotFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapOrFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterToken;
 import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
 import org.apache.directory.ldapstudio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.shared.asn1.codec.DecoderException;
@@ -46,11 +40,21 @@ import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.search.AndFilter;
 import org.apache.directory.shared.ldap.codec.search.AttributeValueAssertionFilter;
+import org.apache.directory.shared.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.shared.ldap.codec.search.Filter;
 import org.apache.directory.shared.ldap.codec.search.NotFilter;
 import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
+import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.filter.BranchNode;
+import org.apache.directory.shared.ldap.filter.ExprNode;
+import org.apache.directory.shared.ldap.filter.ExtensibleNode;
+import org.apache.directory.shared.ldap.filter.FilterParser;
+import org.apache.directory.shared.ldap.filter.FilterParserImpl;
+import org.apache.directory.shared.ldap.filter.PresenceNode;
+import org.apache.directory.shared.ldap.filter.SimpleNode;
+import org.apache.directory.shared.ldap.filter.SubstringNode;
 import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.dom4j.Document;
@@ -231,103 +235,136 @@ public class ExportDsmlJob extends AbstractEclipseJob
      *      the filter String to convert
      * @return
      *      the corresponding Shared LDAP Filter
-     * @throws DecoderException
+     * @throws ParseException 
+     * @throws IOException 
+     * @throws DecoderException 
      */
-    public static Filter convertToSharedLdapFilter( String filter ) throws DecoderException
+    public static Filter convertToSharedLdapFilter( String filter ) throws IOException, ParseException,
+        DecoderException
     {
-        LdapFilterParser ldapFilterParser = new LdapFilterParser();
+        FilterParser filterParser = new FilterParserImpl();
 
-        ldapFilterParser.parse( filter );
+        ExprNode exprNode = filterParser.parse( filter );
 
-        return convertToSharedLdapFilter( ldapFilterParser.getModel() );
+        return convertToSharedLdapFilter( exprNode );
     }
 
 
     /**
-     * Converts a Browser Core Filter Model into a Shared LDAP Model.
+     * Converts a ExprNode Filter Model into a Shared LDAP Model.
      *
-     * @param filter
+     * @param exprNode
      *      the filter
      * @return
      *      the corresponding filter in the Shared LDAP Model
-     * @throws DecoderException
+     * @throws DecoderException 
      */
-    public static Filter convertToSharedLdapFilter( LdapFilter filter ) throws DecoderException
+    public static Filter convertToSharedLdapFilter( ExprNode exprNode ) throws DecoderException
     {
         Filter sharedLdapFilter = null;
 
-        LdapFilterComponent filterComponent = filter.getFilterComponent();
-        if ( filterComponent instanceof LdapAndFilterComponent )
+        if ( exprNode instanceof BranchNode )
         {
-            LdapAndFilterComponent andFilterComponent = ( LdapAndFilterComponent ) filterComponent;
+            BranchNode branchNode = ( BranchNode ) exprNode;
 
-            AndFilter andFilter = new AndFilter();
-            sharedLdapFilter = andFilter;
-
-            Filter[] filters = iterateOnFilters( andFilterComponent.getFilters() );
-            for ( int i = 0; i < filters.length; i++ )
+            switch ( branchNode.getOperator() )
             {
-                andFilter.addFilter( filters[i] );
+                case AND:
+                    AndFilter andFilter = new AndFilter();
+                    sharedLdapFilter = andFilter;
+
+                    List<Filter> andFilters = iterateOnFilters( branchNode.getChildren() );
+                    for ( int i = 0; i < andFilters.size(); i++ )
+                    {
+                        andFilter.addFilter( andFilters.get( i ) );
+                    }
+                    break;
+
+                case OR:
+                    OrFilter orFilter = new OrFilter();
+                    sharedLdapFilter = orFilter;
+
+                    List<Filter> orFilters = iterateOnFilters( branchNode.getChildren() );
+                    for ( int i = 0; i < orFilters.size(); i++ )
+                    {
+                        orFilter.addFilter( orFilters.get( i ) );
+                    }
+                    break;
+                case NOT:
+                    NotFilter notFilter = new NotFilter();
+                    sharedLdapFilter = notFilter;
+
+                    List<Filter> notFilters = iterateOnFilters( branchNode.getChildren() );
+                    notFilter.setNotFilter( notFilters.get( 0 ) );
+                    break;
             }
         }
-        else if ( filterComponent instanceof LdapOrFilterComponent )
+        else if ( exprNode instanceof PresenceNode )
         {
-            LdapOrFilterComponent orFilterComponent = ( LdapOrFilterComponent ) filterComponent;
+            PresenceNode presenceNode = ( PresenceNode ) exprNode;
 
-            OrFilter orFilter = new OrFilter();
-            sharedLdapFilter = orFilter;
+            PresentFilter presentFilter = new PresentFilter();
+            sharedLdapFilter = presentFilter;
 
-            Filter[] filters = iterateOnFilters( orFilterComponent.getFilters() );
-            for ( int i = 0; i < filters.length; i++ )
+            presentFilter.setAttributeDescription( presenceNode.getAttribute() );
+        }
+        else if ( exprNode instanceof SimpleNode )
+        {
+            SimpleNode simpleNode = ( SimpleNode ) exprNode;
+
+            switch ( simpleNode.getAssertionType() )
             {
-                orFilter.addFilter( filters[i] );
+                case APPROXIMATE:
+                    AttributeValueAssertionFilter approxMatchFilter = createAttributeValueAssertionFilter( simpleNode,
+                        LdapConstants.APPROX_MATCH_FILTER );
+                    sharedLdapFilter = approxMatchFilter;
+                    break;
+
+                case EQUALITY:
+                    AttributeValueAssertionFilter equalityMatchFilter = createAttributeValueAssertionFilter(
+                        simpleNode, LdapConstants.EQUALITY_MATCH_FILTER );
+                    sharedLdapFilter = equalityMatchFilter;
+                    break;
+
+                case GREATEREQ:
+                    AttributeValueAssertionFilter greaterOrEqualFilter = createAttributeValueAssertionFilter(
+                        simpleNode, LdapConstants.GREATER_OR_EQUAL_FILTER );
+                    sharedLdapFilter = greaterOrEqualFilter;
+                    break;
+
+                case LESSEQ:
+                    AttributeValueAssertionFilter lessOrEqualFilter = createAttributeValueAssertionFilter( simpleNode,
+                        LdapConstants.LESS_OR_EQUAL_FILTER );
+                    sharedLdapFilter = lessOrEqualFilter;
+                    break;
             }
         }
-        else if ( filterComponent instanceof LdapNotFilterComponent )
+        else if ( exprNode instanceof ExtensibleNode )
         {
-            LdapNotFilterComponent notFilterComponent = ( LdapNotFilterComponent ) filterComponent;
+            ExtensibleNode extensibleNode = ( ExtensibleNode ) exprNode;
 
-            NotFilter notFilter = new NotFilter();
-            sharedLdapFilter = notFilter;
+            ExtensibleMatchFilter extensibleMatchFilter = new ExtensibleMatchFilter();
+            sharedLdapFilter = extensibleMatchFilter;
 
-            Filter[] filters = iterateOnFilters( notFilterComponent.getFilters() );
-            notFilter.setNotFilter( filters[0] );
+            extensibleMatchFilter.setDnAttributes( extensibleNode.dnAttributes() );
+            extensibleMatchFilter.setMatchingRule( extensibleNode.getMatchingRuleId() );
+            extensibleMatchFilter.setMatchValue( extensibleNode.getValue() );
+            extensibleMatchFilter.setType( extensibleNode.getAttribute() );
         }
-        else if ( filterComponent instanceof LdapFilterItemComponent )
+        else if ( exprNode instanceof SubstringNode )
         {
-            LdapFilterItemComponent filterItemComponent = ( LdapFilterItemComponent ) filterComponent;
+            SubstringNode substringNode = ( SubstringNode ) exprNode;
 
-            int filterType = filterItemComponent.getFilterToken().getType();
-            if ( filterType == LdapFilterToken.EQUAL )
-            {
-                AttributeValueAssertionFilter avaFilter = createAttributeValueAssertionFilter( filterItemComponent,
-                    LdapConstants.EQUALITY_MATCH_FILTER );
-                sharedLdapFilter = avaFilter;
-            }
-            else if ( filterType == LdapFilterToken.GREATER )
-            {
-                AttributeValueAssertionFilter avaFilter = createAttributeValueAssertionFilter( filterItemComponent,
-                    LdapConstants.GREATER_OR_EQUAL_FILTER );
-                sharedLdapFilter = avaFilter;
-            }
-            else if ( filterType == LdapFilterToken.LESS )
-            {
-                AttributeValueAssertionFilter avaFilter = createAttributeValueAssertionFilter( filterItemComponent,
-                    LdapConstants.LESS_OR_EQUAL_FILTER );
-                sharedLdapFilter = avaFilter;
-            }
-            else if ( filterType == LdapFilterToken.APROX )
-            {
-                AttributeValueAssertionFilter avaFilter = createAttributeValueAssertionFilter( filterItemComponent,
-                    LdapConstants.APPROX_MATCH_FILTER );
-                sharedLdapFilter = avaFilter;
-            }
-            else if ( filterType == LdapFilterToken.PRESENT )
-            {
-                PresentFilter presentFilter = new PresentFilter();
-                sharedLdapFilter = presentFilter;
+            SubstringFilter substringFilter = new SubstringFilter();
+            sharedLdapFilter = substringFilter;
 
-                presentFilter.setAttributeDescription( filterItemComponent.getAttributeToken().getValue() );
+            substringFilter.setType( substringNode.getAttribute() );
+            substringFilter.setInitialSubstrings( substringNode.getInitial() );
+            substringFilter.setFinalSubstrings( substringNode.getFinal() );
+            List anys = substringNode.getAny();
+            for ( int i = 0; i < anys.size(); i++ )
+            {
+                substringFilter.addAnySubstrings( ( String ) anys.get( i ) );
             }
         }
 
@@ -336,46 +373,45 @@ public class ExportDsmlJob extends AbstractEclipseJob
 
 
     /**
-     * Iterates the conversion on the given array of Ldap Filters.
+     * Iterates the conversion on the given List of notdes.
      *
      * @param filters
-     *      the array of Ldap Filters to convert
+     *      the List of nodes to convert
      * @return
      *      an array containing the conversion for each Ldap Filter into its Shared LDAP Model
-     * @throws DecoderException
+     * @throws DecoderException 
      */
-    private static Filter[] iterateOnFilters( LdapFilter[] filters ) throws DecoderException
+    private static List<Filter> iterateOnFilters( List<ExprNode> filters ) throws DecoderException
     {
         List<Filter> filtersList = new ArrayList<Filter>();
 
-        for ( int c = 0; c < filters.length; c++ )
+        for ( int c = 0; c < filters.size(); c++ )
         {
-            filtersList.add( convertToSharedLdapFilter( filters[c] ) );
+            filtersList.add( convertToSharedLdapFilter( filters.get( c ) ) );
         }
 
-        return filtersList.toArray( new Filter[0] );
+        return filtersList;
     }
 
 
     /**
-     * Create and returns an Attribute Value Assertion Filter from the given LdapFilterItemComponent ant the given type.
+     * Create and returns an Attribute Value Assertion Filter from the given SimpleNode ant the given type.
      *
-     * @param filter
+     * @param node
      *      the filter to convert
      * @param type
      *      the type of the Attribute Value Assertion Filter
      * @return
      *      the corresponding Attribute Value Assertion Filter
      */
-    private static AttributeValueAssertionFilter createAttributeValueAssertionFilter( LdapFilterItemComponent filter,
-        int type )
+    private static AttributeValueAssertionFilter createAttributeValueAssertionFilter( SimpleNode node, int type )
     {
         AttributeValueAssertionFilter avaFilter = new AttributeValueAssertionFilter( type );
 
         AttributeValueAssertion assertion = new AttributeValueAssertion();
         avaFilter.setAssertion( assertion );
-        assertion.setAttributeDesc( filter.getAttributeToken().getValue() );
-        assertion.setAssertionValue( filter.getValueToken().getValue() );
+        assertion.setAttributeDesc( node.getAttribute() );
+        assertion.setAssertionValue( node.getValue() );
 
         return avaFilter;
     }
