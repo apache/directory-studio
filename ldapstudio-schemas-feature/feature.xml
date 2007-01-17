@@ -218,20 +218,20 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="LDAP Studio Update Site" url="http://people.apache.org/~pajbam/ldapstudio/update"/>
+      <update label="LDAP Studio Update Site" url="http://people.apache.org/~pamarcelot/ldapstudio/update"/>
    </url>
 
    <plugin
          id="org.apache.directory.ldapstudio.schemas"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.6.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.ldapstudio.jars"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.6.0"/>
 
 </feature>

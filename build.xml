@@ -79,15 +79,6 @@
             </fileset>
         </copy>
 
-        <!-- Creation of the LDAP Studio RCP Feature -->
-        <ant dir="ldapstudio-rcp-feature" inheritAll="no" />
-        <!-- Copy of the LDAP Studio RCP Feature in the "features" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/features">
-            <fileset dir="${basedir}/ldapstudio-rcp-feature/target">
-                <include name="*.jar" />
-            </fileset>
-        </copy>
-
         <!-- Creation of the Schemas Editor Plugin -->
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" />
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
@@ -96,33 +87,6 @@
                 <include name="*.jar" />
             </fileset>
         </copy>
-
-        <!-- Creation of the Schemas Editor Feature -->
-        <ant dir="ldapstudio-schemas-feature" inheritAll="no" />
-        <!-- Copy of the Schemas Editor Feature in the "features" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/features">
-            <fileset dir="${basedir}/ldapstudio-schemas-feature/target">
-                <include name="*.jar" />
-            </fileset>
-        </copy>
-
-        <!-- Creation of the Import/Export Plugin -->
-        <!--<ant dir="ldapstudio-importexport-plugin" inheritAll="no" />-->
-        <!-- Copy of the Import/Export Plugin in the "plugins" folder of the RCP app -->
-        <!--<copy todir="${ldapstudio-complete.build}/plugins">-->
-        <!--    <fileset dir="${basedir}/ldapstudio-importexport-plugin/target">-->
-        <!--        <include name="*.jar" />-->
-        <!--    </fileset>-->
-        <!--</copy>-->
-
-	<!-- Creation of the DSML Plugin -->
-        <!--<ant dir="ldapstudio-dsml-plugin" inheritAll="no" />-->
-        <!-- Copy of the DSML Plugin in the "plugins" folder of the RCP app -->
-        <!--<copy todir="${ldapstudio-complete.build}/plugins">-->
-            <!--<fileset dir="${basedir}/ldapstudio-dsml-plugin/target">-->
-         <!--       <include name="*.jar" />-->
-         <!--   </fileset>-->
-       <!-- </copy>-->
 
         <!-- Creation of the Browser Core Plugin -->
         <ant dir="ldapstudio-browser-core" inheritAll="no" />
@@ -142,25 +106,7 @@
             </fileset>
         </copy>
 
-        <!-- Creation of the Browser Feature -->
-        <ant dir="ldapstudio-browser-feature" inheritAll="no" />
-        <!-- Copy of the Browser Feature in the "features" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/features">
-            <fileset dir="${basedir}/ldapstudio-browser-feature/target">
-                <include name="*.jar" />
-            </fileset>
-        </copy>
-
-	<!-- Creation of the ACIItem Editor Plugin -->
-        <!--<ant dir="ldapstudio-aciitemeditor" inheritAll="no" />-->
-        <!-- Copy of the ACI Item Editor Plugin in the "plugins" folder of the RCP app -->
-        <!--<copy todir="${ldapstudio-complete.build}/plugins">-->
-        <!--    <fileset dir="${basedir}/ldapstudio-aciitemeditor/target">-->
-         <!--       <include name="*.jar" />-->
-         <!--   </fileset>-->
-       <!--   </copy>-->
-
-	<!-- Creation of the Jars Plugin -->
+	    <!-- Creation of the Jars Plugin -->
         <ant dir="ldapstudio-jars" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
@@ -168,6 +114,42 @@
                 <include name="*.jar" />
             </fileset>
         </copy>
+
+        <!-- Property for the features -->
+		<property name="project.features" value="${ldapstudio-complete.build}/features" />
+
+        <!-- Copy of the LDAP Studio RCP Feature in the "features" folder -->
+		<property name="ldapstudio-rcp-feature.project" value="${basedir}/ldapstudio-rcp-feature" />
+		<property name="ldapstudio-rcp-feature.name" value="org.apache.directory.ldapstudio.rcp" />
+		<property name="ldapstudio-rcp-feature.version" value="0.6.0" />
+        <mkdir dir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}" />
+		<copy todir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}">
+			<fileset dir="${ldapstudio-rcp-feature.project}">
+				<include name="feature.xml" />
+			</fileset>
+		</copy>
+		
+        <!-- Copy of the Schemas Editor Feature in the "features" folder -->
+		<property name="ldapstudio-schemas-feature.project" value="${basedir}/ldapstudio-schemas-feature" />
+		<property name="ldapstudio-schemas-feature.name" value="org.apache.directory.ldapstudio.schemas.feature" />
+		<property name="ldapstudio-schemas-feature.version" value="0.6.0" />
+		<mkdir dir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}" />
+		<copy todir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}">
+			<fileset dir="${ldapstudio-schemas-feature.project}">
+				<include name="feature.xml" />
+			</fileset>
+		</copy>
+		
+	    <!-- Copy of the Browser Feature in the "features" folder -->
+		<property name="ldapstudio-browser-feature.project" value="${basedir}/ldapstudio-browser-feature" />
+		<property name="ldapstudio-browser-feature.name" value="org.apache.directory.ldapstudio.browser.feature" />
+		<property name="ldapstudio-browser-feature.version" value="0.6.0" />
+		<mkdir dir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}" />
+		<copy todir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}">
+			<fileset dir="${ldapstudio-browser-feature.project}">
+				<include name="feature.xml" />
+			</fileset>
+		</copy>
 
         <!-- Setting Permissions -->
         <antcall target="setPermission_${ldapstudio-rcp.os.name}" />
