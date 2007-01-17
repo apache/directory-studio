@@ -36,18 +36,24 @@
    </extension>   
    <extension
          point="org.eclipse.ui.views">
+      <category
+            id="org.apache.directory.ldapstudio.schemas.view.category"
+            name="%ldapstudio-schemas-plugin.views.category.name"/>
       <view
             allowMultiple="false"
+            category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer"
             icon="ressources/icons/chart_organisation.png"
             id="org.apache.directory.ldapstudio.schemas.view.HierarchicalViewer"
             name="%ldapstudio-schemas-plugin.views.hierarchy.name"/>
       <view
+            category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager"
             icon="ressources/icons/box.png"
             id="org.apache.directory.ldapstudio.schemas.view.PoolManager"
             name="%ldapstudio-schemas-plugin.views.schemas.name"/>
       <view
+            category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.SearchViewer"
             icon="ressources/icons/find.png"
             id="org.apache.directory.ldapstudio.schemas.view.SearchViewer"
@@ -156,17 +162,23 @@
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
+      <category
+            id="org.apache.directory.ldapstudio.schemas.view.wizards.category"
+            name="%ldapstudio-schemas-plugin.wizards.category.name"/>
       <wizard
+            category="org.apache.directory.ldapstudio.schemas.view.wizards.category"
             class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
             icon="ressources/icons/schema_new.gif"
             id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
             name="%ldapstudio-schemas-plugin.wizards.createanewschema.name"/>
       <wizard
+            category="org.apache.directory.ldapstudio.schemas.view.wizards.category"
             class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjectClassWizard"
             icon="ressources/icons/object_class_new.gif"
             id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjecClassWizard"
             name="%ldapstudio-schemas-plugin.wizards.createanewobjectclass.name"/>
       <wizard
+            category="org.apache.directory.ldapstudio.schemas.view.wizards.category"
             class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"
             icon="ressources/icons/attribute_type_new.gif"
             id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"

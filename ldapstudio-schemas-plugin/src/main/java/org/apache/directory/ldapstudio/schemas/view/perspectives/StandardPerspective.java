@@ -53,7 +53,9 @@ public class StandardPerspective implements IPerspectiveFactory
         layout.addStandaloneView( SearchViewer.ID, true, IPageLayout.BOTTOM, 0.7f, editorArea );
         layout.getViewLayout( SearchViewer.ID ).setCloseable( false );
 
+        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
         layout.addPerspectiveShortcut( StandardPerspective.ID );
         //layout.addPerspectiveShortcut(TreePerspective.ID);	
+
     }
 }

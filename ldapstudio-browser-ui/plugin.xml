@@ -50,7 +50,7 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="LDAP Browser and Editor"
+            name="LDAP Browser"
             id="org.apache.directory.ldapstudio.browser.ui.category"/>
       <view
             allowMultiple="false"
@@ -592,7 +592,7 @@
        point="org.eclipse.ui.commands">
     <category
           id="org.apache.directory.ldapstudio.browser.commands"
-          name="LDAP Browser and Editor"/>
+          name="LDAP Browser"/>
     <command
           categoryId="org.apache.directory.ldapstudio.browser.commands"
           description="Add a value to an existing attribute"
