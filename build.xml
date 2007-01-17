@@ -120,7 +120,7 @@
 
         <!-- Copy of the LDAP Studio RCP Feature in the "features" folder -->
 		<property name="ldapstudio-rcp-feature.project" value="${basedir}/ldapstudio-rcp-feature" />
-		<property name="ldapstudio-rcp-feature.name" value="org.apache.directory.ldapstudio.rcp" />
+		<property name="ldapstudio-rcp-feature.name" value="org.apache.directory.ldapstudio.rcp.feature" />
 		<property name="ldapstudio-rcp-feature.version" value="0.6.0" />
         <mkdir dir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}" />
 		<copy todir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}">
