@@ -16,7 +16,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project name="ldapstudio-dsml-command" default="bundle" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+<project default="bundle" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
 	<property name="project.name" value="ldapstudio-dsml-command" />
 	<property name="project.version" value="0.1" />
 

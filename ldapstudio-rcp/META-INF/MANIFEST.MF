@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: LDAP Studio
+Bundle-Name: LDAP Studio RCP Application
 Bundle-SymbolicName: org.apache.directory.ldapstudio;singleton:=true
-Bundle-Version: 0.1
+Bundle-Version: 0.6.0
 Bundle-Activator: org.apache.directory.ldapstudio.Activator
-Bundle-Vendor: apache.org
+Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.update.core,

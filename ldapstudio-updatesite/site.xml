@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.apache.directory.ldapstudio.browser.feature_0.6.0.jar" id="org.apache.directory.ldapstudio.browser.feature" version="0.6.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+      <category name="LDAP Studio Browser"/>
+   </feature>
+   <feature url="features/org.apache.directory.ldapstudio.schemas.feature_0.6.0.jar" id="org.apache.directory.ldapstudio.schemas.feature" version="0.6.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+      <category name="LDAP Studio Schemas Editor"/>
+   </feature>
+   <category-def name="LDAP Studio RCP" label="LDAP Studio RCP">
+      <description>
+         The LDAP Studio RCP category contains all features related to the LDAP Studio RCP Application.
+      </description>
+   </category-def>
+   <category-def name="LDAP Studio Browser" label="LDAP Studio Browser">
+      <description>
+         The LDAP Studio Browser category contains all features related to the LDAP Studio Browser.
+      </description>
+   </category-def>
+   <category-def name="LDAP Studio Schemas Editor" label="LDAP Studio Schemas Editor">
+      <description>
+         The LDAP Studio Schemas category contains all features related to the LDAP Studio Schemas Editor.
+      </description>
+   </category-def>
+</site>

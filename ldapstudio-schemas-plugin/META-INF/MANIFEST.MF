@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Schemas Plug-in
+Bundle-Name: LDAP Studio Schemas Editor Plug-in
 Bundle-SymbolicName: org.apache.directory.ldapstudio.schemas;singleton:=true
-Bundle-Version: 0.8
+Bundle-Version: 0.6.0
 Bundle-Activator: org.apache.directory.ldapstudio.schemas.Activator
-Bundle-Vendor: apache.org
+Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -21,4 +21,5 @@ Bundle-ClassPath: .,
  lib/velocity-dep-1.4.jar,
  lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar,
  lib/apacheds-core-shared-1.5.0-SNAPSHOT.jar,
- lib/shared-asn1-0.9.6-SNAPSHOT.jar
+ lib/shared-asn1-0.9.6-SNAPSHOT.jar,
+ lib/junit-3.8.2.jar

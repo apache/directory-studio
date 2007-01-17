@@ -79,34 +79,52 @@
             </fileset>
         </copy>
 
-        <!-- Creation of the Schemas Plugin -->
+        <!-- Creation of the LDAP Studio RCP Feature -->
+        <ant dir="ldapstudio-rcp-feature" inheritAll="no" />
+        <!-- Copy of the LDAP Studio RCP Feature in the "features" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/features">
+            <fileset dir="${basedir}/ldapstudio-rcp-feature/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the Schemas Editor Plugin -->
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" />
-        <!-- Copy of the Schemas Plugin in the "plugins" folder of the RCP app -->
+        <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
             <fileset dir="${basedir}/ldapstudio-schemas-plugin/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
-        <!-- Creation of the Import/Export Plugin -->
-        <ant dir="ldapstudio-importexport-plugin" inheritAll="no" />
-        <!-- Copy of the Import/Export Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-importexport-plugin/target">
+        <!-- Creation of the Schemas Editor Feature -->
+        <ant dir="ldapstudio-schemas-feature" inheritAll="no" />
+        <!-- Copy of the Schemas Editor Feature in the "features" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/features">
+            <fileset dir="${basedir}/ldapstudio-schemas-feature/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
+
+        <!-- Creation of the Import/Export Plugin -->
+        <!--<ant dir="ldapstudio-importexport-plugin" inheritAll="no" />-->
+        <!-- Copy of the Import/Export Plugin in the "plugins" folder of the RCP app -->
+        <!--<copy todir="${ldapstudio-complete.build}/plugins">-->
+        <!--    <fileset dir="${basedir}/ldapstudio-importexport-plugin/target">-->
+        <!--        <include name="*.jar" />-->
+        <!--    </fileset>-->
+        <!--</copy>-->
 
 	<!-- Creation of the DSML Plugin -->
-        <ant dir="ldapstudio-dsml-plugin" inheritAll="no" />
+        <!--<ant dir="ldapstudio-dsml-plugin" inheritAll="no" />-->
         <!-- Copy of the DSML Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-dsml-plugin/target">
-                <include name="*.jar" />
-            </fileset>
-        </copy>
+        <!--<copy todir="${ldapstudio-complete.build}/plugins">-->
+            <!--<fileset dir="${basedir}/ldapstudio-dsml-plugin/target">-->
+         <!--       <include name="*.jar" />-->
+         <!--   </fileset>-->
+       <!-- </copy>-->
 
-	<!-- Creation of the Browser Core Plugin -->
+        <!-- Creation of the Browser Core Plugin -->
         <ant dir="ldapstudio-browser-core" inheritAll="no" />
         <!-- Copy of the Browser Core Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
@@ -115,7 +133,7 @@
             </fileset>
         </copy>
 
-	<!-- Creation of the Browser UI Plugin -->
+        <!-- Creation of the Browser UI Plugin -->
         <ant dir="ldapstudio-browser-ui" inheritAll="no" />
         <!-- Copy of the Browser UI Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
@@ -124,14 +142,23 @@
             </fileset>
         </copy>
 
-	<!-- Creation of the ACIItem Editor Plugin -->
-        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" />
-        <!-- Copy of the ACI Item Editor Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-aciitemeditor/target">
+        <!-- Creation of the Browser Feature -->
+        <ant dir="ldapstudio-browser-feature" inheritAll="no" />
+        <!-- Copy of the Browser Feature in the "features" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/features">
+            <fileset dir="${basedir}/ldapstudio-browser-feature/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
+
+	<!-- Creation of the ACIItem Editor Plugin -->
+        <!--<ant dir="ldapstudio-aciitemeditor" inheritAll="no" />-->
+        <!-- Copy of the ACI Item Editor Plugin in the "plugins" folder of the RCP app -->
+        <!--<copy todir="${ldapstudio-complete.build}/plugins">-->
+        <!--    <fileset dir="${basedir}/ldapstudio-aciitemeditor/target">-->
+         <!--       <include name="*.jar" />-->
+         <!--   </fileset>-->
+       <!--   </copy>-->
 
 	<!-- Creation of the Jars Plugin -->
         <ant dir="ldapstudio-jars" inheritAll="no" />
@@ -197,14 +224,12 @@
     <!-- ================================== -->
     <target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
         <ant dir="ldapstudio-rcp" inheritAll="no" target="clean"/>
+        <ant dir="ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-importexport-plugin" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-dsml-plugin" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-dsml-command" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-browser-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-jars" inheritAll="no" target="clean" />
         <delete dir="${ldapstudio-complete.output}" />
     </target>

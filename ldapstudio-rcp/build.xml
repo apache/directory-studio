@@ -16,7 +16,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project name="ldapstudio-rcp" default="product" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+<project default="product" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
     <property name="project.name" value="org.apache.directory.ldapstudio" />
     <property name="project.version" value="0.1" />
 
@@ -163,6 +163,7 @@
 		<copy todir="${ldapstudio-rcp.application}" failonerror="true" overwrite="true" preservelastmodified="yes">
 			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/${ldapstudio-rcp.os.name}/${ldapstudio-rcp.os.arch}/rcp/" />
 		</copy>
+		<mkdir dir="${ldapstudio-rcp.application}/features" />
 		<mkdir dir="${ldapstudio-rcp.application}/plugins" />
 		<copy todir="${ldapstudio-rcp.application}/plugins" failonerror="true" overwrite="true">
 			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/${ldapstudio-rcp.os.name}/${ldapstudio-rcp.os.arch}" excludes="rcp/" />
