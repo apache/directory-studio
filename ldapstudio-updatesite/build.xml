@@ -1,0 +1,124 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<project default="generate" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	<property name="project.name" value="org.apache.directory.ldapstudio.schemas.feature" />
+	<property name="project.version" value="0.6.0" />
+
+	<property name="project.plugins" value="${basedir}/plugins" />
+	<property name="project.features" value="${basedir}/features" />
+		
+	<!-- ================================== -->
+	<!--                              GENERATE                                  -->
+	<!-- ================================== -->
+	<target name="generate" description="Generates the update site. Generates and copies features and plugins.">
+		
+		<!-- Creation of the LDAP Studio RCP Feature -->
+		<ant dir="../ldapstudio-rcp-feature" inheritAll="no" />
+		<!-- Copy of the LDAP Studio RCP Feature in the "features" folder -->
+		<copy todir="${project.features}">
+			<fileset dir="../ldapstudio-rcp-feature/target">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		
+        <!-- Creation of the LDAP Studio Schemas Editor Feature -->
+        <ant dir="../ldapstudio-schemas-feature" inheritAll="no" />
+        <!-- Copy of the Schemas Editor Feature in the "features" folder -->
+        <copy todir="${project.features}">
+            <fileset dir="../ldapstudio-schemas-feature/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+		
+	    <!-- Creation of the LDAP Studio Browser Feature -->
+	    <ant dir="../ldapstudio-browser-feature" inheritAll="no" />
+	    <!-- Copy of the Browser Feature in the "features" folder -->
+	    <copy todir="${project.features}">
+	        <fileset dir="../ldapstudio-browser-feature/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
+		
+	    <!-- Creation of the LDAP Studio RCP Plugin -->
+	    <ant dir="../ldapstudio-rcp" target="jar" inheritAll="no" />
+	    <!-- Copy of the LDAP Studio RCP Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-rcp/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
+		
+	    <!-- Creation of the LDAP Studio Schemas Editor Plugin -->
+	    <ant dir="../ldapstudio-schemas-plugin" inheritAll="no" />
+	    <!-- Copy of the Schemas Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-schemas-plugin/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
+		
+	    <!-- Creation of the LDAP Studio Browser Core Plugin -->
+	    <ant dir="../ldapstudio-browser-core" inheritAll="no" />
+	    <!-- Copy of the  LDAP Studio Browser Core Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-browser-core/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
+		
+	    <!-- Creation of the LDAP Studio Browser UI Plugin -->
+	    <ant dir="../ldapstudio-browser-ui" inheritAll="no" />
+	    <!-- Copy of the  LDAP Studio Browser UI Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-browser-ui/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
+		
+	    <!-- Creation of the LDAP Studio Jars Plugin -->
+	    <ant dir="../ldapstudio-jars" inheritAll="no" />
+	    <!-- Copy of the  LDAP Studio Jars Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-jars/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
+		
+	</target>
+	
+	
+	<!-- ================================== -->
+	<!--                                       CLEAN                              -->
+	<!-- ================================== -->
+	<target name="clean" description="Deletes any generated file">
+		<ant dir="../ldapstudio-rcp" inheritAll="no" target="clean"/>
+        <ant dir="../ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
+        <ant dir="../ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
+        <ant dir="../ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
+        <ant dir="../ldapstudio-browser-core" inheritAll="no" target="clean" />
+        <ant dir="../ldapstudio-browser-ui" inheritAll="no" target="clean" />
+        <ant dir="../ldapstudio-browser-feature" inheritAll="no" target="clean"/>
+        <ant dir="../ldapstudio-jars" inheritAll="no" target="clean" />
+		<delete includeemptydirs="true">
+			<fileset dir="${project.plugins}"/>
+			<fileset dir="${project.features}"/>
+		</delete>
+	</target>
+	
+</project>

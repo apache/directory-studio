@@ -32,6 +32,7 @@
 				<exclude name=".project"/>
 				<exclude name="build.properties"/>
 				<exclude name="build.xml"/>
+				<exclude name="target/**"/>
 			</fileset>
 		</jar>
 	</target>
