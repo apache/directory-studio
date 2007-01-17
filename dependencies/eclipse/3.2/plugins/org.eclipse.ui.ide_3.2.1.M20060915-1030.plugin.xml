@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+    
+<!-- IDE extension points -->
+   <extension-point id="markerHelp" name="%ExtPoint.markerHelp" schema="schema/markerHelp.exsd"/>
+   <extension-point id="markerImageProviders" name="%ExtPoint.markerImageProviders" schema="schema/markerImageProviders.exsd"/>
+   <extension-point id="markerResolution" name="%ExtPoint.markerResolution" schema="schema/markerResolution.exsd"/>
+   <extension-point id="projectNatureImages" name="%ExtPoint.projectNatureImages" schema="schema/projectNatureImages.exsd"/>
+   <extension-point id="resourceFilters" name="%ExtPoint.resourceFilters" schema="schema/resourceFilters.exsd"/>
+   <extension-point id="markerSupport" name="%ExtPoint.markerSupport" schema="schema/markerSupport.exsd"/>
+   <extension-point id="filesystemSupport" name="%ExtPoint.fileSystemSupport" schema="schema/filesystemSupport.exsd"/>
+
+   
+   
+   
+
+
+<!-- Update Actions -->
+<!-- End Update -->
+   
+   <!-- Adaptor factory for IWorkingSet to IContributorResourceAdapter, IWorkbenchAdapter, ResourceMapping -->
+   
+  
+   
+</plugin>

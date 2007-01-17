@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!-- ======================================================================= -->
+<!-- Search Plugin                                                           -->
+<!-- ======================================================================= -->
+<plugin>
+
+	<!-- Search extension point definitions -->
+	
+	<extension-point name="%searchPages" id="searchPages" schema="schema/searchPages.exsd"/>
+	<extension-point name="%searchResultSorters" id="searchResultSorters" schema="schema/searchResultSorters.exsd"/>
+  	<extension-point name="%searchResultViewPages" id="searchResultViewPages" schema="schema/searchResultViewPages.exsd"/>
+    <extension-point name="%textSearchEngine" id="textSearchEngine" schema="schema/textSearchEngine.exsd"/>
+    <extension-point name="%textSearchQueryProvider" id="textSearchQueryProvider" schema="schema/textSearchQueryProvider.exsd"/>
+	
+	
+	<!-- Extensions -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- action sets -->
+		
+   
+<!-- Default search results view -->
+	
+	
+	
+	
+	
+</plugin>
