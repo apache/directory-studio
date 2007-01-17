@@ -32,6 +32,9 @@
 
     <property name="ldapstudio-rcp.eclipse.dir" value="../dependencies/eclipse" />
     <property name="ldapstudio-rcp.eclipse.version" value="3.2" />
+	<property name="ldapstudio-rcp.eclipse.uiideplugin.filename" value="org.eclipse.ui.ide_3.2.1.M20060915-1030" />
+	<property name="ldapstudio-rcp.eclipse.uieditorsplugin.filename" value="org.eclipse.ui.editors_3.2.1.r321_v20060721" />
+	<property name="ldapstudio-rcp.eclipse.searchplugin.filename" value="org.eclipse.search_3.2.1.r321_v20060726" />
 
 	    <!-- Setting up OS Name-->
     <condition property="ldapstudio-rcp.os.name" value="macosx" >
@@ -169,6 +172,33 @@
 			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/${ldapstudio-rcp.os.name}/${ldapstudio-rcp.os.arch}" excludes="rcp/" />
 			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/plugins" />
 		</copy>
+		
+		<!-- Replace some plugin.xml to get rid of unused actions, menus, wizard, views, ... -->
+		<move 
+			file="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.searchplugin.filename}.plugin.xml" 
+			tofile="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<zip destfile="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.searchplugin.filename}.jar"
+			basedir="${ldapstudio-rcp.application}/plugins"
+			includes="plugin.xml" 
+			update="true"/>
+		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<move 
+			file="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uiideplugin.filename}.plugin.xml" 
+			tofile="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<zip destfile="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uiideplugin.filename}.jar"
+			basedir="${ldapstudio-rcp.application}/plugins"
+			includes="plugin.xml" 
+			update="true"/>
+		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<move 
+			file="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uieditorsplugin.filename}.plugin.xml" 
+			tofile="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<zip destfile="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uieditorsplugin.filename}.jar"
+			basedir="${ldapstudio-rcp.application}/plugins"
+			includes="plugin.xml" 
+			update="true"/>
+		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		
 		<move file="${ldapstudio-rcp.application}/eclipse${ldapstudio-rcp.os.extension}" tofile="${ldapstudio-rcp.application}/LDAP Studio${ldapstudio-rcp.os.extension}">
 		</move>
 		<move file="${ldapstudio-rcp.output}/${project.name}_${project.version}.jar" tofile="${ldapstudio-rcp.application}/plugins/${project.name}_${project.version}.jar">
