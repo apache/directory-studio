@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio;
 
 
-import org.apache.directory.ldapstudio.actions.AddExtensionAction;
 import org.apache.directory.ldapstudio.actions.ManageConfigurationAction;
 import org.apache.directory.ldapstudio.actions.OpenFileAction;
 import org.apache.directory.ldapstudio.actions.ReportABugAction;
@@ -72,7 +71,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction preferencesAction;
     private IWorkbenchAction helpAction;
     private UpdateAction updateAction;
-    private AddExtensionAction addExtensionAction;
     private ManageConfigurationAction manageConfigurationAction;
     private IWorkbenchAction newAction;
     private IWorkbenchAction importAction;
@@ -212,9 +210,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
             ImageKeys.SEARCH_UPDATES ) );
         register( updateAction );
 
-//        addExtensionAction = new AddExtensionAction( window );
-//        register( addExtensionAction );
-
         manageConfigurationAction = new ManageConfigurationAction( window );
         manageConfigurationAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
             ImageKeys.MANAGE_CONFIGURATION ) );
@@ -320,7 +315,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         MenuManager softwareUpdates = new MenuManager( Messages
             .getString( "ApplicationActionBarAdvisor.Software_Updates" ), "softwareUpdates" ); //$NON-NLS-1$ //$NON-NLS-2$
         softwareUpdates.add( updateAction );
-//        softwareUpdates.add( addExtensionAction );
         softwareUpdates.add( manageConfigurationAction );
         helpMenu.add( softwareUpdates );
         helpMenu.add( new Separator() );
