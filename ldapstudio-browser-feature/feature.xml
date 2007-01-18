@@ -4,11 +4,12 @@
       label="LDAP Studio Browser Feature"
       version="0.6.0"
       provider-name="Apache Software Foundation"
+      image="ldapstudio.png"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
       arch="ppc,x86">
 
-   <description url="http://www.example.com/description">
+   <description>
       The LDAP Studio Browser Feature contains all plugins related to the LDAP Browser.
    </description>
 
@@ -217,7 +218,7 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="LDAP Studio Update Site" url="http://people.apache.org/~pamarcelot/ldapstudio/update"/>
+      <update label="LDAP Studio" url="http://people.apache.org/~pamarcelot/ldapstudio/update"/>
    </url>
 
    <plugin

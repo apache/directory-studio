@@ -126,6 +126,7 @@
 		<copy todir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}">
 			<fileset dir="${ldapstudio-rcp-feature.project}">
 				<include name="feature.xml" />
+				<include name="ldapstudio.png" />
 			</fileset>
 		</copy>
 		
@@ -137,6 +138,7 @@
 		<copy todir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}">
 			<fileset dir="${ldapstudio-schemas-feature.project}">
 				<include name="feature.xml" />
+				<include name="ldapstudio.png" />
 			</fileset>
 		</copy>
 		
@@ -148,6 +150,7 @@
 		<copy todir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}">
 			<fileset dir="${ldapstudio-browser-feature.project}">
 				<include name="feature.xml" />
+				<include name="ldapstudio.png" />
 			</fileset>
 		</copy>
 

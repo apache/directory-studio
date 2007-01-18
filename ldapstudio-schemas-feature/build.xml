@@ -47,6 +47,7 @@
 				<exclude name="build.properties"/>
 				<exclude name="build.xml"/>
 				<exclude name="feature.xml"/>
+				<exclude name="ldapstudio.png"/>
 			</fileset>
 		</delete>
 	</target>
