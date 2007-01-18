@@ -5,7 +5,7 @@
 		 <key>CFBundleExecutable</key>
 		 <string>LDAPStudio</string>
 		 <key>CFBundleIconFile</key>
-		 <string></string>
+		 <string>ldapstudio.icns</string>
 		 <key>CFBundleInfoDictionaryVersion</key>
 		 <string>6.0</string>
 		 <key>CFBundleName</key>
