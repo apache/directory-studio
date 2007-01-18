@@ -61,22 +61,20 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.apache.directory.ldapstudio.view.Perspective"
+            icon="resources/icons/welcome-perspective.gif"
             id="org.apache.directory.ldapstudio.perspective"
             name="Welcome"/>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
+            category="org.apache.directory.ldapstudio.rcp.ui.category"
             class="org.apache.directory.ldapstudio.view.WelcomeView"
             id="org.apache.directory.ldapstudio.view.WelcomeView"
             name="Welcome View"/>
-      <view
-            name="Progress"
-            icon="resources/icons/progress.gif"
-            category="org.eclipse.ui"
-            class="org.eclipse.ui.ExtensionFactory:progressView"
-            id="org.eclipse.ui.views.ProgressView">
-         </view>
+      <category
+            id="org.apache.directory.ldapstudio.rcp.ui.category"
+            name="LDAP Studio RCP"/>
    </extension>
 
 </plugin>
