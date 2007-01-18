@@ -26,6 +26,9 @@
     <condition property="ldapstudio-rcp.os.name" value="macosx" >
             <os name="Mac OS X"/>
     </condition>
+    <condition property="isMacOSX" value="true" >
+            <os name="Mac OS X"/>
+    </condition>
     <condition property="ldapstudio-rcp.os.name" value="linux" >
             <os family="unix" />
     </condition>
@@ -156,6 +159,9 @@
 
         <!-- Setting Permissions -->
         <antcall target="setPermission_${ldapstudio-rcp.os.name}" />
+        
+        <!-- Special repackaging for Mac OS X -->
+        <antcall target="repackage_MacOSX" />
     </target>
 	
     <!-- ================================== -->
@@ -171,6 +177,13 @@
 
     <target name="setPermission_win32" description="Sets the right permissions on Windows">
         <chmod file="${ldapstudio-complete.build}/LDAP Studio.exe" perm="755" />
+    </target>
+    
+    <!-- ================================== -->
+    <!--         Repackage Mac OS X         -->
+    <!-- ================================== -->
+    <target name="repackage_MacOSX" description="Special repackage for Mac OS X" if="isMacOSX">        <property name="app.dir" location="${ldapstudio-complete.build}/LDAP Studio.app" />        <property name="java.dir" location="${app.dir}/Contents/Resources/Java" />
+        <mkdir dir="${java.dir}"/>        <move todir="${java.dir}">          <fileset dir="${ldapstudio-complete.build}">               <exclude name="LDAP Studio.app/**"/>          </fileset>        </move>
     </target>
 
     <!-- ================================== -->

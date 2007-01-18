@@ -9,23 +9,11 @@
 		 <key>CFBundleInfoDictionaryVersion</key>
 		 <string>6.0</string>
 		 <key>CFBundleName</key>
-		 <string>LDAPStudio</string>
+		 <string>LDAP Studio</string>
 		 <key>CFBundlePackageType</key>
 		 <string>APPL</string>
 		 <key>CFBundleSignature</key>
 		 <string>????</string>
-		 <key>Eclipse</key>
-		 <array>
-		 		 <string>-startup</string>
-		 		 <string>../../../startup.jar</string>
-		 		 <string>-vmargs</string>
-		 		 <string>-XstartOnFirstThread</string>
-		 		 <string>-Xms30M</string>
-		 		 <string>-Xmx150M</string>
-		 		 <string>-Dorg.eclipse.swt.internal.carbon.smallFonts</string>
-		 		 <string>-Dorg.eclipse.swt.internal.carbon.noFocusRing</string>
-		 </array>
-		 <key>LSUIElement</key>
-		 <string>1</string>
+		 <key>Eclipse</key>         <array>             <string>-vm</string>             <string>/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/java</string>             <string>-startup</string>             <string>$APP_PACKAGE/Contents/Resources/Java/startup.jar</string>             <string>-keyring</string>             <string>~/.eclipse_keyring</string>             <string>-consoleLog</string>             <string>-showlocation</string>         </array>     <key>LSBackgroundOnly</key>     <string>1</string>     <key>WorkingDirectory</key>     <string>$APP_PACKAGE/Contents/Resources/Java</string>
 </dict>
 </plist>
