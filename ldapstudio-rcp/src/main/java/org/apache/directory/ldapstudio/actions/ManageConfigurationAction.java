@@ -30,14 +30,14 @@ import org.eclipse.update.ui.UpdateManagerUI;
 
 
 /**
- * This class implements the Manage Extensions Action.
+ * This class implements the Manage Configuration Action.
  * It uses Eclipse Plugin Manager to allow user to 
  * manager their plugin configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ManageExtensionsAction extends Action implements IAction
+public class ManageConfigurationAction extends Action implements IAction
 {
     private IWorkbenchWindow window;
 
@@ -47,12 +47,12 @@ public class ManageExtensionsAction extends Action implements IAction
      * @param window
      *          the window it is attached to
      */
-    public ManageExtensionsAction( IWorkbenchWindow window )
+    public ManageConfigurationAction( IWorkbenchWindow window )
     {
         this.window = window;
-        setId( "org.apache.directory.ldapstudio.manageExtensions" ); //$NON-NLS-1$
-        setText( Messages.getString( "ManageExtensionsAction.Manage_Extensions" ) ); //$NON-NLS-1$
-        setToolTipText( Messages.getString( "ManageExtensionsAction.Manage_extensions_for_LDAP_Studio" ) ); //$NON-NLS-1$
+        setId( "org.apache.directory.ldapstudio.manageConfiguration" ); //$NON-NLS-1$
+        setText( Messages.getString( "ManageConfigurationAction.Manage_Configuration" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "ManageConfigurationAction.Manage_configuration_for_LDAP_Studio" ) ); //$NON-NLS-1$
     }
 
 

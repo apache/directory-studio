@@ -47,6 +47,8 @@ public class Perspective implements IPerspectiveFactory
 
         layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
         layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.schemas.perspective" ); //$NON-NLS-1$ 
+    
+        layout.addShowViewShortcut( WelcomeView.ID );
     }
 
 }

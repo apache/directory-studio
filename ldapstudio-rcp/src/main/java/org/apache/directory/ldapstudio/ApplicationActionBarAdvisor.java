@@ -22,8 +22,9 @@ package org.apache.directory.ldapstudio;
 
 
 import org.apache.directory.ldapstudio.actions.AddExtensionAction;
-import org.apache.directory.ldapstudio.actions.ManageExtensionsAction;
+import org.apache.directory.ldapstudio.actions.ManageConfigurationAction;
 import org.apache.directory.ldapstudio.actions.OpenFileAction;
+import org.apache.directory.ldapstudio.actions.ReportABugAction;
 import org.apache.directory.ldapstudio.actions.UpdateAction;
 import org.apache.directory.ldapstudio.view.ImageKeys;
 import org.eclipse.jface.action.GroupMarker;
@@ -72,7 +73,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction helpAction;
     private UpdateAction updateAction;
     private AddExtensionAction addExtensionAction;
-    private ManageExtensionsAction manageExtensionsAction;
+    private ManageConfigurationAction manageConfigurationAction;
     private IWorkbenchAction newAction;
     private IWorkbenchAction importAction;
     private IWorkbenchAction exportAction;
@@ -90,7 +91,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IContributionItem perspectivesList;
     private IContributionItem viewsList;
     private IContributionItem reopenEditorsList;
-
+    private ReportABugAction reportABug;
+    
 
     /**
      * Creates a new instance of ApplicationActionBarAdvisor.
@@ -196,6 +198,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         register( closeAllPerspectivesAction );
         
         aboutAction = ActionFactory.ABOUT.create( window );
+        aboutAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+            ImageKeys.ABOUT ) );
         register( aboutAction );
 
         preferencesAction = ActionFactory.PREFERENCES.create( window );
@@ -204,13 +208,17 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         register( preferencesAction );
 
         updateAction = new UpdateAction( window );
+        updateAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+            ImageKeys.SEARCH_UPDATES ) );
         register( updateAction );
 
-        addExtensionAction = new AddExtensionAction( window );
-        register( addExtensionAction );
+//        addExtensionAction = new AddExtensionAction( window );
+//        register( addExtensionAction );
 
-        manageExtensionsAction = new ManageExtensionsAction( window );
-        register( manageExtensionsAction );
+        manageConfigurationAction = new ManageConfigurationAction( window );
+        manageConfigurationAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+            ImageKeys.MANAGE_CONFIGURATION ) );
+        register( manageConfigurationAction );
 
         helpAction = ActionFactory.HELP_CONTENTS.create( window );
         register( helpAction );
@@ -218,6 +226,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         viewsList = ContributionItemFactory.VIEWS_SHORTLIST.create( window );
         perspectivesList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create( window );
         reopenEditorsList = ContributionItemFactory.REOPEN_EDITORS.create( window );
+        
+        reportABug = new ReportABugAction( window );
+        reportABug.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+            ImageKeys.REPORT_BUG ) );
+        register( reportABug );
+        
     }
 
 
@@ -301,12 +315,15 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         // Help
         helpMenu.add( helpAction );
+        helpMenu.add( reportABug );
+        helpMenu.add( new Separator() );
         MenuManager softwareUpdates = new MenuManager( Messages
             .getString( "ApplicationActionBarAdvisor.Software_Updates" ), "softwareUpdates" ); //$NON-NLS-1$ //$NON-NLS-2$
         softwareUpdates.add( updateAction );
-        softwareUpdates.add( addExtensionAction );
-        softwareUpdates.add( manageExtensionsAction );
+//        softwareUpdates.add( addExtensionAction );
+        softwareUpdates.add( manageConfigurationAction );
         helpMenu.add( softwareUpdates );
+        helpMenu.add( new Separator() );
         helpMenu.add( aboutAction );
     }
 
