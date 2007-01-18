@@ -55,7 +55,10 @@ public class StandardPerspective implements IPerspectiveFactory
 
         layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
         layout.addPerspectiveShortcut( StandardPerspective.ID );
-        //layout.addPerspectiveShortcut(TreePerspective.ID);	
 
+        // Adding View shortcuts
+        layout.addShowViewShortcut( HierarchicalViewer.ID );
+        layout.addShowViewShortcut( PoolManager.ID );
+        layout.addShowViewShortcut( SearchViewer.ID );
     }
 }
