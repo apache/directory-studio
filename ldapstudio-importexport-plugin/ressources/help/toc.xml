@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-
-<toc label="Import/Export Plugin Help" topic="ressources/help/toc.html">
-	<topic label="Importing from a LDIF file"  href="ressources/help/importing.html" /> 
-	<topic label="Exporting to a LDIF file"  href="ressources/help/exporting.html" />
-	<topic label="Preferences"  href="ressources/help/preferences.html" /> 
-</toc>

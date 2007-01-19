@@ -26,9 +26,6 @@
     <condition property="ldapstudio-rcp.os.name" value="macosx" >
             <os name="Mac OS X"/>
     </condition>
-    <condition property="isMacOSX" value="true" >
-            <os name="Mac OS X"/>
-    </condition>
     <condition property="ldapstudio-rcp.os.name" value="linux" >
             <os family="unix" />
     </condition>
@@ -45,6 +42,11 @@
     </condition>
     <condition property="ldapstudio-rcp.os.extension" value=".exe">
         <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
+    </condition>
+
+
+    <condition property="isTargetMacOSX" value="true" >
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
     </condition>
 
     <!-- ================================== -->
@@ -182,7 +184,7 @@
     <!-- ================================== -->
     <!--         Repackage Mac OS X         -->
     <!-- ================================== -->
-    <target name="repackage_MacOSX" description="Special repackage for Mac OS X" if="isMacOSX">        <property name="app.dir" location="${ldapstudio-complete.build}/LDAP Studio.app" />        <property name="java.dir" location="${app.dir}/Contents/Resources/Java" />
+    <target name="repackage_MacOSX" description="Special repackage for Mac OS X" if="isTargetMacOSX">        <property name="app.dir" location="${ldapstudio-complete.build}/LDAP Studio.app" />        <property name="java.dir" location="${app.dir}/Contents/Resources/Java" />
         <mkdir dir="${java.dir}"/>        <move todir="${java.dir}">          <fileset dir="${ldapstudio-complete.build}">               <exclude name="LDAP Studio.app/**"/>          </fileset>        </move>
     </target>
 
@@ -192,10 +194,7 @@
     <target name="javadoc" description="Generate Javadoc files">
         <ant dir="ldapstudio-rcp" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-importexport-plugin" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-dsml-plugin" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-dsml-command" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="javadoc" />
@@ -207,10 +206,7 @@
     <target name="resolve" description="Resolves the library dependencies using Ivy">
         <ant dir="ldapstudio-rcp" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-importexport-plugin" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-dsml-plugin" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-dsml-command" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="resolve" />
