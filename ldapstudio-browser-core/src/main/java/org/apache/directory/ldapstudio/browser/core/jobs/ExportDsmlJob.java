@@ -436,9 +436,12 @@ public class ExportDsmlJob extends AbstractEclipseJob
     {
         List<org.apache.directory.shared.ldap.codec.Control> returnList = new ArrayList<org.apache.directory.shared.ldap.codec.Control>();
 
-        for ( int i = 0; i < controls.length; i++ )
+        if ( controls != null)
         {
-            returnList.add( convertToSharedLDAP( controls[i] ) );
+            for ( int i = 0; i < controls.length; i++ )
+            {
+                returnList.add( convertToSharedLDAP( controls[i] ) );
+            }
         }
 
         return returnList;
