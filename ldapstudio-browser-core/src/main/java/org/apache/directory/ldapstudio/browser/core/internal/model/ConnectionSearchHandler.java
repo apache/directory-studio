@@ -454,43 +454,58 @@ public class ConnectionSearchHandler
 
         if ( search.getReturningAttributes() == null || search.getReturningAttributes().length > 0 )
         {
-
             LdifAttrValLine[] lines = record.getAttrVals();
 
             // clear old attributes defined as returing attributes or all
             if ( search.getReturningAttributes() != null )
             {
                 String[] ras = search.getReturningAttributes();
-                for ( int r = 0; r < ras.length; r++ )
+                
+                // special case *
+                if( Arrays.asList( ras ).contains( ISearch.ALL_USER_ATTRIBUTES ) )
                 {
-                    String ra = ras[r];
-
-                    IAttribute oldAttribute = entry.getAttribute( ra );
-                    if ( oldAttribute != null )
+                    // clear all user attributes
+                    IAttribute[] oldAttributes = entry.getAttributes();
+                    for ( int i = 0; oldAttributes != null && i < oldAttributes.length; i++ )
                     {
-                        if ( ra.equals( ISearch.ALL_USER_ATTRIBUTES ) && !oldAttribute.isOperationalAttribute() )
+                        if( !oldAttributes[i].isOperationalAttribute() )
                         {
                             try
                             {
-                                entry.deleteAttribute( oldAttribute, connection );
-                            }
-                            catch ( ModelModificationException e )
-                            {
-                            }
-                        }
-                        if ( ra.equals( ISearch.ALL_OPERATIONAL_ATTRIBUTES ) && oldAttribute.isOperationalAttribute() )
-                        {
-                            try
-                            {
-                                entry.deleteAttribute( oldAttribute, connection );
+                                entry.deleteAttribute( oldAttributes[i], connection );
                             }
                             catch ( ModelModificationException e )
                             {
                             }
                         }
                     }
-
-                    AttributeHierarchy ah = entry.getAttributeWithSubtypes( ra );
+                }
+                
+                // special case +
+                if( Arrays.asList( ras ).contains( ISearch.ALL_OPERATIONAL_ATTRIBUTES ) )
+                {
+                    // clear all operational attributes
+                    IAttribute[] oldAttributes = entry.getAttributes();
+                    for ( int i = 0; oldAttributes != null && i < oldAttributes.length; i++ )
+                    {
+                        if( oldAttributes[i].isOperationalAttribute() )
+                        {
+                            try
+                            {
+                                entry.deleteAttribute( oldAttributes[i], connection );
+                            }
+                            catch ( ModelModificationException e )
+                            {
+                            }
+                        }
+                    }
+                }
+                
+                
+                for ( int r = 0; r < ras.length; r++ )
+                {
+                    // clear attributes requested from server, also include subtypes
+                    AttributeHierarchy ah = entry.getAttributeWithSubtypes( ras[r] );
                     if ( ah != null )
                     {
                         for ( Iterator it = ah.iterator(); it.hasNext(); )
@@ -523,29 +538,6 @@ public class ConnectionSearchHandler
                 }
             }
 
-            // Set attributeNameSet = null;
-            // if(search.getReturningAttributes() != null) {
-            // attributeNameSet = new
-            // HashSet(Arrays.asList(search.getReturningAttributes()));
-            // }
-            // IAttribute[] oldAttributes = entry.getAttributes();
-            // for(int i=0; oldAttributes!=null&&i<oldAttributes.length;
-            // i++) {
-            //            	
-            // if(attributeNameSet == null ||
-            // attributeNameSet.contains(oldAttributes[i].getDescription())
-            // ||
-            // (attributeNameSet.contains(ISearch.ALL_USER_ATTRIBUTES) &&
-            // !oldAttributes[i].isOperationalAttribute()) ||
-            // (attributeNameSet.contains(ISearch.ALL_OPERATIONAL_ATTRIBUTES)
-            // && oldAttributes[i].isOperationalAttribute())
-            // ) {
-            // try {
-            // entry.deleteAttribute(oldAttributes[i], connection);
-            // } catch (ModelModificationException e) {
-            // }
-            // }
-            // }
 
             // additional clear old attributes if the record contains the
             // attribute
