@@ -294,7 +294,7 @@ public class ConnectionSearchHandler
 
             String attributeName = lines[i].getUnfoldedAttributeDescription();
 
-            if ( search.isInitChildrenFlag() )
+            if ( search.isInitHasChildrenFlag() )
             {
                 // hasChildren flag
                 if ( IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES.equalsIgnoreCase( attributeName ) )
@@ -349,7 +349,7 @@ public class ConnectionSearchHandler
         SearchParameter searchParameter = ( SearchParameter ) search.getSearchParameter().clone();
 
         // add children detetion attributes
-        if ( search.isInitChildrenFlag() )
+        if ( search.isInitHasChildrenFlag() )
         {
             if ( search.getConnection().getSchema().hasAttributeTypeDescription(
                 IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES )

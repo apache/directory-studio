@@ -158,7 +158,7 @@ public class Search implements ISearch
         this.searchParameter.setCountLimit( countLimit );
         this.searchParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
         this.searchParameter.setReferralsHandlingMethod( referralsHandlingMethod );
-        this.searchParameter.setInitChildrenFlag( initHasChildrenFlag );
+        this.searchParameter.setInitHasChildrenFlag( initHasChildrenFlag );
         this.searchParameter.setInitAliasAndReferralFlag( initAliasAndReferralsFlag );
         this.searchParameter.setControls( controls );
     }
@@ -189,9 +189,9 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public boolean isInitChildrenFlag()
+    public boolean isInitHasChildrenFlag()
     {
-        return this.searchParameter.isInitChildrenFlag();
+        return this.searchParameter.isInitHasChildrenFlag();
     }
 
 
@@ -464,7 +464,7 @@ public class Search implements ISearch
     {
         return new Search( this.getName(), this.getConnection(), this.getSearchBase(), this.getFilter(), this
             .getReturningAttributes(), this.getScope(), this.getCountLimit(), this.getTimeLimit(), this
-            .getAliasesDereferencingMethod(), this.getReferralsHandlingMethod(), this.isInitChildrenFlag(), this
+            .getAliasesDereferencingMethod(), this.getReferralsHandlingMethod(), this.isInitHasChildrenFlag(), this
             .isInitAliasAndReferralFlag(), this.getControls() );
     }
 

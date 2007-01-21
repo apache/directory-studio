@@ -345,7 +345,7 @@ public class SearchParameter implements Serializable
         clone.setCountLimit( getCountLimit() );
         clone.setAliasesDereferencingMethod( getAliasesDereferencingMethod() );
         clone.setReferralsHandlingMethod( getReferralsHandlingMethod() );
-        clone.setInitChildrenFlag( isInitChildrenFlag() );
+        clone.setInitHasChildrenFlag( isInitHasChildrenFlag() );
         clone.setInitAliasAndReferralFlag( isInitAliasAndReferralFlag() );
         clone.setControls( getControls() );
         return clone;
@@ -379,7 +379,7 @@ public class SearchParameter implements Serializable
      * 
      * @return true, if the hasChildren flag of IEntry should be initialized
      */
-    public boolean isInitChildrenFlag()
+    public boolean isInitHasChildrenFlag()
     {
         return initHasChildrenFlag;
     }
@@ -390,7 +390,7 @@ public class SearchParameter implements Serializable
      * 
      * @param initHasChildrenFlag the init hasChildren flag
      */
-    public void setInitChildrenFlag( boolean initHasChildrenFlag )
+    public void setInitHasChildrenFlag( boolean initHasChildrenFlag )
     {
         this.initHasChildrenFlag = initHasChildrenFlag;
     }

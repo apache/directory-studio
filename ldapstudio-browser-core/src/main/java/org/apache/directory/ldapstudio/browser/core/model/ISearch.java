@@ -79,7 +79,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return true, if the hasChildren flag should be initialized
      */
-    public abstract boolean isInitChildrenFlag();
+    public abstract boolean isInitHasChildrenFlag();
 
 
     /**

@@ -97,7 +97,7 @@ public class ReferralException extends ConnectionException
                     originalSearchParameter.getReturningAttributes(), referralUrl.hasScope() ? referralUrl.getScope()
                         : originalSearchParameter.getScope(), originalSearchParameter.getCountLimit(),
                     originalSearchParameter.getTimeLimit(), originalSearchParameter.getAliasesDereferencingMethod(),
-                    originalSearchParameter.getReferralsHandlingMethod(), originalSearchParameter.isInitChildrenFlag(),
+                    originalSearchParameter.getReferralsHandlingMethod(), originalSearchParameter.isInitHasChildrenFlag(),
                     originalSearchParameter.isInitAliasAndReferralFlag(), originalSearchParameter.getControls() );
                 referralSearchList.add( referralSearch );
             }
