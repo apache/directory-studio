@@ -26,30 +26,60 @@ import java.io.Serializable;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifControlLine;
 
 
+/**
+ * The Control class represents a LDAP control as defined in RFC 4511
+ * <pre>
+ * Control ::= SEQUENCE {
+ *     controlType             LDAPOID,
+ *     criticality             BOOLEAN DEFAULT FALSE,
+ *     controlValue            OCTET STRING OPTIONAL }
+ * </pre>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Control implements Serializable
 {
 
+    /** The serialVersionUID. */
     private static final long serialVersionUID = -1289018814649849178L;
 
+    /**
+     * The subentries control as defined in RFC 3672.
+     */
     public static final Control SUBENTRIES_CONTROL = new Control( "Subentries Control", "1.3.6.1.4.1.4203.1.10.1",
         false, new byte[]
             { 0x01, 0x01, ( byte ) 0xFF } );
 
+    /** The symbolic name. */
     private String name;
 
+    /** The oid. */
     private String oid;
 
+    /** The critical. */
     private boolean critical;
 
+    /** The control value. */
     private transient byte[] controlValue;
 
 
+    /**
+     * Creates a new instance of Control.
+     */
     public Control()
     {
-
     }
 
 
+    /**
+     * Creates a new instance of Control.
+     *
+     * @param name the symbolic name
+     * @param oid the oid
+     * @param critical the criticality
+     * @param controlValue the control value
+     */
     public Control( String name, String oid, boolean critical, byte[] controlValue )
     {
         super();
@@ -60,64 +90,53 @@ public class Control implements Serializable
     }
 
 
-    // public static Control parseControl(String controlLdif) throws
-    // ParseException {
-    //		
-    // if("".equals(controlLdif)) {
-    // return NONE_CONTOL;
-    // }
-    //		
-    // try {
-    // String ldif =
-    // "dn: cn=dummy" +
-    // BrowserCoreConstants.LINE_SEPARATOR +
-    // "control: " +
-    // controlLdif +
-    // BrowserCoreConstants.LINE_SEPARATOR
-    // ;
-    //			
-    // LdifParser parser = new LdifParser();
-    // LdifFile model = parser.parse(ldif);
-    // LdifPart part = model.getLastContainer().getLastPart();
-    // LdifControlLine ldifControlLine = (LdifControlLine)part;
-    // if(!ldifControlLine.isValid()) {
-    // throw new Exception(ldifControlLine.getInvalidString());
-    // }
-    //			
-    // Control control = new Control("", ldifControlLine.getUnfoldedOid(),
-    // ldifControlLine.isCritical(),
-    // ldifControlLine.getControlValueAsBinary());
-    // return control;
-    // }
-    // catch (Exception e) {
-    // throw new ParseException(e.getMessage(), 0);
-    // }
-    // }
-
+    /**
+     * Gets the control value.
+     * 
+     * @return the control value
+     */
     public byte[] getControlValue()
     {
         return controlValue;
     }
 
 
+    /**
+     * Gets the oid.
+     * 
+     * @return the oid
+     */
     public String getOid()
     {
         return oid;
     }
 
 
+    /**
+     * Checks if is critical.
+     * 
+     * @return true, if is critical
+     */
     public boolean isCritical()
     {
         return critical;
     }
 
 
+    /**
+     * Gets the symbolic name.
+     * 
+     * @return the name
+     */
     public String getName()
     {
         return name;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
 
@@ -138,30 +157,53 @@ public class Control implements Serializable
     }
 
 
+    /**
+     * Sets the control value.
+     * 
+     * @param controlValue the control value
+     */
     public void setControlValue( byte[] controlValue )
     {
         this.controlValue = controlValue;
     }
 
 
+    /**
+     * Sets the critical.
+     * 
+     * @param critical the critical
+     */
     public void setCritical( boolean critical )
     {
         this.critical = critical;
     }
 
 
+    /**
+     * Sets the symbolic name.
+     * 
+     * @param name the name
+     */
     public void setName( String name )
     {
         this.name = name;
     }
 
 
+    /**
+     * Sets the oid.
+     * 
+     * @param oid the oid
+     */
     public void setOid( String oid )
     {
         this.oid = oid;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object obj )
     {
         if ( obj == null || !( obj instanceof Control ) )

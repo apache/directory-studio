@@ -21,9 +21,25 @@
 package org.apache.directory.ldapstudio.browser.core.model;
 
 
+/**
+ * Callback interface to request the target connection 
+ * of a referral from a higher-level layer (from the UI plugin).
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface IReferralHandler
 {
 
+    /**
+     * Gets the connection from this referral handler.
+     * The connection is used to continue a LDAP request.
+     * The referral handler may display a dialog to the user
+     * to select a proper connection.
+     * 
+     * @param referralURL the referral URL
+     * @return the target connection
+     */
     public IConnection getReferralConnection( URL referralURL );
 
 }

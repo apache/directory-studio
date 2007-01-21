@@ -103,9 +103,9 @@ public class JNDIConnectionProvider implements IConnectionProvider
         {
             if ( parameter.getAuthMethod() == IConnection.AUTH_SIMPLE )
             {
-                String bindDN = credentials.getBindDN();
+                String bindPrincipal = credentials.getBindPrincipal();
                 String bindPassword = credentials.getBindPassword();
-                this.context.bindSimple( bindDN, bindPassword, monitor );
+                this.context.bindSimple( bindPrincipal, bindPassword, monitor );
             }
             else if ( parameter.getAuthMethod() == IConnection.AUTH_ANONYMOUS )
             {

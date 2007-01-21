@@ -25,36 +25,61 @@ import org.apache.directory.ldapstudio.browser.core.model.ConnectionParameter;
 import org.apache.directory.ldapstudio.browser.core.model.ICredentials;
 
 
+/**
+ * Default implementation of ICredentials.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Credentials implements ICredentials
 {
 
-    private String bindDN;
+    /** The bind principal. */
+    private String bindPrincipal;
 
+    /** The bind password. */
     private String bindPassword;
 
+    /** The connection parameter. */
     private ConnectionParameter connectionParameter;
 
 
-    public Credentials( String bindDN, String bindPassword, ConnectionParameter connectionParameter )
+    /**
+     * Creates a new instance of Credentials.
+     *
+     * @param bindPrincipal the bind principal, typically a DN
+     * @param bindPassword the bind password
+     * @param connectionParameter the connection parameter
+     */
+    public Credentials( String bindPrincipal, String bindPassword, ConnectionParameter connectionParameter )
     {
-        this.bindDN = bindDN;
+        this.bindPrincipal = bindPrincipal;
         this.bindPassword = bindPassword;
         this.connectionParameter = connectionParameter;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ConnectionParameter getConnectionParameter()
     {
         return connectionParameter;
     }
 
 
-    public String getBindDN()
+    /**
+     * {@inheritDoc}
+     */
+    public String getBindPrincipal()
     {
-        return bindDN;
+        return bindPrincipal;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getBindPassword()
     {
         return bindPassword;

@@ -32,23 +32,42 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
+/**
+ * Default implementation if IBookmark.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Bookmark implements IBookmark
 {
 
+    /** The serialVersionUID. */
     private static final long serialVersionUID = 2914726541167255499L;
 
+    /** The connection. */
     private IConnection connection;
 
+    /** The bookmark parameter. */
     private BookmarkParameter bookmarkParameter;
 
+    /** The bookmark entry. */
     private DelegateEntry bookmarkEntry;
 
 
+    /**
+     * Creates a new instance of Bookmark.
+     */
     protected Bookmark()
     {
     }
 
 
+    /**
+     * Creates a new instance of Bookmark.
+     *
+     * @param connection the connection
+     * @param bookmarkParameter the bookmark parameter
+     */
     public Bookmark( IConnection connection, BookmarkParameter bookmarkParameter )
     {
         this.connection = connection;
@@ -57,6 +76,13 @@ public class Bookmark implements IBookmark
     }
 
 
+    /**
+     * Creates a new instance of Bookmark.
+     *
+     * @param connection the connection
+     * @param dn the target DN
+     * @param name the symbolic name
+     */
     public Bookmark( IConnection connection, DN dn, String name )
     {
         this.connection = connection;
@@ -65,12 +91,18 @@ public class Bookmark implements IBookmark
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public DN getDn()
     {
         return this.bookmarkParameter.getDn();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setDn( DN dn )
     {
         this.bookmarkParameter.setDn( dn );
@@ -78,12 +110,18 @@ public class Bookmark implements IBookmark
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getName()
     {
         return this.bookmarkParameter.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setName( String name )
     {
         this.bookmarkParameter.setName( name );
@@ -91,24 +129,29 @@ public class Bookmark implements IBookmark
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class adapter )
     {
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+        Class<?> clazz = ( Class<?> ) adapter;
+        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( clazz.isAssignableFrom( IConnection.class ) )
         {
-            return this.connection;
+            return getConnection();
         }
-        if ( adapter == IEntry.class )
+        if ( clazz.isAssignableFrom( IEntry.class ) )
         {
-            return this.bookmarkEntry;
+            return getEntry();
         }
-        if ( adapter == IBookmark.class )
+        if ( clazz.isAssignableFrom( IBookmark.class ) )
         {
             return this;
         }
+
         return null;
     }
 
@@ -121,36 +164,45 @@ public class Bookmark implements IBookmark
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public BookmarkParameter getBookmarkParameter()
     {
         return bookmarkParameter;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setBookmarkParameter( BookmarkParameter bookmarkParameter )
     {
         this.bookmarkParameter = bookmarkParameter;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IConnection getConnection()
     {
         return this.connection;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IEntry getEntry()
     {
         return this.bookmarkEntry;
     }
 
 
-    public IBookmark getBookmark()
-    {
-        return this;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return this.getName();

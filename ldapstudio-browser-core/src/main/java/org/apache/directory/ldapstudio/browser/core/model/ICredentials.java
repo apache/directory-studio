@@ -21,15 +21,36 @@
 package org.apache.directory.ldapstudio.browser.core.model;
 
 
+/**
+ * An ICredential holds authentication information for a connection. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface ICredentials
 {
 
+    /**
+     * Gets the connection parameter.
+     * 
+     * @return the connection parameter
+     */
     public ConnectionParameter getConnectionParameter();
 
 
-    public String getBindDN();
+    /**
+     * Gets the bind principal, typically a DN.
+     * 
+     * @return the bind principal
+     */
+    public String getBindPrincipal();
 
 
+    /**
+     * Gets the bind password.
+     * 
+     * @return the bind password
+     */
     public String getBindPassword();
 
 }

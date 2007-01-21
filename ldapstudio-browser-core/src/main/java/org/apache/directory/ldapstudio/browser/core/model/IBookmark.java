@@ -29,31 +29,78 @@ import org.apache.directory.ldapstudio.browser.core.propertypageproviders.EntryP
 import org.eclipse.core.runtime.IAdaptable;
 
 
+/**
+ * An IBookmark is used as shortcut to an entry in the DIT.
+ * The target entry is defined by a connection a DN.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPageProvider, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider
 {
 
+    /**
+     * Gets the target DN.
+     * 
+     * @return the DN
+     */
     public DN getDn();
 
 
+    /**
+     * Sets the target DN.
+     * 
+     * @param dn the DN
+     */
     public void setDn( DN dn );
 
 
+    /**
+     * Gets the symbolic name.
+     * 
+     * @return the name
+     */
     public String getName();
 
 
+    /**
+     * Sets the symbolic name.
+     * 
+     * @param name the name
+     */
     public void setName( String name );
 
 
+    /**
+     * Gets the connection.
+     * 
+     * @return the connection
+     */
     public IConnection getConnection();
 
 
+    /**
+     * Gets the entry.
+     * 
+     * @return the entry
+     */
     public IEntry getEntry();
 
 
+    /**
+     * Gets the bookmark parameter.
+     * 
+     * @return the bookmark parameter
+     */
     public BookmarkParameter getBookmarkParameter();
 
 
+    /**
+     * Sets the bookmark parameter.
+     * 
+     * @param bookmarkParameter the bookmark parameter
+     */
     public void setBookmarkParameter( BookmarkParameter bookmarkParameter );
 
 }

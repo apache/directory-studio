@@ -21,9 +21,24 @@
 package org.apache.directory.ldapstudio.browser.core.model;
 
 
+/**
+ * Callback interface to request credentials from a 
+ * higher-level layer (from the UI plugin).
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface IAuthHandler
 {
 
+    /**
+     * Gets credentials from this authentication handler. 
+     * The credentials are used to bind to the given connection. 
+     * The authentication handler may display a dialog to the user.
+     * 
+     * @param connectionParameter the connection to bind to
+     * @return the credentials
+     */
     public ICredentials getCredentials( ConnectionParameter connectionParameter );
 
 }
