@@ -37,41 +37,65 @@ import org.apache.directory.ldapstudio.browser.core.model.URL;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
+/**
+ * Default implementation of ISearch.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Search implements ISearch
 {
 
+    /** The serialVersionUID. */
     private static final long serialVersionUID = -3482673086666351174L;
 
+    /** The connection. */
     private IConnection connection;
 
+    /** The search results. */
     private ISearchResult[] searchResults;
 
+    /** The search parameter. */
     private SearchParameter searchParameter;
 
+    /** The count limit exceeded flag. */
     private boolean countLimitExceeded;
 
 
     /**
      * Creates a new search with the following parameters:
-     * 
+     * <ul>
      * <li>searchName: current date
      * <li>connection: null
-     * <li>searchBase: empty
-     * <li>filter: empty (objectClass=*)
-     * <li>returningAttributea: none
-     * <li>scope: one level
-     * <li>countLimit: preference value
-     * <li>timeLimit: preference value
+     * <li>empty search base
+     * <li>default filter (objectClass=*)
+     * <li>no returning attributes
+     * <li>search scope one level
+     * <li>no count limit
+     * <li>no time limit
+     * <li>never dereference aliases
+     * <li>ignore referrals
+     * <li>no initialization of hasChildren flag
+     * <li>no initialization of isAlias and isReferral flag
+     * <li>no controls  
+     * <li>
+     * </ul>
      */
     public Search()
     {
         this(
             new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss" ).format( new Date() ), //$NON-NLS-1$	
-            null, new DN(), FILTER_TRUE, NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0, 0,
+            null, EMPTY_SEARCH_BASE, FILTER_TRUE, NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0, 0,
             IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
     }
 
 
+    /**
+     * Creates a new Search with the given connection and search parameters.
+     *
+     * @param conn the connection
+     * @param searchParameter the search parameters
+     */
     public Search( IConnection conn, SearchParameter searchParameter )
     {
         this.connection = conn;
@@ -85,74 +109,75 @@ public class Search implements ISearch
      * Creates a new search with the given search parameters
      * 
      * @param searchName
-     *                The name of the search
+     *                the name of the search
      * @param conn
-     *                The connection of the search
+     *                the connection of the search
      * @param searchBase
-     *                The base DN of the search
+     *                the base DN of the search, a null search base will be
+     *                transformed to an empty DN.
      * @param filter
-     *                The filter to use, null or empty filters will be
+     *                the filter to use, null or empty filters will be
      *                transformed to (objectClass=*)
      * @param returningAttributes
-     *                The attributes to return, empty array indicates none,
-     *                null indicates all
+     *                the attributes to return, an empty array indicates none,
+     *                null will be transformed to '*' (all user attributes)
      * @param scope
      *                the search scope, one of SCOPE_OBJECT, SCOPE_ONELEVEL,
      *                SCOPE_SUBTREE
      * @param countLimit
-     *                The count limit, 0 indicates no limit
+     *                the count limit, 0 indicates no limit
      * @param timeLimit
-     *                The time limit in ms, 0 indicats no limit
+     *                the time limit in ms, 0 indicates no limit
      * @param aliasesDereferencingMethod
+     *                the aliases dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER, 
+     *                IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING
+     *                or IConnection.DEREFERENCE_ALIASES_SEARCH
      * @param referralsHandlingMethod
-     * @param initChildrenFlag
-     * @param initAliasFlag
-     * @param initObjectClasses
+     *                the referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE 
+     *                or IConnection.HANDLE_REFERRALS_FOLLOW 
+     * @param initHasChildrenFlag
+     *                the init hasChildren flag
+     * @param initAliasAndReferralsFlag
+     *                the init isAlias and isReferral flag
      */
     public Search( String searchName, IConnection conn, DN searchBase, String filter, String[] returningAttributes,
         int scope, int countLimit, int timeLimit, int aliasesDereferencingMethod, int referralsHandlingMethod,
-        boolean initChildrenFlag, boolean initAliasAndReferralsFlag, Control[] controls )
+        boolean initHasChildrenFlag, boolean initAliasAndReferralsFlag, Control[] controls )
     {
         this.connection = conn;
         this.searchResults = null;
+        this.countLimitExceeded = false;
 
         this.searchParameter = new SearchParameter();
         this.searchParameter.setName( searchName );
         this.searchParameter.setSearchBase( searchBase );
-        if ( filter == null || "".equals( filter ) ) { //$NON-NLS-1$
-            this.searchParameter.setFilter( FILTER_TRUE );
-        }
-        else
-        {
-            this.searchParameter.setFilter( filter );
-        }
-        if ( returningAttributes == null )
-        {
-            this.searchParameter.setReturningAttributes( new String[]
-                { ALL_USER_ATTRIBUTES } );
-        }
-        else
-        {
-            this.searchParameter.setReturningAttributes( returningAttributes );
-        }
+        this.searchParameter.setFilter( filter );
+        this.searchParameter.setReturningAttributes( returningAttributes );
         this.searchParameter.setScope( scope );
         this.searchParameter.setTimeLimit( timeLimit );
         this.searchParameter.setCountLimit( countLimit );
         this.searchParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
         this.searchParameter.setReferralsHandlingMethod( referralsHandlingMethod );
-        this.searchParameter.setInitChildrenFlag( initChildrenFlag );
+        this.searchParameter.setInitChildrenFlag( initHasChildrenFlag );
         this.searchParameter.setInitAliasAndReferralFlag( initAliasAndReferralsFlag );
         this.searchParameter.setControls( controls );
-        this.countLimitExceeded = false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public URL getUrl()
     {
         return new URL( this );
     }
 
 
+    /**
+     * Fires a search update event if the search name is set.
+     *
+     * @param detail the SearchUpdateEvent detail
+     */
     private void fireSearchUpdated( int detail )
     {
         if ( this.getName() != null && !"".equals( this.getName() ) ) { //$NON-NLS-1$
@@ -161,30 +186,45 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isInitChildrenFlag()
     {
         return this.searchParameter.isInitChildrenFlag();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isInitAliasAndReferralFlag()
     {
         return this.searchParameter.isInitAliasAndReferralFlag();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Control[] getControls()
     {
         return this.searchParameter.getControls();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getCountLimit()
     {
         return this.searchParameter.getCountLimit();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setCountLimit( int countLimit )
     {
         this.searchParameter.setCountLimit( countLimit );
@@ -192,31 +232,37 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getFilter()
     {
         return this.searchParameter.getFilter();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setFilter( String filter )
     {
-        if ( filter == null || "".equals( filter ) ) { //$NON-NLS-1$
-            this.searchParameter.setFilter( FILTER_TRUE );
-        }
-        else
-        {
-            this.searchParameter.setFilter( filter );
-        }
+        this.searchParameter.setFilter( filter );
         this.fireSearchUpdated( SearchUpdateEvent.SEARCH_PARAMETER_UPDATED );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String[] getReturningAttributes()
     {
         return this.searchParameter.getReturningAttributes();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setReturningAttributes( String[] returningAttributes )
     {
         this.searchParameter.setReturningAttributes( returningAttributes );
@@ -224,12 +270,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getScope()
     {
         return this.searchParameter.getScope();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setScope( int scope )
     {
         this.searchParameter.setScope( scope );
@@ -237,12 +289,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getAliasesDereferencingMethod()
     {
         return this.searchParameter.getAliasesDereferencingMethod();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
     {
         this.searchParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
@@ -250,12 +308,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getReferralsHandlingMethod()
     {
         return this.searchParameter.getReferralsHandlingMethod();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setReferralsHandlingMethod( int referralsHandlingMethod )
     {
         this.searchParameter.setReferralsHandlingMethod( referralsHandlingMethod );
@@ -263,12 +327,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public DN getSearchBase()
     {
         return this.searchParameter.getSearchBase();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSearchBase( DN searchBase )
     {
         this.searchParameter.setSearchBase( searchBase );
@@ -276,12 +346,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getTimeLimit()
     {
         return this.searchParameter.getTimeLimit();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setTimeLimit( int timeLimit )
     {
         this.searchParameter.setTimeLimit( timeLimit );
@@ -289,12 +365,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getName()
     {
         return this.searchParameter.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setName( String searchName )
     {
         this.searchParameter.setName( searchName );
@@ -302,12 +384,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ISearchResult[] getSearchResults()
     {
         return searchResults;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSearchResults( ISearchResult[] searchResults )
     {
         this.searchResults = searchResults;
@@ -318,12 +406,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isCountLimitExceeded()
     {
         return this.countLimitExceeded;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setCountLimitExceeded( boolean countLimitExceeded )
     {
         this.countLimitExceeded = countLimitExceeded;
@@ -331,12 +425,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IConnection getConnection()
     {
         return connection;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setConnection( IConnection connection )
     {
         this.connection = connection;
@@ -348,14 +448,18 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
-        // return this.searchParameter.getFilter() +
-        // Integer.toString(this.searchResults!=null?this.searchResults.length:0);
         return this.getName() + " (" + this.connection + ")"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object clone()
     {
         return new Search( this.getName(), this.getConnection(), this.getSearchBase(), this.getFilter(), this
@@ -365,32 +469,44 @@ public class Search implements ISearch
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public SearchParameter getSearchParameter()
     {
         return searchParameter;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSearchParameter( SearchParameter searchParameter )
     {
         this.searchParameter = searchParameter;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class adapter )
     {
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+
+        Class<?> clazz = ( Class<?> ) adapter;
+        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( clazz.isAssignableFrom( IConnection.class ) )
         {
-            return this.connection;
+            return getConnection();
         }
-        if ( adapter == ISearch.class )
+        if ( clazz.isAssignableFrom( ISearch.class ) )
         {
             return this;
         }
+
         return null;
     }
 

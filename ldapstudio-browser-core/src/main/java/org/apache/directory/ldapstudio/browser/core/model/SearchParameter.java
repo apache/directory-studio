@@ -28,8 +28,6 @@ import java.io.Serializable;
  * A Bean class to hold the search parameters.
  * It is used to make searches persistent.
  * 
- * TODO: check problems with null searchBase, filter and returningAttributes!
- * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
@@ -70,7 +68,7 @@ public class SearchParameter implements Serializable
     private Control[] controls;
 
     /** Flag indicating wether the hasChildren flag of IEntry should be initialized */
-    private boolean initChildrenFlag;
+    private boolean initHasChildrenFlag;
 
     /** Flag indicating wether the isAlias and isReferral flag of IEntry should be initialized */
     private boolean initAliasAndReferralFlag;
@@ -79,27 +77,33 @@ public class SearchParameter implements Serializable
     /**
      * Creates a new instance of SearchParameter with default search parameters:
      * <ul>
-     * <li>Filter (objectClass=*)
-     * <li>Object scope
-     * <li>No time limit
-     * <li<No count limit
-     * <li>Never dereference aliases
-     * <li>Ignore referrals
-     * <li>No controls
-     * <li>Don't initialize hasChildren flag
-     * <li>Don't initialize isAlias and isReferral flag
+     * <li>null search name
+     * <li>empty search base
+     * <li>default filter (objectClass=*)
+     * <li>no returning attributes
+     * <li>search scope one level
+     * <li>no count limit
+     * <li>no time limit
+     * <li>never dereference aliases
+     * <li>ignore referrals
+     * <li>no initialization of hasChildren flag
+     * <li>no initialization of isAlias and isReferral flag
+     * <li>no controls 
      * </ul>
      */
     public SearchParameter()
     {
+        name = null;
+        searchBase = ISearch.EMPTY_SEARCH_BASE;
         filter = ISearch.FILTER_TRUE;
-        scope = ISearch.SCOPE_OBJECT;
+        returningAttributes = ISearch.NO_ATTRIBUTES;
+        scope = ISearch.SCOPE_ONELEVEL;
         timeLimit = 0;
         countLimit = 0;
         aliasesDereferencingMethod = IConnection.DEREFERENCE_ALIASES_NEVER;
         referralsHandlingMethod = IConnection.HANDLE_REFERRALS_IGNORE;
         controls = null;
-        initChildrenFlag = false;
+        initHasChildrenFlag = false;
         initAliasAndReferralFlag = false;
     }
 
@@ -138,12 +142,17 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Sets the filter.
+     * Sets the filter, a null or empty filter will be
+     * transformed to (objectClass=*).
      * 
      * @param filter the filter
      */
     public void setFilter( String filter )
     {
+        if ( filter == null || "".equals( filter ) ) //$NON-NLS-1$
+        {
+            filter = ISearch.FILTER_TRUE;
+        }
         this.filter = filter;
     }
 
@@ -182,7 +191,8 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Sets the returning attributes.
+     * Sets the returning attributes, an empty array indicates none,
+     * null will be transformed to '*' (all user attributes).
      * 
      * @param returningAttributes the returning attributes
      */
@@ -190,9 +200,8 @@ public class SearchParameter implements Serializable
     {
         if ( returningAttributes == null )
         {
-            IllegalArgumentException e = new IllegalArgumentException( "Argument returningAttributes is null" ); //$NON-NLS-1$
-            e.printStackTrace();
-            throw e;
+            returningAttributes = new String[]
+                { ISearch.ALL_USER_ATTRIBUTES };
         }
         this.returningAttributes = returningAttributes;
     }
@@ -284,12 +293,17 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Sets the search base.
+     * Sets the search base, a null search base will be
+     * transformed to an empty DN.
      * 
      * @param searchBase the search base
      */
     public void setSearchBase( DN searchBase )
     {
+        if ( searchBase == null )
+        {
+            searchBase = ISearch.EMPTY_SEARCH_BASE;
+        }
         this.searchBase = searchBase;
     }
 
@@ -339,9 +353,9 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Checks if the hasChildren flag of IEntry should be initialized.
+     * Checks if the isAlias and isReferral flags of IEntry should be initialized.
      * 
-     * @return true, if the hasChildren flag of IEntry should be initialized
+     * @return true, if the isAlias and isReferral flags of IEntry should be initialized
      */
     public boolean isInitAliasAndReferralFlag()
     {
@@ -352,7 +366,7 @@ public class SearchParameter implements Serializable
     /**
      * Sets if the hasChildren flag of IEntry should be initialized.
      * 
-     * @param initAliasAndReferralFlag the init alias and referral flag
+     * @param initAliasAndReferralFlag the init isAlias and isReferral flag
      */
     public void setInitAliasAndReferralFlag( boolean initAliasAndReferralFlag )
     {
@@ -367,18 +381,18 @@ public class SearchParameter implements Serializable
      */
     public boolean isInitChildrenFlag()
     {
-        return initChildrenFlag;
+        return initHasChildrenFlag;
     }
 
 
     /**
      * Sets if the hasChildren flag of IEntry should be initialized.
      * 
-     * @param initChildrenFlag the init children flag
+     * @param initHasChildrenFlag the init hasChildren flag
      */
-    public void setInitChildrenFlag( boolean initChildrenFlag )
+    public void setInitChildrenFlag( boolean initHasChildrenFlag )
     {
-        this.initChildrenFlag = initChildrenFlag;
+        this.initHasChildrenFlag = initHasChildrenFlag;
     }
 
 
