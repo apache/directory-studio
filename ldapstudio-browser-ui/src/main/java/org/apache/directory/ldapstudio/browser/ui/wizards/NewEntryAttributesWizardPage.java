@@ -112,12 +112,12 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                         {
                             if ( values[v].isEmpty() )
                             {
-                                attribute.deleteValue( values[v], wizard );
+                                attribute.deleteValue( values[v] );
                             }
                         }
                         if ( attribute.getValueSize() == 0 )
                         {
-                            newEntry.deleteAttribute( attribute, wizard );
+                            newEntry.deleteAttribute( attribute );
                         }
                     }
                 }
@@ -129,8 +129,8 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                     if ( newEntry.getAttribute( newMust[i] ) == null )
                     {
                         IAttribute att = new Attribute( newEntry, newMust[i] );
-                        newEntry.addAttribute( att, wizard );
-                        att.addEmptyValue( wizard );
+                        newEntry.addAttribute( att );
+                        att.addEmptyValue();
                     }
                 }
             }

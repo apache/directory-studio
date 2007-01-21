@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
@@ -29,7 +28,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ModelModificationExcep
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.wizards.AttributeWizard;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -42,7 +40,7 @@ import org.eclipse.swt.widgets.Display;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewAttributeAction extends BrowserAction implements ModelModifier
+public class NewAttributeAction extends BrowserAction
 {
     /**
      * Creates a new instance of NewAttributeAction.
@@ -103,10 +101,10 @@ public class NewAttributeAction extends BrowserAction implements ModelModifier
                         if ( att == null )
                         {
                             att = new Attribute( entry, newAttributeDescription );
-                            entry.addAttribute( att, this );
+                            entry.addAttribute( att ) ;
                         }
 
-                        att.addEmptyValue( this );
+                        att.addEmptyValue();
                     }
                     catch ( ModelModificationException mme )
                     {

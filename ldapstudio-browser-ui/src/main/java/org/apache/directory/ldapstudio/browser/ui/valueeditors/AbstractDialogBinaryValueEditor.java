@@ -22,7 +22,6 @@ package org.apache.directory.ldapstudio.browser.ui.valueeditors;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.jobs.CreateValuesJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.DeleteAttributesValueJob;
@@ -45,7 +44,7 @@ import org.apache.directory.ldapstudio.browser.core.utils.Utils;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValueEditor implements ModelModifier
+public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValueEditor
 {
 
     protected AbstractDialogBinaryValueEditor()
@@ -222,7 +221,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
             {
                 EventRegistry.suspendEventFireingInCurrentThread();
                 IAttribute attribute = new Attribute( entry, attributeDescription );
-                entry.addAttribute( attribute, this );
+                entry.addAttribute( attribute );
                 EventRegistry.resumeEventFireingInCurrentThread();
 
                 Object newValue;
@@ -276,7 +275,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
                 if ( oldValue.isEmpty() )
                 {
                     EventRegistry.suspendEventFireingInCurrentThread();
-                    attribute.deleteEmptyValue( this );
+                    attribute.deleteEmptyValue();
                     EventRegistry.resumeEventFireingInCurrentThread();
                     new CreateValuesJob( attribute, newValue ).execute();
                 }

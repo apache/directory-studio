@@ -33,9 +33,9 @@ public class EntryRenamedEvent extends EntryModificationEvent
     private IEntry newEntry;
 
 
-    public EntryRenamedEvent( IEntry oldEntry, IEntry newEntry, ModelModifier source )
+    public EntryRenamedEvent( IEntry oldEntry, IEntry newEntry )
     {
-        super( newEntry.getConnection(), newEntry.getParententry(), source );
+        super( newEntry.getConnection(), newEntry.getParententry() );
         this.oldEntry = oldEntry;
         this.newEntry = newEntry;
     }

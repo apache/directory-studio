@@ -21,11 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -35,7 +33,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewValueAction extends BrowserAction implements ModelModifier
+public class NewValueAction extends BrowserAction
 {
     /**
      * Creates a new instance of NewValueAction.
@@ -62,15 +60,15 @@ public class NewValueAction extends BrowserAction implements ModelModifier
     {
         if ( getSelectedValues().length == 1 )
         {
-            getSelectedValues()[0].getAttribute().addEmptyValue( this );
+            getSelectedValues()[0].getAttribute().addEmptyValue();
         }
         else if ( getSelectedAttributes().length == 1 )
         {
-            getSelectedAttributes()[0].addEmptyValue( this );
+            getSelectedAttributes()[0].addEmptyValue();
         }
         else if ( getSelectedAttributeHierarchies().length == 1 )
         {
-            getSelectedAttributeHierarchies()[0].getAttribute().addEmptyValue( this );
+            getSelectedAttributeHierarchies()[0].getAttribute().addEmptyValue();
         }
 
         if ( getSelectedSearchResults().length > 0 )

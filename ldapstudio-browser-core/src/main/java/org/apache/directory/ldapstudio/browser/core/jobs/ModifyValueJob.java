@@ -60,11 +60,11 @@ public class ModifyValueJob extends AbstractModificationJob
         monitor.worked( 1 );
 
         IValue newValue = new Value( attribute, newRawValue );
-        attribute.modifyValue( oldValue, newValue, this );
+        attribute.modifyValue( oldValue, newValue );
         attribute.getEntry().getConnection().modify( oldValue, newValue, monitor );
 
         this.event = new ValueModifiedEvent( attribute.getEntry().getConnection(), attribute.getEntry(), attribute,
-            oldValue, newValue, this );
+            oldValue, newValue );
     }
 
 

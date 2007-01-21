@@ -39,9 +39,9 @@ public class ValueModifiedEvent extends EntryModificationEvent
 
 
     public ValueModifiedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
-        IValue oldValue, IValue newValue, ModelModifier source )
+        IValue oldValue, IValue newValue )
     {
-        super( connection, modifiedEntry, source );
+        super( connection, modifiedEntry );
         this.modifiedAttribute = modifiedAttribute;
         this.oldValue = oldValue;
         this.newValue = newValue;

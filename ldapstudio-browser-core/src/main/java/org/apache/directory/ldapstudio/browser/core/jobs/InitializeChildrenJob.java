@@ -108,7 +108,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             IEntry parent = entries[pi];
             if ( parent.getConnection() != null && entries[pi].getConnection().isOpened() && parent.isDirectoryEntry() )
             {
-                EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent, parent.getConnection() ), this );
+                EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
             }
         }
     }
@@ -124,7 +124,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
         // root DSE has no children
         if ( parent instanceof IRootDSE )
         {
-            parent.setChildrenInitialized( true, parent.getConnection() );
+            parent.setChildrenInitialized( true );
             return;
         }
 
@@ -134,10 +134,10 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
         {
             if ( oldChildren[i] != null )
             {
-                parent.deleteChild( oldChildren[i], parent.getConnection() );
+                parent.deleteChild( oldChildren[i] );
             }
         }
-        parent.setChildrenInitialized( false, parent.getConnection() );
+        parent.setChildrenInitialized( false );
 
         // determine alias and referral handling
         int scope = ISearch.SCOPE_ONELEVEL;
@@ -179,10 +179,10 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             {
                 if ( connChildren[i] != null )
                 {
-                    parent.deleteChild( connChildren[i], parent.getConnection() );
+                    parent.deleteChild( connChildren[i] );
                 }
             }
-            parent.setChildrenInitialized( false, parent.getConnection() );
+            parent.setChildrenInitialized( false );
 
             for ( int i = 0; srs != null && i < srs.length; i++ )
             {
@@ -190,7 +190,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                 {
                     ReferralBaseEntry referralBaseEntry = new ReferralBaseEntry( srs[i].getEntry().getConnection(),
                         srs[i].getEntry().getDn() );
-                    parent.addChild( referralBaseEntry, parent.getConnection() );
+                    parent.addChild( referralBaseEntry );
                     // System.out.println("Ref: " +
                     // referralBaseEntry.getUrl());
                 }
@@ -198,19 +198,19 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                 {
                     AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getConnection(), srs[i]
                         .getEntry().getDn() );
-                    parent.addChild( aliasBaseEntry, parent.getConnection() );
+                    parent.addChild( aliasBaseEntry );
                     // System.out.println("Ali: " +
                     // aliasBaseEntry.getUrl());
                 }
                 else
                 {
-                    parent.addChild( srs[i].getEntry(), parent.getConnection() );
+                    parent.addChild( srs[i].getEntry() );
                 }
             }
         }
         else
         {
-            parent.setHasChildrenHint( false, parent.getConnection() );
+            parent.setHasChildrenHint( false );
         }
 
         // get subentries
@@ -236,17 +236,17 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
 
                 for ( int i = 0; subSrs != null && i < subSrs.length; i++ )
                 {
-                    parent.addChild( subSrs[i].getEntry(), parent.getConnection() );
+                    parent.addChild( subSrs[i].getEntry() );
                 }
             }
         }
 
         // check exceeded limits / canceled
         parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
-            || monitor.isCanceled(), parent.getConnection() );
+            || monitor.isCanceled() );
 
         // set initialized state
-        parent.setChildrenInitialized( true, parent.getConnection() );
+        parent.setChildrenInitialized( true );
 
     }
 

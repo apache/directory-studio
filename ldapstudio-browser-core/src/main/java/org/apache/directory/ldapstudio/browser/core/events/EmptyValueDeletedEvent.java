@@ -37,9 +37,9 @@ public class EmptyValueDeletedEvent extends EntryModificationEvent
 
 
     public EmptyValueDeletedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
-        IValue deletedValue, ModelModifier source )
+        IValue deletedValue )
     {
-        super( connection, modifiedEntry, source );
+        super( connection, modifiedEntry );
         this.modifiedAttribute = modifiedAttribute;
         this.deletedValue = deletedValue;
     }

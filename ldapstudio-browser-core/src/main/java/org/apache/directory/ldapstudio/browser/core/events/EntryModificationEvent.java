@@ -32,20 +32,11 @@ public abstract class EntryModificationEvent
 
     protected IEntry modifiedEntry;
 
-    protected ModelModifier source;
 
-
-    public EntryModificationEvent( IConnection connection, IEntry modifiedEntry, ModelModifier source )
+    public EntryModificationEvent( IConnection connection, IEntry modifiedEntry )
     {
         this.originalConnection = connection;
         this.modifiedEntry = modifiedEntry;
-        this.source = source;
-    }
-
-
-    public ModelModifier getSource()
-    {
-        return this.source;
     }
 
 

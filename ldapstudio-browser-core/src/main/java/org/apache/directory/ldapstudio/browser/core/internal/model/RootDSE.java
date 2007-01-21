@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
@@ -62,7 +61,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
     }
 
 
-    public RootDSE( IConnection connection, ModelModifier source ) throws ModelModificationException
+    public RootDSE( IConnection connection ) throws ModelModificationException
     {
         super();
         this.setDirectoryEntry( true );

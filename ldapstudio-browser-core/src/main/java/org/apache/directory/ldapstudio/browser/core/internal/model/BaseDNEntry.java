@@ -22,7 +22,6 @@ package org.apache.directory.ldapstudio.browser.core.internal.model;
 
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
@@ -46,7 +45,7 @@ public class BaseDNEntry extends AbstractEntry
     }
 
 
-    public BaseDNEntry( DN baseDn, IConnection connection, ModelModifier source ) throws ModelModificationException
+    public BaseDNEntry( DN baseDn, IConnection connection ) throws ModelModificationException
     {
         super();
 

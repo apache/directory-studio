@@ -31,7 +31,6 @@ import org.apache.directory.ldapstudio.browser.core.events.EmptyValueDeletedEven
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.events.ValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueModifiedEvent;
@@ -155,31 +154,31 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public void addAttribute( IAttribute attributeToAdd, ModelModifier source ) throws ModelModificationException
+    public void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException
     {
         if ( this.getDelegate() != null )
-            getDelegate().addAttribute( attributeToAdd, source );
+            getDelegate().addAttribute( attributeToAdd );
     }
 
 
-    public void addChild( IEntry childrenToAdd, ModelModifier source )
+    public void addChild( IEntry childrenToAdd )
     {
         if ( this.getDelegate() != null )
-            getDelegate().addChild( childrenToAdd, source );
+            getDelegate().addChild( childrenToAdd );
     }
 
 
-    public void deleteAttribute( IAttribute attributeToDelete, ModelModifier source ) throws ModelModificationException
+    public void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException
     {
         if ( this.getDelegate() != null )
-            getDelegate().deleteAttribute( attributeToDelete, source );
+            getDelegate().deleteAttribute( attributeToDelete );
     }
 
 
-    public void deleteChild( IEntry childrenToDelete, ModelModifier source )
+    public void deleteChild( IEntry childrenToDelete )
     {
         if ( this.getDelegate() != null )
-            getDelegate().deleteChild( childrenToDelete, source );
+            getDelegate().deleteChild( childrenToDelete );
     }
 
 
@@ -300,14 +299,14 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public void setAttributesInitialized( boolean b, ModelModifier source )
+    public void setAttributesInitialized( boolean b )
     {
 
         if ( !b )
         {
             if ( this.getDelegate() != null )
             {
-                getDelegate().setAttributesInitialized( b, source );
+                getDelegate().setAttributesInitialized( b );
             }
             setDelegate( null );
             this.entryDoesNotExist = false;
@@ -325,7 +324,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             }
             if ( this.getDelegate() != null )
             {
-                getDelegate().setAttributesInitialized( b, source );
+                getDelegate().setAttributesInitialized( b );
             }
         }
     }
@@ -338,17 +337,17 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public void setHasMoreChildren( boolean b, ModelModifier source )
+    public void setHasMoreChildren( boolean b )
     {
         if ( this.getDelegate() != null )
-            getDelegate().setHasMoreChildren( b, source );
+            getDelegate().setHasMoreChildren( b );
     }
 
 
-    public void setHasChildrenHint( boolean b, ModelModifier source )
+    public void setHasChildrenHint( boolean b )
     {
         if ( this.getDelegate() != null )
-            getDelegate().setHasChildrenHint( b, source );
+            getDelegate().setHasChildrenHint( b );
     }
 
 
@@ -359,14 +358,14 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public void setChildrenInitialized( boolean b, ModelModifier source )
+    public void setChildrenInitialized( boolean b )
     {
 
         if ( !b )
         {
             if ( this.getDelegate() != null )
             {
-                getDelegate().setChildrenInitialized( b, source );
+                getDelegate().setChildrenInitialized( b );
             }
             // setDelegate(null);
             this.entryDoesNotExist = false;
@@ -384,7 +383,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             }
             if ( this.getDelegate() != null )
             {
-                getDelegate().setChildrenInitialized( b, source );
+                getDelegate().setChildrenInitialized( b );
             }
         }
     }
@@ -448,34 +447,34 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             {
                 AttributeAddedEvent e = ( AttributeAddedEvent ) event;
                 AttributeAddedEvent delegateEvent = new AttributeAddedEvent( e.getOriginalConnection(), this, e
-                    .getAddedAttribute(), e.getSource() );
+                    .getAddedAttribute() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof AttributeDeletedEvent )
             {
                 AttributeDeletedEvent e = ( AttributeDeletedEvent ) event;
                 AttributeDeletedEvent delegateEvent = new AttributeDeletedEvent( e.getOriginalConnection(), this, e
-                    .getDeletedAttribute(), e.getSource() );
+                    .getDeletedAttribute() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof AttributesInitializedEvent )
             {
                 AttributesInitializedEvent e = ( AttributesInitializedEvent ) event;
-                AttributesInitializedEvent delegateEvent = new AttributesInitializedEvent( this, e.getSource() );
+                AttributesInitializedEvent delegateEvent = new AttributesInitializedEvent( this );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof EmptyValueAddedEvent )
             {
                 EmptyValueAddedEvent e = ( EmptyValueAddedEvent ) event;
                 EmptyValueAddedEvent delegateEvent = new EmptyValueAddedEvent( e.getOriginalConnection(), this, e
-                    .getModifiedAttribute(), e.getAddedValue(), e.getSource() );
+                    .getModifiedAttribute(), e.getAddedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof EmptyValueDeletedEvent )
             {
                 EmptyValueDeletedEvent e = ( EmptyValueDeletedEvent ) event;
                 EmptyValueDeletedEvent delegateEvent = new EmptyValueDeletedEvent( e.getOriginalConnection(), this, e
-                    .getModifiedAttribute(), e.getDeletedValue(), e.getSource() );
+                    .getModifiedAttribute(), e.getDeletedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             // EntryAddedEvent
@@ -485,35 +484,35 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             else if ( event instanceof ChildrenInitializedEvent )
             {
                 ChildrenInitializedEvent e = ( ChildrenInitializedEvent ) event;
-                ChildrenInitializedEvent delegateEvent = new ChildrenInitializedEvent( this, e.getSource() );
+                ChildrenInitializedEvent delegateEvent = new ChildrenInitializedEvent( this );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueAddedEvent )
             {
                 ValueAddedEvent e = ( ValueAddedEvent ) event;
                 ValueAddedEvent delegateEvent = new ValueAddedEvent( e.getOriginalConnection(), this, e
-                    .getModifiedAttribute(), e.getAddedValue(), e.getSource() );
+                    .getModifiedAttribute(), e.getAddedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueDeletedEvent )
             {
                 ValueDeletedEvent e = ( ValueDeletedEvent ) event;
                 ValueDeletedEvent delegateEvent = new ValueDeletedEvent( e.getOriginalConnection(), this, e
-                    .getModifiedAttribute(), e.getDeletedValue(), e.getSource() );
+                    .getModifiedAttribute(), e.getDeletedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueModifiedEvent )
             {
                 ValueModifiedEvent e = ( ValueModifiedEvent ) event;
                 ValueModifiedEvent delegateEvent = new ValueModifiedEvent( e.getOriginalConnection(), this, e
-                    .getModifiedAttribute(), e.getOldValue(), e.getNewValue(), e.getSource() );
+                    .getModifiedAttribute(), e.getOldValue(), e.getNewValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueRenamedEvent )
             {
                 ValueRenamedEvent e = ( ValueRenamedEvent ) event;
                 ValueRenamedEvent delegateEvent = new ValueRenamedEvent( e.getOriginalConnection(), this, e
-                    .getOldValue(), e.getNewValue(), e.getSource() );
+                    .getOldValue(), e.getNewValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             // ValuesSetEvent

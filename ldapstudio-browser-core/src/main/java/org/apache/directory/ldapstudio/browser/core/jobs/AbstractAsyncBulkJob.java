@@ -22,11 +22,10 @@ package org.apache.directory.ldapstudio.browser.core.jobs;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 
 
-public abstract class AbstractAsyncBulkJob extends AbstractEclipseJob implements ModelModifier
+public abstract class AbstractAsyncBulkJob extends AbstractEclipseJob
 {
 
     protected final void executeAsyncJob( ExtendedProgressMonitor pm ) throws ModelModificationException

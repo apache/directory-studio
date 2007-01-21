@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
@@ -30,7 +29,6 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserEntryPage;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserSearchResultPage;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -43,7 +41,7 @@ import org.eclipse.jface.viewers.TreeViewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class UpAction extends BrowserAction implements ModelModifier
+public class UpAction extends BrowserAction
 {
     protected TreeViewer viewer;
 

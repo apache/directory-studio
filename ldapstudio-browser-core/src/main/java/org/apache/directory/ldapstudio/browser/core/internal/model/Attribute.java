@@ -30,7 +30,6 @@ import org.apache.directory.ldapstudio.browser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EmptyValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.events.ValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueModifiedEvent;
@@ -201,14 +200,13 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public void addEmptyValue( ModelModifier source )
+    public void addEmptyValue()
     {
         try
         {
             IValue emptyValue = new Value( this );
             valueList.add( emptyValue );
-            this.attributeModified( new EmptyValueAddedEvent( getEntry().getConnection(), getEntry(), this, emptyValue,
-                source ) );
+            this.attributeModified( new EmptyValueAddedEvent( getEntry().getConnection(), getEntry(), this, emptyValue ) );
         }
         catch ( ModelModificationException mme )
         {
@@ -220,7 +218,7 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public void deleteEmptyValue( ModelModifier source )
+    public void deleteEmptyValue()
     {
         for ( Iterator it = this.valueList.iterator(); it.hasNext(); )
         {
@@ -228,8 +226,7 @@ public class Attribute implements IAttribute
             if ( value.isEmpty() )
             {
                 it.remove();
-                attributeModified( new EmptyValueDeletedEvent( getEntry().getConnection(), getEntry(), this, value,
-                    source ) );
+                attributeModified( new EmptyValueDeletedEvent( getEntry().getConnection(), getEntry(), this, value ) );
                 return;
             }
         }
@@ -272,7 +269,7 @@ public class Attribute implements IAttribute
      * @param valueToDelete the value to delete
      * @return true if deleted
      */
-    private boolean deleteValue( IValue valueToDelete )
+    private boolean internalDeleteValue( IValue valueToDelete )
     {
         for ( Iterator it = valueList.iterator(); it.hasNext(); )
         {
@@ -290,26 +287,25 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public void addValue( IValue valueToAdd, ModelModifier source ) throws ModelModificationException
+    public void addValue( IValue valueToAdd ) throws ModelModificationException
     {
         this.checkValue( valueToAdd );
 
         valueList.add( valueToAdd );
-        attributeModified( new ValueAddedEvent( getEntry().getConnection(), getEntry(), this, valueToAdd, source ) );
+        attributeModified( new ValueAddedEvent( getEntry().getConnection(), getEntry(), this, valueToAdd ) );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void deleteValue( IValue valueToDelete, ModelModifier source ) throws ModelModificationException
+    public void deleteValue( IValue valueToDelete ) throws ModelModificationException
     {
         this.checkValue( valueToDelete );
 
-        if ( this.deleteValue( valueToDelete ) )
+        if ( this.internalDeleteValue( valueToDelete ) )
         {
-            this.attributeModified( new ValueDeletedEvent( getEntry().getConnection(), getEntry(), this, valueToDelete,
-                source ) );
+            this.attributeModified( new ValueDeletedEvent( getEntry().getConnection(), getEntry(), this, valueToDelete ) );
         }
     }
 
@@ -317,15 +313,15 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public void modifyValue( IValue oldValue, IValue newValue, ModelModifier source ) throws ModelModificationException
+    public void modifyValue( IValue oldValue, IValue newValue ) throws ModelModificationException
     {
         this.checkValue( oldValue );
         this.checkValue( newValue );
 
-        this.deleteValue( oldValue );
+        this.internalDeleteValue( oldValue );
         this.valueList.add( newValue );
         this.attributeModified( new ValueModifiedEvent( getEntry().getConnection(), getEntry(), this, oldValue,
-            newValue, source ) );
+            newValue ) );
     }
 
 

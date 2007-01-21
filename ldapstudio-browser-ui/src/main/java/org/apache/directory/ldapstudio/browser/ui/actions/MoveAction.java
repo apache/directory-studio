@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 import java.util.LinkedHashSet;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.BaseDNEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
@@ -33,7 +32,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.dialogs.MoveEntriesDialog;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
@@ -45,7 +43,7 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class MoveAction extends BrowserAction implements ModelModifier
+public class MoveAction extends BrowserAction
 {
     /**
      * Creates a new instance of MoveAction.

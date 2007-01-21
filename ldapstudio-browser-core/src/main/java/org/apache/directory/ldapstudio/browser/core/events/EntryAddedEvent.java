@@ -29,9 +29,9 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 public class EntryAddedEvent extends EntryModificationEvent
 {
 
-    public EntryAddedEvent( IConnection connection, IEntry addedEntry, ModelModifier source )
+    public EntryAddedEvent( IConnection connection, IEntry addedEntry )
     {
-        super( connection, addedEntry, source );
+        super( connection, addedEntry );
     }
 
 

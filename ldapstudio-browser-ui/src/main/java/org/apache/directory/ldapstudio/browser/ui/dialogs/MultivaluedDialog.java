@@ -28,7 +28,6 @@ import org.apache.directory.ldapstudio.browser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EmptyValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.events.ValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ValueModifiedEvent;
@@ -45,7 +44,6 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEdito
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetConfiguration;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.OpenDefaultEditorAction;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -56,7 +54,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
-public class MultivaluedDialog extends Dialog implements ModelModifier
+public class MultivaluedDialog extends Dialog
 {
 
     public static final String DIALOG_TITLE = "Multivalued Editor";
@@ -204,7 +202,7 @@ public class MultivaluedDialog extends Dialog implements ModelModifier
     {
         if ( this.attributeHierarchie.getAttribute().getValueSize() == 0 )
         {
-            this.attributeHierarchie.getAttribute().addEmptyValue( this );
+            this.attributeHierarchie.getAttribute().addEmptyValue();
         }
     }
 
@@ -224,7 +222,7 @@ public class MultivaluedDialog extends Dialog implements ModelModifier
                 {
                     if ( values[i].isEmpty() )
                     {
-                        attribute.deleteEmptyValue( this );
+                        attribute.deleteEmptyValue();
                     }
                 }
 
@@ -233,7 +231,7 @@ public class MultivaluedDialog extends Dialog implements ModelModifier
                 {
                     try
                     {
-                        attribute.getEntry().deleteAttribute( attribute, this );
+                        attribute.getEntry().deleteAttribute( attribute );
                     }
                     catch ( ModelModificationException e )
                     {
@@ -276,8 +274,8 @@ public class MultivaluedDialog extends Dialog implements ModelModifier
                 try
                 {
                     IAttribute attribute = new Attribute( entry, attributeDescription );
-                    entry.addAttribute( attribute, null );
-                    attribute.addEmptyValue( null );
+                    entry.addAttribute( attribute );
+                    attribute.addEmptyValue();
                 }
                 catch ( ModelModificationException e )
                 {

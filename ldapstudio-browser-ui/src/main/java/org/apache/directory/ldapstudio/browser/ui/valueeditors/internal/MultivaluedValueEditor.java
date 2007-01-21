@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -47,7 +46,7 @@ import org.eclipse.swt.widgets.Control;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class MultivaluedValueEditor extends CellEditor implements IValueEditor, ModelModifier
+public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 {
 
     /** The value to handle */

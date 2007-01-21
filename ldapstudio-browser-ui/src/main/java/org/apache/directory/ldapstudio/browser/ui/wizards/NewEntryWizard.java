@@ -22,7 +22,6 @@ package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Bookmark;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DummyEntry;
 import org.apache.directory.ldapstudio.browser.core.jobs.CreateEntryJob;
@@ -36,7 +35,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -50,7 +48,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 
-public class NewEntryWizard extends Wizard implements INewWizard, ModelModifier
+public class NewEntryWizard extends Wizard implements INewWizard
 {
 
     private NewEntryTypeWizardPage typePage;

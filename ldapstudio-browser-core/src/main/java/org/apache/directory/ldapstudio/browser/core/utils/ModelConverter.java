@@ -83,9 +83,9 @@ public class ModelConverter
                 if ( attribute == null )
                 {
                     attribute = new Attribute( entry, attributeName );
-                    entry.addAttribute( attribute, null );
+                    entry.addAttribute( attribute );
                 }
-                attribute.addValue( new Value( attribute, value ), null );
+                attribute.addValue( new Value( attribute, value ) );
             }
             else if ( !( parts[i] instanceof LdifDnLine ) && !( parts[i] instanceof LdifSepLine ) )
             {
@@ -93,8 +93,8 @@ public class ModelConverter
                 name = name.replaceAll( "\n", "" );
                 name = name.replaceAll( "\r", "" );
                 IAttribute attribute = new Attribute( entry, name );
-                attribute.addValue( new Value( attribute, parts[i] ), null );
-                entry.addAttribute( attribute, null );
+                attribute.addValue( new Value( attribute, parts[i] ) );
+                entry.addAttribute( attribute );
                 // IAttribute attribute = entry.getAttribute("");
                 // if(attribute == null) {
                 // attribute = new Attribute(entry, "");

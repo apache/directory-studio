@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.ui.views.browser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
@@ -34,7 +33,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserConfiguration;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserWidget;
-
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +47,7 @@ import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
 
 
-public class BrowserView extends ViewPart implements ModelModifier
+public class BrowserView extends ViewPart
 {
 
     private BrowserConfiguration configuration;
@@ -175,8 +173,8 @@ public class BrowserView extends ViewPart implements ModelModifier
 
                 if ( !parentEntries[i].isChildrenInitialized() )
                 {
-                    parentEntries[i].setChildrenInitialized( true, this );
-                    parentEntries[i].setHasMoreChildren( true, this );
+                    parentEntries[i].setChildrenInitialized( true );
+                    parentEntries[i].setHasMoreChildren( true );
                 }
             }
 

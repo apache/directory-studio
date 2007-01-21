@@ -101,7 +101,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
             num = deleteEntryRecursive( entryToDelete, false, num, monitor );
 
             // delete from parent
-            entryToDelete.getParententry().deleteChild( entryToDelete, connection );
+            entryToDelete.getParententry().deleteChild( entryToDelete );
             entriesToUpdateSet.add( entryToDelete.getParententry() );
 
             // delete from searches
@@ -215,7 +215,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
         for ( Iterator it = entriesToUpdateSet.iterator(); it.hasNext(); )
         {
             IEntry parent = ( IEntry ) it.next();
-            EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent, parent.getConnection() ), this );
+            EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
         }
         for ( Iterator it = searchesToUpdateSet.iterator(); it.hasNext(); )
         {

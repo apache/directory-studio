@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Subschema;
 import org.apache.directory.ldapstudio.browser.core.propertypageproviders.ConnectionPropertyPageProvider;
 import org.apache.directory.ldapstudio.browser.core.propertypageproviders.EntryPropertyPageProvider;
@@ -44,10 +43,8 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param childToAdd
      *                the child to add
-     * @param source
-     *                the ModelModifier
      */
-    public abstract void addChild( IEntry childToAdd, ModelModifier source );
+    public abstract void addChild( IEntry childToAdd );
 
 
     /**
@@ -55,10 +52,8 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param childToDelete
      *                the child to delete
-     * @param source
-     *                the ModelModifier
      */
-    public abstract void deleteChild( IEntry childToDelete, ModelModifier source );
+    public abstract void deleteChild( IEntry childToDelete );
 
 
     /**
@@ -67,14 +62,11 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param attributeToAdd
      *                the attribute to add
-     * @param source
-     *                the ModelModifier
      * @throws ModelModificationException
      *                 if the attribute is alreade present in this entry or
      *                 if the attribute's entry isn't this entry.
      */
-    public abstract void addAttribute( IAttribute attributeToAdd, ModelModifier source )
-        throws ModelModificationException;
+    public abstract void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException;
 
 
     /**
@@ -82,13 +74,10 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param attributeToDelete
      *                the attribute to delete
-     * @param source
-     *                the ModelModifier
      * @throws ModelModificationException
      *                 if the attribute isn't present in this entry.
      */
-    public abstract void deleteAttribute( IAttribute attributeToDelete, ModelModifier source )
-        throws ModelModificationException;
+    public abstract void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException;
 
 
     /**
@@ -236,7 +225,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the attributes initialized flag
      */
-    public abstract void setAttributesInitialized( boolean b, ModelModifier source );
+    public abstract void setAttributesInitialized( boolean b );
 
 
     /**
@@ -296,11 +285,11 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     *  Sets a flag wheter this entry's children are initialized..
+     * Sets a flag wheter this entry's children are initialized..
      * 
      * @param b the children initialized flag
      */
-    public abstract void setChildrenInitialized( boolean b, ModelModifier source );
+    public abstract void setChildrenInitialized( boolean b );
 
 
     /**
@@ -316,7 +305,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the has children hint
      */
-    public abstract void setHasChildrenHint( boolean b, ModelModifier source );
+    public abstract void setHasChildrenHint( boolean b );
 
 
     /**
@@ -353,7 +342,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the has more children flag
      */
-    public abstract void setHasMoreChildren( boolean b, ModelModifier source );
+    public abstract void setHasMoreChildren( boolean b );
 
 
     /**

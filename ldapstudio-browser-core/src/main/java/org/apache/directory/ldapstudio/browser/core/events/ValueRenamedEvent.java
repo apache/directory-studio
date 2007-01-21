@@ -35,10 +35,9 @@ public class ValueRenamedEvent extends EntryModificationEvent
     private IValue newValue;
 
 
-    public ValueRenamedEvent( IConnection connection, IEntry modifiedEntry, IValue oldValue, IValue newValue,
-        ModelModifier source )
+    public ValueRenamedEvent( IConnection connection, IEntry modifiedEntry, IValue oldValue, IValue newValue )
     {
-        super( connection, modifiedEntry, source );
+        super( connection, modifiedEntry );
         this.oldValue = oldValue;
         this.newValue = newValue;
     }

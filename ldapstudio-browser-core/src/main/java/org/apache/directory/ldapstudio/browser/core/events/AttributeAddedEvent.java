@@ -33,10 +33,9 @@ public class AttributeAddedEvent extends EntryModificationEvent
     private IAttribute addedAttribute;
 
 
-    public AttributeAddedEvent( IConnection connection, IEntry modifiedEntry, IAttribute addedAttribute,
-        ModelModifier source )
+    public AttributeAddedEvent( IConnection connection, IEntry modifiedEntry, IAttribute addedAttribute )
     {
-        super( connection, modifiedEntry, source );
+        super( connection, modifiedEntry );
         this.addedAttribute = addedAttribute;
     }
 

@@ -21,9 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
-
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -34,7 +32,7 @@ import org.eclipse.swt.events.KeyListener;
 
 
 public abstract class AbstractOpenEditorAction extends AbstractEntryEditorListenerAction implements FocusListener,
-    KeyListener, ModelModifier
+    KeyListener
 {
 
     protected EntryEditorWidgetActionGroup actionGroup;

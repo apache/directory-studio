@@ -30,7 +30,6 @@ import java.util.Set;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.events.EntryRenamedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -40,7 +39,7 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.RDN;
 
 
-public class RenameEntryJob extends AbstractAsyncBulkJob implements ModelModifier
+public class RenameEntryJob extends AbstractAsyncBulkJob
 {
 
     private IConnection connection;
@@ -101,12 +100,12 @@ public class RenameEntryJob extends AbstractAsyncBulkJob implements ModelModifie
         if ( !monitor.errorsReported() )
         {
             // rename in parent
-            parent.deleteChild( oldEntry, this );
+            parent.deleteChild( oldEntry );
             this.newEntry = connection.getEntry( newDn, monitor );
-            parent.addChild( newEntry, this );
-            parent.setHasMoreChildren( false, this );
+            parent.addChild( newEntry );
+            parent.setHasMoreChildren( false );
 
-            newEntry.setHasChildrenHint( oldEntry.hasChildren(), this );
+            newEntry.setHasChildrenHint( oldEntry.hasChildren() );
             if ( oldEntry.isChildrenInitialized() )
             {
                 InitializeChildrenJob.initializeChildren( newEntry, monitor );
@@ -144,7 +143,7 @@ public class RenameEntryJob extends AbstractAsyncBulkJob implements ModelModifie
     {
         if ( oldEntry != null && newEntry != null )
         {
-            EventRegistry.fireEntryUpdated( new EntryRenamedEvent( oldEntry, newEntry, this ), this );
+            EventRegistry.fireEntryUpdated( new EntryRenamedEvent( oldEntry, newEntry ), this );
         }
         for ( Iterator it = searchesToUpdateSet.iterator(); it.hasNext(); )
         {

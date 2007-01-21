@@ -28,9 +28,9 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 public class ChildrenInitializedEvent extends EntryModificationEvent
 {
 
-    public ChildrenInitializedEvent( IEntry initializedEntry, ModelModifier source )
+    public ChildrenInitializedEvent( IEntry initializedEntry )
     {
-        super( initializedEntry.getConnection(), initializedEntry, source );
+        super( initializedEntry.getConnection(), initializedEntry );
     }
 
 

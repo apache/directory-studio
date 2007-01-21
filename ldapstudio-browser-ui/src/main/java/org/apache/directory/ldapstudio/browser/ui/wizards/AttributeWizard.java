@@ -21,10 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -38,7 +36,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 
-public class AttributeWizard extends Wizard implements INewWizard, ModelModifier
+public class AttributeWizard extends Wizard implements INewWizard
 {
 
     private AttributeTypeWizardPage typePage;

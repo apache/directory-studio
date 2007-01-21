@@ -36,7 +36,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ModelModificationExcep
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -152,17 +151,17 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             if ( ocAttribute == null )
             {
                 ocAttribute = new Attribute( newEntry, IAttribute.OBJECTCLASS_ATTRIBUTE );
-                newEntry.addAttribute( ocAttribute, wizard );
+                newEntry.addAttribute( ocAttribute );
             }
             IValue[] values = ocAttribute.getValues();
             for ( int i = 0; i < values.length; i++ )
             {
-                ocAttribute.deleteValue( values[i], wizard );
+                ocAttribute.deleteValue( values[i] );
             }
             for ( Iterator it = selectedObjectClasses.iterator(); it.hasNext(); )
             {
                 Object oc = ( Object ) it.next();
-                ocAttribute.addValue( new Value( ocAttribute, oc ), wizard );
+                ocAttribute.addValue( new Value( ocAttribute, oc ) );
             }
 
         }

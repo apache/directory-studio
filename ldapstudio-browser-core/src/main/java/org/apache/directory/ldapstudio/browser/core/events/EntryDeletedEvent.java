@@ -29,9 +29,9 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 public class EntryDeletedEvent extends EntryModificationEvent
 {
 
-    public EntryDeletedEvent( IConnection connection, IEntry deletedEntry, ModelModifier source )
+    public EntryDeletedEvent( IConnection connection, IEntry deletedEntry )
     {
-        super( connection, deletedEntry, source );
+        super( connection, deletedEntry );
     }
 
 

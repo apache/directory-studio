@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -50,7 +49,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor implements IValueEditor, ModelModifier
+public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor implements IValueEditor
 {
 
     /** 

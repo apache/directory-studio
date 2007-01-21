@@ -22,7 +22,6 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.BaseDNEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
@@ -33,7 +32,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.RDN;
 import org.apache.directory.ldapstudio.browser.ui.dialogs.RenameEntryDialog;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -47,7 +45,7 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class RenameAction extends BrowserAction implements ModelModifier
+public class RenameAction extends BrowserAction
 {
     /**
      * Creates a new instance of RenameAction.

@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.AttributeDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.ldapstudio.browser.core.propertypageproviders.AttributePropertyPageProvider;
@@ -229,19 +228,15 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
     /**
      * Adds an empty value.
      * 
-     * @param source
-     *                the ModelModifier
      */
-    public abstract void addEmptyValue( ModelModifier source );
+    public abstract void addEmptyValue();
 
 
     /**
      * Removes one empty value if one is present.
      * 
-     * @param source
-     *                the ModelModifier
      */
-    public abstract void deleteEmptyValue( ModelModifier source );
+    public abstract void deleteEmptyValue();
 
 
     /**
@@ -250,13 +245,11 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @param valueToAdd
      *                the value to add
-     * @param source
-     *                the ModelModifier
      * @throws ModelModificationException
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void addValue( IValue valueToAdd, ModelModifier source ) throws ModelModificationException;
+    public abstract void addValue( IValue valueToAdd ) throws ModelModificationException;
 
 
     /**
@@ -264,13 +257,11 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @param valueToDelete
      *                the value to delete
-     * @param source
-     *                the ModelModifier
      * @throws ModelModificationException
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void deleteValue( IValue valueToDelete, ModelModifier source ) throws ModelModificationException;
+    public abstract void deleteValue( IValue valueToDelete ) throws ModelModificationException;
 
 
     /**
@@ -280,13 +271,11 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      *                the value that should be replaced
      * @param newValue
      *                the value that should be added
-     * @param source
-     *                the ModelModifier
      * @throws ModelModificationException
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void modifyValue( IValue oldValue, IValue newValue, ModelModifier source )
+    public abstract void modifyValue( IValue oldValue, IValue newValue )
         throws ModelModificationException;
 
 

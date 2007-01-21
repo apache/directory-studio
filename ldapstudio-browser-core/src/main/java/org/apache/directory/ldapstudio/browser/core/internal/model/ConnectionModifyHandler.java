@@ -393,7 +393,7 @@ class ConnectionModifyHandler
                             }
                             else
                             {
-                                entry.setAttributesInitialized( false, connection );
+                                entry.setAttributesInitialized( false );
                             }
                         }
 

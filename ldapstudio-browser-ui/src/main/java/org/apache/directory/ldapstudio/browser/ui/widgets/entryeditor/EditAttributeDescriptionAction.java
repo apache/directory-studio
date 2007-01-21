@@ -21,20 +21,18 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.jobs.RenameValuesJob;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.actions.DeleteAction;
 import org.apache.directory.ldapstudio.browser.ui.wizards.AttributeWizard;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 
 
-public class EditAttributeDescriptionAction extends AbstractEntryEditorListenerAction implements ModelModifier
+public class EditAttributeDescriptionAction extends AbstractEntryEditorListenerAction
 {
 
     private DeleteAction deleteAction;

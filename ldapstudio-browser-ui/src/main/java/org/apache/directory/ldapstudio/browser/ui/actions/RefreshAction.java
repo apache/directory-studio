@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.InitializeChildrenJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.SearchJob;
@@ -33,7 +32,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -43,7 +41,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class RefreshAction extends BrowserAction implements ModelModifier
+public class RefreshAction extends BrowserAction
 {
     /**
      * Creates a new instance of RefreshAction.

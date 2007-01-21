@@ -31,7 +31,6 @@ import java.util.Set;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.events.EntryMovedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -40,7 +39,7 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 
 
-public class MoveEntriesJob extends AbstractAsyncBulkJob implements ModelModifier
+public class MoveEntriesJob extends AbstractAsyncBulkJob
 {
 
     private IConnection connection;
@@ -110,13 +109,13 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob implements ModelModifie
             if ( errorStatusSize1 == errorStatusSize2 )
             {
                 // move in parent
-                oldParent.deleteChild( oldEntry, this );
+                oldParent.deleteChild( oldEntry );
                 IEntry newEntry = connection.getEntry( newDn, monitor );
                 this.newEntries[i] = newEntry;
-                newParent.addChild( newEntry, this );
-                newParent.setHasMoreChildren( false, this );
+                newParent.addChild( newEntry );
+                newParent.setHasMoreChildren( false );
 
-                newEntry.setHasChildrenHint( oldEntry.hasChildren(), this );
+                newEntry.setHasChildrenHint( oldEntry.hasChildren() );
                 if ( oldEntry.isChildrenInitialized() )
                 {
                     InitializeChildrenJob.initializeChildren( newEntry, monitor );
@@ -157,7 +156,7 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob implements ModelModifie
         {
             if ( oldEntries[i] != null && newEntries[i] != null )
             {
-                EventRegistry.fireEntryUpdated( new EntryMovedEvent( oldEntries[i], newEntries[i], this ), this );
+                EventRegistry.fireEntryUpdated( new EntryMovedEvent( oldEntries[i], newEntries[i] ), this );
             }
         }
         for ( Iterator it = searchesToUpdateSet.iterator(); it.hasNext(); )

@@ -89,7 +89,7 @@ public class CreateEntryJob extends AbstractAsyncBulkJob
             {
                 createdEntries[i] = entryToCreate.getConnection().getEntry( entryToCreate.getDn(), monitor );
                 // createdEntries[i].getParententry().addChild(entry, this);
-                createdEntries[i].setHasChildrenHint( false, this );
+                createdEntries[i].setHasChildrenHint( false );
             }
 
             monitor.worked( 1 );
@@ -104,7 +104,7 @@ public class CreateEntryJob extends AbstractAsyncBulkJob
             if ( createdEntries[i] != null )
             {
                 EventRegistry.fireEntryUpdated( new EntryAddedEvent( createdEntries[i].getConnection(),
-                    createdEntries[i], this ), this );
+                    createdEntries[i] ), this );
             }
         }
     }

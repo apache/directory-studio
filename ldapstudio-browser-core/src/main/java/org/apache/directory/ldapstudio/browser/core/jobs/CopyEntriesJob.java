@@ -116,7 +116,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
 
     protected void runNotification()
     {
-        EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent, parent.getConnection() ), this );
+        EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
     }
 
 
@@ -151,7 +151,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
 
                 // create new entry
                 RDN rdn = entryToCopy.getRdn();
-                IEntry newEntry = new Entry( parent, rdn, parent.getConnection() );
+                IEntry newEntry = new Entry( parent, rdn );
 
                 // change RDN if entry already exists
                 ExtendedProgressMonitor testMonitor = new ExtendedProgressMonitor( monitor );
@@ -161,13 +161,13 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                     String rdnValue = rdn.getValue();
                     String newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, "", rdnValue ); //$NON-NLS-1$
                     RDN newRdn = getNewRdn( rdn, newRdnValue );
-                    newEntry = new Entry( parent, newRdn, parent.getConnection() );
+                    newEntry = new Entry( parent, newRdn );
                     testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
                     for ( int i = 2; testEntry != null; i++ )
                     {
                         newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, i + " ", rdnValue ); //$NON-NLS-1$
                         newRdn = getNewRdn( rdn, newRdnValue );
-                        newEntry = new Entry( parent, newRdn, parent.getConnection() );
+                        newEntry = new Entry( parent, newRdn );
                         testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
                     }
                 }
@@ -181,13 +181,13 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                         || IAttribute.REFERRAL_ATTRIBUTE.equalsIgnoreCase( attributeToCopy.getDescription() ) )
                     {
                         IAttribute newAttribute = new Attribute( newEntry, attributeToCopy.getDescription() );
-                        newEntry.addAttribute( newAttribute, newEntry.getConnection() );
+                        newEntry.addAttribute( newAttribute );
                         IValue[] valuesToCopy = attributeToCopy.getValues();
                         for ( int j = 0; j < valuesToCopy.length; j++ )
                         {
                             IValue valueToCopy = valuesToCopy[j];
                             IValue newValue = new Value( newAttribute, valueToCopy.getRawValue() );
-                            newAttribute.addValue( newValue, newEntry.getConnection() );
+                            newAttribute.addValue( newValue );
                         }
                     }
                 }
@@ -206,11 +206,11 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                         {
                             if ( part.getUnencodedValue().equals( values[ii].getRawValue() ) )
                             {
-                                rdnAttribute.deleteValue( values[ii], newEntry.getConnection() );
+                                rdnAttribute.deleteValue( values[ii] );
                             }
                             if ( rdnAttribute.getValueSize() == 0 )
                             {
-                                newEntry.deleteAttribute( rdnAttribute, newEntry.getConnection() );
+                                newEntry.deleteAttribute( rdnAttribute );
                             }
                         }
                     }
@@ -223,9 +223,8 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                     if ( rdnAttribute == null )
                     {
                         rdnAttribute = new Attribute( newEntry, part.getType() );
-                        newEntry.addAttribute( rdnAttribute, newEntry.getConnection() );
-                        rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ), newEntry
-                            .getConnection() );
+                        newEntry.addAttribute( rdnAttribute );
+                        rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ) );
                     }
                     else
                     {
@@ -241,15 +240,14 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                         }
                         if ( mustAdd )
                         {
-                            rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ), newEntry
-                                .getConnection() );
+                            rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ) );
                         }
                     }
                 }
 
                 newEntry.getConnection().create( newEntry, monitor );
-                newEntry.getParententry().addChild( newEntry, newEntry.getConnection() );
-                newEntry.setHasChildrenHint( false, newEntry.getConnection() );
+                newEntry.getParententry().addChild( newEntry );
+                newEntry.setHasChildrenHint( false );
 
                 num++;
                 monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__copied_n_entries,

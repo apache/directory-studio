@@ -33,10 +33,9 @@ public class AttributeDeletedEvent extends EntryModificationEvent
     private IAttribute deletedAttribute;
 
 
-    public AttributeDeletedEvent( IConnection connection, IEntry modifiedEntry, IAttribute deletedAttribute,
-        ModelModifier source )
+    public AttributeDeletedEvent( IConnection connection, IEntry modifiedEntry, IAttribute deletedAttribute )
     {
-        super( connection, modifiedEntry, source );
+        super( connection, modifiedEntry );
         this.deletedAttribute = deletedAttribute;
     }
 

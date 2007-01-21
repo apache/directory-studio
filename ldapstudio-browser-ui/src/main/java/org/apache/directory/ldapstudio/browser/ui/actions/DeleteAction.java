@@ -33,7 +33,6 @@ import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.DeleteEntriesJob;
 import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
@@ -47,7 +46,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ModelModificationExcep
 import org.apache.directory.ldapstudio.browser.core.model.RDNPart;
 import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
@@ -61,7 +59,7 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DeleteAction extends BrowserAction implements ModelModifier
+public class DeleteAction extends BrowserAction
 {
     /**
      * {@inheritDoc}
@@ -322,14 +320,14 @@ public class DeleteAction extends BrowserAction implements ModelModifier
                         {
                             if ( vals[i].isEmpty() )
                             {
-                                att.deleteEmptyValue( this );
+                                att.deleteEmptyValue();
                             }
                         }
                         if ( att.getValueSize() == 0 )
                         {
                             try
                             {
-                                att.getEntry().deleteAttribute( att, this );
+                                att.getEntry().deleteAttribute( att );
                             }
                             catch ( ModelModificationException e )
                             {
@@ -342,7 +340,7 @@ public class DeleteAction extends BrowserAction implements ModelModifier
                         IValue value = ( IValue ) it.next();
                         if ( value.isEmpty() )
                         {
-                            value.getAttribute().deleteEmptyValue( this );
+                            value.getAttribute().deleteEmptyValue();
                             it.remove();
                         }
                     }

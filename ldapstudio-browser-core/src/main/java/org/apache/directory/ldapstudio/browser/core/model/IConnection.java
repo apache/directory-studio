@@ -26,7 +26,6 @@ import java.io.Writer;
 
 import org.apache.directory.ldapstudio.browser.core.BookmarkManager;
 import org.apache.directory.ldapstudio.browser.core.SearchManager;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ConnectionException;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ModificationLogger;
 import org.apache.directory.ldapstudio.browser.core.jobs.ExtendedProgressMonitor;
@@ -36,7 +35,7 @@ import org.apache.directory.ldapstudio.browser.core.propertypageproviders.Connec
 import org.eclipse.core.runtime.IAdaptable;
 
 
-public interface IConnection extends Serializable, IAdaptable, ConnectionPropertyPageProvider, ModelModifier
+public interface IConnection extends Serializable, IAdaptable, ConnectionPropertyPageProvider
 {
 
     public static final String[] ROOT_DSE_ATTRIBUTES =

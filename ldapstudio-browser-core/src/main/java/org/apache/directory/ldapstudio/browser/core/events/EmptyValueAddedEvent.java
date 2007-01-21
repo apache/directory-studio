@@ -37,9 +37,9 @@ public class EmptyValueAddedEvent extends EntryModificationEvent
 
 
     public EmptyValueAddedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
-        IValue addedValue, ModelModifier source )
+        IValue addedValue )
     {
-        super( connection, modifiedEntry, source );
+        super( connection, modifiedEntry );
         this.modifiedAttribute = modifiedAttribute;
         this.addedValue = addedValue;
     }

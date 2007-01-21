@@ -279,7 +279,7 @@ public class Connection implements IConnection, Serializable
                 if ( !this.connectionParameter.isFetchBaseDNs() )
                 {
                     this.baseDNEntries = new BaseDNEntry[1];
-                    this.baseDNEntries[0] = new BaseDNEntry( new DN( this.connectionParameter.getBaseDN() ), this, this );
+                    this.baseDNEntries[0] = new BaseDNEntry( new DN( this.connectionParameter.getBaseDN() ), this );
                     this.cacheEntry( this.baseDNEntries[0] );
                 }
             }
@@ -446,7 +446,7 @@ public class Connection implements IConnection, Serializable
 
     private void loadRootDSE( ExtendedProgressMonitor monitor ) throws Exception
     {
-        this.rootDSE = new RootDSE( this, this );
+        this.rootDSE = new RootDSE( this );
         this.cacheEntry( this.rootDSE );
 
         // First get ALL attributes
@@ -484,7 +484,7 @@ public class Connection implements IConnection, Serializable
                 this.baseDNEntries = new BaseDNEntry[baseDnEntryList.size()];
                 for ( int i = 0; i < this.baseDNEntries.length; i++ )
                 {
-                    this.baseDNEntries[i] = new BaseDNEntry( new DN( ( String ) baseDnEntryList.get( i ) ), this, this );
+                    this.baseDNEntries[i] = new BaseDNEntry( new DN( ( String ) baseDnEntryList.get( i ) ), this );
                     this.cacheEntry( this.baseDNEntries[i] );
                 }
 
@@ -554,7 +554,7 @@ public class Connection implements IConnection, Serializable
         DirectoryMetadataEntry[] metadataEntries = new DirectoryMetadataEntry[metadataEntryList.size()];
         for ( int i = 0; i < metadataEntryList.size(); i++ )
         {
-            metadataEntries[i] = new DirectoryMetadataEntry( ( DN ) metadataEntryList.get( i ), this, this );
+            metadataEntries[i] = new DirectoryMetadataEntry( ( DN ) metadataEntryList.get( i ), this );
             metadataEntries[i].setDirectoryEntry( true );
         }
         return metadataEntries;

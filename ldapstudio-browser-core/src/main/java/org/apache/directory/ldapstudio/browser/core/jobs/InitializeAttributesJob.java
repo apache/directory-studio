@@ -107,7 +107,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
             IEntry parent = entries[pi];
             if ( parent.getConnection() != null && entries[pi].getConnection().isOpened() && parent.isDirectoryEntry() )
             {
-                EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( parent, parent.getConnection() ), this );
+                EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( parent ), this );
             }
         }
     }
@@ -160,7 +160,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
         entry.getConnection().search( search, monitor );
 
         // set initialized state
-        entry.setAttributesInitialized( true, entry.getConnection() );
+        entry.setAttributesInitialized( true );
     }
 
 }

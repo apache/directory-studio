@@ -38,7 +38,6 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
@@ -81,7 +80,7 @@ public abstract class AbstractEntry implements IEntry
     protected abstract void setRdn( RDN newRdn );
 
 
-    public void addChild( IEntry childToAdd, ModelModifier source )
+    public void addChild( IEntry childToAdd )
     {
 
         ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
@@ -96,11 +95,11 @@ public abstract class AbstractEntry implements IEntry
             ci.childrenSet = new LinkedHashSet();
         }
         ci.childrenSet.add( childToAdd );
-        this.entryModified( new EntryAddedEvent( childToAdd.getConnection(), childToAdd, source ) );
+        this.entryModified( new EntryAddedEvent( childToAdd.getConnection(), childToAdd ) );
     }
 
 
-    public void deleteChild( IEntry childToDelete, ModelModifier source )
+    public void deleteChild( IEntry childToDelete )
     {
 
         ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
@@ -112,12 +111,12 @@ public abstract class AbstractEntry implements IEntry
             {
                 this.getJNDIConnection().setChildrenInfo( this, null );
             }
-            this.entryModified( new EntryDeletedEvent( this.getJNDIConnection(), childToDelete, source ) );
+            this.entryModified( new EntryDeletedEvent( this.getJNDIConnection(), childToDelete ) );
         }
     }
 
 
-    public void addAttribute( IAttribute attributeToAdd, ModelModifier source ) throws ModelModificationException
+    public void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException
     {
 
         String oidString = attributeToAdd.getAttributeDescription().toOidString( getConnection().getSchema() );
@@ -145,12 +144,12 @@ public abstract class AbstractEntry implements IEntry
             // ai.attributeMap.put(attributeToAdd.getDescription().toLowerCase(),
             // attributeToAdd);
             ai.attributeMap.put( oidString.toLowerCase(), attributeToAdd );
-            this.entryModified( new AttributeAddedEvent( this.getJNDIConnection(), this, attributeToAdd, source ) );
+            this.entryModified( new AttributeAddedEvent( this.getJNDIConnection(), this, attributeToAdd ) );
         }
     }
 
 
-    public void deleteAttribute( IAttribute attributeToDelete, ModelModifier source ) throws ModelModificationException
+    public void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException
     {
 
         String oidString = attributeToDelete.getAttributeDescription().toOidString( getConnection().getSchema() );
@@ -171,7 +170,7 @@ public abstract class AbstractEntry implements IEntry
             {
                 this.getJNDIConnection().setAttributeInfo( this, null );
             }
-            this.entryModified( new AttributeDeletedEvent( this.getJNDIConnection(), this, attribute, source ) );
+            this.entryModified( new AttributeDeletedEvent( this.getJNDIConnection(), this, attribute ) );
         }
         else
         {
@@ -367,7 +366,7 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    public void setAttributesInitialized( boolean b, ModelModifier source )
+    public void setAttributesInitialized( boolean b )
     {
 
         AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
@@ -388,7 +387,7 @@ public abstract class AbstractEntry implements IEntry
             this.getJNDIConnection().setAttributeInfo( this, null );
         }
 
-        this.entryModified( new AttributesInitializedEvent( this, source ) );
+        this.entryModified( new AttributesInitializedEvent( this ) );
     }
 
 
@@ -485,7 +484,7 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    public void setChildrenInitialized( boolean b, ModelModifier source )
+    public void setChildrenInitialized( boolean b )
     {
         ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
         if ( ci == null && b )
@@ -508,7 +507,7 @@ public abstract class AbstractEntry implements IEntry
             this.getJNDIConnection().setChildrenInfo( this, null );
         }
 
-        this.entryModified( new ChildrenInitializedEvent( this, source ) );
+        this.entryModified( new ChildrenInitializedEvent( this ) );
     }
 
 
@@ -566,7 +565,7 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    public void setHasMoreChildren( boolean b, ModelModifier source )
+    public void setHasMoreChildren( boolean b )
     {
         ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
         if ( ci == null )
@@ -576,7 +575,7 @@ public abstract class AbstractEntry implements IEntry
         }
         ci.hasMoreChildren = b;
 
-        this.entryModified( new ChildrenInitializedEvent( this, source ) );
+        this.entryModified( new ChildrenInitializedEvent( this ) );
     }
 
 
@@ -587,7 +586,7 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    public void setHasChildrenHint( boolean b, ModelModifier source )
+    public void setHasChildrenHint( boolean b )
     {
         if ( b )
             this.flags = this.flags | HAS_CHILDREN_HINT_FLAG;

@@ -32,7 +32,6 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.events.AttributeAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.AttributeDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
@@ -86,28 +85,28 @@ public class DummyEntry implements IEntry
     }
 
 
-    public void addAttribute( IAttribute attributeToAdd, ModelModifier source ) throws ModelModificationException
+    public void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException
     {
         attributeMap.put( attributeToAdd.getDescription().toLowerCase(), attributeToAdd );
         EventRegistry.fireEntryUpdated( new AttributeAddedEvent( attributeToAdd.getEntry().getConnection(), this,
-            attributeToAdd, attributeToAdd.getEntry().getConnection() ), this );
+            attributeToAdd ), this );
     }
 
 
-    public void addChild( IEntry childrenToAdd, ModelModifier source )
+    public void addChild( IEntry childrenToAdd )
     {
     }
 
 
-    public void deleteAttribute( IAttribute attributeToDelete, ModelModifier source ) throws ModelModificationException
+    public void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException
     {
         attributeMap.remove( attributeToDelete.getDescription().toLowerCase() );
         EventRegistry.fireEntryUpdated( new AttributeDeletedEvent( attributeToDelete.getEntry().getConnection(), this,
-            attributeToDelete, attributeToDelete.getEntry().getConnection() ), this );
+            attributeToDelete ), this );
     }
 
 
-    public void deleteChild( IEntry childrenToDelete, ModelModifier source )
+    public void deleteChild( IEntry childrenToDelete )
     {
     }
 
@@ -309,12 +308,12 @@ public class DummyEntry implements IEntry
     }
 
 
-    public void moveTo( IEntry newParent, ModelModifier source ) throws ModelModificationException
+    public void moveTo( IEntry newParent ) throws ModelModificationException
     {
     }
 
 
-    public void rename( RDN newRdn, boolean deleteOldRdn, ModelModifier source ) throws ModelModificationException
+    public void rename( RDN newRdn, boolean deleteOldRdn ) throws ModelModificationException
     {
 
     }
@@ -325,7 +324,7 @@ public class DummyEntry implements IEntry
     }
 
 
-    public void setAttributesInitialized( boolean b, ModelModifier source )
+    public void setAttributesInitialized( boolean b )
     {
     }
 
@@ -335,12 +334,12 @@ public class DummyEntry implements IEntry
     }
 
 
-    public void setHasMoreChildren( boolean b, ModelModifier source )
+    public void setHasMoreChildren( boolean b )
     {
     }
 
 
-    public void setHasChildrenHint( boolean b, ModelModifier source )
+    public void setHasChildrenHint( boolean b )
     {
     }
 
@@ -360,7 +359,7 @@ public class DummyEntry implements IEntry
     }
 
 
-    public void setChildrenInitialized( boolean b, ModelModifier source )
+    public void setChildrenInitialized( boolean b )
     {
     }
 

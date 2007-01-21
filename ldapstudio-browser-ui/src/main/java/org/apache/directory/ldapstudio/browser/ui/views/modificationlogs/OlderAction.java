@@ -23,15 +23,13 @@ package org.apache.directory.ldapstudio.browser.ui.views.modificationlogs;
 
 import java.io.File;
 
-import org.apache.directory.ldapstudio.browser.core.events.ModelModifier;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
-public class OlderAction extends BrowserAction implements ModelModifier
+public class OlderAction extends BrowserAction
 {
 
     private ModificationLogsView view;

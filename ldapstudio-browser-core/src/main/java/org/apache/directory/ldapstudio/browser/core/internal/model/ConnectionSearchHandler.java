@@ -257,21 +257,21 @@ public class ConnectionSearchHandler
             DN aDN = ( DN ) it.next();
             if ( aDN.getParentDn() == null )
             {
-                entry = new BaseDNEntry( aDN, connection, connection );
+                entry = new BaseDNEntry( aDN, connection );
                 connection.cacheEntry( entry );
             }
             else if ( connection.getEntryFromCache( aDN.getParentDn() ) != null )
             {
                 IEntry parentEntry = connection.getEntryFromCache( aDN.getParentDn() );
-                entry = new Entry( parentEntry, aDN.getRdn(), connection );
+                entry = new Entry( parentEntry, aDN.getRdn() );
                 entry.setDirectoryEntry( true );
 
-                parentEntry.addChild( entry, connection );
+                parentEntry.addChild( entry );
                 // parentEntry.setAttributesInitialized(false, this);
 
-                parentEntry.setChildrenInitialized( true, connection );
-                parentEntry.setHasMoreChildren( true, connection );
-                parentEntry.setHasChildrenHint( true, connection );
+                parentEntry.setChildrenInitialized( true );
+                parentEntry.setHasMoreChildren( true );
+                parentEntry.setHasChildrenHint( true );
 
                 connection.cacheEntry( entry );
             }
@@ -300,19 +300,19 @@ public class ConnectionSearchHandler
                 if ( IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES.equalsIgnoreCase( attributeName ) )
                 {
                     if ( "FALSE".equalsIgnoreCase( lines[i].getValueAsString() ) ) { //$NON-NLS-1$
-                        entry.setHasChildrenHint( false, connection );
+                        entry.setHasChildrenHint( false );
                     }
                 }
                 if ( IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES.equalsIgnoreCase( attributeName ) )
                 {
                     if ( "0".equalsIgnoreCase( lines[i].getValueAsString() ) ) { //$NON-NLS-1$
-                        entry.setHasChildrenHint( false, connection );
+                        entry.setHasChildrenHint( false );
                     }
                 }
                 if ( IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT.equalsIgnoreCase( attributeName ) )
                 {
                     if ( "0".equalsIgnoreCase( lines[i].getValueAsString() ) ) { //$NON-NLS-1$
-                        entry.setHasChildrenHint( false, connection );
+                        entry.setHasChildrenHint( false );
                     }
                 }
             }
@@ -338,7 +338,7 @@ public class ConnectionSearchHandler
             && Arrays.asList( search.getControls() ).contains( Control.SUBENTRIES_CONTROL ) )
         {
             entry.setSubentry( true );
-            entry.setHasChildrenHint( false, connection );
+            entry.setHasChildrenHint( false );
         }
 
     }
@@ -472,7 +472,7 @@ public class ConnectionSearchHandler
                         {
                             try
                             {
-                                entry.deleteAttribute( oldAttributes[i], connection );
+                                entry.deleteAttribute( oldAttributes[i] );
                             }
                             catch ( ModelModificationException e )
                             {
@@ -492,7 +492,7 @@ public class ConnectionSearchHandler
                         {
                             try
                             {
-                                entry.deleteAttribute( oldAttributes[i], connection );
+                                entry.deleteAttribute( oldAttributes[i] );
                             }
                             catch ( ModelModificationException e )
                             {
@@ -513,7 +513,7 @@ public class ConnectionSearchHandler
                             IAttribute attribute = ( IAttribute ) it.next();
                             try
                             {
-                                entry.deleteAttribute( attribute, connection );
+                                entry.deleteAttribute( attribute );
                             }
                             catch ( ModelModificationException e )
                             {
@@ -530,7 +530,7 @@ public class ConnectionSearchHandler
                 {
                     try
                     {
-                        entry.deleteAttribute( oldAttributes[i], connection );
+                        entry.deleteAttribute( oldAttributes[i] );
                     }
                     catch ( ModelModificationException e )
                     {
@@ -549,7 +549,7 @@ public class ConnectionSearchHandler
                 {
                     try
                     {
-                        entry.deleteAttribute( oldAttribute, connection );
+                        entry.deleteAttribute( oldAttribute );
                     }
                     catch ( ModelModificationException mme )
                     {
@@ -567,14 +567,14 @@ public class ConnectionSearchHandler
                 if ( entry.getAttribute( attributeName ) == null )
                 {
                     attribute = new Attribute( entry, attributeName );
-                    entry.addAttribute( attribute, connection );
+                    entry.addAttribute( attribute );
                 }
                 else
                 {
                     attribute = entry.getAttribute( attributeName );
                 }
 
-                attribute.addValue( new Value( attribute, lines[i].getValueAsObject() ), connection );
+                attribute.addValue( new Value( attribute, lines[i].getValueAsObject() ) );
             }
         }
     }

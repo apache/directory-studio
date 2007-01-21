@@ -140,7 +140,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                     {
                         if ( values[v].getStringValue().equals( oldRdnParts[i].getUnencodedValue() ) )
                         {
-                            attribute.deleteValue( values[v], wizard );
+                            attribute.deleteValue( values[v] );
                         }
                     }
                 }
@@ -158,13 +158,13 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 if ( rdnAttribute == null )
                 {
                     rdnAttribute = new Attribute( newEntry, newRdnParts[i].getType() );
-                    newEntry.addAttribute( rdnAttribute, wizard );
+                    newEntry.addAttribute( rdnAttribute );
                 }
                 String rdnValue = newRdnParts[i].getUnencodedValue();
                 String[] stringValues = rdnAttribute.getStringValues();
                 if ( !Arrays.asList( stringValues ).contains( rdnValue ) )
                 {
-                    rdnAttribute.addValue( new Value( rdnAttribute, rdnValue ), wizard );
+                    rdnAttribute.addValue( new Value( rdnAttribute, rdnValue ) );
                 }
             }
 

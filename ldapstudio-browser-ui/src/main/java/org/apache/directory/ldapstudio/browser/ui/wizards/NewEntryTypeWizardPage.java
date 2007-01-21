@@ -177,7 +177,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 {
                     if ( !SchemaUtils.isModifyable( attributes[i].getAttributeTypeDescription() ) )
                     {
-                        newEntry.deleteAttribute( attributes[i], wizard );
+                        newEntry.deleteAttribute( attributes[i] );
                     }
                 }
                 wizard.setNewEntry( newEntry );

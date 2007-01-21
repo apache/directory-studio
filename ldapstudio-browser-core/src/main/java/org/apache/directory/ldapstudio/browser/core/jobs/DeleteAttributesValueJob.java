@@ -95,11 +95,11 @@ public class DeleteAttributesValueJob extends AbstractModificationJob
 
         for ( int i = 0; attributes != null && i < attributes.length; i++ )
         {
-            attributes[i].getEntry().deleteAttribute( attributes[i], this );
+            attributes[i].getEntry().deleteAttribute( attributes[i] );
         }
         for ( int i = 0; values != null && i < values.length; i++ )
         {
-            values[i].getAttribute().deleteValue( values[i], this );
+            values[i].getAttribute().deleteValue( values[i] );
         }
 
         entry.getConnection().delete( attributes, monitor );
@@ -107,11 +107,11 @@ public class DeleteAttributesValueJob extends AbstractModificationJob
 
         if ( values.length > 0 )
         {
-            this.event = new ValueDeletedEvent( entry.getConnection(), entry, values[0].getAttribute(), values[0], this );
+            this.event = new ValueDeletedEvent( entry.getConnection(), entry, values[0].getAttribute(), values[0] );
         }
         else if ( attributes.length > 0 )
         {
-            this.event = new AttributeDeletedEvent( entry.getConnection(), entry, attributes[0], this );
+            this.event = new AttributeDeletedEvent( entry.getConnection(), entry, attributes[0] );
         }
     }
 

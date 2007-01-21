@@ -28,9 +28,9 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 public class AttributesInitializedEvent extends EntryModificationEvent
 {
 
-    public AttributesInitializedEvent( IEntry initializedEntry, ModelModifier source )
+    public AttributesInitializedEvent( IEntry initializedEntry )
     {
-        super( initializedEntry.getConnection(), initializedEntry, source );
+        super( initializedEntry.getConnection(), initializedEntry );
     }
 
 

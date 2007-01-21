@@ -28,7 +28,6 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEven
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -135,7 +134,7 @@ public class BrowserUniversalListener implements ITreeViewerListener, IDoubleCli
             if ( entry.isChildrenInitialized() && entry.hasMoreChildren()
                 && entry.getChildrenCount() < entry.getConnection().getCountLimit() )
             {
-                entry.setChildrenInitialized( false, entry.getConnection() );
+                entry.setChildrenInitialized( false );
             }
         }
     }

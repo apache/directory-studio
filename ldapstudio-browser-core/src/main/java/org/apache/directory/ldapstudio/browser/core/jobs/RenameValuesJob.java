@@ -82,17 +82,17 @@ public class RenameValuesJob extends AbstractModificationJob
             if ( newAttribute == null )
             {
                 newAttribute = new Attribute( entry, newAttributeName );
-                entry.addAttribute( newAttribute, this );
+                entry.addAttribute( newAttribute );
             }
 
             newValues[i] = new Value( newAttribute, oldValues[i].getRawValue() );
-            newAttribute.addValue( newValues[i], this );
+            newAttribute.addValue( newValues[i] );
 
-            oldValues[i].getAttribute().deleteValue( oldValues[i], this );
+            oldValues[i].getAttribute().deleteValue( oldValues[i] );
 
             if ( this.event == null )
             {
-                this.event = new ValueRenamedEvent( entry.getConnection(), entry, oldValues[0], newValues[0], this );
+                this.event = new ValueRenamedEvent( entry.getConnection(), entry, oldValues[0], newValues[0] );
             }
         }
 

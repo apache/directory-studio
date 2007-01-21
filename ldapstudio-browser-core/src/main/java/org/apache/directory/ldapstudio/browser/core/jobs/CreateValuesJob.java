@@ -88,15 +88,15 @@ public class CreateValuesJob extends AbstractModificationJob
                 // "+attributeNames[i]+" is not in subschema");
                 // }
                 attribute = new Attribute( entry, attributeDescriptions[i] );
-                entry.addAttribute( attribute, this );
+                entry.addAttribute( attribute );
             }
 
             newValues[i] = new Value( attribute, rawValues[i] );
-            attribute.addValue( newValues[i], this );
+            attribute.addValue( newValues[i] );
 
             if ( this.event == null )
             {
-                event = new ValueAddedEvent( entry.getConnection(), entry, attribute, newValues[i], this );
+                event = new ValueAddedEvent( entry.getConnection(), entry, attribute, newValues[i] );
             }
         }
 
