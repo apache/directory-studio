@@ -224,6 +224,7 @@
     <target name="resolve" description="Resolves the library dependencies using Ivy">
         <ant dir="ldapstudio-rcp" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="resolve" />
@@ -239,6 +240,7 @@
         <ant dir="ldapstudio-rcp" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
+        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
