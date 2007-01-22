@@ -229,6 +229,13 @@ of your accepting any such warranty or additional liability.
          install-size="0"
          version="0.6.0"
          unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.ldapstudio.schemas.help"
+         download-size="0"
+         install-size="0"
+         version="0.6.0"
+         unpack="false"/>
          
 	<plugin
          id="org.apache.directory.ldapstudio.jars"
