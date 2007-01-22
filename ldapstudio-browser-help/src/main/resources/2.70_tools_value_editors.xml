@@ -1,0 +1,504 @@
+<section id="tools_value_editors">
+	<title>Value Editors</title>
+	
+	<section id="tools_value_editors_concept">
+		<title>Concept</title>
+		
+		<para>
+			An LDAP entry contains different attribute types with different syntaxes:
+			objectClasses, names, passwords, images, etc.
+			To handle the different data types Value Editors are used. 
+			Value Editors know how to edit a value .
+		</para>
+		
+		<para>
+			The default Value Editor for an attibute is determined using the following 
+			procedure:
+			<orderedlist numeration="arabic">
+				<listitem>
+					<para>If a Value Editor for the attribute type is specified, this one is used.</para>
+				</listitem>
+				<listitem>
+					<para>If a Value Editor for the attribute's syntax is specified, this one is used.</para>
+				</listitem>
+				<listitem>
+					<para>If the attribute is binary according to its syntax, the Binary Editor is used.</para>
+				</listitem>
+				<listitem>
+					<para>If the attribute is string according to its syntax, the Text Editor is used.</para>
+				</listitem>
+			</orderedlist>
+		</para>
+		<para>
+			The default Value Editor could be specified by attribute type or syntax in the
+			<link linkend="preferences_value_editors">Value Editors preferences</link>
+		</para>
+		<para>
+			Another task of a Value Editor is to provide the displayed value for the 
+			Entry editor and Search Result editor. Especially binary data can't be 
+			displayed "as-is".
+		</para>
+	</section>
+	
+	<section id="tools_value_editors_inplacetexteditor">
+		<title>In-Place Text Editor</title>
+		<para>
+			The In-Place Text Editor is the default editor for string values without line breaks.
+		</para>
+		<simplesect id="tools_value_editors_inplacetexteditor_display">
+			<title>Display value</title>
+			<para>
+				Values are displayed as stored in directory:
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_1b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_inplacetexteditor_edit">
+			<title>Edit value</title>
+			<para>
+				Values are edited directly within the entry editor or search result editor. 
+				To save the new value press <emphasis role="strong">Enter</emphasis>
+				or click somewhere outside the edit field. To cancel the modification press
+				<emphasis role="strong">Esc</emphasis>.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_1a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+	</section>
+	
+	<section id="tools_value_editors_texteditor">
+		<title>Text Editor</title>
+		<para>
+			The Text Editor is the default editor for string values with line breaks.
+		</para>
+		<simplesect id="tools_value_editors_texteditor_display">
+			<title>Display value</title>
+			<para>
+				Values are displayed as stored in directory:
+			</para>		
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_2b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_texteditor_edit">
+			<title>Edit value</title>
+			<para>
+				Values are edited in a dialog which provides a simple text area. To 
+				finish editing press <emphasis role="strong">OK</emphasis> to save 
+				the new value or <emphasis role="strong">Cancel</emphasis> to 
+				discard your modification.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_2a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+	</section>
+	
+	<section id="tools_value_editors_hexeditor">
+		<title>Hex Editor</title>
+		<para>
+			The Hex Editor is the default editor for binary values.
+		</para>
+		<simplesect id="tools_value_editors_hexeditor_display">
+			<title>Display value</title>			
+			<para>
+				The displayed value "Binary Data" indicates that the value
+				contains binary data, additional the size in bytes is shown.
+			</para>	
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_3b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_hexeditor_edit">
+			<title>Edit value</title>
+			<para>
+				The Hex Editor dialog displays the binary data as hex. 
+				To create or modify a value load the binary data from a file using the
+				<emphasis role="strong">Load data...</emphasis> button.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_3a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_hexeditor_save">
+			<title>Save value</title>
+			<para>
+				You could also save the current binary data to a file with the
+				<emphasis role="strong">Save data...</emphasis> button.
+			</para>
+		</simplesect>
+	</section>
+	
+	<section id="tools_value_editors_passwordeditor">
+		<title>Password Editor</title>
+		<para>
+			The Password Editor is the default editor for passwords.
+		</para>
+		<simplesect id="tools_value_editors_passwordeditor_display">
+			<title>Display value</title>			
+			<para>
+				The real password isn't displayed but only the encryption method.
+			</para>	
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_4c.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_passwordeditor_details">
+			<title>Details</title>
+			<para>
+				In the <emphasis role="strong">Current Passord</emphasis> tab you see
+				some details about the password. 
+			</para>
+			<para>
+				The current password could also be verified. Enter the compare password 
+				into the <emphasis role="strong">Verify Password</emphasis> field. 
+				The <emphasis role="strong">Verify</emphasis> function compares the 
+				current password with the hashed value of the entered password.
+				The <emphasis role="strong">Bind</emphasis> function binds to the 
+				directory using the DN of the current entry and the entered password.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_4a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_passwordeditor_edit">
+			<title>Edit value</title>
+			<para>
+				In the <emphasis role="strong">New Passord</emphasis> tab you can enter a new passord.
+				Type in the password in the input field	and select a hash (encryption) method. 
+				The preview field shows the resulting password.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_4b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+	</section>		
+	
+	<section id="tools_value_editors_imageeditor">
+		<title>Image Editor</title>
+		<para>
+			The Image Editor is the default editor for images.
+		</para>
+		<simplesect id="tools_value_editors_imageeditor_display">
+			<title>Display value</title>			
+			<para>
+				The image type, width, height and size in bytes is used as display value.
+			</para>	
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_5c.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_imageeditor_details">
+			<title>Details</title>
+			<para>
+				In the <emphasis role="strong">Current Image</emphasis> tab you see
+				the image and some details about it. 
+			</para>
+			<para>
+				You could also save the current image to a file with the
+				<emphasis role="strong">Save...</emphasis> button.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_5a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_imageeditor_edit">
+			<title>Edit value</title>
+			<para>
+				In the <emphasis role="strong">New Image</emphasis> tab you can load a new
+				image from a file using the	<emphasis role="strong">Browse...</emphasis>
+				button.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_5b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+	</section>		
+	
+	<section id="tools_value_editors_objectclasseditor">
+		<title>Object Class Editor</title>
+		<para>
+			The Object Class Editor is the default editor for the objectClass attribute.
+		</para>
+		<simplesect id="tools_value_editors_objectclasseditor_display">
+			<title>Display value</title>
+			<para>
+				The objectClass name and the type of object class (structural, auxiliary, abstract)
+				is used as display value.
+			</para>		
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_6b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_objectclasseditor_edit">
+			<title>Edit value</title>
+			<para>
+				In the Object Class Editor dialog you can select the available
+				object classes from a drop-down list.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_6a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+	</section>		
+	
+	<section id="tools_value_editors_addresseditor">
+		<title>Address Editor</title>
+		<para>
+			The Address Editor is the default editor for attributes with postal address syntax.
+			In the postal address syntax the dollar character '$' is used as line separator.
+		</para>
+		<simplesect id="tools_value_editors_addresseditor_display">
+			<title>Display value</title>
+			<para>
+				Values are displayed as stored in directory, dollar characters are replaced by 
+				commas.
+			</para>		
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_7b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_addresseditor_edit">
+			<title>Edit value</title>
+			<para>
+				Values are edited in a dialog which provides a simple text area. Dollar
+				characters are replaced by line breaks.
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_7a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+	</section>
+	
+	<section id="tools_value_editors_dneditor">
+		<title>DN Editor</title>
+		<para>
+			The DN Editor is the default editor for attributes with distinguished name syntax.
+		</para>
+		<simplesect id="tools_value_editors_dneditor_display">
+			<title>Display value</title>
+			<para>
+				Values are displayed as stored in directory.
+			</para>		
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_8c.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_dneditor_edit">
+			<title>Edit value</title>
+			<para>
+				The edit dialog looks as follows:
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_8a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				To edit the DN you can use the following options:
+				<itemizedlist>
+					<listitem>
+						<para>
+							You could manually edit the DN in the input field.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							You could choose a previously used DN from
+							drop-down list.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							By clicking
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata fileref="icons/parent.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+							<emphasis role="strong">Parent</emphasis>
+							the parent DN of the current DN appears 
+							in the input field.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							<emphasis role="strong">Browse..</emphasis> opens
+							a DN Selector, similar to the LDAP Browser. You can browse
+							and filter to find an entry. When selecting an entry its DN appears
+							int the input field.
+						</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_8b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+	</section>	
+		
+	<section id="tools_value_editors_timestampeditor">
+		<title>Timestamp Editor</title>
+		<para>
+			The Timestamp Editor is the default editor for attributes with generalized time syntax.
+		</para>
+		<simplesect id="tools_value_editors_timestampeditor_display">
+			<title>Display value</title>
+			<para>
+				The values are converted to local time.
+			</para>		
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_value_editors_9a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_timestampeditor_edit">
+			<title>Edit value</title>
+			<para>
+				The In-Place Text Editor is used to edit values.
+			</para>
+		</simplesect>		
+	</section>		
+
+
+</section>

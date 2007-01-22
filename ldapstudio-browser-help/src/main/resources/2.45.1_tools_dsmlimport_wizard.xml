@@ -1,0 +1,172 @@
+<section id="tools_dsmlimport_wizard">
+	<title>DSML Import wizard</title>
+	<para>
+		This wizard imports DSMLv2 files into the directory.
+	</para>
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the Connections view select a connection and
+					choose
+					<emphasis role="strong">
+						Import >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata
+									fileref="icons/import_dsml.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						DSML Import...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the LDAP Browser view select an entry and choose
+					<emphasis role="strong">
+						Import >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata
+									fileref="icons/import_dsml.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						DSML Import...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">File > Import...</emphasis>
+					and choose
+					<emphasis role="strong">
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata
+									fileref="icons/import_dsml.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						DSML into LDAP
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<simplesect id="tools_dsmlimport_wizard_logging">
+		
+	</simplesect>
+
+	<simplesect id="tools_dsmlimport_wizard_ui">
+		<title>The wizard</title>
+		<!-- 
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_dsmlimport_wizard_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" />
+					<colspec colname="Description" />
+					<colspec colname="Default" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>DSML file</entry>
+							<entry>
+								The DSML file to import. Type in the
+								full path or
+								<emphasis role="strong">
+									Browse...
+								</emphasis>
+								to select the path on the file system.
+								The drop-down list provides a history of
+								recently used files.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Import into</entry>
+							<entry>
+								The connection into which the DSML
+								should be imported. Use the
+								<emphasis role="strong">
+									Browse...
+								</emphasis>
+								button to select a connection.
+							</entry>
+							<entry>
+								The connection that was selected when
+								the wizard has been started.
+							</entry>
+						</row>
+						<row>
+							<entry>Enable logging</entry>
+							<entry>
+								When checked every imported DSML record
+								is logged into a logfile.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>Use default logfile</entry>
+							<entry>
+								By default the extension ".log" is
+								appended the import filename.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>Use custom logfile</entry>
+							<entry>
+								When checked you could specify a custom
+								logfile.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>Overwrite existing logfile</entry>
+							<entry>
+								If the default or custom logfile already
+								exist, you must permit to overwrite the
+								logfile.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>Continue on error</entry>
+							<entry>
+								If checked the import process continues
+								if an error occurs while importing a
+								record. If not checked the import
+								process interrupts.
+							</entry>
+							<entry>on</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+		 -->
+	</simplesect>
+
+</section>

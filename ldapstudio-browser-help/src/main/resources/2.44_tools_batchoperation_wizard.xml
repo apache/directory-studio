@@ -1,0 +1,116 @@
+<section id="tools_batchoperation_wizard">
+	<title>Batch Operation wizard</title>
+	<para>
+		This wizard helps you to execute a batch operation to several
+		entries.
+	</para>
+
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the LDAP Browser view select an entry or search.
+					Then choose
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata fileref="icons/batch.gif"
+								format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+					<emphasis role="strong">
+						New Batch Operation...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench window's toolbar, activate the
+					drop-down menu on the New Wizard button and select
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata fileref="icons/batch.gif"
+								format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+					<emphasis role="strong">
+						LDAP Batch Operation
+					</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">
+						File > New >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata fileref="icons/batch.gif"
+									format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						LDAP Batch Operation
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<para>
+		The execution of a batch operation is a four-step process:
+		<orderedlist numeration="arabic">
+			<listitem>
+				<para>
+					<link linkend="tools_batchoperation_wizard_1">
+						Select entries where the batch operation should
+						be applied to.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_batchoperation_wizard_2">
+						Select the operation type.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_batchoperation_wizard_3">
+						Specifiy the modifications.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_batchoperation_wizard_4">
+						Choose execution method.
+					</link>
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+
+	<simplesect id="tools_batchoperation_wizard_1">
+		<title>Page 1</title>
+		<para>TODO..</para>
+	</simplesect>
+
+	<simplesect id="tools_batchoperation_wizard_2">
+		<title>Page 2</title>
+		<para>TODO..</para>
+	</simplesect>
+
+	<simplesect id="tools_batchoperation_wizard_3">
+		<title>Page 3</title>
+		<para>TODO..</para>
+	</simplesect>
+
+	<simplesect id="tools_batchoperation_wizard_4">
+		<title>Page 4</title>
+		<para>TODO..</para>
+	</simplesect>
+
+</section>

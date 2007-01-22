@@ -1,0 +1,201 @@
+<section id="tools_browser_view_searches">
+	<title>Searches category</title>
+	<para>
+		This section describes the Searches category in the LDAP Browser
+		view.
+	</para>
+
+	<simplesect id="tools_browser_view_searches_newsearch">
+		<title>New Search</title>
+		<para>
+			To perform a new search please choose one of the following
+			methods:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Select a search or entry and choose
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/search_new.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+						<emphasis role="strong">New Search...</emphasis>
+						from the context menu. The selected search or
+						entry is used to preset search parameters.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Use the Workbench
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/search.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+						<emphasis role="strong">Search</emphasis>
+						action.
+					</para>
+				</listitem>
+			</itemizedlist>
+			Please see
+			<link linkend="tools_search_dialog">Search dialog</link>
+			how to define the search parameters.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_searches_navigation">
+		<title>Navigation</title>
+		<para>
+			In the Searches category the searches and belonging search
+			results are displayed. The first hierachy level contains the
+			Searches, the second hierarchie level shows the search
+			result entries. To expand and collapse a search the
+			double-click could be used.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_browser_view_9.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			With the
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata
+							fileref="icons/locate_searchresult_in_dit.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">Open Search Result in DIT</emphasis>
+			action the search result entry could be located in the DIT.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_searches_unperfomed">
+		<title>Unperfomed Searches</title>
+		<para>
+			An unperfomed search could be identified by the gray search
+			icon
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata
+							fileref="icons/search_unperformed.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			and the absent number in parentheses at the end of the
+			search name label. To perfom the search expand it or press
+			the refresh button.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_searches_perfomed">
+		<title>Perfomed Searches</title>
+		<para>
+			A perfomed search could be identified by the yellow search
+			icon
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata fileref="icons/search.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			If a search is performed the number of search results is
+			appended in parentheses to the search name label. If the
+			directory server returned a partial result (e.g. because of
+			count or time limits) a plus (+) character is appended to
+			the number of search results to indicate that there are more
+			results. To perfom the search again press the refresh
+			button.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_searches_results">
+		<title>Search Results</title>
+		<para>
+			By default the DN of the search results is used as label and
+			the length of the label is limited to 50 characters. This
+			behaviour could be changed in the
+			<link linkend="preferences_browser_view">
+				LDAP Browser preferences
+			</link>
+			.
+		</para>
+		<para>
+			The icons of the search results depends on the RDN type, see
+			<link linkend="tools_browser_view_dit_icons">
+				DIT category
+			</link>
+			. Additional the search results have a small overlay image
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata
+							fileref="icons/ovr16/searchresult.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_searches_folding">
+		<title>Folding</title>
+		<para>
+			By default large search results folded into virtual folders
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata fileref="icons/folder.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			each with 100 entries. This may help to keep the displayed
+			tree smaller. This behaviour could be changed in the
+			<link linkend="preferences_browser_view">
+				LDAP Browser preferences
+			</link>
+			.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_browser_view_8.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_searches_batchoperation">
+		<title>Batch Operation</title>
+		<para>
+			With the
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata fileref="icons/batch.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">New Batch Operation...</emphasis>
+			action you can execute a modify operation to all search
+			results.
+		</para>
+	</simplesect>
+
+</section>

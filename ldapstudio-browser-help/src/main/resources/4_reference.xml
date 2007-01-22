@@ -1,0 +1,122 @@
+<chapter id="reference">
+	<title>Reference</title>
+	<section id="reference_rfcs">
+		<title>RFCs</title>
+		<simplelist>
+			<member>
+				<ulink url="rfc/rfc4510.html">
+					RFC 4510: LDAP: Technical Specification Road Map
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4511.html">
+					RFC 4511: LDAP: The Protocol
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4512.html">
+					RFC 4512: LDAP: Directory Information Models
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4513.html">
+					RFC 4513: LDAP: Authentication Methods and Security Mechanisms
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4514.html">
+					RFC 4514: LDAP: String Representation of Distinguished Names
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4515.html">
+					RFC 4515: LDAP: String Representation of Search Filters
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4516.html">
+					RFC 4516: LDAP: Uniform Resource Locator
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4517.html">
+					RFC 4517: LDAP: Syntaxes and Matching Rules
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4518.html">
+					RFC 4518: LDAP: Internationalized String Preparation
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc4519.html">
+					RFC 4519: LDAP: Schema for User Applications
+				</ulink>
+			</member>
+		</simplelist>
+	</section>
+	
+	<section id="reference_oldrfcs">
+		<title>Old RFCs</title>
+		<simplelist>
+			<member>
+				<ulink url="rfc/rfc2251.txt">
+					RFC 2251: Lightweight Directory Access Protocol (v3)
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2252.txt">
+					RFC 2252: Attribute Syntax Definitions
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2253.txt">
+					RFC 2253: UTF-8 String Representation of Distinguished Names
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2254.txt">
+					RFC 2254: The String Representation of LDAP Search Filters
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2255.txt">
+					RFC 2255: The LDAP URL Format
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2256.txt">
+					RFC 2256: A Summary of the X.500(96) User Schema for use with LDAPv3
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2829.txt">
+					RFC 2829: Authentication Methods for LDAP
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2830.txt">
+					RFC 2830: Extension for Transport Layer Security
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc3377.txt">
+					RFC 3377: Technical Specification
+				</ulink>
+			</member>
+			<member>
+				<ulink url="rfc/rfc2849.txt">
+					RFC 2849: The LDAP Data Interchange Format (LDIF) - Technical Specification
+				</ulink>
+			</member>
+		</simplelist>
+	</section>
+	
+	<section id="reference_jndi_tutorial">
+		<title>JNDI Tutorial</title>
+		<para>
+			<ulink url="http://java.sun.com/products/jndi/tutorial/">JNDI Tutorial</ulink>
+		</para>
+	</section>
+	
+</chapter>

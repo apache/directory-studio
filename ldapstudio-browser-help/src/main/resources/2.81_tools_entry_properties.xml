@@ -1,0 +1,35 @@
+<section id="tools_entry_properties">
+	<title>Entry properties</title>
+	<para>
+		The Entry properties page shows some information about the entry.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="images/tools_entry_properties_1.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>	
+	<para>
+		The first two lines shows the DN and LDAP-URL of the entry.
+	</para>
+	<para>
+		The 'Create and Modify Information' group shows the create
+		and modify timestamp and DN. If no values are shown use the 'Refresh'
+		button to load the attributes.
+	</para>
+	<para> 
+		The 'Sizing Information' group shows information about
+		the entry size in bytes, the number of children, attributes and values.
+		To take operational attributes into account check 
+		'Include operational attributes'. The 'Refresh' button reloads the
+		attributes and counts children.
+	</para>
+	<para>
+		You could select and copy all displayed information.
+	</para>
+</section>

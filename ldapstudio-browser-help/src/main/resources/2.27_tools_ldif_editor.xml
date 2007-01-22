@@ -1,0 +1,29 @@
+<section id="tools_ldif_editor">
+	<title>LDIF editor</title>
+	<para>TODO..</para>
+	<para>
+		<itemizedlist>
+			<listitem>Syntax Coloring</listitem>
+			<listitem>Content Assistent</listitem>
+			<listitem>Templates</listitem>
+			<listitem>Formatting</listitem>
+			<listitem>Error Annotations</listitem>
+			<listitem>BASE-64 Tooltip</listitem>
+			<listitem>Edit Attribute Descripton</listitem>
+			<listitem>Edit Value / Value Editors</listitem>
+			<listitem>Edit Record / LDIF Entry Editor</listitem>
+			<listitem>Folding</listitem>
+			<listitem>Execute LDIF</listitem>
+			<listitem>Outline</listitem>
+			
+			
+		</itemizedlist>
+	</para>
+	
+	<!-- 
+	Outline, select connection + execute, content vs.
+	modify, content assist, templates, errors and warnings,
+	perferences, folding, context menu (edit attribute,
+	value, record), formatting, UTF-8/BASE64
+	 -->
+</section>

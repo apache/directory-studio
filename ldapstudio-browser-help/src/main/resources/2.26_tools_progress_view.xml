@@ -1,0 +1,21 @@
+<section id="tools_progress_view">
+	<title>Progress view</title>
+	<para>Long-running operations, especially every access to directories, 
+		are executed in background. The Progress view shows such pending
+		operations.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="images/tools_progress_view_1.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>	
+	<para>
+		To cancel a long-running operation press the stop button.
+	</para>
+
+</section>

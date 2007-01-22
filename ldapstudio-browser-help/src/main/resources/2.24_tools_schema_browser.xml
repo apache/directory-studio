@@ -1,0 +1,465 @@
+<section id="tools_schema_browser">
+	<title>Schema Browser</title>
+	<para>
+		With the Schema Browser you can browse the schema with its
+		schema elements like object classes, attribute types, matching
+		rules and syntaxes. It is placed in the editor area.
+	</para>
+
+	<section id="tools_schema_browser_overview">
+		<title>Overview</title>
+
+		<para>
+			This section describes general aspects of the Schema
+			Browser.
+		</para>
+
+		<simplesect id="tools_schema_browser_screenshot">
+			<title>Example screenshot</title>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tools_schema_browser_1.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+
+		<simplesect id="tools_schema_browser_layout">
+			<title>Layout</title>
+			<para>
+				The header of the Schema Browser contains the title and
+				the toolbar. The title shows the connection of the
+				currently displayed schema.
+			</para>
+			<para>
+				The Schema Browser consists of five pages:
+				<itemizedlist>
+					<listitem>
+						<para>
+							<link linkend="tools_schema_browser_ocd">
+								Object Classes page
+							</link>
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							<link linkend="tools_schema_browser_atd">
+								Attribute Type page
+							</link>
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							<link linkend="tools_schema_browser_lsd">
+								LDAP Syntaxes page
+							</link>
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							<link linkend="tools_schema_browser_mrd">
+								Matching Rules page
+							</link>
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							<link linkend="tools_schema_browser_mru">
+								Matching Rule Use page
+							</link>
+						</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+			<para>
+				Each page has a master-detail layout. The left part of a
+				page shows a list of all schema elements (like object
+				class names or attribute types). To search a schema
+				element you can filter the list by typing the name of
+				the schema element into the filter input field. When
+				selecting one schema element the right part of the page
+				shows the details.
+			</para>
+		</simplesect>
+
+		<simplesect id="tools_schema_browser_navigation">
+			<title>Navigation</title>
+			<para>
+				In the detail section references to other schema
+				elements are displayed as hyperlinks. Click to the
+				hyperlink to jump to the target schema element.
+			</para>
+		</simplesect>
+
+		<simplesect id="tools_schema_browser_toolbar">
+			<title>Toolbar</title>
+			<para>
+				The toolbar contains the following items:
+				<informaltable frame="all">
+					<tgroup cols="4">
+						<colspec colname="Icon" align="center" />
+						<colspec colname="Action" />
+						<colspec colname="Description" />
+						<colspec colname="Shortcut" />
+						<thead>
+							<row>
+								<entry>Icon</entry>
+								<entry>Action</entry>
+								<entry>Description</entry>
+								<entry>Shortcut</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata
+													fileref="icons/defaultschema.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</entry>
+								<entry>Show Default Schema</entry>
+								<entry>
+									Shows the default schema instead of
+									the schema of the currently selected
+									connection.
+								</entry>
+								<entry></entry>
+							</row>
+							<row>
+								<entry>
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata
+													fileref="icons/refresh.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</entry>
+								<entry>Reload Schema</entry>
+								<entry>
+									Reloads the schema of the currently
+									selected connection.
+								</entry>
+								<entry></entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+	</section>
+
+	<section id="tools_schema_browser_ocd">
+		<title>Object Classes</title>
+		<para>
+			The Object Classes page shows the object classes defined in
+			schema.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_schema_browser_2.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The left part of the page lists the available object
+			classes.
+		</para>
+		<para>
+			The right part of the page shows the details of the selected
+			object class:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Details: Shows the OID, names, description and
+						kind of the object class.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						MUST Attributes: Shows all MUST attributes, even
+						those inherited from superclasses.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						MAY Attributes: Shows all MAY attributes, even
+						those inherited from superclasses.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Superclasses: Shows the object classes this
+						object class is directly derived from (in other
+						words the parents).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Subclasses: Shows the object classes derived
+						from this object class (in other words the
+						children).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Raw Schema Definition: Shows the raw value of
+						the object class definition as returned from
+						server.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+
+	<section id="tools_schema_browser_atd">
+		<title>Attribute Types</title>
+		<para>
+			The Attribute Types page shows the attribute types defined
+			in schema.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_schema_browser_3.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The left part of the page lists the available attribute
+			types.
+		</para>
+		<para>
+			The right part of the page shows the details of the selected
+			attribute type:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Details: Shows the OID, names, description and
+						usage of the attribute type.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Flags: Shows if the attribute type is
+						single-valued, read-only and/or collective.
+						Non-matching flags are greyed-out.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Syntax: Shows the syntax OID and description and
+						optional a length of the attribute type.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Matching Rules: Shows the equality, substring
+						and ordering matching rules of the attribute
+						type.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Other Matching Rules: Shows additional matching
+						rules applicable to the attribute type.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Used as MUST: Shows object classed where this
+						attribute type is used as MUST.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Used as MAY: Shows object classed where this
+						attribute type is used as MAY.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Supertype: Shows the attribute type where this
+						attribute is derived from (in other words the
+						parent).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Subtypes: Shows attribute types derived from
+						this attribute types (in other words the
+						children).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Raw Schema Definition: Shows the raw value of
+						the attribute type definition as returned from
+						server.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+
+	<section id="tools_schema_browser_lsd">
+		<title>Syntaxes</title>
+		<para>
+			The Syntaxes page shows the syntaxes defined in schema.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_schema_browser_5.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The left part of the page lists the available syntaxes.
+		</para>
+		<para>
+			The right part of the page shows the details of the selected
+			syntax:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Details: Shows the OID description of the
+						syntax.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Used from: Shows attribute types using this
+						syntax.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Raw Schema Definition: Shows the raw value of
+						the syntax definition as returned from server.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+
+	<section id="tools_schema_browser_mrd">
+		<title>Matching Rules</title>
+		<para>
+			The Matching Rules page shows the matching rules defined in
+			schema.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_schema_browser_4.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The left part of the page lists the available matching
+			rules.
+		</para>
+		<para>
+			The right part of the page shows the details of the selected
+			matching rule:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Details: Shows the OID, name and description of
+						the matching rule.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Syntax: Shows the syntax OID and description of
+						the matching rule.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Used from: Shows attribute types using this
+						matching rule.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Raw Schema Definition: Shows the raw value of
+						the matching rule definition as returned from
+						server.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+
+	<section id="tools_schema_browser_mru">
+		<title>Matching Rule Use</title>
+		<para>
+			The Matching Rule Use page shows the matching rule uses
+			defined in schema.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_schema_browser_6.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The left part of the page lists the available matching rule
+			use descriptions.
+		</para>
+		<para>
+			The right part of the page shows the details of the selected
+			matching rule use:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Details: Shows the OID, namees and description
+						of the matching rules.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Applies: Shows attribute types this matching
+						rule applies to.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Raw Schema Definition: Shows the raw value of
+						the matching rule use definition as returned
+						from server.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+
+</section>

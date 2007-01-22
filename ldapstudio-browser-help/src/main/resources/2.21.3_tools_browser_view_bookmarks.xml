@@ -1,0 +1,49 @@
+<section id="tools_browser_view_bookmarks">
+	<title>Bookmarks category</title>
+	
+	<para>
+		This section describes the Bookmark category in the LDAP Browser
+		view.
+	</para>
+
+	<para>
+		Bookmarks could be used to quickly access frequently used
+		entries.
+	</para>
+
+	<simplesect id="tools_browser_view_bookmarks_newbookmark">
+		<title>New Bookmark</title>
+		<para>
+			To create a new bookmark select an entry or search result
+			and choose
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata fileref="icons/bookmark_add.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">New Bookmark...</emphasis>
+			from the context menu.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_bookmarks_navigation">
+		<title>Navigation</title>
+		<para>
+			With the
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata
+							fileref="icons/locate_bookmark_in_dit.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">Open Bookmark in DIT</emphasis>
+			action the bookmark entry could be located in the DIT.
+		</para>
+	</simplesect>
+
+</section>

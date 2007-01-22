@@ -1,0 +1,62 @@
+<section id="tools_value_properties">
+	<title>Value properties</title>
+	<para>
+		The Values properties page shows some information about the value.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="images/tools_value_properties_1.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<informaltable frame='all'>
+		<tgroup cols='2'>
+			<colspec colname="Field" />
+			<colspec colname="Description" />
+			<thead>
+				<row>
+					<entry>Field</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Attribute Description</entry>
+					<entry>
+						The attribute description of the attribute
+					</entry>
+				</row>
+				<row>
+					<entry>Value Type</entry>
+					<entry>
+						String or Binary
+					</entry>
+				</row>
+				<row>
+					<entry>Value Size</entry>
+					<entry>
+						If Binary the size in bytes. If String
+						the number of characters and the size in bytes.
+						These two number could differ if the value 
+						contains multibyte characters.
+					</entry>
+				</row>
+				<row>
+					<entry>Data</entry>
+					<entry>
+						Nothing if Binary.
+						If String the raw value as returned form server.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</informaltable>		
+	<para>
+		You could select and copy all displayed information.
+	</para>	
+</section>

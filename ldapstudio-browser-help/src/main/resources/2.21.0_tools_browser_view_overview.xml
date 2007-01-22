@@ -1,0 +1,409 @@
+<section id="tools_browser_view_overview">
+	<title>Overview</title>
+
+	<para>
+		This section describes general aspects of the LDAP Browser view.
+	</para>
+
+	<simplesect id="tools_browser_view_screenshot">
+		<title>Example screenshot</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="images/tools_browser_view_1.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_icons">
+		<title>Icons</title>
+		<para>
+			The following icons can appear in the LDAP Browser view:
+		</para>
+		<informaltable frame="all">
+			<tgroup cols="2" align="left" colsep="1" rowsep="1">
+				<colspec colname="Icon" align="center" />
+				<colspec colname="Description" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/dit.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>
+							The top-level category containing the
+							directory information tree.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_person.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_org.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_dc.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_default.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>
+							Entry, the icon depends on its RDN
+							attribute.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_alias.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_ref.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Alias or referral entry.</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/browser_schemabrowsereditor.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>The schema entry.</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_root.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>The root DSE entry.</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/folder.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>A container for folded entries.</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/searches.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>
+							The top-level category containing persistent
+							searches.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/search.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>A search.</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/bookmarks.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>
+							The top-level category containing bookmarks.
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/bookmark.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>A Bookmark.</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_toolbar">
+		<title>Toolbar</title>
+		<para>
+			The toolbar contains the following items:
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Icon" align="center" />
+					<colspec colname="Action" />
+					<colspec colname="Description" />
+					<thead>
+						<row>
+							<entry>Icon</entry>
+							<entry>Action</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/parent.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Up</entry>
+							<entry>
+								Selects the parent node of the currently selected
+								node.
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/collapseall.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Collapse All</entry>
+							<entry>
+								Collapses the whole tree, only the three
+								top-level categories remain visible.
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/refresh.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Refresh</entry>
+							<entry>
+								Refreshes the selected objects
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_browser_view_drop_down_menu">
+		<title>Drop Down Menu</title>
+		<para>
+			The drop down menu contains the following items:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Sorting...: Opens the
+						<link linkend="tools_browser_view_sortdialog">
+							Sort Dialog
+						</link>
+						.
+					</para>
+				</listitem>
+				<listitem>
+					<para>Show DIT: Shows the DIT category.</para>
+				</listitem>
+				<listitem>
+					<para>
+						Show Searches: Shows the Searches category.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Show Bookmarks: Shows the Bookmarks category.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Show Directory Metadata: Shows the directory
+						metadata entries (e.g. the root DSE or the
+						schema entry) inside the DIT category.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Preferences...: Opens the
+						<link linkend="preferences_browser_view">
+							LDAP Browser preferences
+						</link>
+						dialog.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+
+
+	<simplesect id="tools_browser_view_sortdialog">
+		<title>Sort dialog</title>
+		<para>
+			With the sort dialog you can set the sorting behaviour of
+			the LDAP Browser view.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_browser_view_2.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<informaltable frame="all">
+			<tgroup cols="3">
+				<colspec colname="Field" />
+				<colspec colname="Description" />
+				<colspec colname="Default" />
+				<thead>
+					<row>
+						<entry>Field</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Leaf entries first</entry>
+						<entry>
+							If enabled, entries without children are
+							grouped before the entries with children.
+						</entry>
+						<entry>on</entry>
+					</row>
+					<row>
+						<entry>Meta entries last</entry>
+						<entry>
+							If enabled, meta entries (e.g. root DSE or
+							schema entry) are grouped after all other
+							entries.
+						</entry>
+						<entry>on</entry>
+					</row>
+					<row>
+						<entry>Sort by</entry>
+						<entry>
+							Sort criteria and order of entries in DIT
+							and search results. Select either 'RDN' or
+							'RDN Value' from the drop-down list as sort
+							critera and select the sort order. Or select
+							'No sorting' to disable sorting.
+						</entry>
+						<entry>RDN Value and Ascending</entry>
+					</row>
+					<row>
+						<entry>Sort limit</entry>
+						<entry>
+							If there are more than the specified number
+							of children or search results they won't
+							be sorted. Hint: For performance reasons the
+							maximum value should be 10000!
+						</entry>
+						<entry>10000</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</simplesect>
+</section>

@@ -1,0 +1,18 @@
+<section id="tools_bookmark_properties">
+	<title>Bookmark properties</title>
+	<para>
+		In the Bookmark properties page you can modify the bookmark name and
+		target entry.
+	</para>	
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="images/tools_bookmark_properties_1.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>	
+</section>

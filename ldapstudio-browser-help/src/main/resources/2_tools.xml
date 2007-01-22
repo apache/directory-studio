@@ -1,0 +1,62 @@
+<chapter id="tools">
+	<title>Tools</title>
+
+	&tools_ldap_perspective;
+	
+	<section id="tools_viewsandeditors">
+		<title>Views and editors</title>
+	
+		&tools_connections_view;
+		&tools_browser_view;
+		
+		&tools_entry_editor;
+		&tools_search_result_editor;
+		&tools_schema_browser;
+	
+		&tools_modification_logs_view;
+		&tools_progress_view;
+
+		&tools_ldif_editor;
+
+	</section>
+
+	<section  id="tools_wizardsanddialogs">
+		<title>Wizards and dialogs</title>
+		
+		&tools_newconnection_wizard;
+		&tools_newentry_wizard;
+		
+		&tools_attribute_wizard;
+		&tools_search_dialog;
+	
+		&tools_batchoperation_wizard;
+		
+		&tools_ldifimport_wizard;
+		&tools_dsmlimport_wizard;
+		&tools_ldifexport_wizard;
+		&tools_dsmlexport_wizard;
+		&tools_csvexport_wizard;
+		&tools_excelexport_wizard;
+		
+		&tools_referrals_connection_dialog;
+		&tools_filter_editor_dialog;
+
+	</section>
+	
+	&tools_value_editors;
+	
+	<section id="tools_properties">
+		<title>Properties</title>
+		
+		&tools_connection_properties;
+		&tools_entry_properties;
+		&tools_attribute_properties;
+		&tools_value_properties;
+		&tools_search_properties;
+		&tools_bookmark_properties;
+	
+	</section>
+	
+	&tools_preferences;
+
+</chapter>

@@ -1,0 +1,17 @@
+<section id="tools_browser_view">
+	<title>LDAP Browser view</title>
+	<para>
+		The LDAP Browser shows the directory information tree (DIT), the persistent searches 
+		and bookmarks of the selected connection in three separate categories. It allows
+		you to explore the directory content.
+	</para>
+
+	
+	&tools_browser_view_overview;
+	&tools_browser_view_dit;
+	&tools_browser_view_searches;
+	&tools_browser_view_bookmarks;
+	&tools_browser_view_contextmenu;
+
+
+</section>

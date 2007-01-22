@@ -1,0 +1,273 @@
+<section id="tools_search_result_editor_overview">
+	<title>Overview</title>
+
+	<para>
+		This section describes general aspects of the Search Result
+		editor.
+	</para>
+
+	<simplesect id="tools_search_result_editor_screenshot">
+		<title>Example screenshot</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_search_result_editor_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_layout">
+		<title>Layout</title>
+		<para>
+			The Search Result editor has a multi-column layout, one
+			column for each returning attribute defined in search
+			parameters. Each line represents a search result with its
+			values.
+		</para>
+		<para>
+			The cells have the following meaning:
+			<itemizedlist>
+				<listitem>
+					<para>
+						A value indicates that the entry has such an
+						attribute with exacly one value.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						An empty cell indicates that the entry hasn't
+						such an attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						X values: ... indicates that the entry has
+						multiple values for that attribute.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			You can choose whether the DN of each search result is
+			displayed as first column. Toggle
+			<emphasis role="strong">Toolbar menu -> Show DN</emphasis>
+			.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_fonts">
+		<title>Fonts and Colors</title>
+		<para>
+			To distinguish the different attribute classes the Search
+			Result editor uses the same fonts and colos as the
+			<link linkend="tools_entry_editor_fonts">Entry editor</link>
+			.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_toolbar">
+		<title>Toolbar</title>
+		<para>
+			The toolbar contains the following items:
+			<informaltable frame="all">
+				<tgroup cols="4">
+					<colspec colname="Icon" align="center" />
+					<colspec colname="Action" />
+					<colspec colname="Description" />
+					<colspec colname="Shortcut" />
+					<thead>
+						<row>
+							<entry>Icon</entry>
+							<entry>Action</entry>
+							<entry>Description</entry>
+							<entry>Shortcut</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/value_add.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>New Value</entry>
+							<entry>
+								Adds a new value to the selected
+								attribute and starts the edit mode.
+							</entry>
+							<entry>
+								<shortcut>
+									<keycombo>
+										<keycap>Ctrl</keycap>
+										<keycap>+</keycap>
+									</keycombo>
+								</shortcut>
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/delete.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Delete</entry>
+							<entry>
+								Deletes the selected attribute.
+							</entry>
+							<entry>
+								<shortcut>
+									<keycap>Delete</keycap>
+								</shortcut>
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/refresh.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Refresh</entry>
+							<entry>Performs the current search.</entry>
+							<entry>
+								<shortcut>
+									<keycap>F5</keycap>
+								</shortcut>
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/copy_table.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Copy Table</entry>
+							<entry>
+								Copies values as displayed in the table
+								as CSV. By default the tabulator is used
+								as attribute delimiter, a pipe is used
+								as value delimiter and each attribute is
+								wrapped by double-quotes. These settings
+								are suitable to paste the copied data
+								into Excel or OpenOffice, the settings
+								could be changed in
+								<link
+									linkend="preferences_text_formats">
+									Text Formats preferences
+								</link>
+								.
+							</entry>
+							<entry></entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata
+												fileref="icons/filter.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Show Quick Filter</entry>
+							<entry>
+								Shows/Hides the
+								<link
+									linkend="tools_search_result_editor_features_quickfilter">
+									Quick Filter
+								</link>
+								.
+							</entry>
+							<entry>
+								<shortcut>
+									<keycombo>
+										<keycap>Ctrl</keycap>
+										<keycap>F</keycap>
+									</keycombo>
+								</shortcut>
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_drop_down_menu">
+		<title>Drop Down Menu</title>
+		<para>
+			The drop down menu contains the following items:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Show DN: If checked the distinguished name of
+						each search result is displayed as first column.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						DN as link: If checked the distinguished name of
+						each search result is a link. Clicking to this link
+						will open the search result entry.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Show Raw Values: If checked the raw values (as
+						stored in directory) are displayed. By default
+						some attributes have a special display value:
+						<itemizedlist>
+							<listitem>
+								Images: Image format, width, height, and
+								size.
+							</listitem>
+							<listitem>Binary data: Data size.</listitem>
+							<listitem>
+								Passwords: Used hash method.
+							</listitem>
+							<listitem>
+								Timestamps: Locale dependent date and
+								time format.
+							</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Preferences...: Opens the
+						<link
+							linkend="preferences_search_result_editor">
+							Search Result editor preferences
+						</link>
+						dialog.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+</section>

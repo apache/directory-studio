@@ -1,0 +1,1080 @@
+<section id="tools_search_result_editor_contextmenu">
+	<title>Context Menu</title>
+	<para>
+		This section describes the context menu of the Search Result
+		editor.
+	</para>
+
+	<simplesect id="tools_search_result_editor_contextmenu_newvalue">
+		<title>New Value</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/value_add.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Adds a new value to the selected
+						attribute and starts the edit mode. If the
+						attribute already contains one or multiple
+						values the Multivalued Editor is opened.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attribute is selected and the
+						attribute is modifyable
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>+</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_contextmenu_newsearch">
+		<title>New Search...</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/search_new.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_search_dialog">
+							Search dialog
+						</link>
+						. The selected attribute is used to build the
+						search filter (Query by example).
+					</para>
+				</listitem>
+				<listitem>
+					<para>Enabled: If an attribute is selected.</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>H</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_newbatchoperation">
+		<title>New Batch Operation...</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata fileref="icons/batch.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link
+							linkend="tools_batchoperation_wizard">
+							Batch Operation wizard
+						</link>
+						. If an attribute with one or multiple DNs
+						values are selected these DNs are used as
+						operation objects. Otherwise the selected
+						attribute is used to build the search filter
+						(Query by example).
+					</para>
+				</listitem>
+				<listitem>
+					<para>Enabled: If an attribute is selected.</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_locatednindit">
+		<title>Locate DN in DIT</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/locate_dn_in_dit.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Locates the entry of the selected
+						DN in DIT.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F3</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_opensearchresult">
+		<title>Open Search Result</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/open_searchresult.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Locates and opens the search
+						result.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F4</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_schemabrowser_ocd">
+		<title>Open Schema Browser -> Object Class Definition</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata fileref="icons/ocd.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_schema_browser_ocd">
+							Object Class page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the object class definition of the
+						currently selected objectClass attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If the objectClass attribute is
+						selected and the schema contains this object
+						class.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_schemabrowser_atd">
+		<title>Open Schema Browser -> Attribute Type Definition</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata fileref="icons/atd.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_schema_browser_atd">
+							Attribute Type page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the attribute type definiton of the
+						currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attribute is selected and the
+						schema contains this attribute type.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_schemabrowser_mrd_equality">
+		<title>
+			Open Schema Browser -> Equality Matching Rule Definition
+		</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/mrd_equality.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_schema_browser_mrd">
+							Matching Rule page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the equality matching rule definiton
+						of the currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attribute is selected, the
+						attribute provides an equality matching rule and
+						the schema contains this matching rule.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_schemabrowser_mrd_substring">
+		<title>
+			Open Schema Browser -> Substring Matching Rule Definition
+		</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/mrd_substring.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_schema_browser_mrd">
+							Matching Rule page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the substring matching rule
+						definiton of the currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled:If an attribute is selected, the
+						attribute provides a substring matching rule and
+						the schema contains this matching rule.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_schemabrowser_mrd_ordering">
+		<title>
+			Open Schema Browser -> Ordering Matching Rule Definition
+		</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/mrd_ordering.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_schema_browser_mrd">
+							Matching Rule page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the ordering matching rule definiton
+						of the currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attribute is selected, the
+						attribute provides an ordering matching rule and
+						the schema contains this matching rule.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_schemabrowser_lsd">
+		<title>Open Schema Browser -> Syntax Definition</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata fileref="icons/lsd.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Opens the
+						<link linkend="tools_schema_browser_lsd">
+							Syntax page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the syntax definiton of the
+						currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attribute is selected, the
+						attribute provides an syntax and the schema
+						contains this syntax.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_edior_contextmenu_copy">
+		<title>Copy Values</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata fileref="icons/copy.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Copies the values of the selected
+						attribute. The values are copied to clipboard in
+						an internal format so they could be pasted to
+						another entry even in the entry editor.
+						Additional they are copied to the system
+						clipboard as string so they could be pasted in
+						other applications. New-line is used as value
+						separator. Binary values are copied BASE-64
+						encoded.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>C</keycap>
+							</keycombo>
+						</shortcut>
+						or
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>Insert</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_contextmenu_paste">
+		<title>TODO: Paste Values</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata fileref="icons/paste.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Pasted the previously copied values
+						to the selected attribute. Each value is copied
+						separately, when an error occurs while adding
+						the value the paste operation will continue with
+						the next value.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If the system clipboard contains
+						values.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycombo>
+								<keycap>Ctrl</keycap>
+								<keycap>V</keycap>
+							</keycombo>
+						</shortcut>
+						or
+						<shortcut>
+							<keycombo>
+								<keycap>Shift</keycap>
+								<keycap>Insert</keycap>
+							</keycombo>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_contextmenu_delete">
+		<title>Delete</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/delete.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Deletes the selected attribute.
+						Note that the following attributes aren't
+						deleteable:
+						<itemizedlist>
+							<listitem>objectClasses</listitem>
+							<listitem>RDN attributes</listitem>
+							<listitem>Must attributes</listitem>
+							<listitem>Operational attributes</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attributes is selected and this
+						is deletable.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>Delete</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copydn">
+		<title>Advanced -> Copy DN</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/copy_dn.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Copies the distinguished name of
+						the current search result (e.g. cn=John
+						Fowler,ou=People,o=JNDITutorial)
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copyurl">
+		<title>Advanced -> Copy URL</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/copy_url.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Description: Copies the URL of the current
+						search result (e.g. ldap://localhost:389/cn=John
+						Fowler,ou=People,o=JNDITutorial)
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copyattribute">
+		<title>Advanced -> Copy Attribute Description</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/copy_att.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Copies the attribute description of the selected
+						attribute as string to the system clipboard.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copyutf8">
+		<title>Advanced -> Copy Values (UTF-8)</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/copy_raw.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Copies the selected values UTF-8 encoded to the
+						system clipboard.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copybase64">
+		<title>Advanced -> Copy Values (BASE-64)</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/copy_base64.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Copies the selected values BASE-64 encoded to
+						the system clipboard.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copyhex">
+		<title>Advanced -> Copy Values (HEX)</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/copy_hex.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Copies the selected values HEX encoded to the
+						system clipboard.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copyldif">
+		<title>Advanced -> Copy Name-Value-Pairs as LDIF</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/copy_ldif.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Copies the selected attribute in LDIF format to
+						the system clipboard.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_advanced_copyfilter">
+		<title>Advanced -> Copy Search Filter</title>
+		<para>
+			Builds search filters from the selected attribute. There are
+			four options:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Default
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata
+													fileref="icons/filter_equals.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Copies the selected
+									attribute as LDAP search filter
+									(attribute=value).
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Enabled: If a singlevalued attribute
+									is selected.
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						NOT
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata
+													fileref="icons/filter_not.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Copies the selected
+									attribute as LDAP NOT search filter
+									(!(attribute=value)).
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Enabled: If a singlevalued value is
+									selected.
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						AND
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata
+													fileref="icons/filter_and.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Copies the selected
+									attribute as LDAP AND search filter
+									(&amp;(attribute1=value1)...(attributeN=valueN)).
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						OR
+						<itemizedlist>
+							<listitem>
+								<para>
+									Icon:
+									<guiicon>
+										<inlinemediaobject>
+											<imageobject>
+												<imagedata
+													fileref="icons/filter_or.gif" format="GIF" />
+											</imageobject>
+										</inlinemediaobject>
+									</guiicon>
+								</para>
+							</listitem>
+							<listitem>
+								<para>
+									Description: Copies the selected
+									attribute as LDAP OR search filter
+									(|(attribute1=value1)...(attributeN=valueN)).
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_contextmenu_editvalue">
+		<title>Edit Value</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Edits the selected attribute using the default
+						value editor. To change the default value editor
+						see
+						<link linkend="preferences_value_editors">
+							Value Provider preferences
+						</link>
+						.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attribute is selected and this is
+						modifyable.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F7</keycap>
+						</shortcut>
+						or
+						<shortcut>
+							<keycap>Enter</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_editvaluewith">
+		<title>Edit Value With</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Depending on the selected attribute there could
+						be alternate value editors. To edit the selected
+						attribute with another value editor choose one
+						of the listed editors.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enabled: If an attribute is selected, this is
+						empty or singevalued and this is modifyable.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_contextmenu_reload">
+		<title>Search Again</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata
+										fileref="icons/refresh.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Performs the search again.</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F5</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="tools_search_result_editor_contextmenu_properties">
+		<title>Properties</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Description: Opens the Properties dialog with
+						the
+						<link linkend="tools_attribute_properties">
+							attribute properties page
+						</link>
+						or
+						<link linkend="tools_entry_properties">
+							entry properties page
+						</link>
+						.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<keycombo>
+							<keycap>Alt</keycap>
+							<keycap>Enter</keycap>
+						</keycombo>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+</section>
+

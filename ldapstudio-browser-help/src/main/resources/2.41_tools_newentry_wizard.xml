@@ -1,0 +1,272 @@
+<section id="tools_newentry_wizard">
+	<title>New Entry wizard</title>
+	<para>This wizard helps you to create a new entry.</para>
+
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the LDAP Browser view select an entry or search
+					result or bookmark. Then choose
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata fileref="icons/entry_add.gif"
+								format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+					<emphasis role="strong">New Entry...</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench window's toolbar, activate the
+					drop-down menu on the New Wizard button and select
+					<emphasis role="strong">LDAP Entry</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">
+						File > New > LDAP Entry
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<para>
+		The creation of a new LDAP entry is a four-step process:
+		<orderedlist numeration="arabic">
+			<listitem>
+				<para>
+					<link linkend="tools_newentry_wizard_1">
+						Select entry creation method.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newentry_wizard_2">
+						Specify object classes of the new entry.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newentry_wizard_3">
+						Specifiy the distinguished name of the new
+						entry.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newentry_wizard_4">
+						Enter attributes and values of the new entry.
+					</link>
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+
+	<simplesect id="tools_newentry_wizard_1">
+		<title>Page 1</title>
+		<para>First you have to select the entry creation method.</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_newentry_wizard_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			With the option
+			<emphasis role="strong">Create entry from scratch</emphasis>
+			you could create a the new entry from scratch. All object
+			classes and attributes have to be specified in the wizard.
+		</para>
+		<para>
+			The option
+			<emphasis role="strong">
+				Use existing entry as template
+			</emphasis>
+			allows you to use an existing entry with its object classes
+			and attributes as template. The entry used as template could
+			be specified in the input field:
+			<itemizedlist>
+				<listitem>
+					<para>
+						By default the DN of entry that was selected
+						when the wizard has been started is used as
+						template entry.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						You could manually edit the DN of the templayte
+						entry.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						You could choose a previously used DN from
+						drop-down list.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						By clicking
+						<emphasis role="strong">Browse....</emphasis>
+						you could open a dialog to select the DN of the
+						template entry.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_newentry_wizard_2">
+		<title>Page 2</title>
+		<para>
+			On the second page you have to choose the object classes of
+			the new entry.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_newentry_wizard_2.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The list
+			<emphasis role="strong">Available object classes</emphasis>
+			on the left side lists the object classes provided from
+			schema of the current connection. The list
+			<emphasis role="strong">Selected object classes</emphasis>
+			lists the object classes of the new entry. To add object
+			classed to the "selected" list select some in the
+			"available" list and click the
+			<emphasis role="strong">Add</emphasis>
+			button. You could also double-click an object class in the
+			"available" list. To remove object classed from the
+			"selected" list select some in the "selected" list and click
+			the
+			<emphasis role="strong">Remove</emphasis>
+			button. You could also double-click an object class in the
+			"selected" list.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_newentry_wizard_3">
+		<title>Page 3</title>
+		<para>
+			On the third page you have to define the distinguished name
+			of the new entry.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_newentry_wizard_3.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The parent of the new entry could be specified in the input
+			field:
+			<itemizedlist>
+				<listitem>
+					<para>
+						If you choosed the "from scratch" method the DN
+						of entry that was selected when the wizard has
+						been started is used by default. If you choosed
+						the "template" method the parent of the template
+						entry is used by default.
+					</para>
+				</listitem>
+				<listitem>
+					<para>You could manually edit the parent DN.</para>
+				</listitem>
+				<listitem>
+					<para>
+						You could choose a previously used DN from
+						drop-down list.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						By clicking
+						<emphasis role="strong">Browse....</emphasis>
+						you could open a dialog to select the parent DN.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			To specify the RDN select an attribute from the drop-down
+			list and enter the value. If you choosed the "template"
+			method the RDN is preset with the RDN of the template entry.
+			The wizard also support multivalued RDNs. With the
+			<emphasis role="strong">+</emphasis>
+			and
+			<emphasis role="strong">-</emphasis>
+			buttons you can add and remove name-value pairs.
+		</para>
+		<para>The DN preview field shows a preview of the DN.</para>
+		<para>
+			When clicking to
+			<emphasis role="strong">Next</emphasis>
+			the wizard checks if an entry with the specified DN already
+			exists. In that case you have to change the DN of the new
+			entry.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_newentry_wizard_4">
+		<title>Page 4</title>
+		<para>
+			On the fourth page you have to define the attributes of the
+			new entry.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_newentry_wizard_4.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The layout and features are similar to the Entry editor. You
+			could add, edit or delete attributes and values.
+		</para>
+		<para>
+			If you have choosed the "template" method all attributes of
+			the template entry are already filled in the new entry.
+			Otherwise only the selected object classes and the RDN
+			attribute are filled.
+		</para>
+		<para>
+			As soon as all MUST attributes are filled the
+			<emphasis role="strong">Finish</emphasis>
+			button is activated. When clicking the button the new entry
+			will be created in directory.
+		</para>
+	</simplesect>
+
+</section>

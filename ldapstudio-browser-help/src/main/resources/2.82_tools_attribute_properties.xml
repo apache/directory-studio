@@ -1,0 +1,28 @@
+<section id="tools_attribute_properties">
+	<title>Attribute properties</title>
+	<para>
+		The Attribute properties page shows some information about the attribute.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="images/tools_attribute_properties_1.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>	
+	<para>
+		The first four lines shows the attribute description, the type (String or Binary), 
+		the values count and the size in bytes.
+	</para>
+	<para>
+		The next four groups shows the attribute's schema definition, similar to
+		the Attribute Type schema page.
+	</para>
+	<para>
+		You could select and copy all displayed information.
+	</para>
+</section>

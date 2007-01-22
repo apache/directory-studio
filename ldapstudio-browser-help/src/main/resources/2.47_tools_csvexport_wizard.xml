@@ -1,0 +1,174 @@
+<section id="tools_csvexport_wizard">
+	<title>CSV Export wizard</title>
+	<para>This wizard is used to export entries to CSV files.</para>
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the LDAP Browser view select an entry or a search
+					and choose
+					<emphasis role="strong">
+						Export >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata
+									fileref="icons/export_csv.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						CSV Export...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Connections view select a connection and
+					choose
+					<emphasis role="strong">
+						Export >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata
+									fileref="icons/export_csv.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						CSV Export...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">File > Export...</emphasis>
+					and choose
+					<emphasis role="strong">
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata
+									fileref="icons/export_csv.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						LDAP to CSV
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<simplesect id="tools_csvexport_wizard_1">
+		<title>Data to Export</title>
+		<para>
+			On the Data to Export page you have to specify which
+			entries and attributes to export. 
+		</para>
+
+		<para>
+			The layout of the page is similar to the 
+			<link
+				linkend="tools_search_dialog">
+				LDAP Search page
+			</link>
+			. In the <emphasis role="strong">Returning Attributes</emphasis> section
+			you can also choose the following option:
+		</para>
+
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" />
+					<colspec colname="Description" />
+					<colspec colname="Default" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Export DN</entry>
+							<entry>
+								Exports the distinguished name as first column in the CSV file.
+							</entry>
+							<entry>on</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_csvexport_wizard_2">
+		<title>CSV File</title>
+		<para>
+			On the CSV File page you have to select the target CSV file.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_csvexport_wizard_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" />
+					<colspec colname="Description" />
+					<colspec colname="Default" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>CSV File</entry>
+							<entry>
+								The CSV file to export to. Type in the
+								full path or
+								<emphasis role="strong">
+									Browse...
+								</emphasis>
+								to select the path on the file system.
+								The drop-down list provides a history of
+								recently used files.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Overwrite existing CSV file</entry>
+							<entry>
+								If the export file already exist, you
+								must permit to overwrite the file.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>Text Formats</entry>
+							<entry>
+								Opens the
+								<link
+									linkend="preferences_text_formats">
+									Text Formats preferences
+								</link>
+								where you could modify the CSV format.
+							</entry>
+							<entry>-</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+</section>

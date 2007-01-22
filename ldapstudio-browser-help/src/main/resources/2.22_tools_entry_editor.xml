@@ -1,0 +1,12 @@
+<section id="tools_entry_editor">
+	<title>Entry editor</title>
+	<para>
+		The Entry editor is used to view and edit the attributes and values of an entry. 
+		Although it is placed in the editor area there is only a single instance of the Entry editor.
+	</para>
+
+	&tools_entry_editor_overview;
+	&tools_entry_editor_features;
+	&tools_entry_editor_contextmenu;
+	
+</section>

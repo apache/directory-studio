@@ -1,0 +1,48 @@
+<chapter id="tasks">
+	<title>Tasks</title>
+	<para>
+		TODO...
+	</para>
+	<para>
+		<itemizedlist>
+			<listitem>Create a connection</listitem>
+			<listitem>Modify connection parameters</listitem>
+			
+			<listitem>Create an entry: Wizard, LDIF, from scratch, use template</listitem>
+			<listitem>Duplicate entries/subtree</listitem>
+			<listitem>Move entries/subtree</listitem>
+			<listitem>Rename an entry/subtree</listitem>
+			<listitem>Delete entries/subtree</listitem>
+			<listitem>Handle large trees: count limit, folding, filter</listitem>
+			
+			<listitem>Modify an entry's attributes</listitem>
+			<listitem>Modify Aliases entries</listitem>
+			<listitem>Modify Referral entries</listitem>
+			<listitem>Modify multiple entries: Batch Operation, Search Result editor, LDIF</listitem>
+			
+			<listitem>Search</listitem>
+			<listitem>Duplicate a Search</listitem>
+			<listitem>Navigation</listitem>
+			<listitem>Query by example</listitem>
+			
+		</itemizedlist>
+	</para>
+
+	<!-- 
+	<para>
+	  Basic Conceps:
+	  - Navigation: Browser:Up,Down,F3, EE:F3,Schema,Show-In, SRE:F3,F4,Link,Schema, SB:Links
+	  - View/Editor interaction: Push,Single-EE,Single-SRE
+	  - Search Page
+	  - Threading, long-running operations
+	  - Modification logging
+	  - LDIF interface
+	  - Caching, Reloading Schema and Entries
+	  - Save locations (connection, schema, mod-logs)
+	  - Value Editors
+	  - Referrals and Aliases
+	  - LDAP tutorial
+	</para>
+	 -->
+	 
+</chapter>

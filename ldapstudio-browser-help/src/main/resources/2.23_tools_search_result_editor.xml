@@ -1,0 +1,14 @@
+<section id="tools_search_result_editor">
+	<title>Search Result editor</title>
+	<para>
+		The Search Result editor is used to view and edit search
+		results. Although it is placed in the editor area there is only
+		a single instance of the Search Result editor.
+	</para>
+
+	&tools_search_result_editor_overview;
+	&tools_search_result_editor_features;
+	&tools_search_result_editor_contextmenu;
+
+</section>
+

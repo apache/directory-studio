@@ -1,44 +1,113 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[
+
+  <!ENTITY gettingstarted SYSTEM "1_gettingstarted.xml">
+
+  <!ENTITY tools SYSTEM "2_tools.xml">
+  
+  <!ENTITY tools_ldap_perspective SYSTEM "2.10_tools_ldap_perspective.xml">
+
+  <!ENTITY tools_connections_view SYSTEM "2.20_tools_connections_view.xml">
+  
+  <!ENTITY tools_browser_view SYSTEM "2.21_tools_browser_view.xml">
+  <!ENTITY tools_browser_view_overview SYSTEM "2.21.0_tools_browser_view_overview.xml">
+  <!ENTITY tools_browser_view_dit SYSTEM "2.21.1_tools_browser_view_dit.xml">
+  <!ENTITY tools_browser_view_searches SYSTEM "2.21.2_tools_browser_view_searches.xml">
+  <!ENTITY tools_browser_view_bookmarks SYSTEM "2.21.3_tools_browser_view_bookmarks.xml">
+  <!ENTITY tools_browser_view_contextmenu SYSTEM "2.21.9_tools_browser_view_contextmenu.xml">
+
+  <!ENTITY tools_entry_editor SYSTEM "2.22_tools_entry_editor.xml">
+  <!ENTITY tools_entry_editor_overview SYSTEM "2.22.0_tools_entry_editor_overview.xml">
+  <!ENTITY tools_entry_editor_features SYSTEM "2.22.1_tools_entry_editor_features.xml">
+  <!ENTITY tools_entry_editor_contextmenu SYSTEM "2.22.9_tools_entry_editor_contextmenu.xml">
+  
+  <!ENTITY tools_search_result_editor SYSTEM "2.23_tools_search_result_editor.xml">
+  <!ENTITY tools_search_result_editor_overview SYSTEM "2.23.0_tools_search_result_editor_overview.xml">
+  <!ENTITY tools_search_result_editor_features SYSTEM "2.23.1_tools_search_result_editor_features.xml">
+  <!ENTITY tools_search_result_editor_contextmenu SYSTEM "2.23.9_tools_search_result_editor_contextmenu.xml">
+
+  <!ENTITY tools_schema_browser SYSTEM "2.24_tools_schema_browser.xml">
+
+  <!ENTITY tools_modification_logs_view SYSTEM "2.25_tools_modification_logs_view.xml">
+
+  <!ENTITY tools_progress_view SYSTEM "2.26_tools_progress_view.xml">
+
+  <!ENTITY tools_ldif_editor SYSTEM "2.27_tools_ldif_editor.xml">
+
+  <!ENTITY tools_newconnection_wizard SYSTEM "2.40_tools_newconnection_wizard.xml">
+  <!ENTITY tools_newentry_wizard SYSTEM "2.41_tools_newentry_wizard.xml">
+  <!ENTITY tools_attribute_wizard SYSTEM "2.42_tools_attribute_wizard.xml">
+  <!ENTITY tools_search_dialog SYSTEM "2.43_tools_search_dialog.xml">
+  <!ENTITY tools_batchoperation_wizard SYSTEM "2.44_tools_batchoperation_wizard.xml">
+  
+  <!ENTITY tools_ldifimport_wizard SYSTEM "2.45_tools_ldifimport_wizard.xml">
+  <!ENTITY tools_dsmlimport_wizard SYSTEM "2.45.1_tools_dsmlimport_wizard.xml">
+  <!ENTITY tools_ldifexport_wizard SYSTEM "2.46_tools_ldifexport_wizard.xml">
+  <!ENTITY tools_dsmlexport_wizard SYSTEM "2.46.1_tools_dsmlexport_wizard.xml">
+  <!ENTITY tools_csvexport_wizard SYSTEM "2.47_tools_csvexport_wizard.xml">
+  <!ENTITY tools_excelexport_wizard SYSTEM "2.48_tools_excelexport_wizard.xml">
+
+  <!ENTITY tools_referrals_connection_dialog SYSTEM "2.49_tools_referrals_connection_dialog.xml">
+  <!ENTITY tools_filter_editor_dialog SYSTEM "2.50_tools_filter_editor_dialog.xml">
+
+  <!ENTITY tools_value_editors SYSTEM "2.70_tools_value_editors.xml">
+
+  <!ENTITY tools_connection_properties SYSTEM "2.80_tools_connection_properties.xml">
+  <!ENTITY tools_entry_properties SYSTEM "2.81_tools_entry_properties.xml">
+  <!ENTITY tools_attribute_properties SYSTEM "2.82_tools_attribute_properties.xml">
+  <!ENTITY tools_value_properties SYSTEM "2.83_tools_value_properties.xml">
+  <!ENTITY tools_search_properties SYSTEM "2.84_tools_search_properties.xml">
+  <!ENTITY tools_bookmark_properties SYSTEM "2.85_tools_bookmark_properties.xml">
+  
+  <!ENTITY tools_preferences SYSTEM "2.90_tools_preferences.xml">
+  
+  <!ENTITY tasks SYSTEM "3_tasks.xml">
+  <!ENTITY reference SYSTEM "4_reference.xml">
+  <!ENTITY tipsntricks SYSTEM "5_tipsntricks.xml">
+  <!ENTITY whatsnew SYSTEM "6_whatsnew.xml">
+  
+]>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
 
 <book>
 
 	<bookinfo>
-		<title>LDAP Browser Users Guide</title>
+		<title>LDAP Studio Browser User's Guide</title>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>
 		</copyright>
 		<legalnotice>
 			<para>
-			LDAP Browser this user guide are distributed under the Apache License. 
+				This user guide is distributed under the Apache License, Version 2.0. 
+				You can find the license details online at <ulink url="http://apache.org/licenses/LICENSE-2.0.txt">http://apache.org/licenses/LICENSE-2.0.txt</ulink>.
 			</para>			
-		</legalnotice>
+		</legalnotice>		
 	</bookinfo>
 
-	<chapter id="ch1">
-		<title>Chapter 1</title>
-		
-		<para>
-			This getting started guide provides a short introduction to the LDAP Browser. 
-		</para>
-		
-		<section id="sec1">
-			<title>Section 1</title>
-			
-			<para>
-				Bla bla
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata
-								fileref="images/product_lg.gif" format="GIF" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-			
-		</section>
-	</chapter>
+	&gettingstarted;
+	&tools;
+	&tasks;
+	&reference;
+	&tipsntricks;
+	&whatsnew;
 
 </book>
