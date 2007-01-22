@@ -200,15 +200,6 @@
       <initializer class="org.apache.directory.ldapstudio.schemas.controller.PreferenceInitializer"/>
    </extension>
    <extension
-         point="org.eclipse.help.toc">
-      <toc
-            file="toc.xml"
-            primary="true"/>
-      <toc file="ressources/help/tocconcepts.xml"/>
-      <toc file="ressources/help/tocreference.xml"/>
-      <toc file="ressources/help/toctasks.xml"/>
-   </extension>
-   <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
             id="org.apache.directory.ldapstudio.schemas.actionSet"
