@@ -56,7 +56,8 @@
 			<fileset dir="${basedir}">
 				<include name="docbook-xsl-*/**"/>
 			</fileset>
-			<mapper type="regexp" from="${fromregexp}" to="${toregexp}" />
+			<!--<mapper type="regexp" from="${fromregexp}" to="${toregexp}" />-->
+			<regexpmapper from="${fromregexp}" to="${toregexp}" handledirsep="true" />
 		</move>
 		<delete includeemptydirs="true">
 			<fileset dir="${basedir}">
