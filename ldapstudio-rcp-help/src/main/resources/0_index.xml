@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
+
+<book>
+	<bookinfo>
+		<title>LDAP Studio User's Guide</title>
+		<copyright>
+			<year>2007</year>
+			<holder>Apache Software Foundation</holder>
+		</copyright>
+		<legalnotice>
+			<para>
+				This user guide is distributed under the Apache License. 
+			</para>			
+		</legalnotice>
+	</bookinfo>
+	
+	<!-- INTRODUCTION SECTION -->
+	<section id="introduction">
+		<title>Introduction</title>
+		<para>
+			LDAP Studio is a Tooling Platform for LDAP Servers. It composed of an Eclipse RCP Application and a set of Eclipse plugins.
+		</para>
+	</section>
+</book>

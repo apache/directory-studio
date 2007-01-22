@@ -1,0 +1,232 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<project default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	<property name="project.name" value="org.apache.directory.ldapstudio.rcp.help" />
+	<property name="project.version" value="0.6.0" />
+
+	<property name="project.output" value="${basedir}/target" />
+	<property name="project.build" value="${project.output}/build" />
+	<property name="project.html" value="${project.output}/html" />
+	<property name="project.src" value="${basedir}/src/main/resources" />
+
+	<property name="lib.dir" value="lib" />
+
+	<property name="repository.dir" location="../dependencies/externals/"/>
+
+	<!-- Configuring Ivy (Needs to be AFTER the $repository.dir declaration) -->
+	<ivy:configure file="../tools/ivyconf.xml"/>
+
+	<!-- ================================== -->
+	<!--               RESOLVE              -->
+	<!-- ================================== -->
+	<target name="resolve" description="--> retreive dependencies with ivy">
+		<ivy:retrieve/>
+
+		<mkdir dir="${basedir}/docbook-xml" />
+		<unzip dest="${basedir}/docbook-xml">
+			<fileset dir="${basedir}/lib">
+				<include name="**/docbook-xml*.zip"/>
+			</fileset>
+		</unzip>
+
+		<unzip dest="${basedir}">
+			<fileset dir="${basedir}/lib">
+				<include name="**/docbook-xsl*.zip"/>
+			</fileset>
+		</unzip>
+		<property name="fromregexp" value="^(docbook-xsl-[^/]+)/(.*)" />
+		<property name="toregexp" value="docbook-xsl/\2" />
+		<move todir="${basedir}">
+			<fileset dir="${basedir}">
+				<include name="docbook-xsl-*/**"/>
+			</fileset>
+			<!--<mapper type="regexp" from="${fromregexp}" to="${toregexp}" />-->
+			<regexpmapper from="${fromregexp}" to="${toregexp}" handledirsep="true" />
+		</move>
+		<delete includeemptydirs="true">
+			<fileset dir="${basedir}">
+				<include name="docbook-xsl-*"/>
+			</fileset>
+		</delete>
+
+
+	</target>
+
+	<!-- ================================== -->
+	<!--           ECLIPSE HELP             -->
+	<!-- ================================== -->
+	<target name="eclipse-help" depends="resolve" description="Generates the eclipse help">
+		<mkdir dir="${project.build}" />
+		
+		<xslt in="${project.src}/0_index.xml" out="${project.build}/index.html" style="${basedir}/docbook-xsl/eclipse/eclipse.xsl">
+
+			<classpath location="lib/xalan-2.7.0.jar" />
+
+			<param name="manifest.in.base.dir" expression="0" />
+			<param name="base.dir" expression="html/" />
+
+			<param name="html.stylesheet" expression="css/book.css" />
+			<param name="table.cell.borders.thickness" expression="1" />
+			<!-- <param name="table.borders.with.css" expression="1" /> -->
+
+			<param name="generate.section.toc.level" expression="5" />
+			<param name="toc.max.depth" expression="1" />
+
+			<param name="chunk.first.sections" expression="1" />
+			<param name="chunk.section.depth" expression="5" />
+
+			<param name="chunk.fast" expression="1" />
+			<param name="chunk.separate.lots" expression="1" />
+			<!--<param name="chunk.tocs.and.lots" expression="1" />-->
+
+			<param name="ulink.target" expression="_self" />
+			<param name="suppress.navigation" expression="1" />
+			<param name="html.cleanup" expression="1" />
+			<param name="html.cellpadding" expression="3" />
+			<param name="use.id.as.filename" expression="1" />
+			<param name="chapter.autolabel" expression="0" />
+			<param name="section.autolabel" expression="0" />
+
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="iso8859_1" />
+			<outputproperty name="indent" value="es" />
+		</xslt>
+		
+		<copy todir="${project.build}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="plugin.xml" />
+				<include name="plugin.properties" />
+				<include name="about.html" />
+			</fileset>
+		</copy>
+		<mkdir dir="${project.build}/META-INF" />
+		<copy todir="${project.build}/META-INF">
+			<fileset dir="${basedir}/META-INF">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<mkdir dir="${project.build}/about_files" />
+		<copy todir="${project.build}/about_files">
+			<fileset dir="${basedir}/about_files">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${project.build}/html" />
+		<copy todir="${project.build}/html">
+			<fileset dir="${basedir}/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<tstamp>
+			<format pattern="yyyy-MMM-dd, HH:mm 'GMT'Z" property="timestamp" locale="en" />
+		</tstamp>
+		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${project.build}/compile.timestamp" />
+	</target>
+
+	<!-- ================================== -->
+	<!--           STATIC HTML              -->
+	<!-- ================================== -->
+	<target name="static-html" depends="resolve" description="Generates the static html">
+		<mkdir dir="${project.html}" />
+		<copy todir="${project.html}">
+			<fileset dir="${basedir}/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<xslt in="${project.src}/0_index.xml" out="${project.html}/index.html" style="${basedir}/docbook-xsl/html/chunk.xsl">
+
+			<classpath location="lib/xalan-2.7.0.jar" />
+
+			<param name="manifest.in.base.dir" expression="0" />
+			<!-- <param name="base.dir" expression="html/" /> -->
+
+			<param name="html.stylesheet" expression="css/book.css" />
+			<param name="table.cell.borders.thickness" expression="1" />
+			<!-- <param name="table.borders.with.css" expression="1" /> -->
+
+			<param name="generate.section.toc.level" expression="5" />
+			<param name="toc.max.depth" expression="3" />
+
+			<param name="chunk.first.sections" expression="1" />
+			<param name="chunk.section.depth" expression="5" />
+
+			<param name="chunk.fast" expression="1" />
+			<param name="chunk.separate.lots" expression="1" />
+			<!--<param name="chunk.tocs.and.lots" expression="1" />-->
+
+			<param name="ulink.target" expression="_self" />
+			<param name="suppress.navigation" expression="0" />
+			<param name="html.cleanup" expression="1" />
+			<param name="html.cellpadding" expression="3" />
+			<param name="use.id.as.filename" expression="1" />
+			<param name="chapter.autolabel" expression="0" />
+			<param name="section.autolabel" expression="0" />
+
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="iso8859_1" />
+			<outputproperty name="indent" value="es" />
+		</xslt>
+
+
+		<tstamp>
+			<format pattern="yyyy-MMM-dd, HH:mm 'GMT'Z" property="timestamp" locale="en" />
+		</tstamp>
+		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${project.html}/compile.timestamp" />
+	</target>
+
+
+	<!-- ================================== -->
+	<!--              JAR                   -->
+	<!-- ================================== -->
+	<target name="jar" description="Creates jar file" depends="eclipse-help">
+		<jar destfile="${project.output}/${project.name}_${project.version}.jar" manifest="${project.build}/META-INF/MANIFEST.MF">
+			<fileset dir="${project.build}" excludes="compile.timestamp" />
+		</jar>
+	</target>
+
+	<!-- ================================== -->
+	<!--               CLEAN                -->
+	<!-- ================================== -->
+	<target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
+		<delete includeemptydirs="true">
+			<fileset dir="${basedir}">
+				<exclude name=".classpath"/>
+				<exclude name=".project"/>
+				<exclude name="about.html"/>
+				<exclude name="about_files**"/>
+				<exclude name="build.properties"/>
+				<exclude name="build-eclipse.xml"/>
+				<exclude name="build-html.xml"/>
+				<exclude name="build.xml"/>
+				<exclude name="ivy.xml"/>
+				<exclude name="plugin.properties"/>
+				<exclude name="plugin.xml"/>
+				<exclude name="docbook/**"/>
+				<exclude name="src/**" />
+				<exclude name="resources/**" />
+				<exclude name="META-INF/**"/>
+			</fileset>
+		</delete>
+	</target>
+</project>

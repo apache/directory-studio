@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
+
+<book>
+	<bookinfo>
+		<title>Schemas Editor User's Guide</title>
+		<copyright>
+			<year>2007</year>
+			<holder>Apache Software Foundation</holder>
+		</copyright>
+		<legalnotice>
+			<para>
+				This user guide is distributed under the Apache License. 
+			</para>			
+		</legalnotice>
+	</bookinfo>
+	
+	<!-- INTRODUCTION SECTION -->
+	<section id="introduction">
+		<title>Introduction</title>
+		<para>
+			LDAP Studio Schemas Editor is a plugin designed to handle Schemas files (in OpenLDAP format) of LDAP Server.
+		</para>	
+		<para>
+			It allows browsing, creation, removal of schemas, object classes and attribute types.
+		</para>
+	</section>
+	
+    <!-- GETTING STARTED CHAPTER -->
+	<chapter id="gettingstarted">
+		<title>Getting Started</title>
+		<para>
+			This part of the guide provides you a sum up of the basic concepts of the Schemas Editor Plugin. 
+		</para>
+		
+        <!-- VIEWS SECTION -->
+		<section id="views">
+			<title>Views</title>
+			
+            <!-- HIERARCHY VIEW SECTION -->
+			<section id="hierarchy_view">
+				<title>Hierarchy view</title>
+				<para>
+					Hierarchy view provides a hierarchical view of the resources in the schemas. From here, you can open 
+					object classes and attribute types to edit them or browse the classes hierarchy.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/views_hierarchy_view.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					By default, the Hierarchy view is included in the Schemas perspective
+				</para>
+				<para>
+					<emphasis role="strong">Toolbar</emphasis>
+				</para>
+				<para>
+					The toolbar of the Hierarchy view contains the following buttons:
+				</para>
+				<para>
+					<itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<emphasis>Sort Alphabetically</emphasis> - Displays the hierarchy by alphabetical order.
+						</listitem>
+						<listitem>
+							<emphasis>Sort Unalphabetically</emphasis> - Displays the hierarchy by unalphabetical order.
+						</listitem>
+					</itemizedlist>
+				</para>
+				<para>
+					<emphasis role="strong">Icons</emphasis>
+				</para>
+				<para>
+					The following icons can appear in the Hierarchy view.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class_warning.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Unresolved object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/folder.png" format="PNG" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Folder</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</section>
+			
+            <!-- SCHEMA VIEW SECTION -->
+			<section id="schemas_view">
+				<title>Schemas View</title>
+                <para>
+					Schemas view provides a view of all the opened schemas. From here, you can open object classes and attribute 
+                    types to edit them or browse the property of schemas files. You can also, add or delete attribute types, object 
+                    classes or schemas.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/views_schemas_view.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					By default, the Schemas view is included in the Schemas perspective
+				</para>
+                <para>
+					<emphasis role="strong">Toolbar</emphasis>
+				</para>
+				<para>
+					The toolbar of the Schemas view contains the following buttons:
+				</para>
+                <para>
+					<itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<emphasis>Open a local schema file</emphasis> - Opens a file dialog to select the schema file.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new schema</emphasis> - Opens a wizard to create a new schema.
+                        </listitem>
+                        <listitem>
+							<emphasis>Remove the selected schema from the pool</emphasis> - Removes the selected schema from the pool.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new object class</emphasis> -  Opens a wizard to create a new object class.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new attribute type</emphasis> - Opens a wizard to create a new attribute type.
+                        </listitem>
+                        <listitem>
+							<emphasis>Delete</emphasis> - Deletes the selected element (attribute type or object class). (Note: A schema cannot be deleted, but only removed.)
+                        </listitem>
+                        <listitem>
+							<emphasis>Sort Alphabetically</emphasis> - Displays the hierarchy by alphabetical order.
+                        </listitem>
+                        <listitem>
+							<emphasis>Sort Unalphabetically</emphasis> - Displays the hierarchy by unalphabetical order.
+                        </listitem>
+                    </itemizedlist>
+                </para>
+				<para>
+					<emphasis role="strong">Icons</emphasis>
+				</para>
+				<para>
+					The following icons can appear in the Schemas view.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/schema.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Schema file</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/schema_core.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Core schema file</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/folder.png" format="PNG" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Folder</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</section>
+			
+            <!-- SEARCH VIEW SECTION -->
+			<section id="search_view">
+				<title>Search View</title>
+                <para>
+					Search view provides a search field to search any ressources in the Workbench (object class or attribute type). 
+                    From here, you can open object classes and attribute types to edit them.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/views_search_view.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					By default, the Search view is included in the Schemas perspective
+				</para>
+                <para>
+					<emphasis role="strong">Toolbar</emphasis>
+				</para>
+				<para>
+					Search view provides the following search filter:
+				</para>
+                <para>
+					<itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<emphasis>All metadata</emphasis> - Search elements by name, oid and description.
+                        </listitem>
+                        <listitem>
+							<emphasis>Name</emphasis> - Only search elements by name.
+                        </listitem>
+                        <listitem>
+							<emphasis>OID</emphasis> - Only search elements by OID.
+                        </listitem>
+                        <listitem>
+							<emphasis>Description</emphasis> -  Only search elements by description.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new attribute type</emphasis> - Opens a wizard to create a new attribute type.
+                        </listitem>
+                    </itemizedlist>
+                </para>
+				<para>
+					<emphasis role="strong">Icons</emphasis>
+				</para>
+				<para>
+					The following icons can appear in the Search view.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</section>
+		</section>
+		
+        <!-- EDITORS SECTION -->
+		<section id="editors">
+			<title>Editors</title>
+			
+            <!-- ATTRIBUTE TYPE EDITOR SECTION -->
+			<section id="attribute_type_editor">
+				<title>Attribute Type Editor</title>
+                <para>The attribute type editor is the one-stop shop where you can define all aspects of your attribute type.</para>
+                <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/editors_attribute_type_overview.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+                <para>The <emphasis role="strong">Overview</emphasis> page is where the user can edit the properties of the attribute type.</para>
+                <para>User can edit:</para>
+                <para>
+                    <itemizedlist spacing="normal" mark="bullet">
+						<listitem>the name</listitem> 
+                        <listitem>the OID</listitem> 
+                        <listitem>the description</listitem> 
+                        <listitem>the superior type</listitem> 
+                        <listitem>the usage</listitem> 
+                        <listitem>the syntax and syntax length</listitem> 
+                        <listitem>if the attribute type is obsolete</listitem> 
+                        <listitem>if the attribute type is single-value</listitem> 
+                        <listitem>if the attribute type is collective</listitem> 
+                        <listitem>if the attribute type is no-user-modification</listitem> 
+                        <listitem>all the matching rules (equality, ordering, substring)</listitem>
+                    </itemizedlist>
+                </para>
+                <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/editors_attribute_type_source_code.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+                <para>The <emphasis role="strong">Source code</emphasis> page is where the user can see the result of his actions in the Overview page and what source code will be generated in the schema file.</para>
+			</section>
+			
+            <!-- OBJECT CLASS EDITOR SECTION -->
+			<section id="object_class_editor">
+				<title>Object Class Editor</title>
+                <para>The object class editor is the one-stop shop where you can define all aspects of your object class.</para>
+                <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/editors_object_class_overview.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+                <para>The <emphasis role="strong">Overview</emphasis> page is where the user can edit the properties of the object class.</para>
+                <para>User can edit:</para>
+                <para>
+                    <itemizedlist spacing="normal" mark="bullet">
+                        <listitem>the name</listitem> 
+                        <listitem>the OID</listitem> 
+                         <listitem>the description</listitem> 
+                        <listitem>the superior class</listitem> 
+                        <listitem>the class type</listitem> 
+                        <listitem>if the object class is obsolete</listitem> 
+                        <listitem>the mandatory attributes (add and remove)</listitem> 
+                        <listitem>the optionnal attributes (add and remove)</listitem>
+                    </itemizedlist>
+                </para>
+                <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/editors_object_class_source_code.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+                <para>The <emphasis role="strong">Source code</emphasis> page is where the user can see the result of his actions in the Overview page and what source code will be generated in the schema file.</para>
+			</section>
+			
+            <!-- SCHEMA EDITOR SECTION -->
+			<section id="schema_editor">
+				<title>Schema Editor</title>
+                <para>The schema editor is, at the moment, only a simple view of the source code of the schema file.</para>
+                <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/editors_schema_source_code.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+                <para>This editor can be reached from the <emphasis role="strong">Schema</emphasis> view right-clicking on the schema icon and choosing <emphasis role="strong">View source code</emphasis> in the context menu.</para>
+                <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/editors_schema_source_code_context_menu.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+			</section>
+		</section>
+	</chapter>
+	
+    <!-- TASKS SECTION -->
+	<chapter id="tasks">
+		<title>Tasks</title>
+		<para>
+			This part of the guide provides you a list of the tasks you can accomplish with the Schemas Editor Plugin. 
+		</para>
+		
+        <!-- OPENING A SCHEMA SECTION -->
+		<section id="opening_a_schema">
+			<title>Opening a schema</title>
+            <para>In this section, you will learn how to open a schema file.</para>
+            <para>1. In the Schemas view, click the <emphasis role="strong">Open a local schema file</emphasis> button in the toolbar, or select <emphasis role="strong">Open local schema file</emphasis> from the File menu.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/opening_a_schema/toolbar_action.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/opening_a_schema/file_menu.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>2. Browse the filesystem and select the schema file. Then click <emphasis role="strong">Open</emphasis>.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/opening_a_schema/open_dialog.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</section>
+
+        <!-- CREATING A NEW SCHEMA SECTION -->
+		<section id="creating_a_new_schema">
+			<title>Creating a new schema</title>
+            <para>In this section, you will learn how to create a new schema.</para>
+            <para>1. In the Schemas view, click the <emphasis role="strong">Create a new schema</emphasis> button in the toolbar.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_schema/toolbar_action.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>2. In the <emphasis role="strong">Name</emphasis> field, enter the name of the schema.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_schema/wizard.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>3. If a schema of the same name already exists, you will see this error.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_schema/wizard_error.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>4. Then click <emphasis role="strong">Finish</emphasis>.</para>
+		</section>
+
+        <!-- REMOVING A SCHEMA SECTION -->
+		<section id="removing_a_schema">
+			<title>Removing a schema</title>
+            <para>In this section, you will learn how to remove a schema.</para>
+            <para>1. In the Schemas view, click the <emphasis role="strong">Remove the selected schema</emphasis> from the pool button in the toolbar.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/removing_a_schema/toolbar_action.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para><emphasis role="strong">Note:</emphasis> It is not possible to remove a core schema</para>
+		</section>
+
+        <!-- CREATING A NEW OBJECT CLASS SECTION -->
+		<section id="creating_a_new_object_class">
+			<title>Creating a new object class</title>
+            <para>In this section, you will learn how to create a new object class.</para>
+            <para>1. In the Schemas view, click the <emphasis role="strong">Create a new object class</emphasis>  button in the toolbar.</para>
+            <para><emphasis role="strong">Note:</emphasis> It is not possible to create a new object class in a core schema.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_object_class/toolbar_action.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>2. In the <emphasis role="strong">OID</emphasis> field, enter an OID of your choice.</para>
+            <para>If you want the <emphasis role="strong">OID</emphasis> field to be pre-filled with your organisation's OID, check the <emphasis role="strong">Prefix with default OID</emphasis> checkbox.
+            In the <emphasis role="strong">Name</emphasis> field, enter the name of the object class.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_object_class/wizard.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>3. If an object class of the same name already exists, you will see this error.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_object_class/wizard_error_same_name.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>4. If an element (object class or attribute type) already has the OID you provided, you will see this error.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_object_class/wizard_error_same_oid.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>5. If you enter a bad OID, you will see this error.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_object_class/wizard_error_malformed_oid.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>6. Then click <emphasis role="strong">Finish</emphasis>.</para>
+		</section>
+
+        <!-- CREATING A NEW ATTRIBUTE TYPE SECTION -->
+		<section id="creating_a_new_attribute_type">
+			<title>Creating a new attribute type</title>
+            <para>In this section, you will learn how to create a new attribute type.</para>
+            <para>1. In the Schemas view, click the <emphasis role="strong">Create a new attribute type</emphasis> button in the toolbar.</para>
+            <para><emphasis role="strong">Note:</emphasis> It is not possible to create a new attribute type in a core schema.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_attribute_type/toolbar_action.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>2. In the <emphasis role="strong">OID</emphasis> field, enter an OID of your choice.</para>
+            <para>If you want the <emphasis role="strong">OID</emphasis> field to be pre-filled with your organisation's OID, check the <emphasis role="strong">Prefix with default OID</emphasis> checkbox.
+            In the <emphasis role="strong">Name</emphasis> field, enter the name of the attribute type.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_attribute_type/wizard.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>3. If an attribute type of the same name already exists, you will see this error.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_same_name.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>4. If an element (object class or attribute type) already has the OID you provided, you will see this error.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_same_oid.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>5. If you enter a bad OID, you will see this error.</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_malformed_oid.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para>6. Then click <emphasis role="strong">Finish</emphasis>.</para>
+		</section>
+	</chapter>
+	
+    <!-- REFERENCE CHAPTER -->
+	<chapter id="reference">
+		<title>Reference</title>
+
+        <!-- OBJECT CLASS AND ATTRIBUTE TYPE PREFERENCE SECTION -->
+		<section id="object_class_and_attribute_type_prefs">
+			<title>Object Class and Attribute Type Preferences</title>
+            <para>On the ObjectClass and AttributeType preferences page, you can indicate the following preferences.</para>
+            <para>
+				<informaltable>
+					<tgroup cols="3">
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>Your organization's default OID</entry>
+								<entry>OID of your organisation.</entry>
+								<entry>1.2.3.4.5.6</entry>
+							</row>
+							<row>
+								<entry>Automatically prefix new elements with this OID</entry>
+								<entry>Select this option if you want new elements (object class or attribute type) to be prefixed with the OID provided in the field above in wizards.</entry>
+								<entry>Off</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+            <para>Here is what the ObjectClass and AttributeType preferences page looks like:</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/reference/preferences_OC_and_AT.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</section>
+
+        <!-- SCHEMAS PREFERENCESECTION -->
+		<section id="schemas_prefs">
+			<title>Schemas Preferences</title>
+            <para>On the Schemas preferences page, you can indicate the following preferences.</para>
+            <para>
+				<informaltable>
+					<tgroup cols="3">
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>Default save/load dialogs directory</entry>
+								<entry>This option allows you to browse to a directory you want to set as default save/load dialogs directory.</entry>
+								<entry>User's Home directory</entry>
+							</row>
+							<row>
+								<entry>Save schemas configuration when exiting LDAP Studio</entry>
+								<entry>Select this option if you want the opened schemas to saved automatically when LDAP Studio exits.</entry>
+								<entry>On</entry>
+							</row>
+							<row>
+								<entry>Use specific core files</entry>
+								<entry>Select this option if you want to use different core files from the standard ones bundled with LDAP Studio.</entry>
+								<entry>Off</entry>
+							</row>
+							<row>
+								<entry>Core schemas directory</entry>
+								<entry>This option allows you to browse to your specific core schemas directory.</entry>
+								<entry>User's Home directory</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+            <para>Here is what the Schemas preferences page looks like:</para>
+            <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/reference/preferences_schemas.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+            <para></para>
+            <para></para>
+            <para></para>
+		</section>
+
+        <!-- RFCS SECTION -->
+		<section id="rfcs">
+			<title>RFCs</title>
+            <simplelist>
+			    <member>
+				    <ulink url="rfcs/rfc2252.txt">
+					    RFC 2252 - Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions
+				    </ulink>
+			    </member>
+                <member>
+				    <ulink url="rfcs/rfc4517.txt">
+					    RFC 4517 - Lightweight Directory Access Protocol (LDAP): Syntaxes and Matching Rules
+				    </ulink>
+			    </member>
+                <member>
+				    <ulink url="rfcs/rfc4524.txt">
+					    RFC 4524 - COSINE LDAP/X.500 Schema
+				    </ulink>
+			    </member>
+                <member>
+				    <ulink url="rfcs/rfc4519.txt">
+					    RFC 4519 - Lightweight Directory Access Protocol (LDAP): Schema for User Applications
+				    </ulink>
+			    </member>
+            </simplelist>
+		</section>
+
+        <!-- RELEASE NOTES SECTION -->
+		<section id="release_notes">
+			<title>Release notes</title>
+            <para><emphasis role="strong">LDAP Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
+            <para>Includes :</para>
+            <para>
+                <itemizedlist spacing="normal" mark="bullet">
+					<listitem>LDAP Studio RCP 0.6.0</listitem>
+					<listitem>LDAP Studio Browser Plugin 0.6.0</listitem>
+					<listitem>LDAP Studio Schemas Editor Plugin 0.6.0</listitem>
+                </itemizedlist>
+            </para>
+        </section>
+	</chapter>
+</book>
