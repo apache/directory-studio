@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="docbook"
+		module="docbook-xml"
+		revision="4.5"
+		status="release"
+		publication="20061026131700"
+	/>
+	<configurations>
+		<conf name="default" visibility="public" />
+	</configurations>
+	<publications>
+		<artifact name="docbook-xml" type="zip" ext="zip" conf="default"/>
+	</publications>
+</ivy-module>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
+
+<book>
+
+	<bookinfo>
+		<title>LDAP Browser Users Guide</title>
+		<copyright>
+			<year>2007</year>
+			<holder>Apache Software Foundation</holder>
+		</copyright>
+		<legalnotice>
+			<para>
+			LDAP Browser this user guide are distributed under the Apache License. 
+			</para>			
+		</legalnotice>
+	</bookinfo>
+
+	<chapter id="ch1">
+		<title>Chapter 1</title>
+		
+		<para>
+			This getting started guide provides a short introduction to the LDAP Browser. 
+		</para>
+		
+		<section id="sec1">
+			<title>Section 1</title>
+			
+			<para>
+				Bla bla
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata
+								fileref="images/product_lg.gif" format="GIF" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			
+		</section>
+	</chapter>
+
+</book>
