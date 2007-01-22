@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
+
+<book>
+	<bookinfo>
+		<title>Schemas Editor Users Guide</title>
+		<copyright>
+			<year>2007</year>
+			<holder>Apache Software Foundation</holder>
+		</copyright>
+		<legalnotice>
+			<para>
+				This user guide is distributed under the Apache License. 
+			</para>			
+		</legalnotice>
+	</bookinfo>
+	
+	<!-- INTRODUCTION SECTION -->
+	<section id="introduction">
+		<title>Introduction</title>
+		<para>
+			LDAP Studio Schemas Editor is a plugin designed to handle Schemas files (in OpenLDAP format) of LDAP Server.
+		</para>	
+		<para>
+			It allows browsing, creation, removal of schemas, object classes and attribute types.
+		</para>
+	</section>
+	
+    <!-- GETTING STARTED CHAPTER -->
+	<chapter id="gettingstarted">
+		<title>Getting Started</title>
+		
+        <!-- VIEWS SECTION -->
+		<section id="views">
+			<title>Views</title>
+			
+            <!-- HIERARCHY VIEW SECTION -->
+			<section id="hierarchy_view">
+				<title>Hierarchy view</title>
+				<para>
+					Hierarchy view provides a hierarchical view of the resources in the schemas. From here, you can open 
+					object classes and attribute types to edit them or browse the classes hierarchy.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/views_hierarchy_view.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					By default, the Hierarchy view is included in the Schemas perspective
+				</para>
+				<para>
+					<emphasis role="strong">Toolbar</emphasis>
+				</para>
+				<para>
+					The toolbar of the Hierarchy view contains the following buttons:
+				</para>
+				<para>
+					<itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<emphasis>Sort Alphabetically</emphasis> - Displays the hierarchy by alphabetical order.
+						</listitem>
+						<listitem>
+							<emphasis>Sort Unalphabetically</emphasis> - Displays the hierarchy by unalphabetical order.
+						</listitem>
+					</itemizedlist>
+				</para>
+				<para>
+					<emphasis role="strong">Icons</emphasis>
+				</para>
+				<para>
+					The following icons can appear in the Hierarchy view.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class_warning.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Unresolved object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/folder.png" format="PNG" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Folder</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</section>
+			
+            <!-- SCHEMA VIEW SECTION -->
+			<section id="schemas_view">
+				<title>Schemas View</title>
+                <para>
+					Schemas view provides a view of all the opened schemas. From here, you can open object classes and attribute 
+                    types to edit them or browse the property of schemas files. You can also, add or delete attribute types, object 
+                    classes or schemas.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/views_schemas_view.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					By default, the Schemas view is included in the Schemas perspective
+				</para>
+                <para>
+					<emphasis role="strong">Toolbar</emphasis>
+				</para>
+				<para>
+					The toolbar of the Schemas view contains the following buttons:
+				</para>
+                <para>
+					<itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<emphasis>Open a local schema file</emphasis> - Opens a file dialog to select the schema file.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new schema</emphasis> - Opens a wizard to create a new schema.
+                        </listitem>
+                        <listitem>
+							<emphasis>Remove the selected schema from the pool</emphasis> - Removes the selected schema from the pool.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new object class</emphasis> -  Opens a wizard to create a new object class.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new attribute type</emphasis> - Opens a wizard to create a new attribute type.
+                        </listitem>
+                        <listitem>
+							<emphasis>Delete</emphasis> - Deletes the selected element (attribute type or object class). (Note: A schema cannot be deleted, but only removed.)
+                        </listitem>
+                        <listitem>
+							<emphasis>Sort Alphabetically</emphasis> - Displays the hierarchy by alphabetical order.
+                        </listitem>
+                        <listitem>
+							<emphasis>Sort Unalphabetically</emphasis> - Displays the hierarchy by unalphabetical order.
+                        </listitem>
+                    </itemizedlist>
+                </para>
+				<para>
+					<emphasis role="strong">Icons</emphasis>
+				</para>
+				<para>
+					The following icons can appear in the Schemas view.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/schema.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Schema file</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/schema_core.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Core schema file</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/folder.png" format="PNG" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Folder</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</section>
+			
+            <!-- SEARCH VIEW SECTION -->
+			<section id="search_view">
+				<title>Search View</title>
+                <para>
+					Search view provides a search field to search any ressources in the Workbench (object class or attribute type). 
+                    From here, you can open object classes and attribute types to edit them.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/concepts/views_search_view.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					By default, the Search view is included in the Schemas perspective
+				</para>
+                <para>
+					<emphasis role="strong">Toolbar</emphasis>
+				</para>
+				<para>
+					Search view provides the following search filter:
+				</para>
+                <para>
+					<itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<emphasis>All metadata</emphasis> - Search elements by name, oid and description.
+                        </listitem>
+                        <listitem>
+							<emphasis>Name</emphasis> - Only search elements by name.
+                        </listitem>
+                        <listitem>
+							<emphasis>OID</emphasis> - Only search elements by OID.
+                        </listitem>
+                        <listitem>
+							<emphasis>Description</emphasis> -  Only search elements by description.
+                        </listitem>
+                        <listitem>
+							<emphasis>Create a new attribute type</emphasis> - Opens a wizard to create a new attribute type.
+                        </listitem>
+                    </itemizedlist>
+                </para>
+				<para>
+					<emphasis role="strong">Icons</emphasis>
+				</para>
+				<para>
+					The following icons can appear in the Search view.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</section>
+		</section>
+		
+        <!-- EDITORS SECTION -->
+		<section id="editors">
+			<title>Editors</title>
+			
+            <!-- ATTRIBUTE TYPE EDITOR SECTION -->
+			<section id="attribute_type_editor">
+				<title>Attribute Type Editor</title>
+			</section>
+			
+            <!-- OBJECT CLASS EDITOR SECTION -->
+			<section id="object_class_editor">
+				<title>Object Class Editor</title>
+			</section>
+			
+            <!-- SCHEMA EDITOR SECTION -->
+			<section id="schema_editor">
+				<title>Schema Editor</title>
+			</section>
+		</section>
+	</chapter>
+	
+    <!-- TASKS SECTION -->
+	<chapter id="tasks">
+		<title>Tasks</title>
+		<para>
+			This getting started guide provides a short introduction to the LDAP Browser. 
+		</para>
+		
+        <!-- OPENING A SCHEMA SECTION -->
+		<section id="opening_a_schema">
+			<title>Opening a schema</title>
+		</section>
+
+        <!-- CREATING A NEW SCHEMA SECTION -->
+		<section id="creating_a_new_schema">
+			<title>Creating a new schema</title>
+		</section>
+
+        <!-- REMOVING A SCHEMA SECTION -->
+		<section id="removing_a_schema">
+			<title>Removing a schema</title>
+		</section>
+
+        <!-- CREATING A NEW OBJECT CLASS SECTION -->
+		<section id="creating_a_new_object_class">
+			<title>Creating a new object class</title>
+		</section>
+
+        <!-- CREATING A NEW ATTRIBUTE TYPE SECTION -->
+		<section id="creating_a_new_attribute_type">
+			<title>Creating a new attribute type</title>
+		</section>
+	</chapter>
+	
+    <!-- REFERENCE CHAPTER -->
+	<chapter id="reference">
+		<title>Reference</title>
+		<para>
+			This getting started guide provides a short introduction to the LDAP Browser. 
+		</para>
+		
+        <!-- PREFERENCES SECTION -->
+		<section id="preferences">
+			<title>Preferences</title>
+			
+            <!-- HELP SECTION -->
+			<section id="help">
+				<title>Help</title>
+			</section>
+
+            <!-- HELP SERVER SECTION -->
+			<section id="help_server">
+				<title>Help Server</title>
+			</section>
+
+            <!-- OBJECT CLASS AND ATTRIBUTE TYPE SECTION -->
+			<section id="object_class_and_attribute_type">
+				<title>Object Class and Attribute Type</title>
+			</section>
+
+            <!-- SCHEMAS SECTION -->
+			<section id="schemas">
+				<title>Schemas</title>
+			</section>
+			
+		</section>
+
+	</chapter>
+
+</book>
