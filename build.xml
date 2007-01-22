@@ -44,7 +44,7 @@
         <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
     </condition>
 
-
+    <!-- Setting up a special property if target OS is Mac OS X-->
     <condition property="isTargetMacOSX" value="true" >
             <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
     </condition>
@@ -89,6 +89,15 @@
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
             <fileset dir="${basedir}/ldapstudio-schemas-plugin/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the Schemas Editor Help Plugin -->
+        <ant dir="ldapstudio-schemas-help" inheritAll="no" />
+        <!-- Copy of the Schemas Editor Help Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-schemas-help/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
