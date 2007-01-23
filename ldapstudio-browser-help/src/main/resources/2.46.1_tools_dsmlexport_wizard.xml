@@ -115,7 +115,6 @@
 
 	<simplesect id="tools_dsmlexport_wizard_2">
 		<title>DSML File</title>
-		<!-- 
 		<para>
 			On the DSML File page you have to select the target DSML file.
 		</para>
@@ -165,23 +164,10 @@
 							</entry>
 							<entry>off</entry>
 						</row>
-						<row>
-							<entry>Text Formats</entry>
-							<entry>
-								Opens the
-								<link
-									linkend="preferences_text_formats">
-									Text Formats preferences
-								</link>
-								where you could modify the DSML format.
-							</entry>
-							<entry>-</entry>
-						</row>
 					</tbody>
 				</tgroup>
 			</informaltable>
 		</para>
-		 -->
 	</simplesect>
 
 </section>

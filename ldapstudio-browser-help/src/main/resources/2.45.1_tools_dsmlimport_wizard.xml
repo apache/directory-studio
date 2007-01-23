@@ -65,7 +65,6 @@
 
 	<simplesect id="tools_dsmlimport_wizard_ui">
 		<title>The wizard</title>
-		<!-- 
 		<para>
 			<screenshot>
 				<mediaobject>
@@ -120,53 +119,42 @@
 							</entry>
 						</row>
 						<row>
-							<entry>Enable logging</entry>
+							<entry>Save response</entry>
 							<entry>
-								When checked every imported DSML record
-								is logged into a logfile.
+								When checked the response of the DSML request execution 
+								is saved into a response file.
 							</entry>
 							<entry>on</entry>
 						</row>
 						<row>
-							<entry>Use default logfile</entry>
+							<entry>Use default response file</entry>
 							<entry>
-								By default the extension ".log" is
+								By default the extension ".response.xml" is
 								appended the import filename.
 							</entry>
 							<entry>on</entry>
 						</row>
 						<row>
-							<entry>Use custom logfile</entry>
+							<entry>Use custom response file</entry>
 							<entry>
 								When checked you could specify a custom
-								logfile.
+								response file.
 							</entry>
 							<entry>off</entry>
 						</row>
 						<row>
-							<entry>Overwrite existing logfile</entry>
+							<entry>Overwrite existing response file</entry>
 							<entry>
-								If the default or custom logfile already
+								If the default or custom response file already
 								exist, you must permit to overwrite the
-								logfile.
+								response file.
 							</entry>
 							<entry>off</entry>
-						</row>
-						<row>
-							<entry>Continue on error</entry>
-							<entry>
-								If checked the import process continues
-								if an error occurs while importing a
-								record. If not checked the import
-								process interrupts.
-							</entry>
-							<entry>on</entry>
 						</row>
 					</tbody>
 				</tgroup>
 			</informaltable>
 		</para>
-		 -->
 	</simplesect>
 
 </section>
