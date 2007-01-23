@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.ldapstudio.schemas.feature"
-      label="LDAP Studio Schemas"
+      label="LDAP Studio Schemas Editor"
       version="0.6.0"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
