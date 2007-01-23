@@ -89,9 +89,6 @@ public class ModificationLogsView extends ViewPart
         layout.marginHeight = 0;
         composite.setLayout( layout );
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_modification_logs_view" );
-
         // create main widget
         mainWidget = new LdifEditorWidget( null, "", false );
         mainWidget.createWidget( composite );
@@ -104,6 +101,10 @@ public class ModificationLogsView extends ViewPart
 
         // create the listener
         this.universalListener = new ModificationLogsViewUniversalListener( this );
+
+        // set help context
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_modification_logs_view" );
     }
 
 

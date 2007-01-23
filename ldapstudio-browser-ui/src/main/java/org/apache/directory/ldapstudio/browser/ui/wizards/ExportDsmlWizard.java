@@ -21,6 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 import org.apache.directory.ldapstudio.browser.core.jobs.ExportDsmlJob;
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -66,6 +69,21 @@ public class ExportDsmlWizard extends ExportBaseWizard
         addPage( fromPage );
         toPage = new ExportDsmlToWizardPage( ExportDsmlToWizardPage.class.getName(), this );
         addPage( toPage );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        // set help context ID
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_dsmlexport_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_dsmlexport_wizard" );
     }
 
 

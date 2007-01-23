@@ -138,10 +138,29 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             IWizardPage page = new DummyWizardPage();
             addPage( page );
         }
+    }
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( getContainer().getShell(),
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        // set help context ID
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( applyOnPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( ldifPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( modifyPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( finishPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
     }
+
 
     class DummyWizardPage extends WizardPage
     {

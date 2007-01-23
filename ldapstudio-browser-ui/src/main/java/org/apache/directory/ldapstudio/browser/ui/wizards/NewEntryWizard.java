@@ -152,10 +152,27 @@ public class NewEntryWizard extends Wizard implements INewWizard
             IWizardPage page = new DummyWizardPage();
             addPage( page );
         }
+    }
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( getContainer().getShell(),
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        // set help context ID
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( ocPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( dnPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( attributePage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
     }
+
 
     class DummyWizardPage extends WizardPage
     {

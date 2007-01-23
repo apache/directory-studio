@@ -30,10 +30,13 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This class implements the Import DSML Wizard.
@@ -161,8 +164,21 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     {
         mainPage = new ImportDsmlMainWizardPage( ImportDsmlMainWizardPage.class.getName(), this );
         addPage( mainPage );
-
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        // set help context ID
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_dsmlimport_wizard" );
+    }
+    
     
     /**
      * Get the connection attached to the Import

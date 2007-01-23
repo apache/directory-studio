@@ -22,6 +22,9 @@ package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
 import org.apache.directory.ldapstudio.browser.core.jobs.ExportCsvJob;
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 
 public class ExportCsvWizard extends ExportBaseWizard
@@ -50,6 +53,21 @@ public class ExportCsvWizard extends ExportBaseWizard
         addPage( fromPage );
         toPage = new ExportCsvToWizardPage( ExportCsvToWizardPage.class.getName(), this );
         addPage( toPage );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        // set help context ID
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_csvexport_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_csvexport_wizard" );
     }
 
 

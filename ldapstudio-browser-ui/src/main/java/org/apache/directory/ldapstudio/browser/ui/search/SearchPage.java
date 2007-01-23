@@ -115,14 +115,16 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
         // convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
         parent.setLayoutData( gd );
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_dialog" );
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
         this.spw = new SearchPageWrapper( SearchPageWrapper.NONE );
         this.spw.createContents( composite );
         this.spw.loadFromSearch( this.search );
         this.spw.addWidgetModifyListener( this );
+        
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_dialog" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_dialog" );
 
         super.setControl( parent );
     }

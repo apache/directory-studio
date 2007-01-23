@@ -34,6 +34,7 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -113,11 +114,20 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     {
         mainPage = new ImportLdifMainWizardPage( ImportLdifMainWizardPage.class.getName(), this );
         addPage( mainPage );
-
-//        PlatformUI.getWorkbench().getHelpSystem().setHelp( getContainer().getShell(),
-//            BrowserUIPlugin.PLUGIN_ID + "." + "tools_ldifimport_wizard" );
     }
-
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_ldifimport_wizard" );
+    }
+    
 
     public boolean performFinish()
     {

@@ -31,6 +31,7 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionP
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -87,8 +88,22 @@ public class NewConnectionWizard extends Wizard implements INewWizard, Connectio
 
         optionsPage = new NewConnectionOptionsWizardPage( NewConnectionOptionsWizardPage.class.getName(), this );
         addPage( optionsPage );
+    }
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( getContainer().getShell(),
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        // set help context ID
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newconnection_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( authPage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newconnection_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( optionsPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_newconnection_wizard" );
     }
 

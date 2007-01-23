@@ -106,10 +106,23 @@ public class AttributeWizard extends Wizard implements INewWizard
             IWizardPage page = new DummyWizardPage();
             addPage( page );
         }
+    }
 
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( getContainer().getShell(),
+
+    /**
+     * {@inheritDoc}
+     */
+    public void createPageControls( Composite pageContainer )
+    {
+        super.createPageControls( pageContainer );
+        
+        // set help context ID
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
+            BrowserUIPlugin.PLUGIN_ID + "." + "tools_attribute_wizard" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( optionsPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_attribute_wizard" );
     }
+
 
     class DummyWizardPage extends WizardPage
     {
