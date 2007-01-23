@@ -70,6 +70,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction aboutAction;
     private IWorkbenchAction preferencesAction;
     private IWorkbenchAction helpAction;
+    private IWorkbenchAction dynamicHelpAction;
     private UpdateAction updateAction;
     private ManageConfigurationAction manageConfigurationAction;
     private IWorkbenchAction newAction;
@@ -218,6 +219,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         helpAction = ActionFactory.HELP_CONTENTS.create( window );
         register( helpAction );
         
+        dynamicHelpAction = ActionFactory.DYNAMIC_HELP.create( window );
+        register( dynamicHelpAction );
+        
         viewsList = ContributionItemFactory.VIEWS_SHORTLIST.create( window );
         perspectivesList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create( window );
         reopenEditorsList = ContributionItemFactory.REOPEN_EDITORS.create( window );
@@ -310,6 +314,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         // Help
         helpMenu.add( helpAction );
+        helpMenu.add( dynamicHelpAction );
         helpMenu.add( reportABug );
         helpMenu.add( new Separator() );
         MenuManager softwareUpdates = new MenuManager( Messages

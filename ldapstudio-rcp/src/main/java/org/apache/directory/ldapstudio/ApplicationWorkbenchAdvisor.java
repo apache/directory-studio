@@ -21,6 +21,12 @@
 package org.apache.directory.ldapstudio;
 
 
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.TrayDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -65,6 +71,13 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
     {
         //enable the save/restore windows size & position feature
         configurer.setSaveAndRestore( true );
+
+        //enable help button in dialogs 
+        TrayDialog.setDialogHelpAvailable( true );
+        ImageRegistry reg = JFaceResources.getImageRegistry();
+        ImageDescriptor helpImage = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
+            "IMGS_LCL_LINKTO_HELP" );
+        reg.put( Dialog.DLG_IMG_HELP, helpImage );
     }
 
 
