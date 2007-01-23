@@ -10,16 +10,216 @@
 		</copyright>
 		<legalnotice>
 			<para>
-				This user guide is distributed under the Apache License. 
-			</para>			
+				This user's guide is distributed under the Apache License, Version 2.0. 
+				You can find the license details online at <ulink url="http://apache.org/licenses/LICENSE-2.0.txt">http://apache.org/licenses/LICENSE-2.0.txt</ulink>.
+			</para>				
 		</legalnotice>
 	</bookinfo>
 	
-	<!-- INTRODUCTION SECTION -->
-	<section id="introduction">
-		<title>Introduction</title>
-		<para>
-			LDAP Studio is a Tooling Platform for LDAP Servers. It composed of an Eclipse RCP Application and a set of Eclipse plugins.
-		</para>
-	</section>
+	<!-- GETTING STARTED CHAPTER -->
+	<chapter id="gettingstarted">
+		<title>Getting started</title>
+		
+		<!-- DOWNLOAD AND INSTALLATION SECTION -->
+		<section id="download_install">
+			<title>Download and install</title>
+			<para>The latest version of LDAP Studio can be downloaded from the 
+			LDAP Studio Downloads page, at this address : 
+			<ulink url="http://people.apache.org/~pamarcelot/ldapstudio/downloads/">http://people.apache.org/~pamarcelot/ldapstudio/downloads/</ulink>.</para>
+			<para><emphasis role="strong">System requirements</emphasis></para>
+			<para>
+				<itemizedlist>
+					<listitem>Mac OS X 10.4 or later, Windows, Linux or Solaris</listitem>
+					<listitem><ulink url="http://www.java.com/">Java Runtime Environment</ulink> 5 or later</listitem>
+				</itemizedlist>
+			</para>
+			<para><emphasis role="strong">Installing on Mac OS X</emphasis></para>
+			<para>Follow this installation process:</para>
+			<para>
+				<itemizedlist>
+					<listitem>Step 1: Double-click the downloaded package to mount the LDAP Studio DMG.</listitem>
+					<listitem>Step 2: Drag and drop LDAP Studio to your Applications folder.</listitem>
+				</itemizedlist>
+			</para>
+			<para><emphasis role="strong">Installing on Linux</emphasis></para>
+			<para>Follow this installation process:</para>
+			<para>
+				<itemizedlist>
+					<listitem>Step 1: Uncompress the Tar Gzip archive ('tar xzf ldapstudio-0.6.0-linux-i386.tar.gz' for the i386 Linux version).</listitem>
+					<listitem>Step 2: Move the LDAP Studio folder to the location of your choice.</listitem>
+				</itemizedlist>
+			</para>
+			<para><emphasis role="strong">Installing on Windows</emphasis></para>
+			<para>Follow this installation process:</para>
+			<para>
+				<itemizedlist>
+					<listitem>Unzip the Zip archive.</listitem>
+					<listitem>Run the installer and follow install instructions.</listitem>
+				</itemizedlist>
+			</para>
+			<para><emphasis role="strong">Installing on Solaris</emphasis></para>
+			<para>TO DO</para>
+		</section>
+	</chapter>
+	
+	<!-- TASKS CHAPTER -->
+	<chapter id="tasks">
+		<title>Tasks</title>
+		
+		<!-- RUNNING LDAP STUDIO SECTION -->
+		<section id="running">
+			<title>Running LDAP Studio</title>
+			<para><emphasis role="strong">Mac OS X</emphasis></para>
+			<para>If you followed the instructions on the "Download and install" page, simply double-click the LDAP Studio application located in your Applications folder.</para>
+			<para><emphasis role="strong">Linux</emphasis></para>
+			<para>After installing the LDAP Studio in a directory, you can start LDAP Studio by running the LDAP Studio executable included with the release.</para>
+			<para><emphasis role="strong">Windows</emphasis></para>
+			<para>If you followed the instructions on the "Download and install" page, simply click on the LDAP Studio executable in the LDAP Studio folder located in the All programs item of the Start menu.</para>
+			<para><emphasis role="strong">Solaris</emphasis></para>
+			<para>TO DO</para>
+		</section>
+		
+		<!-- UPDATING LDAP STUDIO SECTION -->
+		<section id="updating">
+			<title>Updating LDAP Studio</title>
+			<para>To check to see whether there are updates for features of LDAP Studio (requires Internet access):</para>
+			<para>1. Click  <emphasis role="strong">Help > Software Updates > <imageobject><imagedata fileref="images/search-updates.png" format="PNG" /></imageobject> Search for updates...</emphasis>. 
+				This will contact LDAP Studio Web site to discover what versions of those features are available. The potential 
+				upgrades are presented in on the next page.</para>
+			<para>2. Select the feature versions that you wish to upgrade, and click <emphasis role="strong">Next</emphasis>.</para>
+			<para>3. Carefully review the license agreements for the upgraded features. If the terms of 
+				all these licenses are acceptable, check "I accept the terms in the license agreements." Do not proceed to 
+				download the features if the license terms are not acceptable.</para>
+			<para>4. Feature versions can be digitally signed by the company that provides them. This allows you to 
+				verify more easily that the features and plug-ins that are about to be downloaded and installed are coming from 
+				a trusted supplier.</para>
+			<para>Click <emphasis role="strong">Install</emphasis> to allow the downloading and installing to proceed.</para>
+			<para>5. Once all the features and plug-ins have been downloaded successfully and their files installed into the product on the 
+			local computer, a new configuration that incorporates these features and plug-ins will be formulated. Click <emphasis role="strong">Yes</emphasis> when asked to exit 
+			and restart the Workbench for the changes to take effect.</para>
+			
+			<!-- INSPECTING THE CURRENT CONFIGURATION SECTION -->
+			<section id="inspecting_configuration">
+				<title>Inspecting the current configuration</title>
+				<para>The <emphasis role="strong">Help > <imageobject><imagedata fileref="images/about.png" format="PNG" /></imageobject> About LDAP Studio</emphasis> dialog shows most of the important information about the features and plug-in configured
+					 in the product. To find out further detailed information about the current configuration:</para>
+				<para>1. Open the update configuration manager by clicking <emphasis role="strong"> Help > Software Updates > <imageobject><imagedata fileref="images/manage-configuration.png" format="PNG" /></imageobject> Manage Configuration</emphasis>. 
+					This opens the Product Configuration dialog.</para>
+				<para>2. In the Product Configuration dialog expand the root node (current  configuration). The first tier of items are locations on 
+					the local computer where the files for features and plug-ins are stored. For a typical product, all features are installed in a single 
+					directory sub-tree. However, a feature that is installed as an extension of another product are usually located in a separate directory 
+					sub-tree.</para>
+				<para>3. Expand the location to see the feature versions installed there.</para>
+				<para>4. The nesting of the features indicates which child features are included in a given parent feature. Nested features act as a unit.
+				</para>
+				<para>5. Select a feature version and click <emphasis role="strong">Show Properties</emphasis> to open the Properties dialog which presents more detailed information about 
+					the selected feature.</para>
+				<para>6. Click <emphasis role="strong">Show Disabled Features</emphasis> filter on the toolbar of the Product Configuration dialog. Any feature versions that are disabled are 
+					now shown (you might not have any). Disabled feature versions are ones that are installed on the local computer but excluded from the 
+					current configuration. At most one version of any given feature can be present in a given configuration; usually the ones with the lower 
+					version numbers will be in a disabled state.</para>
+				<para>7. In the Properties dialog of a feature, click <emphasis role="strong">Status</emphasis> to find out whether the selected feature is configured exactly as packaged. The 
+					status will show when a feature's plug-ins are present at different versions, or disabled due to missing prerequisite plug-ins that are 
+					expected to be supplied by some other feature.</para>
+			</section>
+			
+			<!-- ENABLING, DISABLING AND UNINSTALLING FEATURES SECTION -->
+			<section id="enabling_disabling_uninstalling_features">
+				<title>Enabling, disabling and uninstalling features</title>
+				<para>You can browse and manage your configuration from the <emphasis role="strong">Product Configuration dialog</emphasis>. Open the <emphasis role="strong">Product Configuration</emphasis> dialog by 
+					clicking <emphasis role="strong"> Help > Software Updates > <imageobject><imagedata fileref="images/manage-configuration.png" format="PNG" /></imageobject> Manage Configuration</emphasis>.</para>
+				<para>1. <emphasis role="strong">Disabling a feature</emphasis>: select the feature and click <emphasis role="strong">Disable</emphasis> in the right pane of the dialog. This option is available only when the 
+					feature is currently enabled, and the feature is either an optional feature or a root feature (not included by other features).</para>
+				<para>2. <emphasis role="strong">Enabling a feature</emphasis>: First, ensure <emphasis role="strong">Show Disabled Features</emphasis>  is turned on in the tool bar. Then, select a disabled optional or root 
+					feature and click <emphasis role="strong">Enable</emphasis> in the right pane of the dialog.</para>
+				<para>3. <emphasis role="strong">Uninstalling a feature</emphasis>: features that you have installed using the update manager can be uninstalled, provided they are already 
+					disabled, or that they are optional or root features. If the feature is disabled, make sure <emphasis role="strong">Show Disabled Features</emphasis> is turned on in the tool bar. 
+					Select the feature and click <emphasis role="strong">Uninstall</emphasis> in the right page of the dialog.</para>
+			</section>
+			
+		</section>
+		
+		<!-- REPORTING A BUG SECTION -->
+		<section id="reporting_a_bug">
+			<title>Reporting a bug</title>
+			<para>Use the <emphasis role="strong">Help > <imageobject><imagedata fileref="images/bug-report.png" format="PNG" /></imageobject> Report a bug...</emphasis> menu item to report any bug you find on LDAP Studio.</para>
+			<para>You will be redirected on your default Web browser to our issue tracking software called Jira.</para>
+			<para>You can also reach it using this address : <ulink url="https://issues.apache.org/jira/browse/DIRSTUDIO">https://issues.apache.org/jira/browse/DIRSTUDIO</ulink></para>
+			<para><imageobject><imagedata fileref="images/jira-screenshot.png" format="PNG" /></imageobject></para>
+			<para>To report a bug:</para>
+			<para>1. Click the <emphasis role="strong">Create a new issue</emphasis> link in the menu.</para>
+			<para>2. Make sure the selected project is 'Directory LDAP Studio' and the issue type is 'Bug'. Click <emphasis role="strong">Next</emphasis>.</para>
+			<para>3. Fill in the issue form giving the more details you can on the bug you have found.</para>
+			<para>4. Click the <emphasis role="strong">Create</emphasis> button to create the new issue.</para>
+		</section>
+		
+	</chapter>
+	
+	<!-- REFERENCE -->
+	<chapter id="reference">
+		<title>Reference</title>
+		
+		<!-- PREFERENCES SECTION -->
+		<section id="preferences">
+			<title>Preferences</title>
+			
+			<!-- HELP SECTION -->
+			<section id="help">
+				<title>Help</title>
+				
+				<!-- HELP SERVER SECTION -->
+				<section id="help_server">
+					<title>Help Server</title>
+				</section>
+				
+			</section> <!-- end Help Section -->
+			
+			<!-- TEXT EDITORS SECTION -->
+			<section id="text_editors">
+				<title>Text editors</title>
+				
+				<!-- ACCESSIBILITY SECTION -->
+				<section id="accessibility">
+					<title>Accessibility</title>
+				</section>
+				
+				<!-- ANNOTATIONS SECTION -->
+				<section id="annotations">
+					<title>Annotations</title>
+				</section>
+				
+				<!-- LINKED MODE SECTION -->
+				<section id="linked_mode">
+					<title>Linked mode</title>
+				</section>
+				
+				<!-- QUICK DIFF SECTION -->
+				<section id="quick_diff">
+					<title>Quick diff</title>
+				</section>
+				
+				<!-- SPELLING SECTION -->
+				<section id="spelling">
+					<title>Spelling</title>
+				</section>
+				
+			</section> <!-- end Text Editors Section -->
+			
+		</section> <!-- end Preferences Section -->
+		
+		<!-- RELEASE NOTES SECTION -->
+		<section id="release_notes">
+			<title>Release notes</title>
+            <para><emphasis role="strong">LDAP Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
+            <para>Includes :</para>
+            <para>
+                <itemizedlist spacing="normal" mark="bullet">
+					<listitem>LDAP Studio RCP 0.6.0</listitem>
+					<listitem>LDAP Studio Browser Plugin 0.6.0</listitem>
+					<listitem>LDAP Studio Schemas Editor Plugin 0.6.0</listitem>
+                </itemizedlist>
+            </para>
+        </section> <!-- end Release Notes Section -->
+        
+	</chapter>
 </book>
