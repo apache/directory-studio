@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.ldapstudio.schemas.feature"
-      label="LDAP Studio Schemas Feature"
+      label="LDAP Studio Schemas"
       version="0.6.0"
       provider-name="Apache Software Foundation"
-      image="ldapstudio.png"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
-      arch="ppc,x86">
+      arch="ppc,x86"
+      image="ldapstudio.png">
 
    <description>
       The LDAP Studio Schemas Feature contains all plugins related to the
@@ -236,8 +236,8 @@ of your accepting any such warranty or additional liability.
          install-size="0"
          version="0.6.0"
          unpack="false"/>
-         
-	<plugin
+
+   <plugin
          id="org.apache.directory.ldapstudio.jars"
          download-size="0"
          install-size="0"

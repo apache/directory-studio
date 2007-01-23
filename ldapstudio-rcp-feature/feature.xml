@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.ldapstudio.feature"
-      label="LDAP Studio RCP Feature"
+      label="LDAP Studio RCP"
       version="0.6.0"
       provider-name="Apache Software Foundation"
-      image="ldapstudio.png"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
-      arch="ppc,x86">
+      arch="ppc,x86"
+      image="ldapstudio.png">
 
    <description>
       The LDAP Studio RCP Feature contains all plugins related to the
