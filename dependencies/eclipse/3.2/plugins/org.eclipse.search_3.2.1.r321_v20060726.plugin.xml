@@ -10,28 +10,62 @@
 	
 	<extension-point name="%searchPages" id="searchPages" schema="schema/searchPages.exsd"/>
 	<extension-point name="%searchResultSorters" id="searchResultSorters" schema="schema/searchResultSorters.exsd"/>
-  	<extension-point name="%searchResultViewPages" id="searchResultViewPages" schema="schema/searchResultViewPages.exsd"/>
-    <extension-point name="%textSearchEngine" id="textSearchEngine" schema="schema/textSearchEngine.exsd"/>
-    <extension-point name="%textSearchQueryProvider" id="textSearchQueryProvider" schema="schema/textSearchQueryProvider.exsd"/>
+	<extension-point name="%searchResultViewPages" id="searchResultViewPages" schema="schema/searchResultViewPages.exsd"/>
+	<extension-point name="%textSearchEngine" id="textSearchEngine" schema="schema/textSearchEngine.exsd"/>
+	<extension-point name="%textSearchQueryProvider" id="textSearchQueryProvider" schema="schema/textSearchQueryProvider.exsd"/>
 	
 	
 	<!-- Extensions -->
 	
+	<extension point="org.eclipse.ui.commands">
+		<category
+			name="%searchCategory.name"
+			description="%searchCategory.description"
+			id="org.eclipse.search.ui.category.search"
+		/>
+
+		<command
+			categoryId="org.eclipse.search.ui.category.search"
+			id="org.eclipse.search.ui.openSearchDialog"
+			name= "%ActionDefinition.openSearchDialog.name"
+			description="%ActionDefinition.openSearchDialog.description"
+		/>
+	</extension>
 	
+	<extension point="org.eclipse.ui.bindings">
+		<!-- COMMAND+H is "Hide" on carbon, so don't overwrite it -->
+		<key
+			sequence="Ctrl+H"
+			commandId="org.eclipse.search.ui.openSearchDialog"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+		/>
+	</extension>
 	
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet
+			id="org.eclipse.search.searchActionSet"
+	        label="%search"
+			visible="true">
 	
+			<action id="org.eclipse.search.OpenSearchDialog"
+				definitionId="org.eclipse.search.ui.openSearchDialog"
+				toolbarPath="Normal/Search"			
+				menubarPath="org.eclipse.search.menu/internalDialogGroup"
+				label="%openSearchDialogAction.label"
+				tooltip="%openSearchDialogAction.tooltip"
+				icon="$nl$/icons/full/etool16/search.gif"
+				helpContextId="open_search_dialog_action_context"
+				class="org.eclipse.search.internal.ui.OpenSearchDialogAction"/>
+
+	     </actionSet>
+	</extension>
 	
-	
-	
-	
-	
-	<!-- action sets -->
-		
-   
-<!-- Default search results view -->
-	
-	
-	
-	
+    <extension
+   		point="org.eclipse.ui.keywords">
+      <keyword
+            label="%preferenceKeywords.general"
+            id="org.eclipse.search.ui"/>
+	</extension>
 	
 </plugin>
+
