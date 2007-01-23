@@ -1,37 +1,161 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
 
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
 <book>
 	<bookinfo>
-		<title>Schemas Editor User's Guide</title>
+		<title>LDAP Studio Schemas Editor User's Guide</title>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>
 		</copyright>
 		<legalnotice>
 			<para>
-				This user guide is distributed under the Apache License. 
+				This user's guide is distributed under the Apache License, Version 2.0. 
+				You can find the license details online at <ulink url="http://apache.org/licenses/LICENSE-2.0.txt">http://apache.org/licenses/LICENSE-2.0.txt</ulink>.
 			</para>			
 		</legalnotice>
 	</bookinfo>
 	
-	<!-- INTRODUCTION SECTION -->
-	<section id="introduction">
-		<title>Introduction</title>
-		<para>
-			LDAP Studio Schemas Editor is a plugin designed to handle Schemas files (in OpenLDAP format) of LDAP Server.
-		</para>	
-		<para>
-			It allows browsing, creation, removal of schemas, object classes and attribute types.
-		</para>
-	</section>
-	
     <!-- GETTING STARTED CHAPTER -->
 	<chapter id="gettingstarted">
-		<title>Getting Started</title>
+		<title>Getting started</title>
 		<para>
 			This part of the guide provides you a sum up of the basic concepts of the Schemas Editor Plugin. 
 		</para>
+
+        <!-- DOWNLOAD AND INSTALLATION SECTION -->
+        <section id="download_install">
+		    <title>Download and installation</title>
+		    <para>
+		 	    Beside the integration in LDAP Studio the LDAP Studio Schemas Editor can also be installed
+		 	    as a plug-in into a regular Eclipse installation. This section describes this
+		 	    alternative. 
+		    </para>
+		    <para>
+			    Using the Eclipse Install/Update Manager is the easiest way to 
+			    install the LDAP Studio Schemas Editor plug-in.
+			    From workbench menu choose
+			    <emphasis role="strong">
+			    <menuchoice>
+				    <guimenu>Help</guimenu>
+				    <guisubmenu>Software Updates</guisubmenu>
+				    <guimenuitem>Find and Install...</guimenuitem>
+			    </menuchoice>
+			    </emphasis>
+			    . 
+		    </para>
+		    <para>
+			    In the opened wizard choose 
+			    <emphasis role="strong">Search for new features to install</emphasis> 
+			    and click <emphasis role="strong">Next</emphasis>.
+			    <screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata
+							    fileref="images/gettingstarted/install_1.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+		    </para>
+		    <para>
+			    Next please specify the LDAP Studio update site. Click the <emphasis role="strong">New Remote Site...</emphasis> button.
+			    In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
+			    <itemizedlist>
+				    <listitem>Name: LDAP Studio Update Site</listitem>
+				    <listitem>URL: http://people.apache.org/~pamarcelot/ldapstudio/update/</listitem>
+			    </itemizedlist>
+			    <screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata
+							fileref="images/gettingstarted/install_2.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+		    </para>
+		    <para>
+			    Make sure the new update site is checked an press 
+			    <emphasis role="strong">Finish</emphasis>.
+			    <screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata
+							    fileref="images/gettingstarted/install_3.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+		    </para>
+		    <para>
+			    Now the install manager checks the update site and presents the search results. Select the
+			    feature you want to install - of course the LDAP Studio Schemas Editor - and click 
+			    <emphasis role="strong">Next</emphasis>.
+			    <screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata
+							    fileref="images/gettingstarted/install_4.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+		    </para>
+		    <para>
+			    Accept the license agreement, the LDAP Studio Schemas Editor is distributed under the 
+			    Apache License, Version 2.0.
+			    <screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata
+							    fileref="images/gettingstarted/install_5.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+		    </para>
+		    <para>
+			    In the next dialog ensure that the LDAP Studio Schemas Editor feature is selected and 
+			    click to <emphasis role="strong">Finish</emphasis>.
+			    <screenshot>
+				    <mediaobject>
+					    <imageobject>
+						<imagedata
+							fileref="images/gettingstarted/install_6.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+		    </para>
+		    <para>
+			    Now the install manager loads the necessary files. When download is finished
+			    you have to verify the installation, please click to 
+			    <emphasis role="strong">Install</emphasis>.
+			    <screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata
+						    	fileref="images/gettingstarted/install_7.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+		    </para>
+		    <para>
+			    After installation it is recommended to restart the Eclipse workbench.
+		    </para>
+	    </section>
 		
         <!-- VIEWS SECTION -->
 		<section id="views">
@@ -49,7 +173,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/views_hierarchy_view.png" format="PNG" />
+									fileref="images/gettingstarted/views_hierarchy_view.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -93,7 +217,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/object_class.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -103,7 +227,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/object_class_warning.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/object_class_warning.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -113,7 +237,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/folder.png" format="PNG" />
+												<imagedata fileref="images/gettingstarted/folder.png" format="PNG" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -123,7 +247,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -148,7 +272,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/views_schemas_view.png" format="PNG" />
+									fileref="images/gettingstarted/views_schemas_view.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -210,7 +334,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/schema.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/schema.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -220,7 +344,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/schema_core.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/schema_core.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -230,7 +354,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/folder.png" format="PNG" />
+												<imagedata fileref="images/gettingstarted/folder.png" format="PNG" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -240,7 +364,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/object_class.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -250,7 +374,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -274,7 +398,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/views_search_view.png" format="PNG" />
+									fileref="images/gettingstarted/views_search_view.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -327,7 +451,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/object_class.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/object_class.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -337,7 +461,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/concepts/attribute_type.gif" format="GIF" />
+												<imagedata fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -363,7 +487,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/editors_attribute_type_overview.png" format="PNG" />
+									fileref="images/gettingstarted/editors_attribute_type_overview.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -390,7 +514,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/editors_attribute_type_source_code.png" format="PNG" />
+									fileref="images/gettingstarted/editors_attribute_type_source_code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -407,7 +531,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/editors_object_class_overview.png" format="PNG" />
+									fileref="images/gettingstarted/editors_object_class_overview.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -431,7 +555,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/editors_object_class_source_code.png" format="PNG" />
+									fileref="images/gettingstarted/editors_object_class_source_code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -448,7 +572,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/editors_schema_source_code.png" format="PNG" />
+									fileref="images/gettingstarted/editors_schema_source_code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -459,7 +583,7 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata
-									fileref="images/concepts/editors_schema_source_code_context_menu.png" format="PNG" />
+									fileref="images/gettingstarted/editors_schema_source_code_context_menu.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
