@@ -75,12 +75,21 @@
         <!-- Creation of the folders -->
         <mkdir dir="${ldapstudio-complete.build}" />
 
-        <!-- Creation of the RCP LDAP Studio application -->
+        <!-- Creation of the LDAP Studio RCP application -->
         <ant dir="ldapstudio-rcp" inheritAll="no" />
         <!-- Copy of the RCP app -->
         <copy todir="${ldapstudio-complete.build}">
             <fileset dir="${basedir}/ldapstudio-rcp/target/LDAP Studio">
                 <include name="**" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDAP Studio RCP Help application -->
+        <ant dir="ldapstudio-rcp-help" inheritAll="no" />
+        <!-- Copy of the LDAP Studio RCP Help Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-rcp-help/target/">
+                <include name="*.jar" />
             </fileset>
         </copy>
 
@@ -223,6 +232,7 @@
     <!-- ================================== -->
     <target name="resolve" description="Resolves the library dependencies using Ivy">
         <ant dir="ldapstudio-rcp" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="resolve" />
@@ -239,6 +249,7 @@
     <target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
         <ant dir="ldapstudio-rcp" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
+        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
