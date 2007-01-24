@@ -162,45 +162,449 @@
 		<!-- PREFERENCES SECTION -->
 		<section id="preferences">
 			<title>Preferences</title>
+			<para>The <emphasis role="strong">Preferences</emphasis> dialog is the dialog used to set user preferences. The Preferences dialog pages can be searched using the filter function. To filter by matching the page title, simply type the name of the page you are seeking and the available pages will be presented below. The filter also searches on keywords such as appearance and java. The history controls allow you to navigate through previously viewed pages. To step back or forward several pages at a time, click the drop down arrow and a list of the most recently viewed preference pages will appear.</para>
+			<para>The Preferences dialog can be found from the main workbench <emphasis role="strong">Window</emphasis> menu under <emphasis role="strong">Window > <imageobject><imagedata fileref="images/preferences.png" format="PNG" /></imageobject> Preferences</emphasis>. Preference pages contributed by plug-ins will be found in this dialog.</para>
 			
 			<!-- HELP SECTION -->
 			<section id="help">
 				<title>Help</title>
+				<para>On the <emphasis role="strong">Help</emphasis> preferences page, you can indicate how to display help information.</para>
+				<para>
+					<informaltable>
+						<tgroup cols="3">
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Use external browsers</entry>
+									<entry>If embedded web browser is supported on your system, help window uses an embedded help browser to display help contents, whenever possible, and this option is available. Select it, to force help to use external browsers. Use "Web Browser" preference page to select browser to use.</entry>
+									<entry>Off</entry>
+								</row>
+								<row>
+									<entry>Open window context help</entry>
+									<entry>This option allows you to determine whether the window context help will be opened in a dynamic help view or in an infopop.</entry>
+									<entry>in a dynamic help view</entry>
+								</row>
+								<row>
+									<entry>Open dialog context help</entry>
+									<entry>This option allows you to determine whether the dialog context help will be opened in a dynamic help section of help view or in an infopop.</entry>
+									<entry>in dialog tray</entry>
+								</row>
+								<row>
+									<entry>Help view document open mode</entry>
+									<entry>This option allows you to determine whether the documents selected in the help view will be opened in place or in the editor area.</entry>
+									<entry>Open in place</entry>
+								</row>
+								<row>
+									<entry>Search</entry>
+									<entry>Determines whether potential hits should be shown while searching. Showing potential hits will increase search performance, at the cost of potential loss of accuracy.</entry>
+									<entry>Show all potential hits (faster)</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+				<para>Here is what the Help preferences page looks like:</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/help_screen.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				
 				
 				<!-- HELP SERVER SECTION -->
 				<section id="help_server">
 					<title>Help Server</title>
+					<para>Help system includes an internal server that serves help contents to the browser. Use the <emphasis role="strong">Help > Help Server</emphasis> preference page to change the interface and port that the servers uses. You should only change these settings if you experience problems and cannot view help with the default preferences.</para>
+					<para>
+						<informaltable>
+							<tgroup cols="3">
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>Host</entry>
+										<entry>Name or address of a local IP interface to be used by the server.</entry>
+										<entry>blank</entry>
+									</row>
+									<row>
+										<entry>Port</entry>
+										<entry>IP port for server to listen on. If no port is specified for the value, a port will be assigned by the operating system.</entry>
+										<entry>blank</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>
+					<para>Here is what the Help preferences page looks like:</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata
+										fileref="images/help-server_screen.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
 				</section>
 				
 			</section> <!-- end Help Section -->
 			
 			<!-- TEXT EDITORS SECTION -->
 			<section id="text_editors">
-				<title>Text editors</title>
+				<title>Text Editors</title>
+				<para>The following preferences can be changed on the <emphasis role="strong">Text Editors</emphasis> page.</para>
+				<para>
+					<informaltable>
+						<tgroup cols="3">
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Displayed tab width</entry>
+									<entry>This option allows you to set the displayed tab width for the text editor.</entry>
+									<entry>4</entry>
+								</row>
+								<row>
+									<entry>Undo history size</entry>
+									<entry>This option allows you to undo the history size for the text editor.</entry>
+									<entry>25</entry>
+								</row>
+								<row>
+									<entry>Highlight current line</entry>
+									<entry>This option controls whether or the current line is highlighted or not.</entry>
+									<entry>On</entry>
+								</row>
+								<row>
+									<entry>Show print margin</entry>
+									<entry>This option controls whether the print margin is visible or not.</entry>
+									<entry>Off</entry>
+								</row>
+								<row>
+									<entry>Show line numbers</entry>
+									<entry>This option controls whether or not line numbers are shown on the left side of the text editor.</entry>
+									<entry>Off</entry>
+								</row>
+								<row>
+									<entry>Show range indicators</entry>
+									<entry>This option controls whether or not range indicators are shown in the text editor.</entry>
+									<entry>On</entry>
+								</row>
+								<row>
+									<entry>Support hyperlink style navigation</entry>
+									<entry>This option controls whether or not hyperlink style navigation is supported.</entry>
+									<entry>On</entry>
+								</row>
+								<row>
+									<entry>Hyperlink style navigation key modifier</entry>
+									<entry>This option sets the hyperlink style navigation key modifier.</entry>
+									<entry>Ctrl</entry>
+								</row>
+								<row>
+									<entry>Disable overwrite typing mode</entry>
+									<entry>This option controls whether the overwrite typing mode is enabled or disabled.</entry>
+									<entry>Off</entry>
+								</row>
+								<row>
+									<entry>Appearance color options</entry>
+									<entry>This option controls various appearance colors.</entry>
+									<entry>-</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+				<para>Here is what the Help preferences page looks like:</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/text-editors_screen.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
 				
 				<!-- ACCESSIBILITY SECTION -->
 				<section id="accessibility">
 					<title>Accessibility</title>
+					<para>The following preferences can be changed on the <emphasis role="strong">Text Editors > Accessibility</emphasis> page.</para>
+					<para>
+						<informaltable>
+							<tgroup cols="3">
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>Use custom caret </entry>
+										<entry>This option replaces the original caret with a custom caret and shows a different caret for Overwrite and Insert mode.</entry>
+										<entry>On</entry>
+									</row>
+									<row>
+										<entry>Enable thick caret</entry>
+										<entry> This option replaces the original caret with a more visible, thicker caret.</entry>
+										<entry>On</entry>
+									</row>
+									<row>
+										<entry>Use characters to show changes on line number bar</entry>
+										<entry>Quick Diff shows the changes in a vertical ruler using colors. Color blind persons can enable this option to show the differences with different characters in the line number ruler.</entry>
+										<entry>Off</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>
+					<para>Here is what the Accesibility preferences page looks like:</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata
+										fileref="images/accessibility_screen.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
 				</section>
 				
 				<!-- ANNOTATIONS SECTION -->
 				<section id="annotations">
 					<title>Annotations</title>
+					<para>The following preferences can be changed on the <emphasis role="strong">Text Editors > Annotations</emphasis> preference page.</para>
+					<para>
+						<informaltable>
+							<tgroup cols="2">
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>Show in Text as</entry>
+										<entry>This option controls whether the selected annotation type is shown in the text. The corresponding text will be underlined with squiggles or highlighted.</entry>
+									</row>
+									<row>
+										<entry>Show in Overview ruler</entry>
+										<entry>This option controls whether the overview ruler on the right side of the text editor is shown.</entry>
+									</row>
+									<row>
+										<entry>Show in Vertical ruler  </entry>
+										<entry>This option controls whether the selected annotation type is shown in the vertical ruler.</entry>
+									</row>
+									<row>
+										<entry>Color</entry>
+										<entry>This option controls the color for the selected annotation type.</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>
+					<para>Here is what the Annotations preferences page looks like:</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata
+										fileref="images/annotations_screen.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
 				</section>
 				
 				<!-- LINKED MODE SECTION -->
 				<section id="linked_mode">
-					<title>Linked mode</title>
+					<title>Linked Mode</title>
+					<para>Here is what the Linked Mode preferences page looks like:</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata
+										fileref="images/linked-mode_screen.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
 				</section>
 				
 				<!-- QUICK DIFF SECTION -->
 				<section id="quick_diff">
-					<title>Quick diff</title>
+					<title>Quick Diff</title>
+					<para>The following preferences can be changed on the <emphasis role="strong">Text Editors > Quick Diff</emphasis> preference page.</para>
+					<para>
+						<informaltable>
+							<tgroup cols="3">
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>Enable quick diff</entry>
+										<entry>This option will enable or disable the quick diff option.</entry>
+										<entry>On</entry>
+									</row>
+									<row>
+										<entry>Show differences in overview ruler</entry>
+										<entry>This option will show differences in the overview ruler.</entry>
+										<entry>Off</entry>
+									</row>
+									<row>
+										<entry>Colors - Changes</entry>
+										<entry>This option controls the color of changes.</entry>
+										<entry>-</entry>
+									</row>
+									<row>
+										<entry>Colors - Additions</entry>
+										<entry>This option controls the color of additions. </entry>
+										<entry>-</entry>
+									</row>
+									<row>
+										<entry>Colors - Deletions</entry>
+										<entry>This option controls the color of deletions. </entry>
+										<entry>-</entry>
+									</row>
+									<row>
+										<entry>Use this reference source</entry>
+										<entry>
+											This option sets which reference to use as the base for generating quick diff comparisons. Options are:
+											<itemizedlist>
+				    							<listitem>Version on Disk: Current file is compared against the last saved version on disk.</listitem>
+												<listitem>Latest CVS Revision: Current file is compared against the latest CVS revision for the file.</listitem>
+			    							</itemizedlist>
+										</entry>
+										<entry>Version on Disk</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>
+					<para>Here is what the Quick Diff preferences page looks like:</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata
+										fileref="images/quick-diff_screen.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
 				</section>
 				
 				<!-- SPELLING SECTION -->
 				<section id="spelling">
 					<title>Spelling</title>
+					<para>The following preferences can be changed on the <emphasis role="strong">Text Editors > Spelling</emphasis> preference page.</para>
+					<para>
+						<informaltable>
+							<tgroup cols="3">
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>Enable spell checking</entry>
+										<entry>This option enables spell checking.</entry>
+										<entry>Off</entry>
+									</row>
+									<row>
+										<entry>Ignore words with digits </entry>
+										<entry>This option ignores words with digits when performing spell checking.</entry>
+										<entry>Off</entry>
+									</row>
+									<row>
+										<entry>Ignore mixed case words </entry>
+										<entry>This option ignores mixed case words when performing spell checking.</entry>
+										<entry>Off</entry>
+									</row>
+									<row>
+										<entry>Ignore sentence capitalization</entry>
+										<entry>This option ignores sentence capitalization when performing spell checking. </entry>
+										<entry>Off</entry>
+									</row>
+									<row>
+										<entry>Ignore upper case words</entry>
+										<entry>This option ignores upper case words when performing spell checking.</entry>
+										<entry>Off</entry>
+									</row>
+									<row>
+										<entry>Ignore internet addresses</entry>
+										<entry>This option ignores internet addresses when performing spell checking.</entry>
+										<entry>Off</entry>
+									</row>
+									<row>
+										<entry>Platform dictionary</entry>
+										<entry>This option selects a platform dictionary to use.</entry>
+										<entry>-</entry>
+									</row>
+									<row>
+										<entry>User defined dictionary</entry>
+										<entry>This option selects a User defined dictionary to use.</entry>
+										<entry>-</entry>
+									</row>
+									<row>
+										<entry>Maximum number of correction proposals</entry>
+										<entry>This option limits the possible corrections displayed to the given value.</entry>
+										<entry>20</entry>
+									</row>
+									<row>
+										<entry>Make dictionary available to content assist</entry>
+										<entry>This option allows content assist to use the dictionary when constructing its choices.</entry>
+										<entry>20</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>
+					<para>Here is what the Spelling preferences page looks like:</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata
+										fileref="images/spelling_screen.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
 				</section>
 				
 			</section> <!-- end Text Editors Section -->
