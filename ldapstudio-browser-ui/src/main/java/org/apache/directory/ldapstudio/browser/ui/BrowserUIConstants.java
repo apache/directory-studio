@@ -478,21 +478,21 @@ public interface BrowserUIConstants
 
     public static final String IMG_LDIF_DN = "icons/ldif_dn.gif";
 
-    public static final String IMG_ATD = "icons/atd.gif";
+    public static final String IMG_ATD = "icons/atd.png";
 
-    public static final String IMG_OCD = "icons/ocd.gif";
+    public static final String IMG_OCD = "icons/ocd.png";
 
-    public static final String IMG_MRD = "icons/mrd.gif";
+    public static final String IMG_MRD = "icons/mrd.png";
 
-    public static final String IMG_MRUD = "icons/mrud.gif";
+    public static final String IMG_MRUD = "icons/mrud.png";
 
-    public static final String IMG_LSD = "icons/lsd.gif";
+    public static final String IMG_LSD = "icons/lsd.png";
 
-    public static final String IMG_MRD_EQUALITY = "icons/mrd_equality.gif";
+    public static final String IMG_MRD_EQUALITY = "icons/mrd_equality.png";
 
-    public static final String IMG_MRD_SUBSTRING = "icons/mrd_substring.gif";
+    public static final String IMG_MRD_SUBSTRING = "icons/mrd_substring.png";
 
-    public static final String IMG_MRD_ORDERING = "icons/mrd_ordering.gif";
+    public static final String IMG_MRD_ORDERING = "icons/mrd_ordering.png";
 
     public static final String IMG_OVR_FILTERED = "icons/ovr16/filtered.gif";
 
