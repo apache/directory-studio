@@ -48,4 +48,9 @@ public interface IImageKeys
     public static final String OBJECT_CLASS_WARNING = "ressources/icons/object_class_warning.gif"; //$NON-NLS-1$
     public static final String SCHEMA = "ressources/icons/schema.gif"; //$NON-NLS-1$
     public static final String SCHEMA_CORE = "ressources/icons/schema_core.gif"; //$NON-NLS-1$
+    
+    // Images for Wizards
+    public static final String ATTRIBUTE_TYPE_NEW_WIZARD = "ressources/icons/attribute_type_new_wizard.png"; //$NON-NLS-1$
+    public static final String OBJECT_CLASS_NEW_WIZARD = "ressources/icons/object_class_new_wizard.png"; //$NON-NLS-1$
+    public static final String SCHEMA_NEW_WIZARD = "ressources/icons/schema_new_wizard.png"; //$NON-NLS-1$
 }

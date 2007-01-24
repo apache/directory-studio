@@ -23,11 +23,13 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 
 import java.util.Hashtable;
 
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.model.OID;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.preferences.GeneralPreferencePage;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -44,6 +46,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -74,6 +77,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
         super( "CreateANewObjecClassWizardPage" ); //$NON-NLS-1$
         setTitle( Messages.getString( "CreateANewObjectClassWizardPage.Page_Title" ) ); //$NON-NLS-1$
         setDescription( Messages.getString( "CreateANewObjectClassWizardPage.Page_Description" ) ); //$NON-NLS-1$
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OBJECT_CLASS_NEW_WIZARD ) );
         this.selection = selection;
 
         classesByName = SchemaPool.getInstance().getObjectClassesAsHashTableByName();
