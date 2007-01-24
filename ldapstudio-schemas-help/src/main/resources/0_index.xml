@@ -547,7 +547,7 @@
                         <listitem>the class type</listitem> 
                         <listitem>if the object class is obsolete</listitem> 
                         <listitem>the mandatory attributes (add and remove)</listitem> 
-                        <listitem>the optionnal attributes (add and remove)</listitem>
+                        <listitem>the optional attributes (add and remove)</listitem>
                     </itemizedlist>
                 </para>
                 <para>
