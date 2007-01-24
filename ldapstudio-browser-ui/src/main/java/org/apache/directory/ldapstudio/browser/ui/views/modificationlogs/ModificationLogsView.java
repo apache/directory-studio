@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.ui.views.modificationlogs;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.ldifeditor.LdifEditorWidget;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -60,7 +59,7 @@ public class ModificationLogsView extends ViewPart
 
     public void setFocus()
     {
-
+        mainWidget.getSourceViewer().getTextWidget().setFocus();
     }
 
 
