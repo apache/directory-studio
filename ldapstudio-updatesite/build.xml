@@ -63,12 +63,30 @@
 	            <include name="*.jar" />
 	        </fileset>
 	    </copy>
+
+	    <!-- Creation of the LDAP Studio Help Plugin -->
+	    <ant dir="../ldapstudio-rcp-help" target="jar" inheritAll="no" />
+	    <!-- Copy of the LDAP Studio Help Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-rcp-help/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
 		
 	    <!-- Creation of the LDAP Studio Schemas Editor Plugin -->
 	    <ant dir="../ldapstudio-schemas-plugin" inheritAll="no" />
 	    <!-- Copy of the Schemas Plugin in the "plugins" folder -->
 	    <copy todir="${project.plugins}">
 	        <fileset dir="../ldapstudio-schemas-plugin/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
+
+	    <!-- Creation of the LDAP Studio Schemas Editor Help Plugin -->
+	    <ant dir="../ldapstudio-schemas-help" inheritAll="no" />
+	    <!-- Copy of the Schemas Help Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-schemas-help/target">
 	            <include name="*.jar" />
 	        </fileset>
 	    </copy>
@@ -90,6 +108,15 @@
 	            <include name="*.jar" />
 	        </fileset>
 	    </copy>
+
+	    <!-- Creation of the LDAP Studio Browser Help Plugin -->
+	    <ant dir="../ldapstudio-browser-help" inheritAll="no" />
+	    <!-- Copy of the  LDAP Studio Browser Help Plugin in the "plugins" folder -->
+	    <copy todir="${project.plugins}">
+	        <fileset dir="../ldapstudio-browser-help/target">
+	            <include name="*.jar" />
+	        </fileset>
+	    </copy>
 		
 	    <!-- Creation of the LDAP Studio Jars Plugin -->
 	    <ant dir="../ldapstudio-jars" inheritAll="no" />
@@ -108,11 +135,14 @@
 	<!-- ================================== -->
 	<target name="clean" description="Deletes any generated file">
 		<ant dir="../ldapstudio-rcp" inheritAll="no" target="clean"/>
+		<ant dir="../ldapstudio-rcp-help" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
+        <ant dir="../ldapstudio-schemas-help" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-browser-core" inheritAll="no" target="clean" />
         <ant dir="../ldapstudio-browser-ui" inheritAll="no" target="clean" />
+        <ant dir="../ldapstudio-browser-help" inheritAll="no" target="clean" />
         <ant dir="../ldapstudio-browser-feature" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-jars" inheritAll="no" target="clean" />
 		<delete includeemptydirs="true">
