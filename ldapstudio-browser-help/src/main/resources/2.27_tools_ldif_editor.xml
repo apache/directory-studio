@@ -18,17 +18,35 @@
 	</para>
 	
 	<simplesect id="tools_ldif_editor_using">
-		<title>Use LDIF editor</title>
+		<title>Using LDIF editor</title>
 		<para>
 			To create a new LDIF file choose <emphasis role="strong">File -> New </emphasis>, 
 			expand <emphasis role="strong">LDIF Browser</emphasis>, 
-			select <emphasis role="strong">LDIF File</emphasis> and press the Finish button.
+			select 
+			<emphasis role="strong">
+				<guiicon>
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata fileref="icons/browser_ldifeditor.gif"
+								format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+				</guiicon>
+				LDIF File
+			</emphasis> 
+			and press the Finish button.
+		</para>
+		<para>
 			To open an existing LDIF file choose <emphasis role="strong">File -> Open File</emphasis>, 
 			that opens a file dialog where you could select the LDIF file. 
 			Within Eclipse you could also open a LDIF file from Navigator view.
+		</para>
+		<para>
 			To save the modified LDIF choose <emphasis role="strong">File -> Save</emphasis>
 			or <emphasis role="strong">File -> Save as</emphasis> and select a save location 
 			and enter the file name.
+		</para>
+		<para>
 			The LDIF editor also supports default editor functionality like Copy/Paste, 
 			Undo/Redo and a Find/Replace dialog, see Edit menu. 
 		</para>
@@ -57,7 +75,18 @@
 				</listitem>
 				<listitem>
 					<para>
-						The LDIF file could be executed, just press the the execute button.
+						The LDIF could be imported into the selected directory by invoking the 
+						<emphasis role="strong">
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata fileref="icons/execute.gif"
+											format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</emphasis> 
+						execute button.
 					</para>
 				</listitem>
 			</itemizedlist>			
@@ -226,7 +255,7 @@
 			The LDIF editor provides a context-sensitive content assistent.
 			To start content assistence press 
 			<emphasis role="strong">Ctrl+Space</emphasis>, 
-			a popup with proposals is shown. 
+			then a popup with proposals is shown. 
 			You could select one using the cursur keys or the mouse, press 
 			<emphasis role="strong">Enter</emphasis> to apply 
 			the selected proposal. To close the popup press the 
@@ -237,17 +266,41 @@
 			<listitem>
 				<para>
 					When starting a new record a popup with record templates is shown.
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/tools_ldif_editor_10.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
 				</para>
 			</listitem>
 			<listitem>
 				<para>
 					When writing an attribute in a content or add record a popup with 
-					a list of matching attributes is shown.
+					a list with matching attributes is shown.
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/tools_ldif_editor_12.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
 				</para>
 			</listitem>
 			<listitem>
 				<para>
-					In an modify record the popup lists possible modify items.
+					In an modify record the popup lists possible modify item templates.
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/tools_ldif_editor_11.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
 				</para>
 			</listitem>
 		</itemizedlist>
@@ -262,7 +315,7 @@
 			must be encoded. 
 		</para>
 		<para>
-			To edit such values the 
+			To edit such values 
 			<link linkend="tools_value_editors">
 				Value editors
 			</link>
@@ -294,6 +347,14 @@
 			You can add, modify and delete attributes. 
 			To apply the modification press <emphasis role="strong">OK</emphasis>, 
 			the previous record is replaced by the new one.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata
+							fileref="images/tools_ldif_editor_13.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>			
 		</para>
 	</simplesect>
 
@@ -307,6 +368,14 @@
 				<para>
 					Move the mouse over the value, a tooltip with the value is displayed. 
 					This works only for text-based values, not for binary values.
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata
+									fileref="images/tools_ldif_editor_14.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
 				</para>
 			</listitem>
 			<listitem>
@@ -315,6 +384,202 @@
 				</para>
 			</listitem>
 		</itemizedlist>
+	</simplesect>
+
+	<simplesect id="tools_ldif_editor_error_annotations">
+		<title>Error annotations</title>
+		<para>
+			Syntax errors are displayed using error annotations. 
+			In the ruler the error icon 
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata
+							fileref="icons/error.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			is displayed.
+			Additional the erroneous content is red squiggled.
+		</para>
+		<para>
+			Note: The support for error annotations is still in development and has to be improved.
+			The displayed messages are not very useful at the moment.
+		</para>
+	</simplesect>
+	
+	<simplesect id="tools_ldif_editor_outline">
+		<title>Outline</title>
+		<para>
+			The Outline view shows the distinguished names of all the records 
+			in the LDIF file, the icon indicates the record type.
+			The following icons are used:
+		</para>
+		<informaltable frame="all">
+			<tgroup cols="2">
+				<colspec colname="Icon" />
+				<colspec colname="Description" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/entry_default.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Content record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_add.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Add record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_modify.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Modify record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_delete.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Delete record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_rename.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Moddn/Modrdn record</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+		<para>
+			When expanding the DNs the detail of a record are shown:
+		</para>
+		<informaltable frame="all">
+			<tgroup cols="2">
+				<colspec colname="Icon" />
+				<colspec colname="Description" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_attribute.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Attribute</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_value.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Value</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_mod_add.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Changetype add</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_mod_replace.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Changetype modify</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata
+											fileref="icons/ldif_mod_delete.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Changetype delete</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+		<para>
+			When selecting an element in the Outline view the corresponding 
+			element is selected in LDIF editor.
+		</para>
 	</simplesect>
 
 	<simplesect id="tools_ldif_editor_formatting">
@@ -332,9 +597,10 @@
 		<title>Folding</title>
 		<para>
 			Multi-lined comments, records and multi-lined values could be folded. 
-			There is a (+) and (-) in the left ruler to collapse and expand these.
-			By default multi-lined comments and multi-lined values are folded. 
-			This behaviour could be changed in 
+			There is a <emphasis role="strong">(+)</emphasis> and 
+			<emphasis role="strong">(-)</emphasis> in the left ruler to collapse 
+			and expand these. By default multi-lined comments and multi-lined
+			values are folded. This behaviour could be changed in 
 			<link linkend="preferences_ldif_editor">
 				LDIF Editor preferences
 			</link>.
