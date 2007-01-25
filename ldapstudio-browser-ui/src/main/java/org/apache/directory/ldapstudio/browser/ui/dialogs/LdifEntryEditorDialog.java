@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Shell;
 public class LdifEntryEditorDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "LDIF Entry Editor";
+    public static final String DIALOG_TITLE = "LDIF Record Editor";
 
     public static final int MAX_WIDTH = 450;
 
