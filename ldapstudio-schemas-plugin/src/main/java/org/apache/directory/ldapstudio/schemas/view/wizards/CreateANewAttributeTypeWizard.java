@@ -24,12 +24,16 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -75,11 +79,20 @@ public class CreateANewAttributeTypeWizard extends Wizard implements INewWizard
 
         // Creating the new attribute type and adding it to the schema
         AttributeTypeLiteral attributeTypeLiteral = new AttributeTypeLiteral( this.page.getOidField() );
-        attributeTypeLiteral.setNames( new String[]
-            { this.page.getNameField() } );
-
+        attributeTypeLiteral.setNames( new String[] { this.page.getNameField() } );
         AttributeType attributeType = new AttributeType( attributeTypeLiteral, schema );
         schema.addAttributeType( attributeType );
+        
+        // Opening the associated editor
+        AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( attributeType );
+        String editorId = AttributeTypeFormEditor.ID;
+        try
+        {
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( input, editorId );
+        }
+        catch ( PartInitException e )
+        {
+        }
 
         return true;
     }

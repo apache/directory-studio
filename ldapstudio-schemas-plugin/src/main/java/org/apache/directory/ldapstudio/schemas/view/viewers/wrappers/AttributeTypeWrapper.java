@@ -127,6 +127,19 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
     /******************************************
      *           Object Redefinition          *
      ******************************************/
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof AttributeTypeWrapper )
+        {
+            AttributeTypeWrapper compared = ( AttributeTypeWrapper ) obj;
+            return compared.getOid().equals( this.getOid() );
+        }
+        return false;
+    }
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()

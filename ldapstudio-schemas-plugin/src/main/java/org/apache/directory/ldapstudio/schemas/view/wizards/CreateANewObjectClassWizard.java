@@ -24,12 +24,16 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -74,14 +78,22 @@ public class CreateANewObjectClassWizard extends Wizard implements INewWizard
 
         // Creating the new object class and adding it to the schema
         ObjectClassLiteral objectClassLiteral = new ObjectClassLiteral( this.page.getOidField() );
-        objectClassLiteral.setNames( new String[]
-            { this.page.getNameField() } );
-        objectClassLiteral.setSuperiors( new String[]
-            { "top" } ); //$NON-NLS-1$
-
+        objectClassLiteral.setNames( new String[] { this.page.getNameField() } );
+        objectClassLiteral.setSuperiors( new String[]{ "top" } ); //$NON-NLS-1$
         ObjectClass objectClass = new ObjectClass( objectClassLiteral, schema );
         schema.addObjectClass( objectClass );
 
+        // Opening the associated editor
+        ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( objectClass );
+        String editorId = ObjectClassFormEditor.ID;
+        try
+        {
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( input, editorId );
+        }
+        catch ( PartInitException e )
+        {
+        }
+        
         return true;
     }
 
