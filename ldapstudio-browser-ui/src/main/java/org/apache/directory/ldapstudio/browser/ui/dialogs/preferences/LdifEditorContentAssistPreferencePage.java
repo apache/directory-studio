@@ -64,7 +64,6 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
     {
         super( "Content Assist" );
         super.setPreferenceStore( BrowserUIPlugin.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for attributes:" );
     }
 
 
