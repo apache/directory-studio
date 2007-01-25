@@ -42,4 +42,6 @@ public interface ICommandIds
     public static final String CMD_CREATE_A_NEW_ATTRIBUTETYPE = Application.PLUGIN_ID + ".createanewattributetype"; //$NON-NLS-1$
     public static final String CMD_SORT_HIERACHICAL_VIEWER = Application.PLUGIN_ID + ".sorthierarchicalviewer"; //$NON-NLS-1$
     public static final String CMD_SORT_POOL_MANAGER = Application.PLUGIN_ID + ".sortpoolmanager"; //$NON-NLS-1$
+    public static final String LINK_WITH_EDITOR_HIERARCHY_VIEW = Application.PLUGIN_ID + ".linkwitheditorhierarchyview"; //$NON-NLS-1$
+    public static final String LINK_WITH_EDITOR_SCHEMA_VIEW = Application.PLUGIN_ID + ".linkwitheditorschemasview"; //$NON-NLS-1$
 }

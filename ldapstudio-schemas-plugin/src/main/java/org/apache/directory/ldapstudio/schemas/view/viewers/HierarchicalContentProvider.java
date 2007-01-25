@@ -141,7 +141,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                 }
             }
 
-            //complete optionnal attributes
+            //complete optional attributes
             String[] optAttributes = objectClass.getMay();
             for ( String name : optAttributes )
             {

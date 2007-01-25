@@ -29,6 +29,7 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttr
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.DeleteAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemasView;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenLocalFileAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.RemoveSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SortPoolManagerAction;
@@ -36,6 +37,7 @@ import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IToolBarManager;
@@ -84,9 +86,13 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
             SortPoolManagerAction.SortType.alphabetical, Messages.getString( "PoolManager.Sort_alphabetically" ) ) ); //$NON-NLS-1$
         toolbar.add( new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
             SortPoolManagerAction.SortType.unalphabetical, Messages.getString( "PoolManager.Sort_unalphabetically" ) ) ); //$NON-NLS-1$
+        toolbar.add( new LinkWithEditorSchemasView( this ) );
 
         // ContextMenu Creation
         createContextMenu();
+
+        // Registering the Viewer, so other views can be notified when the viewer selection changes
+        getSite().setSelectionProvider( viewer );
     }
 
 
@@ -270,4 +276,52 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
         return true;
     }
 
+
+    /**
+     * Search for the given element in the Tree and returns it if it has been found.
+     *
+     * @param element
+     *      the element to find
+     * @return
+     *      the element if it has been found, null if has not been found
+     */
+    public DisplayableTreeElement findElementInTree( DisplayableTreeElement element )
+    {
+        DisplayableTreeElement input = ( DisplayableTreeElement ) getViewer().getInput();
+
+        return findElementInTree( element, input );
+    }
+
+
+    /**
+     * Search for the given element in the Tree and returns it if it has been found.
+     *
+     * @param element
+     *      the element to find
+     * @param current
+     *      the current element
+     * @return
+     */
+    private DisplayableTreeElement findElementInTree( DisplayableTreeElement element, DisplayableTreeElement current )
+    {
+        if ( element.equals( current ) )
+        {
+            return current;
+        }
+        else
+        {
+            Object[] children = contentProvider.getChildren( current );
+
+            for ( int i = 0; i < children.length; i++ )
+            {
+                DisplayableTreeElement item = ( DisplayableTreeElement ) children[i];
+                DisplayableTreeElement foundElement = findElementInTree( element, item );
+                if ( foundElement != null )
+                {
+                    return foundElement;
+                }
+            }
+        }
+        return null;
+    }
 }

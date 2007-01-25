@@ -41,6 +41,7 @@ public interface IImageKeys
     public static final String SORT_ALPHABETICAL = "ressources/icons/sort_alphabetical.gif"; //$NON-NLS-1$
     public static final String SORT_UNALPHABETICAL = "ressources/icons/sort_unalphabetical.gif"; //$NON-NLS-1$
     public static final String SHOW_PREFERENCES = "ressources/icons/preferences.png"; //$NON-NLS-1$
+    public static final String LINK_WITH_EDITOR = "ressources/icons/link_with_editor.gif"; //$NON-NLS-1$
 
     // Images for Views
     public static final String ATTRIBUTE_TYPE = "ressources/icons/attribute_type.gif"; //$NON-NLS-1$

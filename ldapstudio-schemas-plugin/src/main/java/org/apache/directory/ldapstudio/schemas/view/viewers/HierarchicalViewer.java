@@ -25,10 +25,12 @@ import java.util.Comparator;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.HierarchicalViewerController;
+import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorHierarchyView;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SortHierarchicalViewAction;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -72,6 +74,7 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
         toolbar.add( new SortHierarchicalViewAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
             SortHierarchicalViewAction.SortType.unalphabetical, Messages
                 .getString( "HierarchicalViewer.Sort_unalphabetically" ) ) ); //$NON-NLS-1$
+        toolbar.add( new LinkWithEditorHierarchyView( this ) );
     }
 
 
@@ -141,5 +144,53 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
         refresh();
+    }
+    
+    /**
+     * Search for the given element in the Tree and returns it if it has been found.
+     *
+     * @param element
+     *      the element to find
+     * @return
+     *      the element if it has been found, null if has not been found
+     */
+    public DisplayableTreeElement findElementInTree( DisplayableTreeElement element )
+    {
+        DisplayableTreeElement input = ( DisplayableTreeElement ) getViewer().getInput();
+
+        return findElementInTree( element, input );
+    }
+
+
+    /**
+     * Search for the given element in the Tree and returns it if it has been found.
+     *
+     * @param element
+     *      the element to find
+     * @param current
+     *      the current element
+     * @return
+     */
+    private DisplayableTreeElement findElementInTree( DisplayableTreeElement element, DisplayableTreeElement current )
+    {
+        if ( element.equals( current ) )
+        {
+            return current;
+        }
+        else
+        {
+            Object[] children = contentProvider.getChildren( current );
+
+            for ( int i = 0; i < children.length; i++ )
+            {
+                DisplayableTreeElement item = ( DisplayableTreeElement ) children[i];
+                DisplayableTreeElement foundElement = findElementInTree( element, item );
+                if ( foundElement != null )
+                {
+                    return foundElement;
+                }
+            }
+        }
+        return null;
     }
 }
