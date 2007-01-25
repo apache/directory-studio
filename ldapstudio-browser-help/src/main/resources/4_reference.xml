@@ -1,63 +1,73 @@
 <chapter id="reference">
 	<title>Reference</title>
-	<section id="reference_rfcs">
+	<simplesect id="reference_rfcs">
 		<title>RFCs</title>
 		<simplelist>
 			<member>
-				<ulink url="rfc/rfc4510.html">
+				<ulink url="rfc/rfc4510.txt">
 					RFC 4510: LDAP: Technical Specification Road Map
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4511.html">
+				<ulink url="rfc/rfc4511.txt">
 					RFC 4511: LDAP: The Protocol
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4512.html">
+				<ulink url="rfc/rfc4512.txt">
 					RFC 4512: LDAP: Directory Information Models
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4513.html">
+				<ulink url="rfc/rfc4513.txt">
 					RFC 4513: LDAP: Authentication Methods and Security Mechanisms
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4514.html">
+				<ulink url="rfc/rfc4514.txt">
 					RFC 4514: LDAP: String Representation of Distinguished Names
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4515.html">
+				<ulink url="rfc/rfc4515.txt">
 					RFC 4515: LDAP: String Representation of Search Filters
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4516.html">
+				<ulink url="rfc/rfc4516.txt">
 					RFC 4516: LDAP: Uniform Resource Locator
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4517.html">
+				<ulink url="rfc/rfc4517.txt">
 					RFC 4517: LDAP: Syntaxes and Matching Rules
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4518.html">
+				<ulink url="rfc/rfc4518.txt">
 					RFC 4518: LDAP: Internationalized String Preparation
 				</ulink>
 			</member>
 			<member>
-				<ulink url="rfc/rfc4519.html">
+				<ulink url="rfc/rfc4519.txt">
 					RFC 4519: LDAP: Schema for User Applications
 				</ulink>
 			</member>
+			<member>
+				<ulink url="rfc/rfc2849.txt">
+					RFC 2849: The LDAP Data Interchange Format (LDIF) - Technical Specification
+				</ulink>
+			</member>			
+			<member>
+				<ulink url="rfc/rfc3866.txt">
+					RFC 3866: Language Tags and Ranges in the LDAP
+				</ulink>
+			</member>			
 		</simplelist>
-	</section>
+	</simplesect>
 	
-	<section id="reference_oldrfcs">
-		<title>Old RFCs</title>
+	<simplesect id="reference_obsolete">
+		<title>Obsolete RFCs</title>
 		<simplelist>
 			<member>
 				<ulink url="rfc/rfc2251.txt">
@@ -99,24 +109,14 @@
 					RFC 2830: Extension for Transport Layer Security
 				</ulink>
 			</member>
-			<member>
-				<ulink url="rfc/rfc3377.txt">
-					RFC 3377: Technical Specification
-				</ulink>
-			</member>
-			<member>
-				<ulink url="rfc/rfc2849.txt">
-					RFC 2849: The LDAP Data Interchange Format (LDIF) - Technical Specification
-				</ulink>
-			</member>
 		</simplelist>
-	</section>
+	</simplesect>
 	
-	<section id="reference_jndi_tutorial">
-		<title>JNDI Tutorial</title>
+	<simplesect id="reference_tutorial">
+		<title>Tutorials</title>
 		<para>
 			<ulink url="http://java.sun.com/products/jndi/tutorial/">JNDI Tutorial</ulink>
 		</para>
-	</section>
+	</simplesect>
 	
 </chapter>
