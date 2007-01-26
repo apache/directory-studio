@@ -132,7 +132,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         gl = new GridLayout( 1, false );
         authComposite.setLayout( gl );
         cpw.addAuthenticationMethodInput( connection.getAuthMethod(), authComposite );
-        cpw.addSimpleAuthInput( connection.getBindPassword() != null,
+        cpw.addSimpleAuthInput( ( connection.getBindPassword() != null ) || ( connection.getBindPrincipal() == null && connection.getBindPassword() == null ),
             connection.getBindPrincipal() != null ? connection.getBindPrincipal().toString() : "", connection
                 .getBindPassword() != null ? connection.getBindPassword() : "", authComposite );
         this.authTab = new TabItem( this.tabFolder, SWT.NONE );
