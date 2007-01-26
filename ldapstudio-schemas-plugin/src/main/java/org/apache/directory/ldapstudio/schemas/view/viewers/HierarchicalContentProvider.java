@@ -33,6 +33,7 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.Alphabetica
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -100,17 +101,16 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
      */
     public Object[] getChildren( Object parentElement )
     {
-
         if ( parentElement instanceof ObjectClassWrapper )
         {
             //we are looking for the childrens of the contained objectClass
             ObjectClass objectClass =  ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
 
-            IntermediateNode sub = new IntermediateNode( "Sub-types", ( ObjectClassWrapper ) parentElement, this ); //$NON-NLS-1$
+            IntermediateNode sub = new IntermediateNode( "Sub-types", ( ObjectClassWrapper ) parentElement, this, IntermediateNodeType.OBJECT_CLASS_FOLDER ); //$NON-NLS-1$
             IntermediateNode may = new IntermediateNode(
-                "Optionnal Attributes", ( ObjectClassWrapper ) parentElement, this ); //$NON-NLS-1$
+                "Optionnal Attributes", ( ObjectClassWrapper ) parentElement, this, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
             IntermediateNode must = new IntermediateNode(
-                "Mandatory Attributes", ( ObjectClassWrapper ) parentElement, this ); //$NON-NLS-1$
+                "Mandatory Attributes", ( ObjectClassWrapper ) parentElement, this, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
 
             //-> we need to compare each and every other objectClass's sup against them 
             //-> we also need to find a better way to do this (complexity wise)

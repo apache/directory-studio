@@ -44,6 +44,8 @@ public interface IImageKeys
     public static final String LINK_WITH_EDITOR = "ressources/icons/link_with_editor.gif"; //$NON-NLS-1$
 
     // Images for Views
+    public static final String FOLDER_ATTRIBUTE_TYPE = "ressources/icons/folder_at.gif"; //$NON-NLS-1$
+    public static final String FOLDER_OBJECT_CLASS = "ressources/icons/folder_oc.gif"; //$NON-NLS-1$
     public static final String ATTRIBUTE_TYPE = "ressources/icons/attribute_type.gif"; //$NON-NLS-1$
     public static final String OBJECT_CLASS = "ressources/icons/object_class.gif"; //$NON-NLS-1$
     public static final String OBJECT_CLASS_WARNING = "ressources/icons/object_class_warning.gif"; //$NON-NLS-1$

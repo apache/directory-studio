@@ -32,6 +32,7 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.Intermediat
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.PoolManagerAttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.PoolManagerObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -117,9 +118,9 @@ public class PoolManagerContentProvider implements SortableContentProvider, IStr
             Schema schema = ( ( ( SchemaWrapper ) parentElement ).getMySchema() );
 
             IntermediateNode attributeTypes = new IntermediateNode(
-                "Attribute Types", ( SchemaWrapper ) parentElement, this ); //$NON-NLS-1$
+                "Attribute Types", ( SchemaWrapper ) parentElement, this, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
             IntermediateNode objectClasses = new IntermediateNode(
-                "Object Classes", ( SchemaWrapper ) parentElement, this ); //$NON-NLS-1$
+                "Object Classes", ( SchemaWrapper ) parentElement, this, IntermediateNodeType.OBJECT_CLASS_FOLDER ); //$NON-NLS-1$
 
             // Let's get all Attribute Types defined in the schema
             AttributeType[] attributeTypeList = schema.getAttributeTypesAsArray();

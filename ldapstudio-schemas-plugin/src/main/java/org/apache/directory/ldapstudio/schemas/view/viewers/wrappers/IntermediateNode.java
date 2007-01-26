@@ -24,10 +24,13 @@ package org.apache.directory.ldapstudio.schemas.view.viewers.wrappers;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SortableContentProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -40,6 +43,12 @@ import org.eclipse.ui.PlatformUI;
 public class IntermediateNode implements DisplayableTreeElement
 {
 
+    /** This enum represent the different types of IntermediateNodes */
+    public enum IntermediateNodeType
+    {
+        NONE, OBJECT_CLASS_FOLDER, ATTRIBUTE_TYPE_FOLDER
+    }
+
     /******************************************
      *               Fields                   *
      ******************************************/
@@ -47,6 +56,7 @@ public class IntermediateNode implements DisplayableTreeElement
     private String name;
     private DisplayableTreeElement parent;
     private ArrayList<DisplayableTreeElement> elements;
+    private IntermediateNodeType type;
 
 
     /******************************************
@@ -65,6 +75,28 @@ public class IntermediateNode implements DisplayableTreeElement
         this.parent = parent;
         this.contentProvider = contentProvider;
         elements = new ArrayList<DisplayableTreeElement>();
+        this.type = IntermediateNodeType.NONE;
+    }
+
+
+    /**
+     * Default constructor
+     * @param name
+     *      the name that will be displayed in the tree viewer
+     * @param parent
+     *      the parent DisplayableTreeElement in the schema relationship
+     * hierarchy
+     * @param type 
+     *      the type of IntermediateNode
+     */
+    public IntermediateNode( String name, DisplayableTreeElement parent, SortableContentProvider contentProvider,
+        IntermediateNodeType type )
+    {
+        this.name = name;
+        this.parent = parent;
+        this.contentProvider = contentProvider;
+        elements = new ArrayList<DisplayableTreeElement>();
+        this.type = type;
     }
 
 
@@ -201,6 +233,19 @@ public class IntermediateNode implements DisplayableTreeElement
      */
     public Image getDisplayImage()
     {
+        switch ( type )
+        {
+            case NONE:
+                String imageKey = ISharedImages.IMG_OBJ_FOLDER;
+                return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );
+            case ATTRIBUTE_TYPE_FOLDER:
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.FOLDER_ATTRIBUTE_TYPE )
+                .createImage();
+            case OBJECT_CLASS_FOLDER:
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.FOLDER_OBJECT_CLASS )
+                .createImage();
+        }
+        
         String imageKey = ISharedImages.IMG_OBJ_FOLDER;
         return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );
     }
@@ -236,5 +281,29 @@ public class IntermediateNode implements DisplayableTreeElement
             }
         }
         return false;
+    }
+
+
+    /**
+     * Gets the type of IntermediateNode
+     *
+     * @return
+     *      the type of IntermediateNode
+     */
+    public IntermediateNodeType getType()
+    {
+        return type;
+    }
+
+
+    /**
+     * Sets the type of IntermediateNode
+     *
+     * @param type
+     *      the type to set
+     */
+    public void setType( IntermediateNodeType type )
+    {
+        this.type = type;
     }
 }
