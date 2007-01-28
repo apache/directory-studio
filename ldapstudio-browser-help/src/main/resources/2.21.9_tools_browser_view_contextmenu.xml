@@ -442,19 +442,11 @@
 				<listitem>
 					<para>
 						Description: Moves the selected entries to
-						another parent. The Move Entries dialog is
-						opened to select the new parent DN. Note: Some
-						directories doesn't support moving whole trees but
-						only moving leaf entries. Also it is not
-						possible to move base entries or the root DSE.
-						<screenshot>
-							<mediaobject>
-								<imageobject>
-									<imagedata
-										fileref="images/tools_browser_view_4.png" format="PNG" />
-								</imageobject>
-							</mediaobject>
-						</screenshot>
+						another parent. The 
+						<link linkend="tools_move_entries_dialog">
+							Move Entries dialog
+						</link> 
+						is opened to select the new parent DN. 
 					</para>
 				</listitem>
 				<listitem>
@@ -479,21 +471,11 @@
 						<itemizedlist>
 							<listitem>
 								Entry or Search Result: Renames the
-								selected entry in directory. The Rename
-								Entry dialog is opened to specify a new
-								RDN. Note: Some directories doesn't
-								support renaming whole trees but only
-								renaming leaf entries. Also it is not
-								possible to delete base entries or the
-								root DSE.
-								<screenshot>
-									<mediaobject>
-										<imageobject>
-											<imagedata
-												fileref="images/tools_browser_view_5.png" format="PNG" />
-										</imageobject>
-									</mediaobject>
-								</screenshot>
+								selected entry in directory. The 
+								<link linkend="tools_rename_entry_dialog">
+									Rename Entry dialog
+								</link>
+								is opened to specify a new RDN. 
 							</listitem>
 							<listitem>
 								Search: Renames the selected search.

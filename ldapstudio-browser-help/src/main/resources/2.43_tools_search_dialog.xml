@@ -112,7 +112,6 @@
 							</emphasis>
 							to open the DN Selector dialog.
 						</entry>
-						to select a DN.
 						<entry>
 							<superscript>*</superscript>)
 						</entry>
@@ -120,15 +119,16 @@
 					<row>
 						<entry>Filter</entry>
 						<entry>
-							Enter a valid LDAP search filter. 
-							Hit Ctrl-Space to get
-							content assistance. The drop-down list
+							Enter a valid LDAP search filter. Hit 
+							<shortcut><keycombo><keycap>Strg</keycap><keycap>Space</keycap></keycombo></shortcut> 
+							to get content assistance. The drop-down list
 							provides a history of recently used
-							attributes. A click to the
+							filters. A click to the
 							<emphasis role="strong">
 								Filter Editor
 							</emphasis>
-							button opens the Filter Editor dialog.
+							button opens the 
+							<link linkend="tools_filter_editor_dialog">Filter Editor dialog</link>.
 						</entry>
 						<entry>
 							<superscript>*</superscript>)
@@ -139,7 +139,8 @@
 						<entry>
 							A comma-separated list of attributes
 							that should be returned and displayed in
-							the Search Result editor. Hit Ctrl-Space
+							the Search Result editor. Hit 
+							<shortcut><keycombo><keycap>Strg</keycap><keycap>Space</keycap></keycombo></shortcut>
 							to get content assistance. The drop-down
 							list provides a history of recently used
 							attributes.

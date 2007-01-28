@@ -13,9 +13,14 @@
 			</imageobject>
 		</inlinemediaobject>
 		<emphasis role="strong">New Attribute...</emphasis>
-		button in the Entry editor or select
+		button in the Entry editor's tool bar or select
 		<emphasis role="strong">New Attribute...</emphasis>
-		from the Entry editor's context menu.
+		from the Entry editor's context menu or hit 
+		<shortcut><keycombo>
+			<keycap>Shift</keycap>
+			<keycap>Strg</keycap>
+			<keycap>+</keycap>
+		</keycombo></shortcut>.
 	</para>
 	<para>
 		To edit the attribute description select an attribute in the

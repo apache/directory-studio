@@ -49,6 +49,8 @@
 
   <!ENTITY tools_referrals_connection_dialog SYSTEM "2.49_tools_referrals_connection_dialog.xml">
   <!ENTITY tools_filter_editor_dialog SYSTEM "2.50_tools_filter_editor_dialog.xml">
+  <!ENTITY tools_rename_entry_dialog SYSTEM "2.51_tools_rename_entry_dialog.xml">
+  <!ENTITY tools_move_entries_dialog SYSTEM "2.52_tools_move_entries_dialog.xml">
 
   <!ENTITY tools_value_editors SYSTEM "2.70_tools_value_editors.xml">
 

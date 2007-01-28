@@ -40,6 +40,8 @@
 		
 		&tools_referrals_connection_dialog;
 		&tools_filter_editor_dialog;
+		&tools_rename_entry_dialog;
+		&tools_move_entries_dialog;
 
 	</section>
 	

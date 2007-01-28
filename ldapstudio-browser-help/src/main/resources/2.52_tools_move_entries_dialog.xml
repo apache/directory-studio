@@ -1,0 +1,64 @@
+<section id="tools_move_entries_dialog">
+	<title>Move Entries dialog</title>
+	<para>
+		The Move Entries dialog is used to move entries to another parent. 
+	</para>
+	
+	<para>
+		To start the Move Entries dialog select the entries you want to move, then 
+		choose <emphasis role="strong">Move...</emphasis> from context menu.
+	</para>	
+	
+	<para>
+		Note: Some directories doesn't support moving whole trees but
+		only moving leaf entries. Also it is not possible to move base 
+		entries or the root DSE.
+	</para>
+								
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata
+						fileref="images/tools_browser_view_4.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>	
+	</para>
+	
+	<para>
+		<informaltable frame="all">
+			<tgroup cols="3">
+				<colspec colname="Option" />
+				<colspec colname="Description" />
+				<colspec colname="Default" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+				
+					<row>
+						<entry>Parent</entry>
+						<entry>
+							The new parent of the entries. 
+							You could edit the DN or select a
+							recently used DN from drop-down list or
+							click to
+							<emphasis role="strong">
+								Browse....
+							</emphasis>
+							to open the DN Selector dialog.
+						</entry>
+						<entry>
+							The current parent
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</section>
