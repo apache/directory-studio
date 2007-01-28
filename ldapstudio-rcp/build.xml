@@ -174,7 +174,7 @@
 		</copy>
 		
 		<!-- Replace some plugin.xml to get rid of unused actions, menus, wizard, views, ... -->
-		<!--<move 
+		<move 
 			file="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.searchplugin.filename}.plugin.xml" 
 			tofile="${ldapstudio-rcp.application}/plugins/plugin.xml" />
 		<zip destfile="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.searchplugin.filename}.jar"
@@ -197,7 +197,7 @@
 			basedir="${ldapstudio-rcp.application}/plugins"
 			includes="plugin.xml" 
 			update="true"/>
-		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />-->
+		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
 		
 		<move file="${ldapstudio-rcp.application}/eclipse${ldapstudio-rcp.os.extension}" tofile="${ldapstudio-rcp.application}/LDAP Studio${ldapstudio-rcp.os.extension}">
 		</move>

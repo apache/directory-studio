@@ -40,6 +40,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ContributionItemFactory;
+import org.eclipse.ui.actions.NewWizardDropDownAction;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -74,6 +75,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private UpdateAction updateAction;
     private ManageConfigurationAction manageConfigurationAction;
     private IWorkbenchAction newAction;
+    private IWorkbenchAction newDropDownAction;
     private IWorkbenchAction importAction;
     private IWorkbenchAction exportAction;
     private IWorkbenchAction propertiesAction;
@@ -91,7 +93,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IContributionItem viewsList;
     private IContributionItem reopenEditorsList;
     private ReportABugAction reportABug;
-    
+    private IWorkbenchAction backwardHistoryAction;
+    private IWorkbenchAction forwardHistoryAction;
+    private IWorkbenchAction nextAction;
+    private IWorkbenchAction previousAction;
 
     /**
      * Creates a new instance of ApplicationActionBarAdvisor.
@@ -123,6 +128,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         newAction = ActionFactory.NEW.create( window );
         register( newAction );
         newAction.setText( "New..." );
+        
+        newDropDownAction = new NewWizardDropDownAction( window );
+//        new NavigationHistoryAction( window, false );
         
         openFileAction = new OpenFileAction( window );
         register(openFileAction);
@@ -231,6 +239,18 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
             ImageKeys.REPORT_BUG ) );
         register( reportABug );
         
+        forwardHistoryAction = ActionFactory.FORWARD_HISTORY.create( window );
+        register( forwardHistoryAction );
+
+        backwardHistoryAction = ActionFactory.BACKWARD_HISTORY.create( window );
+        register( backwardHistoryAction );
+
+        nextAction = ActionFactory.NEXT.create( window );
+        register( nextAction );
+
+        previousAction = ActionFactory.PREVIOUS.create( window );
+        register( previousAction );
+
     }
 
 
@@ -241,12 +261,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     {
         MenuManager fileMenu = new MenuManager( "&File", IWorkbenchActionConstants.M_FILE ); //$NON-NLS-1$
         MenuManager editMenu = new MenuManager( "&Edit", IWorkbenchActionConstants.M_EDIT ); //$NON-NLS-1$
+        MenuManager navigateMenu = new MenuManager( "&Navigate", IWorkbenchActionConstants.M_NAVIGATE ); //$NON-NLS-1$
         MenuManager windowMenu = new MenuManager( "&Window", IWorkbenchActionConstants.M_WINDOW ); //$NON-NLS-1$
         MenuManager helpMenu = new MenuManager( "&Help", IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
 
         // Adding menus
         menuBar.add( fileMenu );
         menuBar.add( editMenu );
+        menuBar.add( navigateMenu );
         // Add a group marker indicating where action set menus will appear.
         menuBar.add( new GroupMarker( IWorkbenchActionConstants.MB_ADDITIONS ) );
         menuBar.add( windowMenu );
@@ -282,7 +304,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         fileMenu.add( new Separator() );
         fileMenu.add( exitAction );
         
-        // Population Edit Menu
+        // Populating Edit Menu
         editMenu.add( undoAction );
         editMenu.add( redoAction );
         editMenu.add( new Separator() );
@@ -298,6 +320,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         editMenu.add( new Separator() );
         editMenu.add( findAction );
         
+        // Populating Navigate Menu
+        navigateMenu.add( nextAction );
+        navigateMenu.add( previousAction );
+        navigateMenu.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+        navigateMenu.add( new GroupMarker( IWorkbenchActionConstants.NAV_END ) );
+        navigateMenu.add( new Separator() );
+        navigateMenu.add( backwardHistoryAction );
+        navigateMenu.add( forwardHistoryAction );
         
         // Window 
         MenuManager perspectiveMenu = new MenuManager("Open Perspective", "openPerspective");
@@ -332,10 +362,23 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
      */
     protected void fillCoolBar( ICoolBarManager coolBar )
     {
+        // add main tool bar
         IToolBarManager toolbar = new ToolBarManager( SWT.FLAT | SWT.RIGHT );
-        coolBar.add( new ToolBarContributionItem( toolbar, Application.PLUGIN_ID + ".toolbar" ) ); //$NON-NLS-1$
-        
-        toolbar.add( newAction );
+        toolbar.add( newDropDownAction );
         toolbar.add( preferencesAction );
+        coolBar.add( new ToolBarContributionItem( toolbar, Application.PLUGIN_ID + ".toolbar" ) ); //$NON-NLS-1$
+
+        // add marker for additions
+        coolBar.add( new GroupMarker( IWorkbenchActionConstants.MB_ADDITIONS ) );
+
+        // add navigation tool bar
+        // some actions are added from org.eclipse.ui.editor to the HISTORY_GROUP
+        IToolBarManager navToolBar = new ToolBarManager( SWT.FLAT | SWT.RIGHT );
+        navToolBar.add( new Separator( IWorkbenchActionConstants.HISTORY_GROUP ) );
+        navToolBar.add( backwardHistoryAction );
+        navToolBar.add( forwardHistoryAction );
+        coolBar.add( new ToolBarContributionItem( navToolBar, IWorkbenchActionConstants.TOOLBAR_NAVIGATE ) );
+
     }
+    
 }

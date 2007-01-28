@@ -741,5 +741,96 @@
             class="org.eclipse.ui.texteditor.ResourceMarkerAnnotationModelFactory">
       </factory>
    </extension>
+
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="%textEditorAnnotationNavigationActionSet.label"
+            visible="true"
+            id="org.eclipse.ui.edit.text.actionSet.annotationNavigation">
+         <action
+               allowLabelUpdate="true"
+               style="pulldown"
+               id="org.eclipse.ui.edit.text.gotoPreviousAnnotation"
+               toolbarPath="org.eclipse.ui.workbench.navigate/history.group"
+               hoverIcon="$nl$/icons/full/ctool16/prev_nav.gif"
+               class="org.eclipse.ui.internal.editors.text.PreviousPulldownActionDelegate"
+               definitionId="org.eclipse.ui.navigate.previous"
+               disabledIcon="$nl$/icons/full/dtool16/prev_nav.gif"
+               icon="$nl$/icons/full/etool16/prev_nav.gif"
+               label="%goToPreviousAnnotation.label"
+               retarget="true"
+               tooltip="%goToPreviousAnnotation.tooltip">
+         </action>
+         <action
+               allowLabelUpdate="true"
+               style="pulldown"
+               id="org.eclipse.ui.edit.text.gotoNextAnnotation"
+               toolbarPath="org.eclipse.ui.workbench.navigate/history.group"
+               hoverIcon="$nl$/icons/full/ctool16/next_nav.gif"
+               class="org.eclipse.ui.internal.editors.text.NextPulldownActionDelegate"
+               definitionId="org.eclipse.ui.navigate.next"
+               disabledIcon="$nl$/icons/full/dtool16/next_nav.gif"
+               icon="$nl$/icons/full/etool16/next_nav.gif"
+               label="%goToNextAnnotation.label"
+               retarget="true"
+               tooltip="%goToNextAnnotation.tooltip">
+         </action>
+      </actionSet>
+      <actionSet
+            label="%textEditorNavigationActionSet.label"
+            visible="true"
+            id="org.eclipse.ui.edit.text.actionSet.navigation">
+         <action
+               toolbarPath="org.eclipse.ui.workbench.navigate/history.group"
+               id="org.eclipse.ui.edit.text.gotoLastEditPosition"
+               hoverIcon="$nl$/icons/full/ctool16/last_edit_pos.gif"
+               class="org.eclipse.ui.internal.texteditor.GotoLastEditPositionAction"
+               definitionId="org.eclipse.ui.edit.text.gotoLastEditPosition"
+               disabledIcon="$nl$/icons/full/dtool16/last_edit_pos.gif"
+               icon="$nl$/icons/full/etool16/last_edit_pos.gif"
+               helpContextId="goto_last_edit_position_action_context"
+               label="%goToLastEditPosition.label"
+               menubarPath="navigate/"
+               tooltip="%goToLastEditPosition.tooltip">
+         </action>
+      </actionSet>
+	  <actionSet
+	    label="%conversionActionSet.label"
+	    visible="true"
+	    id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo">
+         <menu
+               label="%conversionSubMenu.label"
+               path="file/save.ext"
+               id="converstLineDelimitersTo">
+            <separator name="lineDelimitersConversion"/>
+            <separator name="encoding"/>
+         </menu>
+         <action
+	       definitionId="org.eclipse.ui.edit.text.delimiter.macOS9"
+	       label="%convertDelimiters.MacOS9.label"
+	       class="org.eclipse.ui.internal.editors.text.ConvertLineDelimitersToMacOS9"
+	       tooltip="%convertDelimiters.MacOS9.description"
+	       menubarPath="file/converstLineDelimitersTo/lineDelimitersConversion"
+	       id="org.eclipse.ui.edit.text.delimiter.macOS9">
+	 	 </action>
+         <action
+	       definitionId="org.eclipse.ui.edit.text.delimiter.unix"
+	       label="%convertDelimiters.Unix.label"
+	       class="org.eclipse.ui.internal.editors.text.ConvertLineDelimitersToUnix"
+	       tooltip="%convertDelimiters.Unix.description"
+	       menubarPath="file/converstLineDelimitersTo/lineDelimitersConversion"
+	       id="org.eclipse.ui.edit.text.delimiter.unix">
+	 	 </action>
+         <action
+	       definitionId="org.eclipse.ui.edit.text.delimiter.windows"
+	       label="%convertDelimiters.Windows.label"
+	       class="org.eclipse.ui.internal.editors.text.ConvertLineDelimitersToWindows"
+	       tooltip="%convertDelimiters.Unix.description"
+	       menubarPath="file/converstLineDelimitersTo/lineDelimitersConversion"
+	       id="org.eclipse.ui.edit.text.delimiter.windows">
+	 	 </action>
+	  </actionSet>
+   </extension>
    
 </plugin>
