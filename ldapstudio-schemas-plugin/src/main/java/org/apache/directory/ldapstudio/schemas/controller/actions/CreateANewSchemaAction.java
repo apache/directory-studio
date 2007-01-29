@@ -26,14 +26,8 @@ import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IViewActionDelegate;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -42,7 +36,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class implements the Action for creating a new schema
  */
 
-public class CreateANewSchemaAction extends Action implements IWorkbenchWindowActionDelegate, IViewActionDelegate
+public class CreateANewSchemaAction extends Action
 {
     /**
      * Default constructor
@@ -61,15 +55,9 @@ public class CreateANewSchemaAction extends Action implements IWorkbenchWindowAc
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
-    public void run( IAction action )
-    {
-        this.run();
-    }
-
-
     public void run()
     {
         // Instantiates and initializes the wizard
@@ -79,25 +67,5 @@ public class CreateANewSchemaAction extends Action implements IWorkbenchWindowAc
         WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
         dialog.create();
         dialog.open();
-    }
-
-
-    public void dispose()
-    {
-    }
-
-
-    public void init( IWorkbenchWindow window )
-    {
-    }
-
-
-    public void selectionChanged( IAction action, ISelection selection )
-    {
-    }
-
-
-    public void init( IViewPart view )
-    {
     }
 }

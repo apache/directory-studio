@@ -21,14 +21,18 @@
 package org.apache.directory.ldapstudio.schemas.controller;
 
 
+import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttributeTypeAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.DeleteAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemasView;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenLocalFileAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaSourceCode;
 import org.apache.directory.ldapstudio.schemas.controller.actions.RemoveSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAsAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.SortPoolManagerAction;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaCreationException;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -37,250 +41,499 @@ import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEdi
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.viewers.Messages;
 import org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
-public class PoolManagerController implements IMenuListener, IDoubleClickListener, DropTargetListener
+/**
+ * This class implements the Controller for the Schemas View
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class PoolManagerController
 {
+    /** The logger */
     private static Logger logger = Logger.getLogger( PoolManagerController.class );
-    private static final PoolManagerController instance_;
+
+    /** The associated view */
+    private PoolManager view;
+
+    /** The Drag'n'Drop FileTransfer Object */
     private final static FileTransfer fileTransfer = FileTransfer.getInstance();
 
-    //Static thread-safe singleton initializer
-    static
+    /** The Context Menu */
+    private MenuManager contextMenu;
+
+    // The Actions
+    private Action openLocalFile;
+    private Action createANewSchema;
+    private Action removeSchema;
+    private Action createANewObjectClass;
+    private Action createANewAttributeType;
+    private Action deleteAction;
+    private Action sortAlphabetical;
+    private Action sortUnAlphabetical;
+    private Action collapseAll;
+    private Action linkWithEditor;
+    private Action openSchemaSourceCode;
+    private Action save;
+    private Action saveAs;
+
+
+    /**
+     * Creates a new instance of PoolManagerController.
+     *
+     * @param view
+     *      the associated view
+     */
+    public PoolManagerController( PoolManager view )
     {
-        try
-        {
-            instance_ = new PoolManagerController();
-        }
-        catch ( Throwable e )
-        {
-            throw new RuntimeException( e.getMessage() );
-        }
+        this.view = view;
+
+        initActions();
+        initToolbar();
+        initContextMenu();
+        initDragAndDrop();
+        initDoubleClickListener();
+        registerUpdateActions();
     }
 
 
     /**
-     * Use this method to get the singleton instance of the controller
-     * @return
+     * Initializes the Actions.
      */
-    public static PoolManagerController getInstance()
+    private void initActions()
     {
-        return instance_;
+        openLocalFile = new OpenLocalFileAction();
+        createANewSchema = new CreateANewSchemaAction();
+        removeSchema = new RemoveSchemaAction();
+        createANewObjectClass = new CreateANewObjectClassAction();
+        createANewAttributeType = new CreateANewAttributeTypeAction();
+        deleteAction = new DeleteAction();
+        sortAlphabetical = new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
+            SortPoolManagerAction.SortType.alphabetical, Messages.getString( "PoolManager.Sort_alphabetically" ) ); //$NON-NLS-1$
+        sortUnAlphabetical = new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
+            SortPoolManagerAction.SortType.unalphabetical, Messages.getString( "PoolManager.Sort_unalphabetically" ) ); //$NON-NLS-1$
+        collapseAll = new CollapseAllAction( view.getViewer() );
+        linkWithEditor = new LinkWithEditorSchemasView( view );
+        openSchemaSourceCode = new OpenSchemaSourceCode( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
+            "View source code" );
+        save = new SaveAction();
+        saveAs = new SaveAsAction();
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
+    /**
+     * Initializes the Toolbar.
      */
-    public void menuAboutToShow( IMenuManager manager )
+    private void initToolbar()
     {
-        CreateANewSchemaAction createANewSchemaAction = new CreateANewSchemaAction();
-        CreateANewObjectClassAction createANewObjectClassAction = new CreateANewObjectClassAction();
-        CreateANewAttributeTypeAction createANewAttributeTypeAction = new CreateANewAttributeTypeAction();
-        DeleteAction deleteAction = new DeleteAction();
-        OpenSchemaSourceCode openSchemaSourceCode = new OpenSchemaSourceCode( PlatformUI.getWorkbench()
-            .getActiveWorkbenchWindow(), "View source code" ); //$NON-NLS-1$
-        SaveAction saveAction = new SaveAction();
-        SaveAsAction saveAsAction = new SaveAsAction();
-        RemoveSchemaAction removeSchemaAction = new RemoveSchemaAction();
-
-        PoolManager view = ( PoolManager ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-            .findView( Application.PLUGIN_ID + ".view.PoolManager" ); //$NON-NLS-1$
-
-        Object selection = ( ( TreeSelection ) view.getViewer().getSelection() ).getFirstElement();
-
-        if ( selection instanceof SchemaWrapper )
-        {
-            Schema schema = ( ( SchemaWrapper ) selection ).getMySchema();
-            if ( schema.type == SchemaType.coreSchema )
-            {
-                manager.add( saveAsAction );
-                manager.add( new Separator() );
-                manager.add( openSchemaSourceCode );
-            }
-            else if ( schema.type == SchemaType.userSchema )
-            {
-                manager.add( createANewObjectClassAction );
-                manager.add( createANewAttributeTypeAction );
-                manager.add( new Separator() );
-                manager.add( saveAction );
-                manager.add( saveAsAction );
-                manager.add( removeSchemaAction );
-                manager.add( new Separator() );
-                manager.add( openSchemaSourceCode );
-            }
-        }
-        else if ( selection instanceof IntermediateNode )
-        {
-            if ( ( ( IntermediateNode ) selection ).getDisplayName().equals( "Attribute Types" ) ) { //$NON-NLS-1$
-                manager.add( createANewAttributeTypeAction );
-            }
-            else if ( ( ( IntermediateNode ) selection ).getDisplayName().equals( "Object Classes" ) ) { //$NON-NLS-1$
-                manager.add( createANewObjectClassAction );
-            }
-        }
-        else if ( ( selection instanceof AttributeTypeWrapper ) )
-        {
-            manager.add( deleteAction );
-            manager.add( new Separator() );
-            manager.add( createANewAttributeTypeAction );
-        }
-        else if ( ( selection instanceof ObjectClassWrapper ) )
-        {
-            manager.add( deleteAction );
-            manager.add( new Separator() );
-            manager.add( createANewObjectClassAction );
-        }
-        else
-        {
-            // Nothing is selected
-            if ( selection == null )
-            {
-                manager.add( createANewSchemaAction );
-            }
-        }
+        IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
+        toolbar.add( openLocalFile );
+        toolbar.add( createANewSchema );
+        toolbar.add( removeSchema );
+        toolbar.add( new Separator() );
+        toolbar.add( createANewObjectClass );
+        toolbar.add( createANewAttributeType );
+        toolbar.add( ( IAction ) deleteAction );
+        toolbar.add( new Separator() );
+        toolbar.add( sortAlphabetical );
+        toolbar.add( sortUnAlphabetical );
+        toolbar.add( new Separator() );
+        toolbar.add( collapseAll );
+        toolbar.add( linkWithEditor );
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+    /**
+     * Initializes the ContextMenu.
      */
-    public void doubleClick( DoubleClickEvent event )
+    private void initContextMenu()
     {
-        // TODO : /!\ Essayer de factoriser le code commun � la fenetre de vue hierarchique dans une classe abstraite
-
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-        PoolManager view = ( PoolManager ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-            .findView( PoolManager.ID );
         TreeViewer viewer = view.getViewer();
 
-        // What we get from the treeViewer is a StructuredSelection
-        StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+        contextMenu = new MenuManager( "" ); //$NON-NLS-1$
+        contextMenu.setRemoveAllWhenShown( true );
 
-        // Here's the real object (an AttributeTypeWrapper, ObjectClassWrapper or IntermediateNode)
-        Object objectSelection = selection.getFirstElement();
-        IEditorInput input = null;
-        String editorId = null;
-
-        // Selecting the right editor and input
-        if ( objectSelection instanceof AttributeTypeWrapper )
+        contextMenu.addMenuListener( new IMenuListener()
         {
-            input = new AttributeTypeFormEditorInput( ( ( AttributeTypeWrapper ) objectSelection ).getMyAttributeType() );
-            editorId = AttributeTypeFormEditor.ID;
-        }
-        else if ( objectSelection instanceof ObjectClassWrapper )
-        {
-            input = new ObjectClassFormEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getMyObjectClass() );
-            editorId = ObjectClassFormEditor.ID;
-        }
-        else if ( ( objectSelection instanceof IntermediateNode ) || ( objectSelection instanceof SchemaWrapper ) )
-        {
-            // Here we don't open an editor, we just expand the node.
-            viewer.setExpandedState( objectSelection, !viewer.getExpandedState( objectSelection ) );
-        }
-
-        // Let's open the editor
-        if ( input != null )
-        {
-            try
+            /**
+             * {@inheritDoc}
+             */
+            public void menuAboutToShow( IMenuManager manager )
             {
-                page.openEditor( input, editorId );
-            }
-            catch ( PartInitException e )
-            {
-                logger.debug( "error when opening the editor" ); //$NON-NLS-1$
-            }
-        }
-    }
+                Object selection = ( ( TreeSelection ) view.getViewer().getSelection() ).getFirstElement();
 
-
-    /******************************************
-     *         DropTargetListener Impl        *
-     ******************************************/
-
-    public void dragEnter( DropTargetEvent event )
-    {
-        if ( ( event.operations & DND.DROP_COPY ) != 0 )
-        {
-            event.detail = DND.DROP_COPY;
-        }
-        else
-        {
-            event.detail = DND.DROP_NONE;
-        }
-
-        //we only want files
-        for ( int i = 0; i < event.dataTypes.length; i++ )
-        {
-            if ( fileTransfer.isSupportedType( event.dataTypes[i] ) )
-            {
-                event.currentDataType = event.dataTypes[i];
-                break;
-            }
-        }
-    }
-
-
-    public void dragOver( DropTargetEvent event )
-    {
-    }
-
-
-    public void dragOperationChanged( DropTargetEvent event )
-    {
-    }
-
-
-    public void dragLeave( DropTargetEvent event )
-    {
-    }
-
-
-    public void dropAccept( DropTargetEvent event )
-    {
-    }
-
-
-    public void drop( DropTargetEvent event )
-    {
-        if ( fileTransfer.isSupportedType( event.currentDataType ) )
-        {
-            SchemaPool pool = SchemaPool.getInstance();
-            String[] files = ( String[] ) event.data;
-            for ( int i = 0; i < files.length; i++ )
-            {
-                try
+                if ( selection instanceof SchemaWrapper )
                 {
-                    pool.addAlreadyExistingSchema( files[i], SchemaType.userSchema );
+                    Schema schema = ( ( SchemaWrapper ) selection ).getMySchema();
+                    if ( schema.type == SchemaType.coreSchema )
+                    {
+                        manager.add( saveAs );
+                        manager.add( new Separator() );
+                        manager.add( openSchemaSourceCode );
+                    }
+                    else if ( schema.type == SchemaType.userSchema )
+                    {
+                        manager.add( createANewObjectClass );
+                        manager.add( createANewAttributeType );
+                        manager.add( new Separator() );
+                        manager.add( save );
+                        manager.add( saveAs );
+                        manager.add( removeSchema );
+                        manager.add( new Separator() );
+                        manager.add( openSchemaSourceCode );
+                    }
                 }
-                catch ( SchemaCreationException e )
+                else if ( selection instanceof IntermediateNode )
                 {
-                    logger.debug( "error when initializing new schema after drag&drop: " + files[i] ); //$NON-NLS-1$
+                    if ( ( ( IntermediateNode ) selection ).getType() == IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER )
+                    {
+                        manager.add( createANewAttributeType );
+                    }
+                    else if ( ( ( IntermediateNode ) selection ).getType() == IntermediateNodeType.OBJECT_CLASS_FOLDER )
+                    {
+                        manager.add( createANewObjectClass );
+                    }
+                }
+                else if ( ( selection instanceof AttributeTypeWrapper ) )
+                {
+                    manager.add( deleteAction );
+                    manager.add( new Separator() );
+                    manager.add( createANewAttributeType );
+                }
+                else if ( ( selection instanceof ObjectClassWrapper ) )
+                {
+                    manager.add( deleteAction );
+                    manager.add( new Separator() );
+                    manager.add( createANewObjectClass );
+                }
+                else
+                {
+                    // Nothing is selected
+                    if ( selection == null )
+                    {
+                        manager.add( createANewSchema );
+                    }
                 }
             }
-        }
+        } );
+
+        // set the context menu to the table viewer
+        viewer.getControl().setMenu( contextMenu.createContextMenu( viewer.getControl() ) );
+        // register the context menu to enable extension actions
+        view.getSite().registerContextMenu( contextMenu, viewer );
+    }
+
+
+    /**
+     * Initializes the DragNDrop support
+     */
+    private void initDragAndDrop()
+    {
+        DropTarget target = new DropTarget( view.getViewer().getControl(), DND.DROP_COPY );
+        //we only support file dropping on the viewer
+        Transfer[] types = new Transfer[]
+            { FileTransfer.getInstance() };
+        target.setTransfer( types );
+        target.addDropListener( new DropTargetListener()
+        {
+            /**
+             * {@inheritDoc}
+             */
+            public void dragEnter( DropTargetEvent event )
+            {
+                if ( ( event.operations & DND.DROP_COPY ) != 0 )
+                {
+                    event.detail = DND.DROP_COPY;
+                }
+                else
+                {
+                    event.detail = DND.DROP_NONE;
+                }
+
+                //we only want files
+                for ( int i = 0; i < event.dataTypes.length; i++ )
+                {
+                    if ( fileTransfer.isSupportedType( event.dataTypes[i] ) )
+                    {
+                        event.currentDataType = event.dataTypes[i];
+                        break;
+                    }
+                }
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            public void dragOver( DropTargetEvent event )
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            public void dragOperationChanged( DropTargetEvent event )
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            public void dragLeave( DropTargetEvent event )
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            public void dropAccept( DropTargetEvent event )
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            public void drop( DropTargetEvent event )
+            {
+                if ( fileTransfer.isSupportedType( event.currentDataType ) )
+                {
+                    SchemaPool pool = SchemaPool.getInstance();
+                    String[] files = ( String[] ) event.data;
+                    for ( int i = 0; i < files.length; i++ )
+                    {
+                        try
+                        {
+                            pool.addAlreadyExistingSchema( files[i], SchemaType.userSchema );
+                        }
+                        catch ( SchemaCreationException e )
+                        {
+                            logger.debug( "error when initializing new schema after drag&drop: " + files[i] ); //$NON-NLS-1$
+                        }
+                    }
+                }
+            }
+        } );
+
+    }
+
+
+    /**
+     * Initializes the DoubleClickListener
+     */
+    private void initDoubleClickListener()
+    {
+        view.getViewer().addDoubleClickListener( new IDoubleClickListener()
+        {
+            /**
+             * {@inheritDoc}
+             */
+            public void doubleClick( DoubleClickEvent event )
+            {
+                // TODO : /!\ Essayer de factoriser le code commun � la fenetre de vue hierarchique dans une classe abstraite
+
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+                PoolManager view = ( PoolManager ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                    .findView( PoolManager.ID );
+                TreeViewer viewer = view.getViewer();
+
+                // What we get from the treeViewer is a StructuredSelection
+                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+
+                // Here's the real object (an AttributeTypeWrapper, ObjectClassWrapper or IntermediateNode)
+                Object objectSelection = selection.getFirstElement();
+                IEditorInput input = null;
+                String editorId = null;
+
+                // Selecting the right editor and input
+                if ( objectSelection instanceof AttributeTypeWrapper )
+                {
+                    input = new AttributeTypeFormEditorInput( ( ( AttributeTypeWrapper ) objectSelection )
+                        .getMyAttributeType() );
+                    editorId = AttributeTypeFormEditor.ID;
+                }
+                else if ( objectSelection instanceof ObjectClassWrapper )
+                {
+                    input = new ObjectClassFormEditorInput( ( ( ObjectClassWrapper ) objectSelection )
+                        .getMyObjectClass() );
+                    editorId = ObjectClassFormEditor.ID;
+                }
+                else if ( ( objectSelection instanceof IntermediateNode )
+                    || ( objectSelection instanceof SchemaWrapper ) )
+                {
+                    // Here we don't open an editor, we just expand the node.
+                    viewer.setExpandedState( objectSelection, !viewer.getExpandedState( objectSelection ) );
+                }
+
+                // Let's open the editor
+                if ( input != null )
+                {
+                    try
+                    {
+                        page.openEditor( input, editorId );
+                    }
+                    catch ( PartInitException e )
+                    {
+                        logger.debug( "error when opening the editor" ); //$NON-NLS-1$
+                    }
+                }
+            }
+        } );
+
+    }
+
+
+    /**
+     * Registers a Listener on the Schemas View and enable/disable the
+     * Actions according to the selection
+     */
+    private void registerUpdateActions()
+    {
+        // Handling selection of the Browser View to enable/disable the Actions
+        view.getSite().getPage().addSelectionListener( PoolManager.ID, new ISelectionListener()
+        {
+            /**
+             * {@inheritDoc}
+             */
+            public void selectionChanged( IWorkbenchPart part, ISelection selection )
+            {
+                TreeSelection treeSelection = ( TreeSelection ) selection;
+
+                Object selectedObject = ( ( TreeSelection ) selection ).getFirstElement();
+
+                if ( treeSelection.size() != 1 || selectedObject == null )
+                {
+                    removeSchema.setEnabled( false );
+                    createANewObjectClass.setEnabled( false );
+                    createANewAttributeType.setEnabled( false );
+                    deleteAction.setEnabled( false );
+                }
+                else if ( selectedObject instanceof SchemaWrapper )
+                {
+                    SchemaWrapper schemaWrapper = ( SchemaWrapper ) selectedObject;
+
+                    if ( schemaWrapper.getMySchema().type == SchemaType.coreSchema )
+                    {
+                        removeSchema.setEnabled( false );
+                        createANewObjectClass.setEnabled( false );
+                        createANewAttributeType.setEnabled( false );
+                        deleteAction.setEnabled( false );
+                    }
+                    else
+                    {
+                        removeSchema.setEnabled( true );
+                        createANewObjectClass.setEnabled( true );
+                        createANewAttributeType.setEnabled( true );
+                        deleteAction.setEnabled( false );
+                    }
+                }
+                else if ( selectedObject instanceof AttributeTypeWrapper )
+                {
+                    AttributeTypeWrapper attributeTypeWrapper = ( AttributeTypeWrapper ) selectedObject;
+                    deleteAction.setText( "Delete Attribute Type" + " '" + attributeTypeWrapper.getName() + "'" );
+
+                    if ( attributeTypeWrapper.getMyAttributeType().getOriginatingSchema().type == SchemaType.coreSchema )
+                    {
+                        createANewObjectClass.setEnabled( false );
+                        createANewAttributeType.setEnabled( false );
+                        deleteAction.setEnabled( false );
+                    }
+                    else
+                    {
+                        createANewObjectClass.setEnabled( false );
+                        createANewAttributeType.setEnabled( true );
+                        deleteAction.setEnabled( true );
+                    }
+                }
+                else if ( selectedObject instanceof ObjectClassWrapper )
+                {
+                    ObjectClassWrapper objectClassWrapper = ( ObjectClassWrapper ) selectedObject;
+                    deleteAction.setText( "Delete Object Class" + " '" + objectClassWrapper.getNames()[0] + "'" );
+
+                    if ( objectClassWrapper.getMyObjectClass().getOriginatingSchema().type == SchemaType.coreSchema )
+                    {
+                        createANewObjectClass.setEnabled( false );
+                        createANewAttributeType.setEnabled( false );
+                        deleteAction.setEnabled( false );
+                    }
+                    else
+                    {
+                        createANewObjectClass.setEnabled( true );
+                        createANewAttributeType.setEnabled( false );
+                        deleteAction.setEnabled( true );
+                    }
+                }
+                else if ( selectedObject instanceof IntermediateNode )
+                {
+                    IntermediateNode intermediateNode = ( IntermediateNode ) selectedObject;
+                    SchemaWrapper schemaWrapper = ( SchemaWrapper ) intermediateNode.getParent();
+
+                    if ( schemaWrapper.getMySchema().type == SchemaType.coreSchema )
+                    {
+                        removeSchema.setEnabled( false );
+                        createANewObjectClass.setEnabled( false );
+                        createANewAttributeType.setEnabled( false );
+                        deleteAction.setEnabled( false );
+                    }
+                    else
+                    {
+                        if ( intermediateNode.getType() == IntermediateNodeType.OBJECT_CLASS_FOLDER )
+                        {
+                            removeSchema.setEnabled( true );
+                            createANewObjectClass.setEnabled( true );
+                            createANewAttributeType.setEnabled( false );
+                            deleteAction.setEnabled( false );
+                        }
+                        else if ( intermediateNode.getType() == IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER )
+                        {
+                            removeSchema.setEnabled( true );
+                            createANewObjectClass.setEnabled( false );
+                            createANewAttributeType.setEnabled( true );
+                            deleteAction.setEnabled( false );
+                        }
+                        else
+                        {
+                            removeSchema.setEnabled( true );
+                            createANewObjectClass.setEnabled( false );
+                            createANewAttributeType.setEnabled( false );
+                            deleteAction.setEnabled( false );
+                        }
+                    }
+                }
+            }
+        } );
     }
 }

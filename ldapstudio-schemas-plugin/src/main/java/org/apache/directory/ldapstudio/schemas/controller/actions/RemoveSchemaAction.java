@@ -31,15 +31,9 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTy
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.ui.IViewActionDelegate;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -47,7 +41,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class implements the Action for removing a schema from the pool
  */
-public class RemoveSchemaAction extends Action implements IWorkbenchWindowActionDelegate, IViewActionDelegate
+public class RemoveSchemaAction extends Action
 {
 
     /**
@@ -67,8 +61,8 @@ public class RemoveSchemaAction extends Action implements IWorkbenchWindowAction
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -125,31 +119,5 @@ public class RemoveSchemaAction extends Action implements IWorkbenchWindowAction
             else
                 pool.removeSchema( schema );
         }
-    }
-
-
-    public void dispose()
-    {
-    }
-
-
-    public void init( IWorkbenchWindow window )
-    {
-    }
-
-
-    public void run( IAction action )
-    {
-        this.run();
-    }
-
-
-    public void selectionChanged( IAction action, ISelection selection )
-    {
-    }
-
-
-    public void init( IViewPart view )
-    {
     }
 }

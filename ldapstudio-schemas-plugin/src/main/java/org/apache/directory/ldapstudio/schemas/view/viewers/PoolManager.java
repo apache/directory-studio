@@ -25,15 +25,6 @@ import java.util.Comparator;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
-import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttributeTypeAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewSchemaAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.DeleteAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemasView;
-import org.apache.directory.ldapstudio.schemas.controller.actions.OpenLocalFileAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.RemoveSchemaAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.SortPoolManagerAction;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
@@ -41,21 +32,19 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DropTarget;
-import org.eclipse.swt.dnd.FileTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISaveablePart2;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
+/**
+ * This class implements the Schemas View
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class PoolManager extends ViewPart implements PoolListener, ISaveablePart2
 {
     public static final String ID = Application.PLUGIN_ID + ".view.PoolManager"; //$NON-NLS-1$
@@ -66,90 +55,45 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
     private PoolManagerContentProvider contentProvider;
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
-    @Override
     public void createPartControl( Composite parent )
     {
         this.parent = parent;
         initViewer();
-        IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-        toolbar.add( new OpenLocalFileAction() );
-        toolbar.add( new CreateANewSchemaAction() );
-        toolbar.add( new RemoveSchemaAction() );
-        toolbar.add( new Separator() );
-        toolbar.add( new CreateANewObjectClassAction() );
-        toolbar.add( new CreateANewAttributeTypeAction() );
-        toolbar.add( new DeleteAction() );
-        toolbar.add( new Separator() );
-        toolbar.add( new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortPoolManagerAction.SortType.alphabetical, Messages.getString( "PoolManager.Sort_alphabetically" ) ) ); //$NON-NLS-1$
-        toolbar.add( new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortPoolManagerAction.SortType.unalphabetical, Messages.getString( "PoolManager.Sort_unalphabetically" ) ) ); //$NON-NLS-1$
-        toolbar.add( new Separator() );
-        toolbar.add( new CollapseAllAction( getViewer() ) );
-        toolbar.add( new LinkWithEditorSchemasView( this ) );
-
-        // ContextMenu Creation
-        createContextMenu();
 
         // Registering the Viewer, so other views can be notified when the viewer selection changes
         getSite().setSelectionProvider( viewer );
-    }
 
-
-    private MenuManager createContextMenu()
-    {
-        MenuManager menu = new MenuManager( "" ); //$NON-NLS-1$
-        menu.setRemoveAllWhenShown( true );
-        //contextual-menu handling via the singleton controller instance
-        menu.addMenuListener( PoolManagerController.getInstance() );
-        // set the context menu to the table viewer
-        viewer.getControl().setMenu( menu.createContextMenu( viewer.getControl() ) );
-        // register the context menu to enable extension actions
-        getSite().registerContextMenu( menu, viewer );
-        return menu;
-    }
-
-
-    private void initViewer()
-    {
         SchemaPool pool = SchemaPool.getInstance();
         //we want to be notified if the pool has been modified
         pool.addListener( this );
 
-        viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new PoolManagerContentProvider();
-        contentProvider.bindToTreeViewer( viewer );
-
-        //double-click handling via the singleton controller instance
-        viewer.addDoubleClickListener( PoolManagerController.getInstance() );
-
-        //drag&drop handling via the singleton controller instance
-        int operations = DND.DROP_COPY;
-        DropTarget target = new DropTarget( viewer.getControl(), operations );
-        //we only support file dropping on the viewer
-        Transfer[] types = new Transfer[]
-            { FileTransfer.getInstance() };
-        target.setTransfer( types );
-        target.addDropListener( PoolManagerController.getInstance() );
+        // Adding the controller
+        new PoolManagerController( this );
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
+    /**
+     * Initializes the Viewer
      */
-    @Override
+    private void initViewer()
+    {
+        viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        contentProvider = new PoolManagerContentProvider();
+        contentProvider.bindToTreeViewer( viewer );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void setFocus()
     {
         viewer.getControl().setFocus();
     }
 
-
-    /******************************************
-     *                 Logic                  *
-     ******************************************/
 
     /**
      * Refresh the entire view
@@ -181,10 +125,6 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
     }
 
 
-    /******************************************
-     *            Pool Listener Impl          *
-     ******************************************/
-
     /**
      * We refresh the view only if the pool has been modified
      */
@@ -196,7 +136,10 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
 
 
     /**
-     * @return the internal tree viewer
+     * Gets the TreeViewer
+     *
+     * @return
+     *      the TreeViewer
      */
     public TreeViewer getViewer()
     {
@@ -204,13 +147,18 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int promptToSaveOnClose()
     {
-        // TODO Auto-generated method stub
         return ISaveablePart2.YES;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSave( IProgressMonitor monitor )
     {
         // save schemas on disk
@@ -239,16 +187,19 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSaveAs()
     {
-        // TODO Auto-generated method stub
-
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isDirty()
     {
-        // TODO Auto-generated method stub
         Schema[] schemas = SchemaPool.getInstance().getSchemas();
         for ( int i = 0; i < schemas.length; i++ )
         {
@@ -261,21 +212,26 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
                 }
             }
         }
+
         // Default value
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSaveAsAllowed()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSaveOnCloseNeeded()
     {
-        // TODO Auto-generated method stub
         return true;
     }
 

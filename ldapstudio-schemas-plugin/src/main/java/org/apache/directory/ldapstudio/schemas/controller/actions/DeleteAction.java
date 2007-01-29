@@ -35,17 +35,11 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClass
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IViewActionDelegate;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -54,7 +48,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class implements the Action for deleting an element (object class or attribute type)
  */
-public class DeleteAction extends Action implements IWorkbenchWindowActionDelegate, IViewActionDelegate
+public class DeleteAction extends Action
 {
     private static Logger logger = Logger.getLogger( DeleteAction.class );
 
@@ -81,8 +75,8 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -183,31 +177,5 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
                 }
             }
         }
-    }
-
-
-    public void dispose()
-    {
-    }
-
-
-    public void init( IWorkbenchWindow window )
-    {
-    }
-
-
-    public void run( IAction action )
-    {
-        this.run();
-    }
-
-
-    public void selectionChanged( IAction action, ISelection selection )
-    {
-    }
-
-
-    public void init( IViewPart view )
-    {
     }
 }

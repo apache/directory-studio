@@ -33,17 +33,11 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClass
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.ui.IViewActionDelegate;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -51,8 +45,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class implements the Action for creating a new attribute type
  */
-public class CreateANewAttributeTypeAction extends Action implements IWorkbenchWindowActionDelegate,
-    IViewActionDelegate
+public class CreateANewAttributeTypeAction extends Action
 {
 
     /**
@@ -72,8 +65,8 @@ public class CreateANewAttributeTypeAction extends Action implements IWorkbenchW
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
+    /**
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -138,31 +131,5 @@ public class CreateANewAttributeTypeAction extends Action implements IWorkbenchW
                 dialog.open();
             }
         }
-    }
-
-
-    public void dispose()
-    {
-    }
-
-
-    public void init( IWorkbenchWindow window )
-    {
-    }
-
-
-    public void run( IAction action )
-    {
-        this.run();
-    }
-
-
-    public void selectionChanged( IAction action, ISelection selection )
-    {
-    }
-
-
-    public void init( IViewPart view )
-    {
     }
 }
