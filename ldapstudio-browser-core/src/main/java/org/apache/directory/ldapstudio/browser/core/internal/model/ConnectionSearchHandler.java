@@ -235,6 +235,10 @@ public class ConnectionSearchHandler
         }
         catch ( Exception e )
         {
+            if ( search != null )
+            {
+                search.setSearchResults( new ISearchResult[0] );
+            }
             monitor.reportError( e );
         }
     }
