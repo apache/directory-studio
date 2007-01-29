@@ -173,7 +173,7 @@ public class LinkWithEditorHierarchyView extends Action
      */
     public LinkWithEditorHierarchyView( HierarchicalViewer view )
     {
-        super( "Link with editor", AS_CHECK_BOX );
+        super( "Link with Editor", AS_CHECK_BOX );
         super.setActionDefinitionId( Activator.PLUGIN_ID + "linkwitheditorschemasview" );
         super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
             IImageKeys.LINK_WITH_EDITOR ) );

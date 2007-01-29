@@ -25,6 +25,7 @@ import java.util.Comparator;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.HierarchicalViewerController;
+import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorHierarchyView;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SortHierarchicalViewAction;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
@@ -32,6 +33,7 @@ import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -74,6 +76,8 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
         toolbar.add( new SortHierarchicalViewAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
             SortHierarchicalViewAction.SortType.unalphabetical, Messages
                 .getString( "HierarchicalViewer.Sort_unalphabetically" ) ) ); //$NON-NLS-1$
+        toolbar.add( new Separator() );
+        toolbar.add( new CollapseAllAction( getViewer() ) );
         toolbar.add( new LinkWithEditorHierarchyView( this ) );
     }
 

@@ -25,6 +25,7 @@ import java.util.Comparator;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
+import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttributeTypeAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewSchemaAction;
@@ -86,6 +87,8 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
             SortPoolManagerAction.SortType.alphabetical, Messages.getString( "PoolManager.Sort_alphabetically" ) ) ); //$NON-NLS-1$
         toolbar.add( new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
             SortPoolManagerAction.SortType.unalphabetical, Messages.getString( "PoolManager.Sort_unalphabetically" ) ) ); //$NON-NLS-1$
+        toolbar.add( new Separator() );
+        toolbar.add( new CollapseAllAction( getViewer() ) );
         toolbar.add( new LinkWithEditorSchemasView( this ) );
 
         // ContextMenu Creation
