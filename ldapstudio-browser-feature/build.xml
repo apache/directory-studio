@@ -48,6 +48,7 @@
 				<exclude name="build.xml"/>
 				<exclude name="feature.xml"/>
 				<exclude name="ldapstudio.png"/>
+				<exclude name="META-INF/**"/>
 			</fileset>
 		</delete>
 	</target>
