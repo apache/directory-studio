@@ -245,7 +245,7 @@ public class LdifOutlinePage extends ContentOutlinePage
     public void refresh( Object element )
     {
         final TreeViewer treeViewer = getTreeViewer();
-        if ( treeViewer != null )
+        if ( treeViewer != null && treeViewer.getTree() != null && !treeViewer.getTree().isDisposed() )
         {
             treeViewer.refresh( element );
         }
@@ -259,7 +259,7 @@ public class LdifOutlinePage extends ContentOutlinePage
     {
         final TreeViewer treeViewer = getTreeViewer();
 
-        if ( treeViewer != null )
+        if ( treeViewer != null && treeViewer.getTree() != null && !treeViewer.getTree().isDisposed() )
         {
             // ISelection selection = treeViewer.getSelection();
             // Object[] expandedElements = treeViewer.getExpandedElements();
