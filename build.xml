@@ -159,6 +159,7 @@
 			<fileset dir="${ldapstudio-rcp-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
+				<include name="META-INF/**" />
 			</fileset>
 		</copy>
 		
@@ -171,6 +172,7 @@
 			<fileset dir="${ldapstudio-schemas-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
+				<include name="META-INF/**" />
 			</fileset>
 		</copy>
 		
@@ -183,6 +185,7 @@
 			<fileset dir="${ldapstudio-browser-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
+				<include name="META-INF/**" />
 			</fileset>
 		</copy>
 
