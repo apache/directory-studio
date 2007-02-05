@@ -203,6 +203,7 @@
 	<target name="jar" description="Creates jar file" depends="eclipse-help">
 		<jar destfile="${project.output}/${project.name}_${project.version}.jar" manifest="${project.build}/META-INF/MANIFEST.MF">
 			<fileset dir="${project.build}" excludes="compile.timestamp" />
+			<include name="META-INF/**"/>
 		</jar>
 	</target>
 
