@@ -22,10 +22,14 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -39,7 +43,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class ObjectClassFormEditorSourceCodePage extends FormPage
 {
     private ObjectClass objectClass;
-    private Text sourceCode_text;
+    private SchemaSourceViewer schemaSourceViewer;
 
 
     /**
@@ -70,9 +74,16 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
         objectClass = input.getObjectClass();
 
         // SOURCE CODE Field
-        sourceCode_text = toolkit.createText( form.getBody(), "", SWT.MULTI ); //$NON-NLS-1$
-        sourceCode_text.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        sourceCode_text.setEditable( false );
+        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.MULTI );
+        schemaSourceViewer.getTextWidget().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        schemaSourceViewer.getTextWidget().setEditable( false );
+        
+        // set text font
+        Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
+        schemaSourceViewer.getTextWidget().setFont( font );
+        
+        IDocument document = new Document();
+        schemaSourceViewer.setDocument( document );
 
         // Initialization from the "input" object class
         initFieldsContentFromInput();
@@ -82,7 +93,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
     private void initFieldsContentFromInput()
     {
         // SOURCE CODE Field
-        sourceCode_text.setText( objectClass.write() );
+        schemaSourceViewer.getDocument().set( objectClass.write() );
     }
 
 
@@ -91,7 +102,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
      */
     public void refresh()
     {
-        if ( sourceCode_text != null )
+        if ( schemaSourceViewer != null )
         {
             initFieldsContentFromInput();
         }

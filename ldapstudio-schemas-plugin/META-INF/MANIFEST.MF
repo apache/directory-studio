@@ -8,7 +8,8 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.apache.directory.ldapstudio.jars
+ org.apache.directory.ldapstudio.jars,
+ org.eclipse.jface.text
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/commons-collections-3.1.jar,

@@ -24,8 +24,11 @@ package org.apache.directory.ldapstudio.schemas;
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaCodeScanner;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaTextAttributeProvider;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -41,6 +44,10 @@ public class Activator extends AbstractUIPlugin
 
     // The shared instance
     private static Activator plugin;
+
+    private static ITokenScanner schemaCodeScanner;
+
+    private static SchemaTextAttributeProvider schemaTextAttributeProvider;
 
 
     /**
@@ -88,4 +95,37 @@ public class Activator extends AbstractUIPlugin
         return plugin;
     }
 
+
+    /**
+     * Returns the Schema Code Scanner.
+     *
+     * @return
+     *      the Schema Code Scanner
+     */
+    public static ITokenScanner getSchemaCodeScanner()
+    {
+        if ( schemaCodeScanner == null )
+        {
+            schemaCodeScanner = new SchemaCodeScanner( getSchemaTextAttributeProvider() );
+        }
+        
+        return schemaCodeScanner;
+    }
+
+
+    /**
+     * Returns the Schema Text Attribute Provider.
+     *
+     * @return
+     *     the Schema Text Attribute Provider 
+     */
+    private static SchemaTextAttributeProvider getSchemaTextAttributeProvider()
+    {
+        if ( schemaTextAttributeProvider == null )
+        {
+            schemaTextAttributeProvider = new SchemaTextAttributeProvider();
+        }
+        
+        return schemaTextAttributeProvider;
+    }
 }

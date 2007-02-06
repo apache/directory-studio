@@ -24,10 +24,15 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -41,7 +46,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class SchemaFormEditorSourceCodePage extends FormPage
 {
     private Schema schema;
-    private Text sourceCode_text;
+    private SourceViewer schemaSourceViewer;
 
 
     /**
@@ -72,10 +77,17 @@ public class SchemaFormEditorSourceCodePage extends FormPage
         schema = input.getSchema();
 
         // SOURCE CODE Field
-        sourceCode_text = toolkit.createText( form.getBody(), "", SWT.MULTI ); //$NON-NLS-1$
-        sourceCode_text.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        sourceCode_text.setEditable( false );
-
+        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.MULTI );
+        schemaSourceViewer.getTextWidget().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        schemaSourceViewer.getTextWidget().setEditable( false );
+        
+        // set text font
+        Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
+        schemaSourceViewer.getTextWidget().setFont( font );
+        
+        IDocument document = new Document();
+        schemaSourceViewer.setDocument( document );
+        
         // Initialization from the "input" object class
         initFieldsContentFromInput();
     }
@@ -107,6 +119,7 @@ public class SchemaFormEditorSourceCodePage extends FormPage
                 sb.append( "\n" ); //$NON-NLS-1$
             }
         }
-        sourceCode_text.setText( sb.toString() );
+        
+        schemaSourceViewer.getDocument().set( sb.toString() );
     }
 }
