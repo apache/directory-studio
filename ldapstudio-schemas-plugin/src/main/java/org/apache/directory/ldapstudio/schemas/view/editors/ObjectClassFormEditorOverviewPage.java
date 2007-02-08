@@ -74,6 +74,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ObjectClassFormEditorOverviewPage extends FormPage implements SchemaElementListener
 {
+    /** The page ID */
+    public static final String ID = "org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassEditorOverviewPage";
+
+    /** The page title*/
+    public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Overview" );
+
     /** The modified object class */
     private ObjectClass modifiedObjectClass;
 
@@ -434,12 +440,11 @@ public class ObjectClassFormEditorOverviewPage extends FormPage implements Schem
     /**
      * Default constructor
      * @param editor
-     * @param id
-     * @param title
+     *      the associated editor
      */
-    public ObjectClassFormEditorOverviewPage( FormEditor editor, String id, String title )
+    public ObjectClassFormEditorOverviewPage( FormEditor editor )
     {
-        super( editor, id, title );
+        super( editor, ID, TITLE );
     }
 
 
@@ -639,6 +644,16 @@ public class ObjectClassFormEditorOverviewPage extends FormPage implements Schem
     }
 
 
+    /**
+     * Verifies if an attribute type is already present in a the given table
+     *
+     * @param name
+     *      the name of the attribute type to search
+     * @param table
+     *      the table to search in
+     * @return
+     *      true if the attribute type is already present in the given table
+     */
     private boolean isAttributeTypeAlreadySpecified( String name, Table table )
     {
         for ( int i = 0; i < table.getItemCount(); i++ )

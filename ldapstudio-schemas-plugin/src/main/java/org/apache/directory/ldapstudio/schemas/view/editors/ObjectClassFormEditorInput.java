@@ -36,8 +36,10 @@ public class ObjectClassFormEditorInput implements IEditorInput
 
 
     /**
-     * Default constructor
+     * Default constructor.
+     * 
      * @param obj
+     *      the object class
      */
     public ObjectClassFormEditorInput( ObjectClass obj )
     {
@@ -118,11 +120,12 @@ public class ObjectClassFormEditorInput implements IEditorInput
 
     /**
      * Returns the input object class
-     * @return the input object class
+     * 
+     * @return
+     *      the input object class
      */
     public ObjectClass getObjectClass()
     {
         return this.objectClass;
     }
-
 }

@@ -22,7 +22,6 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
-import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -122,11 +121,9 @@ public class ObjectClassFormEditor extends FormEditor
     {
         try
         {
-            overview = new ObjectClassFormEditorOverviewPage( this,
-                "overview", Messages.getString( "ObjectClassFormEditor.Overview" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            overview = new ObjectClassFormEditorOverviewPage( this ); //$NON-NLS-1$ //$NON-NLS-2$
             addPage( overview );
-            sourceCode = new ObjectClassFormEditorSourceCodePage( this,
-                "sourceCode", Messages.getString( "ObjectClassFormEditor.Source_Code" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            sourceCode = new ObjectClassFormEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
             addPage( sourceCode );
         }
         catch ( PartInitException e )

@@ -25,13 +25,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElementListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;
@@ -49,7 +47,6 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -57,22 +54,30 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ObjectClassFormEditorSourceCodePage extends FormPage implements SchemaElementListener
 {
+    /** The page ID */
+    public static final String ID = "org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassEditorSourceCodePage";
+
+    /** The page title*/
+    public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Source_Code" );
+
+    /** The modified object class */
     private ObjectClass modifiedObjectClass;
+
+    /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;
-    
+
+    /** The flag to indicate if the user can leave the Source Code page */
     private boolean canLeaveThePage = true;
 
 
     /**
      * Default constructor
      * @param editor
-     * @param id
-     * @param title
+     *      the associated editor
      */
-    public ObjectClassFormEditorSourceCodePage( FormEditor editor, String id, String title )
+    public ObjectClassFormEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, id, title );
-        setTitleImage( AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE_NEW_WIZARD ).createImage() );
+        super( editor, ID, TITLE );
     }
 
 
@@ -93,7 +98,8 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
         modifiedObjectClass.addListener( this );
 
         // SOURCE CODE Field
-        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
+        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
+            | SWT.V_SCROLL );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
         gd.heightHint = 10;
         schemaSourceViewer.getTextWidget().setLayoutData( gd );
@@ -108,10 +114,10 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
                 canLeaveThePage = true;
                 try
                 {
-                    ( (ObjectClassFormEditor) getEditor() ).setDirty( true );
+                    ( ( ObjectClassFormEditor ) getEditor() ).setDirty( true );
                     OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                     parser.parse( schemaSourceViewer.getTextWidget().getText() );
-                    
+
                     List objectclasses = parser.getObjectClassTypes();
                     if ( objectclasses.size() != 1 )
                     {
@@ -132,13 +138,13 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
                     System.err.println( exception.getMessage() );
                 }
             }
-        });
+        } );
         //toolkit.createLabel( form.getBody(), "" );
-        
+
         // set text font
         Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
         schemaSourceViewer.getTextWidget().setFont( font );
-        
+
         IDocument document = new Document();
         schemaSourceViewer.setDocument( document );
         schemaSourceViewer.getAnnotationModel().connect( document );
@@ -148,26 +154,42 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
     }
 
 
+    /**
+     * Fills in the User Interface.
+     */
     private void fillInUiFields()
     {
         // SOURCE CODE Field
         schemaSourceViewer.getDocument().set( modifiedObjectClass.write() );
     }
-    
-    
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#canLeaveThePage()
+     */
     public boolean canLeaveThePage()
     {
         return canLeaveThePage;
     }
 
 
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.SchemaElementListener#schemaElementChanged(org.apache.directory.ldapstudio.schemas.model.SchemaElement, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+     */
     public void schemaElementChanged( SchemaElement originatingSchemaElement, LDAPModelEvent e )
     {
         modifiedObjectClass.removeListener( this );
         fillInUiFields();
         modifiedObjectClass.addListener( this );
     }
-    
+
+
+    /**
+     * Updates the Modified Object Class from the given Object Class Literal.
+     *
+     * @param ocl
+     *      the Object Class Literal
+     */
     private void updateObjectClass( ObjectClassLiteral ocl )
     {
         modifiedObjectClass.removeListener( this );
