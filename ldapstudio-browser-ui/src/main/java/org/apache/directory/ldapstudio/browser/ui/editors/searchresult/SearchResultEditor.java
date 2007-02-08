@@ -34,6 +34,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
@@ -64,10 +65,11 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         return SearchResultEditor.class.getName();
     }
 
-
+    
     public void setInput( IEditorInput input )
     {
         super.setInput( input );
+        
         if ( input instanceof SearchResultEditorInput && this.universalListener != null )
         {
             SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
@@ -76,19 +78,19 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
             if ( search != null )
             {
-                // INavigationLocation[] locations =
-                // getSite().getPage().getNavigationHistory().getLocations();
-                // if(locations != null && locations.length > 0) {
-                // if(locations[locations.length-1].getInput() instanceof
-                // SearchResultEditorInput &&
-                // ((SearchResultEditorInput)locations[locations.length-1].getInput()).getSearch()
-                // == search) {
-                // return;
-                // }
-                // }
+                // enable one instance hack before fireing the input change event 
+                // otherwise the navigation history is cleared.
+                SearchResultEditorInput.enableOneInstanceHack( true );
+                firePropertyChange( IEditorPart.PROP_INPUT );
+
+                // disable one instance hack for marking the location
+                SearchResultEditorInput.enableOneInstanceHack( false );
                 getSite().getPage().getNavigationHistory().markLocation( this );
             }
         }
+
+        // finally enable the one instance hack 
+        SearchResultEditorInput.enableOneInstanceHack( true );
     }
 
 
@@ -103,8 +105,14 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
-        setInput( input );
         super.setSite( site );
+
+        // mark dummy location, necessary because the first marked
+        // location doesn't appear in history
+        this.setInput( new SearchResultEditorInput( null ) );
+        getSite().getPage().getNavigationHistory().markLocation( this );
+
+        this.setInput( input );
     }
 
 
@@ -154,9 +162,6 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
     public void dispose()
     {
-
-        SearchResultEditorManager.editorClosed();
-
         if ( this.configuration != null )
         {
             this.actionGroup.dispose();

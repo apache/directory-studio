@@ -24,28 +24,41 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.NavigationLocation;
 
 
+/**
+ * This class is used to mark the search result editor input to the navigation history.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorNavigationLocation extends NavigationLocation
 {
 
-    protected SearchResultEditorNavigationLocation( SearchResultEditor editor )
+    /**
+     * Creates a new instance of SearchResultEditorNavigationLocation.
+     *
+     * @param editor the search result editor
+     */
+    SearchResultEditorNavigationLocation( SearchResultEditor editor )
     {
         super( editor );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         ISearch search = getSearch();
         if ( search != null )
         {
-            return search.getName();
+            return "Search " + search.getName();
         }
         else
         {
@@ -54,6 +67,9 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void saveState( IMemento memento )
     {
         ISearch search = getSearch();
@@ -62,6 +78,9 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void restoreState( IMemento memento )
     {
         IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
@@ -71,6 +90,9 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void restoreLocation()
     {
         IEditorPart editorPart = getEditorPart();
@@ -82,17 +104,53 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean mergeInto( INavigationLocation currentLocation )
     {
-        return false;
+        if ( currentLocation == null )
+        {
+            return false;
+        }
+
+        if ( getClass() != currentLocation.getClass() )
+        {
+            return false;
+        }
+
+        SearchResultEditorNavigationLocation location = ( SearchResultEditorNavigationLocation ) currentLocation;
+        ISearch other = location.getSearch();
+        ISearch search = getSearch();
+
+        if ( other == null && search == null )
+        {
+            return true;
+        }
+        else if ( other == null || search == null )
+        {
+            return false;
+        }
+        else
+        {
+            return search.equals( other );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void update()
     {
     }
 
 
+    /**
+     * Gets the search.
+     *
+     * @return the search
+     */
     private ISearch getSearch()
     {
 
@@ -108,6 +166,15 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
         }
 
         return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        return "" + getSearch();
     }
 
 }

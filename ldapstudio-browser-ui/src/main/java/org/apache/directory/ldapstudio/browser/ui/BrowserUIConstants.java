@@ -120,6 +120,8 @@ public interface BrowserUIConstants
 
     public static final String PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE_MAX_LENGTH = "browserSearchResultAbbreviateMaxLength";
 
+    public static final String PREFERENCE_BROWSER_LINK_WITH_EDITOR = "browserLinkWithEditor";
+    
     public static final String PREFERENCE_BROWSER_SHOW_DIT = "browserShowDIT";
 
     public static final String PREFERENCE_BROWSER_SHOW_SEARCHES = "browserShowSearches";
@@ -248,6 +250,8 @@ public interface BrowserUIConstants
 
     public static final String IMG_CLEAR = "icons/clear.gif";
 
+    public static final String IMG_LINK_WITH_EDITOR = "icons/link_with_editor.gif";
+    
     public static final String IMG_REFRESH = "icons/refresh.gif";
 
     public static final String IMG_COLLAPSEALL = "icons/collapseall.gif";

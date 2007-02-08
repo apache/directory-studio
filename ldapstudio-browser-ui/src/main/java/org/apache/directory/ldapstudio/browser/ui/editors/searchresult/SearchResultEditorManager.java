@@ -22,39 +22,67 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * The SearchResultEditorManager is used to set and get the the input
+ * of the single search result editor instance.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorManager
 {
 
-    private static SearchResultEditor editor;
+    /** The dummy input, to find the single entry editor instance */
+    private static SearchResultEditorInput DUMMY_INPUT = new SearchResultEditorInput( null );
 
 
+    /**
+     * Sets the input to the search result editor.
+     *
+     * @param entry the search input, may be null to clear the editor
+     */
     public static void setInput( ISearch search )
     {
+        SearchResultEditorInput input = new SearchResultEditorInput( search );
+        setInput( input );
+    }
 
-        IEditorInput input = new SearchResultEditorInput( search );
 
-        if ( editor == null && search != null )
+    /**
+     * Sets the input to the search result edtior. 
+     *
+     * @param input the input
+     */
+    private static void setInput( SearchResultEditorInput input )
+    {
+        SearchResultEditor editor = ( SearchResultEditor ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+            .getActivePage().findEditor( DUMMY_INPUT );
+        if ( editor == null && input.getSearch() != null )
         {
+            // open new search result editor
             try
             {
                 editor = ( SearchResultEditor ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                     .openEditor( input, SearchResultEditor.getId(), false );
+                editor.setInput( input );
             }
             catch ( PartInitException e )
             {
                 e.printStackTrace();
             }
         }
-        else if ( editor != null )
+        else
         {
+            // set the input to already opened search result editor
             editor.setInput( input );
-            if ( search != null )
+
+            // bring search result editor to top only if an search is displayed in it. 
+            if ( input.getSearch() != null )
             {
                 if ( !PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().isPartVisible( editor ) )
                 {
@@ -65,9 +93,30 @@ public class SearchResultEditorManager
     }
 
 
-    static void editorClosed()
+    /**
+     * Get the input of the search result editor. 
+     * May be null if the editor is not opended 
+     * or it the editor has an invalid input.
+     *
+     * @return the editor input or null
+     */
+    public static ISearch getInput()
     {
-        editor = null;
+        SearchResultEditor editor = ( SearchResultEditor ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+            .getActivePage().findEditor( DUMMY_INPUT );
+
+        if ( editor != null )
+        {
+            IEditorInput input = editor.getEditorInput();
+            if ( input != null && input instanceof SearchResultEditorInput )
+            {
+                SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
+                return srei.getSearch();
+            }
+
+        }
+
+        return null;
     }
 
 }

@@ -26,13 +26,13 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifOutlinePage;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidget;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
@@ -69,14 +69,22 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
     public void setInput( IEditorInput input )
     {
         super.setInput( input );
+
         if ( input instanceof EntryEditorInput && this.universalListener != null )
         {
-
             EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entry = eei.getEntry();
+            IEntry entry = eei.getResolvedEntry();
             this.universalListener.setInput( entry );
+
             if ( entry != null )
             {
+                // enable one instance hack before fireing the input change event 
+                // otherwise the navigation history is cleared.
+                EntryEditorInput.enableOneInstanceHack( true );
+                firePropertyChange( IEditorPart.PROP_INPUT );
+
+                // disable one instance hack for marking the location
+                EntryEditorInput.enableOneInstanceHack( false );
                 getSite().getPage().getNavigationHistory().markLocation( this );
             }
 
@@ -84,14 +92,23 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
             {
                 this.outlinePage.refresh();
             }
+
+            // finally enable the one instance hack 
+            EntryEditorInput.enableOneInstanceHack( true );
         }
     }
 
 
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
-        this.setInput( input );
         super.setSite( site );
+
+        // mark dummy location, necessary because the first marked
+        // location doesn't appear in history
+        this.setInput( new EntryEditorInput( ( IEntry ) null ) );
+        getSite().getPage().getNavigationHistory().markLocation( this );
+
+        this.setInput( input );
     }
 
 
@@ -178,9 +195,6 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
 
     public void dispose()
     {
-
-        EntryEditorManager.editorClosed();
-
         if ( this.configuration != null )
         {
             this.universalListener.dispose();
@@ -252,7 +266,6 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
 
     public INavigationLocation createEmptyNavigationLocation()
     {
-        System.out.println( "EntryEditor#createEmptyNavigationLocation()" );
         return null;
     }
 

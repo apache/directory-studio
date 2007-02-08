@@ -21,26 +21,76 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
+import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-
+import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * The EntryEditorManager is used to set and get the the input
+ * of the single entry editor instance.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorManager
 {
 
-    private static EntryEditor editor;
+    /** The dummy input, to find the single entry editor instance */
+    private static EntryEditorInput DUMMY_INPUT = new EntryEditorInput( ( IEntry ) null );
 
 
+    /**
+     * Sets the entry input to the entry editor.
+     *
+     * @param entry the entry input, may be null to clear the editor
+     */
     public static void setInput( IEntry entry )
     {
+        EntryEditorInput input = new EntryEditorInput( entry );
+        setInput( input );
+    }
 
-        IEditorInput input = new EntryEditorInput( entry );
 
-        if ( editor == null && entry != null )
+    /**
+     * Sets the search result input to the entry editor.
+     *
+     * @param searchResult the search result input, may be null to clear the editor
+     */
+    public static void setInput( ISearchResult searchResult )
+    {
+        EntryEditorInput input = new EntryEditorInput( searchResult );
+        setInput( input );
+    }
+
+
+    /**
+     * Sets the bookmark input to the entry editor.
+     *
+     * @param bookmark the bookmark input, may be null to clear the editor
+     */
+    public static void setInput( IBookmark bookmark )
+    {
+        EntryEditorInput input = new EntryEditorInput( bookmark );
+        setInput( input );
+    }
+
+
+    /**
+     * Sets the input to the entry edtior. 
+     *
+     * @param input the input
+     */
+    private static void setInput( EntryEditorInput input )
+    {
+        EntryEditor editor = ( EntryEditor ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .findEditor( DUMMY_INPUT );
+        if ( editor == null && input.getResolvedEntry() != null )
         {
+            // open new entry editor
             try
             {
                 editor = ( EntryEditor ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -51,10 +101,13 @@ public class EntryEditorManager
                 e.printStackTrace();
             }
         }
-        else if ( editor != null )
+        else
         {
+            // set the input to already opened entry editor
             editor.setInput( input );
-            if ( entry != null )
+
+            // bring entry editor to top only if an entry is displayed in it. 
+            if ( input.getResolvedEntry() != null )
             {
                 if ( !PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().isPartVisible( editor ) )
                 {
@@ -65,9 +118,30 @@ public class EntryEditorManager
     }
 
 
-    static void editorClosed()
+    /**
+     * Get the input of the entry editor. 
+     * May be null if the editor is not opended 
+     * or it the editor has an invalid input.
+     *
+     * @return the editor input or null
+     */
+    public static Object getInput()
     {
-        editor = null;
+        EntryEditor editor = ( EntryEditor ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .findEditor( DUMMY_INPUT );
+
+        if ( editor != null )
+        {
+            IEditorInput input = editor.getEditorInput();
+            if ( input != null && input instanceof EntryEditorInput )
+            {
+                EntryEditorInput eei = ( EntryEditorInput ) input;
+                return eei.getInput();
+            }
+
+        }
+
+        return null;
     }
 
 }

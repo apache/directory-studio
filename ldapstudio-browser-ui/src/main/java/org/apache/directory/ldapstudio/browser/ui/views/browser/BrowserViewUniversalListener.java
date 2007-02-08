@@ -48,7 +48,6 @@ import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditorManag
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorManager;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserUniversalListener;
-
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -134,30 +133,35 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
         ISearch[] searches = SelectionUtils.getSearches( selection );
 
-        ISearch search = null;
-        IEntry entry = null;
         if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
         {
             if ( entries.length == 1 )
             {
-                entry = entries[0];
+                EntryEditorManager.setInput( entries[0] );
+                SearchResultEditorManager.setInput( null );
             }
             else if ( searchResults.length == 1 )
             {
-                entry = searchResults[0].getEntry();
+                EntryEditorManager.setInput( searchResults[0] );
+                SearchResultEditorManager.setInput( null );
             }
             else if ( bookmarks.length == 1 )
             {
-                entry = bookmarks[0].getEntry();
+                EntryEditorManager.setInput( bookmarks[0] );
+                SearchResultEditorManager.setInput( null );
             }
             else if ( searches.length == 1 )
             {
-                search = searches[0];
+                EntryEditorManager.setInput( ( IEntry ) null );
+                SearchResultEditorManager.setInput( searches[0] );
             }
         }
+        else
+        {
+            EntryEditorManager.setInput( ( IEntry ) null );
+            SearchResultEditorManager.setInput( null );
+        }
 
-        EntryEditorManager.setInput( entry );
-        SearchResultEditorManager.setInput( search );
     }
 
 
@@ -279,7 +283,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
     public void entryUpdated( EntryModificationEvent event )
     {
-        
+
         // Don't handle attribute initalization, could cause double
         // retrieval of children. 
         //

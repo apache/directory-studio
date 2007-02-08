@@ -24,69 +24,180 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
 
+/**
+ * The input for the search result editor.
+ * 
+ * There is a trick to provide a single instance of the search result editor:
+ * <ul>
+ * <li>If oneInstanceHackEnabled is true the equals method returns always 
+ *     true as long as the compared object is also of type SearchResultEditorInput. 
+ *     With this trick only one instance of the search result editor is opened
+ *     by the eclipse editor framework.
+ * <li>If oneInstanceHackEnabled is false the equals method returns 
+ *     true only if the wrapped objects (ISearchare equal. This is 
+ *     necessary for the history navigation because it must be able 
+ *     to distinguish the different input objects.
+ * </ul>
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorInput implements IEditorInput
 {
 
+    /** The search input */
     private ISearch search;
 
+    /** One instance hack flag */
+    private static boolean oneInstanceHackEnabled = true;
 
+
+    /**
+     * Creates a new instance of SearchResultEditorInput.
+     *
+     * @param search the searc input
+     */
     public SearchResultEditorInput( ISearch search )
     {
         this.search = search;
     }
 
 
+    /**
+     * This implementation always return false because
+     * a search should not be visible in the 
+     * "File Most Recently Used" menu.
+     * 
+     * {@inheritDoc}
+     */
     public boolean exists()
     {
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_BROWSER_SEARCHRESULTEDITOR );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getName()
     {
         return "Search Result Editor";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getToolTipText()
     {
-        return this.search != null ? this.search.getName() : "";
+        return search != null ? this.search.getName() : "";
     }
 
 
+    /**
+     * This implementation always return null.
+     * 
+     * {@inheritDoc}
+     */
     public IPersistableElement getPersistable()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class adapter )
     {
         return null;
     }
 
 
+    /**
+     * Gets the search input, may be null.
+     *
+     * @return the search input or null
+     */
     public ISearch getSearch()
     {
         return search;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return getToolTipText().hashCode();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object obj )
     {
-        return obj instanceof SearchResultEditorInput;
+
+        boolean equal;
+
+        if ( oneInstanceHackEnabled )
+        {
+            equal = ( obj instanceof SearchResultEditorInput );
+        }
+        else
+        {
+            if ( obj instanceof SearchResultEditorInput )
+            {
+                SearchResultEditorInput other = ( SearchResultEditorInput ) obj;
+                if ( this.search == null && other.search == null )
+                {
+                    return true;
+                }
+                else if ( this.search == null || other.search == null )
+                {
+                    return false;
+                }
+                else
+                {
+                    equal = other.search.equals( this.search );
+                }
+            }
+            else
+            {
+                equal = false;
+            }
+        }
+
+        return equal;
+    }
+
+
+    /**
+     * Enables or disabled the one instance hack.
+     *
+     * @param b 
+     *      true to enable the one instance hack,
+     *      false to disable the one instance hack
+     */
+    public static void enableOneInstanceHack( boolean b )
+    {
+        oneInstanceHackEnabled = b;
     }
 
 }

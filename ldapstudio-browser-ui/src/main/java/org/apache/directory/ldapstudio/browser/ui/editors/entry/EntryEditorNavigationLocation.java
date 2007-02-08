@@ -23,56 +23,159 @@ package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
+import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
+import org.apache.directory.ldapstudio.browser.core.model.ISearch;
+import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.NameException;
-
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.NavigationLocation;
 
 
+/**
+ * This class is used to mark the entry editor input to the navigation history.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorNavigationLocation extends NavigationLocation
 {
 
-    protected EntryEditorNavigationLocation( EntryEditor editor )
+    /**
+     * Creates a new instance of EntryEditorNavigationLocation.
+     *
+     * @param editor the entry editor
+     */
+    EntryEditorNavigationLocation( EntryEditor editor )
     {
         super( editor );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
-        IEntry entry = getEntry();
-        if ( entry != null )
+        EntryEditorInput eei = getEntryEditorInput();
+        if ( eei != null )
         {
-            return entry.getDn().toString();
+            if ( eei.getEntryInput() != null )
+            {
+                if ( eei.getEntryInput() instanceof IRootDSE )
+                {
+                    return "Root DSE";
+                }
+                else
+                {
+                    return "Entry " + eei.getEntryInput().getDn().toString();
+                }
+            }
+            else if ( eei.getSearchResultInput() != null )
+            {
+                if ( eei.getSearchResultInput() instanceof IRootDSE )
+                {
+                    return "Root DSE";
+                }
+                else
+                {
+                    return "Search Result " + eei.getSearchResultInput().getDn().toString();
+                }
+            }
+            else if ( eei.getBookmarkInput() != null )
+            {
+                if ( eei.getBookmarkInput() instanceof IRootDSE )
+                {
+                    return "Root DSE";
+                }
+                else
+                {
+                    return "Bookmark " + eei.getBookmarkInput().getDn().toString();
+                }
+            }
         }
-        else
-        {
-            return super.getText();
-        }
+        return super.getText();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void saveState( IMemento memento )
     {
-        IEntry entry = getEntry();
-        memento.putString( "DN", entry.getDn().toString() );
-        memento.putString( "CONNECTION", entry.getConnection().getName() );
+        EntryEditorInput eei = getEntryEditorInput();
+        if ( eei != null )
+        {
+            if ( eei.getEntryInput() != null )
+            {
+                IEntry entry = eei.getEntryInput();
+                memento.putString( "TYPE", "IEntry" );
+                memento.putString( "DN", entry.getDn().toString() );
+                memento.putString( "CONNECTION", entry.getConnection().getName() );
+            }
+            else if ( eei.getSearchResultInput() != null )
+            {
+                ISearchResult searchResult = eei.getSearchResultInput();
+                memento.putString( "TYPE", "ISearchResult" );
+                memento.putString( "DN", searchResult.getDn().toString() );
+                memento.putString( "SEARCH", searchResult.getSearch().getName() );
+                memento.putString( "CONNECTION", searchResult.getSearch().getConnection().getName() );
+            }
+            else if ( eei.getBookmarkInput() != null )
+            {
+                IBookmark bookmark = eei.getBookmarkInput();
+                memento.putString( "TYPE", "IBookmark" );
+                memento.putString( "BOOKMARK", bookmark.getName() );
+                memento.putString( "CONNECTION", bookmark.getConnection().getName() );
+            }
+        }
+
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void restoreState( IMemento memento )
     {
         try
         {
-            IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
-                memento.getString( "CONNECTION" ) );
-            DN dn = new DN( memento.getString( "DN" ) );
-            IEntry entry = connection.getEntryFromCache( dn );
-            super.setInput( new EntryEditorInput( entry ) );
+            String type = memento.getString( "TYPE" );
+            if ( "IEntry".equals( type ) )
+            {
+                IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                    memento.getString( "CONNECTION" ) );
+                DN dn = new DN( memento.getString( "DN" ) );
+                IEntry entry = connection.getEntryFromCache( dn );
+                super.setInput( new EntryEditorInput( entry ) );
+            }
+            else if ( "ISearchResult".equals( type ) )
+            {
+                IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                    memento.getString( "CONNECTION" ) );
+                ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) );
+                ISearchResult[] searchResults = search.getSearchResults();
+                DN dn = new DN( memento.getString( "DN" ) );
+                for ( int i = 0; i < searchResults.length; i++ )
+                {
+                    if ( dn.equals( searchResults[i].getDn() ) )
+                    {
+                        super.setInput( new EntryEditorInput( searchResults[i] ) );
+                        break;
+                    }
+                }
+            }
+            else if ( "IBookmark".equals( type ) )
+            {
+                IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                    memento.getString( "CONNECTION" ) );
+                IBookmark bookmark = connection.getBookmarkManager().getBookmark( memento.getString( "BOOKMARK" ) );
+                super.setInput( new EntryEditorInput( bookmark ) );
+            }
         }
         catch ( NameException e )
         {
@@ -82,6 +185,9 @@ public class EntryEditorNavigationLocation extends NavigationLocation
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void restoreLocation()
     {
         IEditorPart editorPart = getEditorPart();
@@ -93,33 +199,73 @@ public class EntryEditorNavigationLocation extends NavigationLocation
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean mergeInto( INavigationLocation currentLocation )
     {
-        return false;
+        if ( currentLocation == null )
+        {
+            return false;
+        }
+
+        if ( getClass() != currentLocation.getClass() )
+        {
+            return false;
+        }
+
+        EntryEditorNavigationLocation location = ( EntryEditorNavigationLocation ) currentLocation;
+        Object other = location.getEntryEditorInput().getInput();
+        Object entry = getEntryEditorInput().getInput();
+
+        if ( other == null && entry == null )
+        {
+            return true;
+        }
+        else if ( other == null || entry == null )
+        {
+            return false;
+        }
+        else
+        {
+            return entry.equals( other );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void update()
     {
-
     }
 
 
-    private IEntry getEntry()
+    /**
+     * Gets the input.
+     *
+     * @return the input
+     */
+    private EntryEditorInput getEntryEditorInput()
     {
 
         Object editorInput = getInput();
         if ( editorInput != null && editorInput instanceof EntryEditorInput )
         {
             EntryEditorInput entryEditorInput = ( EntryEditorInput ) editorInput;
-            IEntry entry = entryEditorInput.getEntry();
-            if ( entry != null )
-            {
-                return entry;
-            }
+            return entryEditorInput;
         }
 
         return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString()
+    {
+        return "" + getEntryEditorInput().getInput();
     }
 
 }

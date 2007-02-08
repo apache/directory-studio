@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
+import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
@@ -142,6 +143,17 @@ public class BrowserView extends ViewPart
 
     public void select( Object obj )
     {
+        if ( obj instanceof ISearch )
+        {
+            ISearch search = ( ISearch ) obj;
+
+            this.mainWidget.getViewer().expandToLevel( search, 0 );
+
+            this.mainWidget.getViewer().reveal( search );
+            this.mainWidget.getViewer().refresh( search, true );
+            this.mainWidget.getViewer().setSelection( new StructuredSelection( search ), true );
+            this.mainWidget.getViewer().setSelection( new StructuredSelection( search ), true );
+        }
         if ( obj instanceof ISearchResult )
         {
             ISearchResult searchResult = ( ISearchResult ) obj;
@@ -153,6 +165,17 @@ public class BrowserView extends ViewPart
             this.mainWidget.getViewer().refresh( searchResult, true );
             this.mainWidget.getViewer().setSelection( new StructuredSelection( searchResult ), true );
             this.mainWidget.getViewer().setSelection( new StructuredSelection( searchResult ), true );
+        }
+        if ( obj instanceof IBookmark )
+        {
+            IBookmark bookmark = ( IBookmark ) obj;
+            
+            this.mainWidget.getViewer().expandToLevel( bookmark, 0 );
+            
+            this.mainWidget.getViewer().reveal( bookmark );
+            this.mainWidget.getViewer().refresh( bookmark, true );
+            this.mainWidget.getViewer().setSelection( new StructuredSelection( bookmark ), true );
+            this.mainWidget.getViewer().setSelection( new StructuredSelection( bookmark ), true );
         }
         if ( obj instanceof IEntry )
         {

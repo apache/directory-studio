@@ -123,6 +123,7 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
         store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_SEARCH_RESULT_LABEL, BrowserUIConstants.SHOW_DN );
         store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE, true );
         store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE_MAX_LENGTH, 50 );
+        store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR, true );
         store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_SHOW_DIT, true );
         store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_SHOW_SEARCHES, true );
         store.setDefault( BrowserUIConstants.PREFERENCE_BROWSER_SHOW_BOOKMARKS, true );

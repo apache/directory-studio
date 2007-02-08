@@ -41,6 +41,7 @@ import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserActionPro
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserActionGroup;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
@@ -63,6 +64,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     private ShowDirectoryMetadataEntriesAction showDirectoryMetadataEntriesAction;
 
     private OpenBrowserPreferencePageAction openBrowserPreferencePageAction;
+
+    private LinkWithEditorAction linkWithEditorAction;
 
     private static final String locateEntryInDitAction = "locateEntryInDitAction";
 
@@ -122,6 +125,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         super( view.getMainWidget(), view.getConfiguration() );
         TreeViewer viewer = view.getMainWidget().getViewer();
 
+        this.linkWithEditorAction = new LinkWithEditorAction( view );
         this.showDITAction = new ShowDITAction();
         this.showSearchesAction = new ShowSearchesAction();
         this.showBookmarksAction = new ShowBookmarksAction();
@@ -185,6 +189,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     {
         if ( this.openBrowserPreferencePageAction != null )
         {
+            linkWithEditorAction.dispose();
+            linkWithEditorAction = null;
 
             this.showDITAction.dispose();
             this.showDITAction = null;
@@ -201,6 +207,20 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         }
 
         super.dispose();
+    }
+
+
+    public void fillToolBar( IToolBarManager toolBarManager )
+    {
+
+        toolBarManager.add( ( IAction ) this.browserActionMap.get( upAction ) );
+        toolBarManager.add( new Separator() );
+        toolBarManager.add( ( IAction ) this.browserActionMap.get( refreshAction ) );
+        toolBarManager.add( new Separator() );
+        toolBarManager.add( collapseAllAction );
+        toolBarManager.add( linkWithEditorAction );
+        toolBarManager.update( true );
+
     }
 
 
