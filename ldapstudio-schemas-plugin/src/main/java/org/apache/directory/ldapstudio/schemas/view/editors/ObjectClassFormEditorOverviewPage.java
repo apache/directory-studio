@@ -28,13 +28,15 @@ import java.util.HashSet;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
+import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
+import org.apache.directory.ldapstudio.schemas.model.SchemaElementListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -44,7 +46,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -71,21 +72,363 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class is the Overview Page of the Object Class Editor
  */
-public class ObjectClassFormEditorOverviewPage extends FormPage
+public class ObjectClassFormEditorOverviewPage extends FormPage implements SchemaElementListener
 {
+    /** The modified object class */
+    private ObjectClass modifiedObjectClass;
 
-    private Text name_text;
-    private Text oid_text;
-    private Text description_text;
-    private Hyperlink sup_label;
-    private Combo sup_combo;
-    private Combo classType_combo;
-    private Button obsolete_checkbox;
-    private Table mandatoryAttributes_table;
-    private Table optionnalAttributes_table;
-    private ObjectClass objectClass;
+    // UI fields
+    private Text nameText;
     private String[] aliasesList;
-    private Button aliases_button;
+    private Button aliasesButton;
+    private Text oidText;
+    private Text descriptionText;
+    private Hyperlink supLabel;
+    private Combo supCombo;
+    private Combo classTypeCombo;
+    private Button obsoleteCheckbox;
+    private Table mandatoryAttributesTable;
+    private Button addButtonMandatoryTable;
+    private Button removeButtonMandatoryTable;
+    private Table optionalAttributesTable;
+    private Button addButtonOptionalTable;
+    private Button removeButtonOptionalTable;
+
+    // Listeners
+    /** The listener for Name Text Widget */
+    private ModifyListener nameTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            modifiedObjectClass.getNames()[0] = nameText.getText();
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Aliases Button Widget */
+    private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, aliasesList, ( modifiedObjectClass
+                .getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
+            if ( manageDialog.open() != Window.OK )
+            {
+                return;
+            }
+            if ( manageDialog.isDirty() )
+            {
+                aliasesList = manageDialog.getAliasesList();
+                ArrayList<String> names = new ArrayList<String>();
+                names.add( modifiedObjectClass.getNames()[0] );
+                for ( int i = 0; i < aliasesList.length; i++ )
+                {
+                    names.add( aliasesList[i] );
+                }
+                modifiedObjectClass.setNames( names.toArray( new String[0] ) );
+                setEditorDirty();
+            }
+        }
+    };
+
+    /** The listener for OID Text Widget */
+    private ModifyListener oidTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            modifiedObjectClass.setOid( oidText.getText() );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Description Text Widget */
+    private ModifyListener descriptionTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            int caretPosition = descriptionText.getCaretPosition();
+            modifiedObjectClass.setDescription( descriptionText.getText() );
+            descriptionText.setSelection( caretPosition );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Sup Label Widget */
+    private HyperlinkAdapter supLabelListner = new HyperlinkAdapter()
+    {
+        public void linkActivated( HyperlinkEvent e )
+        {
+            if ( !supCombo.getItem( supCombo.getSelectionIndex() ).equals(
+                Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                SchemaPool pool = SchemaPool.getInstance();
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+                ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( pool.getObjectClass( supCombo
+                    .getItem( supCombo.getSelectionIndex() ) ) );
+                String editorId = ObjectClassFormEditor.ID;
+                try
+                {
+                    page.openEditor( input, editorId );
+                }
+                catch ( PartInitException exception )
+                {
+                    Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                }
+            }
+        }
+    };
+
+    /** The listener for Sup Combo Widget */
+    private ModifyListener supComboListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( supCombo.getItem( supCombo.getSelectionIndex() ).equals(
+                Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                modifiedObjectClass.setSuperiors( new String[0] );
+            }
+            else
+            {
+                modifiedObjectClass.setSuperiors( new String[]
+                    { supCombo.getItem( supCombo.getSelectionIndex() ) } );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Class Type Widget */
+    private ModifyListener classTypeListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( classTypeCombo.getSelectionIndex() == 0 )
+            {
+                modifiedObjectClass.setClassType( ObjectClassTypeEnum.ABSTRACT );
+            }
+            else if ( classTypeCombo.getSelectionIndex() == 1 )
+            {
+                modifiedObjectClass.setClassType( ObjectClassTypeEnum.AUXILIARY );
+            }
+            else if ( classTypeCombo.getSelectionIndex() == 2 )
+            {
+                modifiedObjectClass.setClassType( ObjectClassTypeEnum.STRUCTURAL );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Obsolete Widget */
+    private SelectionAdapter obsoleteListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            modifiedObjectClass.setObsolete( obsoleteCheckbox.getSelection() );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Mandatory Attributes Table Widget */
+    private MouseListener mandatoryAttributesTableListener = new MouseListener()
+    {
+        public void mouseDoubleClick( MouseEvent e )
+        {
+            SchemaPool pool = SchemaPool.getInstance();
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+            AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool
+                .getAttributeType( mandatoryAttributesTable.getSelection()[0].getText() ) );
+            String editorId = AttributeTypeFormEditor.ID;
+            try
+            {
+                page.openEditor( input, editorId );
+            }
+            catch ( PartInitException exception )
+            {
+                Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+            }
+        }
+
+
+        public void mouseDown( MouseEvent e )
+        {
+        }
+
+
+        public void mouseUp( MouseEvent e )
+        {
+            if ( modifiedObjectClass.getOriginatingSchema().type != Schema.SchemaType.coreSchema )
+            {
+                removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
+            }
+        }
+    };
+
+    /** The listener for Add Button Widget of the Mandatory Attributes section */
+    private SelectionAdapter addButtonMandatoryTableListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog( null );
+            if ( selectionDialog.open() != Window.OK )
+            {
+                return;
+            }
+            if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(), optionalAttributesTable ) )
+            {
+                // The selected attribute type is already in the Optionnal Attributes Table
+                MessageDialog
+                    .openError(
+                        null,
+                        Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_Optionnal_Attributes_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            else
+            {
+                if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
+                    mandatoryAttributesTable ) )
+                {
+                    // The selected attribute type is already in the Mandatory Attributes Table
+                    MessageDialog
+                        .openError(
+                            null,
+                            Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_this_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                else
+                {
+                    // The selected attribute is not in any table, so it can be added
+                    TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE );
+                    item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+                        IImageKeys.ATTRIBUTE_TYPE ).createImage() );
+                    item.setText( selectionDialog.getSelectedAttributeType() );
+                    ArrayList<String> mustList = new ArrayList<String>();
+                    for ( int i = 0; i < mandatoryAttributesTable.getItemCount(); i++ )
+                    {
+                        mustList.add( mandatoryAttributesTable.getItem( i ).getText() );
+                    }
+                    modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
+                    setEditorDirty();
+                }
+            }
+        }
+    };
+
+    /** The listener for Remove Button Widget of the Mandatory Attributes section */
+    private SelectionAdapter removeButtonMandatoryTableListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            mandatoryAttributesTable.remove( mandatoryAttributesTable.getSelectionIndex() );
+            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
+            ArrayList<String> mustList = new ArrayList<String>();
+            for ( int i = 0; i < mandatoryAttributesTable.getItemCount(); i++ )
+            {
+                mustList.add( mandatoryAttributesTable.getItem( i ).getText() );
+            }
+            modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Optional Attributes Table Widget */
+    private MouseListener optionalAttributesTableListener = new MouseListener()
+    {
+        public void mouseDoubleClick( MouseEvent e )
+        {
+            SchemaPool pool = SchemaPool.getInstance();
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+            AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool
+                .getAttributeType( optionalAttributesTable.getSelection()[0].getText() ) );
+            String editorId = AttributeTypeFormEditor.ID;
+            try
+            {
+                page.openEditor( input, editorId );
+            }
+            catch ( PartInitException exception )
+            {
+                Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+            }
+        }
+
+
+        public void mouseDown( MouseEvent e )
+        {
+        }
+
+
+        public void mouseUp( MouseEvent e )
+        {
+            if ( modifiedObjectClass.getOriginatingSchema().type != Schema.SchemaType.coreSchema )
+            {
+                removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
+            }
+        }
+    };
+
+    /** The listener for Add Button Widget of the Optional Attributes section */
+    private SelectionAdapter addButtonOptionalTableListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog( null );
+            if ( selectionDialog.open() != Window.OK )
+            {
+                return;
+            }
+            if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(), mandatoryAttributesTable ) )
+            {
+                // The selected attribute type is already in the Mandatory Attributes Table
+                MessageDialog
+                    .openError(
+                        null,
+                        Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_Mandatory_Attributes_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            else
+            {
+                if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
+                    optionalAttributesTable ) )
+                {
+                    // The selected attribute type is already in the Optionnal Attributes Table
+                    MessageDialog
+                        .openError(
+                            null,
+                            Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_this_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                else
+                {
+                    // The selected attribute is not in any table, so it can be added
+                    TableItem item = new TableItem( optionalAttributesTable, SWT.NONE );
+                    item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+                        IImageKeys.ATTRIBUTE_TYPE ).createImage() );
+                    item.setText( selectionDialog.getSelectedAttributeType() );
+                    ArrayList<String> mayList = new ArrayList<String>();
+                    for ( int i = 0; i < optionalAttributesTable.getItemCount(); i++ )
+                    {
+                        mayList.add( optionalAttributesTable.getItem( i ).getText() );
+                    }
+                    modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );
+                    setEditorDirty();
+                }
+
+            }
+        }
+    };
+
+    /** The listener for Remove Button Widget of the Optional Attributes section */
+    private SelectionAdapter removeButtonOptionalTableListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            optionalAttributesTable.remove( optionalAttributesTable.getSelectionIndex() );
+            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
+            ArrayList<String> mayList = new ArrayList<String>();
+            for ( int i = 0; i < optionalAttributesTable.getItemCount(); i++ )
+            {
+                mayList.add( optionalAttributesTable.getItem( i ).getText() );
+            }
+            modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );
+            setEditorDirty();
+        }
+    };
 
 
     /**
@@ -105,18 +448,45 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        // Getting the modified object class and listening to its modifications
+        modifiedObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getModifiedObjectClass();
+        modifiedObjectClass.addListener( this );
+
+        // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
         GridLayout layout = new GridLayout( 2, true );
         form.getBody().setLayout( layout );
 
-        // Getting the input and the objectClass
-        ObjectClassFormEditorInput input = ( ObjectClassFormEditorInput ) getEditorInput();
-        objectClass = input.getObjectClass();
-
         // General Information Section
-        Section section_general_information = toolkit.createSection( form.getBody(), Section.DESCRIPTION
-            | Section.TITLE_BAR );
+        createGeneralInformationSection( form.getBody(), toolkit );
+
+        // Mandatory Attributes Section
+        createMandatoryAttributesSection( form.getBody(), toolkit );
+
+        // Optionnal Attributes Section
+        createOptionalAttributesSection( form.getBody(), toolkit );
+
+        // Filling the UI with values from the object class
+        fillInUiFields();
+
+        // Listeners initialization
+        initListeners();
+    }
+
+
+    /**
+     * Creates the General Information Section.
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the FormToolKit to use
+     */
+    private void createGeneralInformationSection( Composite parent, FormToolkit toolkit )
+    {
+        // General Information Section
+        Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section_general_information.setDescription( Messages
             .getString( "ObjectClassFormEditorOverviewPage.General_Information_Section_Description" ) ); //$NON-NLS-1$
         section_general_information.setText( Messages
@@ -131,65 +501,62 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         section_general_information.setClient( client_general_information );
         section_general_information.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 ) );
 
-        // Adding elements to the section
         // NAME Field
         toolkit
             .createLabel( client_general_information, Messages.getString( "ObjectClassFormEditorOverviewPage.Name" ) ); //$NON-NLS-1$
-        name_text = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        name_text.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        nameText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
+        nameText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         // ALIASES Button
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
-        aliases_button = toolkit.createButton( client_general_information, Messages
+        aliasesButton = toolkit.createButton( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
-        aliases_button.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false ) );
+        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false ) );
 
         // OID Field
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassFormEditorOverviewPage.OID" ) ); //$NON-NLS-1$
-        oid_text = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        oid_text.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
+        oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Description" ) ); //$NON-NLS-1$
-        description_text = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
+        descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
         GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         descriptionGridData.heightHint = 37;
-        description_text.setLayoutData( descriptionGridData );
+        descriptionText.setLayoutData( descriptionGridData );
 
         // SUP Combo
-        sup_label = toolkit.createHyperlink( client_general_information, Messages
+        supLabel = toolkit.createHyperlink( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Superior_class" ), SWT.WRAP ); //$NON-NLS-1$
-        sup_combo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        sup_combo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
+        supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        initSupCombo();
 
         // CLASS TYPE Combo
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Class_type" ) ); //$NON-NLS-1$
-        classType_combo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        classType_combo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        classTypeCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
+        classTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        initClassTypeCombo();
 
         // OBSOLETE Checkbox
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        obsolete_checkbox = toolkit.createButton( client_general_information, Messages
+        obsoleteCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
-        obsolete_checkbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Mandatory Attributes Section
-        createMandatoryAttributesSection( form.getBody(), toolkit );
-
-        // Optionnal Attributes Section
-        createOptionnalAttributesSection( form.getBody(), toolkit );
-
-        // Initialization from the "input" object class
-        initFieldsContentFromInput();
-
-        // Listeners initialization
-        initListeners();
+        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
+    /**
+     * Creates the Mandatory Attributes Section.
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the FormToolKit to use
+     */
     private void createMandatoryAttributesSection( Composite parent, FormToolkit toolkit )
     {
         // MANDATORY ATTRIBUTES Section
@@ -208,124 +575,37 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         layout.numColumns = 2;
         client.setLayout( layout );
 
-        mandatoryAttributes_table = toolkit.createTable( client, SWT.NULL );
+        mandatoryAttributesTable = toolkit.createTable( client, SWT.NULL );
         gd = new GridData( SWT.FILL, SWT.FILL, true, true );
         gd.verticalSpan = 2;
         gd.heightHint = 100;
-        mandatoryAttributes_table.setLayoutData( gd );
+        mandatoryAttributesTable.setLayoutData( gd );
 
-        final Button add_button = toolkit.createButton( client, Messages
+        addButtonMandatoryTable = toolkit.createButton( client, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Add..." ), SWT.PUSH ); //$NON-NLS-1$
-        final Button remove_button = toolkit.createButton( client, Messages
+        removeButtonMandatoryTable = toolkit.createButton( client, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Remove" ), SWT.PUSH ); //$NON-NLS-1$
         gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
-        add_button.setLayoutData( gd );
-        remove_button.setLayoutData( gd );
-        remove_button.setEnabled( false );
+        addButtonMandatoryTable.setLayoutData( gd );
+        removeButtonMandatoryTable.setLayoutData( gd );
 
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
-            add_button.setEnabled( false );
-            remove_button.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listeners
-            add_button.addSelectionListener( new SelectionAdapter()
-            {
-                public void widgetSelected( SelectionEvent e )
-                {
-                    AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog( null );
-                    if ( selectionDialog.open() != Window.OK )
-                    {
-                        return;
-                    }
-                    if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
-                        optionnalAttributes_table ) )
-                    {
-                        // The selected attribute type is already in the Optionnal Attributes Table
-                        MessageDialog
-                            .openError(
-                                null,
-                                Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_Optionnal_Attributes_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
-                    else
-                    {
-                        if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
-                            mandatoryAttributes_table ) )
-                        {
-                            // The selected attribute type is already in the Mandatory Attributes Table
-                            MessageDialog
-                                .openError(
-                                    null,
-                                    Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_this_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                        }
-                        else
-                        {
-                            // The selected attribute is not in any table, so it can be added
-                            TableItem item = new TableItem( mandatoryAttributes_table, SWT.NONE );
-                            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-                                IImageKeys.ATTRIBUTE_TYPE ).createImage() );
-                            item.setText( selectionDialog.getSelectedAttributeType() );
-                            setEditorDirty();
-                        }
-
-                    }
-                }
-            } );
-            remove_button.addSelectionListener( new SelectionAdapter()
-            {
-                public void widgetSelected( SelectionEvent e )
-                {
-                    mandatoryAttributes_table.remove( mandatoryAttributes_table.getSelectionIndex() );
-                    setEditorDirty();
-                    remove_button.setEnabled( mandatoryAttributes_table.getSelection().length != 0 );
-                }
-            } );
-        }
-        // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
-        mandatoryAttributes_table.addMouseListener( new MouseListener()
-        {
-            public void mouseDoubleClick( MouseEvent e )
-            {
-                SchemaPool pool = SchemaPool.getInstance();
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-                AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool
-                    .getAttributeType( mandatoryAttributes_table.getSelection()[0].getText() ) );
-                String editorId = AttributeTypeFormEditor.ID;
-                try
-                {
-                    page.openEditor( input, editorId );
-                }
-                catch ( PartInitException exception )
-                {
-                    Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
-                }
-            }
-
-
-            public void mouseDown( MouseEvent e )
-            {
-            }
-
-
-            public void mouseUp( MouseEvent e )
-            {
-                if ( objectClass.getOriginatingSchema().type != Schema.SchemaType.coreSchema )
-                {
-                    remove_button.setEnabled( mandatoryAttributes_table.getSelection().length != 0 );
-                }
-            }
-        } );
+        // By default, no element is selected
+        removeButtonMandatoryTable.setEnabled( false );
     }
 
 
-    private void createOptionnalAttributesSection( Composite parent, FormToolkit toolkit )
+    /**
+     * Creates the Optional Attributes Section.
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the FormToolKit to use
+     */
+    private void createOptionalAttributesSection( Composite parent, FormToolkit toolkit )
     {
-        // OPTIONNAL ATTRIBUTES Section
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION |  Section.TITLE_BAR );
+        // OPTIONAL ATTRIBUTES Section
+        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.setText( Messages.getString( "ObjectClassFormEditorOverviewPage.Optionnal_Attributes_Section_Text" ) ); //$NON-NLS-1$
         section.setDescription( Messages
             .getString( "ObjectClassFormEditorOverviewPage.Optionnal_Attributes_Section_Description" ) ); //$NON-NLS-1$
@@ -340,117 +620,22 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         layout.numColumns = 2;
         client.setLayout( layout );
 
-        optionnalAttributes_table = toolkit.createTable( client, SWT.SINGLE | SWT.V_SCROLL );
+        optionalAttributesTable = toolkit.createTable( client, SWT.SINGLE | SWT.V_SCROLL );
         gd = new GridData( SWT.FILL, SWT.FILL, true, true );
         gd.verticalSpan = 2;
         gd.heightHint = 100;
-        optionnalAttributes_table.setLayoutData( gd );
+        optionalAttributesTable.setLayoutData( gd );
 
-        final Button add_button = toolkit.createButton( client, Messages
+        addButtonOptionalTable = toolkit.createButton( client, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Add..." ), SWT.PUSH ); //$NON-NLS-1$
-        final Button remove_button = toolkit.createButton( client, Messages
+        removeButtonOptionalTable = toolkit.createButton( client, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Remove" ), SWT.PUSH ); //$NON-NLS-1$
         gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
-        add_button.setLayoutData( gd );
-        remove_button.setLayoutData( gd );
-        remove_button.setEnabled( false );
+        addButtonOptionalTable.setLayoutData( gd );
+        removeButtonOptionalTable.setLayoutData( gd );
 
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
-            add_button.setEnabled( false );
-            remove_button.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listeners
-            add_button.addSelectionListener( new SelectionAdapter()
-            {
-                public void widgetSelected( SelectionEvent e )
-                {
-                    AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog( null );
-                    if ( selectionDialog.open() != Window.OK )
-                    {
-                        return;
-                    }
-                    if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
-                        mandatoryAttributes_table ) )
-                    {
-                        // The selected attribute type is already in the Mandatory Attributes Table
-                        MessageDialog
-                            .openError(
-                                null,
-                                Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_Mandatory_Attributes_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
-                    else
-                    {
-                        if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
-                            optionnalAttributes_table ) )
-                        {
-                            // The selected attribute type is already in the Optionnal Attributes Table
-                            MessageDialog
-                                .openError(
-                                    null,
-                                    Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_this_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                        }
-                        else
-                        {
-                            // The selected attribute is not in any table, so it can be added
-                            TableItem item = new TableItem( optionnalAttributes_table, SWT.NONE );
-                            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-                                IImageKeys.ATTRIBUTE_TYPE ).createImage() );
-                            item.setText( selectionDialog.getSelectedAttributeType() );
-                            setEditorDirty();
-                        }
-
-                    }
-                }
-            } );
-            remove_button.addSelectionListener( new SelectionAdapter()
-            {
-                public void widgetSelected( SelectionEvent e )
-                {
-                    optionnalAttributes_table.remove( optionnalAttributes_table.getSelectionIndex() );
-                    setEditorDirty();
-                    remove_button.setEnabled( optionnalAttributes_table.getSelection().length != 0 );
-                }
-            } );
-        }
-        // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
-        optionnalAttributes_table.addMouseListener( new MouseListener()
-        {
-            public void mouseDoubleClick( MouseEvent e )
-            {
-                SchemaPool pool = SchemaPool.getInstance();
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-                AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool
-                    .getAttributeType( optionnalAttributes_table.getSelection()[0].getText() ) );
-                String editorId = AttributeTypeFormEditor.ID;
-                try
-                {
-                    page.openEditor( input, editorId );
-                }
-                catch ( PartInitException exception )
-                {
-                    Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
-                }
-            }
-
-
-            public void mouseDown( MouseEvent e )
-            {
-            }
-
-
-            public void mouseUp( MouseEvent e )
-            {
-                if ( objectClass.getOriginatingSchema().type != Schema.SchemaType.coreSchema )
-                {
-                    remove_button.setEnabled( optionnalAttributes_table.getSelection().length != 0 );
-                }
-            }
-        } );
+        // By default, no element is selected
+        removeButtonOptionalTable.setEnabled( false );
     }
 
 
@@ -467,57 +652,67 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     }
 
 
-    private void initFieldsContentFromInput()
+    /**
+     * Initializes the UI fields from the input.
+     */
+    private void fillInUiFields()
     {
         // NAME Field
-        if ( objectClass.getNames()[0] != null )
+        if ( modifiedObjectClass.getNames()[0] != null )
         {
-            this.name_text.setText( objectClass.getNames()[0] );
+            nameText.setText( modifiedObjectClass.getNames()[0] );
         }
 
         // ALIASES
-        String[] names = objectClass.getNames();
+        String[] names = modifiedObjectClass.getNames();
         ArrayList<String> aliases = new ArrayList<String>();
         for ( int i = 1; i < names.length; i++ )
         {
             String name = names[i];
             aliases.add( name );
         }
-        this.aliasesList = aliases.toArray( new String[0] );
+        aliasesList = aliases.toArray( new String[0] );
 
         // OID Field
-        if ( objectClass.getOid() != null )
+        if ( modifiedObjectClass.getOid() != null )
         {
-            this.oid_text.setText( objectClass.getOid() );
+            oidText.setText( modifiedObjectClass.getOid() );
         }
 
         // DESCRIPTION Field
-        if ( objectClass.getDescription() != null )
+        if ( modifiedObjectClass.getDescription() != null )
         {
-            this.description_text.setText( objectClass.getDescription() );
+            descriptionText.setText( modifiedObjectClass.getDescription() );
         }
 
         // SUP Combo
-        initSup_combo();
-
-        // CLASSTYPE Combo
-        initClassType_combo();
-
-        // OBSOLETE Checkbox
-        if ( objectClass.isObsolete() )
+        if ( modifiedObjectClass.getSuperiors().length == 0 )
         {
-            this.obsolete_checkbox.setSelection( true );
+            fillSupCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
+        }
+        else
+        {
+            fillSupCombo( modifiedObjectClass.getSuperiors()[0] );
         }
 
+        // CLASS TYPE Combo
+        fillInClassType();
+
+        // OBSOLETE Checkbox
+        obsoleteCheckbox.setSelection( modifiedObjectClass.isObsolete() );
+
         // MANDATORY ATTRIBUTES Table
-        initMandatoryAttributes_table();
+        fillInMandatoryAttributesTable();
 
         // OPTIONNAL ATTRIBUTES Table
-        initOptionnalAttributes_table();
+        fillInOptionalAttributesTable();
     }
 
 
-    private void initSup_combo()
+    /**
+     * Initializes the Superior Combo box.
+     */
+    private void initSupCombo()
     {
         SchemaPool pool = SchemaPool.getInstance();
         ArrayList<ObjectClass> ocList = new ArrayList<ObjectClass>( pool.getObjectClassesAsHashTableByName().values() );
@@ -538,50 +733,59 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         } );
 
         // Creating the UI
-        sup_combo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        sup_combo.select( 0 );
+        supCombo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
+        supCombo.select( 0 );
         int counter = 1;
         for ( ObjectClass oc : ocList )
         {
-            // TODO : Ajouter une verification pour qu'on ne puisse pas ajouter en sup l'objectclass lui meme et ses alias
-            sup_combo.add( oc.getNames()[0], counter );
-            if ( ( objectClass.getSuperiors().length != 0 )
-                && ( oc.getNames()[0].equals( objectClass.getSuperiors()[0] ) ) )
-            {
-                // We select the right superior
-                sup_combo.select( counter );
-            }
+            supCombo.add( oc.getNames()[0], counter );
             counter++;
         }
     }
 
 
-    private void initClassType_combo()
+    /**
+     * Initializes the Class Type Combo
+     */
+    private void initClassTypeCombo()
     {
-        classType_combo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.Abstract" ), 0 ); //$NON-NLS-1$
-        classType_combo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.Auxiliary" ), 1 ); //$NON-NLS-1$
-        classType_combo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.Structural" ), 2 ); //$NON-NLS-1$
-        if ( objectClass.getClassType() == ObjectClassTypeEnum.ABSTRACT )
+        classTypeCombo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.Abstract" ), 0 ); //$NON-NLS-1$
+        classTypeCombo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.Auxiliary" ), 1 ); //$NON-NLS-1$
+        classTypeCombo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.Structural" ), 2 ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Fills in the Class Type Combo
+     */
+    private void fillInClassType()
+    {
+        if ( modifiedObjectClass.getClassType() == ObjectClassTypeEnum.ABSTRACT )
         {
-            classType_combo.select( 0 );
+            classTypeCombo.select( 0 );
         }
-        else if ( objectClass.getClassType() == ObjectClassTypeEnum.AUXILIARY )
+        else if ( modifiedObjectClass.getClassType() == ObjectClassTypeEnum.AUXILIARY )
         {
-            classType_combo.select( 1 );
+            classTypeCombo.select( 1 );
         }
-        else if ( objectClass.getClassType() == ObjectClassTypeEnum.STRUCTURAL )
+        else if ( modifiedObjectClass.getClassType() == ObjectClassTypeEnum.STRUCTURAL )
         {
-            classType_combo.select( 2 );
+            classTypeCombo.select( 2 );
         }
     }
 
 
-    private void initMandatoryAttributes_table()
+    /**
+     * Initializes the Mandatory Attributes Table
+     */
+    private void fillInMandatoryAttributesTable()
     {
-        String[] mustArray = objectClass.getMust();
+        mandatoryAttributesTable.clearAll();
+        mandatoryAttributesTable.setItemCount( 0 );
+        String[] mustArray = modifiedObjectClass.getMust();
         for ( int i = 0; i < mustArray.length; i++ )
         {
-            TableItem item = new TableItem( mandatoryAttributes_table, SWT.NONE );
+            TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE );
             item.setImage( AbstractUIPlugin
                 .imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
             item.setText( mustArray[i] );
@@ -589,12 +793,17 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     }
 
 
-    private void initOptionnalAttributes_table()
+    /**
+     * Initializes the Optional Attributes Table
+     */
+    private void fillInOptionalAttributesTable()
     {
-        String[] mayArray = objectClass.getMay();
+        optionalAttributesTable.clearAll();
+        optionalAttributesTable.setItemCount( 0 );
+        String[] mayArray = modifiedObjectClass.getMay();
         for ( int i = 0; i < mayArray.length; i++ )
         {
-            TableItem item = new TableItem( optionnalAttributes_table, SWT.NONE );
+            TableItem item = new TableItem( optionalAttributesTable, SWT.NONE );
             item.setImage( AbstractUIPlugin
                 .imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
             item.setText( mayArray[i] );
@@ -602,244 +811,154 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     }
 
 
+    /**
+     * Initializes the listeners
+     */
     private void initListeners()
     {
         // NAME Field
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
-            name_text.setEditable( false );
+            nameText.setEditable( false );
         }
         else
         {
             // else we set the listener
-            name_text.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
+            nameText.addModifyListener( nameTextListener );
         }
 
         // ALIASES Button
         // The user can always access to the Manage Aliases Window, but if the object class is in a core-schema file editing will be disabled
-        aliases_button.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, aliasesList, ( objectClass
-                    .getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
-                if ( manageDialog.open() != Window.OK )
-                {
-                    return;
-                }
-                if ( manageDialog.isDirty() )
-                {
-                    aliasesList = manageDialog.getAliasesList();
-                    setEditorDirty();
-                }
-            }
-        } );
+        aliasesButton.addSelectionListener( aliasesButtonListener );
 
         // OID Field
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
-            oid_text.setEditable( false );
+            oidText.setEditable( false );
         }
         else
         {
             // else we set the listener
-            oid_text.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
+            oidText.addModifyListener( oidTextListener );
         }
 
         // DESCRIPTION Field
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
-            description_text.setEditable( false );
+            descriptionText.setEditable( false );
         }
         else
         {
             // else we set the listener
-            description_text.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
+            descriptionText.addModifyListener( descriptionTextListener );
         }
 
         // SUP Combo
-        sup_label.addHyperlinkListener( new HyperlinkAdapter()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                if ( !sup_combo.getItem( sup_combo.getSelectionIndex() ).equals(
-                    Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                    SchemaPool pool = SchemaPool.getInstance();
-                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-                    ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( pool.getObjectClass( sup_combo
-                        .getItem( sup_combo.getSelectionIndex() ) ) );
-                    String editorId = ObjectClassFormEditor.ID;
-                    try
-                    {
-                        page.openEditor( input, editorId );
-                    }
-                    catch ( PartInitException exception )
-                    {
-                        Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug(
-                            "error when opening the editor" ); //$NON-NLS-1$
-                    }
-                }
-            }
-        } );
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        supLabel.addHyperlinkListener( supLabelListner );
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
-            sup_combo.setEnabled( false );
+            supCombo.setEnabled( false );
         }
         else
         {
             // else we set the listener
-            sup_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
+            supCombo.addModifyListener( supComboListener );
         }
 
         // CLASS TYPE Combo
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
-            classType_combo.setEnabled( false );
+            classTypeCombo.setEnabled( false );
         }
         else
         {
             // else we set the listener
-            classType_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
+            classTypeCombo.addModifyListener( classTypeListener );
         }
 
         // OBSOLETE Checkbox
-        if ( objectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
-            obsolete_checkbox.setEnabled( false );
+            obsoleteCheckbox.setEnabled( false );
         }
         else
         {
             // else we set the listener
-            obsolete_checkbox.addSelectionListener( new SelectionListener()
-            {
-                public void widgetDefaultSelected( SelectionEvent e )
-                {
-                }
-
-
-                public void widgetSelected( SelectionEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
+            obsoleteCheckbox.addSelectionListener( obsoleteListener );
         }
+
+        // Mandatory Attributes Table
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        {
+            // If the object class is in a core-schema file, we disable editing
+            addButtonMandatoryTable.setEnabled( false );
+            removeButtonMandatoryTable.setEnabled( false );
+        }
+        else
+        {
+            // else we set the listeners
+            addButtonMandatoryTable.addSelectionListener( addButtonMandatoryTableListener );
+            removeButtonMandatoryTable.addSelectionListener( removeButtonMandatoryTableListener );
+        }
+        // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
+        mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
+
+        // Optional Attributes Table
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        {
+            // If the object class is in a core-schema file, we disable editing
+            addButtonOptionalTable.setEnabled( false );
+            removeButtonOptionalTable.setEnabled( false );
+        }
+        else
+        {
+            // else we set the listeners
+            addButtonOptionalTable.addSelectionListener( addButtonOptionalTableListener );
+            removeButtonOptionalTable.addSelectionListener( removeButtonOptionalTableListener );
+        }
+        // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
+        optionalAttributesTable.addMouseListener( optionalAttributesTableListener );
     }
 
 
+    /**
+     * Sets the editor as dirty
+     */
     private void setEditorDirty()
     {
         ( ( ObjectClassFormEditor ) getEditor() ).setDirty( true );
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#doSave(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * Fills the the Sup Combo with the correct value
      */
-    @Override
-    public void doSave( IProgressMonitor monitor )
+    private void fillSupCombo( String name )
     {
-        // NAME
-        //		if ( name_text.getText().equals("") ){
-        //			MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK|SWT.ICON_ERROR);
-        //			messageBox.setMessage("You must to provide a name to the object class to be able to save it.");
-        //			messageBox.open();
-        //			monitor.setCanceled(true);
-        //			monitor.done();
-        //			return;
-        //		}
-        ArrayList<String> names = new ArrayList<String>();
-        names.add( name_text.getText() );
-        for ( int i = 0; i < this.aliasesList.length; i++ )
+        for ( int i = 0; i < supCombo.getItemCount(); i++ )
         {
-            names.add( this.aliasesList[i] );
+            if ( name.equals( supCombo.getItem( i ) ) )
+            {
+                supCombo.select( i );
+                return;
+            }
         }
-        objectClass.setNames( names.toArray( new String[0] ) );
+    }
 
-        // OID
-        objectClass.setOid( oid_text.getText() );
 
-        // DESCRIPTION
-        objectClass.setDescription( description_text.getText() );
-
-        // SUP
-        if ( sup_combo.getItem( sup_combo.getSelectionIndex() ).equals(
-            Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-            objectClass.setSuperiors( new String[0] );
-        }
-        else
-        {
-            objectClass.setSuperiors( new String[]
-                { sup_combo.getItem( sup_combo.getSelectionIndex() ) } );
-        }
-
-        // CLASS TYPE
-        if ( classType_combo.getSelectionIndex() == 0 )
-        {
-            objectClass.setClassType( ObjectClassTypeEnum.ABSTRACT );
-        }
-        else if ( classType_combo.getSelectionIndex() == 1 )
-        {
-            objectClass.setClassType( ObjectClassTypeEnum.AUXILIARY );
-        }
-        else if ( classType_combo.getSelectionIndex() == 2 )
-        {
-            objectClass.setClassType( ObjectClassTypeEnum.STRUCTURAL );
-        }
-
-        // OBSOLETE
-        objectClass.setObsolete( obsolete_checkbox.getSelection() );
-
-        // MANDATORY ATTRIBUTES
-        ArrayList<String> mustList = new ArrayList<String>();
-        for ( int i = 0; i < mandatoryAttributes_table.getItemCount(); i++ )
-        {
-            mustList.add( mandatoryAttributes_table.getItem( i ).getText() );
-        }
-        objectClass.setMust( mustList.toArray( new String[0] ) );
-
-        // OPTIONNAL ATTRIBUTES
-        ArrayList<String> mayList = new ArrayList<String>();
-        for ( int i = 0; i < optionnalAttributes_table.getItemCount(); i++ )
-        {
-            mayList.add( optionnalAttributes_table.getItem( i ).getText() );
-        }
-        objectClass.setMay( mayList.toArray( new String[0] ) );
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.SchemaElementListener#schemaElementChanged(org.apache.directory.ldapstudio.schemas.model.SchemaElement, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+     */
+    public void schemaElementChanged( SchemaElement originatingSchemaElement, LDAPModelEvent e )
+    {
+        modifiedObjectClass.removeListener( this );
+        fillInUiFields();
+        modifiedObjectClass.addListener( this );
     }
 }

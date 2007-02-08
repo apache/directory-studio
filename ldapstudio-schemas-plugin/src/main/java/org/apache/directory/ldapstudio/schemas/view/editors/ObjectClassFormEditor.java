@@ -22,12 +22,18 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 
@@ -36,12 +42,26 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public class ObjectClassFormEditor extends FormEditor
 {
+    /** The logger */
     private static Logger logger = Logger.getLogger( ObjectClassFormEditor.class );
+
+    /** The ID of the Editor */
     public static final String ID = Application.PLUGIN_ID + ".view.objectclassformeditor"; //$NON-NLS-1$
+
+    /** The Overview page */
     private ObjectClassFormEditorOverviewPage overview;
+
+    /** The Source Code page */
     private ObjectClassFormEditorSourceCodePage sourceCode;
+
+    /** The dirty state flag */
     private boolean dirty = false;
-    private ObjectClass objectClass;
+
+    /** The original object class */
+    private ObjectClass originalObjectClass;
+
+    /** The object class used to save modifications */
+    private ObjectClass modifiedObjectClass;
 
 
     /**
@@ -63,8 +83,24 @@ public class ObjectClassFormEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        objectClass = ( ( ObjectClassFormEditorInput ) getEditorInput() ).getObjectClass();
-        objectClass.setEditor( this );
+        originalObjectClass = ( ( ObjectClassFormEditorInput ) getEditorInput() ).getObjectClass();
+        originalObjectClass.setEditor( this );
+
+        modifiedObjectClass = new ObjectClass( originalObjectClass.getLiteral(), originalObjectClass
+            .getOriginatingSchema() );
+
+        addPageChangedListener( new IPageChangedListener()
+        {
+            public void pageChanged( PageChangedEvent event )
+            {
+                Object selectedPage = event.getSelectedPage();
+
+                if ( ( selectedPage instanceof ObjectClassFormEditorOverviewPage ) && !sourceCode.canLeaveThePage() )
+                {
+                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
+                }
+            }
+        } );
     }
 
 
@@ -74,7 +110,7 @@ public class ObjectClassFormEditor extends FormEditor
     @Override
     public void dispose()
     {
-        objectClass.removeEditor( this );
+        originalObjectClass.removeEditor( this );
     }
 
 
@@ -106,11 +142,17 @@ public class ObjectClassFormEditor extends FormEditor
     @Override
     public void doSave( IProgressMonitor monitor )
     {
-        // Save is delegate to the page (that holds the object class itself)
-        overview.doSave( monitor );
-        // We reload the name in case of it has changed
+        // Verifying if there is an error on the source code page
+        if ( !sourceCode.canLeaveThePage() )
+        {
+            notifyError( "The editor of the Source Code contains errors, you cannot save the object class until these errors are fixed." );
+            monitor.setCanceled( true );
+            return;
+        }
+
+        updateObjectClass( modifiedObjectClass, originalObjectClass );
+
         setPartName( getEditorInput().getName() );
-        sourceCode.refresh();
         if ( !monitor.isCanceled() )
         {
             setDirty( false );
@@ -143,7 +185,7 @@ public class ObjectClassFormEditor extends FormEditor
     @Override
     public boolean isDirty()
     {
-        return this.dirty;
+        return dirty;
     }
 
 
@@ -157,5 +199,65 @@ public class ObjectClassFormEditor extends FormEditor
     {
         this.dirty = dirty;
         editorDirtyStateChanged();
+    }
+
+
+    /**
+     * Gets the modified object class.
+     *
+     * @return
+     *      the modified object class
+     */
+    public ObjectClass getModifiedObjectClass()
+    {
+        return modifiedObjectClass;
+    }
+
+
+    /**
+     * Sets the modified object class.
+     *
+     * @param modifiedObjectClass
+     *      the modified object class to set.
+     */
+    public void setModifiedObjectClass( ObjectClass modifiedObjectClass )
+    {
+        this.modifiedObjectClass = modifiedObjectClass;
+    }
+
+
+    /**
+     * Updates the values of an object class to another one
+     *
+     * @param oc1
+     *      the object class literal to clone from
+     * @param oc2
+     *      the object class literal to clone to
+     */
+    private void updateObjectClass( ObjectClass oc1, ObjectClass oc2 )
+    {
+        oc2.setClassType( oc1.getClassType() );
+        oc2.setDescription( oc1.getDescription() );
+        oc2.setMay( oc1.getMay() );
+        oc2.setMust( oc1.getMust() );
+        oc2.setNames( oc1.getNames() );
+        oc2.setObsolete( oc1.isObsolete() );
+        oc2.setOid( oc2.getOid() );
+        oc2.setSuperiors( oc1.getSuperiors() );
+    }
+
+
+    /**
+     * Opens an error dialog displaying the given message.
+     *  
+     * @param message
+     *      the message to display
+     */
+    private void notifyError( String message )
+    {
+        MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK
+            | SWT.ICON_ERROR );
+        messageBox.setMessage( message );
+        messageBox.open();
     }
 }
