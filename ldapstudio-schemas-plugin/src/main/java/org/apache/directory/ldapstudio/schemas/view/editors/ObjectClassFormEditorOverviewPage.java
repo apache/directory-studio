@@ -103,7 +103,13 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
-            modifiedObjectClass.getNames()[0] = nameText.getText();
+            ArrayList<String> names = new ArrayList<String>();
+            names.add( nameText.getText() );
+            for ( int i = 0; i < aliasesList.length; i++ )
+            {
+                names.add( aliasesList[i] );
+            }
+            modifiedObjectClass.setNames( names.toArray( new String[0] ) );
             setEditorDirty();
         }
     };
