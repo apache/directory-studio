@@ -22,8 +22,10 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
+import org.apache.directory.ldapstudio.schemas.model.SchemaListener;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -46,6 +48,14 @@ public class SchemaFormEditorSourceCodePage extends FormPage
 {
     private Schema schema;
     private SchemaSourceViewer schemaSourceViewer;
+
+    private SchemaListener schemaListener = new SchemaListener()
+    {
+        public void schemaChanged( Schema originatingSchema, LDAPModelEvent e )
+        {
+            fillInUiFields();
+        }
+    };
 
 
     /**
@@ -75,27 +85,29 @@ public class SchemaFormEditorSourceCodePage extends FormPage
         SchemaFormEditorInput input = ( SchemaFormEditorInput ) getEditorInput();
         schema = input.getSchema();
 
+        schema.addListener( schemaListener );
+
         // SOURCE CODE Field
-        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.H_SCROLL | SWT.V_SCROLL );
+        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
+            | SWT.V_SCROLL );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
         gd.heightHint = 10;
         schemaSourceViewer.getTextWidget().setLayoutData( gd );
         schemaSourceViewer.getTextWidget().setEditable( false );
-        
-        
+
         // set text font
         Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
         schemaSourceViewer.getTextWidget().setFont( font );
-        
+
         IDocument document = new Document();
         schemaSourceViewer.setDocument( document );
-        
-        // Initialization from the "input" object class
-        initFieldsContentFromInput();
+
+        // Initializes the UI from the schema
+        fillInUiFields();
     }
 
 
-    private void initFieldsContentFromInput()
+    private void fillInUiFields()
     {
         // SOURCE CODE Field
         AttributeType[] attributeTypes = schema.getAttributeTypesAsArray();
@@ -121,7 +133,7 @@ public class SchemaFormEditorSourceCodePage extends FormPage
                 sb.append( "\n" ); //$NON-NLS-1$
             }
         }
-        
+
         schemaSourceViewer.getDocument().set( sb.toString() );
     }
 }
