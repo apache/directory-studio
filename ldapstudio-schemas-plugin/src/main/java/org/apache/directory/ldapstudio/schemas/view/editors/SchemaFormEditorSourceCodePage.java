@@ -28,7 +28,6 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
@@ -46,7 +45,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class SchemaFormEditorSourceCodePage extends FormPage
 {
     private Schema schema;
-    private SourceViewer schemaSourceViewer;
+    private SchemaSourceViewer schemaSourceViewer;
 
 
     /**
@@ -77,9 +76,12 @@ public class SchemaFormEditorSourceCodePage extends FormPage
         schema = input.getSchema();
 
         // SOURCE CODE Field
-        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.MULTI );
-        schemaSourceViewer.getTextWidget().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.H_SCROLL | SWT.V_SCROLL );
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
+        gd.heightHint = 10;
+        schemaSourceViewer.getTextWidget().setLayoutData( gd );
         schemaSourceViewer.getTextWidget().setEditable( false );
+        
         
         // set text font
         Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
