@@ -145,13 +145,13 @@
             class="org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor"
             default="false"
             icon="ressources/icons/object_class.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.objectclassformeditor"
+            id="org.apache.directory.ldapstudio.schemas.view.objectClassEditor"
             name="%ldapstudio-schemas-plugin.editors.objectclassformeditor.name"/>
       <editor
             class="org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor"
             default="false"
             icon="ressources/icons/attribute_type.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.attributetypeformeditor"
+            id="org.apache.directory.ldapstudio.schemas.view.attributeTypeEditor"
             name="%ldapstudio-schemas-plugin.editors.attributetypeformeditor.name"/>
       <editor
             class="org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor"
