@@ -35,14 +35,12 @@ import org.apache.directory.ldapstudio.schemas.model.Syntax;
 import org.apache.directory.ldapstudio.schemas.model.Syntaxes;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -68,35 +66,289 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class AttributeTypeFormEditorOverviewPage extends FormPage
 {
-    private Text name_text;
-    private Text oid_text;
-    private Text description_text;
-    private Hyperlink sup_label;
-    private Combo sup_combo;
-    private Combo usage_combo;
-    private Combo syntax_combo;
-    private Text syntaxLength_text;
-    private Button obsolete_checkbox;
-    private Button singleValue_checkbox;
-    private Button collective_checkbox;
-    private Button noUserModification_checkbox;
-    private Combo equality_combo;
-    private Combo ordering_combo;
-    private Combo substring_combo;
-    private AttributeType attributeType;
-    private Button aliases_button;
+    /** The page ID*/
+    public static final String ID = AttributeTypeFormEditor.ID + "overviewPage";
+
+    /** The page title */
+    public static String TITLE = Messages.getString( "AttributeTypeFormEditor.Overview" );
+
+    /** The modified object class */
+    private AttributeType modifiedAttributeType;
+
+    // UI Fields
+    private Text nameText;
     private String[] aliasesList;
+    private Button aliasesButton;
+    private Text oidText;
+    private Text descriptionText;
+    private Hyperlink supLabel;
+    private Combo supCombo;
+    private Combo usageCombo;
+    private Combo syntaxCombo;
+    private Text syntaxLengthText;
+    private Button obsoleteCheckbox;
+    private Button singleValueCheckbox;
+    private Button collectiveCheckbox;
+    private Button noUserModificationCheckbox;
+    private Combo equalityCombo;
+    private Combo orderingCombo;
+    private Combo substringCombo;
+
+    // Listeners
+
+    /** The listener for the Name Text Widget*/
+    private ModifyListener nameTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            modifiedAttributeType.getNames()[0] = nameText.getText();
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Aliases Button Widget */
+    private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, aliasesList, ( modifiedAttributeType
+                .getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
+            if ( manageDialog.open() != Window.OK )
+            {
+                return;
+            }
+            if ( manageDialog.isDirty() )
+            {
+                aliasesList = manageDialog.getAliasesList();
+                ArrayList<String> names = new ArrayList<String>();
+                names.add( modifiedAttributeType.getNames()[0] );
+                for ( int i = 0; i < aliasesList.length; i++ )
+                {
+                    names.add( aliasesList[i] );
+                }
+                modifiedAttributeType.setNames( names.toArray( new String[0] ) );
+                setEditorDirty();
+            }
+        }
+    };
+
+    /** The listener for the OID Text Widget */
+    //    private Object oidTextListener;
+    /** The listener for the Description Text Widget */
+    private ModifyListener descriptionTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            int caretPosition = descriptionText.getCaretPosition();
+            modifiedAttributeType.setDescription( descriptionText.getText() );
+            descriptionText.setSelection( caretPosition );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Sup Label Widget*/
+    private HyperlinkAdapter supLabelListener = new HyperlinkAdapter()
+    {
+        public void linkActivated( HyperlinkEvent e )
+        {
+            if ( !supCombo.getItem( supCombo.getSelectionIndex() ).equals(
+                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                SchemaPool pool = SchemaPool.getInstance();
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+                AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool.getAttributeType( supCombo
+                    .getItem( supCombo.getSelectionIndex() ) ) );
+                String editorId = AttributeTypeFormEditor.ID;
+                try
+                {
+                    page.openEditor( input, editorId );
+                }
+                catch ( PartInitException exception )
+                {
+                    Logger.getLogger( AttributeTypeFormEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                }
+            }
+        }
+    };
+
+    /** The listener for the Sup Combo Widget */
+    private ModifyListener supComboListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( supCombo.getItem( supCombo.getSelectionIndex() ).equals(
+                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                modifiedAttributeType.setSuperior( "" ); //$NON-NLS-1$
+            }
+            else
+            {
+                modifiedAttributeType.setSuperior( supCombo.getItem( supCombo.getSelectionIndex() ) );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Usage Combo Widget */
+    private ModifyListener usageComboListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( usageCombo.getSelectionIndex() == 0 )
+            {
+                modifiedAttributeType.setUsage( UsageEnum.DIRECTORY_OPERATION );
+            }
+            else if ( usageCombo.getSelectionIndex() == 1 )
+            {
+                modifiedAttributeType.setUsage( UsageEnum.DISTRIBUTED_OPERATION );
+            }
+            else if ( usageCombo.getSelectionIndex() == 2 )
+            {
+                modifiedAttributeType.setUsage( UsageEnum.DSA_OPERATION );
+            }
+            else if ( usageCombo.getSelectionIndex() == 3 )
+            {
+                modifiedAttributeType.setUsage( UsageEnum.USER_APPLICATIONS );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Syntax Combo Widget */
+    private ModifyListener syntaxComboListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( syntaxCombo.getItem( syntaxCombo.getSelectionIndex() ).equals(
+                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                modifiedAttributeType.setSyntax( "" ); //$NON-NLS-1$
+            }
+            else
+            {
+                modifiedAttributeType.setSyntax( Syntaxes.getSyntax(
+                    syntaxCombo.getItem( syntaxCombo.getSelectionIndex() ) ).getOid() );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Syntax Length Text Widget */
+    private ModifyListener syntaxLengthTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( syntaxLengthText.getText().length() == 0 )
+            {
+                modifiedAttributeType.setLength( -1 );
+            }
+            else
+            {
+                modifiedAttributeType.setLength( Integer.parseInt( syntaxLengthText.getText() ) );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Obsolete Checbox Widget */
+    private SelectionAdapter obsoleteCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            modifiedAttributeType.setObsolete( obsoleteCheckbox.getSelection() );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Single-Value Checkbox Widget */
+    private SelectionAdapter singleValueCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            modifiedAttributeType.setSingleValue( singleValueCheckbox.getSelection() );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Collective Checkbox Widget */
+    private SelectionAdapter collectiveCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            modifiedAttributeType.setCollective( collectiveCheckbox.getSelection() );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the No-User-Modification Widget */
+    private SelectionAdapter noUserModificationCheckboxListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            modifiedAttributeType.setNoUserModification( noUserModificationCheckbox.getSelection() );
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Equality Combo Widget */
+    private ModifyListener equalityComboListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( equalityCombo.getItem( equalityCombo.getSelectionIndex() ).equals(
+                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                modifiedAttributeType.setEquality( "" ); //$NON-NLS-1$
+            }
+            else
+            {
+                modifiedAttributeType.setEquality( equalityCombo.getItem( equalityCombo.getSelectionIndex() ) );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Ordering Combo Widget */
+    private ModifyListener orderingComboListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( orderingCombo.getItem( orderingCombo.getSelectionIndex() ).equals(
+                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                modifiedAttributeType.setOrdering( "" ); //$NON-NLS-1$
+            }
+            else
+            {
+                modifiedAttributeType.setOrdering( orderingCombo.getItem( orderingCombo.getSelectionIndex() ) );
+            }
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for the Substring Combo Widget */
+    private ModifyListener substringComboListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            if ( substringCombo.getItem( substringCombo.getSelectionIndex() ).equals(
+                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
+                modifiedAttributeType.setSubstr( "" ); //$NON-NLS-1$
+            }
+            else
+            {
+                modifiedAttributeType.setSubstr( substringCombo.getItem( substringCombo.getSelectionIndex() ) );
+            }
+            setEditorDirty();
+        }
+    };
 
 
     /**
-     * Default constructor
+     * Default constructor.
+     * 
      * @param editor
-     * @param id
-     * @param title
+     *      the associated editor
      */
-    public AttributeTypeFormEditorOverviewPage( FormEditor editor, String id, String title )
+    public AttributeTypeFormEditorOverviewPage( FormEditor editor )
     {
-        super( editor, id, title );
+        super( editor, ID, TITLE );
     }
 
 
@@ -105,18 +357,45 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        // Getting the modified attribute type and listening to its modifications
+        modifiedAttributeType = ( ( AttributeTypeFormEditor ) getEditor() ).getModifiedAttributeType();
+
+        // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
         GridLayout layout = new GridLayout();
         form.getBody().setLayout( layout );
 
-        // Getting the input and the attributeType
-        AttributeTypeFormEditorInput input = ( AttributeTypeFormEditorInput ) getEditorInput();
-        attributeType = input.getAttributeType();
-
         // General Information Section
-        Section section_general_information = toolkit.createSection( form.getBody(), Section.DESCRIPTION
-            | Section.EXPANDED | Section.TITLE_BAR );
+        createGeneralInformationSection( form.getBody(), toolkit );
+
+        // Matching Rules Section
+        createMatchingRulesSection( form.getBody(), toolkit );
+
+        // Enabling or disabling the fields
+        setFieldsEditableState();
+
+        // Filling the UI with values from the attribute type
+        fillInUiFields();
+
+        // Listeners initialization
+        addListeners();
+    }
+
+
+    /**
+     * Creates the General Information Section.
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the FormToolKit to use
+     */
+    private void createGeneralInformationSection( Composite parent, FormToolkit toolkit )
+    {
+        // General Information Section
+        Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
+            | Section.TITLE_BAR );
         section_general_information.setDescription( Messages
             .getString( "AttributeTypeFormEditorOverviewPage.General_Section_Description" ) ); //$NON-NLS-1$
         section_general_information.setText( Messages
@@ -135,76 +414,91 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         // NAME Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Name" ) ); //$NON-NLS-1$
-        name_text = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        name_text.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        nameText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
+        nameText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
 
         // ALIASES Button
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
-        aliases_button = toolkit.createButton( client_general_information, Messages
+        aliasesButton = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Manage_aliases" ), SWT.PUSH ); //$NON-NLS-1$
-        aliases_button.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false, 2, 1 ) );
+        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false, 2, 1 ) );
 
         // OID Field
         toolkit
             .createLabel( client_general_information, Messages.getString( "AttributeTypeFormEditorOverviewPage.OID" ) ); //$NON-NLS-1$
-        oid_text = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        oid_text.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
+        oidText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Description" ) ); //$NON-NLS-1$
-        description_text = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
-        description_text.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
+        descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
+        descriptionText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
 
         // SUP Combo
-        sup_label = toolkit.createHyperlink( client_general_information, Messages
+        supLabel = toolkit.createHyperlink( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Superior_type" ), SWT.WRAP ); //$NON-NLS-1$
-        sup_combo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        sup_combo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
+        supCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        initSupCombo();
 
         // USAGE Combo
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Usage" ) ); //$NON-NLS-1$
-        usage_combo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        usage_combo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
+        usageCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        initUsageCombo();
 
         // SYNTAX Combo
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Synatx" ) ); //$NON-NLS-1$
-        syntax_combo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        syntax_combo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        syntaxCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
+        syntaxCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        initSyntaxCombo();
 
         // SYNTAX LENGTH Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Syntax_length" ) ); //$NON-NLS-1$
-        syntaxLength_text = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        syntaxLength_text.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        syntaxLengthText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
+        syntaxLengthText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
 
         // OBSOLETE Checkbox
         toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
-        obsolete_checkbox = toolkit.createButton( client_general_information, Messages
+        obsoleteCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
-        obsolete_checkbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
 
         // SINGLE-VALUE Checkbox
-        singleValue_checkbox = toolkit.createButton( client_general_information, Messages
+        singleValueCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Single-Value" ), SWT.CHECK ); //$NON-NLS-1$
-        singleValue_checkbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        singleValueCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
 
         // COLLECTIVE Checkbox
         toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
-        collective_checkbox = toolkit.createButton( client_general_information, Messages
+        collectiveCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Collective" ), SWT.CHECK ); //$NON-NLS-1$
-        collective_checkbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        collectiveCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
 
         // NO-USER-MODIFICATION Checkbox
-        noUserModification_checkbox = toolkit.createButton( client_general_information, Messages
+        noUserModificationCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.No-User-Modification" ), SWT.CHECK ); //$NON-NLS-1$
-        noUserModification_checkbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        noUserModificationCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+    }
 
+
+    /**
+     * Creates the Matching Rules Section.
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the FormToolKit to use
+     */
+    private void createMatchingRulesSection( Composite parent, FormToolkit toolkit )
+    {
         // Matching Rules Section
-        Section section_matching_rules = toolkit.createSection( form.getBody(), Section.DESCRIPTION | Section.EXPANDED
+        Section section_matching_rules = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
         section_matching_rules.setDescription( Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Specify_matching_rules" ) ); //$NON-NLS-1$
@@ -219,108 +513,36 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         section_matching_rules.setClient( client_matching_rules );
         section_matching_rules.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
-        // Adding elements to the section
         // EQUALITY Combo
         toolkit
             .createLabel( client_matching_rules, Messages.getString( "AttributeTypeFormEditorOverviewPage.Equility" ) ); //$NON-NLS-1$
-        equality_combo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
-        equality_combo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        equalityCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
+        equalityCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        initEqualityCombo();
 
         // ORDERING Combo
         toolkit
             .createLabel( client_matching_rules, Messages.getString( "AttributeTypeFormEditorOverviewPage.Ordering" ) ); //$NON-NLS-1$
-        ordering_combo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
-        ordering_combo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        orderingCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
+        orderingCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        initOrderingCombo();
 
         // SUBSTRING Combo
         toolkit.createLabel( client_matching_rules, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Substring" ) ); //$NON-NLS-1$
-        substring_combo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
-        substring_combo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
-
-        // Initialization from the "input" attribute type
-        initFieldsContentFromInput();
-
-        // Listeners initialization
-        initListeners();
-    }
-
-
-    private void initFieldsContentFromInput()
-    {
-        // NAME Field
-        if ( attributeType.getNames()[0] != null )
-        {
-            this.name_text.setText( attributeType.getNames()[0] );
-        }
-
-        // ALIASES
-        String[] names = attributeType.getNames();
-        ArrayList<String> aliases = new ArrayList<String>();
-        for ( int i = 1; i < names.length; i++ )
-        {
-            String name = names[i];
-            aliases.add( name );
-        }
-        this.aliasesList = aliases.toArray( new String[0] );
-
-        // OID Field
-        if ( attributeType.getOid() != null )
-        {
-            this.oid_text.setText( attributeType.getOid() );
-        }
-
-        // DESCRIPTION Field
-        if ( attributeType.getDescription() != null )
-        {
-            this.description_text.setText( attributeType.getDescription() );
-        }
-
-        // SUP Combo
-        initSup_combo();
-
-        // USAGE Combo
-        initUsage_combo();
-
-        // SYNTAX Combo
-        initSyntax_combo();
-
-        // SYNTAX LENGTH Field
-        if ( attributeType.getLength() != -1 )
-        {
-            this.syntaxLength_text.setText( attributeType.getLength() + "" ); //$NON-NLS-1$
-        }
-
-        // OBSOLETE Checkbox
-        this.obsolete_checkbox.setSelection( attributeType.isObsolete() );
-
-        // SINGLE-VALUE Checkbox
-        this.singleValue_checkbox.setSelection( attributeType.isSingleValue() );
-
-        // COLLECTIVE Checkbox
-        this.collective_checkbox.setSelection( attributeType.isCollective() );
-
-        // NO-USER-MODIFICATION Checkbox
-        this.noUserModification_checkbox.setSelection( attributeType.isNoUserModification() );
-
-        // EQUALITY Combo
-        initEqualityCombo();
-
-        // ORDERING Combo
-        initOrderingCombo();
-
-        // SUBSTRING
+        substringCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
+        substringCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
         initSubstringCombo();
     }
 
 
-    private void initSup_combo()
+    private void initSupCombo()
     {
         SchemaPool pool = SchemaPool.getInstance();
         ArrayList<AttributeType> atList = new ArrayList<AttributeType>( pool.getAttributeTypesAsHashTableByName()
             .values() );
 
-        //remove duplicate entries
+        // Remove duplicate entries
         HashSet<AttributeType> set = new HashSet<AttributeType>( atList );
         atList = new ArrayList<AttributeType>( set );
 
@@ -336,59 +558,60 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         } );
 
         // Creating the UI
-        sup_combo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        sup_combo.select( 0 );
+        supCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
+        supCombo.select( 0 );
         int counter = 1;
         for ( AttributeType at : atList )
         {
             // TODO : Ajouter une verification pour qu'on ne puisse pas ajouter en sup l'objectclass lui meme et ses alias
-            sup_combo.add( at.getNames()[0], counter );
-            if ( ( ( attributeType.getSuperior() != null ) || ( attributeType.getSuperior() != "" ) ) && ( at.getNames()[0].equals( attributeType.getSuperior() ) ) ) { //$NON-NLS-1$
+            supCombo.add( at.getNames()[0], counter );
+            if ( ( ( modifiedAttributeType.getSuperior() != null ) || ( modifiedAttributeType.getSuperior() != "" ) ) && ( at.getNames()[0].equals( modifiedAttributeType.getSuperior() ) ) ) { //$NON-NLS-1$
                 // We select the right superior
-                sup_combo.select( counter );
+                supCombo.select( counter );
             }
             counter++;
         }
     }
 
 
-    private void initUsage_combo()
+    private void initUsageCombo()
     {
-        usage_combo.add( "directoryOperation", 0 ); //$NON-NLS-1$
-        usage_combo.add( "distributedOperation", 1 ); //$NON-NLS-1$
-        usage_combo.add( "DSAOperation", 2 ); //$NON-NLS-1$
-        usage_combo.add( "userApplications", 3 ); //$NON-NLS-1$
-        if ( attributeType.getUsage() == UsageEnum.DIRECTORY_OPERATION )
+        usageCombo.add( "directoryOperation", 0 ); //$NON-NLS-1$
+        usageCombo.add( "distributedOperation", 1 ); //$NON-NLS-1$
+        usageCombo.add( "DSAOperation", 2 ); //$NON-NLS-1$
+        usageCombo.add( "userApplications", 3 ); //$NON-NLS-1$
+        if ( modifiedAttributeType.getUsage() == UsageEnum.DIRECTORY_OPERATION )
         {
-            usage_combo.select( 0 );
+            usageCombo.select( 0 );
         }
-        else if ( attributeType.getUsage() == UsageEnum.DISTRIBUTED_OPERATION )
+        else if ( modifiedAttributeType.getUsage() == UsageEnum.DISTRIBUTED_OPERATION )
         {
-            usage_combo.select( 1 );
+            usageCombo.select( 1 );
         }
-        else if ( attributeType.getUsage() == UsageEnum.DSA_OPERATION )
+        else if ( modifiedAttributeType.getUsage() == UsageEnum.DSA_OPERATION )
         {
-            usage_combo.select( 2 );
+            usageCombo.select( 2 );
         }
-        else if ( attributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
+        else if ( modifiedAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
         {
-            usage_combo.select( 3 );
+            usageCombo.select( 3 );
         }
     }
 
 
-    private void initSyntax_combo()
+    private void initSyntaxCombo()
     {
-        syntax_combo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ), 0 ); //$NON-NLS-1$
-        syntax_combo.select( 0 );
+        syntaxCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ), 0 ); //$NON-NLS-1$
+        syntaxCombo.select( 0 );
         ArrayList<Syntax> syntaxes = Syntaxes.getSyntaxes();
         int counter = 1;
         for ( Syntax syntax : syntaxes )
         {
-            syntax_combo.add( syntax.getName() );
-            if ( ( attributeType.getSyntax() != null ) && ( attributeType.getSyntax().equals( syntax.getOid() ) ) )
+            syntaxCombo.add( syntax.getName() );
+            if ( ( modifiedAttributeType.getSyntax() != null )
+                && ( modifiedAttributeType.getSyntax().equals( syntax.getOid() ) ) )
             {
-                syntax_combo.select( counter );
+                syntaxCombo.select( counter );
             }
             counter++;
         }
@@ -397,16 +620,17 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
 
     private void initEqualityCombo()
     {
-        equality_combo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        equality_combo.select( 0 );
+        equalityCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
+        equalityCombo.select( 0 );
         int counter = 1;
         ArrayList<MatchingRule> equalityMatchingRules = MatchingRules.getEqualityMatchingRules();
         for ( MatchingRule matchingRule : equalityMatchingRules )
         {
-            equality_combo.add( matchingRule.getName() );
-            if ( ( attributeType.getEquality() != null ) && attributeType.getEquality().equals( matchingRule.getName() ) )
+            equalityCombo.add( matchingRule.getName() );
+            if ( ( modifiedAttributeType.getEquality() != null )
+                && modifiedAttributeType.getEquality().equals( matchingRule.getName() ) )
             {
-                equality_combo.select( counter );
+                equalityCombo.select( counter );
             }
             counter++;
         }
@@ -415,16 +639,17 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
 
     private void initOrderingCombo()
     {
-        ordering_combo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        ordering_combo.select( 0 );
+        orderingCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
+        orderingCombo.select( 0 );
         int counter = 1;
         ArrayList<MatchingRule> orderingMatchingRules = MatchingRules.getOrderingMatchingRules();
         for ( MatchingRule matchingRule : orderingMatchingRules )
         {
-            ordering_combo.add( matchingRule.getName() );
-            if ( ( attributeType.getOrdering() != null ) && attributeType.getOrdering().equals( matchingRule.getName() ) )
+            orderingCombo.add( matchingRule.getName() );
+            if ( ( modifiedAttributeType.getOrdering() != null )
+                && modifiedAttributeType.getOrdering().equals( matchingRule.getName() ) )
             {
-                ordering_combo.select( counter );
+                orderingCombo.select( counter );
             }
             counter++;
         }
@@ -433,458 +658,195 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
 
     private void initSubstringCombo()
     {
-        substring_combo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        substring_combo.select( 0 );
+        substringCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
+        substringCombo.select( 0 );
         int counter = 1;
         ArrayList<MatchingRule> substringMatchingRules = MatchingRules.getSubstringMatchingRules();
         for ( MatchingRule matchingRule : substringMatchingRules )
         {
-            substring_combo.add( matchingRule.getName() );
-            if ( ( attributeType.getSubstr() != null ) && attributeType.getSubstr().equals( matchingRule.getName() ) )
+            substringCombo.add( matchingRule.getName() );
+            if ( ( modifiedAttributeType.getSubstr() != null )
+                && modifiedAttributeType.getSubstr().equals( matchingRule.getName() ) )
             {
-                substring_combo.select( counter );
+                substringCombo.select( counter );
             }
             counter++;
         }
     }
 
 
-    private void initListeners()
+    private void fillInUiFields()
     {
         // NAME Field
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
+        if ( modifiedAttributeType.getNames()[0] != null )
+        {
+            this.nameText.setText( modifiedAttributeType.getNames()[0] );
+        }
+
+        // ALIASES
+        String[] names = modifiedAttributeType.getNames();
+        ArrayList<String> aliases = new ArrayList<String>();
+        for ( int i = 1; i < names.length; i++ )
+        {
+            String name = names[i];
+            aliases.add( name );
+        }
+        this.aliasesList = aliases.toArray( new String[0] );
+
+        // OID Field
+        if ( modifiedAttributeType.getOid() != null )
+        {
+            this.oidText.setText( modifiedAttributeType.getOid() );
+        }
+
+        // DESCRIPTION Field
+        if ( modifiedAttributeType.getDescription() != null )
+        {
+            this.descriptionText.setText( modifiedAttributeType.getDescription() );
+        }
+
+        // SUP Combo
+        //initSup_combo();
+        // TODO
+
+        // USAGE Combo
+        //        initUsage_combo();
+        // TODO
+
+        // SYNTAX Combo
+        //        initSyntax_combo();
+        // TODO
+
+        // SYNTAX LENGTH Field
+        if ( modifiedAttributeType.getLength() != -1 )
+        {
+            this.syntaxLengthText.setText( modifiedAttributeType.getLength() + "" ); //$NON-NLS-1$
+        }
+
+        // OBSOLETE Checkbox
+        this.obsoleteCheckbox.setSelection( modifiedAttributeType.isObsolete() );
+
+        // SINGLE-VALUE Checkbox
+        this.singleValueCheckbox.setSelection( modifiedAttributeType.isSingleValue() );
+
+        // COLLECTIVE Checkbox
+        this.collectiveCheckbox.setSelection( modifiedAttributeType.isCollective() );
+
+        // NO-USER-MODIFICATION Checkbox
+        this.noUserModificationCheckbox.setSelection( modifiedAttributeType.isNoUserModification() );
+
+        // EQUALITY Combo
+        //        initEqualityCombo();
+        // TODO
+
+        // ORDERING Combo
+        //        initOrderingCombo();
+        // TODO
+
+        // SUBSTRING
+        //        initSubstringCombo();
+        // TODO
+    }
+
+
+    /**
+     * Enalbes/Disables the UI fields
+     */
+    private void setFieldsEditableState()
+    {
+        if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the attribute type is in a core-schema file, we disable editing
-            name_text.setEditable( false );
+            nameText.setEditable( false );
+            descriptionText.setEditable( false );
+            supCombo.setEnabled( false );
+            usageCombo.setEnabled( false );
+            syntaxCombo.setEnabled( false );
+            syntaxLengthText.setEditable( false );
+            obsoleteCheckbox.setEnabled( false );
+            singleValueCheckbox.setEnabled( false );
+            collectiveCheckbox.setEnabled( false );
+            noUserModificationCheckbox.setEnabled( false );
+            equalityCombo.setEnabled( false );
+            orderingCombo.setEnabled( false );
+            substringCombo.setEnabled( false );
         }
-        else
+
+        // AT THE MOMENT, WE CANNOT SET A NEW OID TO THE ATTRIBUTE TYPE, SO WE DISABLE THIS FUNCTIONNALITY
+        oidText.setEditable( false );
+    }
+
+
+    /**
+     * Adds listeners to UI fields
+     */
+    private void addListeners()
+    {
+        if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
-            // else we set the listener
-            name_text.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
+            nameText.addModifyListener( nameTextListener );
+            descriptionText.addModifyListener( descriptionTextListener );
+            supLabel.addHyperlinkListener( supLabelListener );
+            supCombo.addModifyListener( supComboListener );
+            usageCombo.addModifyListener( usageComboListener );
+            syntaxCombo.addModifyListener( syntaxComboListener );
+            syntaxLengthText.addModifyListener( syntaxLengthTextListener );
+            obsoleteCheckbox.addSelectionListener( obsoleteCheckboxListener );
+            singleValueCheckbox.addSelectionListener( singleValueCheckboxListener );
+            collectiveCheckbox.addSelectionListener( collectiveCheckboxListener );
+            noUserModificationCheckbox.addSelectionListener( noUserModificationCheckboxListener );
+            equalityCombo.addModifyListener( equalityComboListener );
+            orderingCombo.addModifyListener( orderingComboListener );
+            substringCombo.addModifyListener( substringComboListener );
         }
 
         // ALIASES Button
         // The user can always access to the Manage Aliases Window, but if the object class is in a core-schema file editing will be disabled
-        aliases_button.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, aliasesList, ( attributeType
-                    .getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
-                if ( manageDialog.open() != Window.OK )
-                {
-                    return;
-                }
-                if ( manageDialog.isDirty() )
-                {
-                    aliasesList = manageDialog.getAliasesList();
-                    setEditorDirty();
-                }
-            }
-        } );
+        aliasesButton.addSelectionListener( aliasesButtonListener );
 
-        // OID Field
-        // AT THE MOMENT, WE CANNOT SET A NEW OID TO THE ATTRIBUTE TYPE, SO WE DISABLE THIS FUNCTIONNALITY
-        oid_text.setEditable( false );
-        // AND WE REMOVE THE LISTENERS
-        // if (attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema) {
-        // 		// If the attribute type is in a core-schema file, we disable editing
-        // 		oid_text.setEditable(false);
-        // } else {
-        // 		// else we set the listener
-        // 		oid_text.addModifyListener(new ModifyListener() {
-        //			public void modifyText(ModifyEvent e) { setEditorDirty(); }		
-        //		});
-        // }
-
-        // DESCRIPTION Field
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            description_text.setEditable( false );
-        }
-        else
-        {
-            // else we set the listener
-            description_text.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // SUP Combo
-        sup_label.addHyperlinkListener( new HyperlinkAdapter()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                if ( !sup_combo.getItem( sup_combo.getSelectionIndex() ).equals(
-                    Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                    SchemaPool pool = SchemaPool.getInstance();
-                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-                    AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool
-                        .getAttributeType( sup_combo.getItem( sup_combo.getSelectionIndex() ) ) );
-                    String editorId = AttributeTypeFormEditor.ID;
-                    try
-                    {
-                        page.openEditor( input, editorId );
-                    }
-                    catch ( PartInitException exception )
-                    {
-                        Logger.getLogger( AttributeTypeFormEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
-                    }
-                }
-            }
-        } );
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            sup_combo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            sup_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // USAGE Combo
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            usage_combo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            usage_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // SYNTAX Combo
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            syntax_combo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            syntax_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // SYNTAX LENGTH Field
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            syntaxLength_text.setEditable( false );
-        }
-        else
-        {
-            // else we set the listener
-            syntaxLength_text.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // OBSOLETE Checkbox
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            obsolete_checkbox.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            obsolete_checkbox.addSelectionListener( new SelectionListener()
-            {
-                public void widgetDefaultSelected( SelectionEvent e )
-                {
-                }
-
-
-                public void widgetSelected( SelectionEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // SINGLE-VALUE Checkbox
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            singleValue_checkbox.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            singleValue_checkbox.addSelectionListener( new SelectionListener()
-            {
-                public void widgetDefaultSelected( SelectionEvent e )
-                {
-                }
-
-
-                public void widgetSelected( SelectionEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // COLLECTIVE Checkbox
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            collective_checkbox.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            collective_checkbox.addSelectionListener( new SelectionListener()
-            {
-                public void widgetDefaultSelected( SelectionEvent e )
-                {
-                }
-
-
-                public void widgetSelected( SelectionEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // NO-USER-MODIFICATION Checkbox
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            noUserModification_checkbox.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            noUserModification_checkbox.addSelectionListener( new SelectionListener()
-            {
-                public void widgetDefaultSelected( SelectionEvent e )
-                {
-                }
-
-
-                public void widgetSelected( SelectionEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // EQUALITY Combo
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            equality_combo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            equality_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // ORDERING Combo
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            ordering_combo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            ordering_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
-
-        // SUBSTRING Combo
-        if ( attributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the attribute type is in a core-schema file, we disable editing
-            substring_combo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            substring_combo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    setEditorDirty();
-                }
-            } );
-        }
+        supLabel.addHyperlinkListener( supLabelListener );
     }
 
 
+    /**
+     * Removes listeners from UI fields
+     */
+    private void removeListeners()
+    {
+        nameText.removeModifyListener( nameTextListener );
+        aliasesButton.removeSelectionListener( aliasesButtonListener );
+        descriptionText.removeModifyListener( descriptionTextListener );
+        supLabel.removeHyperlinkListener( supLabelListener );
+        supCombo.removeModifyListener( supComboListener );
+        usageCombo.removeModifyListener( usageComboListener );
+        syntaxCombo.removeModifyListener( syntaxComboListener );
+        syntaxLengthText.removeModifyListener( syntaxLengthTextListener );
+        obsoleteCheckbox.removeSelectionListener( obsoleteCheckboxListener );
+        singleValueCheckbox.removeSelectionListener( singleValueCheckboxListener );
+        collectiveCheckbox.removeSelectionListener( collectiveCheckboxListener );
+        noUserModificationCheckbox.removeSelectionListener( noUserModificationCheckboxListener );
+        equalityCombo.removeModifyListener( equalityComboListener );
+        orderingCombo.removeModifyListener( orderingComboListener );
+        substringCombo.removeModifyListener( substringComboListener );
+    }
+
+
+    /**
+     * Sets the dirty state of the editor to dirty
+     */
     private void setEditorDirty()
     {
         ( ( AttributeTypeFormEditor ) getEditor() ).setDirty( true );
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#doSave(org.eclipse.core.runtime.IProgressMonitor)
+    /**
+     * Refreshes the UI.
      */
-    @Override
-    public void doSave( IProgressMonitor monitor )
+    public void refreshUI()
     {
-        // NAME
-        // TODO : Pour le moment on ne gere pas les alias, seul un nom est possible
-        //		String[] oldNames = attributeType.getNames();
-        //		oldNames[0] = name_text.getText();
-        //		attributeType.setNames(oldNames);
-        ArrayList<String> names = new ArrayList<String>();
-        names.add( name_text.getText() );
-        for ( int i = 0; i < this.aliasesList.length; i++ )
-        {
-            names.add( this.aliasesList[i] );
-        }
-        attributeType.setNames( names.toArray( new String[0] ) );
-
-        // OID
-        // TODO : Il n'y a pas de setOid sur l'attributeTypeLiteral
-        //attributeType.setOid(oid_text.getText());
-
-        // DESCRIPTION
-        attributeType.setDescription( description_text.getText() );
-
-        // SUP
-        if ( sup_combo.getItem( sup_combo.getSelectionIndex() ).equals(
-            Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-            attributeType.setSuperior( "" ); //$NON-NLS-1$
-        }
-        else
-        {
-            attributeType.setSuperior( sup_combo.getItem( sup_combo.getSelectionIndex() ) );
-        }
-
-        // USAGE
-        if ( usage_combo.getSelectionIndex() == 0 )
-        {
-            attributeType.setUsage( UsageEnum.DIRECTORY_OPERATION );
-        }
-        else if ( usage_combo.getSelectionIndex() == 1 )
-        {
-            attributeType.setUsage( UsageEnum.DISTRIBUTED_OPERATION );
-        }
-        else if ( usage_combo.getSelectionIndex() == 2 )
-        {
-            attributeType.setUsage( UsageEnum.DSA_OPERATION );
-        }
-        else if ( usage_combo.getSelectionIndex() == 3 )
-        {
-            attributeType.setUsage( UsageEnum.USER_APPLICATIONS );
-        }
-
-        // SYNTAX
-        if ( syntax_combo.getItem( syntax_combo.getSelectionIndex() ).equals(
-            Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-            attributeType.setSyntax( "" ); //$NON-NLS-1$
-        }
-        else
-        {
-            attributeType.setSyntax( Syntaxes.getSyntax( syntax_combo.getItem( syntax_combo.getSelectionIndex() ) )
-                .getOid() );
-        }
-
-        // SYNTAX LENGTH
-        if ( syntaxLength_text.getText().length() == 0 )
-        {
-            attributeType.setLength( -1 );
-        }
-        else
-        {
-            attributeType.setLength( Integer.parseInt( syntaxLength_text.getText() ) );
-        }
-
-        // OBSOLETE
-        attributeType.setObsolete( obsolete_checkbox.getSelection() );
-
-        // SINGLE-VALUE
-        attributeType.setSingleValue( singleValue_checkbox.getSelection() );
-
-        // COLLECTIVE
-        attributeType.setCollective( collective_checkbox.getSelection() );
-
-        // NO-USE-MODIFICATION
-        attributeType.setNoUserModification( noUserModification_checkbox.getSelection() );
-
-        // EQUALITY
-        if ( equality_combo.getItem( equality_combo.getSelectionIndex() ).equals(
-            Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-            attributeType.setEquality( "" ); //$NON-NLS-1$
-        }
-        else
-        {
-            attributeType.setEquality( equality_combo.getItem( equality_combo.getSelectionIndex() ) );
-        }
-
-        // ORDERING
-        if ( ordering_combo.getItem( ordering_combo.getSelectionIndex() ).equals(
-            Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-            attributeType.setOrdering( "" ); //$NON-NLS-1$
-        }
-        else
-        {
-            attributeType.setOrdering( ordering_combo.getItem( ordering_combo.getSelectionIndex() ) );
-        }
-
-        // SUBSTRING
-        if ( substring_combo.getItem( substring_combo.getSelectionIndex() ).equals(
-            Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-            attributeType.setSubstr( "" ); //$NON-NLS-1$
-        }
-        else
-        {
-            attributeType.setSubstr( substring_combo.getItem( substring_combo.getSelectionIndex() ) );
-        }
+        removeListeners();
+        fillInUiFields();
+        addListeners();
     }
 }

@@ -25,10 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
-import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
-import org.apache.directory.ldapstudio.schemas.model.SchemaElementListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
@@ -52,10 +49,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 /**
  * This class is the Source Code Page of the Object Class Editor
  */
-public class ObjectClassFormEditorSourceCodePage extends FormPage implements SchemaElementListener
+public class ObjectClassFormEditorSourceCodePage extends FormPage
 {
     /** The page ID */
-    public static final String ID = "org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassEditorSourceCodePage";
+    public static final String ID = ObjectClassFormEditor.ID + "sourceCodePage";
 
     /** The page title*/
     public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Source_Code" );
@@ -68,6 +65,39 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
 
     /** The flag to indicate if the user can leave the Source Code page */
     private boolean canLeaveThePage = true;
+
+    /** The listener of the Schema Source Viewer Widget */
+    private ModifyListener schemaSourceViewerListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            canLeaveThePage = true;
+            try
+            {
+                ( ( ObjectClassFormEditor ) getEditor() ).setDirty( true );
+                OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
+                parser.parse( schemaSourceViewer.getTextWidget().getText() );
+
+                List objectclasses = parser.getObjectClassTypes();
+                if ( objectclasses.size() != 1 )
+                {
+                    // TODO Throw an exception and return
+                }
+                else
+                {
+                    updateObjectClass( ( ObjectClassLiteral ) objectclasses.get( 0 ) );
+                }
+            }
+            catch ( IOException e1 )
+            {
+                canLeaveThePage = false;
+            }
+            catch ( ParseException exception )
+            {
+                canLeaveThePage = false;
+            }
+        }
+    };
 
 
     /**
@@ -95,7 +125,6 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
         toolkit.paintBordersFor( form.getBody() );
 
         modifiedObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getModifiedObjectClass();
-        modifiedObjectClass.addListener( this );
 
         // SOURCE CODE Field
         schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
@@ -107,39 +136,6 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
         {
             schemaSourceViewer.setEditable( false );
         }
-        schemaSourceViewer.getTextWidget().addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                canLeaveThePage = true;
-                try
-                {
-                    ( ( ObjectClassFormEditor ) getEditor() ).setDirty( true );
-                    OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
-                    parser.parse( schemaSourceViewer.getTextWidget().getText() );
-
-                    List objectclasses = parser.getObjectClassTypes();
-                    if ( objectclasses.size() != 1 )
-                    {
-                        // Throw an exception and return
-                    }
-                    else
-                    {
-                        updateObjectClass( ( ObjectClassLiteral ) objectclasses.get( 0 ) );
-                    }
-                }
-                catch ( IOException e1 )
-                {
-                    canLeaveThePage = false;
-                }
-                catch ( ParseException exception )
-                {
-                    canLeaveThePage = false;
-                    System.err.println( exception.getMessage() );
-                }
-            }
-        } );
-        //toolkit.createLabel( form.getBody(), "" );
 
         // set text font
         Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
@@ -147,10 +143,11 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
 
         IDocument document = new Document();
         schemaSourceViewer.setDocument( document );
-        schemaSourceViewer.getAnnotationModel().connect( document );
 
         // Initialization from the "input" object class
         fillInUiFields();
+
+        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
     }
 
 
@@ -173,17 +170,6 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.model.SchemaElementListener#schemaElementChanged(org.apache.directory.ldapstudio.schemas.model.SchemaElement, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
-     */
-    public void schemaElementChanged( SchemaElement originatingSchemaElement, LDAPModelEvent e )
-    {
-        modifiedObjectClass.removeListener( this );
-        fillInUiFields();
-        modifiedObjectClass.addListener( this );
-    }
-
-
     /**
      * Updates the Modified Object Class from the given Object Class Literal.
      *
@@ -192,7 +178,6 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
      */
     private void updateObjectClass( ObjectClassLiteral ocl )
     {
-        modifiedObjectClass.removeListener( this );
         modifiedObjectClass.setClassType( ocl.getClassType() );
         modifiedObjectClass.setDescription( ocl.getDescription() );
         modifiedObjectClass.setMay( ocl.getMay() );
@@ -201,6 +186,14 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage implements Sch
         modifiedObjectClass.setObsolete( ocl.isObsolete() );
         modifiedObjectClass.setOid( ocl.getOid() );
         modifiedObjectClass.setSuperiors( ocl.getSuperiors() );
-        modifiedObjectClass.addListener( this );
+    }
+
+
+    /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        fillInUiFields();
     }
 }

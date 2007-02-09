@@ -25,9 +25,14 @@ import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 
@@ -36,17 +41,53 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public class AttributeTypeFormEditor extends FormEditor
 {
+    /** The logger */
     private static Logger logger = Logger.getLogger( AttributeTypeFormEditor.class );
 
-    public static final String ID = Application.PLUGIN_ID + ".view.attributetypeformeditor"; //$NON-NLS-1$
+    /** The ID of the Editor */
+    public static final String ID = Application.PLUGIN_ID + ".view.attributeTypeEditor"; //$NON-NLS-1$
 
+    /** The Overview page */
     private AttributeTypeFormEditorOverviewPage overview;
 
+    /** The Source Code page */
     private AttributeTypeFormEditorSourceCodePage sourceCode;
 
+    /** The dirty state flag */
     private boolean dirty = false;
 
-    private AttributeType attributeType;
+    /** The original attribute type */
+    private AttributeType originalAttributeType;
+
+    /** The attribute type used to save modifications */
+    private AttributeType modifiedAttributeType;
+
+    /** The listener for page changed */
+    private IPageChangedListener pageChangedListener = new IPageChangedListener()
+    {
+        public void pageChanged( PageChangedEvent event )
+        {
+            Object selectedPage = event.getSelectedPage();
+
+            if ( selectedPage instanceof AttributeTypeFormEditorOverviewPage )
+            {
+                if ( !sourceCode.canLeaveThePage() )
+                {
+                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
+                    return;
+                }
+
+                overview.refreshUI();
+            }
+            else if ( selectedPage instanceof AttributeTypeFormEditorSourceCodePage )
+            {
+                if ( sourceCode.canLeaveThePage() )
+                {
+                    sourceCode.refreshUI();
+                }
+            }
+        }
+    };
 
 
     /**
@@ -71,8 +112,13 @@ public class AttributeTypeFormEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        attributeType = ( ( AttributeTypeFormEditorInput ) getEditorInput() ).getAttributeType();
-        attributeType.setEditor( this );
+        originalAttributeType = ( ( AttributeTypeFormEditorInput ) getEditorInput() ).getAttributeType();
+        originalAttributeType.setEditor( this );
+
+        modifiedAttributeType = new AttributeType( originalAttributeType.getLiteral(), originalAttributeType
+            .getOriginatingSchema() );
+
+        addPageChangedListener( pageChangedListener );
     }
 
 
@@ -84,7 +130,7 @@ public class AttributeTypeFormEditor extends FormEditor
     @Override
     public void dispose()
     {
-        attributeType.removeEditor( this );
+        originalAttributeType.removeEditor( this );
     }
 
 
@@ -98,11 +144,9 @@ public class AttributeTypeFormEditor extends FormEditor
     {
         try
         {
-            overview = new AttributeTypeFormEditorOverviewPage( this,
-                "overview", Messages.getString( "AttributeTypeFormEditor.Overview" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            overview = new AttributeTypeFormEditorOverviewPage( this );
             addPage( overview );
-            sourceCode = new AttributeTypeFormEditorSourceCodePage( this,
-                "sourceCode", Messages.getString( "AttributeTypeFormEditor.Source_Code" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            sourceCode = new AttributeTypeFormEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
             addPage( sourceCode );
         }
         catch ( PartInitException e )
@@ -120,12 +164,21 @@ public class AttributeTypeFormEditor extends FormEditor
     @Override
     public void doSave( IProgressMonitor monitor )
     {
-        // Save is delegate to the page (that holds the object class itself)
-        overview.doSave( monitor );
-        // We reload the name in case of it has changed
+        // Verifying if there is an error on the source code page
+        if ( !sourceCode.canLeaveThePage() )
+        {
+            notifyError( "The editor of the Source Code contains errors, you cannot save the object class until these errors are fixed." );
+            monitor.setCanceled( true );
+            return;
+        }
+
+        updateAttributeType( modifiedAttributeType, originalAttributeType );
+
         setPartName( getEditorInput().getName() );
-        sourceCode.refresh();
-        setDirty( false );
+        if ( !monitor.isCanceled() )
+        {
+            setDirty( false );
+        }
     }
 
 
@@ -174,5 +227,70 @@ public class AttributeTypeFormEditor extends FormEditor
     {
         this.dirty = dirty;
         editorDirtyStateChanged();
+    }
+
+
+    /**
+     * Gets the modified attribute type.
+     *
+     * @return
+     *      the modified attribute type
+     */
+    public AttributeType getModifiedAttributeType()
+    {
+        return modifiedAttributeType;
+    }
+
+
+    /**
+     * Sets the modified attribute type.
+     *
+     * @param modifiedAttributeType
+     *      the modified attribute type to set.
+     */
+    public void setModifiedAttributeType( AttributeType modifiedAttributeType )
+    {
+        this.modifiedAttributeType = modifiedAttributeType;
+    }
+
+
+    /**
+     * Updates the values of an object class to another one
+     *
+     * @param oc1
+     *      the object class literal to clone from
+     * @param oc2
+     *      the object class literal to clone to
+     */
+    private void updateAttributeType( AttributeType at1, AttributeType at2 )
+    {
+        at2.setCollective( at1.isCollective() );
+        at2.setDescription( at1.getDescription() );
+        at2.setEquality( at1.getEquality() );
+        at2.setNames( at1.getNames() );
+        at2.setNoUserModification( at1.isNoUserModification() );
+        at2.setObsolete( at1.isObsolete() );
+        // TODO Need to update the Shared LDAP lirary to be able to modify the OID
+        at2.setOrdering( at1.getOrdering() );
+        at2.setSingleValue( at1.isSingleValue() );
+        at2.setSubstr( at1.getSubstr() );
+        at2.setSuperior( at1.getSuperior() );
+        at2.setSyntax( at1.getSyntax() );
+        at2.setUsage( at1.getUsage() );
+    }
+
+
+    /**
+     * Opens an error dialog displaying the given message.
+     *  
+     * @param message
+     *      the message to display
+     */
+    private void notifyError( String message )
+    {
+        MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK
+            | SWT.ICON_ERROR );
+        messageBox.setMessage( message );
+        messageBox.open();
     }
 }

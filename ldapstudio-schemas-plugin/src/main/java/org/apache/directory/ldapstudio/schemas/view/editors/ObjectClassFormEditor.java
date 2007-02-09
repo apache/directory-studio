@@ -45,7 +45,7 @@ public class ObjectClassFormEditor extends FormEditor
     private static Logger logger = Logger.getLogger( ObjectClassFormEditor.class );
 
     /** The ID of the Editor */
-    public static final String ID = Application.PLUGIN_ID + ".view.objectclassformeditor"; //$NON-NLS-1$
+    public static final String ID = Application.PLUGIN_ID + ".view.objectClassEditor"; //$NON-NLS-1$
 
     /** The Overview page */
     private ObjectClassFormEditorOverviewPage overview;
@@ -61,6 +61,33 @@ public class ObjectClassFormEditor extends FormEditor
 
     /** The object class used to save modifications */
     private ObjectClass modifiedObjectClass;
+
+    /** The listener for page changed */
+    private IPageChangedListener pageChangedListener = new IPageChangedListener()
+    {
+        public void pageChanged( PageChangedEvent event )
+        {
+            Object selectedPage = event.getSelectedPage();
+
+            if ( selectedPage instanceof ObjectClassFormEditorOverviewPage )
+            {
+                if ( !sourceCode.canLeaveThePage() )
+                {
+                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
+                    return;
+                }
+
+                overview.refreshUI();
+            }
+            else if ( selectedPage instanceof ObjectClassFormEditorSourceCodePage )
+            {
+                if ( sourceCode.canLeaveThePage() )
+                {
+                    sourceCode.refreshUI();
+                }
+            }
+        }
+    };
 
 
     /**
@@ -88,18 +115,7 @@ public class ObjectClassFormEditor extends FormEditor
         modifiedObjectClass = new ObjectClass( originalObjectClass.getLiteral(), originalObjectClass
             .getOriginatingSchema() );
 
-        addPageChangedListener( new IPageChangedListener()
-        {
-            public void pageChanged( PageChangedEvent event )
-            {
-                Object selectedPage = event.getSelectedPage();
-
-                if ( ( selectedPage instanceof ObjectClassFormEditorOverviewPage ) && !sourceCode.canLeaveThePage() )
-                {
-                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
-                }
-            }
-        } );
+        addPageChangedListener( pageChangedListener );
     }
 
 

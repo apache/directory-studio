@@ -28,11 +28,8 @@ import java.util.HashSet;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
-import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
-import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
-import org.apache.directory.ldapstudio.schemas.model.SchemaElementListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
@@ -72,10 +69,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class is the Overview Page of the Object Class Editor
  */
-public class ObjectClassFormEditorOverviewPage extends FormPage implements SchemaElementListener
+public class ObjectClassFormEditorOverviewPage extends FormPage
 {
     /** The page ID */
-    public static final String ID = "org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassEditorOverviewPage";
+    public static final String ID = ObjectClassFormEditor.ID + "overviewPage";
 
     /** The page title*/
     public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Overview" );
@@ -160,7 +157,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage implements Schem
     };
 
     /** The listener for Sup Label Widget */
-    private HyperlinkAdapter supLabelListner = new HyperlinkAdapter()
+    private HyperlinkAdapter supLabelListener = new HyperlinkAdapter()
     {
         public void linkActivated( HyperlinkEvent e )
         {
@@ -453,9 +450,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage implements Schem
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the modified object class and listening to its modifications
+        // Getting the modified object class
         modifiedObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getModifiedObjectClass();
-        modifiedObjectClass.addListener( this );
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -472,11 +468,14 @@ public class ObjectClassFormEditorOverviewPage extends FormPage implements Schem
         // Optionnal Attributes Section
         createOptionalAttributesSection( form.getBody(), toolkit );
 
+        // Enabling or disabling the fields
+        setFieldsEditableState();
+
         // Filling the UI with values from the object class
         fillInUiFields();
 
         // Listeners initialization
-        initListeners();
+        addListeners();
     }
 
 
@@ -827,118 +826,78 @@ public class ObjectClassFormEditorOverviewPage extends FormPage implements Schem
 
 
     /**
-     * Initializes the listeners
+     * Enalbes/Disables the UI fields
      */
-    private void initListeners()
+    private void setFieldsEditableState()
     {
-        // NAME Field
         if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
             nameText.setEditable( false );
-        }
-        else
-        {
-            // else we set the listener
-            nameText.addModifyListener( nameTextListener );
-        }
-
-        // ALIASES Button
-        // The user can always access to the Manage Aliases Window, but if the object class is in a core-schema file editing will be disabled
-        aliasesButton.addSelectionListener( aliasesButtonListener );
-
-        // OID Field
-        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
             oidText.setEditable( false );
-        }
-        else
-        {
-            // else we set the listener
-            oidText.addModifyListener( oidTextListener );
-        }
-
-        // DESCRIPTION Field
-        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
             descriptionText.setEditable( false );
-        }
-        else
-        {
-            // else we set the listener
-            descriptionText.addModifyListener( descriptionTextListener );
-        }
-
-        // SUP Combo
-        supLabel.addHyperlinkListener( supLabelListner );
-        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
             supCombo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            supCombo.addModifyListener( supComboListener );
-        }
-
-        // CLASS TYPE Combo
-        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
             classTypeCombo.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            classTypeCombo.addModifyListener( classTypeListener );
-        }
-
-        // OBSOLETE Checkbox
-        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
             obsoleteCheckbox.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listener
-            obsoleteCheckbox.addSelectionListener( obsoleteListener );
-        }
-
-        // Mandatory Attributes Table
-        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
             addButtonMandatoryTable.setEnabled( false );
             removeButtonMandatoryTable.setEnabled( false );
-        }
-        else
-        {
-            // else we set the listeners
-            addButtonMandatoryTable.addSelectionListener( addButtonMandatoryTableListener );
-            removeButtonMandatoryTable.addSelectionListener( removeButtonMandatoryTableListener );
-        }
-        // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
-        mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
-
-        // Optional Attributes Table
-        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-        {
-            // If the object class is in a core-schema file, we disable editing
             addButtonOptionalTable.setEnabled( false );
             removeButtonOptionalTable.setEnabled( false );
         }
-        else
+    }
+
+
+    /**
+     * Adds listeners to UI fields
+     */
+    private void addListeners()
+    {
+        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
-            // else we set the listeners
+            nameText.addModifyListener( nameTextListener );
+            oidText.addModifyListener( oidTextListener );
+            descriptionText.addModifyListener( descriptionTextListener );
+            supCombo.addModifyListener( supComboListener );
+            classTypeCombo.addModifyListener( classTypeListener );
+            obsoleteCheckbox.addSelectionListener( obsoleteListener );
+            addButtonMandatoryTable.addSelectionListener( addButtonMandatoryTableListener );
+            removeButtonMandatoryTable.addSelectionListener( removeButtonMandatoryTableListener );
             addButtonOptionalTable.addSelectionListener( addButtonOptionalTableListener );
             removeButtonOptionalTable.addSelectionListener( removeButtonOptionalTableListener );
         }
+
+        // The user can always access to the Manage Aliases Window, but if the object class is in a core-schema file editing will be disabled
+        aliasesButton.addSelectionListener( aliasesButtonListener );
+
+        supLabel.addHyperlinkListener( supLabelListener );
+
+        // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
+        mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
+
         // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
         optionalAttributesTable.addMouseListener( optionalAttributesTableListener );
+    }
+
+
+    /**
+     * Removes listeners from UI fields
+     */
+    private void removeListeners()
+    {
+        nameText.removeModifyListener( nameTextListener );
+        aliasesButton.removeSelectionListener( aliasesButtonListener );
+        oidText.removeModifyListener( oidTextListener );
+        descriptionText.removeModifyListener( descriptionTextListener );
+        supLabel.removeHyperlinkListener( supLabelListener );
+        supCombo.removeModifyListener( supComboListener );
+        classTypeCombo.removeModifyListener( classTypeListener );
+        obsoleteCheckbox.removeSelectionListener( obsoleteListener );
+        mandatoryAttributesTable.removeMouseListener( mandatoryAttributesTableListener );
+        addButtonMandatoryTable.removeSelectionListener( addButtonMandatoryTableListener );
+        removeButtonMandatoryTable.removeSelectionListener( removeButtonMandatoryTableListener );
+        optionalAttributesTable.removeMouseListener( optionalAttributesTableListener );
+        addButtonOptionalTable.removeSelectionListener( addButtonOptionalTableListener );
+        removeButtonOptionalTable.removeSelectionListener( removeButtonOptionalTableListener );
     }
 
 
@@ -967,13 +926,13 @@ public class ObjectClassFormEditorOverviewPage extends FormPage implements Schem
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.model.SchemaElementListener#schemaElementChanged(org.apache.directory.ldapstudio.schemas.model.SchemaElement, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+    /**
+     * Refreshes the UI.
      */
-    public void schemaElementChanged( SchemaElement originatingSchemaElement, LDAPModelEvent e )
+    public void refreshUI()
     {
-        modifiedObjectClass.removeListener( this );
+        removeListeners();
         fillInUiFields();
-        modifiedObjectClass.addListener( this );
+        addListeners();
     }
 }
