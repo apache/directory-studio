@@ -255,12 +255,12 @@ public class AttributeTypeFormEditor extends FormEditor
 
 
     /**
-     * Updates the values of an object class to another one
+     * Updates the values of an attribute type to another one
      *
-     * @param oc1
-     *      the object class literal to clone from
-     * @param oc2
-     *      the object class literal to clone to
+     * @param at1
+     *      the attribute type literal to clone from
+     * @param at2
+     *      the attribute type literal to clone to
      */
     private void updateAttributeType( AttributeType at1, AttributeType at2 )
     {
