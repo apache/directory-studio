@@ -310,7 +310,8 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
                 oldFile.renameTo( newFile );
             }
         }
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_SCHEMA_LOADED )
+        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_SCHEMA_LOADED 
+            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_OPENED )
         {
             this.saveSchema( connectionUpdateEvent.getConnection() );
         }
