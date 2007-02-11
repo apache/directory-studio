@@ -21,14 +21,14 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
+import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser.SchemaBrowser;
-
+import org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser.SchemaBrowserManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -108,35 +108,35 @@ public class OpenSchemaBrowserAction extends BrowserAction
     {
         if ( mode == MODE_NONE )
         {
-            SchemaBrowser.select( null );
+            SchemaBrowserManager.setInput( getConnection(), null );
         }
         else if ( mode == MODE_OBJECTCLASS )
         {
-            SchemaBrowser.select( getOcd() );
+            SchemaBrowserManager.setInput( getConnection(), getOcd() );
         }
         else if ( mode == MODE_ATTRIBUTETYPE )
         {
-            SchemaBrowser.select( getAtd() );
+            SchemaBrowserManager.setInput( getConnection(), getAtd() );
         }
         else if ( mode == MODE_EQUALITYMATCHINGRULE )
         {
-            SchemaBrowser.select( getEmrd() );
+            SchemaBrowserManager.setInput( getConnection(), getEmrd() );
         }
         else if ( mode == MODE_SUBSTRINGMATCHINGRULE )
         {
-            SchemaBrowser.select( getSmrd() );
+            SchemaBrowserManager.setInput( getConnection(), getSmrd() );
         }
         else if ( mode == MODE_ORDERINGMATCHINGRULE )
         {
-            SchemaBrowser.select( getOmrd() );
+            SchemaBrowserManager.setInput( getConnection(), getOmrd() );
         }
         else if ( mode == MODE_SYNTAX )
         {
-            SchemaBrowser.select( getLsd() );
+            SchemaBrowserManager.setInput( getConnection(), getLsd() );
         }
         else
         {
-            SchemaBrowser.select( null );
+            SchemaBrowserManager.setInput( getConnection(), null );
         }
     }
 
@@ -152,27 +152,27 @@ public class OpenSchemaBrowserAction extends BrowserAction
         }
         else if ( mode == MODE_OBJECTCLASS )
         {
-            return "Object Class Definition";
+            return "Object Class Description";
         }
         else if ( mode == MODE_ATTRIBUTETYPE )
         {
-            return "Attribute Type Definiton";
+            return "Attribute Type Description";
         }
         else if ( mode == MODE_EQUALITYMATCHINGRULE )
         {
-            return "Equality Matching Rule Definiton";
+            return "Equality Matching Rule Description";
         }
         else if ( mode == MODE_SUBSTRINGMATCHINGRULE )
         {
-            return "Substring Matching Rule Definiton";
+            return "Substring Matching Rule Description";
         }
         else if ( mode == MODE_ORDERINGMATCHINGRULE )
         {
-            return "Ordering Matching Rule Definiton";
+            return "Ordering Matching Rule Description";
         }
         else if ( mode == MODE_SYNTAX )
         {
-            return "Syntax Definiton";
+            return "Syntax Description";
         }
         else
         {
@@ -341,6 +341,56 @@ public class OpenSchemaBrowserAction extends BrowserAction
             }
 
             return atd;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the connection.
+     *
+     * @return the connection
+     */
+    private IConnection getConnection()
+    {
+        if ( ( getSelectedValues().length + getSelectedAttributes().length ) + getSelectedAttributeHierarchies().length == 1 )
+        {
+            IConnection connection = null;
+            if ( getSelectedValues().length == 1 )
+            {
+                connection = getSelectedValues()[0].getAttribute().getEntry().getConnection();
+            }
+            else if ( getSelectedAttributes().length == 1 )
+            {
+                connection = getSelectedAttributes()[0].getEntry().getConnection();
+            }
+            else if ( getSelectedAttributeHierarchies().length == 1 && getSelectedAttributeHierarchies()[0].size() == 1 )
+            {
+                connection = getSelectedAttributeHierarchies()[0].getAttribute().getEntry().getConnection();
+            }
+
+            return connection;
+        }
+        else if ( getSelectedConnections().length == 1 )
+        {
+            return getSelectedConnections()[0];
+        }
+        else if ( getSelectedEntries().length == 1 )
+        {
+            return getSelectedEntries()[0].getConnection();
+        }
+        else if ( getSelectedSearchResults().length == 1 )
+        {
+            return getSelectedSearchResults()[0].getEntry().getConnection();
+        }
+        else if ( getSelectedBookmarks().length == 1 )
+        {
+            return getSelectedBookmarks()[0].getConnection();
+        }
+        else if ( getSelectedSearches().length == 1 )
+        {
+            return getSelectedSearches()[0].getConnection();
         }
 
         return null;

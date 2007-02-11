@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleUseDescription;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,8 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -44,35 +41,53 @@ import org.eclipse.ui.forms.widgets.Section;
 public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
 {
 
+    /** The main section, contains oid, names and desc */
     private Section mainSection;
 
-    private Section flagSection;
-
-    private Section appliesSection;
-
+    /** The numeric oid field */
     private Text numericOidText;
-
+    
+    /** The name link */
     private Hyperlink nameLink;
-
+    
+    /** The description field */
     private Text descText;
 
+    /** The flag section, contains obsolete */
+    private Section flagSection;
+
+    /** The obsolete field */
     private Label isObsoleteText;
 
+    /** The applies section, contains links */
+    private Section appliesSection;
+
+    /** The links to attribute types the matching rule is applicaple to */
     private Hyperlink[] appliesLinks;
 
 
-    public MatchingRuleUseDescriptionDetailsPage( SchemaBrowser schemaBrowser, FormToolkit toolkit )
+    /**
+     * Creates a new instance of MatchingRuleUseDescriptionDetailsPage.
+     *
+     * @param schemaPage the master schema page
+     * @param toolkit the toolkit used to create controls
+     */
+    public MatchingRuleUseDescriptionDetailsPage( SchemaPage schemaPage, FormToolkit toolkit )
     {
-        super( schemaBrowser, toolkit );
+        super( schemaPage, toolkit );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createContents( final ScrolledForm detailForm )
     {
 
         this.detailForm = detailForm;
         detailForm.getBody().setLayout( new GridLayout() );
 
+        // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         mainSection.setText( "Details" );
         mainSection.marginWidth = 0;
@@ -80,6 +95,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( mainSection );
 
+        // create flag section
         flagSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         flagSection.setText( "Flags" );
         flagSection.marginWidth = 0;
@@ -87,6 +103,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         flagSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( flagSection );
 
+        // create flag content
         Composite flagClient = toolkit.createComposite( flagSection, SWT.WRAP );
         GridLayout flagLayout = new GridLayout();
         flagLayout.numColumns = 1;
@@ -99,6 +116,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         isObsoleteText.setEnabled( false );
 
+        // create applies section
         appliesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         appliesSection.setText( "Applies" );
         appliesSection.marginWidth = 0;
@@ -113,14 +131,29 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
+        // create raw section
         super.createRawSection();
     }
 
 
-    public void matchingRuleUseDescriptionSelected( MatchingRuleUseDescription mrud )
+    /**
+     * {@inheritDoc}
+     */
+    public void setInput( Object input )
     {
+        MatchingRuleUseDescription mrud = null;
+        if ( input instanceof MatchingRuleUseDescription )
+        {
+            mrud = ( MatchingRuleUseDescription ) input;
+        }
+
+        // create main content
         this.createMainContent( mrud );
+        
+        // set flag
         isObsoleteText.setEnabled( mrud != null && mrud.isObsolete() );
+        
+        // create contents of dynamic sections
         this.createAppliesContents( mrud );
         super.createRawContents( mrud );
 
@@ -128,29 +161,28 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
     }
 
 
+    /**
+     * Creates the content of the main section. It is newly created
+     * on every input change to ensure a proper layout of 
+     * multilined descriptions. 
+     *
+     * @param mrud the matching rule use description
+     */
     private void createMainContent( MatchingRuleUseDescription mrud )
     {
-
-        int labelWidth = 100;
-
+        // dispose old content
         if ( mainSection.getClient() != null )
         {
-            if ( mainSection.getClient() instanceof Composite )
-            {
-                Composite client = ( Composite ) mainSection.getClient();
-                if ( client.getChildren() != null && client.getChildren().length > 0 )
-                {
-                    labelWidth = client.getChildren()[0].getSize().x;
-                }
-            }
             mainSection.getClient().dispose();
         }
 
+        // create new client
         Composite mainClient = toolkit.createComposite( mainSection, SWT.WRAP );
         GridLayout mainLayout = new GridLayout( 2, false );
         mainClient.setLayout( mainLayout );
         mainSection.setClient( mainClient );
 
+        // create new content
         if ( mrud != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
@@ -161,13 +193,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             toolkit.createLabel( mainClient, "Matching rule names:", SWT.NONE );
             nameLink = toolkit.createHyperlink( mainClient, "", SWT.WRAP );
             nameLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-            nameLink.addHyperlinkListener( new HyperlinkAdapter()
-            {
-                public void linkActivated( HyperlinkEvent e )
-                {
-                    SchemaBrowser.select( e.getHref() );
-                }
-            } );
+            nameLink.addHyperlinkListener( this );
 
             MatchingRuleDescription mrd = mrud.getSchema().hasMatchingRuleDescription( mrud.getNumericOID() ) ? mrud
                 .getSchema().getMatchingRuleDescription( mrud.getNumericOID() ) : null;
@@ -179,7 +205,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
             descText = toolkit.createText( mainClient, getNonNullString( mrud.getDesc() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-            gd.widthHint = detailForm.getForm().getSize().x - labelWidth - 60;
+            gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
             descText.setEditable( false );
         }
@@ -188,17 +214,27 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
     }
 
 
+    /**
+     * Creates the content of the applies section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param mrud the matching rule use description
+     */
     private void createAppliesContents( MatchingRuleUseDescription mrud )
     {
+        // dispose old content
         if ( appliesSection.getClient() != null )
         {
             appliesSection.getClient().dispose();
         }
 
+        // create new client
         Composite appliesClient = toolkit.createComposite( appliesSection, SWT.WRAP );
         appliesClient.setLayout( new GridLayout() );
         appliesSection.setClient( appliesClient );
 
+        // create content
         if ( mrud != null )
         {
             String[] names = mrud.getAppliesAttributeTypeDescriptionOIDs();
@@ -216,13 +252,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
                         appliesLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         appliesLinks[i].setUnderlined( true );
                         appliesLinks[i].setEnabled( true );
-                        appliesLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                        {
-                            public void linkActivated( HyperlinkEvent e )
-                            {
-                                SchemaBrowser.select( e.getHref() );
-                            }
-                        } );
+                        appliesLinks[i].addHyperlinkListener( this );
                     }
                     else
                     {

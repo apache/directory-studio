@@ -115,4 +115,23 @@ public abstract class SchemaPart implements Comparable, Serializable
         this.line = line;
     }
 
+    
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof SchemaPart )
+        {
+            return this.getClass() == obj.getClass() && this.toString().equals( obj.toString() );
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    
+    public int hashCode()
+    {
+        return toString().hashCode();
+    }
+    
 }

@@ -25,7 +25,6 @@ import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDe
 import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,86 +33,129 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 
+/**
+ * The AttributeTypeDescriptionDetailsPage displays the details of an
+ * attribute type description.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 {
 
+    /** The main section, contains oid, names, desc and usage */
     private Section mainSection;
 
+    /** The numeric oid field */
     private Text numericOidText;
 
-    private Text nameText;
+    /** The names field */
+    private Text namesText;
 
+    /** The description field */
     private Text descText;
 
+    /** The usage field */
     private Text usageText;
 
+    /** The flag section, contains sv, obsolete, collective and read-only */
     private Section flagSection;
 
+    /** The single-valued field */
     private Label singleValuedText;
 
+    /** The obsolete field */
     private Label isObsoleteText;
 
+    /** The collective field */
     private Label collectiveText;
 
+    /** The no-user-modification field */
     private Label noUserModificationText;
 
+    /** The syntax section, contains syntax description, lenth and a link to the syntax */ 
     private Section syntaxSection;
 
-    private Text syntaxText;
+    /** The syntax description field */
+    private Text syntaxDescText;
 
+    /** The syntax length field */
     private Text lengthText;
 
+    /** The link to the syntax */
     private Hyperlink syntaxLink;
 
-    private Section matchSection;
+    /** The matching rules section, contains links to matching rules */
+    private Section matchingRulesSection;
 
+    /** The link to the equality matching rule */
     private Hyperlink equalityLink;
 
+    /** The link to the substring matching rule */
     private Hyperlink substringLink;
 
+    /** The link to the ordering matching rule */
     private Hyperlink orderingLink;
 
+    /** The section with other matching rules */
     private Section otherMatchSection;
 
+    /** The links to other matching rules applicaple to the selected attribute */
     private Hyperlink[] otherMatchLinks;
 
-    private Section mustSection;
+    /** The section with links to object classes using the selected attribute as must */
+    private Section usedAsMustSection;
 
+    /** The links to object classes using the selected attribute as must */
     private Hyperlink[] usedAsMustLinks;
 
-    private Section maySection;
+    /** The section with links to object classes using the selected attribute as may */
+    private Section usedAsMaySection;
 
+    /** The links to object classes using the selected attribute as may */
     private Hyperlink[] usedAsMayLinks;
 
-    private Section superSection;
+    /** The section with a link to the superior attribute type */
+    private Section supertypeSection;
 
+    /** The link to the superior attribute type */
     private Hyperlink superLink;
 
-    private Section subSection;
+    /** The section with links to the derived attribute types */
+    private Section subtypesSection;
 
+    /** The links to derived attribute types */
     private Hyperlink[] subAttributeTypeLinks;
 
 
-    public AttributeTypeDescriptionDetailsPage( SchemaBrowser schemaBrowser, FormToolkit toolkit )
+    /**
+     * Creates a new instance of AttributeTypeDescriptionDetailsPage.
+     *
+     * @param schemaPage the master schema page
+     * @param toolkit the toolkit used to create controls
+     */
+    public AttributeTypeDescriptionDetailsPage( SchemaPage schemaPage, FormToolkit toolkit )
     {
-        super( schemaBrowser, toolkit );
+        super( schemaPage, toolkit );
     }
 
 
-    public void createContents( final ScrolledForm detailForm )
+    /**
+     * {@inheritDoc}
+     */
+    protected void createContents( final ScrolledForm detailForm )
     {
 
         this.detailForm = detailForm;
         detailForm.getBody().setLayout( new GridLayout() );
 
+        // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         mainSection.setText( "Details" );
         mainSection.marginWidth = 0;
@@ -121,6 +163,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( mainSection );
 
+        // create flag section
         flagSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         flagSection.setText( "Flags" );
         flagSection.marginWidth = 0;
@@ -128,6 +171,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         flagSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( flagSection );
 
+        // create flags content
         Composite flagClient = toolkit.createComposite( flagSection, SWT.WRAP );
         GridLayout flagLayout = new GridLayout();
         flagLayout.numColumns = 4;
@@ -152,6 +196,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         isObsoleteText.setEnabled( false );
 
+        // create syntax section
         syntaxSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         syntaxSection.setText( "Syntax" );
         syntaxSection.marginWidth = 0;
@@ -159,6 +204,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         syntaxSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( syntaxSection );
 
+        // create syntax content
         Composite syntaxClient = toolkit.createComposite( syntaxSection, SWT.WRAP );
         GridLayout syntaxLayout = new GridLayout();
         syntaxLayout.numColumns = 2;
@@ -170,72 +216,51 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         toolkit.createLabel( syntaxClient, "Syntax OID:", SWT.NONE );
         syntaxLink = toolkit.createHyperlink( syntaxClient, "", SWT.WRAP );
         syntaxLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        syntaxLink.addHyperlinkListener( new HyperlinkAdapter()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                SchemaBrowser.select( e.getHref() );
-            }
-        } );
+        syntaxLink.addHyperlinkListener( this );
 
         toolkit.createLabel( syntaxClient, "Syntax Description:", SWT.NONE );
-        syntaxText = toolkit.createText( syntaxClient, "", SWT.NONE );
-        syntaxText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        syntaxText.setEditable( false );
+        syntaxDescText = toolkit.createText( syntaxClient, "", SWT.NONE );
+        syntaxDescText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        syntaxDescText.setEditable( false );
 
         toolkit.createLabel( syntaxClient, "Length:", SWT.NONE );
         lengthText = toolkit.createText( syntaxClient, "", SWT.NONE );
         lengthText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         lengthText.setEditable( false );
 
-        matchSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        matchSection.setText( "Matching Rules" );
-        matchSection.marginWidth = 0;
-        matchSection.marginHeight = 0;
-        matchSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        toolkit.createCompositeSeparator( matchSection );
+        // create matching rules section
+        matchingRulesSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
+        matchingRulesSection.setText( "Matching Rules" );
+        matchingRulesSection.marginWidth = 0;
+        matchingRulesSection.marginHeight = 0;
+        matchingRulesSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        toolkit.createCompositeSeparator( matchingRulesSection );
 
-        Composite matchClient = toolkit.createComposite( matchSection, SWT.WRAP );
+        // create matching rules content
+        Composite matchClient = toolkit.createComposite( matchingRulesSection, SWT.WRAP );
         GridLayout matchLayout = new GridLayout();
         matchLayout.numColumns = 2;
         matchLayout.marginWidth = 0;
         matchLayout.marginHeight = 0;
         matchClient.setLayout( matchLayout );
-        matchSection.setClient( matchClient );
+        matchingRulesSection.setClient( matchClient );
 
         toolkit.createLabel( matchClient, "Equality match:", SWT.NONE );
         equalityLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP );
         equalityLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        equalityLink.addHyperlinkListener( new HyperlinkAdapter()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                SchemaBrowser.select( e.getHref() );
-            }
-        } );
+        equalityLink.addHyperlinkListener( this );
 
         toolkit.createLabel( matchClient, "Substring match:", SWT.NONE );
         substringLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP );
         substringLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        substringLink.addHyperlinkListener( new HyperlinkAdapter()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                SchemaBrowser.select( e.getHref() );
-            }
-        } );
+        substringLink.addHyperlinkListener( this );
 
         toolkit.createLabel( matchClient, "Ordering match:", SWT.NONE );
         orderingLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP );
         orderingLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        orderingLink.addHyperlinkListener( new HyperlinkAdapter()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                SchemaBrowser.select( e.getHref() );
-            }
-        } );
+        orderingLink.addHyperlinkListener( this );
 
+        // create other matching rules section
         otherMatchSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         otherMatchSection.setText( "Other Matching Rules" );
         otherMatchSection.marginWidth = 0;
@@ -250,13 +275,14 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        mustSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        mustSection.setText( "Used as MUST" );
-        mustSection.marginWidth = 0;
-        mustSection.marginHeight = 0;
-        mustSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        toolkit.createCompositeSeparator( mustSection );
-        mustSection.addExpansionListener( new ExpansionAdapter()
+        // create used as must section
+        usedAsMustSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
+        usedAsMustSection.setText( "Used as MUST" );
+        usedAsMustSection.marginWidth = 0;
+        usedAsMustSection.marginHeight = 0;
+        usedAsMustSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        toolkit.createCompositeSeparator( usedAsMustSection );
+        usedAsMustSection.addExpansionListener( new ExpansionAdapter()
         {
             public void expansionStateChanged( ExpansionEvent e )
             {
@@ -264,13 +290,14 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        maySection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        maySection.setText( "Used as MAY" );
-        maySection.marginWidth = 0;
-        maySection.marginHeight = 0;
-        maySection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        toolkit.createCompositeSeparator( maySection );
-        maySection.addExpansionListener( new ExpansionAdapter()
+        // create used as may section
+        usedAsMaySection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
+        usedAsMaySection.setText( "Used as MAY" );
+        usedAsMaySection.marginWidth = 0;
+        usedAsMaySection.marginHeight = 0;
+        usedAsMaySection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        toolkit.createCompositeSeparator( usedAsMaySection );
+        usedAsMaySection.addExpansionListener( new ExpansionAdapter()
         {
             public void expansionStateChanged( ExpansionEvent e )
             {
@@ -278,13 +305,14 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        superSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        superSection.setText( "Supertypes" );
-        superSection.marginWidth = 0;
-        superSection.marginHeight = 0;
-        superSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        toolkit.createCompositeSeparator( superSection );
-        superSection.addExpansionListener( new ExpansionAdapter()
+        // create supertype section
+        supertypeSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
+        supertypeSection.setText( "Supertype" );
+        supertypeSection.marginWidth = 0;
+        supertypeSection.marginHeight = 0;
+        supertypeSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        toolkit.createCompositeSeparator( supertypeSection );
+        supertypeSection.addExpansionListener( new ExpansionAdapter()
         {
             public void expansionStateChanged( ExpansionEvent e )
             {
@@ -292,13 +320,14 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        subSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        subSection.setText( "Subtypes" );
-        subSection.marginWidth = 0;
-        subSection.marginHeight = 0;
-        subSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        toolkit.createCompositeSeparator( subSection );
-        subSection.addExpansionListener( new ExpansionAdapter()
+        // create subtypes section
+        subtypesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
+        subtypesSection.setText( "Subtypes" );
+        subtypesSection.marginWidth = 0;
+        subtypesSection.marginHeight = 0;
+        subtypesSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        toolkit.createCompositeSeparator( subtypesSection );
+        subtypesSection.addExpansionListener( new ExpansionAdapter()
         {
             public void expansionStateChanged( ExpansionEvent e )
             {
@@ -306,20 +335,33 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        super.createRawSection();
+        // create raw section
+        createRawSection();
     }
 
 
-    public void attributeTypeDescriptionSelected( AttributeTypeDescription atd )
+    /**
+     * {@inheritDoc}
+     */
+    public void setInput( Object input )
     {
-        this.createMainContent( atd );
+        AttributeTypeDescription atd = null;
+        if ( input instanceof AttributeTypeDescription )
+        {
+            atd = ( AttributeTypeDescription ) input;
+        }
 
+        // create main content
+        createMainContent( atd );
+
+        // set flags
         singleValuedText.setEnabled( atd != null && atd.isSingleValued() );
         isObsoleteText.setEnabled( atd != null && atd.isObsolete() );
         collectiveText.setEnabled( atd != null && atd.isCollective() );
         noUserModificationText.setEnabled( atd != null && atd.isNoUserModification() );
         flagSection.layout();
 
+        // set syntax content
         String lsdOid = null;
         LdapSyntaxDescription lsd = null;
         String lsdLength = null;
@@ -336,10 +378,11 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
         syntaxLink.setEnabled( lsd != null );
-        syntaxText.setText( getNonNullString( lsd != null ? lsd.getDesc() : null ) );
+        syntaxDescText.setText( getNonNullString( lsd != null ? lsd.getDesc() : null ) );
         lengthText.setText( getNonNullString( lsdLength ) );
         syntaxSection.layout();
 
+        // set matching rules content
         String emrOid = null;
         MatchingRuleDescription emr = null;
         if ( atd != null )
@@ -384,45 +427,53 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         orderingLink.setHref( omr );
         orderingLink.setUnderlined( omr != null );
         orderingLink.setEnabled( omr != null );
-        matchSection.layout();
+        matchingRulesSection.layout();
 
-        this.createOtherMatchContent( atd );
-        this.createMustContent( atd );
-        this.createMayContent( atd );
-        this.createSuperContent( atd );
-        this.createSubContent( atd );
-
-        super.createRawContents( atd );
+        // create contents of dynamic sections
+        createOtherMatchContent( atd );
+        createUsedAsMustContent( atd );
+        createUsedAsMayContent( atd );
+        createSupertypeContent( atd );
+        createSubtypesContent( atd );
+        createRawContents( atd );
 
         detailForm.reflow( true );
     }
 
 
+    /**
+     * Creates the content of the main section. It is newly created
+     * on every input change to ensure a proper layout of 
+     * multilined descriptions. 
+     *
+     * @param atd the attribute type description
+     */
     private void createMainContent( AttributeTypeDescription atd )
     {
-
+        // dispose old content
         if ( mainSection.getClient() != null )
         {
             mainSection.getClient().dispose();
         }
 
+        // create new client
         Composite mainClient = toolkit.createComposite( mainSection, SWT.WRAP );
         GridLayout mainLayout = new GridLayout( 2, false );
         mainClient.setLayout( mainLayout );
         mainSection.setClient( mainClient );
 
+        // create new content
         if ( atd != null )
         {
-
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
             numericOidText = toolkit.createText( mainClient, getNonNullString( atd.getNumericOID() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Attribute names:", SWT.NONE );
-            nameText = toolkit.createText( mainClient, getNonNullString( atd.toString() ), SWT.NONE );
-            nameText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-            nameText.setEditable( false );
+            namesText = toolkit.createText( mainClient, getNonNullString( atd.toString() ), SWT.NONE );
+            namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+            namesText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.WRAP );
             descText = toolkit.createText( mainClient, getNonNullString( atd.getDesc() ), SWT.WRAP | SWT.MULTI );
@@ -442,18 +493,28 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
     }
 
 
+    /**
+     * Creates the content of the other matching rules section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param atd the attribute type description
+     */
     private void createOtherMatchContent( AttributeTypeDescription atd )
     {
-
+        // dispose old content
         if ( otherMatchSection.getClient() != null )
         {
             otherMatchSection.getClient().dispose();
         }
 
+        // create new client
         Composite otherMatchClient = toolkit.createComposite( otherMatchSection, SWT.WRAP );
         otherMatchClient.setLayout( new GridLayout() );
         otherMatchSection.setClient( otherMatchClient );
 
+        // create new content, either links to other matching rules 
+        // or a dash if no other matching rules exist.
         if ( atd != null )
         {
             String[] names = atd.getOtherMatchingRuleDescriptionNames();
@@ -471,13 +532,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                         otherMatchLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         otherMatchLinks[i].setUnderlined( true );
                         otherMatchLinks[i].setEnabled( true );
-                        otherMatchLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                        {
-                            public void linkActivated( HyperlinkEvent e )
-                            {
-                                SchemaBrowser.select( e.getHref() );
-                            }
-                        } );
+                        otherMatchLinks[i].addHyperlinkListener( this );
                     }
                     else
                     {
@@ -503,28 +558,37 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
 
         otherMatchSection.layout();
-
     }
 
 
-    private void createSuperContent( AttributeTypeDescription atd )
+    /**
+     * Creates the content of the supertype section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param atd the attribute type description
+     */
+    private void createSupertypeContent( AttributeTypeDescription atd )
     {
-
-        if ( superSection.getClient() != null )
+        // dispose old content
+        if ( supertypeSection.getClient() != null )
         {
-            superSection.getClient().dispose();
+            supertypeSection.getClient().dispose();
         }
 
-        Composite superClient = toolkit.createComposite( superSection, SWT.WRAP );
+        // create new client
+        Composite superClient = toolkit.createComposite( supertypeSection, SWT.WRAP );
         superClient.setLayout( new GridLayout() );
-        superSection.setClient( superClient );
+        supertypeSection.setClient( superClient );
 
+        // create new content, either a link to the superior attribute type
+        // or a dash if no supertype exists.
         if ( atd != null )
         {
             String superName = atd.getSuperiorAttributeTypeDescriptionName();
             if ( superName != null )
             {
-                superSection.setText( "Supertype (" + "1" + ")" );
+                supertypeSection.setText( "Supertype (" + "1" + ")" );
                 if ( atd.getSchema().hasAttributeTypeDescription( superName ) )
                 {
                     AttributeTypeDescription supAtd = atd.getSchema().getAttributeTypeDescription( superName );
@@ -533,13 +597,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                     superLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     superLink.setUnderlined( true );
                     superLink.setEnabled( true );
-                    superLink.addHyperlinkListener( new HyperlinkAdapter()
-                    {
-                        public void linkActivated( HyperlinkEvent e )
-                        {
-                            SchemaBrowser.select( e.getHref() );
-                        }
-                    } );
+                    superLink.addHyperlinkListener( this );
                 }
                 else
                 {
@@ -551,7 +609,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                superSection.setText( "Supertype (0)" );
+                supertypeSection.setText( "Supertype (0)" );
                 superLink = null;
                 Text supText = toolkit.createText( superClient, getNonNullString( null ), SWT.NONE );
                 supText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -560,32 +618,40 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            superSection.setText( "Supertype" );
+            supertypeSection.setText( "Supertype" );
         }
 
-        superSection.layout();
-
+        supertypeSection.layout();
     }
 
 
-    private void createSubContent( AttributeTypeDescription atd )
+    /**
+     * Creates the content of the subtypes. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param atd the attribute type description
+     */
+    private void createSubtypesContent( AttributeTypeDescription atd )
     {
-
-        if ( subSection.getClient() != null )
+        // dispose old content
+        if ( subtypesSection.getClient() != null )
         {
-            subSection.getClient().dispose();
+            subtypesSection.getClient().dispose();
         }
 
-        Composite subClient = toolkit.createComposite( subSection, SWT.WRAP );
+        // create new client
+        Composite subClient = toolkit.createComposite( subtypesSection, SWT.WRAP );
         subClient.setLayout( new GridLayout() );
-        subSection.setClient( subClient );
+        subtypesSection.setClient( subClient );
 
+        // create new content, either links to subtypes or a dash if no subtypes exist.
         if ( atd != null )
         {
             AttributeTypeDescription[] subATDs = atd.getDerivedAttributeTypeDescriptions();
             if ( subATDs != null && subATDs.length > 0 )
             {
-                subSection.setText( "Subtypes (" + subATDs.length + ")" );
+                subtypesSection.setText( "Subtypes (" + subATDs.length + ")" );
                 subAttributeTypeLinks = new Hyperlink[subATDs.length];
                 for ( int i = 0; i < subATDs.length; i++ )
                 {
@@ -594,18 +660,12 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                     subAttributeTypeLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     subAttributeTypeLinks[i].setUnderlined( true );
                     subAttributeTypeLinks[i].setEnabled( true );
-                    subAttributeTypeLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                    {
-                        public void linkActivated( HyperlinkEvent e )
-                        {
-                            SchemaBrowser.select( e.getHref() );
-                        }
-                    } );
+                    subAttributeTypeLinks[i].addHyperlinkListener( this );
                 }
             }
             else
             {
-                subSection.setText( "Subtypes (0)" );
+                subtypesSection.setText( "Subtypes (0)" );
                 subAttributeTypeLinks = new Hyperlink[0];
                 Text subText = toolkit.createText( subClient, getNonNullString( null ), SWT.NONE );
                 subText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -614,32 +674,41 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            subSection.setText( "Subtypes" );
+            subtypesSection.setText( "Subtypes" );
         }
 
-        subSection.layout();
+        subtypesSection.layout();
 
     }
 
 
-    private void createMustContent( AttributeTypeDescription atd )
+    /**
+     * Creates the content of the used as must section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param atd the attribute type description
+     */
+    private void createUsedAsMustContent( AttributeTypeDescription atd )
     {
-
-        if ( mustSection.getClient() != null )
+        // dispose old content
+        if ( usedAsMustSection.getClient() != null )
         {
-            mustSection.getClient().dispose();
+            usedAsMustSection.getClient().dispose();
         }
 
-        Composite mustClient = toolkit.createComposite( mustSection, SWT.WRAP );
+        // create new client
+        Composite mustClient = toolkit.createComposite( usedAsMustSection, SWT.WRAP );
         mustClient.setLayout( new GridLayout() );
-        mustSection.setClient( mustClient );
+        usedAsMustSection.setClient( mustClient );
 
+        // create new content, either links to objectclasses or a dash
         if ( atd != null )
         {
             ObjectClassDescription[] usedAsMusts = atd.getUsedAsMust();
             if ( usedAsMusts != null && usedAsMusts.length > 0 )
             {
-                mustSection.setText( "Used as MUST (" + usedAsMusts.length + ")" );
+                usedAsMustSection.setText( "Used as MUST (" + usedAsMusts.length + ")" );
                 usedAsMustLinks = new Hyperlink[usedAsMusts.length];
                 for ( int i = 0; i < usedAsMusts.length; i++ )
                 {
@@ -648,18 +717,12 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                     usedAsMustLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     usedAsMustLinks[i].setUnderlined( true );
                     usedAsMustLinks[i].setEnabled( true );
-                    usedAsMustLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                    {
-                        public void linkActivated( HyperlinkEvent e )
-                        {
-                            SchemaBrowser.select( e.getHref() );
-                        }
-                    } );
+                    usedAsMustLinks[i].addHyperlinkListener( this );
                 }
             }
             else
             {
-                mustSection.setText( "Used as MUST (0)" );
+                usedAsMustSection.setText( "Used as MUST (0)" );
                 usedAsMustLinks = new Hyperlink[0];
                 Text mustText = toolkit.createText( mustClient, getNonNullString( null ), SWT.NONE );
                 mustText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -668,32 +731,41 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            mustSection.setText( "Used as MUST" );
+            usedAsMustSection.setText( "Used as MUST" );
         }
 
-        mustSection.layout();
+        usedAsMustSection.layout();
 
     }
 
 
-    private void createMayContent( AttributeTypeDescription atd )
+    /**
+     * Creates the content of the used as may section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param atd the attribute type description
+     */
+    private void createUsedAsMayContent( AttributeTypeDescription atd )
     {
-
-        if ( maySection.getClient() != null )
+        // dispose old content
+        if ( usedAsMaySection.getClient() != null )
         {
-            maySection.getClient().dispose();
+            usedAsMaySection.getClient().dispose();
         }
 
-        Composite mayClient = toolkit.createComposite( maySection, SWT.WRAP );
+        // create new client
+        Composite mayClient = toolkit.createComposite( usedAsMaySection, SWT.WRAP );
         mayClient.setLayout( new GridLayout() );
-        maySection.setClient( mayClient );
+        usedAsMaySection.setClient( mayClient );
 
+        // create new content, either links to objectclasses or a dash
         if ( atd != null )
         {
             ObjectClassDescription[] usedAsMays = atd.getUsedAsMay();
             if ( usedAsMays != null && usedAsMays.length > 0 )
             {
-                maySection.setText( "Used as MAY (" + usedAsMays.length + ")" );
+                usedAsMaySection.setText( "Used as MAY (" + usedAsMays.length + ")" );
                 usedAsMayLinks = new Hyperlink[usedAsMays.length];
                 for ( int i = 0; i < usedAsMays.length; i++ )
                 {
@@ -702,18 +774,12 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                     usedAsMayLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     usedAsMayLinks[i].setUnderlined( true );
                     usedAsMayLinks[i].setEnabled( true );
-                    usedAsMayLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                    {
-                        public void linkActivated( HyperlinkEvent e )
-                        {
-                            SchemaBrowser.select( e.getHref() );
-                        }
-                    } );
+                    usedAsMayLinks[i].addHyperlinkListener( this );
                 }
             }
             else
             {
-                maySection.setText( "Used as MAY (0)" );
+                usedAsMaySection.setText( "Used as MAY (0)" );
                 usedAsMayLinks = new Hyperlink[0];
                 Text mayText = toolkit.createText( mayClient, getNonNullString( null ), SWT.NONE );
                 mayText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -722,10 +788,10 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            maySection.setText( "Used as MAY" );
+            usedAsMaySection.setText( "Used as MAY" );
         }
 
-        maySection.layout();
+        usedAsMaySection.layout();
     }
 
 }

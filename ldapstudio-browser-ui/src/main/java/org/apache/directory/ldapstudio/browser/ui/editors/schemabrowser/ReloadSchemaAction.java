@@ -25,48 +25,68 @@ import org.apache.directory.ldapstudio.browser.core.jobs.ReloadSchemasJob;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.action.Action;
 
 
+/**
+ * This action reloads the schema.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ReloadSchemaAction extends Action
 {
 
-    private SchemaBrowser schemaBrowser;
+    /** The schema page */
+    private SchemaPage schemaPage;
 
 
-    public ReloadSchemaAction( SchemaBrowser schemaBrowserView )
+    /**
+     * Creates a new instance of ReloadSchemaAction.
+     *
+     * @param schemaPage the schema page
+     */
+    public ReloadSchemaAction( SchemaPage schemaPage )
     {
         super( "Reload Schema" );
         super.setToolTipText( "Reload Schema" );
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_REFRESH ) );
         super.setEnabled( true );
 
-        this.schemaBrowser = schemaBrowserView;
+        this.schemaPage = schemaPage;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-        final IConnection connection = schemaBrowser.getSelectedConnection();
+        final IConnection connection = schemaPage.getConnection();
         if ( connection != null )
         {
             new ReloadSchemasJob( new IConnection[]
                 { connection } ).execute();
-            this.schemaBrowser.refresh();
+            schemaPage.getSchemaBrowser().refresh();
         }
     }
 
 
+    /**
+     * Disposes this action.
+     */
     public void dispose()
     {
-        this.schemaBrowser = null;
+        schemaPage = null;
     }
 
 
+    /**
+     * Updates the enabled state.
+     */
     public void updateEnabledState()
     {
-        this.setEnabled( schemaBrowser.getSelectedConnection() != null && !schemaBrowser.isShowDefaultSchema() );
+        setEnabled( schemaPage.getConnection() != null && !schemaPage.isShowDefaultSchema() );
     }
 
 }

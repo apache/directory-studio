@@ -27,9 +27,9 @@ import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescr
 import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleUseDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaPart;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -39,257 +39,316 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.INavigationLocation;
+import org.eclipse.ui.INavigationLocationProvider;
+import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 
-public class SchemaBrowser extends EditorPart
+/**
+ * The schema browser editor part.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class SchemaBrowser extends EditorPart implements INavigationLocationProvider, IReusableEditor
 {
 
+    /** The tab folder with all the schema element tabs */
     private CTabFolder tabFolder;
 
+    /** The object class tab */
     private CTabItem ocdTab;
 
+    /** The object class page */
     private ObjectClassDescriptionPage ocdPage;
 
+    /** The attribute type tab */
     private CTabItem atdTab;
 
+    /** The attribute type page */
     private AttributeTypeDescriptionPage atdPage;
 
+    /** The matching rule tab */
     private CTabItem mrdTab;
 
+    /** The matching rule page */
     private MatchingRuleDescriptionPage mrdPage;
 
+    /** The matching rule use tab */
     private CTabItem mrudTab;
 
+    /** The matching rule use page */
     private MatchingRuleUseDescriptionPage mrudPage;
 
+    /** The syntax tab */
     private CTabItem lsdTab;
 
+    /** The syntax page */
     private LdapSyntaxDescriptionPage lsdPage;
 
-    private HistoryManager historyManager;
 
-    private BackAction backAction;
-
-    private ForwardAction forwardAction;
-
-    private ShowDefaultSchemaAction showDefaultSchemaAction;
-
-    private ReloadSchemaAction reloadSchemaAction;
-
-
+    /**
+     * Gets the ID of the schema browser.
+     *
+     * @return the ID of the schema browser
+     */
     public static String getId()
     {
         return SchemaBrowser.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
-        setInput( SchemaBrowserInput.getInstance() );
-        super.setSite( site );
+        setSite( site );
+
+        // mark dummy location, necessary because the first marked
+        // location doesn't appear in history
+        setInput( new SchemaBrowserInput( null, null ) );
+        getSite().getPage().getNavigationHistory().markLocation( this );
+
+        // set real input
+        setInput( input );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        this.reloadSchemaAction.dispose();
-        this.showDefaultSchemaAction.dispose();
-        this.ocdPage.dispose();
-        this.atdPage.dispose();
-        this.mrdPage.dispose();
-        this.mrudPage.dispose();
-        this.lsdPage.dispose();
-        this.tabFolder.dispose();
+        ocdPage.dispose();
+        atdPage.dispose();
+        mrdPage.dispose();
+        mrudPage.dispose();
+        lsdPage.dispose();
+        tabFolder.dispose();
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createPartControl( Composite parent )
     {
+        tabFolder = new CTabFolder( parent, SWT.BOTTOM );
 
-        this.historyManager = new HistoryManager( this );
-        this.backAction = new BackAction( this.historyManager );
-        this.forwardAction = new ForwardAction( this.historyManager );
-        this.showDefaultSchemaAction = new ShowDefaultSchemaAction( this );
-        this.reloadSchemaAction = new ReloadSchemaAction( this );
+        ocdTab = new CTabItem( tabFolder, SWT.NONE );
+        ocdTab.setText( "Object Classes" );
+        ocdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD ) );
+        ocdPage = new ObjectClassDescriptionPage( this );
+        Control ocdPageControl = ocdPage.createControl( tabFolder );
+        ocdTab.setControl( ocdPageControl );
 
-        this.tabFolder = new CTabFolder( parent, SWT.BOTTOM );
+        atdTab = new CTabItem( tabFolder, SWT.NONE );
+        atdTab.setText( "Attribute Types" );
+        atdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ATD ) );
+        atdPage = new AttributeTypeDescriptionPage( this );
+        Control atdPageControl = atdPage.createControl( tabFolder );
+        atdTab.setControl( atdPageControl );
 
-        this.ocdTab = new CTabItem( this.tabFolder, SWT.NONE );
-        this.ocdTab.setText( "Object Classes" );
-        this.ocdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD ) );
-        this.ocdPage = new ObjectClassDescriptionPage( this );
-        Control ocdPageControl = this.ocdPage.createControl( this.tabFolder );
-        this.ocdTab.setControl( ocdPageControl );
+        mrdTab = new CTabItem( tabFolder, SWT.NONE );
+        mrdTab.setText( "Matching Rules" );
+        mrdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_MRD ) );
+        mrdPage = new MatchingRuleDescriptionPage( this );
+        Control mrdPageControl = mrdPage.createControl( tabFolder );
+        mrdTab.setControl( mrdPageControl );
 
-        this.atdTab = new CTabItem( this.tabFolder, SWT.NONE );
-        this.atdTab.setText( "Attribute Types" );
-        this.atdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ATD ) );
-        this.atdPage = new AttributeTypeDescriptionPage( this );
-        Control atdPageControl = this.atdPage.createControl( this.tabFolder );
-        this.atdTab.setControl( atdPageControl );
+        mrudTab = new CTabItem( tabFolder, SWT.NONE );
+        mrudTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_MRUD ) );
+        mrudTab.setText( "Matching Rule Use" );
+        mrudPage = new MatchingRuleUseDescriptionPage( this );
+        Control mrudPageControl = mrudPage.createControl( tabFolder );
+        mrudTab.setControl( mrudPageControl );
 
-        this.mrdTab = new CTabItem( this.tabFolder, SWT.NONE );
-        this.mrdTab.setText( "Matching Rules" );
-        this.mrdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_MRD ) );
-        this.mrdPage = new MatchingRuleDescriptionPage( this );
-        Control mrdPageControl = this.mrdPage.createControl( this.tabFolder );
-        this.mrdTab.setControl( mrdPageControl );
+        lsdTab = new CTabItem( tabFolder, SWT.NONE );
+        lsdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LSD ) );
+        lsdTab.setText( "Syntaxes" );
+        lsdPage = new LdapSyntaxDescriptionPage( this );
+        Control lsdPageControl = lsdPage.createControl( tabFolder );
+        lsdTab.setControl( lsdPageControl );
 
-        this.mrudTab = new CTabItem( this.tabFolder, SWT.NONE );
-        this.mrudTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_MRUD ) );
-        this.mrudTab.setText( "Matching Rule Use" );
-        this.mrudPage = new MatchingRuleUseDescriptionPage( this );
-        Control mrudPageControl = this.mrudPage.createControl( this.tabFolder );
-        this.mrudTab.setControl( mrudPageControl );
+        // set default selection
+        tabFolder.setSelection( ocdTab );
 
-        this.lsdTab = new CTabItem( this.tabFolder, SWT.NONE );
-        this.lsdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LSD ) );
-        this.lsdTab.setText( "Syntaxes" );
-        this.lsdPage = new LdapSyntaxDescriptionPage( this );
-        Control lsdPageControl = this.lsdPage.createControl( this.tabFolder );
-        this.lsdTab.setControl( lsdPageControl );
-
-        this.tabFolder.setSelection( this.ocdTab );
-
+        // init help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_schema_browser" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( tabFolder,
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_schema_browser" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( ocdPageControl,
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_schema_browser" );
-
     }
 
 
-    public static void select( Object obj )
+    /**
+     * {@inheritDoc}
+     */
+    public void setInput( IEditorInput input )
     {
+        super.setInput( input );
 
-        String targetId = SchemaBrowser.getId();
-        IEditorPart target = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findEditor(
-            SchemaBrowserInput.getInstance() );
-        if ( target == null )
+        if ( input instanceof SchemaBrowserInput && tabFolder != null )
         {
-            try
+            SchemaBrowserInput sbi = ( SchemaBrowserInput ) input;
+
+            // set connection;
+            IConnection connection = sbi.getConnection();
+            setConnection( connection );
+
+            // set schema element and activate tab
+            SchemaPart schemaElement = sbi.getSchemaElement();
+            if ( schemaElement instanceof ObjectClassDescription )
             {
-                target = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
-                    SchemaBrowserInput.getInstance(), targetId, true );
+                ocdPage.select( schemaElement );
+                tabFolder.setSelection( ocdTab );
             }
-            catch ( PartInitException e )
+            else if ( schemaElement instanceof AttributeTypeDescription )
             {
+                atdPage.select( schemaElement );
+                tabFolder.setSelection( atdTab );
             }
+            else if ( schemaElement instanceof MatchingRuleDescription )
+            {
+                mrdPage.select( schemaElement );
+                tabFolder.setSelection( mrdTab );
+            }
+            else if ( schemaElement instanceof MatchingRuleUseDescription )
+            {
+                mrudPage.select( schemaElement );
+                tabFolder.setSelection( mrudTab );
+            }
+            else if ( schemaElement instanceof LdapSyntaxDescription )
+            {
+                lsdPage.select( schemaElement );
+                tabFolder.setSelection( lsdTab );
+            }
+
+            if ( connection != null && schemaElement != null )
+            {
+                // enable one instance hack before fireing the input change event 
+                // otherwise the navigation history is cleared.
+                SchemaBrowserInput.enableOneInstanceHack( true );
+                firePropertyChange( IEditorPart.PROP_INPUT );
+
+                // disable one instance hack for marking the location
+                SchemaBrowserInput.enableOneInstanceHack( false );
+                getSite().getPage().getNavigationHistory().markLocation( this );
+            }
+
+            // finally enable the one instance hack 
+            SchemaBrowserInput.enableOneInstanceHack( true );
         }
-        if ( target != null && target instanceof SchemaBrowser )
-        {
-            // target.getSite().getPage().activate(target);
-            target.getSite().getPage().bringToTop( target );
-
-            SchemaBrowser schemaBrowser = ( ( SchemaBrowser ) target );
-            if ( obj instanceof ObjectClassDescription )
-            {
-                schemaBrowser.ocdPage.select( obj );
-                schemaBrowser.tabFolder.setSelection( schemaBrowser.ocdTab );
-            }
-            else if ( obj instanceof AttributeTypeDescription )
-            {
-                schemaBrowser.atdPage.select( obj );
-                schemaBrowser.tabFolder.setSelection( schemaBrowser.atdTab );
-            }
-            else if ( obj instanceof MatchingRuleDescription )
-            {
-                schemaBrowser.mrdPage.select( obj );
-                schemaBrowser.tabFolder.setSelection( schemaBrowser.mrdTab );
-            }
-            else if ( obj instanceof MatchingRuleUseDescription )
-            {
-                schemaBrowser.mrudPage.select( obj );
-                schemaBrowser.tabFolder.setSelection( schemaBrowser.mrudTab );
-            }
-            else if ( obj instanceof LdapSyntaxDescription )
-            {
-                schemaBrowser.lsdPage.select( obj );
-                schemaBrowser.tabFolder.setSelection( schemaBrowser.lsdTab );
-            }
-        }
-
     }
 
 
-    public BackAction getBackAction()
-    {
-        return this.backAction;
-    }
-
-
-    public ForwardAction getForwardAction()
-    {
-        return this.forwardAction;
-    }
-
-
-    public ReloadSchemaAction getReloadSchemaAction()
-    {
-        return reloadSchemaAction;
-    }
-
-
-    public ShowDefaultSchemaAction getShowDefaultSchemaAction()
-    {
-        return showDefaultSchemaAction;
-    }
-
-
+    /**
+     * Refreshes all pages.
+     */
     public void refresh()
     {
-        this.ocdPage.refresh();
-        this.atdPage.refresh();
-        this.mrdPage.refresh();
-        this.mrudPage.refresh();
-        this.lsdPage.refresh();
-
-        this.reloadSchemaAction.updateEnabledState();
+        ocdPage.refresh();
+        atdPage.refresh();
+        mrdPage.refresh();
+        mrudPage.refresh();
+        lsdPage.refresh();
     }
 
 
-    public boolean isShowDefaultSchema()
+    /**
+     * Sets the show defauls schema flag to all pages.
+     *
+     * @param b the default schema flag
+     */
+    public void setShowDefaultSchema( boolean b )
     {
-        return this.showDefaultSchemaAction.isChecked();
+        ocdPage.setShowDefaultSchema( b );
+        atdPage.setShowDefaultSchema( b );
+        mrdPage.setShowDefaultSchema( b );
+        mrudPage.setShowDefaultSchema( b );
+        lsdPage.setShowDefaultSchema( b );
     }
 
 
-    public IConnection getSelectedConnection()
+    /**
+     * Sets the connection.
+     * 
+     * @param connection the connection
+     */
+    public void setConnection( IConnection connection )
     {
-        return this.ocdPage.getSelectedConnection();
+        ocdPage.setConnection( connection );
+        atdPage.setConnection( connection );
+        mrdPage.setConnection( connection );
+        mrudPage.setConnection( connection );
+        lsdPage.setConnection( connection );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setFocus()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSave( IProgressMonitor monitor )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSaveAs()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isDirty()
     {
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSaveAsAllowed()
     {
         return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public INavigationLocation createEmptyNavigationLocation()
+    {
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public INavigationLocation createNavigationLocation()
+    {
+        return new SchemaBrowserNavigationLocation( this );
     }
 
 }

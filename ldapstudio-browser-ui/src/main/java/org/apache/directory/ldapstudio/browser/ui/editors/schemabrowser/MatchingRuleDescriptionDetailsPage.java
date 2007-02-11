@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,52 +32,77 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 
+/**
+ * The MatchingRuleDescriptionDetailsPage displays the details of an
+ * matching rule description.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 {
 
+    /** The main section, contains oid, names and desc */
     private Section mainSection;
 
-    private Section flagSection;
-
-    private Section syntaxSection;
-
-    private Section usedFromSection;
-
+    /** The numeric oid field */
     private Text numericOidText;
 
-    private Text nameText;
+    /** The names field */
+    private Text namesText;
 
+    /** The description field */
     private Text descText;
 
+    /** The flag section, contains obsolete */
+    private Section flagSection;
+
+    /** The obsolete field */
     private Label isObsoleteText;
 
-    private Text syntaxText;
+    /** The syntax section, contains syntax description and a link to the syntax */
+    private Section syntaxSection;
 
+    /** The syntax description field */
+    private Text syntaxDescText;
+
+    /** The link to the syntax */
     private Hyperlink syntaxLink;
 
+    /** The used from section, contains links to attribute types */
+    private Section usedFromSection;
+
+    /** The links to attribute types using the matching rule */
     private Hyperlink[] usedFromLinks;
 
 
-    public MatchingRuleDescriptionDetailsPage( SchemaBrowser schemaBrowser, FormToolkit toolkit )
+    /**
+     * Creates a new instance of MatchingRuleDescriptionDetailsPage.
+     *
+     * @param schemaPage the master schema page
+     * @param toolkit the toolkit used to create controls
+     */
+    public MatchingRuleDescriptionDetailsPage( SchemaPage scheamPage, FormToolkit toolkit )
     {
-        super( schemaBrowser, toolkit );
+        super( scheamPage, toolkit );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createContents( final ScrolledForm detailForm )
     {
-
         this.detailForm = detailForm;
         detailForm.getBody().setLayout( new GridLayout() );
 
+        // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         mainSection.setText( "Details" );
         mainSection.marginWidth = 0;
@@ -86,6 +110,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( mainSection );
 
+        // create flag section
         flagSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         flagSection.setText( "Flags" );
         flagSection.marginWidth = 0;
@@ -93,6 +118,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         flagSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( flagSection );
 
+        // create flag content
         Composite flagClient = toolkit.createComposite( flagSection, SWT.WRAP );
         GridLayout flagLayout = new GridLayout();
         flagLayout.numColumns = 1;
@@ -105,6 +131,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         isObsoleteText.setEnabled( false );
 
+        // create syntax section
         syntaxSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         syntaxSection.setText( "Syntax" );
         syntaxSection.marginWidth = 0;
@@ -112,6 +139,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         syntaxSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( syntaxSection );
 
+        // create syntax content
         Composite syntaxClient = toolkit.createComposite( syntaxSection, SWT.WRAP );
         GridLayout syntaxLayout = new GridLayout();
         syntaxLayout.numColumns = 2;
@@ -123,19 +151,14 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         toolkit.createLabel( syntaxClient, "Syntax OID:", SWT.NONE );
         syntaxLink = toolkit.createHyperlink( syntaxClient, "", SWT.WRAP );
         syntaxLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        syntaxLink.addHyperlinkListener( new HyperlinkAdapter()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                SchemaBrowser.select( e.getHref() );
-            }
-        } );
+        syntaxLink.addHyperlinkListener( this );
 
         toolkit.createLabel( syntaxClient, "Syntax Description:", SWT.NONE );
-        syntaxText = toolkit.createText( syntaxClient, "", SWT.NONE );
-        syntaxText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        syntaxText.setEditable( false );
+        syntaxDescText = toolkit.createText( syntaxClient, "", SWT.NONE );
+        syntaxDescText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        syntaxDescText.setEditable( false );
 
+        // create used from section
         usedFromSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         usedFromSection.setText( "Used from" );
         usedFromSection.marginWidth = 0;
@@ -150,16 +173,29 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        super.createRawSection();
+        // create raw section
+        createRawSection();
     }
 
 
-    public void matchingRuleDescriptionSelected( MatchingRuleDescription mrd )
+    /**
+     * {@inheritDoc}
+     */
+    public void setInput( Object input )
     {
-        this.createMainContent( mrd );
+        MatchingRuleDescription mrd = null;
+        if ( input instanceof MatchingRuleDescription )
+        {
+            mrd = ( MatchingRuleDescription ) input;
+        }
 
+        // create main content
+        createMainContent( mrd );
+
+        // set flag
         isObsoleteText.setEnabled( mrd != null && mrd.isObsolete() );
 
+        // set syntax content
         String lsdOid = null;
         LdapSyntaxDescription lsd = null;
         if ( mrd != null )
@@ -174,43 +210,39 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
         syntaxLink.setEnabled( lsd != null );
-        syntaxText.setText( getNonNullString( lsd != null ? lsd.getDesc() : null ) );
+        syntaxDescText.setText( getNonNullString( lsd != null ? lsd.getDesc() : null ) );
         syntaxSection.layout();
 
-        this.createUsedFromContents( mrd );
+        // create contents of dynamic sections
+        createUsedFromContents( mrd );
+        createRawContents( mrd );
 
-        super.createRawContents( mrd );
-
-        this.usedFromSection.redraw();
-        this.usedFromSection.update();
-        this.usedFromSection.layout();
-        this.detailForm.reflow( true );
+        detailForm.reflow( true );
     }
 
 
+    /**
+     * Creates the content of the main section. It is newly created
+     * on every input change to ensure a proper layout of 
+     * multilined descriptions. 
+     *
+     * @param mrd the matching rule description
+     */
     private void createMainContent( MatchingRuleDescription mrd )
     {
-
-        int labelWidth = 100;
-
+        // dispose old content
         if ( mainSection.getClient() != null )
         {
-            if ( mainSection.getClient() instanceof Composite )
-            {
-                Composite client = ( Composite ) mainSection.getClient();
-                if ( client.getChildren() != null && client.getChildren().length > 0 )
-                {
-                    labelWidth = client.getChildren()[0].getSize().x;
-                }
-            }
             mainSection.getClient().dispose();
         }
 
+        // create new client
         Composite mainClient = toolkit.createComposite( mainSection, SWT.WRAP );
         GridLayout mainLayout = new GridLayout( 2, false );
         mainClient.setLayout( mainLayout );
         mainSection.setClient( mainClient );
 
+        // create new content
         if ( mrd != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
@@ -219,14 +251,14 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
             numericOidText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Matching rule names:", SWT.NONE );
-            nameText = toolkit.createText( mainClient, getNonNullString( mrd.toString() ), SWT.NONE );
-            nameText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-            nameText.setEditable( false );
+            namesText = toolkit.createText( mainClient, getNonNullString( mrd.toString() ), SWT.NONE );
+            namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+            namesText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
             descText = toolkit.createText( mainClient, getNonNullString( mrd.getDesc() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-            gd.widthHint = detailForm.getForm().getSize().x - labelWidth - 60;
+            gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
             descText.setEditable( false );
         }
@@ -235,18 +267,27 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
     }
 
 
+    /**
+     * Creates the content of the used from section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param mrd the matching rule description
+     */
     private void createUsedFromContents( MatchingRuleDescription mrd )
     {
-
+        // dispose old content
         if ( usedFromSection.getClient() != null )
         {
             usedFromSection.getClient().dispose();
         }
 
+        // create new client
         Composite usedFromClient = toolkit.createComposite( usedFromSection, SWT.WRAP );
         usedFromClient.setLayout( new GridLayout() );
         usedFromSection.setClient( usedFromClient );
 
+        // create new content
         if ( mrd != null )
         {
             AttributeTypeDescription[] usedFromATDs = mrd.getUsedFromAttributeTypeDescriptions();
@@ -261,13 +302,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
                     usedFromLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     usedFromLinks[i].setUnderlined( true );
                     usedFromLinks[i].setEnabled( true );
-                    usedFromLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                    {
-                        public void linkActivated( HyperlinkEvent e )
-                        {
-                            SchemaBrowser.select( e.getHref() );
-                        }
-                    } );
+                    usedFromLinks[i].addHyperlinkListener( this );
                 }
             }
             else

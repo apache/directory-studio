@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,40 +30,60 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 
+/**
+ * The LdapSyntaxDescriptionDetailsPage displays the details of an
+ * syntax description.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
 {
 
+    /** The main section, contains oid and desc */
     private Section mainSection;
 
-    private Section usedFromSection;
-
+    /** The numeric oid field */
     private Text numericOidText;
 
+    /** The description field */
     private Text descText;
 
+    /** The used from section, contains links to attribute types */
+    private Section usedFromSection;
+
+    /** The links to attributes using the syntax */
     private Hyperlink[] usedFromLinks;
 
 
-    public LdapSyntaxDescriptionDetailsPage( SchemaBrowser schemaBrowser, FormToolkit toolkit )
+    /**
+     * Creates a new instance of LdapSyntaxDescriptionDetailsPage.
+     *
+     * @param schemaPage the master schema page
+     * @param toolkit the toolkit used to create controls
+     */
+    public LdapSyntaxDescriptionDetailsPage( SchemaPage schemaPage, FormToolkit toolkit )
     {
-        super( schemaBrowser, toolkit );
+        super( schemaPage, toolkit );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createContents( final ScrolledForm detailForm )
     {
 
         this.detailForm = detailForm;
         detailForm.getBody().setLayout( new GridLayout() );
 
+        // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         mainSection.setText( "Details" );
         mainSection.marginWidth = 0;
@@ -72,6 +91,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( mainSection );
 
+        // create used from section
         usedFromSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         usedFromSection.setText( "Used from" );
         usedFromSection.marginWidth = 0;
@@ -86,46 +106,52 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        super.createRawSection();
+        // create raw aection
+        createRawSection();
     }
 
 
-    public void ldapSyntacDescriptionSelected( LdapSyntaxDescription lsd )
+    /**
+     * {@inheritDoc}
+     */
+    public void setInput( Object input )
     {
-        if ( this.detailForm != null && !this.detailForm.isDisposed() )
+        LdapSyntaxDescription lsd = null;
+        if ( input instanceof LdapSyntaxDescription )
         {
-            this.createMainContent( lsd );
-            this.createUsedFromContents( lsd );
-            super.createRawContents( lsd );
-
-            this.detailForm.reflow( true );
+            lsd = ( LdapSyntaxDescription ) input;
         }
+
+        createMainContent( lsd );
+        createUsedFromContents( lsd );
+        createRawContents( lsd );
+
+        detailForm.reflow( true );
     }
 
 
+    /**
+     * Creates the content of the main section. It is newly created
+     * on every input change to ensure a proper layout of 
+     * multilined descriptions. 
+     *
+     * @param lsd the syntax description
+     */
     private void createMainContent( LdapSyntaxDescription lsd )
     {
-
-        int labelWidth = 100;
-
+        // dispose old content
         if ( mainSection.getClient() != null )
         {
-            if ( mainSection.getClient() instanceof Composite )
-            {
-                Composite client = ( Composite ) mainSection.getClient();
-                if ( client.getChildren() != null && client.getChildren().length > 0 )
-                {
-                    labelWidth = client.getChildren()[0].getSize().x;
-                }
-            }
             mainSection.getClient().dispose();
         }
 
+        // create new client
         Composite mainClient = toolkit.createComposite( mainSection, SWT.WRAP );
         GridLayout mainLayout = new GridLayout( 2, false );
         mainClient.setLayout( mainLayout );
         mainSection.setClient( mainClient );
 
+        // create new content
         if ( lsd != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
@@ -136,27 +162,36 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
             descText = toolkit.createText( mainClient, getNonNullString( lsd.getDesc() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-            gd.widthHint = detailForm.getForm().getSize().x - labelWidth - 60;
+            gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
             descText.setEditable( false );
         }
 
         mainSection.layout();
-
     }
 
 
+    /**
+     * Creates the content of the used from section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param lsd the syntax description
+     */
     private void createUsedFromContents( LdapSyntaxDescription lsd )
     {
+        // dispose old content
         if ( usedFromSection.getClient() != null && !usedFromSection.getClient().isDisposed() )
         {
             usedFromSection.getClient().dispose();
         }
 
+        // create new client
         Composite usedFromClient = toolkit.createComposite( usedFromSection, SWT.WRAP );
         usedFromClient.setLayout( new GridLayout() );
         usedFromSection.setClient( usedFromClient );
 
+        // create content
         if ( lsd != null )
         {
             AttributeTypeDescription[] usedFromATDs = lsd.getUsedFromAttributeTypeDescription();
@@ -171,13 +206,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
                     usedFromLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     usedFromLinks[i].setUnderlined( true );
                     usedFromLinks[i].setEnabled( true );
-                    usedFromLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                    {
-                        public void linkActivated( HyperlinkEvent e )
-                        {
-                            SchemaBrowser.select( e.getHref() );
-                        }
-                    } );
+                    usedFromLinks[i].addHyperlinkListener( this );
                 }
             }
             else
@@ -195,7 +224,6 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         }
 
         usedFromSection.layout();
-
     }
 
 }

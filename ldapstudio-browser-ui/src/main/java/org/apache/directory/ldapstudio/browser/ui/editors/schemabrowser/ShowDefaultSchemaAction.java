@@ -26,13 +26,24 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.action.Action;
 
 
+/**
+ * This action toggles between connection specific schemas and the default schema.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ShowDefaultSchemaAction extends Action
 {
-
+    /** The schema browser */
     private SchemaBrowser schemaBrowser;
 
 
-    public ShowDefaultSchemaAction( SchemaBrowser schemaBrowserView )
+    /**
+     * Creates a new instance of ShowDefaultSchemaAction.
+     *
+     * @param schemaBrowser the schema browser
+     */
+    public ShowDefaultSchemaAction( SchemaBrowser schemaBrowser )
     {
         super( "Show Default Schema", Action.AS_CHECK_BOX );
         super.setToolTipText( "Show Default Schema" );
@@ -40,16 +51,22 @@ public class ShowDefaultSchemaAction extends Action
             BrowserUIConstants.IMG_DEFAULT_SCHEMA ) );
         super.setEnabled( true );
 
-        this.schemaBrowser = schemaBrowserView;
+        this.schemaBrowser = schemaBrowser;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-        this.schemaBrowser.refresh();
+        this.schemaBrowser.setShowDefaultSchema( isChecked() );
     }
 
 
+    /**
+     * Disposes this action.
+     */
     public void dispose()
     {
         this.schemaBrowser = null;

@@ -21,15 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.SchemaElementSelectionListener;
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleUseDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaPart;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -37,68 +29,109 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 
-public abstract class SchemaDetailsPage implements SchemaElementSelectionListener
+/**
+ * A base implementation used from all schema detail pages.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public abstract class SchemaDetailsPage implements IHyperlinkListener
 {
 
+    /** The raw section, displays the schema attibute value */
     protected Section rawSection;
 
+    /** The text with the schema attribute value */
     protected Text rawText;
 
+    /** The toolkit used to create controls */
     protected FormToolkit toolkit;
 
-    protected SchemaBrowser schemaBrowser;
+    /** The master schema page */
+    protected SchemaPage schemaPage;
 
+    /** The detail page form */
     protected ScrolledForm detailForm;
 
 
-    protected SchemaDetailsPage( SchemaBrowser schemaBrowser, FormToolkit toolkit )
+    /**
+     * Creates a new instance of SchemaDetailsPage.
+     *
+     * @param schemaPage the master schema page
+     * @param toolkit the toolkit used to create controls
+     */
+    protected SchemaDetailsPage( SchemaPage schemaPage, FormToolkit toolkit )
     {
-        this.schemaBrowser = schemaBrowser;
+        this.schemaPage = schemaPage;
         this.toolkit = toolkit;
-        EventRegistry.addSchemaElementSelectionListener( this );
     }
 
 
+    /**
+     * Disposes this details page.
+     */
     public void dispose()
     {
-        EventRegistry.removeSchemaElementSelectionListener( this );
     }
 
 
-    public void attributeTypeDescriptionSelected( AttributeTypeDescription atd )
+    /**
+     * {@inheritDoc}
+     */
+    public void linkActivated( HyperlinkEvent e )
+    {
+        Object obj = e.getHref();
+        if ( obj instanceof SchemaPart )
+        {
+            schemaPage.getSchemaBrowser().setInput(
+                new SchemaBrowserInput( schemaPage.getConnection(), ( SchemaPart ) obj ) );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void linkEntered( HyperlinkEvent e )
     {
     }
 
 
-    public void objectClassDescriptionSelected( ObjectClassDescription ocd )
+    /**
+     * {@inheritDoc}
+     */
+    public void linkExited( HyperlinkEvent e )
     {
     }
 
 
-    public void matchingRuleDescriptionSelected( MatchingRuleDescription mrd )
-    {
-    }
+    /**
+     * Sets the input of this details page.
+     *
+     * @param input the input
+     */
+    public abstract void setInput( Object input );
 
 
-    public void ldapSyntacDescriptionSelected( LdapSyntaxDescription lsd )
-    {
-    }
+    /**
+     * Creates the contents of the details page.
+     *
+     * @param detailForm the parent
+     */
+    protected abstract void createContents( final ScrolledForm detailForm );
 
 
-    public void matchingRuleUseDescriptionSelected( MatchingRuleUseDescription mrud )
-    {
-    }
-
-
-    public abstract void createContents( final ScrolledForm detailForm );
-
-
-    public void createRawSection()
+    /**
+     * Creates the raw content section.
+     */
+    protected void createRawSection()
     {
         rawSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         rawSection.setText( "Raw Schema Definition" );
@@ -116,7 +149,12 @@ public abstract class SchemaDetailsPage implements SchemaElementSelectionListene
     }
 
 
-    public void createRawContents( SchemaPart schemaPart )
+    /**
+     * Creates the contents of the raw section.
+     *
+     * @param schemaPart the schema part to display
+     */
+    protected void createRawContents( SchemaPart schemaPart )
     {
 
         if ( rawSection.getClient() != null && !rawSection.getClient().isDisposed() )
@@ -145,6 +183,12 @@ public abstract class SchemaDetailsPage implements SchemaElementSelectionListene
     }
 
 
+    /**
+     * Helper method, return a dash "-" if the given string is null. 
+     *
+     * @param s the string
+     * @return the given string or a dash "-" if the given string is null.
+     */
     protected String getNonNullString( String s )
     {
         return s == null ? "-" : s;

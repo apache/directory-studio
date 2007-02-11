@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,56 +30,83 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 
+/**
+ * The ObjectClassDescriptionDetailsPage displays the details of an
+ * object class description.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 {
 
+    /** The main section, contains oid, names, desc and kind */
     private Section mainSection;
 
+    /** The numeric oid field */
     private Text numericOidText;
 
-    private Text nameText;
+    /** The names field */
+    private Text namesText;
 
+    /** The description field */
     private Text descText;
 
+    /** The kind field */
     private Text kindText;
 
+    /** The section with links to superior object classes */
     private Section superclassesSection;
 
+    /** The links to superior object classes */
     private Hyperlink[] superLinks;
 
+    /** The section with links to derived object classes */
     private Section subclassesSection;
 
+    /** The links to derived object classes */
     private Hyperlink[] subLinks;
 
+    /** The section with links to must attribute types */
     private Section mustSection;
 
+    /** The links to must attribute types */
     private Hyperlink[] mustLinks;
 
+    /** The section with links to may attribute types */
     private Section maySection;
 
+    /** The links to may attribute types */
     private Hyperlink[] mayLinks;
 
 
-    public ObjectClassDescriptionDetailsPage( SchemaBrowser schemaBrowser, FormToolkit toolkit )
+    /**
+     * Creates a new instance of ObjectClassDescriptionDetailsPage.
+     *
+     * @param schemaPage the master schema page
+     * @param toolkit the toolkit used to create controls
+     */
+    public ObjectClassDescriptionDetailsPage( SchemaPage schemaPage, FormToolkit toolkit )
     {
-        super( schemaBrowser, toolkit );
+        super( schemaPage, toolkit );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createContents( final ScrolledForm detailForm )
     {
-
         this.detailForm = detailForm;
         detailForm.getBody().setLayout( new GridLayout() );
 
+        // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
         mainSection.setText( "Details" );
         mainSection.marginWidth = 0;
@@ -88,6 +114,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         toolkit.createCompositeSeparator( mainSection );
 
+        // create must section
         mustSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         mustSection.setText( "MUST Attributes" );
         mustSection.marginWidth = 0;
@@ -102,6 +129,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
+        // create may section
         maySection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         maySection.setText( "MAY Attributes" );
         maySection.marginWidth = 0;
@@ -116,6 +144,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
+        // create superior section
         superclassesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         superclassesSection.setText( "Superclasses" );
         superclassesSection.marginWidth = 0;
@@ -130,6 +159,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
+        // create subclasses section
         subclassesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
         subclassesSection.setText( "Subclasses" );
         subclassesSection.marginWidth = 0;
@@ -144,51 +174,58 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        super.createRawSection();
-
+        // create raw section
+        createRawSection();
     }
 
 
-    public void objectClassDescriptionSelected( ObjectClassDescription ocd )
+    /**
+     * {@inheritDoc}
+     */
+    public void setInput( Object input )
     {
+        ObjectClassDescription ocd = null;
+        if ( input instanceof ObjectClassDescription )
+        {
+            ocd = ( ObjectClassDescription ) input;
+        }
+
+        // create main content
         this.createMainContent( ocd );
 
+        // create contents of dynamic sections
         this.createSuperclassContents( ocd );
         this.createSubclassContents( ocd );
-
         this.createMustContents( ocd );
         this.createMayContents( ocd );
-
         super.createRawContents( ocd );
 
         this.detailForm.reflow( true );
-        this.detailForm.redraw();
     }
 
 
+    /**
+     * Creates the content of the main section. It is newly created
+     * on every input change to ensure a proper layout of 
+     * multilined descriptions. 
+     *
+     * @param ocd the object class description
+     */
     private void createMainContent( ObjectClassDescription ocd )
     {
-
-        // int labelWidth = 100;
-
+        // dispose old content
         if ( mainSection.getClient() != null )
         {
-            if ( mainSection.getClient() instanceof Composite )
-            {
-                Composite client = ( Composite ) mainSection.getClient();
-                if ( client.getChildren() != null && client.getChildren().length > 0 )
-                {
-                    // labelWidth = client.getChildren()[0].getSize().x;
-                }
-            }
             mainSection.getClient().dispose();
         }
 
+        // create new client
         Composite mainClient = toolkit.createComposite( mainSection, SWT.WRAP );
         GridLayout mainLayout = new GridLayout( 2, false );
         mainClient.setLayout( mainLayout );
         mainSection.setClient( mainClient );
 
+        // create new content
         if ( ocd != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
@@ -197,9 +234,9 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             numericOidText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Objectclass names:", SWT.NONE );
-            nameText = toolkit.createText( mainClient, getNonNullString( ocd.toString() ), SWT.NONE );
-            nameText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-            nameText.setEditable( false );
+            namesText = toolkit.createText( mainClient, getNonNullString( ocd.toString() ), SWT.NONE );
+            namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+            namesText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
             descText = toolkit.createText( mainClient, getNonNullString( ocd.getDesc() ), SWT.WRAP | SWT.MULTI );
@@ -210,35 +247,52 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
             String kind = "";
             if ( ocd.isStructural() )
+            {
                 kind = "structural";
+            }
             else if ( ocd.isAbstract() )
+            {
                 kind = "abstract";
+            }
             else if ( ocd.isAuxiliary() )
+            {
                 kind = "auxiliary";
+            }
             if ( ocd.isObsolete() )
+            {
                 kind += " (obsolete)";
+            }
             toolkit.createLabel( mainClient, "Objectclass kind:", SWT.NONE );
             kindText = toolkit.createText( mainClient, getNonNullString( kind ), SWT.NONE );
             kindText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             kindText.setEditable( false );
-
         }
 
         mainSection.layout();
     }
 
 
+    /**
+     * Creates the content of the must section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param ocd the object class description
+     */
     private void createMustContents( ObjectClassDescription ocd )
     {
+        // dispose old content
         if ( mustSection.getClient() != null )
         {
             mustSection.getClient().dispose();
         }
 
+        // create new client
         Composite mustClient = toolkit.createComposite( mustSection, SWT.WRAP );
         mustClient.setLayout( new GridLayout() );
         mustSection.setClient( mustClient );
 
+        // create new content
         if ( ocd != null )
         {
             String[] names = ocd.getMustAttributeTypeDescriptionNamesTransitive();
@@ -256,13 +310,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                         mustLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         mustLinks[i].setUnderlined( true );
                         mustLinks[i].setEnabled( true );
-                        mustLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                        {
-                            public void linkActivated( HyperlinkEvent e )
-                            {
-                                SchemaBrowser.select( e.getHref() );
-                            }
-                        } );
+                        mustLinks[i].addHyperlinkListener( this );
                     }
                     else
                     {
@@ -291,17 +339,27 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
     }
 
 
+    /**
+     * Creates the content of the may section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param ocd the object class description
+     */
     private void createMayContents( ObjectClassDescription ocd )
     {
+        // dispose old content
         if ( maySection.getClient() != null )
         {
             maySection.getClient().dispose();
         }
 
+        // create new client
         Composite mayClient = toolkit.createComposite( maySection, SWT.WRAP );
         mayClient.setLayout( new GridLayout() );
         maySection.setClient( mayClient );
 
+        // create new content
         if ( ocd != null )
         {
             String[] names = ocd.getMayAttributeTypeDescriptionNamesTransitive();
@@ -319,14 +377,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                         mayLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         mayLinks[i].setUnderlined( true );
                         mayLinks[i].setEnabled( true );
-                        mayLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                        {
-                            public void linkActivated( HyperlinkEvent e )
-                            {
-                                SchemaBrowser.select( e.getHref() );
-
-                            }
-                        } );
+                        mayLinks[i].addHyperlinkListener( this );
                     }
                     else
                     {
@@ -354,18 +405,27 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
     }
 
 
+    /**
+     * Creates the content of the must section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param ocd the object class description
+     */
     private void createSubclassContents( ObjectClassDescription ocd )
     {
-
+        // dispose old content
         if ( subclassesSection.getClient() != null )
         {
             subclassesSection.getClient().dispose();
         }
 
+        // create new client
         Composite subClient = toolkit.createComposite( subclassesSection, SWT.WRAP );
         subClient.setLayout( new GridLayout() );
         subclassesSection.setClient( subClient );
 
+        // create new content
         if ( ocd != null )
         {
             ObjectClassDescription[] subOCDs = ocd.getSubObjectClassDescriptions();
@@ -380,13 +440,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                     subLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     subLinks[i].setUnderlined( true );
                     subLinks[i].setEnabled( true );
-                    subLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                    {
-                        public void linkActivated( HyperlinkEvent e )
-                        {
-                            SchemaBrowser.select( e.getHref() );
-                        }
-                    } );
+                    subLinks[i].addHyperlinkListener( this );
                 }
             }
             else
@@ -404,25 +458,32 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         }
 
         subclassesSection.layout();
-
     }
 
 
+    /**
+     * Creates the content of the must section. 
+     * It is newly created on every input change because the content
+     * of this section is dynamic.
+     *
+     * @param ocd the object class description
+     */
     private void createSuperclassContents( ObjectClassDescription ocd )
     {
-
+        // dispose old content
         if ( superclassesSection.getClient() != null )
         {
             superclassesSection.getClient().dispose();
         }
 
+        // create new client
         Composite superClient = toolkit.createComposite( superclassesSection, SWT.WRAP );
         superClient.setLayout( new GridLayout() );
         superclassesSection.setClient( superClient );
 
+        // craete new content
         if ( ocd != null )
         {
-
             String[] names = ocd.getSuperiorObjectClassDescriptionNames();
             if ( names != null && names.length > 0 )
             {
@@ -443,13 +504,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                         superLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         superLinks[i].setUnderlined( true );
                         superLinks[i].setEnabled( true );
-                        superLinks[i].addHyperlinkListener( new HyperlinkAdapter()
-                        {
-                            public void linkActivated( HyperlinkEvent e )
-                            {
-                                SchemaBrowser.select( e.getHref() );
-                            }
-                        } );
+                        superLinks[i].addHyperlinkListener( this );
                     }
                     else
                     {
@@ -475,7 +530,6 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         }
 
         superclassesSection.layout();
-
     }
 
 }
