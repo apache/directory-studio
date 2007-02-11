@@ -204,7 +204,6 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
     public INavigationLocation createEmptyNavigationLocation()
     {
-        System.out.println( "SearchResultEditor#createEmptyNavigationLocation()" );
         return null;
     }
 

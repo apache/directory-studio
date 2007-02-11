@@ -144,7 +144,7 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return getResolvedEntry() != null ? getResolvedEntry().getDn().toString() : "";
+        return "";
     }
 
     /**

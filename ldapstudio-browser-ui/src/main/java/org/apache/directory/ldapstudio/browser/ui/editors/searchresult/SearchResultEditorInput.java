@@ -39,7 +39,7 @@ import org.eclipse.ui.IPersistableElement;
  *     With this trick only one instance of the search result editor is opened
  *     by the eclipse editor framework.
  * <li>If oneInstanceHackEnabled is false the equals method returns 
- *     true only if the wrapped objects (ISearchare equal. This is 
+ *     true only if the wrapped objects (ISearch) are equal. This is 
  *     necessary for the history navigation because it must be able 
  *     to distinguish the different input objects.
  * </ul>
@@ -60,7 +60,7 @@ public class SearchResultEditorInput implements IEditorInput
     /**
      * Creates a new instance of SearchResultEditorInput.
      *
-     * @param search the searc input
+     * @param search the search input
      */
     public SearchResultEditorInput( ISearch search )
     {
@@ -104,7 +104,7 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return search != null ? this.search.getName() : "";
+        return "";
     }
 
 
