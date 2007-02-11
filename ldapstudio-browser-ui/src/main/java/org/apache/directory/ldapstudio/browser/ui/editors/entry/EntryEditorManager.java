@@ -101,7 +101,7 @@ public class EntryEditorManager
                 e.printStackTrace();
             }
         }
-        else
+        else if ( editor != null )
         {
             // set the input to already opened entry editor
             editor.setInput( input );

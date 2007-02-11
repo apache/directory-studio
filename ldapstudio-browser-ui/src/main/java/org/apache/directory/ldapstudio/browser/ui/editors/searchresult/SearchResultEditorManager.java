@@ -76,12 +76,12 @@ public class SearchResultEditorManager
                 e.printStackTrace();
             }
         }
-        else
+        else if ( editor != null )
         {
             // set the input to already opened search result editor
             editor.setInput( input );
 
-            // bring search result editor to top only if an search is displayed in it. 
+            // bring search result editor to top only if a search is displayed in it. 
             if ( input.getSearch() != null )
             {
                 if ( !PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().isPartVisible( editor ) )

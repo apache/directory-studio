@@ -77,12 +77,12 @@ public class SchemaBrowserManager
                 e.printStackTrace();
             }
         }
-        else
+        else if ( editor != null )
         {
             // set the input to already opened schema browser
             editor.setInput( input );
 
-            // bring schema browser to top only if schema element schould be displayed. 
+            // bring schema browser to top only if a schema element should be displayed. 
             if ( input.getSchemaElement() != null )
             {
                 if ( !PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().isPartVisible( editor ) )
