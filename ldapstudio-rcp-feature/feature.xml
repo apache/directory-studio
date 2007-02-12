@@ -220,7 +220,7 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="LDAP Studio" url="http://people.apache.org/~pamarcelot/ldapstudio/update"/>
+      <update label="LDAP Studio" url="http://directory.apache.org/ldapstudio/update"/>
    </url>
 
    <plugin
