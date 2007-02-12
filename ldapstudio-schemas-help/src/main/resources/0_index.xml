@@ -79,7 +79,7 @@
 			    In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
 			    <itemizedlist>
 				    <listitem>Name: LDAP Studio Update Site</listitem>
-				    <listitem>URL: http://people.apache.org/~pamarcelot/ldapstudio/update/</listitem>
+				    <listitem>URL: http://directory.apapche.org/ldapstudio/update/</listitem>
 			    </itemizedlist>
 			    <screenshot>
 				    <mediaobject>
