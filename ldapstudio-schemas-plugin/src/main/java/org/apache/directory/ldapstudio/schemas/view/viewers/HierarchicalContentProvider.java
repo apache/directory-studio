@@ -21,47 +21,66 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeTypesAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AlphabeticalOrderComparator;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 
+/**
+ * This class implements the content provider for the Hierarchy View.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class HierarchicalContentProvider implements SortableContentProvider, IStructuredContentProvider,
     ITreeContentProvider
 {
+    /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
+
+    /** The HashTable containing all the object classes */
     private Hashtable<String, ObjectClass> objectClassTable;
+
+    /** The HashTable containing all the attribute types */
     private Hashtable<String, AttributeType> attributeTypeTable;
+
+    /** The Order Comparator */
     private Comparator order = new AlphabeticalOrderComparator();
 
 
-    public HierarchicalContentProvider( SchemaPool schemaPool )
+    /**
+     * Creates a new instance of HierarchicalContentProvider.
+     *
+     * @param schemaPool
+     *      the associated Schema Pool
+     */
+    public HierarchicalContentProvider()
     {
-        this.schemaPool = schemaPool;
+        this.schemaPool = SchemaPool.getInstance();
 
         objectClassTable = schemaPool.getObjectClassesAsHashTableByName();
-
         attributeTypeTable = schemaPool.getAttributeTypesAsHashTableByName();
     }
 
-
-    /******************************************
-     *       Interfaces Implementation        *
-     ******************************************/
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
@@ -72,30 +91,6 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
     }
 
 
-    /**
-     * Disposes of this content provider. This is called by the viewer when it is disposed.
-     */
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
-    public void dispose()
-    {
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-     */
-    public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
-    {
-    }
-
-
-    /******************************************
-     *       ITreeContentProvider Impl        *
-     ******************************************/
-
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
      */
@@ -104,13 +99,9 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
         if ( parentElement instanceof ObjectClassWrapper )
         {
             //we are looking for the childrens of the contained objectClass
-            ObjectClass objectClass =  ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
+            ObjectClass objectClass = ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
 
-            IntermediateNode sub = new IntermediateNode( "Sub-types", ( ObjectClassWrapper ) parentElement, this, IntermediateNodeType.OBJECT_CLASS_FOLDER ); //$NON-NLS-1$
-            IntermediateNode may = new IntermediateNode(
-                "Optionnal Attributes", ( ObjectClassWrapper ) parentElement, this, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
-            IntermediateNode must = new IntermediateNode(
-                "Mandatory Attributes", ( ObjectClassWrapper ) parentElement, this, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
+            List<ObjectClassWrapper> subTypes = new ArrayList<ObjectClassWrapper>();
 
             //-> we need to compare each and every other objectClass's sup against them 
             //-> we also need to find a better way to do this (complexity wise)
@@ -133,7 +124,8 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                             if ( oClassSup.equals( objectClass ) )
                             {
                                 //we use an objectClass wrapper
-                                sub.addElement( new ObjectClassWrapper( oClass, sub ) );
+                                subTypes
+                                    .add( new ObjectClassWrapper( oClass, ( DisplayableTreeElement ) parentElement ) );
                                 break; //break only the inner for
                             }
                         }
@@ -141,35 +133,47 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                 }
             }
 
-            //complete optional attributes
-            String[] optAttributes = objectClass.getMay();
-            for ( String name : optAttributes )
+            return subTypes.toArray();
+        }
+
+        if ( parentElement instanceof AttributeTypeWrapper )
+        {
+            //we are looking for the childrens of the contained attribute type
+            AttributeType attributeType = ( ( AttributeTypeWrapper ) parentElement ).getMyAttributeType();
+
+            List<AttributeTypeWrapper> subTypes = new ArrayList<AttributeTypeWrapper>();
+
+            //-> we need to compare each and every other attribute type sup against them 
+            //-> we also need to find a better way to do this (complexity wise)
+
+            Collection<AttributeType> attributeTypes = attributeTypeTable.values();
+            for ( Iterator iter = attributeTypes.iterator(); iter.hasNext(); )
             {
-                AttributeType attr = attributeTypeTable.get( name );
-                //A CHANGER, ON FAIT SAUTER LES ATTR QUI NE SONT PAS DEFINIS
-                //DANS LE SCHEMA COURANT (ATTRS PAR DEFAUT)
-                if ( attr == null )
-                    continue;
-                //we use an attribute-type wrapper
-                may.addElement( new AttributeTypeWrapper( attr, may ) );
+                AttributeType aType = ( AttributeType ) iter.next();
+
+                //not this attribute type
+                if ( aType.getOid() != attributeType.getOid() )
+                {
+                    String aTypeSupName = aType.getSuperior();
+                    if ( aTypeSupName != null )
+                    {
+                        AttributeType aTypeSup = attributeTypeTable.get( aType.getSuperior() );
+                        if ( aTypeSup != null )
+                        {
+                            //the current object class is a sup of oClass
+                            if ( aTypeSup.equals( attributeType ) )
+                            {
+                                //we use an objectClass wrapper
+                                subTypes
+                                    .add( new AttributeTypeWrapper( aType, ( DisplayableTreeElement ) parentElement ) );
+                                break; //break only the inner for
+                            }
+                        }
+                    }
+                }
             }
 
-            //complete mandatory attributes
-            String[] mandAttributes = objectClass.getMust();
-            for ( String name : mandAttributes )
-            {
-                AttributeType attr = attributeTypeTable.get( name );
-                //A CHANGER, ON FAIT SAUTER LES ATTR QUI NE SONT PAS DEFINIS
-                //DANS LE SCHEMA COURANT (ATTRS PAR DEFAUT)
-                if ( attr == null )
-                    continue;
-
-                //we use an attribute-type wrapper
-                must.addElement( new AttributeTypeWrapper( attr, must ) );
-            }
-
-            return new Object[]
-                { sub, may, must };
+            return subTypes.toArray();
         }
 
         else if ( parentElement instanceof IntermediateNode )
@@ -181,44 +185,66 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                 //is beeing refreshed 
                 // -> the pool has been modified or it's the first display
                 // -> we need to regenerate the hashmaps containing the schemas elements
-                refresh();
+                refreshOcsAndAts();
 
                 //clear the primary node (because it's always the same instance we need to
                 //refresh it manually)
                 intermediate.clearChildrens();
-
-                //bootstrap the tree exploring process by adding the top node into the tree
-                ObjectClass top = schemaPool.getObjectClass( "top" ); //$NON-NLS-1$
-                if ( top != null )
+                if ( !Activator.getDefault().getDialogSettings().getBoolean(
+                    HideObjectClassesAction.HIDE_OBJECT_CLASSES_DS_KEY ) )
                 {
-                    ObjectClassWrapper topWrapper = new ObjectClassWrapper( top, intermediate );
-                    intermediate.addElement( topWrapper );
+                    //bootstrap the tree exploring process by adding the top node into the tree
+                    ObjectClass top = schemaPool.getObjectClass( "top" ); //$NON-NLS-1$
+                    if ( top != null )
+                    {
+                        ObjectClassWrapper topWrapper = new ObjectClassWrapper( top, intermediate );
+                        intermediate.addElement( topWrapper );
+                    }
+
+                    //add the unresolved object-classes to the top of the hierarchy
+                    Collection<ObjectClass> objectClasses = objectClassTable.values();
+                    for ( Iterator iter = objectClasses.iterator(); iter.hasNext(); )
+                    {
+                        ObjectClass oClass = ( ObjectClass ) iter.next();
+                        String[] sups = oClass.getSuperiors();
+                        //if no supperiors had been set
+                        if ( sups.length == 0 )
+                        {
+                            ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
+                            wrapper.setState( ObjectClassWrapper.State.unResolved );
+                            intermediate.addElement( wrapper );
+                            this.hasChildren( wrapper );
+                        }
+                        else
+                        {
+                            for ( String sup : sups )
+                            {
+                                ObjectClass oClassSup = objectClassTable.get( sup );
+                                if ( oClassSup == null )
+                                {
+                                    ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
+                                    wrapper.setState( ObjectClassWrapper.State.unResolved );
+                                    intermediate.addElement( wrapper );
+                                }
+                            }
+                        }
+                    }
                 }
 
-                //add the unresolved object-classes to the top of the hierarchy
-                Collection<ObjectClass> objectClasses = objectClassTable.values();
-                for ( Iterator iter = objectClasses.iterator(); iter.hasNext(); )
+                if ( !Activator.getDefault().getDialogSettings().getBoolean(
+                    HideAttributeTypesAction.HIDE_ATTRIBUTE_TYPES_DS_KEY ) )
                 {
-                    ObjectClass oClass = ( ObjectClass ) iter.next();
-                    String[] sups = oClass.getSuperiors();
-                    //if no supperiors had been set
-                    if ( sups.length == 0 )
+                    //add the unresolved object-classes to the top of the hierarchy
+                    Collection<AttributeType> attributeTypes = attributeTypeTable.values();
+                    for ( Iterator iter = attributeTypes.iterator(); iter.hasNext(); )
                     {
-                        ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
-                        wrapper.setState( ObjectClassWrapper.State.unResolved );
-                        intermediate.addElement( wrapper );
-                    }
-                    else
-                    {
-                        for ( String sup : sups )
+                        AttributeType aType = ( AttributeType ) iter.next();
+                        String sup = aType.getSuperior();
+                        //if no superior had been set
+                        if ( sup == null )
                         {
-                            ObjectClass oClassSup = objectClassTable.get( sup );
-                            if ( oClassSup == null )
-                            {
-                                ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
-                                wrapper.setState( ObjectClassWrapper.State.unResolved );
-                                intermediate.addElement( wrapper );
-                            }
+                            AttributeTypeWrapper wrapper = new AttributeTypeWrapper( aType, intermediate );
+                            intermediate.addElement( wrapper );
                         }
                     }
                 }
@@ -259,27 +285,25 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
     {
         if ( element instanceof ObjectClassWrapper )
         {
-            return true;
+            return getChildren( ( ObjectClassWrapper ) element ).length > 0;
         }
         else if ( element instanceof AttributeTypeWrapper )
         {
-            return false;
+            return getChildren( ( AttributeTypeWrapper ) element ).length > 0;
         }
         else if ( element instanceof IntermediateNode )
         {
-            if ( ( ( IntermediateNode ) element ).getChildren().length > 0 )
-                return true;
+            return ( ( IntermediateNode ) element ).getChildren().length > 0;
         }
 
         return false;
     }
 
 
-    /******************************************
-     *             Internal Logic             *
-     ******************************************/
-
-    private void refresh()
+    /**
+     * Refreshes the object classes and attribute types HahshTables.
+     */
+    private void refreshOcsAndAts()
     {
         objectClassTable = schemaPool.getObjectClassesAsHashTableByName();
 
@@ -287,13 +311,11 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
     }
 
 
-    /******************************************
-     *                 Logic                  *
-     ******************************************/
-
     /**
-     * Specify the comparator that will be used to sort the elements in the view
-     * @param order the comparator
+     * Specify the comparator that will be used to sort the elements in the view.
+     * 
+     * @param order
+     *      the comparator
      */
     public void setOrder( Comparator order )
     {
@@ -302,7 +324,8 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
 
 
     /**
-     * Returns the comparator used to sort the elements in the view
+     * Returns the comparator used to sort the elements in the view.
+     * 
      * @return
      */
     public Comparator getOrder()
@@ -313,8 +336,10 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
 
     /**
      * Initialize a tree viewer to display the information provided by the specified content
-     * provider
-     * @param viewer the tree viewer
+     * provider.
+     * 
+     * @param viewer
+     *      the tree viewer
      */
     public void bindToTreeViewer( TreeViewer viewer )
     {
@@ -323,5 +348,21 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
 
         IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null, this ); //$NON-NLS-1$
         viewer.setInput( invisibleNode );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+     */
+    public void dispose()
+    {
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+     */
+    public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
+    {
     }
 }

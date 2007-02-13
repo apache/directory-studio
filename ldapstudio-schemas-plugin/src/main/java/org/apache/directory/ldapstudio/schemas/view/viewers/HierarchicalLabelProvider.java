@@ -29,12 +29,13 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * Eclipse RPC programming pattern for tree-viewers
- *
+ * This class implements the label provider for the Hierarchy View.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class HierarchicalLabelProvider extends LabelProvider
 {
-
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
      */
@@ -43,7 +44,7 @@ public class HierarchicalLabelProvider extends LabelProvider
         if ( obj instanceof DisplayableTreeElement )
             return ( ( DisplayableTreeElement ) obj ).getDisplayName();
 
-        //default
+        // Default
         return obj.toString();
     }
 
@@ -56,8 +57,7 @@ public class HierarchicalLabelProvider extends LabelProvider
         if ( obj instanceof DisplayableTreeElement )
             return ( ( DisplayableTreeElement ) obj ).getDisplayImage();
 
-        //default
+        // Default
         return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK );
-
     }
 }

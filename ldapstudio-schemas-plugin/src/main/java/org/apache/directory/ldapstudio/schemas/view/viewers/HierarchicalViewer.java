@@ -25,73 +25,64 @@ import java.util.Comparator;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.HierarchicalViewerController;
-import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorHierarchyView;
-import org.apache.directory.ldapstudio.schemas.controller.actions.SortHierarchicalViewAction;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
+/**
+ * This class implements the Hierarchy View where all the hierarchy of object classes and attribute types is displayed.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class HierarchicalViewer extends ViewPart implements PoolListener
 {
+    /** The view's ID */
     public static final String ID = Application.PLUGIN_ID + ".view.HierarchicalViewer"; //$NON-NLS-1$
+
+    /** The tree viewer */
     private TreeViewer viewer;
-    private Composite parent;
+
+    /** The content provider */
     private HierarchicalContentProvider contentProvider;
 
-
-    /**
-     * @return the internal tree viewer
-     */
-    public TreeViewer getViewer()
-    {
-        return viewer;
-    }
-
-
-    /******************************************
-     *        Interfaces Implementation       *
-     ******************************************/
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl( Composite parent )
-    {
-        this.parent = parent;
-        initViewer();
-        IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-        toolbar.add( new SortHierarchicalViewAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortHierarchicalViewAction.SortType.alphabetical, Messages
-                .getString( "HierarchicalViewer.Sort_alphabetically" ) ) ); //$NON-NLS-1$
-        toolbar.add( new SortHierarchicalViewAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortHierarchicalViewAction.SortType.unalphabetical, Messages
-                .getString( "HierarchicalViewer.Sort_unalphabetically" ) ) ); //$NON-NLS-1$
-        toolbar.add( new Separator() );
-        toolbar.add( new CollapseAllAction( getViewer() ) );
-        toolbar.add( new LinkWithEditorHierarchyView( this ) );
-    }
-
-
-    private void initViewer()
-    {
+    { 
+        initViewer( parent );
+        
+        // Registering the Viewer, so other views can be notified when the viewer selection changes
+        getSite().setSelectionProvider( viewer );
+        
         SchemaPool pool = SchemaPool.getInstance();
         //we want to be notified if the pool has been modified
         pool.addListener( this );
+        
+        // Adding the controller
+        new HierarchicalViewerController( this );
+    }
 
+
+    /**
+     * Initializes the viewer.
+     *
+     * @param parent
+     *      the parent element
+     */
+    private void initViewer( Composite parent )
+    {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new HierarchicalContentProvider( pool );
+        contentProvider = new HierarchicalContentProvider();
         contentProvider.bindToTreeViewer( viewer );
-        viewer.addDoubleClickListener( HierarchicalViewerController.getInstance() );
     }
 
 
@@ -104,12 +95,8 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
     }
 
 
-    /******************************************
-     *                 Logic                  *
-     ******************************************/
-
     /**
-     * Refresh the entire view
+     * Refreshes the entire view
      */
     public void refresh()
     {
@@ -138,10 +125,6 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
     }
 
 
-    /******************************************
-     *            Pool Listener Impl          *
-     ******************************************/
-
     /**
      * refresh the view if the pool has been modified
      */
@@ -149,7 +132,8 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
     {
         refresh();
     }
-    
+
+
     /**
      * Search for the given element in the Tree and returns it if it has been found.
      *
@@ -196,5 +180,17 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
             }
         }
         return null;
+    }
+
+
+    /**
+     * Gets the tree viewer.
+     * 
+     * @return
+     *      the tree viewer
+     */
+    public TreeViewer getViewer()
+    {
+        return viewer;
     }
 }

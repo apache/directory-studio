@@ -31,33 +31,43 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * Nasty trick to display object class in the tree-viewer
+ * This class is used to display an object class in a tree viewer. 
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class ObjectClassWrapper implements DisplayableTreeElement
 {
-    /******************************************
-     *               Fields                   *
-     ******************************************/
+    /**
+     * This enum represent the different states of an ObjectClassWrapper
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     public enum State
     {
         resolved, unResolved
     }
 
+    /** The state */
     private State state;
-    private IntermediateNode parent;
+
+    /** The parent element */
+    private DisplayableTreeElement parent;
+
+    /** The associated object class */
     private ObjectClass myObjectClass;
 
 
-    /******************************************
-     *              Constructors              *
-     ******************************************/
-
     /**
-     * Default constructor
-     * @param parent
+     * Creates a new instance of ObjectClassWrapper.
+     *
      * @param myObjectClass
+     *      the associated object class
+     * @param parent
+     *      the parent element
      */
-    public ObjectClassWrapper( ObjectClass myObjectClass, IntermediateNode parent )
+    public ObjectClassWrapper( ObjectClass myObjectClass, DisplayableTreeElement parent )
     {
         this.parent = parent;
         this.myObjectClass = myObjectClass;
@@ -65,12 +75,11 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     }
 
 
-    /******************************************
-     *             Wrapper Methods            *
-     ******************************************/
-
     /**
-     * @return the names of the wrapped object class
+     * Gets the names of the associated object class.
+     *
+     * @return
+     *      the names of the associated object class
      */
     public String[] getNames()
     {
@@ -79,7 +88,10 @@ public class ObjectClassWrapper implements DisplayableTreeElement
 
 
     /**
-     * @return the oid of the wrapped object class
+     * Gets the OID of the associated object class.
+     * 
+     * @return 
+     *      the oid of the associated object class
      */
     public String getOid()
     {
@@ -87,12 +99,11 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     }
 
 
-    /******************************************
-     *               Accessors                *
-     ******************************************/
-
     /**
-     * @return the wrapped object class
+     * Gets the associated object class
+     * 
+     * @return 
+     *      the associated object class
      */
     public ObjectClass getMyObjectClass()
     {
@@ -100,17 +111,20 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     }
 
 
-    /**
-     * @return the parent element
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getParent()
      */
-    public IntermediateNode getParent()
+    public DisplayableTreeElement getParent()
     {
         return parent;
     }
 
 
     /**
-     * @return the state of the wrapped object class
+     * Gets the state of the object class wrapper.
+     * 
+     * @return
+     *      the state of the object class wrapper
      */
     public State getState()
     {
@@ -119,18 +133,16 @@ public class ObjectClassWrapper implements DisplayableTreeElement
 
 
     /**
-     * Sets the state of the wrapped object class
+     * Sets the state of the object class wrapper.
+     * 
      * @param state
+     *      the state of the object class wrapper
      */
     public void setState( State state )
     {
         this.state = state;
     }
 
-
-    /******************************************
-     *       DisplayableTreeElement Impl.     *
-     ******************************************/
 
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayImage()
@@ -159,10 +171,6 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     }
 
 
-    /******************************************
-     *           Object Redefinition          *
-     ******************************************/
-
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
@@ -184,5 +192,4 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     {
         return myObjectClass + " wrapper"; //$NON-NLS-1$
     }
-
 }

@@ -46,4 +46,7 @@ public interface DisplayableTreeElement
      * @return the display name
      */
     public String getDisplayName();
+
+
+    public DisplayableTreeElement getParent();
 }

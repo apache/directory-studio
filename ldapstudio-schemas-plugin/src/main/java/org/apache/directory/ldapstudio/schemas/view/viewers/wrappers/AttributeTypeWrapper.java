@@ -29,40 +29,40 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * Nasty trick to display object-classes attributes in the tree-viewer
+ * This class is used to represent an attribute type in a tree viewer.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AttributeTypeWrapper implements DisplayableTreeElement
 {
-    /******************************************
-     *               Fields                   *
-     ******************************************/
+    /** The parent element */
+    private DisplayableTreeElement parent;
 
-    private IntermediateNode parent;
+    /** The associated attribute type */
     private AttributeType myAttributeType;
 
 
-    /******************************************
-     *              Constructors              *
-     ******************************************/
-
     /**
-     * Default constructor
+     * Creates a new instance of AttributeTypeWrapper.
+     *
      * @param myAttributeType
+     *      the associated attribute type
      * @param parent
+     *      the parent element
      */
-    public AttributeTypeWrapper( AttributeType myAttributeType, IntermediateNode parent )
+    public AttributeTypeWrapper( AttributeType myAttributeType, DisplayableTreeElement parent )
     {
         this.myAttributeType = myAttributeType;
         this.parent = parent;
     }
 
 
-    /******************************************
-     *             Wrapper Methods            *
-     ******************************************/
-
     /**
-     * @return the name of the wrapped attribute type
+     * Gets the name of the associated attribute type.
+     * 
+     * @return
+     *      the name of the associated attribute type
      */
     public String getName()
     {
@@ -71,7 +71,10 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
 
 
     /**
-     * @return the OID of the wrapped attribute type
+     * Gets the OID of the associated attribute type.
+     * 
+     * @return
+     *      the OID of the associated attribute type
      */
     public String getOid()
     {
@@ -79,12 +82,11 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
     }
 
 
-    /******************************************
-     *               Accessors                *
-     ******************************************/
-
     /**
-     * @return the wrapped attribute type
+     * Gets the associated attribute type.
+     * 
+     * @return 
+     *      the associated attribute type
      */
     public AttributeType getMyAttributeType()
     {
@@ -93,17 +95,16 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
 
 
     /**
-     * @return the parent element
+     * Gets the parent element.
+     * 
+     * @return
+     *      the parent element
      */
-    public IntermediateNode getParent()
+    public DisplayableTreeElement getParent()
     {
         return parent;
     }
 
-
-    /******************************************
-     *       DisplayableTreeElement Impl.     *
-     ******************************************/
 
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayImage()
@@ -124,10 +125,6 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
     }
 
 
-    /******************************************
-     *           Object Redefinition          *
-     ******************************************/
-    
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
@@ -140,6 +137,7 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
         }
         return false;
     }
+
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
