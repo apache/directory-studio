@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -152,7 +153,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             setEditorDirty();
         }
     };
-    
+
     /** The listener for the Schema Hyperlink Widget*/
     private HyperlinkAdapter schemaLinkListener = new HyperlinkAdapter()
     {
@@ -327,16 +328,15 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
                 else
                 {
                     // The selected attribute is not in any table, so it can be added
-                    TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE );
-                    item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-                        IImageKeys.ATTRIBUTE_TYPE ).createImage() );
-                    item.setText( selectionDialog.getSelectedAttributeType() );
                     ArrayList<String> mustList = new ArrayList<String>();
-                    for ( int i = 0; i < mandatoryAttributesTable.getItemCount(); i++ )
+                    String[] mustATs = modifiedObjectClass.getMust();
+                    for ( int i = 0; i < mustATs.length; i++ )
                     {
-                        mustList.add( mandatoryAttributesTable.getItem( i ).getText() );
+                        mustList.add( mustATs[i] );
                     }
+                    mustList.add( selectionDialog.getSelectedAttributeType() );
                     modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
+                    fillInMandatoryAttributesTable();
                     setEditorDirty();
                 }
             }
@@ -348,14 +348,19 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            mandatoryAttributesTable.remove( mandatoryAttributesTable.getSelectionIndex() );
-            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
+            String itemToRemove = mandatoryAttributesTable.getItem( mandatoryAttributesTable.getSelectionIndex() )
+                .getText();
+
             ArrayList<String> mustList = new ArrayList<String>();
-            for ( int i = 0; i < mandatoryAttributesTable.getItemCount(); i++ )
+            String[] mustATs = modifiedObjectClass.getMust();
+            for ( int i = 0; i < mustATs.length; i++ )
             {
-                mustList.add( mandatoryAttributesTable.getItem( i ).getText() );
+                mustList.add( mustATs[i] );
             }
+            mustList.remove( itemToRemove );
             modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
+            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
+            fillInMandatoryAttributesTable();
             setEditorDirty();
         }
     };
@@ -428,16 +433,15 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
                 else
                 {
                     // The selected attribute is not in any table, so it can be added
-                    TableItem item = new TableItem( optionalAttributesTable, SWT.NONE );
-                    item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-                        IImageKeys.ATTRIBUTE_TYPE ).createImage() );
-                    item.setText( selectionDialog.getSelectedAttributeType() );
                     ArrayList<String> mayList = new ArrayList<String>();
-                    for ( int i = 0; i < optionalAttributesTable.getItemCount(); i++ )
+                    String[] mayATs = modifiedObjectClass.getMay();
+                    for ( int i = 0; i < mayATs.length; i++ )
                     {
-                        mayList.add( optionalAttributesTable.getItem( i ).getText() );
+                        mayList.add( mayATs[i] );
                     }
+                    mayList.add( selectionDialog.getSelectedAttributeType() );
                     modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );
+                    fillInOptionalAttributesTable();
                     setEditorDirty();
                 }
 
@@ -450,14 +454,19 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            optionalAttributesTable.remove( optionalAttributesTable.getSelectionIndex() );
-            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
+            String itemToRemove = optionalAttributesTable.getItem( optionalAttributesTable.getSelectionIndex() )
+                .getText();
+
             ArrayList<String> mayList = new ArrayList<String>();
-            for ( int i = 0; i < optionalAttributesTable.getItemCount(); i++ )
+            String[] mayATs = modifiedObjectClass.getMay();
+            for ( int i = 0; i < mayATs.length; i++ )
             {
-                mayList.add( optionalAttributesTable.getItem( i ).getText() );
+                mayList.add( mayATs[i] );
             }
+            mayList.remove( itemToRemove );
             modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );
+            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
+            fillInOptionalAttributesTable();
             setEditorDirty();
         }
     };
@@ -553,8 +562,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SCHEMA Field
-        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP  );
-        schemaLabel =  toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
+        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
+        schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
 
         // DESCRIPTION Field
@@ -726,7 +735,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             oidText.setText( modifiedObjectClass.getOid() );
         }
-        
+
         // SCHEMAS Field
         if ( modifiedObjectClass.getOriginatingSchema() != null )
         {
@@ -834,15 +843,26 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      */
     private void fillInMandatoryAttributesTable()
     {
+        int selectionIndex = mandatoryAttributesTable.getSelectionIndex();
+        String selectAttribute = null;
+        if ( selectionIndex != -1 )
+        {
+            selectAttribute = mandatoryAttributesTable.getItem( selectionIndex ).getText();
+        }
         mandatoryAttributesTable.clearAll();
         mandatoryAttributesTable.setItemCount( 0 );
         String[] mustArray = modifiedObjectClass.getMust();
+        Arrays.sort( mustArray );
         for ( int i = 0; i < mustArray.length; i++ )
         {
-            TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE );
+            TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE, i );
             item.setImage( AbstractUIPlugin
                 .imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
             item.setText( mustArray[i] );
+            if ( ( selectionIndex != -1 ) && ( mustArray[i].equals( selectAttribute ) ) )
+            {
+                mandatoryAttributesTable.select( i );
+            }
         }
     }
 
@@ -852,15 +872,26 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      */
     private void fillInOptionalAttributesTable()
     {
+        int selectionIndex = optionalAttributesTable.getSelectionIndex();
+        String selectAttribute = null;
+        if ( selectionIndex != -1 )
+        {
+            selectAttribute = optionalAttributesTable.getItem( selectionIndex ).getText();
+        }
         optionalAttributesTable.clearAll();
         optionalAttributesTable.setItemCount( 0 );
         String[] mayArray = modifiedObjectClass.getMay();
+        Arrays.sort( mayArray );
         for ( int i = 0; i < mayArray.length; i++ )
         {
-            TableItem item = new TableItem( optionalAttributesTable, SWT.NONE );
+            TableItem item = new TableItem( optionalAttributesTable, SWT.NONE, i );
             item.setImage( AbstractUIPlugin
                 .imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
             item.setText( mayArray[i] );
+            if ( ( selectionIndex != -1 ) && ( mayArray[i].equals( selectAttribute ) ) )
+            {
+                optionalAttributesTable.select( i );
+            }
         }
     }
 
@@ -883,6 +914,11 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             removeButtonMandatoryTable.setEnabled( false );
             addButtonOptionalTable.setEnabled( false );
             removeButtonOptionalTable.setEnabled( false );
+        }
+        else
+        {
+            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelectionIndex() != -1 );
+            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelectionIndex() != -1 );
         }
     }
 
@@ -979,5 +1015,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         removeListeners();
         fillInUiFields();
         addListeners();
+        setFieldsEditableState();
     }
 }
