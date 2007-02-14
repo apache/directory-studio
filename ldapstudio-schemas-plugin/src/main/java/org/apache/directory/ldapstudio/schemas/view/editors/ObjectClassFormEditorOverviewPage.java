@@ -48,6 +48,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
@@ -85,6 +86,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private String[] aliasesList;
     private Button aliasesButton;
     private Text oidText;
+    private Hyperlink schemaLink;
+    private Label schemaLabel;
     private Text descriptionText;
     private Hyperlink supLabel;
     private Combo supCombo;
@@ -147,6 +150,26 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             modifiedObjectClass.setOid( oidText.getText() );
             setEditorDirty();
+        }
+    };
+    
+    /** The listener for the Schema Hyperlink Widget*/
+    private HyperlinkAdapter schemaLinkListener = new HyperlinkAdapter()
+    {
+        public void linkActivated( HyperlinkEvent e )
+        {
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+            SchemaFormEditorInput input = new SchemaFormEditorInput( modifiedObjectClass.getOriginatingSchema() );
+            String editorId = SchemaFormEditor.ID;
+            try
+            {
+                page.openEditor( input, editorId );
+            }
+            catch ( PartInitException exception )
+            {
+                Logger.getLogger( AttributeTypeFormEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+            }
         }
     };
 
@@ -529,6 +552,11 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
+        // SCHEMA Field
+        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP  );
+        schemaLabel =  toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
+        schemaLabel.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Description" ) ); //$NON-NLS-1$
@@ -697,6 +725,12 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         if ( modifiedObjectClass.getOid() != null )
         {
             oidText.setText( modifiedObjectClass.getOid() );
+        }
+        
+        // SCHEMAS Field
+        if ( modifiedObjectClass.getOriginatingSchema() != null )
+        {
+            this.schemaLabel.setText( modifiedObjectClass.getOriginatingSchema().getName() );
         }
 
         // DESCRIPTION Field
@@ -875,6 +909,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         // The user can always access to the Manage Aliases Window, but if the object class is in a core-schema file editing will be disabled
         aliasesButton.addSelectionListener( aliasesButtonListener );
 
+        schemaLink.addHyperlinkListener( schemaLinkListener );
         supLabel.addHyperlinkListener( supLabelListener );
 
         // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
@@ -893,6 +928,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         nameText.removeModifyListener( nameTextListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
         oidText.removeModifyListener( oidTextListener );
+        schemaLink.removeHyperlinkListener( schemaLinkListener );
         descriptionText.removeModifyListener( descriptionTextListener );
         supLabel.removeHyperlinkListener( supLabelListener );
         supCombo.removeModifyListener( supComboListener );
