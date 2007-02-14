@@ -595,16 +595,10 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         // Creating the UI
         supCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
         supCombo.select( 0 );
-        int counter = 1;
         for ( AttributeType at : atList )
         {
-            // TODO : Ajouter une verification pour qu'on ne puisse pas ajouter en sup l'objectclass lui meme et ses alias
-            supCombo.add( at.getNames()[0], counter );
-            if ( ( ( modifiedAttributeType.getSuperior() != null ) || ( modifiedAttributeType.getSuperior() != "" ) ) && ( at.getNames()[0].equals( modifiedAttributeType.getSuperior() ) ) ) { //$NON-NLS-1$
-                // We select the right superior
-                supCombo.select( counter );
-            }
-            counter++;
+            // TODO Add a verification, so we can't add as superior the attribute type itself
+            supCombo.add( at.getNames()[0] );
         }
     }
 
@@ -615,22 +609,6 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         usageCombo.add( "distributedOperation", 1 ); //$NON-NLS-1$
         usageCombo.add( "DSAOperation", 2 ); //$NON-NLS-1$
         usageCombo.add( "userApplications", 3 ); //$NON-NLS-1$
-        if ( modifiedAttributeType.getUsage() == UsageEnum.DIRECTORY_OPERATION )
-        {
-            usageCombo.select( 0 );
-        }
-        else if ( modifiedAttributeType.getUsage() == UsageEnum.DISTRIBUTED_OPERATION )
-        {
-            usageCombo.select( 1 );
-        }
-        else if ( modifiedAttributeType.getUsage() == UsageEnum.DSA_OPERATION )
-        {
-            usageCombo.select( 2 );
-        }
-        else if ( modifiedAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
-        {
-            usageCombo.select( 3 );
-        }
     }
 
 
@@ -639,16 +617,9 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         syntaxCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ), 0 ); //$NON-NLS-1$
         syntaxCombo.select( 0 );
         ArrayList<Syntax> syntaxes = Syntaxes.getSyntaxes();
-        int counter = 1;
         for ( Syntax syntax : syntaxes )
         {
             syntaxCombo.add( syntax.getName() );
-            if ( ( modifiedAttributeType.getSyntax() != null )
-                && ( modifiedAttributeType.getSyntax().equals( syntax.getOid() ) ) )
-            {
-                syntaxCombo.select( counter );
-            }
-            counter++;
         }
     }
 
@@ -657,17 +628,10 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     {
         equalityCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
         equalityCombo.select( 0 );
-        int counter = 1;
         ArrayList<MatchingRule> equalityMatchingRules = MatchingRules.getEqualityMatchingRules();
         for ( MatchingRule matchingRule : equalityMatchingRules )
         {
             equalityCombo.add( matchingRule.getName() );
-            if ( ( modifiedAttributeType.getEquality() != null )
-                && modifiedAttributeType.getEquality().equals( matchingRule.getName() ) )
-            {
-                equalityCombo.select( counter );
-            }
-            counter++;
         }
     }
 
@@ -676,17 +640,10 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     {
         orderingCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
         orderingCombo.select( 0 );
-        int counter = 1;
         ArrayList<MatchingRule> orderingMatchingRules = MatchingRules.getOrderingMatchingRules();
         for ( MatchingRule matchingRule : orderingMatchingRules )
         {
             orderingCombo.add( matchingRule.getName() );
-            if ( ( modifiedAttributeType.getOrdering() != null )
-                && modifiedAttributeType.getOrdering().equals( matchingRule.getName() ) )
-            {
-                orderingCombo.select( counter );
-            }
-            counter++;
         }
     }
 
@@ -695,17 +652,10 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     {
         substringCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
         substringCombo.select( 0 );
-        int counter = 1;
         ArrayList<MatchingRule> substringMatchingRules = MatchingRules.getSubstringMatchingRules();
         for ( MatchingRule matchingRule : substringMatchingRules )
         {
             substringCombo.add( matchingRule.getName() );
-            if ( ( modifiedAttributeType.getSubstr() != null )
-                && modifiedAttributeType.getSubstr().equals( matchingRule.getName() ) )
-            {
-                substringCombo.select( counter );
-            }
-            counter++;
         }
     }
 
@@ -747,16 +697,27 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         }
 
         // SUP Combo
-        //initSup_combo();
-        // TODO
+        if ( modifiedAttributeType.getSuperior() == null )
+        {
+            fillSupCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
+        }
+        else
+        {
+            fillSupCombo( modifiedAttributeType.getSuperior() );
+        }
 
         // USAGE Combo
-        //        initUsage_combo();
-        // TODO
+        fillInUsageCombo();
 
         // SYNTAX Combo
-        //        initSyntax_combo();
-        // TODO
+        if ( modifiedAttributeType.getSyntax() == null )
+        {
+            fillInSyntaxCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
+        }
+        else
+        {
+            fillInSyntaxCombo( modifiedAttributeType.getSyntax() );
+        }
 
         // SYNTAX LENGTH Field
         if ( modifiedAttributeType.getLength() != -1 )
@@ -777,16 +738,164 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         this.noUserModificationCheckbox.setSelection( modifiedAttributeType.isNoUserModification() );
 
         // EQUALITY Combo
-        //        initEqualityCombo();
-        // TODO
+        if ( modifiedAttributeType.getEquality() == null )
+        {
+            fillInEqualityCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
+        }
+        else
+        {
+            fillInEqualityCombo( modifiedAttributeType.getEquality() );
+        }
 
         // ORDERING Combo
-        //        initOrderingCombo();
-        // TODO
+        if ( modifiedAttributeType.getOrdering() == null )
+        {
+            fillInOrderingCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
+        }
+        else
+        {
+            fillInOrderingCombo( modifiedAttributeType.getOrdering() );
+        }
 
-        // SUBSTRING
-        //        initSubstringCombo();
-        // TODO
+        // SUBSTRING Combo
+        if ( modifiedAttributeType.getSubstr() == null )
+        {
+            fillInSubstringCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
+        }
+        else
+        {
+            fillInSubstringCombo( modifiedAttributeType.getSubstr() );
+        }
+    }
+
+    
+    /**
+     * Fills the the Sup Combo with the correct value
+     *
+     * @param name
+     *      the name to select
+     */
+    private void fillSupCombo( String name )
+    {
+        supCombo.select( 0 );
+        for ( int i = 0; i < supCombo.getItemCount(); i++ )
+        {
+            if ( name.equals( supCombo.getItem( i ) ) )
+            {
+                supCombo.select( i );
+                return;
+            }
+        }
+    }
+
+
+    /**
+     * Fills the Usage Combo from the attribute type value
+     */
+    private void fillInUsageCombo()
+    {
+        if ( modifiedAttributeType.getUsage() == UsageEnum.DIRECTORY_OPERATION )
+        {
+            usageCombo.select( 0 );
+        }
+        else if ( modifiedAttributeType.getUsage() == UsageEnum.DISTRIBUTED_OPERATION )
+        {
+            usageCombo.select( 1 );
+        }
+        else if ( modifiedAttributeType.getUsage() == UsageEnum.DSA_OPERATION )
+        {
+            usageCombo.select( 2 );
+        }
+        else if ( modifiedAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
+        {
+            usageCombo.select( 3 );
+        }
+    }
+
+
+    /**
+     * Fills the Syntax Combo from the attribute type value
+     *
+     * @param name
+     *      the name to select
+     */
+    private void fillInSyntaxCombo( String name )
+    {
+        if ( name.equals( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) )
+        {
+            syntaxCombo.select( 0 );
+        }
+        else
+        {
+            syntaxCombo.select( 0 );
+            for ( int i = 1; i < syntaxCombo.getItemCount(); i++ )
+            {
+                if ( Syntaxes.getSyntax( syntaxCombo.getItem( i ) ).getOid().equals( name ) )
+                {
+                    syntaxCombo.select( i );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Fills the Equality Combo from the attribute type value
+     *
+     * @param name
+     *      the name to select
+     */
+    private void fillInEqualityCombo( String name )
+    {
+        equalityCombo.select( 0 );
+        for ( int i = 0; i < equalityCombo.getItemCount(); i++ )
+        {
+            if ( name.equals( equalityCombo.getItem( i ) ) )
+            {
+                equalityCombo.select( i );
+                return;
+            }
+        }
+    }
+
+
+    /**
+     * Fills the Ordering Combo from the attribute type value
+     *
+     * @param name
+     *      the name to select
+     */
+    private void fillInOrderingCombo( String name )
+    {
+        orderingCombo.select( 0 );
+        for ( int i = 0; i < orderingCombo.getItemCount(); i++ )
+        {
+            if ( name.equals( orderingCombo.getItem( i ) ) )
+            {
+                orderingCombo.select( i );
+                return;
+            }
+        }
+    }
+
+
+    /**
+     * Fills the Substring Combo from the attribute type value
+     *
+     * @param name
+     *      the name to select
+     */
+    private void fillInSubstringCombo( String name )
+    {
+        substringCombo.select( 0 );
+        for ( int i = 0; i < substringCombo.getItemCount(); i++ )
+        {
+            if ( name.equals( substringCombo.getItem( i ) ) )
+            {
+                substringCombo.select( i );
+                return;
+            }
+        } 
     }
 
 

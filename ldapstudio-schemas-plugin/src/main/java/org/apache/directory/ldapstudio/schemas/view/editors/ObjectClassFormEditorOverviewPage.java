@@ -954,6 +954,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
 
     /**
      * Fills the the Sup Combo with the correct value
+     *
+     * @param name
+     *      the name to select
      */
     private void fillSupCombo( String name )
     {
