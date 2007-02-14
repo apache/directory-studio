@@ -35,11 +35,12 @@ import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEdito
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -57,13 +58,17 @@ import org.eclipse.ui.part.ViewPart;
 
 
 /**
- * This is the main class for the LDAP Studio Search Tool.
- *
+ * This class represents the Search View.
  */
 public class SearchViewer extends ViewPart implements PoolListener
 {
+    /** The view's ID */
     public static final String ID = Application.PLUGIN_ID + ".view.SearchViewer"; //$NON-NLS-1$
+
+    /** The Schema Pool */
     private SchemaPool pool;
+
+    // UI fields
     private Composite top;
     private Table table;
     private TableViewer tableViewer;
@@ -71,22 +76,32 @@ public class SearchViewer extends ViewPart implements PoolListener
     private Combo typeCombo;
     private SearchContentProvider searchContentProvider;
 
-    //Set the table column property names
+    /** The Type column */
     private final String TYPE_COLUMN = Messages.getString( "SearchViewer.Type_Column" ); //$NON-NLS-1$
+
+    /** The Name column*/
     private final String NAME_COLUMN = Messages.getString( "SearchViewer.Name_Column" ); //$NON-NLS-1$
+
+    /** The Schema column */
     private final String SCHEMA_COLUMN = Messages.getString( "SearchViewer.Schema_Column" ); //$NON-NLS-1$
 
-    // Set column names
+    /** The Columns names Array */
     private String[] columnNames = new String[]
         { TYPE_COLUMN, NAME_COLUMN, SCHEMA_COLUMN, };
 
-    //search types
+    /** The Search All type */
     public static final String SEARCH_ALL = Messages.getString( "SearchViewer.Search_All_metadata" ); //$NON-NLS-1$
+
+    /** The Search Name type */
     public static final String SEARCH_NAME = Messages.getString( "SearchViewer.Search_Name" ); //$NON-NLS-1$
+
+    /** The Search OID type */
     public static final String SEARCH_OID = Messages.getString( "SearchViewer.Search_OID" ); //$NON-NLS-1$
+
+    /** The Search Description type */
     public static final String SEARCH_DESC = Messages.getString( "SearchViewer.Search_Description" ); //$NON-NLS-1$
 
-    //current search type
+    /** The current Search type */
     public static String searchType = SEARCH_ALL;
 
 
@@ -119,12 +134,22 @@ public class SearchViewer extends ViewPart implements PoolListener
         searchField.setLayoutData( gridData );
         searchField.addModifyListener( new ModifyListener()
         {
-
             public void modifyText( ModifyEvent e )
             {
                 tableViewer.setInput( searchField.getText() );
             }
 
+        } );
+
+        searchField.addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( e.keyCode == SWT.ARROW_DOWN )
+                {
+                    table.setFocus();
+                }
+            }
         } );
 
         //search type combo
@@ -166,12 +191,10 @@ public class SearchViewer extends ViewPart implements PoolListener
      */
     private void createTable( Composite parent )
     {
-        int style = SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
-
-        table = new Table( parent, style );
+        table = new Table( parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+            | SWT.HIDE_SELECTION );
 
         GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 );
-        //gridData.horizontalSpan = 3;
         table.setLayoutData( gridData );
 
         table.setLinesVisible( false );
@@ -186,76 +209,76 @@ public class SearchViewer extends ViewPart implements PoolListener
         column = new TableColumn( table, SWT.LEFT, 1 );
         column.setText( columnNames[1] );
         column.setWidth( 400 );
-        // Add listener to column so tasks are sorted by name
-        column.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                //tableViewer.setSorter(new ExampleTaskSorter(ExampleTaskSorter.DESCRIPTION));
-            }
-        } );
 
         //3rd column with element defining schema
         column = new TableColumn( table, SWT.LEFT, 2 );
         column.setText( columnNames[2] );
         column.setWidth( 100 );
-        // Add listener to column so tasks are sorted by schema
-        column.addSelectionListener( new SelectionAdapter()
-        {
 
-            public void widgetSelected( SelectionEvent e )
-            {
-                //tableViewer.setSorter(new ExampleTaskSorter(ExampleTaskSorter.OWNER));
-            }
-        } );
-        table.addMouseListener( new MouseListener()
+        table.addMouseListener( new MouseAdapter()
         {
             public void mouseDoubleClick( MouseEvent e )
             {
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                // Getting the source Table of the double click
-                Table sourceTable = ( Table ) e.getSource();
-
-                IEditorInput input = null;
-                String editorId = null;
-
-                // Here is the double clicked item
-                Object item = sourceTable.getSelection()[0].getData();
-                if ( item instanceof AttributeType )
-                {
-                    input = new AttributeTypeFormEditorInput( ( AttributeType ) item );
-                    editorId = AttributeTypeFormEditor.ID;
-                }
-                else if ( item instanceof ObjectClass )
-                {
-                    input = new ObjectClassFormEditorInput( ( ObjectClass ) item );
-                    editorId = ObjectClassFormEditor.ID;
-                }
-
-                // Let's open the editor
-                if ( input != null )
-                {
-                    try
-                    {
-                        page.openEditor( input, editorId );
-                    }
-                    catch ( PartInitException exception )
-                    {
-                        Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
-                    }
-                }
-            }
-
-
-            public void mouseDown( MouseEvent e )
-            {
-            }
-
-
-            public void mouseUp( MouseEvent e )
-            {
+                openEditor( ( Table ) e.getSource() );
             }
         } );
+
+        table.addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( e.keyCode == SWT.ARROW_UP )
+                {
+                    searchField.setFocus();
+                }
+
+                if ( e.keyCode == 13 ) // return key
+                {
+                    openEditor( ( Table ) e.getSource() );
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Open the editor associated with the current selection in the table
+     *
+     * @param table
+     *      the associated table
+     */
+    private void openEditor( Table table )
+    {
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+        IEditorInput input = null;
+        String editorId = null;
+
+        // Here is the double clicked item
+        Object item = table.getSelection()[0].getData();
+        if ( item instanceof AttributeType )
+        {
+            input = new AttributeTypeFormEditorInput( ( AttributeType ) item );
+            editorId = AttributeTypeFormEditor.ID;
+        }
+        else if ( item instanceof ObjectClass )
+        {
+            input = new ObjectClassFormEditorInput( ( ObjectClass ) item );
+            editorId = ObjectClassFormEditor.ID;
+        }
+
+        // Let's open the editor
+        if ( input != null )
+        {
+            try
+            {
+                page.openEditor( input, editorId );
+            }
+            catch ( PartInitException exception )
+            {
+                Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+            }
+        }
     }
 
 
@@ -264,10 +287,8 @@ public class SearchViewer extends ViewPart implements PoolListener
      */
     private void createTableViewer()
     {
-
         tableViewer = new TableViewer( table );
         tableViewer.setUseHashlookup( true );
-
         tableViewer.setColumnProperties( columnNames );
     }
 
@@ -303,5 +324,4 @@ public class SearchViewer extends ViewPart implements PoolListener
     {
         super.setPartName( partName );
     }
-
 }
