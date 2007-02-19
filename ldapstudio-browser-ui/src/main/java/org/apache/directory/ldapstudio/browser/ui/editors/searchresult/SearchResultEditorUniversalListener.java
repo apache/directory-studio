@@ -574,12 +574,9 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
      */
     void setInput( ISearch search )
     {
-        if ( search != viewer.getInput() )
-        {
-            selectedSearch = search;
-            refreshInput();
-            editor.getActionGroup().setInput( search );
-        }
+        selectedSearch = search;
+        refreshInput();
+        editor.getActionGroup().setInput( search );
     }
 
 
