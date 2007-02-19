@@ -21,8 +21,6 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
-import java.util.Comparator;
-
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
@@ -111,17 +109,6 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
         {
             viewer.setExpandedState( object, true );
         }
-    }
-
-
-    /**
-     * Specify the comparator that will be used to sort the elements in that viewer
-     * @param order the comparator
-     */
-    public void setOrder( Comparator order )
-    {
-        contentProvider.setOrder( order );
-        refresh();
     }
 
 

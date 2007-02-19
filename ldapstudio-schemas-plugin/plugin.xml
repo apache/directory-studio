@@ -43,7 +43,7 @@
             allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer"
-            icon="ressources/icons/chart_organisation.png"
+            icon="ressources/icons/hierarchy_view.png"
             id="org.apache.directory.ldapstudio.schemas.view.HierarchicalViewer"
             name="%ldapstudio-schemas-plugin.views.hierarchy.name"/>
       <view
@@ -194,6 +194,10 @@
             class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage"
             id="org.apache.directory.ldapstudio.schemas.preferences.schema"
             name="%ldapstudio-schemas-plugin.preferencepages.schema.name"/>
+      <page
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage"
+            id="org.apache.directory.ldapstudio.schemas.preferences.hierarchyView"
+            name="Hierarchy View"/>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

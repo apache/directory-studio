@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -34,11 +34,13 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClas
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AlphabeticalOrderComparator;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.HierarchyViewFirstNameSorter;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.HierarchyViewOidSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -51,8 +53,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchicalContentProvider implements SortableContentProvider, IStructuredContentProvider,
-    ITreeContentProvider
+public class HierarchicalContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
     /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
@@ -63,8 +64,11 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
     /** The HashTable containing all the attribute types */
     private Hashtable<String, AttributeType> attributeTypeTable;
 
-    /** The Order Comparator */
-    private Comparator order = new AlphabeticalOrderComparator();
+    /** The FirstName Sorter */
+    private HierarchyViewFirstNameSorter firstNameSorter;
+
+    /** The OID Sorter */
+    private HierarchyViewOidSorter oidSorter;
 
 
     /**
@@ -79,6 +83,9 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
 
         objectClassTable = schemaPool.getObjectClassesAsHashTableByName();
         attributeTypeTable = schemaPool.getAttributeTypesAsHashTableByName();
+
+        firstNameSorter = new HierarchyViewFirstNameSorter();
+        oidSorter = new HierarchyViewOidSorter();
     }
 
 
@@ -96,16 +103,20 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
      */
     public Object[] getChildren( Object parentElement )
     {
+        List<DisplayableTreeElement> children = new ArrayList<DisplayableTreeElement>();
+
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        int group = store.getInt( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING );
+        int sortBy = store.getInt( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY );
+        int sortOrder = store.getInt( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER );
+
         if ( parentElement instanceof ObjectClassWrapper )
         {
             //we are looking for the childrens of the contained objectClass
             ObjectClass objectClass = ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
 
-            List<ObjectClassWrapper> subTypes = new ArrayList<ObjectClassWrapper>();
-
             //-> we need to compare each and every other objectClass's sup against them 
             //-> we also need to find a better way to do this (complexity wise)
-
             Collection<ObjectClass> objectClasses = objectClassTable.values();
             for ( Iterator iter = objectClasses.iterator(); iter.hasNext(); )
             {
@@ -124,7 +135,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                             if ( oClassSup.equals( objectClass ) )
                             {
                                 //we use an objectClass wrapper
-                                subTypes
+                                children
                                     .add( new ObjectClassWrapper( oClass, ( DisplayableTreeElement ) parentElement ) );
                                 break; //break only the inner for
                             }
@@ -133,19 +144,31 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                 }
             }
 
-            return subTypes.toArray();
-        }
+            // Sort by
+            if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+            {
 
+                Collections.sort( children, firstNameSorter );
+            }
+            else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+            {
+
+                Collections.sort( children, oidSorter );
+            }
+
+            // Sort order
+            if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+            {
+                Collections.reverse( children );
+            }
+        }
         if ( parentElement instanceof AttributeTypeWrapper )
         {
             //we are looking for the childrens of the contained attribute type
             AttributeType attributeType = ( ( AttributeTypeWrapper ) parentElement ).getMyAttributeType();
 
-            List<AttributeTypeWrapper> subTypes = new ArrayList<AttributeTypeWrapper>();
-
             //-> we need to compare each and every other attribute type sup against them 
             //-> we also need to find a better way to do this (complexity wise)
-
             Collection<AttributeType> attributeTypes = attributeTypeTable.values();
             for ( Iterator iter = attributeTypes.iterator(); iter.hasNext(); )
             {
@@ -164,7 +187,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                             if ( aTypeSup.equals( attributeType ) )
                             {
                                 //we use an objectClass wrapper
-                                subTypes
+                                children
                                     .add( new AttributeTypeWrapper( aType, ( DisplayableTreeElement ) parentElement ) );
                                 break; //break only the inner for
                             }
@@ -173,23 +196,33 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                 }
             }
 
-            return subTypes.toArray();
-        }
+            // Sort by
+            if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+            {
 
+                Collections.sort( children, firstNameSorter );
+            }
+            else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+            {
+
+                Collections.sort( children, oidSorter );
+            }
+
+            // Sort order
+            if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+            {
+                Collections.reverse( children );
+            }
+        }
         else if ( parentElement instanceof IntermediateNode )
         {
             IntermediateNode intermediate = ( IntermediateNode ) parentElement;
 
-            if ( intermediate.getName().equals( "**Primary Node**" ) ) { //$NON-NLS-1$
-                //if we are asked for the primary node it's because the whole viewer
-                //is beeing refreshed 
-                // -> the pool has been modified or it's the first display
-                // -> we need to regenerate the hashmaps containing the schemas elements
+            if ( intermediate.getName().equals( "**Primary Node**" ) ) //$NON-NLS-1$
+            {
                 refreshOcsAndAts();
 
-                //clear the primary node (because it's always the same instance we need to
-                //refresh it manually)
-                intermediate.clearChildrens();
+                List<ObjectClassWrapper> ocList = new ArrayList<ObjectClassWrapper>();
                 if ( !Activator.getDefault().getDialogSettings().getBoolean(
                     HideObjectClassesAction.HIDE_OBJECT_CLASSES_DS_KEY ) )
                 {
@@ -198,7 +231,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                     if ( top != null )
                     {
                         ObjectClassWrapper topWrapper = new ObjectClassWrapper( top, intermediate );
-                        intermediate.addElement( topWrapper );
+                        ocList.add( topWrapper );
                     }
 
                     //add the unresolved object-classes to the top of the hierarchy
@@ -212,7 +245,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                         {
                             ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
                             wrapper.setState( ObjectClassWrapper.State.unResolved );
-                            intermediate.addElement( wrapper );
+                            ocList.add( wrapper );
                             this.hasChildren( wrapper );
                         }
                         else
@@ -224,13 +257,14 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                                 {
                                     ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
                                     wrapper.setState( ObjectClassWrapper.State.unResolved );
-                                    intermediate.addElement( wrapper );
+                                    ocList.add( wrapper );
                                 }
                             }
                         }
                     }
                 }
 
+                List<AttributeTypeWrapper> atList = new ArrayList<AttributeTypeWrapper>();
                 if ( !Activator.getDefault().getDialogSettings().getBoolean(
                     HideAttributeTypesAction.HIDE_ATTRIBUTE_TYPES_DS_KEY ) )
                 {
@@ -244,15 +278,89 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
                         if ( sup == null )
                         {
                             AttributeTypeWrapper wrapper = new AttributeTypeWrapper( aType, intermediate );
-                            intermediate.addElement( wrapper );
+                            atList.add( wrapper );
                         }
                     }
                 }
-            }
 
-            return intermediate.getChildren();
+                if ( group == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST )
+                {
+                    // Sort by
+                    if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    {
+                        Collections.sort( atList, firstNameSorter );
+                        Collections.sort( ocList, firstNameSorter );
+                    }
+                    else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    {
+                        Collections.sort( atList, oidSorter );
+                        Collections.sort( ocList, oidSorter );
+                    }
+
+                    // Sort Order
+                    if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    {
+                        Collections.reverse( atList );
+                        Collections.reverse( ocList );
+                    }
+
+                    // Group
+                    children.addAll( atList );
+                    children.addAll( ocList );
+                }
+                else if ( group == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST )
+                {
+                    // Sort by
+                    if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    {
+                        Collections.sort( atList, firstNameSorter );
+                        Collections.sort( ocList, firstNameSorter );
+                    }
+                    else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    {
+                        Collections.sort( atList, oidSorter );
+                        Collections.sort( ocList, oidSorter );
+                    }
+
+                    // Sort Order
+                    if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    {
+                        Collections.reverse( atList );
+                        Collections.reverse( ocList );
+                    }
+
+                    // Group
+                    children.addAll( ocList );
+                    children.addAll( atList );
+                }
+                else if ( group == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_MIXED )
+                {
+                    // Group
+                    children.addAll( atList );
+                    children.addAll( ocList );
+
+                    // Sort by
+                    if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    {
+
+                        Collections.sort( children, firstNameSorter );
+                    }
+                    else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    {
+
+                        Collections.sort( children, oidSorter );
+                    }
+
+                    // Sort order
+                    if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    {
+                        Collections.reverse( children );
+                    }
+                }
+            }
         }
-        return new Object[0];
+
+        return children.toArray();
     }
 
 
@@ -293,7 +401,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
         }
         else if ( element instanceof IntermediateNode )
         {
-            return ( ( IntermediateNode ) element ).getChildren().length > 0;
+            return getChildren( ( IntermediateNode ) element ).length > 0;
         }
 
         return false;
@@ -312,29 +420,6 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
 
 
     /**
-     * Specify the comparator that will be used to sort the elements in the view.
-     * 
-     * @param order
-     *      the comparator
-     */
-    public void setOrder( Comparator order )
-    {
-        this.order = order;
-    }
-
-
-    /**
-     * Returns the comparator used to sort the elements in the view.
-     * 
-     * @return
-     */
-    public Comparator getOrder()
-    {
-        return order;
-    }
-
-
-    /**
      * Initialize a tree viewer to display the information provided by the specified content
      * provider.
      * 
@@ -346,7 +431,7 @@ public class HierarchicalContentProvider implements SortableContentProvider, ISt
         viewer.setContentProvider( this );
         viewer.setLabelProvider( new HierarchicalLabelProvider() );
 
-        IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null, this ); //$NON-NLS-1$
+        IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$
         viewer.setInput( invisibleNode );
     }
 

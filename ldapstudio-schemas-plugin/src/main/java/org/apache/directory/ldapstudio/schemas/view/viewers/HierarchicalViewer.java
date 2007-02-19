@@ -21,8 +21,6 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
-import java.util.Comparator;
-
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.controller.HierarchicalViewerController;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
@@ -57,16 +55,16 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl( Composite parent )
-    { 
+    {
         initViewer( parent );
-        
+
         // Registering the Viewer, so other views can be notified when the viewer selection changes
         getSite().setSelectionProvider( viewer );
-        
+
         SchemaPool pool = SchemaPool.getInstance();
         //we want to be notified if the pool has been modified
         pool.addListener( this );
-        
+
         // Adding the controller
         new HierarchicalViewerController( this );
     }
@@ -111,17 +109,6 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
         {
             viewer.setExpandedState( object, true );
         }
-    }
-
-
-    /**
-     * Specify the comparator that will be used to sort the elements in that viewer
-     * @param order the comparator
-     */
-    public void setOrder( Comparator order )
-    {
-        contentProvider.setOrder( order );
-        refresh();
     }
 
 

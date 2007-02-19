@@ -59,30 +59,6 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
 
 
     /**
-     * Gets the name of the associated attribute type.
-     * 
-     * @return
-     *      the name of the associated attribute type
-     */
-    public String getName()
-    {
-        return myAttributeType.getNames()[0];
-    }
-
-
-    /**
-     * Gets the OID of the associated attribute type.
-     * 
-     * @return
-     *      the OID of the associated attribute type
-     */
-    public String getOid()
-    {
-        return myAttributeType.getOid();
-    }
-
-
-    /**
      * Gets the associated attribute type.
      * 
      * @return 
@@ -117,15 +93,6 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayName()
-     */
-    public String getDisplayName()
-    {
-        return getName() + "  [" + myAttributeType.getOriginatingSchema().getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-
-    /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals( Object obj )
@@ -133,8 +100,9 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
         if ( obj instanceof AttributeTypeWrapper )
         {
             AttributeTypeWrapper compared = ( AttributeTypeWrapper ) obj;
-            return compared.getOid().equals( this.getOid() );
+            return compared.getMyAttributeType().getOid().equals( getMyAttributeType().getOid() );
         }
+
         return false;
     }
 

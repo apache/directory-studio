@@ -76,30 +76,6 @@ public class ObjectClassWrapper implements DisplayableTreeElement
 
 
     /**
-     * Gets the names of the associated object class.
-     *
-     * @return
-     *      the names of the associated object class
-     */
-    public String[] getNames()
-    {
-        return myObjectClass.getNames();
-    }
-
-
-    /**
-     * Gets the OID of the associated object class.
-     * 
-     * @return 
-     *      the oid of the associated object class
-     */
-    public String getOid()
-    {
-        return myObjectClass.getOid();
-    }
-
-
-    /**
      * Gets the associated object class
      * 
      * @return 
@@ -163,15 +139,6 @@ public class ObjectClassWrapper implements DisplayableTreeElement
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayName()
-     */
-    public String getDisplayName()
-    {
-        return getNames()[0] + "  [" + myObjectClass.getOriginatingSchema().getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-
-    /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals( Object obj )
@@ -179,7 +146,7 @@ public class ObjectClassWrapper implements DisplayableTreeElement
         if ( obj instanceof ObjectClassWrapper )
         {
             ObjectClassWrapper compared = ( ObjectClassWrapper ) obj;
-            return compared.getOid().equals( this.getOid() );
+            return compared.getMyObjectClass().getOid().equals( this.getMyObjectClass().getOid() );
         }
         return false;
     }

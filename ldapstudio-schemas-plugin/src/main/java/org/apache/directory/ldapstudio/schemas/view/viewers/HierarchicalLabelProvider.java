@@ -21,7 +21,12 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -36,16 +41,155 @@ import org.eclipse.ui.PlatformUI;
  */
 public class HierarchicalLabelProvider extends LabelProvider
 {
+    /** The preferences store */
+    private IPreferenceStore store;
+
+
+    /**
+     * Creates a new instance of HierarchicalLabelProvider.
+     */
+    public HierarchicalLabelProvider()
+    {
+        store = Activator.getDefault().getPreferenceStore();
+    }
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
      */
     public String getText( Object obj )
     {
-        if ( obj instanceof DisplayableTreeElement )
-            return ( ( DisplayableTreeElement ) obj ).getDisplayName();
+        String label = "";
 
+        int labelValue = store.getInt( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL );
+        boolean abbreviate = store.getBoolean( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_ABBREVIATE );
+        int abbreviateMaxLength = store.getInt( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH );
+        boolean secondaryLabelDisplay = store
+            .getBoolean( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY );
+        int secondaryLabelValue = store.getInt( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL );
+        boolean secondaryLabelAbbreviate = store
+            .getBoolean( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE );
+        int secondaryLabelAbbreviateMaxLength = store
+            .getInt( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+
+        if ( obj instanceof AttributeTypeWrapper )
+        {
+            if ( labelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+            {
+                label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
+            }
+            else if ( labelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+            {
+                label = concateNames( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
+            }
+            else if ( labelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_OID )
+            {
+                label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getOid();
+            }
+            else
+            // Default
+            {
+                label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
+            }
+        }
+        else if ( obj instanceof ObjectClassWrapper )
+        {
+            if ( labelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+            {
+                label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
+            }
+            else if ( labelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+            {
+                label = concateNames( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
+            }
+            else if ( labelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_OID )
+            {
+                label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getOid();
+            }
+            else
+            // Default
+            {
+                label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
+            }
+        }
+        else
         // Default
-        return obj.toString();
+        {
+            label = obj.toString();
+        }
+
+        if ( abbreviate && ( abbreviateMaxLength < label.length() ) )
+        {
+            label = label.substring( 0, abbreviateMaxLength ) + "...";
+        }
+
+        if ( secondaryLabelDisplay )
+        {
+            String secondaryLabel = "";
+            if ( obj instanceof AttributeTypeWrapper )
+            {
+                if ( secondaryLabelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+                {
+                    secondaryLabel = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
+                }
+                else if ( secondaryLabelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+                {
+                    secondaryLabel = concateNames( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
+                }
+                else if ( secondaryLabelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_OID )
+                {
+                    secondaryLabel = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getOid();
+                }
+            }
+            else if ( obj instanceof ObjectClassWrapper )
+            {
+                if ( secondaryLabelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+                {
+                    secondaryLabel = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
+                }
+                else if ( secondaryLabelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+                {
+                    secondaryLabel = concateNames( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
+                }
+                else if ( secondaryLabelValue == HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_OID )
+                {
+                    secondaryLabel = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getOid();
+                }
+            }
+
+            if ( secondaryLabelAbbreviate && ( secondaryLabelAbbreviateMaxLength < secondaryLabel.length() ) )
+            {
+                secondaryLabel = secondaryLabel.substring( 0, secondaryLabelAbbreviateMaxLength ) + "...";
+            }
+
+            label += "   [" + secondaryLabel + "]";
+        }
+
+        return label;
+    }
+
+
+    /**
+     * Concatenates all aliases in a String format
+     *
+     * @param aliases
+     *      the aliases to concatenate
+     * @return
+     *      a String representing all aliases
+     */
+    private String concateNames( String[] aliases )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append( aliases[0] );
+
+        for ( int i = 1; i < aliases.length; i++ )
+        {
+            sb.append( ", " );
+            sb.append( aliases[i] );
+        }
+
+        return sb.toString();
     }
 
 

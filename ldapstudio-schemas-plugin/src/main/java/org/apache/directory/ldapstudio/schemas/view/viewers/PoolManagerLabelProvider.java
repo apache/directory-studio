@@ -21,7 +21,10 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -29,21 +32,32 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * Label provider for the schema-pool manager
+ * This class implements the LabelProvider for the Schemas View.
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class PoolManagerLabelProvider extends LabelProvider
 {
-
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
      */
     public String getText( Object obj )
     {
-        if ( obj instanceof DisplayableTreeElement )
-            return ( ( DisplayableTreeElement ) obj ).getDisplayName();
+        if ( obj instanceof AttributeTypeWrapper )
+        {
+            return ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
+        }
+        else if ( obj instanceof ObjectClassWrapper )
+        {
+            return ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
+        }
+        else if ( obj instanceof SchemaWrapper )
+        {
+            return ( ( SchemaWrapper ) obj ).getMySchema().getName();
+        }
 
-        //default
+        // Default
         return obj.toString();
     }
 
@@ -54,10 +68,11 @@ public class PoolManagerLabelProvider extends LabelProvider
     public Image getImage( Object obj )
     {
         if ( obj instanceof DisplayableTreeElement )
+        {
             return ( ( DisplayableTreeElement ) obj ).getDisplayImage();
+        }
 
-        //default
+        // Default
         return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK );
-
     }
 }

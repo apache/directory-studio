@@ -77,7 +77,9 @@ public class LinkWithEditorHierarchyView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
+                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchicalViewer.ID, viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
+                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchicalViewer.ID, viewListener );
             }
         }
 
@@ -139,7 +141,9 @@ public class LinkWithEditorHierarchyView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
+                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchicalViewer.ID, viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
+                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchicalViewer.ID, viewListener );
             }
         }
     };
@@ -341,12 +345,10 @@ public class LinkWithEditorHierarchyView extends Action
             IEditorReference reference = editorReferences[i];
             IWorkbenchPart workbenchPart = reference.getPart( true );
 
-            if ( ( 
-                    ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) )
-                    || ( ( workbenchPart instanceof AttributeTypeFormEditor ) && ( wrapper instanceof AttributeTypeWrapper ) ) 
-                    || ( ( workbenchPart instanceof SchemaFormEditor ) && ( wrapper instanceof SchemaWrapper ) ) 
-                )
-                && ( reference.getPartName().equals( wrapper.getDisplayName() ) ) )
+            if ( ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) && ( reference.getPartName().equals( ( ( ObjectClassWrapper ) wrapper).getMyObjectClass().getNames()[0] ) ) )
+              || ( ( workbenchPart instanceof AttributeTypeFormEditor ) && ( wrapper instanceof AttributeTypeWrapper ) && ( reference.getPartName().equals( ( ( AttributeTypeWrapper ) wrapper).getMyAttributeType().getNames()[0] ) ) ) 
+              || ( ( workbenchPart instanceof SchemaFormEditor ) && ( wrapper instanceof SchemaWrapper ) && ( reference.getPartName().equals( ( ( SchemaWrapper ) wrapper).getMySchema().getName() ) ) ) 
+               )
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( workbenchPart );
                 return;

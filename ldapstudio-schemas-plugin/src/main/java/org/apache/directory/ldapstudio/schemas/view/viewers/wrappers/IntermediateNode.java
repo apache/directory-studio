@@ -21,12 +21,8 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers.wrappers;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SortableContentProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -42,26 +38,21 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class IntermediateNode implements DisplayableTreeElement
 {
-
     /** This enum represent the different types of IntermediateNodes */
     public enum IntermediateNodeType
     {
         NONE, OBJECT_CLASS_FOLDER, ATTRIBUTE_TYPE_FOLDER
     }
 
-    /******************************************
-     *               Fields                   *
-     ******************************************/
-    private SortableContentProvider contentProvider;
+    /** The name */
     private String name;
+
+    /** The parent element */
     private DisplayableTreeElement parent;
-    private ArrayList<DisplayableTreeElement> elements;
+
+    /** The type */
     private IntermediateNodeType type;
 
-
-    /******************************************
-     *              Constructors              *
-     ******************************************/
 
     /**
      * Default constructor
@@ -69,12 +60,10 @@ public class IntermediateNode implements DisplayableTreeElement
      * @param parent the parent DisplayableTreeElement in the schema relationship
      * hierarchy
      */
-    public IntermediateNode( String name, DisplayableTreeElement parent, SortableContentProvider contentProvider )
+    public IntermediateNode( String name, DisplayableTreeElement parent )
     {
         this.name = name;
         this.parent = parent;
-        this.contentProvider = contentProvider;
-        elements = new ArrayList<DisplayableTreeElement>();
         this.type = IntermediateNodeType.NONE;
     }
 
@@ -89,13 +78,10 @@ public class IntermediateNode implements DisplayableTreeElement
      * @param type 
      *      the type of IntermediateNode
      */
-    public IntermediateNode( String name, DisplayableTreeElement parent, SortableContentProvider contentProvider,
-        IntermediateNodeType type )
+    public IntermediateNode( String name, DisplayableTreeElement parent, IntermediateNodeType type )
     {
         this.name = name;
         this.parent = parent;
-        this.contentProvider = contentProvider;
-        elements = new ArrayList<DisplayableTreeElement>();
         this.type = type;
     }
 
@@ -122,112 +108,6 @@ public class IntermediateNode implements DisplayableTreeElement
     }
 
 
-    /******************************************
-     *                 Logic                  *
-     ******************************************/
-
-    /**
-     * Adds a 'child' element to the node only if it's not already under the node.
-     * @param o usually AttributeTypeWrappers, SchemaWrapper or ObjectClassWrappers.
-     */
-    public void addElement( DisplayableTreeElement o )
-    {
-        if ( o instanceof AttributeTypeWrapper )
-        {
-            //initial case
-            if ( elements.size() == 0 )
-                elements.add( o );
-
-            AttributeTypeWrapper toAdd = ( AttributeTypeWrapper ) o;
-            for ( DisplayableTreeElement element : elements )
-            {
-                if ( element instanceof AttributeTypeWrapper )
-                {
-                    AttributeTypeWrapper alreadyThere = ( AttributeTypeWrapper ) element;
-                    //check if the attributeType instance has already been added
-                    if ( toAdd.getMyAttributeType().equals( alreadyThere.getMyAttributeType() ) )
-                        return;
-                }
-            }
-            elements.add( o );
-        }
-        else if ( o instanceof ObjectClassWrapper )
-        {
-            //initial case
-            if ( elements.size() == 0 )
-                elements.add( o );
-
-            ObjectClassWrapper toAdd = ( ObjectClassWrapper ) o;
-            for ( DisplayableTreeElement element : elements )
-            {
-                if ( element instanceof ObjectClassWrapper )
-                {
-                    ObjectClassWrapper alreadyThere = ( ObjectClassWrapper ) element;
-
-                    //check if the objectClass instance has already been added
-                    if ( toAdd.getMyObjectClass().equals( alreadyThere.getMyObjectClass() ) )
-                        return;
-                }
-            }
-            elements.add( o );
-        }
-        else if ( o instanceof SchemaWrapper )
-        {
-            //initial case
-            if ( elements.size() == 0 )
-                elements.add( o );
-
-            SchemaWrapper toAdd = ( SchemaWrapper ) o;
-            for ( DisplayableTreeElement element : elements )
-            {
-                if ( element instanceof SchemaWrapper )
-                {
-                    SchemaWrapper alreadyThere = ( SchemaWrapper ) element;
-
-                    if ( toAdd.getMySchema().getName().equals( alreadyThere.getMySchema().getName() ) )
-                        return;
-                }
-            }
-            elements.add( o );
-        }
-    }
-
-
-    /**
-     * Clears the list of childrens from the intermediate nodes
-     */
-    public void clearChildrens()
-    {
-        elements = new ArrayList<DisplayableTreeElement>();
-    }
-
-
-    /**
-     * Returns the child elements in the form of an array of objects
-     * @return
-     */
-    @SuppressWarnings("unchecked")//$NON-NLS-1$
-    public Object[] getChildren()
-    {
-        Collections.sort( elements, contentProvider.getOrder() );
-        return elements.toArray( new Object[]
-            {} );
-    }
-
-
-    /******************************************
-     *       DisplayableTreeElement Impl.     *
-     ******************************************/
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayName()
-     */
-    public String getDisplayName()
-    {
-        return getName();
-    }
-
-
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayImage()
      */
@@ -239,13 +119,13 @@ public class IntermediateNode implements DisplayableTreeElement
                 String imageKey = ISharedImages.IMG_OBJ_FOLDER;
                 return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );
             case ATTRIBUTE_TYPE_FOLDER:
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.FOLDER_ATTRIBUTE_TYPE )
-                .createImage();
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+                    IImageKeys.FOLDER_ATTRIBUTE_TYPE ).createImage();
             case OBJECT_CLASS_FOLDER:
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.FOLDER_OBJECT_CLASS )
-                .createImage();
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+                    IImageKeys.FOLDER_OBJECT_CLASS ).createImage();
         }
-        
+
         String imageKey = ISharedImages.IMG_OBJ_FOLDER;
         return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );
     }

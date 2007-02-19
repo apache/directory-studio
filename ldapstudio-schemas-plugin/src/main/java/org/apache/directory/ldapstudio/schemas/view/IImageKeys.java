@@ -38,13 +38,12 @@ public interface IImageKeys
     public static final String SAVE = "ressources/icons/save.gif"; //$NON-NLS-1$
     public static final String SAVE_AS = "ressources/icons/save_as.png"; //$NON-NLS-1$
     public static final String SAVE_ALL = "ressources/icons/save_all.png"; //$NON-NLS-1$
-    public static final String SORT_ALPHABETICAL = "ressources/icons/sort_alphabetical.gif"; //$NON-NLS-1$
-    public static final String SORT_UNALPHABETICAL = "ressources/icons/sort_unalphabetical.gif"; //$NON-NLS-1$
     public static final String SHOW_PREFERENCES = "ressources/icons/preferences.png"; //$NON-NLS-1$
     public static final String LINK_WITH_EDITOR = "ressources/icons/link_with_editor.gif"; //$NON-NLS-1$
     public static final String COLLAPSE_ALL = "ressources/icons/collapse_all.gif"; //$NON-NLS-1$
     public static final String HIDE_OBJECT_CLASSES = "ressources/icons/hide_object_classes.png"; //$NON-NLS-1$
     public static final String HIDE_ATTRIBUTE_TYPES = "ressources/icons/hide_attribute_types.png"; //$NON-NLS-1$
+    public static final String SORT = "ressources/icons/sort.gif"; //$NON-NLS-1$
 
     // Images for Views
     public static final String FOLDER_ATTRIBUTE_TYPE = "ressources/icons/folder_at.gif"; //$NON-NLS-1$

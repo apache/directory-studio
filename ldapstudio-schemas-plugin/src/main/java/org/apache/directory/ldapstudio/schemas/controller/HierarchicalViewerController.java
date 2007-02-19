@@ -21,23 +21,27 @@
 package org.apache.directory.ldapstudio.schemas.controller;
 
 
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeTypesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorHierarchyView;
-import org.apache.directory.ldapstudio.schemas.controller.actions.SortHierarchicalViewAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenHierarchyViewPreferencesAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSortDialogAction;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer;
-import org.apache.directory.ldapstudio.schemas.view.viewers.Messages;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -61,14 +65,15 @@ public class HierarchicalViewerController
 
     /** The associated view */
     private HierarchicalViewer view;
-    
+
     // The Actions
     private HideObjectClassesAction hideObjectClasses;
     private HideAttributeTypesAction hideAttributeTypes;
-    private SortHierarchicalViewAction sortAlphabetical;
-    private SortHierarchicalViewAction sortUnAlphabetical;
     private CollapseAllAction collapseAll;
     private LinkWithEditorHierarchyView linkWithEditor;
+    private OpenSortDialogAction openSortDialog;
+    private OpenHierarchyViewPreferencesAction openPreferencePage;
+
 
     /**
      * Creates a new instance of HierarchicalViewerController.
@@ -80,8 +85,9 @@ public class HierarchicalViewerController
 
         initActions();
         initToolbar();
-
+        initMenu();
         initDoubleClickListener();
+        initPreferencesListener();
     }
 
 
@@ -92,14 +98,10 @@ public class HierarchicalViewerController
     {
         hideObjectClasses = new HideObjectClassesAction( view );
         hideAttributeTypes = new HideAttributeTypesAction( view );
-        sortAlphabetical = new SortHierarchicalViewAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortHierarchicalViewAction.SortType.alphabetical, Messages
-                .getString( "HierarchicalViewer.Sort_alphabetically" ) ); //$NON-NLS-1$
-        sortUnAlphabetical = new SortHierarchicalViewAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortHierarchicalViewAction.SortType.unalphabetical, Messages
-                .getString( "HierarchicalViewer.Sort_unalphabetically" ) ); //$NON-NLS-1$
         collapseAll = new CollapseAllAction( view.getViewer() );
         linkWithEditor = new LinkWithEditorHierarchyView( view );
+        openSortDialog = new OpenSortDialogAction();
+        openPreferencePage = new OpenHierarchyViewPreferencesAction();
     }
 
 
@@ -112,11 +114,22 @@ public class HierarchicalViewerController
         toolbar.add( hideObjectClasses );
         toolbar.add( hideAttributeTypes );
         toolbar.add( new Separator() );
-        toolbar.add( sortAlphabetical );
-        toolbar.add( sortUnAlphabetical );
-        toolbar.add( new Separator() );
         toolbar.add( collapseAll );
         toolbar.add( linkWithEditor );
+    }
+
+
+    /**
+     * Initializes the Menu.
+     */
+    private void initMenu()
+    {
+        IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
+        menu.add( openSortDialog );
+        menu.add( new Separator() );
+        menu.add( linkWithEditor );
+        menu.add( new Separator() );
+        menu.add( openPreferencePage );
     }
 
 
@@ -176,5 +189,24 @@ public class HierarchicalViewerController
                 }
             }
         } );
+    }
+
+
+    /**
+     * Initializes the listener on the preferences store
+     */
+    private void initPreferencesListener()
+    {
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        {
+            /* (non-Javadoc)
+             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+             */
+            public void propertyChange( PropertyChangeEvent event )
+            {
+                view.getViewer().refresh();
+            }
+        } );
+
     }
 }

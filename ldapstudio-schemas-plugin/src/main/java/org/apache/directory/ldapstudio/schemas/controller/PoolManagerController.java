@@ -32,7 +32,6 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaSour
 import org.apache.directory.ldapstudio.schemas.controller.actions.RemoveSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAsAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.SortPoolManagerAction;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaCreationException;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -41,7 +40,6 @@ import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEdi
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.Messages;
 import org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -103,8 +101,6 @@ public class PoolManagerController
     private Action createANewObjectClass;
     private Action createANewAttributeType;
     private Action deleteAction;
-    private Action sortAlphabetical;
-    private Action sortUnAlphabetical;
     private Action collapseAll;
     private Action linkWithEditor;
     private Action openSchemaSourceCode;
@@ -142,10 +138,6 @@ public class PoolManagerController
         createANewObjectClass = new CreateANewObjectClassAction();
         createANewAttributeType = new CreateANewAttributeTypeAction();
         deleteAction = new DeleteAction();
-        sortAlphabetical = new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortPoolManagerAction.SortType.alphabetical, Messages.getString( "PoolManager.Sort_alphabetically" ) ); //$NON-NLS-1$
-        sortUnAlphabetical = new SortPoolManagerAction( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            SortPoolManagerAction.SortType.unalphabetical, Messages.getString( "PoolManager.Sort_unalphabetically" ) ); //$NON-NLS-1$
         collapseAll = new CollapseAllAction( view.getViewer() );
         linkWithEditor = new LinkWithEditorSchemasView( view );
         openSchemaSourceCode = new OpenSchemaSourceCode( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
@@ -168,9 +160,6 @@ public class PoolManagerController
         toolbar.add( createANewObjectClass );
         toolbar.add( createANewAttributeType );
         toolbar.add( ( IAction ) deleteAction );
-        toolbar.add( new Separator() );
-        toolbar.add( sortAlphabetical );
-        toolbar.add( sortUnAlphabetical );
         toolbar.add( new Separator() );
         toolbar.add( collapseAll );
         toolbar.add( linkWithEditor );
@@ -295,12 +284,14 @@ public class PoolManagerController
                 }
             }
 
+
             /**
              * {@inheritDoc}
              */
             public void dragOver( DropTargetEvent event )
             {
             }
+
 
             /**
              * {@inheritDoc}
@@ -309,6 +300,7 @@ public class PoolManagerController
             {
             }
 
+
             /**
              * {@inheritDoc}
              */
@@ -316,12 +308,14 @@ public class PoolManagerController
             {
             }
 
+
             /**
              * {@inheritDoc}
              */
             public void dropAccept( DropTargetEvent event )
             {
             }
+
 
             /**
              * {@inheritDoc}
@@ -463,7 +457,8 @@ public class PoolManagerController
                 else if ( selectedObject instanceof AttributeTypeWrapper )
                 {
                     AttributeTypeWrapper attributeTypeWrapper = ( AttributeTypeWrapper ) selectedObject;
-                    deleteAction.setText( "Delete Attribute Type" + " '" + attributeTypeWrapper.getName() + "'" );
+                    deleteAction.setText( "Delete Attribute Type" + " '"
+                        + attributeTypeWrapper.getMyAttributeType().getNames()[0] + "'" );
 
                     if ( attributeTypeWrapper.getMyAttributeType().getOriginatingSchema().type == SchemaType.coreSchema )
                     {
@@ -481,7 +476,8 @@ public class PoolManagerController
                 else if ( selectedObject instanceof ObjectClassWrapper )
                 {
                     ObjectClassWrapper objectClassWrapper = ( ObjectClassWrapper ) selectedObject;
-                    deleteAction.setText( "Delete Object Class" + " '" + objectClassWrapper.getNames()[0] + "'" );
+                    deleteAction.setText( "Delete Object Class" + " '"
+                        + objectClassWrapper.getMyObjectClass().getNames()[0] + "'" );
 
                     if ( objectClassWrapper.getMyObjectClass().getOriginatingSchema().type == SchemaType.coreSchema )
                     {

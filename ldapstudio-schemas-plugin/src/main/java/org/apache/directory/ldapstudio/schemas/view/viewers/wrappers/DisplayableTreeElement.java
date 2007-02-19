@@ -40,13 +40,5 @@ public interface DisplayableTreeElement
     public Image getDisplayImage();
 
 
-    /**
-     * Use this method to get the name that should be displayed in
-     * the tree view.
-     * @return the display name
-     */
-    public String getDisplayName();
-
-
     public DisplayableTreeElement getParent();
 }

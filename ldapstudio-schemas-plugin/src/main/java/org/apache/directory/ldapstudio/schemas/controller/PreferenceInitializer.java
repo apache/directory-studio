@@ -21,11 +21,15 @@
 package org.apache.directory.ldapstudio.schemas.controller;
 
 
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.preferences.GeneralPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyViewSorterDialog;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 
 public class PreferenceInitializer extends AbstractPreferenceInitializer
@@ -47,6 +51,26 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         defaults.putBoolean( SchemaPreferencePage.SAVE_WORKSPACE, true );
         defaults.putBoolean( SchemaPreferencePage.SPECIFIC_CORE, false );
         defaults.put( SchemaPreferencePage.SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
-    }
 
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        // Hierarchy View Preference Page
+        store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL,
+            HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
+        store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_ABBREVIATE, true );
+        store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, true );
+        store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL,
+            HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_OID );
+        store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
+        store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" );
+
+        // Hierarchy View Sorting
+        store.setDefault( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING,
+            HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST );
+        store.setDefault( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY,
+            HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME );
+        store.setDefault( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER,
+            HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING );
+    }
 }

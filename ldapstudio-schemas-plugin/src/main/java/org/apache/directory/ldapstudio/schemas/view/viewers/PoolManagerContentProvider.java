@@ -21,17 +21,20 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AlphabeticalOrderComparator;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.PoolManagerAttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.PoolManagerObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemasViewSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -40,15 +43,15 @@ import org.eclipse.jface.viewers.Viewer;
 
 
 /**
- * Content provider for the schema-pool manager
+ * This class implements the Content Provider for the Schemas View.
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
-public class PoolManagerContentProvider implements SortableContentProvider, IStructuredContentProvider,
-    ITreeContentProvider
+public class PoolManagerContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
-
+    /** The Schema Pool */
     private SchemaPool pool;
-    private Comparator order = new AlphabeticalOrderComparator();
 
 
     /**
@@ -70,6 +73,106 @@ public class PoolManagerContentProvider implements SortableContentProvider, IStr
 
 
     /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+     */
+    public Object[] getChildren( Object parentElement )
+    {
+        List<DisplayableTreeElement> children = new ArrayList<DisplayableTreeElement>();
+
+        if ( parentElement instanceof IntermediateNode )
+        {
+            IntermediateNode intermediate = ( IntermediateNode ) parentElement;
+            if ( intermediate.getName().equals( "**Primary Node**" ) ) //$NON-NLS-1$
+            {
+                Schema[] schemas = this.pool.getSchemas();
+                for ( int i = 0; i < schemas.length; i++ )
+                {
+                    children.add( new SchemaWrapper( schemas[i], ( IntermediateNode ) parentElement ) );
+                }
+            }
+            else if ( intermediate.getType().equals( IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ) )
+            {
+                Schema schema = ( ( SchemaWrapper ) intermediate.getParent() ).getMySchema();
+
+                AttributeType[] attributeTypeList = schema.getAttributeTypesAsArray();
+                for ( int i = 0; i < attributeTypeList.length; i++ )
+                {
+                    children.add( new AttributeTypeWrapper( attributeTypeList[i], intermediate ) );
+                }
+            }
+            else if ( intermediate.getType().equals( IntermediateNodeType.OBJECT_CLASS_FOLDER ) )
+            {
+                Schema schema = ( ( SchemaWrapper ) intermediate.getParent() ).getMySchema();
+
+                ObjectClass[] objectClassList = schema.getObjectClassesAsArray();
+                for ( int i = 0; i < objectClassList.length; i++ )
+                {
+                    children.add( new ObjectClassWrapper( objectClassList[i], intermediate ) );
+                }
+            }
+        }
+        else if ( parentElement instanceof SchemaWrapper )
+        {
+            IntermediateNode attributeTypes = new IntermediateNode(
+                "Attribute Types", ( SchemaWrapper ) parentElement, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
+            IntermediateNode objectClasses = new IntermediateNode(
+                "Object Classes", ( SchemaWrapper ) parentElement, IntermediateNodeType.OBJECT_CLASS_FOLDER ); //$NON-NLS-1$
+
+            children.add( attributeTypes );
+            children.add( objectClasses );
+        }
+
+        // Sorting children
+        Collections.sort( children, new SchemasViewSorter() );
+
+        return children.toArray();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+     */
+    public Object getParent( Object element )
+    {
+        if ( element instanceof DisplayableTreeElement )
+        {
+            return ( ( DisplayableTreeElement ) element ).getParent();
+        }
+
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+     */
+    public boolean hasChildren( Object element )
+    {
+        if ( element instanceof DisplayableTreeElement )
+        {
+            return getChildren( element ).length > 0;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Initialize a tree viewer to display the information provided by the specified content
+     * provider
+     * @param viewer the tree viewer
+     */
+    public void bindToTreeViewer( TreeViewer viewer )
+    {
+        viewer.setContentProvider( this );
+        viewer.setLabelProvider( new PoolManagerLabelProvider() );
+
+        IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$
+        viewer.setInput( invisibleNode );
+    }
+
+
+    /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.IContentProvider#dispose()
      */
     public void dispose()
@@ -82,140 +185,5 @@ public class PoolManagerContentProvider implements SortableContentProvider, IStr
      */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-     */
-    public Object[] getChildren( Object parentElement )
-    {
-        if ( parentElement instanceof IntermediateNode )
-        {
-            IntermediateNode intermediate = ( IntermediateNode ) parentElement;
-
-            if ( intermediate.getName().equals( "**Primary Node**" ) ) { //$NON-NLS-1$
-                // clear the primary node (because it's always the same instance we need to
-                //refresh it manually)
-                intermediate.clearChildrens();
-
-                Schema[] schemas = this.pool.getSchemas();
-                for ( int i = 0; i < schemas.length; i++ )
-                {
-                    Schema schema = schemas[i];
-                    SchemaWrapper schemaWrapper = new SchemaWrapper( schema, ( IntermediateNode ) parentElement );
-                    intermediate.addElement( schemaWrapper );
-                }
-            }
-
-            Object[] temp = intermediate.getChildren();
-            return temp;
-        }
-
-        else if ( parentElement instanceof SchemaWrapper )
-        {
-            //we are looking for the childrens of the contained objectClass
-            Schema schema = ( ( ( SchemaWrapper ) parentElement ).getMySchema() );
-
-            IntermediateNode attributeTypes = new IntermediateNode(
-                "Attribute Types", ( SchemaWrapper ) parentElement, this, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
-            IntermediateNode objectClasses = new IntermediateNode(
-                "Object Classes", ( SchemaWrapper ) parentElement, this, IntermediateNodeType.OBJECT_CLASS_FOLDER ); //$NON-NLS-1$
-
-            // Let's get all Attribute Types defined in the schema
-            AttributeType[] attributeTypeList = schema.getAttributeTypesAsArray();
-            for ( int i = 0; i < attributeTypeList.length; i++ )
-            {
-                AttributeType attributeType = attributeTypeList[i];
-                attributeTypes.addElement( new PoolManagerAttributeTypeWrapper( attributeType, attributeTypes ) );
-            }
-
-            // Let's get all Object Classes defined in the schema
-            ObjectClass[] objectClassList = schema.getObjectClassesAsArray();
-            for ( int i = 0; i < objectClassList.length; i++ )
-            {
-                ObjectClass objectClass = objectClassList[i];
-                objectClasses.addElement( new PoolManagerObjectClassWrapper( objectClass, objectClasses ) );
-            }
-
-            return new Object[]
-                { attributeTypes, objectClasses };
-        }
-
-        return new Object[0];
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-     */
-    public Object getParent( Object element )
-    {
-        if ( element instanceof SchemaWrapper )
-        {
-            return ( ( SchemaWrapper ) element ).getParent();
-        }
-        else if ( element instanceof IntermediateNode )
-        {
-            return ( ( IntermediateNode ) element ).getParent();
-        }
-        return null;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-     */
-    public boolean hasChildren( Object element )
-    {
-        if ( element instanceof IntermediateNode )
-        {
-            if ( ( ( IntermediateNode ) element ).getChildren().length > 0 )
-                return true;
-        }
-        else if ( element instanceof SchemaWrapper )
-        {
-            return true;
-        }
-        return false;
-    }
-
-
-    /******************************************
-     *                 Logic                  *
-     ******************************************/
-
-    /**
-     * Specify the comparator that will be used to sort the elements in the view
-     * @param order the comparator
-     */
-    public void setOrder( Comparator order )
-    {
-        this.order = order;
-    }
-
-
-    /**
-     * Returns the comparator used to sort the elements in the view
-     * @return
-     */
-    public Comparator getOrder()
-    {
-        return order;
-    }
-
-
-    /**
-     * Initialize a tree viewer to display the information provided by the specified content
-     * provider
-     * @param viewer the tree viewer
-     */
-    public void bindToTreeViewer( TreeViewer viewer )
-    {
-        viewer.setContentProvider( this );
-        viewer.setLabelProvider( new HierarchicalLabelProvider() );
-
-        IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null, this ); //$NON-NLS-1$
-        viewer.setInput( invisibleNode );
     }
 }
