@@ -26,7 +26,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionConfiguration;
 import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionWidget;
-
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -37,48 +36,73 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
+/**
+ * This class implements the connection view. It displays all connections.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionView extends ViewPart
 {
 
+    /** The configuration. */
     private ConnectionConfiguration configuration;
 
+    /** The actions */
     private ConnectionViewActionGroup actionGroup;
 
+    /** The main widget */
     private ConnectionWidget mainWidget;
 
+    /** The listeners */
     private ConnectionViewUniversalListener universalListener;
 
 
+    /**
+     * Returns the connection view ID.
+     * 
+     * @return the connection view ID.
+     */
     public static String getId()
     {
         return ConnectionView.class.getName();
     }
 
 
+    /**
+     * Creates a new instance of ConnectionView.
+     */
     public ConnectionView()
     {
-        super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation sets focus to the viewer's control.
+     */
     public void setFocus()
     {
         mainWidget.getViewer().getControl().setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.configuration != null )
+        if ( configuration != null )
         {
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.configuration.dispose();
-            this.configuration = null;
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
+            actionGroup.dispose();
+            actionGroup = null;
+            configuration.dispose();
+            configuration = null;
+            universalListener.dispose();
+            universalListener = null;
+            mainWidget.dispose();
+            mainWidget = null;
             getSite().setSelectionProvider( null );
         }
 
@@ -86,6 +110,9 @@ public class ConnectionView extends ViewPart
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createPartControl( Composite parent )
     {
 
@@ -100,54 +127,93 @@ public class ConnectionView extends ViewPart
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_connections_view" );
 
         // create configuration
-        this.configuration = new ConnectionConfiguration();
+        configuration = new ConnectionConfiguration();
 
         // create main widget
-        this.mainWidget = new ConnectionWidget( this.configuration, getViewSite().getActionBars() );
-        this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( BrowserCorePlugin.getDefault().getConnectionManager() );
+        mainWidget = new ConnectionWidget( configuration, getViewSite().getActionBars() );
+        mainWidget.createWidget( composite );
+        mainWidget.setInput( BrowserCorePlugin.getDefault().getConnectionManager() );
 
         // create actions and context menu (and register global actions)
-        this.actionGroup = new ConnectionViewActionGroup( this );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.enableGlobalActionHandlers( getViewSite().getActionBars() );
-        this.actionGroup.fillContextMenu( this.configuration.getContextMenuManager( this.mainWidget.getViewer() ) );
+        actionGroup = new ConnectionViewActionGroup( this );
+        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+        actionGroup.fillMenu( mainWidget.getMenuManager() );
+        actionGroup.enableGlobalActionHandlers( getViewSite().getActionBars() );
+        actionGroup.fillContextMenu( configuration.getContextMenuManager( mainWidget.getViewer() ) );
 
         // create the listener
-        getSite().setSelectionProvider( this.mainWidget.getViewer() );
-        this.universalListener = new ConnectionViewUniversalListener( this );
+        getSite().setSelectionProvider( mainWidget.getViewer() );
+        universalListener = new ConnectionViewUniversalListener( this );
 
         // default selection
         IConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getConnections();
         if ( connections.length > 0 )
         {
             ISelection selection = new StructuredSelection( connections[0] );
-            this.mainWidget.getViewer().setSelection( selection );
-            this.universalListener.selectionChanged( this, selection );
+            mainWidget.getViewer().setSelection( selection );
+            //this.universalListener.selectionChanged( this, selection );
         }
 
     }
 
 
+    /**
+     * Selects the given object in the tree. The object
+     * must be an IConnection.
+     * 
+     * @param obj the object to select
+     */
+    public void select( Object obj )
+    {
+        if ( obj instanceof IConnection )
+        {
+            IConnection connection = ( IConnection ) obj;
+
+            mainWidget.getViewer().reveal( connection );
+            mainWidget.getViewer().refresh( connection, true );
+            mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+        }
+    }
+
+
+    /**
+     * Gets the action group.
+     * 
+     * @return the action group
+     */
     public ConnectionViewActionGroup getActionGroup()
     {
         return actionGroup;
     }
 
 
+    /**
+     * Gets the configuration.
+     * 
+     * @return the configuration
+     */
     public ConnectionConfiguration getConfiguration()
     {
         return configuration;
     }
 
 
+    /**
+     * Gets the main widget.
+     * 
+     * @return the main widget
+     */
     public ConnectionWidget getMainWidget()
     {
         return mainWidget;
     }
 
 
+    /**
+     * Gets the universal listener.
+     * 
+     * @return the universal listener
+     */
     public ConnectionViewUniversalListener getUniversalListener()
     {
         return universalListener;

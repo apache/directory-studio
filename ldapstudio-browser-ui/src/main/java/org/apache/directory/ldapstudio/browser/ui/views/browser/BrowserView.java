@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
@@ -39,60 +38,82 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.part.ViewPart;
 
 
+/**
+ * This class implements the browser view. It displays the DIT, the searches and the bookmarks.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserView extends ViewPart
 {
 
+    /** The configuration */
     private BrowserConfiguration configuration;
 
+    /** The listeners */
     private BrowserViewUniversalListener universalListener;
 
+    /** The actions */
     private BrowserViewActionGroup actionGroup;
 
+    /** The browser's main widget */
     private BrowserWidget mainWidget;
 
 
     // private DragAction dragAction;
     // private DropAction dropAction;
 
+    /**
+     * Returns the browser view ID.
+     * 
+     * @return the browser view ID.
+     */
     public static String getId()
     {
         return BrowserView.class.getName();
     }
 
 
+    /**
+     * Creates a new instance of BrowserView.
+     */
     public BrowserView()
     {
-        super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation sets focus to the viewer's control.
+     */
     public void setFocus()
     {
         mainWidget.getViewer().getControl().setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.configuration != null )
+        if ( configuration != null )
         {
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.configuration.dispose();
-            this.configuration = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
+            actionGroup.dispose();
+            actionGroup = null;
+            universalListener.dispose();
+            universalListener = null;
+            configuration.dispose();
+            configuration = null;
+            mainWidget.dispose();
+            mainWidget = null;
             getSite().setSelectionProvider( null );
         }
 
@@ -100,6 +121,9 @@ public class BrowserView extends ViewPart
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createPartControl( Composite parent )
     {
 
@@ -114,23 +138,23 @@ public class BrowserView extends ViewPart
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_browser_view" );
 
         // create configuration
-        this.configuration = new BrowserConfiguration();
+        configuration = new BrowserConfiguration();
 
         // create main widget
-        this.mainWidget = new BrowserWidget( this.configuration, getViewSite().getActionBars() );
-        this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( getSite() );
+        mainWidget = new BrowserWidget( configuration, getViewSite().getActionBars() );
+        mainWidget.createWidget( composite );
+        mainWidget.setInput( getSite() );
 
         // create actions and context menu (and register global actions)
-        this.actionGroup = new BrowserViewActionGroup( this );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.enableGlobalActionHandlers( getViewSite().getActionBars() );
-        this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
+        actionGroup = new BrowserViewActionGroup( this );
+        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+        actionGroup.fillMenu( mainWidget.getMenuManager() );
+        actionGroup.enableGlobalActionHandlers( getViewSite().getActionBars() );
+        actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
 
         // create the listener
-        getSite().setSelectionProvider( this.mainWidget.getViewer() );
-        this.universalListener = new BrowserViewUniversalListener( this );
+        getSite().setSelectionProvider( mainWidget.getViewer() );
+        universalListener = new BrowserViewUniversalListener( this );
 
         // DND support
         // int ops = DND.DROP_COPY | DND.DROP_MOVE;
@@ -141,47 +165,54 @@ public class BrowserView extends ViewPart
     }
 
 
+    /**
+     * Selects the given object in the tree. The object
+     * must be an IEntry, ISearch, ISearchResult or IBookmark.
+     * 
+     * @param obj the object to select
+     */
     public void select( Object obj )
     {
+        Object objectToSelect = null;
+
         if ( obj instanceof ISearch )
         {
             ISearch search = ( ISearch ) obj;
 
-            this.mainWidget.getViewer().expandToLevel( search, 0 );
+            universalListener.setInput( search.getConnection() );
 
-            this.mainWidget.getViewer().reveal( search );
-            this.mainWidget.getViewer().refresh( search, true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( search ), true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( search ), true );
+            mainWidget.getViewer().expandToLevel( search, 0 );
+
+            objectToSelect = search;
         }
         if ( obj instanceof ISearchResult )
         {
             ISearchResult searchResult = ( ISearchResult ) obj;
             ISearch search = searchResult.getSearch();
 
-            this.mainWidget.getViewer().expandToLevel( search, 1 );
+            universalListener.setInput( search.getConnection() );
 
-            this.mainWidget.getViewer().reveal( searchResult );
-            this.mainWidget.getViewer().refresh( searchResult, true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( searchResult ), true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( searchResult ), true );
+            mainWidget.getViewer().expandToLevel( search, 1 );
+
+            objectToSelect = searchResult;
         }
         if ( obj instanceof IBookmark )
         {
             IBookmark bookmark = ( IBookmark ) obj;
-            
-            this.mainWidget.getViewer().expandToLevel( bookmark, 0 );
-            
-            this.mainWidget.getViewer().reveal( bookmark );
-            this.mainWidget.getViewer().refresh( bookmark, true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( bookmark ), true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( bookmark ), true );
+
+            universalListener.setInput( bookmark.getConnection() );
+
+            mainWidget.getViewer().expandToLevel( bookmark, 0 );
+
+            objectToSelect = bookmark;
         }
         if ( obj instanceof IEntry )
         {
             IEntry entry = ( IEntry ) obj;
 
-            List entryList = new ArrayList();
+            universalListener.setInput( entry.getConnection() );
+
+            List<IEntry> entryList = new ArrayList<IEntry>();
             IEntry tempEntry = entry;
             while ( tempEntry.getParententry() != null )
             {
@@ -201,58 +232,24 @@ public class BrowserView extends ViewPart
                 }
             }
 
-            this.mainWidget.getViewer().reveal( entry );
-            this.mainWidget.getViewer().refresh( entry, true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( entry ), true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( entry ), true );
+            objectToSelect = entry;
+        }
+
+        if ( objectToSelect != null )
+        {
+            mainWidget.getViewer().reveal( objectToSelect );
+            mainWidget.getViewer().refresh( objectToSelect, true );
+            mainWidget.getViewer().setSelection( new StructuredSelection( objectToSelect ), true );
+
         }
     }
 
 
-    public static void setInput( IConnection connection )
-    {
-        try
-        {
-            String targetId = BrowserView.getId();
-            IViewPart targetView = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-                targetId );
-
-            if ( targetView == null && connection != null )
-            {
-                try
-                {
-                    targetView = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-                        targetId, null, IWorkbenchPage.VIEW_VISIBLE );
-                }
-                catch ( PartInitException e )
-                {
-                }
-            }
-
-            try
-            {
-                targetView = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( targetId,
-                    null, IWorkbenchPage.VIEW_VISIBLE );
-            }
-            catch ( PartInitException e )
-            {
-            }
-
-            // set input
-            if ( targetView != null && targetView instanceof BrowserView )
-            {
-                ( ( BrowserView ) targetView ).universalListener.setInput( connection );
-            }
-        }
-        catch ( NullPointerException npe )
-        {
-        }
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class required )
     {
-
         if ( IShowInTarget.class.equals( required ) )
         {
             return new IShowInTarget()
@@ -280,7 +277,6 @@ public class BrowserView extends ViewPart
                         ISearch search = sr.getSearch();
                         select( search );
                     }
-                    System.out.println( "BrowserView: " + context.getInput() + "," + context.getSelection() );
                     return true;
                 }
             };
@@ -290,24 +286,44 @@ public class BrowserView extends ViewPart
     }
 
 
+    /**
+     * Gets the action group.
+     *
+     * @return the action group
+     */
     public BrowserViewActionGroup getActionGroup()
     {
         return actionGroup;
     }
 
 
+    /**
+     * Gets the configuration.
+     *
+     * @return the configuration
+     */
     public BrowserConfiguration getConfiguration()
     {
         return configuration;
     }
 
 
+    /**
+     * Gets the main widget.
+     * 
+     * @return the main widget
+     */
     public BrowserWidget getMainWidget()
     {
         return mainWidget;
     }
 
 
+    /**
+     * Gets the universal listener.
+     * 
+     * @return the universal listener
+     */
     public BrowserViewUniversalListener getUniversalListener()
     {
         return universalListener;

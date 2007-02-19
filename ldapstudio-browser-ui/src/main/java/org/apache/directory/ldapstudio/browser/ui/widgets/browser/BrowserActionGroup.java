@@ -33,7 +33,6 @@ import org.apache.directory.ldapstudio.browser.ui.actions.RefreshAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.UnfilterChildrenAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.UpAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserViewActionProxy;
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -47,103 +46,145 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.commands.ICommandService;
 
 
+/**
+ * This class manages all the actions of the browser widget.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserActionGroup implements IMenuListener
 {
 
+    /** The open sort dialog action. */
     protected OpenSortDialogAction openSortDialogAction;
 
+    /** The collapse all action. */
     protected CollapseAllAction collapseAllAction;
 
+    /** The Constant upAction. */
     protected static final String upAction = "upAction";
 
+    /** The Constant refreshAction. */
     protected static final String refreshAction = "refreshAction";
 
+    /** The Constant filterChildrenAction. */
     protected static final String filterChildrenAction = "filterChildrenAction";
 
+    /** The Constant unfilterChildrenAction. */
     protected static final String unfilterChildrenAction = "unfilterChildrenAction";
 
+    /** The Constant propertyDialogAction. */
     protected static final String propertyDialogAction = "propertyDialogAction";
 
-    protected Map browserActionMap;
+    /** The browser action map. */
+    protected Map<String, BrowserViewActionProxy> browserActionMap;
 
+    /** The action bars. */
     protected IActionBars actionBars;
 
+    /** The browser's main widget. */
     protected BrowserWidget mainWidget;
 
 
+    /**
+     * Creates a new instance of BrowserActionGroup.
+     *
+     * @param mainWidget the browser's main widget
+     * @param configuration the  browser's configuration
+     */
     public BrowserActionGroup( BrowserWidget mainWidget, BrowserConfiguration configuration )
     {
         this.mainWidget = mainWidget;
-        this.browserActionMap = new HashMap();
+        this.browserActionMap = new HashMap<String, BrowserViewActionProxy>();
+
         TreeViewer viewer = mainWidget.getViewer();
+        openSortDialogAction = new OpenSortDialogAction( ( BrowserPreferences ) configuration.getPreferences() );
+        collapseAllAction = new CollapseAllAction( viewer );
 
-        this.openSortDialogAction = new OpenSortDialogAction( ( BrowserPreferences ) configuration.getPreferences() );
-        this.collapseAllAction = new CollapseAllAction( viewer );
-
-        this.browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
-        this.browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
-        this.browserActionMap
-            .put( filterChildrenAction, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
-        this.browserActionMap.put( unfilterChildrenAction, new BrowserViewActionProxy( viewer,
-            new UnfilterChildrenAction() ) );
-        this.browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, new PropertiesAction() ) );
+        browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
+        browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
+        browserActionMap.put( filterChildrenAction, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
+        browserActionMap
+            .put( unfilterChildrenAction, new BrowserViewActionProxy( viewer, new UnfilterChildrenAction() ) );
+        browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, new PropertiesAction() ) );
     }
 
 
+    /**
+     * Disposes this action group.
+     */
     public void dispose()
     {
-        if ( this.mainWidget != null )
+        if ( mainWidget != null )
         {
 
-            this.openSortDialogAction.dispose();
-            this.openSortDialogAction = null;
-            this.collapseAllAction.dispose();
-            this.collapseAllAction = null;
+            openSortDialogAction.dispose();
+            openSortDialogAction = null;
+            collapseAllAction.dispose();
+            collapseAllAction = null;
 
-            for ( Iterator it = this.browserActionMap.keySet().iterator(); it.hasNext(); )
+            for ( Iterator it = browserActionMap.keySet().iterator(); it.hasNext(); )
             {
                 String key = ( String ) it.next();
-                BrowserViewActionProxy action = ( BrowserViewActionProxy ) this.browserActionMap.get( key );
+                BrowserViewActionProxy action = ( BrowserViewActionProxy ) browserActionMap.get( key );
                 action.dispose();
                 action = null;
                 it.remove();
             }
-            this.browserActionMap.clear();
-            this.browserActionMap = null;
+            browserActionMap.clear();
+            browserActionMap = null;
 
-            this.actionBars = null;
-            this.mainWidget = null;
+            actionBars = null;
+            mainWidget = null;
         }
     }
 
 
+    /**
+     * Enables the action handlers.
+     *
+     * @param actionBars the action bars
+     */
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-        this.activateGlobalActionHandlers();
+        activateGlobalActionHandlers();
     }
 
 
+    /**
+     * Fills the tool bar.
+     *
+     * @param toolBarManager the tool bar manager
+     */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-
-        toolBarManager.add( ( IAction ) this.browserActionMap.get( upAction ) );
+        toolBarManager.add( ( IAction ) browserActionMap.get( upAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( this.collapseAllAction );
-        toolBarManager.add( ( IAction ) this.browserActionMap.get( refreshAction ) );
+        toolBarManager.add( collapseAllAction );
+        toolBarManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
         toolBarManager.update( true );
-
     }
 
 
+    /**
+     * Fills the local menu.
+     *
+     * @param menuManager the local menu manager
+     */
     public void fillMenu( IMenuManager menuManager )
     {
-        menuManager.add( this.openSortDialogAction );
+        menuManager.add( openSortDialogAction );
         menuManager.add( new Separator() );
         menuManager.update( true );
     }
 
 
+    /**
+     * Fills the context menu.
+     *
+     * @param menuManager the context menu manager
+     */
     public void fillContextMenu( IMenuManager menuManager )
     {
         menuManager.setRemoveAllWhenShown( true );
@@ -151,42 +192,47 @@ public class BrowserActionGroup implements IMenuListener
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation fills the context menu.
+     */
     public void menuAboutToShow( IMenuManager menuManager )
     {
-
         // up
-        menuManager.add( ( IAction ) this.browserActionMap.get( upAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( upAction ) );
         menuManager.add( new Separator() );
 
         // filter
-        menuManager.add( ( IAction ) this.browserActionMap.get( filterChildrenAction ) );
-        if ( ( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
+        menuManager.add( ( IAction ) browserActionMap.get( filterChildrenAction ) );
+        if ( ( ( IAction ) browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) );
+            menuManager.add( ( IAction ) browserActionMap.get( unfilterChildrenAction ) );
         }
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( ( IAction ) this.browserActionMap.get( refreshAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) this.browserActionMap.get( propertyDialogAction ) );
-
+        menuManager.add( ( IAction ) browserActionMap.get( propertyDialogAction ) );
     }
 
 
+    /**
+     * Activates the action handlers.
+     */
     public void activateGlobalActionHandlers()
     {
-
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), ( IAction ) this.browserActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), ( IAction ) browserActionMap
                 .get( refreshAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) this.browserActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) browserActionMap
                 .get( propertyDialogAction ) );
             actionBars.updateActionBars();
         }
@@ -194,31 +240,33 @@ public class BrowserActionGroup implements IMenuListener
         {
             if ( commandService != null )
             {
-                IAction pda = ( IAction ) this.browserActionMap.get( propertyDialogAction );
+                IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
                 pda.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.properties" );
                 commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
 
-                IAction ra = ( IAction ) this.browserActionMap.get( refreshAction );
+                IAction ra = ( IAction ) browserActionMap.get( refreshAction );
                 commandService.getCommand( ra.getActionDefinitionId() ).setHandler( new ActionHandler( ra ) );
             }
         }
 
         if ( commandService != null )
         {
-            IAction ua = ( IAction ) this.browserActionMap.get( upAction );
+            IAction ua = ( IAction ) browserActionMap.get( upAction );
             commandService.getCommand( ua.getActionDefinitionId() ).setHandler( new ActionHandler( ua ) );
         }
-
     }
 
 
+    /**
+     * Deactivates the action handlers.
+     */
     public void deactivateGlobalActionHandlers()
     {
 
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), null );
             actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), null );
@@ -228,32 +276,31 @@ public class BrowserActionGroup implements IMenuListener
         {
             if ( commandService != null )
             {
-                IAction pda = ( IAction ) this.browserActionMap.get( propertyDialogAction );
+                IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
                 commandService.getCommand( pda.getActionDefinitionId() ).setHandler( null );
 
-                IAction ra = ( IAction ) this.browserActionMap.get( refreshAction );
+                IAction ra = ( IAction ) browserActionMap.get( refreshAction );
                 commandService.getCommand( ra.getActionDefinitionId() ).setHandler( null );
             }
         }
 
         if ( commandService != null )
         {
-            IAction ua = ( IAction ) this.browserActionMap.get( upAction );
+            IAction ua = ( IAction ) browserActionMap.get( upAction );
             commandService.getCommand( ua.getActionDefinitionId() ).setHandler( null );
         }
 
     }
 
 
-    public IAction getRefreshAction()
-    {
-        return ( IAction ) this.browserActionMap.get( refreshAction );
-    }
-
-
+    /**
+     * Sets the connection input to all actions
+     *
+     * @param connection the connection
+     */
     public void setInput( IConnection connection )
     {
-        for ( Iterator it = this.browserActionMap.values().iterator(); it.hasNext(); )
+        for ( Iterator it = browserActionMap.values().iterator(); it.hasNext(); )
         {
             BrowserViewActionProxy action = ( BrowserViewActionProxy ) it.next();
             action.inputChanged( connection );

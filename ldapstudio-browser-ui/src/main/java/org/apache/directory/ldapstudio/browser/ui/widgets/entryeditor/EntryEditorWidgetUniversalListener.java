@@ -33,120 +33,168 @@ import org.apache.directory.ldapstudio.browser.core.events.ValueRenamedEvent;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
-
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 
 
+/**
+ * The EntryEditorWidgetUniversalListener manages all events for the entry editor widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 {
 
+    /** The tree viewer */
     protected TreeViewer viewer;
 
+    /** The action used to start the default value editor */
     protected OpenDefaultEditorAction startEditAction;
 
+    /** This listener starts the value editor when pressing enter */
+    protected SelectionListener viewerSelectionListener = new SelectionAdapter()
+    {
+        /**
+         * {@inheritDoc}
+         */
+        public void widgetSelected( SelectionEvent e )
+        {
+        }
 
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation starts the value editor.
+         */
+        public void widgetDefaultSelected( SelectionEvent e )
+        {
+            if ( startEditAction.isEnabled() )
+                startEditAction.run();
+        }
+    };
+
+    /** This listener starts the value editor or expands/collapses the selected attribute */
+    protected MouseListener viewerMouseListener = new MouseAdapter()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation starts the value editor or expands/collapses the selected attribute.
+         */
+        public void mouseDoubleClick( MouseEvent e )
+        {
+            if ( startEditAction.isEnabled() )
+            {
+                startEditAction.run();
+            }
+
+            IAttribute[] attributes = SelectionUtils.getAttributes( viewer.getSelection() );
+            IValue[] values = SelectionUtils.getValues( viewer.getSelection() );
+            if ( attributes.length == 1 && values.length == 0 )
+            {
+                if ( viewer.getExpandedState( attributes[0] ) )
+                {
+                    viewer.collapseToLevel( attributes[0], 1 );
+                }
+                else
+                {
+                    viewer.expandToLevel( attributes[0], 1 );
+                }
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseDown( MouseEvent e )
+        {
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseUp( MouseEvent e )
+        {
+        }
+    };
+
+
+    /**
+     * Creates a new instance of EntryEditorWidgetUniversalListener.
+     *
+     * @param treeViewer the tree viewer
+     * @param startEditAction the action used to start the default value editor
+     */
     public EntryEditorWidgetUniversalListener( TreeViewer treeViewer, OpenDefaultEditorAction startEditAction )
     {
         this.startEditAction = startEditAction;
         this.viewer = treeViewer;
 
-        this.initListeners();
-    }
-
-
-    protected void initListeners()
-    {
-
-        this.viewer.getTree().addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-            }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-                if ( startEditAction.isEnabled() )
-                    startEditAction.run();
-            }
-        } );
-        this.viewer.getTree().addMouseListener( new MouseAdapter()
-        {
-            public void mouseDoubleClick( MouseEvent e )
-            {
-                if ( startEditAction.isEnabled() )
-                    startEditAction.run();
-
-                IAttribute[] attributes = SelectionUtils.getAttributes( viewer.getSelection() );
-                IValue[] values = SelectionUtils.getValues( viewer.getSelection() );
-                if ( attributes.length == 1 && values.length == 0 )
-                {
-                    if ( viewer.getExpandedState( attributes[0] ) )
-                        viewer.collapseToLevel( attributes[0], 1 );
-                    else
-                        viewer.expandToLevel( attributes[0], 1 );
-                }
-            }
-
-
-            public void mouseDown( MouseEvent e )
-            {
-            }
-
-
-            public void mouseUp( MouseEvent e )
-            {
-            }
-        } );
-
+        // register listeners
+        viewer.getTree().addSelectionListener( viewerSelectionListener  );
+        viewer.getTree().addMouseListener( viewerMouseListener  );
         EventRegistry.addEntryUpdateListener( this );
     }
 
 
+    /**
+     * Disposes this universal listener.
+     */
     public void dispose()
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
             EventRegistry.removeEntryUpdateListener( this );
 
-            this.startEditAction = null;
-            this.viewer = null;
+            startEditAction = null;
+            viewer = null;
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the viewer and selects a value depending
+     * on the event.
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
 
-        if ( this.viewer == null || this.viewer.getTree() == null || this.viewer.getTree().isDisposed()
-            || this.viewer.getInput() == null || event.getModifiedEntry() != this.viewer.getInput() )
+        if ( viewer == null || viewer.getTree() == null || viewer.getTree().isDisposed()
+            || viewer.getInput() == null || event.getModifiedEntry() != viewer.getInput() )
         {
             return;
         }
 
         // force closing of cell editors
-        if ( this.viewer.isCellEditorActive() )
+        if ( viewer.isCellEditorActive() )
         {
-            this.viewer.cancelEditing();
+            viewer.cancelEditing();
         }
 
         // refresh
-        this.viewer.refresh();
+        viewer.refresh();
 
-        // restore selection
+        // selection value
         if ( event instanceof ValueAddedEvent )
         {
+            // select the vadded value
             ValueAddedEvent vaEvent = ( ValueAddedEvent ) event;
             viewer.setSelection( new StructuredSelection( vaEvent.getAddedValue() ), true );
-            this.viewer.refresh();
+            viewer.refresh();
         }
         else if ( event instanceof ValueDeletedEvent )
         {
+            // select another value of the deleted attribute
             ValueDeletedEvent vdEvent = ( ValueDeletedEvent ) event;
             if ( viewer.getSelection().isEmpty() && vdEvent.getDeletedValue().getAttribute().getValueSize() > 0 )
             {
@@ -156,6 +204,7 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         }
         else if ( event instanceof EmptyValueAddedEvent )
         {
+            // select the added value and start editing
             EmptyValueAddedEvent evaEvent = ( EmptyValueAddedEvent ) event;
             viewer.setSelection( new StructuredSelection( evaEvent.getAddedValue() ), true );
             if ( startEditAction.isEnabled() )
@@ -165,6 +214,7 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         }
         else if ( event instanceof EmptyValueDeletedEvent )
         {
+            // select another value of the deleted attribute
             EmptyValueDeletedEvent evdEvent = ( EmptyValueDeletedEvent ) event;
             if ( viewer.getSelection().isEmpty() && evdEvent.getDeletedValue().getAttribute().getValueSize() > 0 )
             {
@@ -174,11 +224,13 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         }
         else if ( event instanceof ValueModifiedEvent )
         {
+            // select the modified value
             ValueModifiedEvent vmEvent = ( ValueModifiedEvent ) event;
             viewer.setSelection( new StructuredSelection( vmEvent.getNewValue() ), true );
         }
         else if ( event instanceof ValueRenamedEvent )
         {
+            // select the renamed value
             ValueRenamedEvent vrEvent = ( ValueRenamedEvent ) event;
             viewer.setSelection( new StructuredSelection( vrEvent.getNewValue() ), true );
         }

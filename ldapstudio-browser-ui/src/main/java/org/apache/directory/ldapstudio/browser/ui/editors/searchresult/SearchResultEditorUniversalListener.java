@@ -21,6 +21,12 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
+/**
+ * The SearchResultEditorUniversalListener manages all events for the search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 import org.apache.directory.ldapstudio.browser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
@@ -34,8 +40,10 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.actions.OpenSearchResultAction;
-
+import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
+import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
@@ -44,10 +52,12 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
@@ -55,8 +65,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.INullSelectionListener;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
@@ -65,242 +77,474 @@ import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 
-public class SearchResultEditorUniversalListener implements IPartListener, SearchUpdateListener, EntryUpdateListener
+public class SearchResultEditorUniversalListener implements SearchUpdateListener, EntryUpdateListener
 {
 
+    /** The search result editor */
     private SearchResultEditor editor;
 
+    /** The table viewer */
     private TableViewer viewer;
 
+    /** The cursor */
     private SearchResultEditorCursor cursor;
 
+    /** The action used to start the default value editor */
     private OpenBestEditorAction startEditAction;
 
+    /** The selected search that is displayed in the search result editor */
     private ISearch selectedSearch;
 
+    /** The hyperlink used for DNs */
     private Hyperlink dnLink;
 
+    /** The table editor, used to display the hyperlink */
     private TableEditor tableEditor;
 
+    /** Token used to activate and deactivate shortcuts in the editor */
+    private IContextActivation contextActivation;
 
+    /** Listener that listens for selections of ISearch objects. */
+    private INullSelectionListener searchSelectionListener = new INullSelectionListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation sets the editor's input when a search is selected.
+         */
+        public void selectionChanged( IWorkbenchPart part, ISelection selection )
+        {
+            if ( editor != null && part != null )
+            {
+                if ( editor.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
+                {
+                    ISearch[] searches = SelectionUtils.getSearches( selection );
+                    Object[] objects = SelectionUtils.getObjects( selection );
+                    if ( searches.length == 1 && objects.length == 1 )
+                    {
+                        editor.setInput( new SearchResultEditorInput( searches[0] ) );
+                    }
+                    else
+                    {
+                        editor.setInput( new SearchResultEditorInput( null ) );
+                    }
+                }
+            }
+        }
+    };
+
+    /** The part listener used to activate and deactivate the shortcuts */
+    private IPartListener2 partListener = new IPartListener2()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation deactivates the shortcuts when the part is deactivated.
+         */
+        public void partDeactivated( IWorkbenchPartReference partRef )
+        {
+            if ( partRef.getPart( false ) == editor && contextActivation != null )
+            {
+
+                editor.getActionGroup().deactivateGlobalActionHandlers();
+
+                IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    IContextService.class );
+                contextService.deactivateContext( contextActivation );
+                contextActivation = null;
+            }
+        }
+
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation activates the shortcuts when the part is activated.
+         */
+        public void partActivated( IWorkbenchPartReference partRef )
+        {
+            if ( partRef.getPart( false ) == editor )
+            {
+
+                IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    IContextService.class );
+                contextActivation = contextService
+                    .activateContext( "org.apache.directory.ldapstudio.browser.action.context" );
+                // org.eclipse.ui.contexts.dialogAndWindow
+                // org.eclipse.ui.contexts.window
+                // org.eclipse.ui.text_editor_context
+
+                editor.getActionGroup().activateGlobalActionHandlers();
+            }
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partBroughtToTop( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partClosed( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partOpened( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partHidden( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partVisible( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partInputChanged( IWorkbenchPartReference partRef )
+        {
+        }
+    };
+
+    /** The listener used to handle clicks to the DN hyper link */
+    private IHyperlinkListener dnHyperlinkListener = new IHyperlinkListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation opens the search result when clicking thd DN link.
+         */
+        public void linkActivated( HyperlinkEvent e )
+        {
+            ISearchResult sr = ( ISearchResult ) e.widget.getData();
+            OpenSearchResultAction action = new OpenSearchResultAction();
+            action.setSelectedSearchResults( new ISearchResult[]
+                { sr } );
+            action.run();
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void linkEntered( HyperlinkEvent e )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void linkExited( HyperlinkEvent e )
+        {
+        }
+    };
+
+    /** This listener removes the DN link when then mouse exits the hyperlink control */
+    private MouseTrackListener dnMouseTrackListener = new MouseTrackListener()
+    {
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseEnter( MouseEvent e )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation removed the DN link.
+         */
+        public void mouseExit( MouseEvent e )
+        {
+            if ( !dnLink.isDisposed() )
+            {
+                dnLink.setVisible( false );
+                tableEditor.setEditor( null );
+            }
+        }
+
+
+        public void mouseHover( MouseEvent e )
+        {
+        }
+    };
+
+    /** This listener renders the DN hyperlink when the mouse cursor moves over the DN */
+    private MouseMoveListener cursorMouseMoveListener = new MouseMoveListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation renders the DN link.
+         */
+        public void mouseMove( MouseEvent e )
+        {
+            if ( !cursor.isDisposed() )
+            {
+                TableItem item = cursor.getRow();
+                if ( cursor.getColumn() == 0
+                    && "DN".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) )
+                {
+                    checkDnLink( item );
+                }
+            }
+        }
+    };
+
+    /** This listener renders the DN link when the mouse cursor moves over the DN */
+    private MouseMoveListener viewerMouseMoveListener = new MouseMoveListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation renders the DN link.
+         */
+        public void mouseMove( MouseEvent e )
+        {
+            if ( !viewer.getTable().isDisposed() )
+            {
+                TableItem item = viewer.getTable().getItem( new Point( e.x, e.y ) );
+                viewer.getTable().getColumns()[0].getWidth();
+                if ( e.x > 0 && e.x < viewer.getTable().getColumns()[0].getWidth()
+                    && "DN".equalsIgnoreCase( viewer.getTable().getColumns()[0].getText() ) )
+                {
+                    checkDnLink( item );
+                }
+            }
+        }
+    };
+
+    /** This listener starts the value editor and toggles the cursor's background color */
+    private SelectionListener cursorSelectionListener = new SelectionAdapter()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation sets the cursor's background color.
+         */
+        public void widgetSelected( SelectionEvent e )
+        {
+            // viewer.setSelection(new StructuredSelection(getRow()), true);
+            // viewer.getTable().setSelection(new TableItem[]{getRow()});
+            viewer.setSelection( null, true );
+            viewer.getTable().setSelection( new TableItem[0] );
+
+            ISearchResult result = cursor.getSelectedSearchResult();
+            String property = cursor.getSelectedProperty();
+            if ( property != null && result != null && viewer.getCellModifier().canModify( result, property ) )
+            {
+                cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_LIST_SELECTION ) );
+            }
+            else
+            {
+                cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_TITLE_INACTIVE_FOREGROUND ) );
+            }
+
+            // cursor.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
+        }
+
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation starts the value editor when pressing enter.
+         */
+        public void widgetDefaultSelected( SelectionEvent e )
+        {
+            viewer.setSelection( null, true );
+            viewer.getTable().setSelection( new TableItem[0] );
+            if ( startEditAction.isEnabled() )
+                startEditAction.run();
+        }
+    };
+
+    /** This listener starts the value editor when double-clicking a cell */
+    private MouseListener cursorMouseListener = new MouseAdapter()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation starts the value editor when double-clicking a cell.
+         */
+        public void mouseDoubleClick( MouseEvent e )
+        {
+            viewer.setSelection( null, true );
+            viewer.getTable().setSelection( new TableItem[0] );
+            if ( startEditAction.isEnabled() )
+                startEditAction.run();
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseDown( MouseEvent e )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void mouseUp( MouseEvent e )
+        {
+        }
+    };
+
+    /** This listener starts the value editor when typing */
+    private KeyListener cursorKeyListener = new KeyListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation starts the value editor when a non-control key is pressed.
+         */
+        public void keyPressed( KeyEvent e )
+        {
+            if ( e.character != '\0' && e.character != SWT.CR && e.character != SWT.LF && e.character != SWT.BS
+                && e.character != SWT.DEL && e.character != SWT.TAB && e.character != SWT.ESC
+                && ( e.stateMask == 0 || e.stateMask == SWT.SHIFT ) )
+            {
+
+                if ( startEditAction.isEnabled()
+                    && startEditAction.getBestValueEditor().getCellEditor() instanceof TextCellEditor )
+                {
+                    startEditAction.run();
+                    CellEditor editor = viewer.getCellEditors()[cursor.getColumn()];
+                    if ( editor instanceof TextCellEditor )
+                    {
+                        editor.setValue( String.valueOf( e.character ) );
+                        ( ( Text ) editor.getControl() ).setSelection( 1 );
+                    }
+                }
+
+            }
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void keyReleased( KeyEvent e )
+        {
+        }
+    };
+
+
+    /**
+     * Creates a new instance of SearchResultEditorUniversalListener.
+     *
+     * @param editor the search result editor
+     */
     public SearchResultEditorUniversalListener( SearchResultEditor editor )
     {
         this.editor = editor;
 
-        this.startEditAction = this.editor.getActionGroup().getOpenBestEditorAction();
-        this.viewer = this.editor.getMainWidget().getViewer();
-        this.cursor = this.editor.getConfiguration().getCursor( this.viewer );
+        startEditAction = editor.getActionGroup().getOpenBestEditorAction();
+        viewer = editor.getMainWidget().getViewer();
+        cursor = editor.getConfiguration().getCursor( viewer );
 
+        // create dn link control
         dnLink = new Hyperlink( viewer.getTable(), SWT.NONE );
         dnLink.setLayoutData( new GridData( SWT.BOTTOM, SWT.LEFT, true, true ) );
         dnLink.setText( "" );
         dnLink.setMenu( viewer.getTable().getMenu() );
-        dnLink.addHyperlinkListener( new IHyperlinkListener()
-        {
-            public void linkActivated( HyperlinkEvent e )
-            {
-                ISearchResult sr = ( ISearchResult ) e.widget.getData();
-                OpenSearchResultAction action = new OpenSearchResultAction();
-                action.setSelectedSearchResults( new ISearchResult[]
-                    { sr } );
-                action.run();
-            }
-
-
-            public void linkEntered( HyperlinkEvent e )
-            {
-            }
-
-
-            public void linkExited( HyperlinkEvent e )
-            {
-            }
-        } );
         tableEditor = new TableEditor( viewer.getTable() );
         tableEditor.horizontalAlignment = SWT.LEFT;
         tableEditor.verticalAlignment = SWT.BOTTOM;
         tableEditor.grabHorizontal = true;
         tableEditor.grabVertical = true;
 
-        this.initListeners();
-    }
+        // init listeners
+        dnLink.addHyperlinkListener( dnHyperlinkListener );
+        dnLink.addMouseTrackListener( dnMouseTrackListener );
 
+        cursor.addMouseMoveListener( cursorMouseMoveListener );
+        cursor.addSelectionListener( cursorSelectionListener );
+        cursor.addMouseListener( cursorMouseListener );
+        cursor.addKeyListener( cursorKeyListener );
 
-    private void initListeners()
-    {
+        viewer.getTable().addMouseMoveListener( viewerMouseMoveListener );
 
-        cursor.addMouseMoveListener( new MouseMoveListener()
-        {
-            public void mouseMove( MouseEvent e )
-            {
-                if ( !cursor.isDisposed() )
-                {
-                    TableItem item = cursor.getRow();
-                    if ( cursor.getColumn() == 0
-                        && "DN".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) )
-                    {
-                        checkDnLink( item );
-                    }
-                }
-            }
-        } );
+        editor.getSite().getPage().addPartListener( partListener );
+        editor.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( BrowserView.getId(),
+            searchSelectionListener );
 
-        viewer.getTable().addMouseMoveListener( new MouseMoveListener()
-        {
-            public void mouseMove( MouseEvent e )
-            {
-                if ( !viewer.getTable().isDisposed() )
-                {
-                    TableItem item = viewer.getTable().getItem( new Point( e.x, e.y ) );
-                    viewer.getTable().getColumns()[0].getWidth();
-                    if ( e.x > 0 && e.x < viewer.getTable().getColumns()[0].getWidth()
-                        && "DN".equalsIgnoreCase( viewer.getTable().getColumns()[0].getText() ) )
-                    {
-                        checkDnLink( item );
-                    }
-                }
-            }
-        } );
-
-        dnLink.addMouseTrackListener( new MouseTrackListener()
-        {
-            public void mouseEnter( MouseEvent e )
-            {
-            }
-
-
-            public void mouseExit( MouseEvent e )
-            {
-                if ( !dnLink.isDisposed() )
-                {
-                    dnLink.setVisible( false );
-                    tableEditor.setEditor( null );
-                }
-            }
-
-
-            public void mouseHover( MouseEvent e )
-            {
-            }
-        } );
-
-        cursor.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                // viewer.setSelection(new StructuredSelection(getRow()), true);
-                // viewer.getTable().setSelection(new TableItem[]{getRow()});
-                viewer.setSelection( null, true );
-                viewer.getTable().setSelection( new TableItem[0] );
-
-                ISearchResult result = cursor.getSelectedSearchResult();
-                String property = cursor.getSelectedProperty();
-                if ( property != null && result != null && viewer.getCellModifier().canModify( result, property ) )
-                {
-                    cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_LIST_SELECTION ) );
-                }
-                else
-                {
-                    cursor.setBackground( Display.getDefault().getSystemColor( SWT.COLOR_TITLE_INACTIVE_FOREGROUND ) );
-                }
-
-                // cursor.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
-            }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-                viewer.setSelection( null, true );
-                viewer.getTable().setSelection( new TableItem[0] );
-                if ( startEditAction.isEnabled() )
-                    startEditAction.run();
-            }
-        } );
-
-        cursor.addMouseListener( new MouseAdapter()
-        {
-            public void mouseDoubleClick( MouseEvent e )
-            {
-                viewer.setSelection( null, true );
-                viewer.getTable().setSelection( new TableItem[0] );
-                if ( startEditAction.isEnabled() )
-                    startEditAction.run();
-            }
-
-
-            public void mouseDown( MouseEvent e )
-            {
-            }
-
-
-            public void mouseUp( MouseEvent e )
-            {
-            }
-        } );
-
-        cursor.addKeyListener( new KeyListener()
-        {
-            public void keyPressed( KeyEvent e )
-            {
-                if ( e.character != '\0' && e.character != SWT.CR && e.character != SWT.LF && e.character != SWT.BS
-                    && e.character != SWT.DEL && e.character != SWT.TAB && e.character != SWT.ESC
-                    && ( e.stateMask == 0 || e.stateMask == SWT.SHIFT ) )
-                {
-
-                    if ( startEditAction.isEnabled()
-                        && startEditAction.getBestValueEditor().getCellEditor() instanceof TextCellEditor )
-                    {
-                        startEditAction.run();
-                        CellEditor editor = viewer.getCellEditors()[cursor.getColumn()];
-                        if ( editor instanceof TextCellEditor )
-                        {
-                            editor.setValue( String.valueOf( e.character ) );
-                            ( ( Text ) editor.getControl() ).setSelection( 1 );
-                        }
-                    }
-
-                }
-            }
-
-
-            public void keyReleased( KeyEvent e )
-            {
-            }
-        } );
-
-        editor.getSite().getPage().addPartListener( this );
         EventRegistry.addSearchUpdateListener( this );
         EventRegistry.addEntryUpdateListener( this );
     }
 
 
+    /**
+     * Disposes the listener.
+     */
     public void dispose()
     {
-        EventRegistry.removeSearchUpdateListener( this );
-        EventRegistry.removeEntryUpdateListener( this );
-        editor.getSite().getPage().removePartListener( this );
-
-        this.selectedSearch = null;
-        this.startEditAction = null;
-        this.cursor = null;
-        this.viewer = null;
-        this.editor = null;
-    }
-
-
-    public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
-    {
-        if ( this.selectedSearch == searchUpdateEvent.getSearch() )
+        if ( editor != null )
         {
-            this.refreshInput();
+            editor.getSite().getPage().removePartListener( partListener );
+            editor.getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(
+                BrowserView.getId(), searchSelectionListener );
+
+            EventRegistry.removeSearchUpdateListener( this );
+            EventRegistry.removeEntryUpdateListener( this );
+
+            selectedSearch = null;
+            startEditAction = null;
+            cursor = null;
+            viewer = null;
+            editor = null;
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the search result editor.
+     */
+    public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
+    {
+        if ( selectedSearch == searchUpdateEvent.getSearch() )
+        {
+            refreshInput();
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the search result editor 
+     * or starts the value editor if an empty value was added.
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
 
-        if ( event instanceof EmptyValueAddedEvent && !this.editor.getActionGroup().isEditorActive() )
+        if ( event instanceof EmptyValueAddedEvent && !editor.getActionGroup().isEditorActive() )
         {
             EmptyValueAddedEvent evae = ( EmptyValueAddedEvent ) event;
             IAttribute att = evae.getAddedValue().getAttribute();
@@ -317,60 +561,68 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
         }
         else
         {
-            this.viewer.refresh( true );
+            viewer.refresh( true );
             cursor.notifyListeners( SWT.Selection, new Event() );
         }
     }
 
 
+    /**
+     * Sets the input.
+     *
+     * @param search the search
+     */
     void setInput( ISearch search )
     {
-        if ( search != this.viewer.getInput() )
+        if ( search != viewer.getInput() )
         {
-            this.selectedSearch = search;
-            this.refreshInput();
-            this.editor.getActionGroup().setInput( search );
+            selectedSearch = search;
+            refreshInput();
+            editor.getActionGroup().setInput( search );
         }
     }
 
 
+    /**
+     * Refreshes the input, makes columns visible or hides columns depending on the number
+     * of returning attributes.
+     */
     void refreshInput()
     {
 
         // create at least on column
-        this.ensureColumnCount( 1 );
+        ensureColumnCount( 1 );
 
         // get all columns
-        TableColumn[] columns = this.viewer.getTable().getColumns();
+        TableColumn[] columns = viewer.getTable().getColumns();
 
-        // number of uses columns
+        // number of used columns
         int usedColumns;
 
-        if ( this.selectedSearch != null )
+        if ( selectedSearch != null )
         {
 
             // get displayed attributes
             boolean showDn = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
                 BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN )
-                || this.selectedSearch.getReturningAttributes().length == 0;
+                || selectedSearch.getReturningAttributes().length == 0;
             String[] attributes;
             if ( showDn )
             {
-                attributes = new String[this.selectedSearch.getReturningAttributes().length + 1];
+                attributes = new String[selectedSearch.getReturningAttributes().length + 1];
                 attributes[0] = "DN";
-                System
-                    .arraycopy( this.selectedSearch.getReturningAttributes(), 0, attributes, 1, attributes.length - 1 );
+                System.arraycopy( selectedSearch.getReturningAttributes(), 0, attributes, 1, attributes.length - 1 );
             }
             else
             {
-                attributes = this.selectedSearch.getReturningAttributes();
+                attributes = selectedSearch.getReturningAttributes();
             }
 
             // create missing columns
             if ( attributes.length > columns.length )
             {
-                this.ensureColumnCount( attributes.length );
-                columns = this.viewer.getTable().getColumns();
+                ensureColumnCount( attributes.length );
+                columns = viewer.getTable().getColumns();
             }
 
             // set column headers
@@ -378,22 +630,21 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
             {
                 columns[i].setText( attributes[i] );
             }
-            this.viewer.setColumnProperties( attributes );
+            viewer.setColumnProperties( attributes );
 
             // set input
-            ( ( SearchResultEditorLabelProvider ) this.viewer.getLabelProvider() ).inputChanged( this.selectedSearch,
-                showDn );
+            ( ( SearchResultEditorLabelProvider ) viewer.getLabelProvider() ).inputChanged( selectedSearch, showDn );
 
-            this.viewer.setInput( this.selectedSearch );
+            viewer.setInput( selectedSearch );
             // this.viewer.refresh();
 
             // update cell editors
             CellEditor[] editors = new CellEditor[attributes.length];
-            this.viewer.setCellEditors( editors );
+            viewer.setCellEditors( editors );
 
             if ( attributes.length > 0 )
             {
-                int width = this.viewer.getTable().getClientArea().width / attributes.length;
+                int width = viewer.getTable().getClientArea().width / attributes.length;
                 for ( int i = 0; i < attributes.length; i++ )
                 {
                     columns[i].setWidth( width );
@@ -408,7 +659,7 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
         }
         else
         {
-            this.viewer.setInput( null );
+            viewer.setInput( null );
             columns[0].setText( "DN" );
             columns[0].pack();
             usedColumns = 1;
@@ -422,20 +673,26 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
         }
 
         // refresh content provider (sorter and filter)
-        this.editor.getConfiguration().getContentProvider( this.editor.getMainWidget() ).refresh();
+        editor.getConfiguration().getContentProvider( editor.getMainWidget() ).refresh();
 
         // this.cursor.setFocus();
     }
 
 
+    /**
+     * Ensures that the table contains at least the number of 
+     * the requested columns.
+     *
+     * @param count the requested number of columns
+     */
     private void ensureColumnCount( int count )
     {
-        TableColumn[] columns = this.viewer.getTable().getColumns();
+        TableColumn[] columns = viewer.getTable().getColumns();
         if ( columns.length < count )
         {
             for ( int i = columns.length; i < count; i++ )
             {
-                TableColumn column = new TableColumn( this.viewer.getTable(), SWT.LEFT );
+                TableColumn column = new TableColumn( viewer.getTable(), SWT.LEFT );
                 column.setText( "" );
                 column.setWidth( 0 );
                 column.setResizable( true );
@@ -445,10 +702,15 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
     }
 
 
+    /**
+     * Renders the DN link.
+     *
+     * @param item the table item
+     */
     private void checkDnLink( TableItem item )
     {
 
-        if ( dnLink == null || dnLink.isDisposed() || tableEditor == null || this.viewer.getTable().isDisposed()
+        if ( dnLink == null || dnLink.isDisposed() || tableEditor == null || viewer.getTable().isDisposed()
             || cursor.isDisposed() )
         {
             return;
@@ -494,55 +756,6 @@ public class SearchResultEditorUniversalListener implements IPartListener, Searc
                 tableEditor.setEditor( null );
             }
         }
-    }
-
-    IContextActivation contextActivation;
-
-
-    public void partActivated( IWorkbenchPart part )
-    {
-        if ( part == this.editor )
-        {
-
-            this.editor.getActionGroup().activateGlobalActionHandlers();
-
-            IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-                IContextService.class );
-            contextActivation = contextService
-                .activateContext( "org.apache.directory.ldapstudio.browser.action.context" );
-
-        }
-    }
-
-
-    public void partDeactivated( IWorkbenchPart part )
-    {
-        if ( part == this.editor && contextActivation != null )
-        {
-
-            IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-                IContextService.class );
-            contextService.deactivateContext( contextActivation );
-            contextActivation = null;
-
-            this.editor.getActionGroup().deactivateGlobalActionHandlers();
-
-        }
-    }
-
-
-    public void partOpened( IWorkbenchPart part )
-    {
-    }
-
-
-    public void partClosed( IWorkbenchPart part )
-    {
-    }
-
-
-    public void partBroughtToTop( IWorkbenchPart part )
-    {
     }
 
 }

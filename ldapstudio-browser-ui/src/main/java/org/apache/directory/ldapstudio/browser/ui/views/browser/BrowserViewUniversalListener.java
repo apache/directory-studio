@@ -44,34 +44,184 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditorManager;
-import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorManager;
+import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor;
+import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditorInput;
+import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditor;
+import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorInput;
+import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserUniversalListener;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 
 
-public class BrowserViewUniversalListener extends BrowserUniversalListener implements ISelectionListener,
-    SearchUpdateListener, EntryUpdateListener, ConnectionUpdateListener, BookmarkUpdateListener, IPartListener2
+/**
+ * The BrowserViewUniversalListener manages all events for the browser view.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class BrowserViewUniversalListener extends BrowserUniversalListener implements SearchUpdateListener,
+    EntryUpdateListener, ConnectionUpdateListener, BookmarkUpdateListener
 {
 
-    private Map connectionToExpandedElementsMap;
+    /** This map contains all expanded elements for a particular connection */
+    private Map<IConnection, Object[]> connectionToExpandedElementsMap;
 
-    private Map connectionToSelectedElementMap;
+    /** This map contains all selected elements for a particular connection */
+    private Map<IConnection, ISelection> connectionToSelectedElementMap;
 
+    /** The browser view */
     private BrowserView view;
 
+    /** Token used to activate and deactivate shortcuts in the view */
     private IContextActivation contextActivation;
+
+    /** Listener that listens for selections of connections */
+    private INullSelectionListener connectionSelectionListener = new INullSelectionListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation sets the input when another connection was selected.
+         */
+        public void selectionChanged( IWorkbenchPart part, ISelection selection )
+        {
+            if ( view != null && part != null )
+            {
+                if ( view.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
+                {
+                    IConnection[] connections = SelectionUtils.getConnections( selection );
+                    if ( connections.length == 1 )
+                    {
+                        setInput( connections[0] );
+                    }
+                    else
+                    {
+                        setInput( null );
+                    }
+                }
+            }
+        }
+    };
+
+    /** The part listener used to activate and deactivate the shortcuts */
+    private IPartListener2 partListener = new IPartListener2()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation deactivates the shortcuts when the part is deactivated.
+         */
+        public void partDeactivated( IWorkbenchPartReference partRef )
+        {
+            if ( partRef.getPart( false ) == view && contextActivation != null )
+            {
+
+                view.getActionGroup().deactivateGlobalActionHandlers();
+
+                IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    IContextService.class );
+                contextService.deactivateContext( contextActivation );
+                contextActivation = null;
+            }
+        }
+
+
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation activates the shortcuts when the part is activated.
+         */
+        public void partActivated( IWorkbenchPartReference partRef )
+        {
+            if ( partRef.getPart( false ) == view )
+            {
+
+                IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    IContextService.class );
+                contextActivation = contextService
+                    .activateContext( "org.apache.directory.ldapstudio.browser.action.context" );
+                // org.eclipse.ui.contexts.dialogAndWindow
+                // org.eclipse.ui.contexts.window
+                // org.eclipse.ui.text_editor_context
+
+                view.getActionGroup().activateGlobalActionHandlers();
+            }
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partBroughtToTop( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partClosed( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partOpened( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partHidden( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partVisible( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public void partInputChanged( IWorkbenchPartReference partRef )
+        {
+        }
+    };
+
+    /** This listener is used to ensure that the entry editor and search result editor are opened
+     when an object in the browser view is selected */
+    private ISelectionChangedListener viewerSelectionListener = new ISelectionChangedListener()
+    {
+        /**
+         * {@inheritDoc}
+         */
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            ensureEditorsVisible( event.getSelection() );
+        }
+    };
 
 
     public BrowserViewUniversalListener( BrowserView view )
@@ -79,149 +229,179 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         super( view.getMainWidget().getViewer() );
         this.view = view;
 
-        this.connectionToExpandedElementsMap = new HashMap();
-        this.connectionToSelectedElementMap = new HashMap();
+        // create maps
+        connectionToExpandedElementsMap = new HashMap<IConnection, Object[]>();
+        connectionToSelectedElementMap = new HashMap<IConnection, ISelection>();
 
+        // register listeners
         EventRegistry.addSearchUpdateListener( this );
         EventRegistry.addBookmarkUpdateListener( this );
         EventRegistry.addEntryUpdateListener( this );
         EventRegistry.addConnectionUpdateListener( this );
-        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener( this );
-        view.getSite().getPage().addPartListener( this );
+
+        view.getSite().getPage().addPartListener( partListener );
+        view.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( ConnectionView.getId(),
+            connectionSelectionListener );
+
+        viewer.addSelectionChangedListener( viewerSelectionListener );
     }
 
 
+    /**
+     * Ensures that the entry editor or the search result editor are 
+     * opended and ready to show the given selection.
+     *
+     * @param selection the browser's selection.
+     */
+    private void ensureEditorsVisible( ISelection selection )
+    {
+        if ( view != null )
+        {
+            IEntry[] entries = SelectionUtils.getEntries( selection );
+            ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
+            IBookmark[] bookmarks = SelectionUtils.getBookmarks( selection );
+            ISearch[] searches = SelectionUtils.getSearches( selection );
+
+            if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
+            {
+                if ( entries.length == 1 )
+                {
+                    try
+                    {
+                        EntryEditorInput input = new EntryEditorInput( entries[0] );
+                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
+                    }
+                    catch ( PartInitException e )
+                    {
+                    }
+                }
+                else if ( searchResults.length == 1 )
+                {
+                    try
+                    {
+                        EntryEditorInput input = new EntryEditorInput( searchResults[0] );
+                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
+                    }
+                    catch ( PartInitException e )
+                    {
+                    }
+                }
+                else if ( bookmarks.length == 1 )
+                {
+                    try
+                    {
+                        EntryEditorInput input = new EntryEditorInput( bookmarks[0] );
+                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
+                    }
+                    catch ( PartInitException e )
+                    {
+                    }
+                }
+                else if ( searches.length == 1 )
+                {
+                    try
+                    {
+                        SearchResultEditorInput input = new SearchResultEditorInput( searches[0] );
+                        view.getSite().getPage().openEditor( input, SearchResultEditor.getId(), false );
+                    }
+                    catch ( PartInitException e )
+                    {
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.view != null )
+        if ( view != null )
         {
-            view.getSite().getPage().removePartListener( this );
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().removeSelectionListener( this );
             EventRegistry.removeSearchUpdateListener( this );
             EventRegistry.removeBookmarkUpdateListener( this );
             EventRegistry.removeEntryUpdateListener( this );
             EventRegistry.removeConnectionUpdateListener( this );
 
-            this.view = null;
-            this.connectionToExpandedElementsMap.clear();
-            this.connectionToExpandedElementsMap = null;
-            this.connectionToSelectedElementMap.clear();
-            this.connectionToSelectedElementMap = null;
+            view.getSite().getPage().removePartListener( partListener );
+            view.getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(
+                ConnectionView.getId(), connectionSelectionListener );
+
+            view = null;
+            connectionToExpandedElementsMap.clear();
+            connectionToExpandedElementsMap = null;
+            connectionToSelectedElementMap.clear();
+            connectionToSelectedElementMap = null;
         }
 
         super.dispose();
     }
 
 
-    public void selectionChanged( IWorkbenchPart part, ISelection selection )
-    {
-
-        if ( part.getClass() == BrowserView.class )
-        {
-            this.sendSelectionHints( selection );
-        }
-
-    }
-
-
-    private void sendSelectionHints( ISelection selection )
-    {
-
-        IEntry[] entries = SelectionUtils.getEntries( selection );
-        ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
-        IBookmark[] bookmarks = SelectionUtils.getBookmarks( selection );
-
-        ISearch[] searches = SelectionUtils.getSearches( selection );
-
-        if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
-        {
-            if ( entries.length == 1 )
-            {
-                EntryEditorManager.setInput( entries[0] );
-                SearchResultEditorManager.setInput( null );
-            }
-            else if ( searchResults.length == 1 )
-            {
-                EntryEditorManager.setInput( searchResults[0] );
-                SearchResultEditorManager.setInput( null );
-            }
-            else if ( bookmarks.length == 1 )
-            {
-                EntryEditorManager.setInput( bookmarks[0] );
-                SearchResultEditorManager.setInput( null );
-            }
-            else if ( searches.length == 1 )
-            {
-                EntryEditorManager.setInput( ( IEntry ) null );
-                SearchResultEditorManager.setInput( searches[0] );
-            }
-        }
-        else
-        {
-            EntryEditorManager.setInput( ( IEntry ) null );
-            SearchResultEditorManager.setInput( null );
-        }
-
-    }
-
-
+    /**
+     * Sets the input to the viewer and saves/restores the expanded and selected elements.
+     *
+     * @param connection the connection input
+     */
     void setInput( IConnection connection )
     {
 
         // only if another connection is selected
-        if ( connection != this.viewer.getInput() )
+        if ( connection != viewer.getInput() )
         {
 
-            IConnection currentConnection = this.viewer.getInput() instanceof IConnection ? ( IConnection ) this.viewer
+            IConnection currentConnection = viewer.getInput() instanceof IConnection ? ( IConnection ) viewer
                 .getInput() : null;
 
             // save expanded elements and selection
             if ( currentConnection != null )
             {
-                this.connectionToExpandedElementsMap.put( currentConnection, this.viewer.getExpandedElements() );
-                if ( !this.viewer.getSelection().isEmpty() )
+                connectionToExpandedElementsMap.put( currentConnection, viewer.getExpandedElements() );
+                if ( !viewer.getSelection().isEmpty() )
                 {
-                    this.connectionToSelectedElementMap.put( currentConnection, this.viewer.getSelection() );
+                    connectionToSelectedElementMap.put( currentConnection, viewer.getSelection() );
                 }
             }
 
             // change input
-            this.viewer.setInput( connection );
-            this.view.getActionGroup().setInput( connection );
+            viewer.setInput( connection );
+            view.getActionGroup().setInput( connection );
 
             // restore expanded elements and selection
-            if ( this.view != null && connection != null )
+            if ( view != null && connection != null )
             {
-                if ( this.connectionToExpandedElementsMap.containsKey( connection ) )
+                if ( connectionToExpandedElementsMap.containsKey( connection ) )
                 {
-                    this.viewer
-                        .setExpandedElements( ( Object[] ) this.connectionToExpandedElementsMap.get( connection ) );
+                    viewer.setExpandedElements( ( Object[] ) connectionToExpandedElementsMap.get( connection ) );
                 }
-                if ( this.connectionToSelectedElementMap.containsKey( connection )
-                    && this.view.getSite().getPage().isPartVisible( this.view ) )
+                if ( connectionToSelectedElementMap.containsKey( connection )
+                    && this.view.getSite().getPage().isPartVisible( view ) )
                 {
-                    this.viewer.setSelection( ( ISelection ) this.connectionToSelectedElementMap.get( connection ),
-                        true );
+                    viewer.setSelection( ( ISelection ) connectionToSelectedElementMap.get( connection ), true );
                 }
             }
-
-            // send selection hint
-            this.sendSelectionHints( this.viewer.getSelection() );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the tree and expands/collapses the 
+     * tree when the connection is opene/closed.
+     */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
-
         if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_OPENED )
         {
-            this.viewer.refresh( connectionUpdateEvent.getConnection() );
-            this.viewer.expandToLevel( 2 );
+            viewer.refresh( connectionUpdateEvent.getConnection() );
+            viewer.expandToLevel( 2 );
 
-            if ( this.view.getConfiguration().getPreferences().isExpandBaseEntries() )
+            if ( view.getConfiguration().getPreferences().isExpandBaseEntries() )
             {
-                Object[] expandedElements = this.viewer.getExpandedElements();
+                Object[] expandedElements = viewer.getExpandedElements();
                 for ( int i = 0; i < expandedElements.length; i++ )
                 {
                     Object object = expandedElements[i];
@@ -230,57 +410,63 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
                         BrowserCategory bc = ( BrowserCategory ) object;
                         if ( bc.getType() == BrowserCategory.TYPE_DIT )
                         {
-                            this.viewer.expandToLevel( bc, 3 );
+                            viewer.expandToLevel( bc, 3 );
                         }
                     }
                 }
             }
-            // this.viewer.expandToLevel(this.view.getConfiguration().getPreferences().isExpandBaseEntries()?3:2);
-
         }
         else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_CLOSED )
         {
-            this.viewer.collapseAll();
-            this.connectionToExpandedElementsMap.remove( connectionUpdateEvent.getConnection() );
-            this.connectionToSelectedElementMap.remove( connectionUpdateEvent.getConnection() );
-            this.sendSelectionHints( this.viewer.getSelection() );
-            this.viewer.refresh( connectionUpdateEvent.getConnection() );
+            viewer.collapseAll();
+            connectionToExpandedElementsMap.remove( connectionUpdateEvent.getConnection() );
+            connectionToSelectedElementMap.remove( connectionUpdateEvent.getConnection() );
+            viewer.refresh( connectionUpdateEvent.getConnection() );
         }
         else
         {
-            this.viewer.refresh( connectionUpdateEvent.getConnection() );
+            viewer.refresh( connectionUpdateEvent.getConnection() );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This viewer selects the updated search.
+     */
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
         ISearch search = searchUpdateEvent.getSearch();
-        this.viewer.refresh();
-        if ( search.getSearchResults() != null && search.getSearchResults().length > 0 )
-        {
-            // this.viewer.refresh(search);
-            // this.viewer.expandToLevel(search, TreeViewer.ALL_LEVELS);
-        }
+        viewer.refresh();
 
         if ( Arrays.asList( search.getConnection().getSearchManager().getSearches() ).contains( search ) )
         {
-            this.viewer.setSelection( new StructuredSelection( search ), true );
+            viewer.setSelection( new StructuredSelection( search ), true );
         }
         else
         {
-            Object searchCategory = ( ( ITreeContentProvider ) this.viewer.getContentProvider() ).getParent( search );
-            this.viewer.setSelection( new StructuredSelection( searchCategory ), true );
+            Object searchCategory = ( ( ITreeContentProvider ) viewer.getContentProvider() ).getParent( search );
+            viewer.setSelection( new StructuredSelection( searchCategory ), true );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
     {
-        this.viewer.refresh();
+        viewer.refresh();
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the tree and 
+     * selects an entry depending on the event type.
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
 
@@ -301,139 +487,27 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
         if ( event instanceof EntryAddedEvent )
         {
-            this.viewer.refresh( event.getModifiedEntry(), true );
-            this.viewer.refresh( event.getModifiedEntry().getParententry(), true );
-            this.viewer.setSelection( new StructuredSelection( event.getModifiedEntry() ), true );
+            viewer.refresh( event.getModifiedEntry(), true );
+            viewer.refresh( event.getModifiedEntry().getParententry(), true );
+            viewer.setSelection( new StructuredSelection( event.getModifiedEntry() ), true );
         }
         else if ( event instanceof EntryRenamedEvent )
         {
             EntryRenamedEvent ere = ( EntryRenamedEvent ) event;
-            this.viewer.refresh( ere.getNewEntry().getParententry(), true );
-            this.viewer.refresh( ere.getNewEntry(), true );
-            this.viewer.setSelection( new StructuredSelection( ere.getNewEntry() ), true );
+            viewer.refresh( ere.getNewEntry().getParententry(), true );
+            viewer.refresh( ere.getNewEntry(), true );
+            viewer.setSelection( new StructuredSelection( ere.getNewEntry() ), true );
         }
         else if ( event instanceof EntryMovedEvent )
         {
             EntryMovedEvent eme = ( EntryMovedEvent ) event;
-            this.viewer.refresh( eme.getOldEntry().getParententry(), true );
-            this.viewer.refresh( eme.getNewEntry().getParententry(), true );
-            this.viewer.refresh( eme.getNewEntry(), true );
-            this.viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
+            viewer.refresh( eme.getOldEntry().getParententry(), true );
+            viewer.refresh( eme.getNewEntry().getParententry(), true );
+            viewer.refresh( eme.getNewEntry(), true );
+            viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
         }
 
-        // else if(event instanceof EntryDeletedEvent) {
-        // this.viewer.refresh(event.getModifiedEntry(), true);
-        // this.viewer.refresh(event.getModifiedEntry().getParententry(), true);
-        // this.viewer.setSelection(new
-        // StructuredSelection(event.getModifiedEntry().getParententry()),
-        // true);
-        // }
-        // else if(event instanceof EntryRenamedEvent) {
-        // EntryRenamedEvent ere = (EntryRenamedEvent) event;
-        // this.viewer.refresh(ere.getModifiedEntry(), true);
-        // this.viewer.refresh(ere.getOriginalParent(), true);
-        // this.viewer.refresh(ere.getNewParent(), true);
-        // }
-        // else if(event instanceof EntryMovedEvent) {
-        // EntryMovedEvent eme = (EntryMovedEvent) event;
-        // this.viewer.refresh(eme.getModifiedEntry(), true);
-        // this.viewer.refresh(eme.getOriginalParent(), true);
-        // this.viewer.refresh(eme.getNewParent(), true);
-        // }
-        // else {
-        // this.viewer.refresh(event.getModifiedEntry(), true);
-        // }
-
-        this.viewer.refresh( event.getModifiedEntry(), true );
-    }
-
-
-    public void doubleClick( DoubleClickEvent event )
-    {
-
-        // special behaviour for searches:
-        // perform search on doouble-click but do not expand the tree.
-        // if(event.getSelection() instanceof IStructuredSelection) {
-        // Object obj =
-        // ((IStructuredSelection)event.getSelection()).getFirstElement();
-        //		    
-        // // perform search
-        // if(obj instanceof ISearch) {
-        // ISearch search = (ISearch) obj;
-        // if(search.getSearchResults() == null) {
-        // IAction action = view.getActionGroup().getRefreshAction();
-        // if(action.isEnabled()) {
-        // action.run();
-        // return;
-        // }
-        // }
-        // }
-        // }
-
-        super.doubleClick( event );
-    }
-
-
-    public void partDeactivated( IWorkbenchPartReference partRef )
-    {
-        if ( partRef.getPart( false ) == this.view && contextActivation != null )
-        {
-
-            this.view.getActionGroup().deactivateGlobalActionHandlers();
-
-            IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-                IContextService.class );
-            contextService.deactivateContext( contextActivation );
-            contextActivation = null;
-        }
-    }
-
-
-    public void partActivated( IWorkbenchPartReference partRef )
-    {
-        if ( partRef.getPart( false ) == this.view )
-        {
-
-            IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-                IContextService.class );
-            contextActivation = contextService
-                .activateContext( "org.apache.directory.ldapstudio.browser.action.context" );
-            // org.eclipse.ui.contexts.dialogAndWindow
-            // org.eclipse.ui.contexts.window
-            // org.eclipse.ui.text_editor_context
-
-            this.view.getActionGroup().activateGlobalActionHandlers();
-        }
-    }
-
-
-    public void partBroughtToTop( IWorkbenchPartReference partRef )
-    {
-    }
-
-
-    public void partClosed( IWorkbenchPartReference partRef )
-    {
-    }
-
-
-    public void partOpened( IWorkbenchPartReference partRef )
-    {
-    }
-
-
-    public void partHidden( IWorkbenchPartReference partRef )
-    {
-    }
-
-
-    public void partVisible( IWorkbenchPartReference partRef )
-    {
-    }
-
-
-    public void partInputChanged( IWorkbenchPartReference partRef )
-    {
+        viewer.refresh( event.getModifiedEntry(), true );
     }
 
 }

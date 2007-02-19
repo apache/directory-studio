@@ -429,4 +429,16 @@ public abstract class SelectionUtils
         return list.toArray( new BrowserSearchResultPage[list.size()] );
     }
 
+    
+    /**
+     * Gets the objects contained in the given selection.
+     *
+     * @param selection the selection
+     * @return an array with object, may be empty.
+     */
+    public static Object[] getObjects( ISelection selection )
+    {
+        List<Object> list = getTypes( selection, Object.class );
+        return list.toArray( new Object[list.size()] );
+    }
 }

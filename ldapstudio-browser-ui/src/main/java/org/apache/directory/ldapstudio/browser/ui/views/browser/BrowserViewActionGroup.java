@@ -36,8 +36,8 @@ import org.apache.directory.ldapstudio.browser.ui.actions.NewEntryAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewSearchAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.PasteAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.RenameAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserViewActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserActionProxy;
+import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserViewActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserActionGroup;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -52,170 +52,220 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.commands.ICommandService;
 
 
+/**
+ * This class manages all the actions of the browser view.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserViewActionGroup extends BrowserActionGroup
 {
 
+    /** The action to show/hide the DIT. */
     private ShowDITAction showDITAction;
 
+    /** The action to show/hide searches. */
     private ShowSearchesAction showSearchesAction;
 
+    /** The action to show/hide bookmarks. */
     private ShowBookmarksAction showBookmarksAction;
 
+    /** The action to show/hide metadata. */
     private ShowDirectoryMetadataEntriesAction showDirectoryMetadataEntriesAction;
 
+    /** The action to open the browser's preference page. */
     private OpenBrowserPreferencePageAction openBrowserPreferencePageAction;
 
+    /** The action to link the current editor with the browser view. */
     private LinkWithEditorAction linkWithEditorAction;
 
+    /** The Constant locateEntryInDitAction. */
     private static final String locateEntryInDitAction = "locateEntryInDitAction";
 
+    /** The Constant newEntryAction. */
     private static final String newEntryAction = "newEntryAction";
 
+    /** The Constant newSearchAction. */
     private static final String newSearchAction = "newSearchAction";
 
+    /** The Constant newBookmarkAction. */
     private static final String newBookmarkAction = "newBookmarkAction";
 
+    /** The Constant newBatchOperationAction. */
     private static final String newBatchOperationAction = "newBatchOperationAction";
 
+    /** The Constant copyAction. */
     private static final String copyAction = "copyAction";
 
+    /** The Constant pasteAction. */
     private static final String pasteAction = "pasteAction";
 
+    /** The Constant deleteAction. */
     private static final String deleteAction = "deleteAction";
 
+    /** The Constant moveAction. */
     private static final String moveAction = "moveAction";
 
+    /** The Constant renameAction. */
     private static final String renameAction = "renameAction";
 
+    /** The Constant copyDnAction. */
     private static final String copyDnAction = "copyDnAction";
 
+    /** The Constant copyUrlAction. */
     private static final String copyUrlAction = "copyUrlAction";
 
+    /** The Constant copyEntryAsLdifDnOnlyAction. */
     private static final String copyEntryAsLdifDnOnlyAction = "copyEntryAsLdifDnOnlyAction";
 
+    /** The Constant copyEntryAsLdifReturningAttributesOnlyAction. */
     private static final String copyEntryAsLdifReturningAttributesOnlyAction = "copyEntryAsLdifReturningAttributesOnlyAction";
 
+    /** The Constant copyEntryAsLdifAction. */
     private static final String copyEntryAsLdifAction = "copyEntryAsLdifAction";
 
+    /** The Constant copyEntryAsLdifOperationalAction. */
     private static final String copyEntryAsLdifOperationalAction = "copyEntryAsLdifOperationalAction";
 
+    /** The Constant copyEntryAsCsvDnOnlyAction. */
     private static final String copyEntryAsCsvDnOnlyAction = "copyEntryAsCsvDnOnlyAction";
 
+    /** The Constant copyEntryAsCsvReturningAttributesOnlyAction. */
     private static final String copyEntryAsCsvReturningAttributesOnlyAction = "copyEntryAsCsvReturningAttributesOnlyAction";
 
+    /** The Constant copyEntryAsCsvAction. */
     private static final String copyEntryAsCsvAction = "copyEntryAsCsvAction";
 
+    /** The Constant copyEntryAsCsvOperationalAction. */
     private static final String copyEntryAsCsvOperationalAction = "copyEntryAsCsvOperationalAction";
 
+    /** The Constant importDsmlAction. */
     private static final String importDsmlAction = "importDsmlAction";
 
+    /** The Constant importLdifAction. */
     private static final String importLdifAction = "importLdifAction";
 
+    /** The Constant exportLdifAction. */
     private static final String exportLdifAction = "exportLdifAction";
-    
+
+    /** The Constant exportDsmlAction. */
     private static final String exportDsmlAction = "exportDsmlAction";
 
+    /** The Constant exportCsvAction. */
     private static final String exportCsvAction = "exportCsvAction";
 
+    /** The Constant exportExcelAction. */
     private static final String exportExcelAction = "exportExcelAction";
 
 
+    /**
+     * Creates a new instance of BrowserViewActionGroup and 
+     * creates all the actions.
+     * 
+     * @param view the browser view
+     */
     public BrowserViewActionGroup( BrowserView view )
     {
         super( view.getMainWidget(), view.getConfiguration() );
         TreeViewer viewer = view.getMainWidget().getViewer();
 
-        this.linkWithEditorAction = new LinkWithEditorAction( view );
-        this.showDITAction = new ShowDITAction();
-        this.showSearchesAction = new ShowSearchesAction();
-        this.showBookmarksAction = new ShowBookmarksAction();
-        this.showDirectoryMetadataEntriesAction = new ShowDirectoryMetadataEntriesAction();
-        this.openBrowserPreferencePageAction = new OpenBrowserPreferencePageAction();
+        linkWithEditorAction = new LinkWithEditorAction( view );
+        showDITAction = new ShowDITAction();
+        showSearchesAction = new ShowSearchesAction();
+        showBookmarksAction = new ShowBookmarksAction();
+        showDirectoryMetadataEntriesAction = new ShowDirectoryMetadataEntriesAction();
+        openBrowserPreferencePageAction = new OpenBrowserPreferencePageAction();
 
-        this.browserActionMap.put( newEntryAction, new BrowserViewActionProxy( viewer, new NewEntryAction( view
-            .getSite().getWorkbenchWindow() ) ) );
-        this.browserActionMap.put( newSearchAction, new BrowserViewActionProxy( viewer, new NewSearchAction() ) );
-        this.browserActionMap.put( newBookmarkAction, new BrowserViewActionProxy( viewer, new NewBookmarkAction() ) );
-        this.browserActionMap.put( newBatchOperationAction, new BrowserViewActionProxy( viewer,
+        browserActionMap.put( newEntryAction, new BrowserViewActionProxy( viewer, new NewEntryAction( view.getSite()
+            .getWorkbenchWindow() ) ) );
+        browserActionMap.put( newSearchAction, new BrowserViewActionProxy( viewer, new NewSearchAction() ) );
+        browserActionMap.put( newBookmarkAction, new BrowserViewActionProxy( viewer, new NewBookmarkAction() ) );
+        browserActionMap.put( newBatchOperationAction, new BrowserViewActionProxy( viewer,
             new NewBatchOperationAction() ) );
 
-        this.browserActionMap.put( locateEntryInDitAction, new BrowserViewActionProxy( viewer,
-            new LocateEntryInDitAction() ) );
+        browserActionMap
+            .put( locateEntryInDitAction, new BrowserViewActionProxy( viewer, new LocateEntryInDitAction() ) );
 
-        this.browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new PasteAction() ) );
-        this.browserActionMap.put( copyAction, new BrowserViewActionProxy( viewer, new CopyAction(
-            ( BrowserActionProxy ) this.browserActionMap.get( pasteAction ) ) ) );
-        this.browserActionMap.put( deleteAction, new BrowserViewActionProxy( viewer, new DeleteAction() ) );
-        this.browserActionMap.put( moveAction, new BrowserViewActionProxy( viewer, new MoveAction() ) );
-        this.browserActionMap.put( renameAction, new BrowserViewActionProxy( viewer, new RenameAction() ) );
+        browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new PasteAction() ) );
+        browserActionMap.put( copyAction, new BrowserViewActionProxy( viewer, new CopyAction(
+            ( BrowserActionProxy ) browserActionMap.get( pasteAction ) ) ) );
+        browserActionMap.put( deleteAction, new BrowserViewActionProxy( viewer, new DeleteAction() ) );
+        browserActionMap.put( moveAction, new BrowserViewActionProxy( viewer, new MoveAction() ) );
+        browserActionMap.put( renameAction, new BrowserViewActionProxy( viewer, new RenameAction() ) );
 
-        this.browserActionMap.put( copyDnAction, new BrowserViewActionProxy( viewer, new CopyDnAction() ) );
-        this.browserActionMap.put( copyUrlAction, new BrowserViewActionProxy( viewer, new CopyUrlAction() ) );
+        browserActionMap.put( copyDnAction, new BrowserViewActionProxy( viewer, new CopyDnAction() ) );
+        browserActionMap.put( copyUrlAction, new BrowserViewActionProxy( viewer, new CopyUrlAction() ) );
 
-        this.browserActionMap.put( copyEntryAsLdifAction, new BrowserViewActionProxy( viewer,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_NORMAL ) ) );
-        this.browserActionMap.put( copyEntryAsLdifDnOnlyAction, new BrowserViewActionProxy( viewer,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
-        this.browserActionMap.put( copyEntryAsLdifReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
-        this.browserActionMap.put( copyEntryAsLdifOperationalAction, new BrowserViewActionProxy( viewer,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
-        this.browserActionMap.put( copyEntryAsCsvAction, new BrowserViewActionProxy( viewer, new CopyEntryAsCsvAction(
+        browserActionMap.put( copyEntryAsLdifAction, new BrowserViewActionProxy( viewer, new CopyEntryAsLdifAction(
             CopyEntryAsLdifAction.MODE_NORMAL ) ) );
-        this.browserActionMap.put( copyEntryAsCsvDnOnlyAction, new BrowserViewActionProxy( viewer,
-            new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
-        this.browserActionMap.put( copyEntryAsCsvReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer,
+        browserActionMap.put( copyEntryAsLdifDnOnlyAction, new BrowserViewActionProxy( viewer,
+            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
+        browserActionMap.put( copyEntryAsLdifReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer,
+            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
+        browserActionMap.put( copyEntryAsLdifOperationalAction, new BrowserViewActionProxy( viewer,
+            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
+        browserActionMap.put( copyEntryAsCsvAction, new BrowserViewActionProxy( viewer, new CopyEntryAsCsvAction(
+            CopyEntryAsLdifAction.MODE_NORMAL ) ) );
+        browserActionMap.put( copyEntryAsCsvDnOnlyAction, new BrowserViewActionProxy( viewer, new CopyEntryAsCsvAction(
+            CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
+        browserActionMap.put( copyEntryAsCsvReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer,
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
-        this.browserActionMap.put( copyEntryAsCsvOperationalAction, new BrowserViewActionProxy( viewer,
+        browserActionMap.put( copyEntryAsCsvOperationalAction, new BrowserViewActionProxy( viewer,
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
 
-        this.browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
-                ImportExportAction.TYPE_IMPORT_DSML ) ) );
-        this.browserActionMap.put( exportDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+        browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+            ImportExportAction.TYPE_IMPORT_DSML ) ) );
+        browserActionMap.put( exportDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_DSML ) ) );
-        this.browserActionMap.put( importLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+        browserActionMap.put( importLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_LDIF ) ) );
-        this.browserActionMap.put( exportLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+        browserActionMap.put( exportLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_LDIF ) ) );
-        this.browserActionMap.put( exportCsvAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+        browserActionMap.put( exportCsvAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
-        this.browserActionMap.put( exportExcelAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+        browserActionMap.put( exportExcelAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
 
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.openBrowserPreferencePageAction != null )
+        if ( openBrowserPreferencePageAction != null )
         {
             linkWithEditorAction.dispose();
             linkWithEditorAction = null;
 
-            this.showDITAction.dispose();
-            this.showDITAction = null;
-            this.showSearchesAction.dispose();
-            this.showSearchesAction = null;
-            this.showBookmarksAction.dispose();
-            this.showBookmarksAction = null;
-            this.showDirectoryMetadataEntriesAction.dispose();
-            this.showDirectoryMetadataEntriesAction = null;
-            this.openBrowserPreferencePageAction.dispose();
-            this.openBrowserPreferencePageAction = null;
+            showDITAction.dispose();
+            showDITAction = null;
+            showSearchesAction.dispose();
+            showSearchesAction = null;
+            showBookmarksAction.dispose();
+            showBookmarksAction = null;
+            showDirectoryMetadataEntriesAction.dispose();
+            showDirectoryMetadataEntriesAction = null;
+            openBrowserPreferencePageAction.dispose();
+            openBrowserPreferencePageAction = null;
 
-            this.openBrowserPreferencePageAction = null;
+            openBrowserPreferencePageAction = null;
         }
 
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
 
-        toolBarManager.add( ( IAction ) this.browserActionMap.get( upAction ) );
+        toolBarManager.add( ( IAction ) browserActionMap.get( upAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) this.browserActionMap.get( refreshAction ) );
+        toolBarManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( collapseAllAction );
         toolBarManager.add( linkWithEditorAction );
@@ -224,112 +274,120 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void fillMenu( IMenuManager menuManager )
     {
 
-        menuManager.add( this.openSortDialogAction );
+        menuManager.add( openSortDialogAction );
         menuManager.add( new Separator() );
-        menuManager.add( this.showDITAction );
-        menuManager.add( this.showSearchesAction );
-        menuManager.add( this.showBookmarksAction );
-        menuManager.add( this.showDirectoryMetadataEntriesAction );
+        menuManager.add( showDITAction );
+        menuManager.add( showSearchesAction );
+        menuManager.add( showBookmarksAction );
+        menuManager.add( showDirectoryMetadataEntriesAction );
         menuManager.add( new Separator() );
-        menuManager.add( this.openBrowserPreferencePageAction );
+        menuManager.add( openBrowserPreferencePageAction );
         menuManager.update( true );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void menuAboutToShow( IMenuManager menuManager )
     {
-
         // new
-        menuManager.add( ( IAction ) this.browserActionMap.get( newEntryAction ) );
-        menuManager.add( ( IAction ) this.browserActionMap.get( newSearchAction ) );
-        menuManager.add( ( IAction ) this.browserActionMap.get( newBookmarkAction ) );
-        menuManager.add( ( IAction ) this.browserActionMap.get( newBatchOperationAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( newEntryAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( newSearchAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( newBookmarkAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( newBatchOperationAction ) );
         menuManager.add( new Separator() );
 
         // navigation
-        BrowserViewActionProxy leid = ( BrowserViewActionProxy ) this.browserActionMap.get( locateEntryInDitAction );
+        BrowserViewActionProxy leid = ( BrowserViewActionProxy ) browserActionMap.get( locateEntryInDitAction );
         leid.setImageDescriptor( leid.getAction().getImageDescriptor() );
         menuManager.add( leid );
-        menuManager.add( ( IAction ) this.browserActionMap.get( upAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( upAction ) );
         menuManager.add( new Separator() );
 
         // copy/paste/...
-        menuManager.add( ( IAction ) this.browserActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) this.browserActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) this.browserActionMap.get( deleteAction ) );
-        menuManager.add( ( IAction ) this.browserActionMap.get( moveAction ) );
-        menuManager.add( ( IAction ) this.browserActionMap.get( renameAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( copyAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( pasteAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( deleteAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( moveAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( renameAction ) );
         MenuManager advancedMenuManager = new MenuManager( "Advanced" );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyDnAction ) );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyUrlAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyDnAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyUrlAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsLdifDnOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsLdifReturningAttributesOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsLdifAction ) );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsLdifOperationalAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifDnOnlyAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifReturningAttributesOnlyAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifOperationalAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsCsvDnOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsCsvReturningAttributesOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsCsvAction ) );
-        advancedMenuManager.add( ( IAction ) this.browserActionMap.get( copyEntryAsCsvOperationalAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvDnOnlyAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvReturningAttributesOnlyAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvAction ) );
+        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvOperationalAction ) );
         advancedMenuManager.add( new Separator() );
         menuManager.add( advancedMenuManager );
         menuManager.add( new Separator() );
 
         // filter, batch
-        menuManager.add( ( IAction ) this.browserActionMap.get( filterChildrenAction ) );
-        if ( ( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
+        menuManager.add( ( IAction ) browserActionMap.get( filterChildrenAction ) );
+        if ( ( ( IAction ) browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) this.browserActionMap.get( unfilterChildrenAction ) );
+            menuManager.add( ( IAction ) browserActionMap.get( unfilterChildrenAction ) );
         }
         menuManager.add( new Separator() );
 
         // import/export
         MenuManager importMenuManager = new MenuManager( "Import" );
-        importMenuManager.add( ( IAction ) this.browserActionMap.get( importLdifAction ) );
-        importMenuManager.add( ( IAction ) this.browserActionMap.get( importDsmlAction ) );
+        importMenuManager.add( ( IAction ) browserActionMap.get( importLdifAction ) );
+        importMenuManager.add( ( IAction ) browserActionMap.get( importDsmlAction ) );
         importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
 
         MenuManager exportMenuManager = new MenuManager( "Export" );
-        exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportLdifAction ) );
-        exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportDsmlAction ) );
+        exportMenuManager.add( ( IAction ) browserActionMap.get( exportLdifAction ) );
+        exportMenuManager.add( ( IAction ) browserActionMap.get( exportDsmlAction ) );
         exportMenuManager.add( new Separator() );
-        exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportCsvAction ) );
-        exportMenuManager.add( ( IAction ) this.browserActionMap.get( exportExcelAction ) );
+        exportMenuManager.add( ( IAction ) browserActionMap.get( exportCsvAction ) );
+        exportMenuManager.add( ( IAction ) browserActionMap.get( exportExcelAction ) );
         menuManager.add( exportMenuManager );
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( ( IAction ) this.browserActionMap.get( refreshAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
         menuManager.add( new Separator() );
 
         // additions
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
 
         // properties
-        menuManager.add( ( IAction ) this.browserActionMap.get( propertyDialogAction ) );
+        menuManager.add( ( IAction ) browserActionMap.get( propertyDialogAction ) );
 
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void activateGlobalActionHandlers()
     {
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) this.browserActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) browserActionMap
                 .get( copyAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) this.browserActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) browserActionMap
                 .get( pasteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) this.browserActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) browserActionMap
                 .get( deleteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.MOVE.getId(), ( IAction ) this.browserActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.MOVE.getId(), ( IAction ) browserActionMap
                 .get( moveAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.RENAME.getId(), ( IAction ) this.browserActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.RENAME.getId(), ( IAction ) browserActionMap
                 .get( renameAction ) );
         }
 
@@ -339,17 +397,20 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             ICommandService.class );
         if ( commandService != null )
         {
-            IAction leid = ( IAction ) this.browserActionMap.get( locateEntryInDitAction );
+            IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
             commandService.getCommand( leid.getActionDefinitionId() ).setHandler( new ActionHandler( leid ) );
         }
 
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deactivateGlobalActionHandlers()
     {
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), null );
             actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), null );
@@ -364,7 +425,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             ICommandService.class );
         if ( commandService != null )
         {
-            IAction leid = ( IAction ) this.browserActionMap.get( locateEntryInDitAction );
+            IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
             commandService.getCommand( leid.getActionDefinitionId() ).setHandler( null );
         }
 

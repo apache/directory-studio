@@ -25,93 +25,124 @@ import org.apache.directory.ldapstudio.browser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
-import org.apache.directory.ldapstudio.browser.ui.views.modificationlogs.ModificationLogsView;
 import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionUniversalListener;
-
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
-public class ConnectionViewUniversalListener extends ConnectionUniversalListener implements ISelectionListener,
-    IDoubleClickListener
+/**
+ * The ConnectionViewUniversalListener manages all events for the connection view.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class ConnectionViewUniversalListener extends ConnectionUniversalListener
 {
 
+    /** The connection view */
     protected ConnectionView view;
 
+    /** This listener is used to ensure that the browser view is opened
+     when an object in the connection view is selected */
+    private ISelectionChangedListener viewerSelectionListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            IConnection[] connections = SelectionUtils.getConnections( event.getSelection() );
+            if ( connections.length == 1 )
+            {
+                ensureBrowserViewVisible( connections[0] );
+            }
+        }
+    };
 
+    /** This listener opens/closes a connection when double clicking a connection */
+    private IDoubleClickListener viewerDoubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            IConnection[] connections = SelectionUtils.getConnections( event.getSelection() );
+            if ( connections.length == 1 )
+            {
+                toggleConnection( connections[0] );
+            }
+        }
+    };
+
+
+    /**
+     * Creates a new instance of ConnectionViewUniversalListener.
+     *
+     * @param view
+     */
     public ConnectionViewUniversalListener( ConnectionView view )
     {
         super( view.getMainWidget().getViewer() );
         this.view = view;
 
-        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener( this );
-        viewer.addDoubleClickListener( this );
+        // listeners
+        viewer.addSelectionChangedListener( viewerSelectionListener );
+        viewer.addDoubleClickListener( viewerDoubleClickListener );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.view != null )
-        {
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().removeSelectionListener( this );
-            this.view = null;
-        }
-        if ( viewer != null )
-        {
-            viewer.removeDoubleClickListener( this );
-        }
+        this.view = null;
         super.dispose();
     }
 
 
-    public void selectionChanged( IWorkbenchPart part, ISelection selection )
+    /**
+     * Ensures that the browser view is opended and ready to show the given selection.
+     *
+     * @param selection the view's selection.
+     */
+    private void ensureBrowserViewVisible( IConnection selection )
     {
         if ( this.view != null )
         {
-            if ( part.getClass() == ConnectionView.class )
+            try
             {
-                IConnection[] connections = SelectionUtils.getConnections( selection );
-                if ( connections.length == 1 )
-                {
-                    BrowserView.setInput( connections[0] );
-                    ModificationLogsView.setInput( connections[0] );
-                }
-                else
-                {
-                    BrowserView.setInput( null );
-                    ModificationLogsView.setInput( null );
-                }
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( BrowserView.getId(),
+                    null, IWorkbenchPage.VIEW_VISIBLE );
+            }
+            catch ( PartInitException e )
+            {
+            }
+            catch ( NullPointerException e )
+            {
             }
         }
     }
 
 
-    public void doubleClick( DoubleClickEvent event )
+    /**
+     * Opens a closed connections or closes an opened connection. 
+     *
+     * @param connection the connection
+     */
+    private void toggleConnection( IConnection connection )
     {
-        if ( !event.getSelection().isEmpty() )
+        if ( connection.isOpened() )
         {
-            Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-            if ( o instanceof IConnection )
+            if ( connection.canClose() )
             {
-                IConnection connection = ( IConnection ) o;
-                if ( connection.isOpened() )
-                {
-                    if ( connection.canClose() )
-                    {
-                        connection.close();
-                    }
-                }
-                else
-                {
-                    OpenConnectionsJob ocj = new OpenConnectionsJob( connection );
-                    ocj.execute();
-                }
+                connection.close();
             }
+        }
+        else
+        {
+            OpenConnectionsJob ocj = new OpenConnectionsJob( connection );
+            ocj.execute();
         }
     }
 

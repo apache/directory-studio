@@ -17,9 +17,11 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.browser.ui.views.browser;
+package org.apache.directory.ldapstudio.browser.ui.views.connection;
 
 
+import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor;
@@ -27,6 +29,8 @@ import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditorInput
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorInput;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -36,15 +40,18 @@ import org.eclipse.ui.IWorkbenchPartReference;
 
 
 /**
- * This class implements the Link With Editor Action for the Browser View.
+ * This class implements the Link With Editor Action for the Connection View.
+ * 
+ * This action is not visible to the user, but it listens to to the link 
+ * with editor property of the browser view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
 public class LinkWithEditorAction extends Action
 {
-    /** The browser view */
-    private BrowserView browserView;
+    /** The connection view */
+    private ConnectionView connectionView;
 
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
@@ -114,29 +121,46 @@ public class LinkWithEditorAction extends Action
         }
     };
 
+    /** The listener listening on changes of the link with editor action of the browser view */
+    private IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
+    {
+
+        /**
+         * {@inheritDoc}
+         */
+        public void propertyChange( PropertyChangeEvent event )
+        {
+            if ( BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR.equals( event.getProperty() ) )
+            {
+                run();
+            }
+        }
+    };
+
 
     /**
      * Creates a new instance of LinkWithEditorAction.
      *
-     * @param browserView
+     * @param connectionView
      *      the associated view
      */
-    public LinkWithEditorAction( BrowserView browserView )
+    public LinkWithEditorAction( ConnectionView connectionView )
     {
         super( "Link with editor", AS_CHECK_BOX );
 
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_LINK_WITH_EDITOR ) );
         super.setEnabled( true );
-        this.browserView = browserView;
+        this.connectionView = connectionView;
 
         super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR ) );
 
-        // Enable the listeners
+        // enable the listeners
+        BrowserUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener( propertyChangeListener );
         if ( isChecked() )
         {
-            browserView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
+            connectionView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
         }
     }
 
@@ -146,23 +170,22 @@ public class LinkWithEditorAction extends Action
      */
     public void run()
     {
-        setChecked( isChecked() );
-        BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
-            BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR, isChecked() );
+        setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
+            BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR ) );
 
         if ( isChecked() )
         {
-            // Enable the listener
-            browserView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
+            // enable the listeners
+            connectionView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
 
             // link
-            IEditorPart activeEditor = browserView.getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
+            IEditorPart activeEditor = connectionView.getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
             linkViewWithEditor( activeEditor );
         }
         else
         {
-            // Disable the listener
-            browserView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
+            // dsable the listeners
+            connectionView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
         }
     }
 
@@ -174,8 +197,8 @@ public class LinkWithEditorAction extends Action
      */
     private void linkViewWithEditor( IWorkbenchPart part )
     {
-        if ( part != null && browserView != null
-            && part.getSite().getWorkbenchWindow() == browserView.getSite().getWorkbenchWindow() )
+        if ( part != null && connectionView != null
+            && part.getSite().getWorkbenchWindow() == connectionView.getSite().getWorkbenchWindow() )
         {
             Object objectToSelect = null;
 
@@ -186,7 +209,11 @@ public class LinkWithEditorAction extends Action
                 if ( input != null && input instanceof EntryEditorInput )
                 {
                     EntryEditorInput eei = ( EntryEditorInput ) input;
-                    objectToSelect = eei.getInput();
+                    IEntry entry = eei.getResolvedEntry();
+                    if ( entry != null )
+                    {
+                        objectToSelect = entry.getConnection();
+                    }
                 }
             }
             else if ( part instanceof SearchResultEditor )
@@ -196,7 +223,11 @@ public class LinkWithEditorAction extends Action
                 if ( input != null && input instanceof SearchResultEditorInput )
                 {
                     SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
-                    objectToSelect = srei.getSearch();
+                    ISearch search = srei.getSearch();
+                    if ( search != null )
+                    {
+                        objectToSelect = search.getConnection();
+                    }
                 }
             }
 
@@ -204,11 +235,11 @@ public class LinkWithEditorAction extends Action
             {
                 // do not select if already selected!
                 // necessary to avoid infinite loops!
-                IStructuredSelection selection = ( IStructuredSelection ) browserView.getMainWidget().getViewer()
+                IStructuredSelection selection = ( IStructuredSelection ) connectionView.getMainWidget().getViewer()
                     .getSelection();
                 if ( selection.size() != 1 || !selection.getFirstElement().equals( objectToSelect ) )
                 {
-                    browserView.select( objectToSelect );
+                    connectionView.select( objectToSelect );
                 }
             }
         }
@@ -222,11 +253,12 @@ public class LinkWithEditorAction extends Action
     {
         if ( editorListener != null )
         {
-            browserView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
+            connectionView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
+            BrowserUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener( propertyChangeListener );
             editorListener = null;
         }
 
-        browserView = null;
+        connectionView = null;
     }
 
 }

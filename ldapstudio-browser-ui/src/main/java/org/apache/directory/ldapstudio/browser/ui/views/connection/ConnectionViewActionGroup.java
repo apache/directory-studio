@@ -39,118 +39,158 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionFactory;
 
 
+/**
+ * This class manages all the actions of the connection view.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionViewActionGroup extends ConnectionActionGroup
 {
+
+    /** The connection view */
     private ConnectionView view;
 
+    /** The link with editor action. */
+    private LinkWithEditorAction linkWithEditorAction;
+
+    /** The Constant selectAllAction. */
     private static final String selectAllAction = "selectAllAction";
 
+    /** The Constant importDsmlAction. */
     private static final String importDsmlAction = "importDsmlAction";
-    
+
+    /** The Constant exportDsmlAction. */
     private static final String exportDsmlAction = "exportDsmlAction";
 
+    /** The Constant importLdifAction. */
     private static final String importLdifAction = "importLdifAction";
 
+    /** The Constant exportLdifAction. */
     private static final String exportLdifAction = "exportLdifAction";
 
+    /** The Constant exportCsvAction. */
     private static final String exportCsvAction = "exportCsvAction";
 
+    /** The Constant exportExcelAction. */
     private static final String exportExcelAction = "exportExcelAction";
 
+    /** The Constant openSchemaBrowserAction. */
     private static final String openSchemaBrowserAction = "openSchemaBrowserAction";
 
+    /** The drag connection listener. */
     private DragConnectionListener dragConnectionListener;
 
+    /** The drop connection listener. */
     private DropConnectionListener dropConnectionListener;
 
 
+    /**
+     * Creates a new instance of ConnectionViewActionGroup and creates
+     * all actions.
+     *
+     * @param view the connection view
+     */
     public ConnectionViewActionGroup( ConnectionView view )
     {
         super( view.getMainWidget(), view.getConfiguration() );
         this.view = view;
         TableViewer viewer = view.getMainWidget().getViewer();
 
-        this.connectionActionMap.put( selectAllAction, new ConnectionViewActionProxy( viewer, new SelectAllAction(
-            viewer ) ) );
-        this.connectionActionMap.put( importDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        linkWithEditorAction = new LinkWithEditorAction( view );
+        connectionActionMap
+            .put( selectAllAction, new ConnectionViewActionProxy( viewer, new SelectAllAction( viewer ) ) );
+        connectionActionMap.put( importDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_DSML ) ) );
-        this.connectionActionMap.put( exportDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( exportDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_DSML ) ) );
-        this.connectionActionMap.put( importLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( importLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_LDIF ) ) );
-        this.connectionActionMap.put( exportLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( exportLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_LDIF ) ) );
-        this.connectionActionMap.put( exportCsvAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( exportCsvAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
-        this.connectionActionMap.put( exportExcelAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( exportExcelAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
 
-        this.connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer,
+        connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer,
             new OpenSchemaBrowserAction() ) );
 
         // DND support
-        this.dropConnectionListener = new DropConnectionListener();
-        this.dragConnectionListener = new DragConnectionListener();
+        dropConnectionListener = new DropConnectionListener();
+        dragConnectionListener = new DragConnectionListener();
         int ops = DND.DROP_COPY | DND.DROP_MOVE;
         Transfer[] transfers = new Transfer[]
             { ConnectionTransfer.getInstance(), SearchTransfer.getInstance() };
-        viewer.addDragSupport( ops, transfers, this.dragConnectionListener );
-        viewer.addDropSupport( ops, transfers, this.dropConnectionListener );
+        viewer.addDragSupport( ops, transfers, dragConnectionListener );
+        viewer.addDropSupport( ops, transfers, dropConnectionListener );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.view != null )
+        if ( view != null )
         {
+            linkWithEditorAction.dispose();
+            linkWithEditorAction = null;
 
-            this.dragConnectionListener.dispose();
-            this.dragConnectionListener = null;
-            this.dropConnectionListener.dispose();
-            this.dropConnectionListener = null;
+            dragConnectionListener.dispose();
+            dragConnectionListener = null;
+            dropConnectionListener.dispose();
+            dropConnectionListener = null;
 
-            this.view = null;
+            view = null;
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void menuAboutToShow( IMenuManager menuManager )
     {
 
         // add
-        menuManager.add( ( IAction ) this.connectionActionMap.get( newConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( newConnectionAction ) );
         menuManager.add( new Separator() );
 
         // open/close
-        if ( ( ( IAction ) this.connectionActionMap.get( closeConnectionAction ) ).isEnabled() )
-            menuManager.add( ( IAction ) this.connectionActionMap.get( closeConnectionAction ) );
-        else if ( ( ( IAction ) this.connectionActionMap.get( openConnectionAction ) ).isEnabled() )
-            menuManager.add( ( IAction ) this.connectionActionMap.get( openConnectionAction ) );
+        if ( ( ( IAction ) connectionActionMap.get( closeConnectionAction ) ).isEnabled() )
+        {
+            menuManager.add( ( IAction ) connectionActionMap.get( closeConnectionAction ) );
+        }
+        else if ( ( ( IAction ) connectionActionMap.get( openConnectionAction ) ).isEnabled() )
+        {
+            menuManager.add( ( IAction ) connectionActionMap.get( openConnectionAction ) );
+        }
         menuManager.add( new Separator() );
 
-        menuManager.add( ( IAction ) this.connectionActionMap.get( openSchemaBrowserAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( openSchemaBrowserAction ) );
         menuManager.add( new Separator() );
 
         // copy/paste/...
-        menuManager.add( ( IAction ) this.connectionActionMap.get( copyConnectionAction ) );
-        menuManager.add( ( IAction ) this.connectionActionMap.get( pasteConnectionAction ) );
-        menuManager.add( ( IAction ) this.connectionActionMap.get( deleteConnectionAction ) );
-        menuManager.add( ( IAction ) this.connectionActionMap.get( selectAllAction ) );
-        menuManager.add( ( IAction ) this.connectionActionMap.get( renameConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( copyConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( pasteConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( deleteConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( selectAllAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( renameConnectionAction ) );
         menuManager.add( new Separator() );
 
         // import/export
         MenuManager importMenuManager = new MenuManager( "Import" );
-        importMenuManager.add( ( IAction ) this.connectionActionMap.get( importLdifAction ) );
-        importMenuManager.add( ( IAction ) this.connectionActionMap.get( importDsmlAction ) );
+        importMenuManager.add( ( IAction ) connectionActionMap.get( importLdifAction ) );
+        importMenuManager.add( ( IAction ) connectionActionMap.get( importDsmlAction ) );
         importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
         MenuManager exportMenuManager = new MenuManager( "Export" );
-        exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportLdifAction ) );
-        exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportDsmlAction ) );
+        exportMenuManager.add( ( IAction ) connectionActionMap.get( exportLdifAction ) );
+        exportMenuManager.add( ( IAction ) connectionActionMap.get( exportDsmlAction ) );
         exportMenuManager.add( new Separator() );
-        exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportCsvAction ) );
-        exportMenuManager.add( ( IAction ) this.connectionActionMap.get( exportExcelAction ) );
+        exportMenuManager.add( ( IAction ) connectionActionMap.get( exportCsvAction ) );
+        exportMenuManager.add( ( IAction ) connectionActionMap.get( exportExcelAction ) );
         menuManager.add( exportMenuManager );
         menuManager.add( new Separator() );
 
@@ -158,16 +198,19 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
 
         // properties
-        menuManager.add( ( IAction ) this.connectionActionMap.get( propertyDialogAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( propertyDialogAction ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void activateGlobalActionHandlers()
     {
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), ( IAction ) this.connectionActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), ( IAction ) connectionActionMap
                 .get( selectAllAction ) );
         }
 
@@ -176,10 +219,13 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deactivateGlobalActionHandlers()
     {
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), null );
         }
