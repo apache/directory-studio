@@ -22,10 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
@@ -59,10 +56,10 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
     private SchemaPool schemaPool;
 
     /** The HashTable containing all the object classes */
-    private Hashtable<String, ObjectClass> objectClassTable;
+    private ObjectClass[] objectClasses;
 
     /** The HashTable containing all the attribute types */
-    private Hashtable<String, AttributeType> attributeTypeTable;
+    private AttributeType[] attributeTypes;
 
     /** The FirstName Sorter */
     private HierarchyViewFirstNameSorter firstNameSorter;
@@ -81,8 +78,8 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
     {
         this.schemaPool = SchemaPool.getInstance();
 
-        objectClassTable = schemaPool.getObjectClassesAsHashTableByName();
-        attributeTypeTable = schemaPool.getAttributeTypesAsHashTableByName();
+        objectClasses = schemaPool.getObjectClassesAsArray();
+        attributeTypes = schemaPool.getAttributeTypesAsArray();
 
         firstNameSorter = new HierarchyViewFirstNameSorter();
         oidSorter = new HierarchyViewOidSorter();
@@ -115,12 +112,9 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
             //we are looking for the childrens of the contained objectClass
             ObjectClass objectClass = ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
 
-            //-> we need to compare each and every other objectClass's sup against them 
-            //-> we also need to find a better way to do this (complexity wise)
-            Collection<ObjectClass> objectClasses = objectClassTable.values();
-            for ( Iterator iter = objectClasses.iterator(); iter.hasNext(); )
+            for ( int i = 0; i < objectClasses.length; i++ )
             {
-                ObjectClass oClass = ( ObjectClass ) iter.next();
+                ObjectClass oClass = objectClasses[i];
 
                 //not this object class
                 if ( oClass.getOid() != objectClass.getOid() )
@@ -128,7 +122,7 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
                     String[] sups = oClass.getSuperiors();
                     for ( String sup : sups )
                     {
-                        ObjectClass oClassSup = objectClassTable.get( sup );
+                        ObjectClass oClassSup = schemaPool.getObjectClass( sup );
                         if ( oClassSup != null )
                         {
                             //the current object class is a sup of oClass
@@ -167,12 +161,9 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
             //we are looking for the childrens of the contained attribute type
             AttributeType attributeType = ( ( AttributeTypeWrapper ) parentElement ).getMyAttributeType();
 
-            //-> we need to compare each and every other attribute type sup against them 
-            //-> we also need to find a better way to do this (complexity wise)
-            Collection<AttributeType> attributeTypes = attributeTypeTable.values();
-            for ( Iterator iter = attributeTypes.iterator(); iter.hasNext(); )
+            for ( int i = 0; i < attributeTypes.length; i++ )
             {
-                AttributeType aType = ( AttributeType ) iter.next();
+                AttributeType aType = attributeTypes[i];
 
                 //not this attribute type
                 if ( aType.getOid() != attributeType.getOid() )
@@ -180,7 +171,7 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
                     String aTypeSupName = aType.getSuperior();
                     if ( aTypeSupName != null )
                     {
-                        AttributeType aTypeSup = attributeTypeTable.get( aType.getSuperior() );
+                        AttributeType aTypeSup = schemaPool.getAttributeType( aType.getSuperior() );
                         if ( aTypeSup != null )
                         {
                             //the current object class is a sup of oClass
@@ -234,11 +225,10 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
                         ocList.add( topWrapper );
                     }
 
-                    //add the unresolved object-classes to the top of the hierarchy
-                    Collection<ObjectClass> objectClasses = objectClassTable.values();
-                    for ( Iterator iter = objectClasses.iterator(); iter.hasNext(); )
+
+                    for ( int i = 0; i < objectClasses.length; i++ )
                     {
-                        ObjectClass oClass = ( ObjectClass ) iter.next();
+                        ObjectClass oClass = objectClasses[i];
                         String[] sups = oClass.getSuperiors();
                         //if no supperiors had been set
                         if ( sups.length == 0 )
@@ -252,7 +242,7 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
                         {
                             for ( String sup : sups )
                             {
-                                ObjectClass oClassSup = objectClassTable.get( sup );
+                                ObjectClass oClassSup = schemaPool.getObjectClass( sup );
                                 if ( oClassSup == null )
                                 {
                                     ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
@@ -268,11 +258,10 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
                 if ( !Activator.getDefault().getDialogSettings().getBoolean(
                     HideAttributeTypesAction.HIDE_ATTRIBUTE_TYPES_DS_KEY ) )
                 {
-                    //add the unresolved object-classes to the top of the hierarchy
-                    Collection<AttributeType> attributeTypes = attributeTypeTable.values();
-                    for ( Iterator iter = attributeTypes.iterator(); iter.hasNext(); )
+                    
+                    for ( int i = 0; i < attributeTypes.length; i++ )
                     {
-                        AttributeType aType = ( AttributeType ) iter.next();
+                        AttributeType aType = attributeTypes[i];
                         String sup = aType.getSuperior();
                         //if no superior had been set
                         if ( sup == null )
@@ -413,9 +402,8 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
      */
     private void refreshOcsAndAts()
     {
-        objectClassTable = schemaPool.getObjectClassesAsHashTableByName();
-
-        attributeTypeTable = schemaPool.getAttributeTypesAsHashTableByName();
+        objectClasses = schemaPool.getObjectClassesAsArray();
+        attributeTypes = schemaPool.getAttributeTypesAsArray();
     }
 
 

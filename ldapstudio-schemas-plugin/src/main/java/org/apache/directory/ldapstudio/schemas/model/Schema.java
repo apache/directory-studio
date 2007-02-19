@@ -28,7 +28,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.io.SchemaParser;
@@ -294,8 +296,9 @@ public class Schema implements SchemaElementListener
      */
     public ObjectClass[] getObjectClassesAsArray()
     {
-        return objectClassTable.values().toArray( new ObjectClass[]
-            {} );
+        Set<ObjectClass> set = new HashSet<ObjectClass>();
+        set.addAll(objectClassTable.values());
+        return set.toArray(new ObjectClass[0]);
     }
 
 
@@ -305,8 +308,9 @@ public class Schema implements SchemaElementListener
      */
     public AttributeType[] getAttributeTypesAsArray()
     {
-        return attributeTypeTable.values().toArray( new AttributeType[]
-            {} );
+        Set<AttributeType> set = new HashSet<AttributeType>();
+        set.addAll(attributeTypeTable.values());
+        return set.toArray(new AttributeType[0]);
     }
 
 

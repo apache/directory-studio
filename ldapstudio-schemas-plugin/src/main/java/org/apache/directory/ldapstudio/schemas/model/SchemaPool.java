@@ -25,7 +25,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
@@ -514,8 +516,9 @@ public class SchemaPool implements SchemaListener
      */
     public ObjectClass[] getObjectClassesAsArray()
     {
-        return getObjectClassesAsHashTableByName().values().toArray( new ObjectClass[]
-            {} );
+        Set<ObjectClass> set = new HashSet<ObjectClass>();
+        set.addAll(getObjectClassesAsHashTableByName().values());
+        return set.toArray(new ObjectClass[0]);
     }
 
 
@@ -525,8 +528,9 @@ public class SchemaPool implements SchemaListener
      */
     public AttributeType[] getAttributeTypesAsArray()
     {
-        return getAttributeTypesAsHashTableByName().values().toArray( new AttributeType[]
-            {} );
+        Set<AttributeType> set = new HashSet<AttributeType>();
+        set.addAll(getAttributeTypesAsHashTableByName().values());
+        return set.toArray(new AttributeType[0]);
     }
 
 
