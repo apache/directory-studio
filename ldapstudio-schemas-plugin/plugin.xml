@@ -49,7 +49,7 @@
       <view
             category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager"
-            icon="ressources/icons/box.png"
+            icon="ressources/icons/schemas_view.png"
             id="org.apache.directory.ldapstudio.schemas.view.PoolManager"
             name="%ldapstudio-schemas-plugin.views.schemas.name"/>
       <view
