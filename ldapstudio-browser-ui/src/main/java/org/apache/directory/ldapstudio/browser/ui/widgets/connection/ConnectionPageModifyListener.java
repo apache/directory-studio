@@ -24,18 +24,48 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.connection;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 
 
+/**
+ * A ConnectionPageModifyListener listens for modifications of the 
+ * ConnectionPageWrapper.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface ConnectionPageModifyListener
 {
 
+    /**
+     * Indicates that the connection page was modified.
+     */
     public void connectionPageModified();
 
 
+    /**
+     * Sets a non-error message that should be displayed
+     * to the user. Null means no message so an existing
+     * message shuld be cleared.
+     * 
+     * @param message the message
+     */
     public void setMessage( String message );
 
+
+    /**
+     * Sets an error message that should be displayed
+     * to the user. Null means no error message so an 
+     * existing error message shuld be cleared.
+     * 
+     * @param errorMessage the error message
+     */
 
     public void setErrorMessage( String errorMessage );
 
 
+    /**
+     * Gets the real connection or null if none.
+     *
+     * @return the real connection
+     */
     public IConnection getRealConnection();
 
 }

@@ -40,7 +40,6 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.HistoryUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.AliasesDereferencingWidget;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.LimitWidget;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.ReferralsHandlingWidget;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.SWT;
@@ -59,96 +58,164 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The ConnectionPageWrapper is a wrapper for all UI widgets needed for the
+ * connection configuration. It is used by the new connection wizard as well
+ * as the connection property page. So all widgets and functionality is 
+ * implemented only once in this wrapper.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionPageWrapper implements ModifyListener, SelectionListener
 {
 
+    /** The connection name text widget */
     private Text nameText;
 
+    /** The host name combo with the history of recently used host names */
     private Combo hostCombo;
 
+    /** The host name text widget */
     private Text hostText;
 
+    /** The host combo with the history of recently used ports */
     private Combo portCombo;
 
+    /** The port text widget */
     private Text portText;
 
+    /** The combo to select the encryption method */
     private Combo encryptionMethodCombo;
 
+    /** The button to check the connection parameters */
     private Button checkConnectionButton;
 
+    /** The checkbox to fetch the base DN's from namingContexts whenever opening the connection */
     private Button autoFetchBaseDnsButton;
 
+    /** The button to fetch the base DN's from namingContexts attribute */
     private Button fetchBaseDnsButton;
 
+    /** The combo that displays the fetched base DN's */
     private Combo baseDNCombo;
 
+    /** The widget with the count and time limits */
     private LimitWidget limitWidget;
 
+    /** The widget to select the alias dereferencing method */
     private AliasesDereferencingWidget aliasesDereferencingWidget;
 
+    /** The widget to select the referrals handling method */
     private ReferralsHandlingWidget referralsHandlingWidget;
 
+    /** The checkbox to choose wether the connection should be opened when finishing the wizard */
     private Button openConnectionButton;
 
+    /** The radio to select anonymous authentication */
     private Button anonymousAuthButton;
 
+    /** The radio to select simple authentication */
     private Button simpleAuthButton;
 
+    /** The bind user combo with the history of recently used bind users */
     private Combo simpleAuthBindPrincipalCombo;
 
+    /** The text widget with the bind user */
     private Text simpleAuthBindPrincipalText;
 
+    /** The text widget to input bind password */
     private Text simpleAuthBindPasswordText;
 
+    /** The checkbox to choose if the bind password should be saved on disk */
     private Button saveSimpleAuthBindPasswordButton;
 
+    /** The button to check the authentication parameters */
     private Button checkSimpleAuthButton;
 
-    private List listenerList;
+    /** The list of listerns that are interested in modifications in this page */
+    private List<ConnectionPageModifyListener> listenerList;
 
+    /** 
+     * This flag indicats if the connection is opened. It is used to determin wether to render
+     * the combos or just simple text widgets.
+     */
     private boolean isConnectionOpened;
 
+    /** The runnable contxt that is used for long-running operations such as connection checks */
     private IRunnableContext runnableContext;
 
 
+    /**
+     * Creates a new instance of ConnectionPageWrapper.
+     *
+     * @param listener the initial modify listener
+     * @param runnableContext the runnable context
+     */
     public ConnectionPageWrapper( ConnectionPageModifyListener listener, IRunnableContext runnableContext )
     {
-        this.listenerList = new ArrayList( 5 );
+        this.listenerList = new ArrayList<ConnectionPageModifyListener>( 5 );
         this.listenerList.add( listener );
         this.isConnectionOpened = listener.getRealConnection() != null && listener.getRealConnection().isOpened();
         this.runnableContext = runnableContext;
     }
 
 
+    /**
+     * Add the give listnere to the list of modify listeners.
+     *
+     * @param listener the modify listener
+     */
     public void addConnectionPageModifyListener( ConnectionPageModifyListener listener )
     {
-        this.listenerList.add( listener );
+        listenerList.add( listener );
     }
 
 
+    /**
+     * Gets the connection name.
+     * 
+     * @return the connectio name
+     */
     public String getName()
     {
         return nameText.getText();
     }
 
 
+    /**
+     * Gets the host name.
+     * 
+     * @return the host name
+     */
     public String getHostName()
     {
         return hostCombo != null ? hostCombo.getText() : hostText.getText();
     }
 
 
+    /**
+     * Gets the port.
+     * 
+     * @return the port
+     */
     public int getPort()
     {
         return Integer.parseInt( portCombo != null ? portCombo.getText() : portText.getText() );
     }
 
 
+    /**
+     * Gets the encyrption method, one of IConnection.ENCYRPTION_NONE, 
+     * IConnection.ENCYRPTION_LDAPS or IConnection.ENCYRPTION_STARTTLS.
+     * 
+     * @return the encyrption method
+     */
     public int getEncyrptionMethod()
     {
-        if ( this.encryptionMethodCombo != null )
+        if ( encryptionMethodCombo != null )
         {
-            switch ( this.encryptionMethodCombo.getSelectionIndex() )
+            switch ( encryptionMethodCombo.getSelectionIndex() )
             {
                 case 1:
                     return IConnection.ENCYRPTION_LDAPS;
@@ -162,42 +229,78 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     }
 
 
+    /**
+     * Returns true if base DN's should be fetched 
+     * whenever opening the connection.
+     * 
+     * @return true, if base DN's should be fetched
+     */
     public boolean isAutoFetchBaseDns()
     {
         return autoFetchBaseDnsButton.getSelection();
     }
 
 
+    /**
+     * Gets the base DN.
+     * 
+     * @return the base DN
+     */
     public String getBaseDN()
     {
         return baseDNCombo.getText();
     }
 
 
+    /**
+     * Gets the count limit.
+     * 
+     * @return the count limit
+     */
     public int getCountLimit()
     {
         return limitWidget.getCountLimit();
     }
 
 
+    /**
+     * Gets the time limit.
+     * 
+     * @return the time limit
+     */
     public int getTimeLimit()
     {
         return limitWidget.getTimeLimit();
     }
 
 
+    /**
+     * Gets the aliases dereferencing method.
+     * 
+     * @return the aliases dereferencing method
+     */
     public int getAliasesDereferencingMethod()
     {
         return aliasesDereferencingWidget.getAliasesDereferencingMethod();
     }
 
 
+    /**
+     * Gets the referrals handling method.
+     * 
+     * @return the referrals handling method
+     */
     public int getReferralsHandlingMethod()
     {
         return referralsHandlingWidget.getReferralsHandlingMethod();
     }
 
 
+    /**
+     * Sets the open connection on finish flag.
+     * 
+     * @param b the open connection on finish flag
+     */
     public void setOpenConnectionOnFinish( boolean b )
     {
         if ( openConnectionButton != null )
@@ -207,19 +310,31 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     }
 
 
+    /**
+     * Returns true if the connection should be opened
+     * when finishing the wizard.
+     * 
+     * @return true, if the connection should be opened
+     */
     public boolean isOpenConnectionOnFinish()
     {
         return openConnectionButton.getSelection();
     }
 
 
+    /**
+     * Gets the authentication method, one of IConnection.AUTH_ANONYMOUS
+     * or IConnection.AUTH_SIMPLE.
+     * 
+     * @return the authentication method
+     */
     public int getAuthenticationMethod()
     {
-        if ( this.anonymousAuthButton.getSelection() )
+        if ( anonymousAuthButton.getSelection() )
         {
             return IConnection.AUTH_ANONYMOUS;
         }
-        else if ( this.simpleAuthButton.getSelection() )
+        else if ( simpleAuthButton.getSelection() )
         {
             return IConnection.AUTH_SIMPLE;
         }
@@ -228,25 +343,50 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     }
 
 
-    public String getSimpleAuthBindDN()
+    /**
+     * Gets the simple auth bind principal.
+     * 
+     * @return the simple auth bind principal
+     */
+    public String getSimpleAuthBindPrincipal()
     {
         return simpleAuthBindPrincipalCombo != null ? simpleAuthBindPrincipalCombo.getText()
             : simpleAuthBindPrincipalText.getText();
     }
 
 
+    /**
+     * Gets the simple auth bind password.
+     * 
+     * @return the simple auth bind password
+     */
     public String getSimpleAuthBindPassword()
     {
         return simpleAuthBindPasswordText.getText();
     }
 
 
+    /**
+     * Returns true if the bind password should be saved on disk.
+     * 
+     * @return true, if the bind password should be saved on disk
+     */
     public boolean isSaveSimpleAuthBindPassword()
     {
         return saveSimpleAuthBindPasswordButton.getSelection();
     }
 
 
+    /**
+     * Adds the main input widgets. In includes widgets for the connection name,
+     * host, port and encrypition method 
+     * 
+     * @param name the initial name
+     * @param host the initial host
+     * @param port the initial port
+     * @param encryptionMethod the initial encryption method
+     * @param parent the parent
+     */
     public void addMainInput( String name, String host, int port, int encryptionMethod, Composite parent )
     {
 
@@ -305,9 +445,8 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
         String[] encMethods = new String[]
             { "No encryption", "Use SSL encryption (ldaps://)", "Use StartTLS extension" };
         BaseWidgetUtils.createLabel( groupComposite, "Encryption method:", 1 );
-        this.encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, encryptionMethod,
-            2 );
-        this.encryptionMethodCombo.addSelectionListener( this );
+        encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, encryptionMethod, 2 );
+        encryptionMethodCombo.addSelectionListener( this );
         BaseWidgetUtils.createSpacer( groupComposite, 1 );
         BaseWidgetUtils
             .createLabel(
@@ -343,10 +482,17 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
             }
         } );
 
-        this.setEnabled();
+        setEnabled();
     }
 
 
+    /**
+     * Adds the base DN input.
+     * 
+     * @param autoFetchBaseDNs the initial auto fetch base DN's flag
+     * @param baseDN the initial base DN
+     * @param parent the parent
+     */
     public void addBaseDNInput( boolean autoFetchBaseDNs, String baseDN, Composite parent )
     {
 
@@ -411,10 +557,19 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
         baseDNCombo.setText( baseDN.toString() );
         baseDNCombo.addModifyListener( this );
 
-        this.setEnabled();
+        setEnabled();
     }
 
 
+    /**
+     * Adds the limit input.
+     * 
+     * @param countLimit the initial count limit
+     * @param timeLimit the initial time limit
+     * @param aliasesDereferencingMethod the initial aliases dereferencing method
+     * @param referralsHandlingMethod the initial referrals handling method
+     * @param parent the parent
+     */
     public void addLimitInput( int countLimit, int timeLimit, int aliasesDereferencingMethod,
         int referralsHandlingMethod, Composite parent )
     {
@@ -430,10 +585,16 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
         referralsHandlingWidget = new ReferralsHandlingWidget( referralsHandlingMethod );
         referralsHandlingWidget.createWidget( composite );
 
-        this.setEnabled();
+        setEnabled();
     }
 
 
+    /**
+     * Adds the open connection on finish input.
+     * 
+     * @param openConnectionOnFinish the initial value
+     * @param parent the parent
+     */
     public void addOpenConnectionInput( boolean openConnectionOnFinish, Composite parent )
     {
         openConnectionButton = BaseWidgetUtils.createCheckbox( parent, "Open connection on finish", 1 );
@@ -442,6 +603,12 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     }
 
 
+    /**
+     * Adds the authentication method input.
+     * 
+     * @param authMethod the initial auth method
+     * @param parent the parent
+     */
     public void addAuthenticationMethodInput( int authMethod, Composite parent )
     {
 
@@ -466,6 +633,14 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     }
 
 
+    /**
+     * Adds the simple auth input.
+     * 
+     * @param saveBindPassword the initial save bind password flag
+     * @param bindPrincipal the initial bind principal
+     * @param bindPassword the initial bind password
+     * @param parent the parent
+     */
     public void addSimpleAuthInput( boolean saveBindPassword, String bindPrincipal, String bindPassword,
         Composite parent )
     {
@@ -529,95 +704,98 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
             {
             }
         } );
-        this.setEnabled();
+        setEnabled();
     }
 
 
+    /**
+     * Fires a connection page modified event when then page was modified.
+     */
     private void fireConnectionPageModified()
     {
-        for ( Iterator it = listenerList.iterator(); it.hasNext(); )
+        for ( Iterator<ConnectionPageModifyListener> it = listenerList.iterator(); it.hasNext(); )
         {
-            ( ( ConnectionPageModifyListener ) it.next() ).connectionPageModified();
+            it.next().connectionPageModified();
         }
     }
 
 
+    /**
+     * Sets the enabled/disabled state of all widgets depending on the connection state.
+     */
     private void setEnabled()
     {
 
         if ( isConnectionOpened )
         {
-            if ( this.encryptionMethodCombo != null && this.checkConnectionButton != null )
+            if ( encryptionMethodCombo != null && checkConnectionButton != null )
             {
-                this.encryptionMethodCombo.setEnabled( false );
-                this.checkConnectionButton.setEnabled( false );
+                encryptionMethodCombo.setEnabled( false );
+                checkConnectionButton.setEnabled( false );
             }
 
-            if ( this.baseDNCombo != null && this.autoFetchBaseDnsButton != null )
+            if ( baseDNCombo != null && autoFetchBaseDnsButton != null )
             {
-                this.autoFetchBaseDnsButton.setEnabled( false );
-                this.baseDNCombo.setEnabled( false );
-                this.fetchBaseDnsButton.setEnabled( false );
+                autoFetchBaseDnsButton.setEnabled( false );
+                baseDNCombo.setEnabled( false );
+                fetchBaseDnsButton.setEnabled( false );
             }
 
-            if ( this.anonymousAuthButton != null && this.simpleAuthButton != null )
+            if ( anonymousAuthButton != null && simpleAuthButton != null )
             {
-                this.anonymousAuthButton.setEnabled( false );
-                this.simpleAuthButton.setEnabled( false );
+                anonymousAuthButton.setEnabled( false );
+                simpleAuthButton.setEnabled( false );
             }
-            if ( this.saveSimpleAuthBindPasswordButton != null && this.saveSimpleAuthBindPasswordButton != null )
+            if ( saveSimpleAuthBindPasswordButton != null && saveSimpleAuthBindPasswordButton != null )
             {
-                this.saveSimpleAuthBindPasswordButton.setEnabled( false );
-                this.checkSimpleAuthButton.setEnabled( false );
+                saveSimpleAuthBindPasswordButton.setEnabled( false );
+                checkSimpleAuthButton.setEnabled( false );
             }
         }
         else
         {
-            if ( this.hostCombo != null && this.portCombo != null && this.checkConnectionButton != null )
+            if ( hostCombo != null && portCombo != null && checkConnectionButton != null )
             {
-                if ( !this.hostCombo.getText().equals( "" ) && !this.hostCombo.getText().equals( "" ) )
+                if ( !hostCombo.getText().equals( "" ) && !hostCombo.getText().equals( "" ) )
                 {
-                    this.checkConnectionButton.setEnabled( true );
+                    checkConnectionButton.setEnabled( true );
                 }
                 else
                 {
-                    this.checkConnectionButton.setEnabled( false );
+                    checkConnectionButton.setEnabled( false );
                 }
             }
 
-            if ( this.baseDNCombo != null && this.autoFetchBaseDnsButton != null )
+            if ( baseDNCombo != null && autoFetchBaseDnsButton != null )
             {
                 if ( autoFetchBaseDnsButton.getSelection() )
                 {
-                    this.baseDNCombo.setEnabled( false );
+                    baseDNCombo.setEnabled( false );
                 }
                 else
                 {
-                    this.baseDNCombo.setEnabled( true );
+                    baseDNCombo.setEnabled( true );
                 }
             }
-            if ( this.simpleAuthBindPrincipalCombo != null && this.simpleAuthBindPasswordText != null
-                && this.saveSimpleAuthBindPasswordButton != null )
+            if ( simpleAuthBindPrincipalCombo != null && simpleAuthBindPasswordText != null
+                && saveSimpleAuthBindPasswordButton != null )
             {
                 boolean simpleAuthSelected = simpleAuthButton == null || simpleAuthButton.getSelection();
                 simpleAuthBindPrincipalCombo.setEnabled( simpleAuthSelected );
                 simpleAuthBindPasswordText.setEnabled( saveSimpleAuthBindPasswordButton.getSelection()
                     && simpleAuthSelected );
                 saveSimpleAuthBindPasswordButton.setEnabled( simpleAuthSelected );
-                // try {
-                // new DN(simpleAuthBindPrincipalCombo.getText());
                 checkSimpleAuthButton.setEnabled( saveSimpleAuthBindPasswordButton.getSelection()
                     && !simpleAuthBindPrincipalCombo.getText().equals( "" )
                     && !simpleAuthBindPasswordText.getText().equals( "" ) && simpleAuthSelected );
-                // }
-                // catch (NameException e) {
-                // checkSimpleAuthButton.setEnabled(false);
-                // }
             }
         }
     }
 
 
+    /**
+     * Validates the connection parameters after each modification.
+     */
     private void validate()
     {
         String message = null;
@@ -635,7 +813,7 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
             {
                 try
                 {
-                    /* DN baseDn = */new DN( baseDNCombo.getText() );
+                    new DN( baseDNCombo.getText() );
                 }
                 catch ( NameException e )
                 {
@@ -658,14 +836,8 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
             }
             else
             {
-                // try {
-                // new DN(simpleAuthBindPrincipalCombo.getText());
-                // }
-                // catch (NameException e) {
-                // message = "Please enter a valid bind DN.";
-                // }
+                // every bind principal is accepted
             }
-
         }
         if ( portCombo != null && portCombo.isVisible() )
         {
@@ -688,46 +860,61 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
                 message = "Please enter a connection name.";
             }
             if ( BrowserCorePlugin.getDefault().getConnectionManager().getConnection( nameText.getText() ) != null
-                && BrowserCorePlugin.getDefault().getConnectionManager().getConnection( nameText.getText() ) != ( ( ConnectionPageModifyListener ) listenerList
-                    .get( 0 ) ).getRealConnection() )
+                && BrowserCorePlugin.getDefault().getConnectionManager().getConnection( nameText.getText() ) != listenerList
+                    .get( 0 ).getRealConnection() )
             {
                 errorMessage = "A connection named '" + nameText.getText() + "' already exists.";
             }
         }
 
-        for ( Iterator it = listenerList.iterator(); it.hasNext(); )
+        for ( Iterator<ConnectionPageModifyListener> it = listenerList.iterator(); it.hasNext(); )
         {
-            ConnectionPageModifyListener listener = ( ConnectionPageModifyListener ) it.next();
+            ConnectionPageModifyListener listener = it.next();
             listener.setMessage( message );
             listener.setErrorMessage( errorMessage );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void modifyText( ModifyEvent e )
     {
-        this.setEnabled();
-        this.validate();
-        this.fireConnectionPageModified();
+        setEnabled();
+        validate();
+        fireConnectionPageModified();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetSelected( SelectionEvent e )
     {
-        this.setEnabled();
-        this.validate();
-        this.fireConnectionPageModified();
+        setEnabled();
+        validate();
+        fireConnectionPageModified();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetDefaultSelected( SelectionEvent e )
     {
-        this.setEnabled();
-        this.validate();
-        this.fireConnectionPageModified();
+        setEnabled();
+        validate();
+        fireConnectionPageModified();
     }
 
 
+    /**
+     * Gets a temporary connection with all conection parameter 
+     * entered in this page. 
+     *
+     * @return a test connection
+     */
     public IConnection getTestConnection()
     {
         if ( getAuthenticationMethod() == IConnection.AUTH_ANONYMOUS )
@@ -752,7 +939,7 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
             {
                 conn = new Connection( null, getHostName(), getPort(), getEncyrptionMethod(), isAutoFetchBaseDns(),
                     new DN( getBaseDN() ), getCountLimit(), getTimeLimit(), getAliasesDereferencingMethod(),
-                    getReferralsHandlingMethod(), IConnection.AUTH_SIMPLE, getSimpleAuthBindDN(),
+                    getReferralsHandlingMethod(), IConnection.AUTH_SIMPLE, getSimpleAuthBindPrincipal(),
                     getSimpleAuthBindPassword() );
             }
             catch ( NameException e )
@@ -768,21 +955,25 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     }
 
 
+    /**
+     * Saved the dialog settings. The curren values of host, port and bind principal are added
+     * to the history.
+     */
     public void saveDialogSettings()
     {
         if ( !isConnectionOpened )
         {
-            if ( this.hostCombo != null )
+            if ( hostCombo != null )
             {
-                HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_HOST_HISTORY, this.hostCombo.getText() );
+                HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_HOST_HISTORY, hostCombo.getText() );
             }
-            if ( this.portCombo != null )
+            if ( portCombo != null )
             {
-                HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_PORT_HISTORY, this.portCombo.getText() );
+                HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_PORT_HISTORY, portCombo.getText() );
             }
-            if ( this.simpleAuthBindPrincipalCombo != null )
+            if ( simpleAuthBindPrincipalCombo != null )
             {
-                HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_DN_HISTORY, this.simpleAuthBindPrincipalCombo
+                HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_DN_HISTORY, simpleAuthBindPrincipalCombo
                     .getText() );
             }
         }

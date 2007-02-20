@@ -33,18 +33,40 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IActionBars;
 
 
+/**
+ * The ConnectionWidget is a reusable widget that displays all connections
+ * in a table viewer. 
+ * 
+ * It includes a content and label provider to display connections with a nice icon.
+ * 
+ * Further is provides a context and a local toolbar menu with actions to
+ * add, modify, delete, open and close connections.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionWidget extends ViewFormWidget
 {
 
+    /** The widget's configuration with the content provider, label provider and menu manager */
     private ConnectionConfiguration configuration;
 
+    /** The action bars */
     private IActionBars actionBars;
 
+    /** The table widget used by the table viewer */
     private Table table;
 
+    /** The table viewer */
     private TableViewer viewer;
 
 
+    /**
+     * Creates a new instance of ConnectionWidget.
+     *
+     * @param configuration the configuration
+     * @param actionBars the action bars
+     */
     public ConnectionWidget( ConnectionConfiguration configuration, IActionBars actionBars )
     {
         this.configuration = configuration;
@@ -52,6 +74,9 @@ public class ConnectionWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createWidget( Composite parent )
     {
         if ( actionBars == null )
@@ -65,6 +90,9 @@ public class ConnectionWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IToolBarManager getToolBarManager()
     {
         if ( actionBars == null )
@@ -78,6 +106,9 @@ public class ConnectionWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IMenuManager getMenuManager()
     {
         if ( actionBars == null )
@@ -92,6 +123,9 @@ public class ConnectionWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IMenuManager getContextMenuManager()
     {
         if ( actionBars == null )
@@ -105,50 +139,69 @@ public class ConnectionWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContent( Composite parent )
     {
 
-        this.table = new Table( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        table = new Table( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.widthHint = 450;
         data.heightHint = 250;
-        this.table.setLayoutData( data );
-        this.viewer = new TableViewer( this.table );
+        table.setLayoutData( data );
+        viewer = new TableViewer( table );
 
         // setup providers
-        this.viewer.setContentProvider( configuration.getContentProvider( this.viewer ) );
-        this.viewer.setLabelProvider( configuration.getLabelProvider( this.viewer ) );
+        viewer.setContentProvider( configuration.getContentProvider( viewer ) );
+        viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
 
-        return this.table;
+        return table;
     }
 
 
+    /**
+     * Sets the input to the table viewer.
+     *
+     * @param input the input
+     */
     public void setInput( Object input )
     {
-        this.viewer.setInput( input );
+        viewer.setInput( input );
     }
 
 
+    /**
+     * Sets focus to the table viewer.
+     */
     public void setFocus()
     {
-        this.viewer.getTable().setFocus();
+        viewer.getTable().setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.configuration.dispose();
-            this.configuration = null;
+            configuration.dispose();
+            configuration = null;
 
-            this.table.dispose();
-            this.table = null;
-            this.viewer = null;
+            table.dispose();
+            table = null;
+            viewer = null;
         }
     }
 
 
+    /**
+     * Gets the table viewer.
+     * 
+     * @return the table viewer
+     */
     public TableViewer getViewer()
     {
         return viewer;

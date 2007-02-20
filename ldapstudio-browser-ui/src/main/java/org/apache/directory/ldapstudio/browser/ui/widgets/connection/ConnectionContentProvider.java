@@ -22,24 +22,46 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.connection;
 
 
 import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
-
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 
+/**
+ * The ConnectionContentProvider represents the content provider for
+ * the connection widget. It accepts the ConnectionManager as input
+ * and returns its connections as elements.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionContentProvider implements IStructuredContentProvider
 {
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation does nothing.
+     */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation does nothing.
+     */
     public void dispose()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation accepts the ConnectionManager and returns its connections.
+     */
     public Object[] getElements( Object inputElement )
     {
         if ( inputElement != null && inputElement instanceof ConnectionManager )

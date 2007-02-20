@@ -24,25 +24,43 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.connection;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 
+/**
+ * The ConnectionLabelProvider represents the label provider for
+ * the connection widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionLabelProvider extends LabelProvider
 {
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation returns the connection name and appends information
+     * about the used encryption method.
+     */
     public String getText( Object obj )
     {
         if ( obj instanceof IConnection )
         {
             IConnection conn = ( IConnection ) obj;
             if ( conn.getEncryptionMethod() == IConnection.ENCYRPTION_LDAPS )
+            {
                 return conn.getName() + " (LDAPS)";
+            }
             else if ( conn.getEncryptionMethod() == IConnection.ENCYRPTION_STARTTLS )
+            {
                 return conn.getName() + " (StartTLS)";
+            }
             else
+            {
                 return conn.getName();
+            }
         }
         else if ( obj != null )
         {
@@ -55,6 +73,11 @@ public class ConnectionLabelProvider extends LabelProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation returns a icon for connected or disconnected state.
+     */
     public Image getImage( Object obj )
     {
         if ( obj instanceof IConnection )

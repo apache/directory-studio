@@ -30,18 +30,29 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateListener;
-
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
 
+/**
+ * The ConnectionUniversalListener manages all events for the connection widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionUniversalListener implements ConnectionUpdateListener, EntryUpdateListener,
     SearchUpdateListener, BookmarkUpdateListener
 {
 
+    /** The table viewer */
     protected TableViewer viewer;
 
 
+    /**
+     * Creates a new instance of ConnectionUniversalListener.
+     *
+     * @param viewer the table viewer
+     */
     public ConnectionUniversalListener( TableViewer viewer )
     {
         this.viewer = viewer;
@@ -53,55 +64,79 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener, En
     }
 
 
+    /**
+     * Disposes this universal listener.
+     */
     public void dispose()
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
             EventRegistry.removeConnectionUpdateListener( this );
             EventRegistry.removeEntryUpdateListener( this );
             EventRegistry.removeSearchUpdateListener( this );
             EventRegistry.removeBookmarkUpdateListener( this );
-            this.viewer = null;
+            viewer = null;
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the viewer. If a new connection was added
+     * this connection is selected.
+     */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.viewer.refresh();
+            viewer.refresh();
             if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_ADDED )
             {
-                this.viewer.setSelection( new StructuredSelection( connectionUpdateEvent.getConnection() ) );
+                viewer.setSelection( new StructuredSelection( connectionUpdateEvent.getConnection() ) );
             }
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the viewer.
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.viewer.refresh();
+            viewer.refresh();
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the viewer.
+     */
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.viewer.refresh();
+            viewer.refresh();
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the viewer.
+     */
     public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.viewer.refresh();
+            viewer.refresh();
         }
     }
 
