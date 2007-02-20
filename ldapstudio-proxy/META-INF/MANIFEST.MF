@@ -8,6 +8,8 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.apache.directory.ldapstudio.browser.ui;resolution:=optional,
+ org.apache.directory.ldapstudio.browser.core;resolution:=optional
 Eclipse-LazyStart: true
 Bundle-ClassPath: .

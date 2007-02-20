@@ -18,4 +18,25 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<plugin></plugin>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="org.apache.directory.ldapstudio.proxy.view.ProxyView"
+            id="org.apache.directory.ldapstudio.proxy.view.ProxyView"
+            name="Proxy"/>
+      <view
+            allowMultiple="false"
+            class="org.apache.directory.ldapstudio.proxy.view.LdapMessageView"
+            id="org.apache.directory.ldapstudio.proxy.view.LdapMessageView"
+            name="LDAP Message"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.directory.ldapstudio.proxy.view.Perspective"
+            icon="resources/icons/perspective.png"
+            id="org.apache.directory.ldapstudio.proxy.perpective"
+            name="LDAP Proxy"/>
+   </extension></plugin>
