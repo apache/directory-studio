@@ -191,7 +191,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         {
             try
             {
-                connection.setBindPrincipal( cpw.getSimpleAuthBindDN() );
+                connection.setBindPrincipal( cpw.getSimpleAuthBindPrincipal() );
                 connection
                     .setBindPassword( cpw.isSaveSimpleAuthBindPassword() ? cpw.getSimpleAuthBindPassword() : null );
             }
