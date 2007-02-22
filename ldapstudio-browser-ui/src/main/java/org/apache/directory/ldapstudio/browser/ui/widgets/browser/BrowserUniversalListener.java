@@ -37,73 +37,141 @@ import org.eclipse.jface.viewers.TreeExpansionEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
-public class BrowserUniversalListener implements ITreeViewerListener, IDoubleClickListener, ConnectionUpdateListener,
-    EntryUpdateListener
+/**
+ * The BrowserUniversalListener manages all events for the browser widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class BrowserUniversalListener implements ConnectionUpdateListener, EntryUpdateListener
 {
 
+    /** The tree viewer */
     protected TreeViewer viewer;
 
+    /** The tree viewer listener */
+    private ITreeViewerListener treeViewerListener = new ITreeViewerListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation checks if the collapsed entry more children
+         * than currently fetched. If this is the case cached children are 
+         * cleared an must be fetched newly when expanding the tree.
+         * 
+         * This could happen when first using a search that returns
+         * only some of an entry's children. 
+         */
+        public void treeCollapsed( TreeExpansionEvent event )
+        {
+            if ( event.getElement() instanceof IEntry )
+            {
+                IEntry entry = ( IEntry ) event.getElement();
+                if ( entry.isChildrenInitialized() && entry.hasMoreChildren()
+                    && entry.getChildrenCount() < entry.getConnection().getCountLimit() )
+                {
+                    entry.setChildrenInitialized( false );
+                }
+            }
+        }
 
+
+        /**
+         * {@inheritDoc}
+         */
+        public void treeExpanded( TreeExpansionEvent event )
+        {
+        }
+    };
+
+    /** The double click listener. */
+    private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
+    {
+
+        public void doubleClick( DoubleClickEvent event )
+        {
+            if ( event.getSelection() instanceof IStructuredSelection )
+            {
+                Object obj = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
+                if ( viewer.getExpandedState( obj ) )
+                {
+                    viewer.collapseToLevel( obj, 1 );
+                }
+                else if ( ( ( ITreeContentProvider ) viewer.getContentProvider() ).hasChildren( obj ) )
+                {
+                    viewer.expandToLevel( obj, 1 );
+                }
+            }
+        }
+
+    };
+
+
+    /**
+     * Creates a new instance of BrowserUniversalListener.
+     *
+     * @param viewer the tree viewer
+     */
     public BrowserUniversalListener( TreeViewer viewer )
     {
         this.viewer = viewer;
 
-        this.viewer.addTreeListener( this );
-        this.viewer.addDoubleClickListener( this );
+        viewer.addTreeListener( treeViewerListener );
+        viewer.addDoubleClickListener( doubleClickListener );
+
         EventRegistry.addConnectionUpdateListener( this );
         EventRegistry.addEntryUpdateListener( this );
     }
 
 
+    /**
+     * Disposes this listener.
+     */
     public void dispose()
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.viewer.removeTreeListener( this );
-            this.viewer.removeDoubleClickListener( this );
+            viewer.removeTreeListener( treeViewerListener );
+            viewer.removeDoubleClickListener( doubleClickListener );
+
             EventRegistry.removeConnectionUpdateListener( this );
             EventRegistry.removeEntryUpdateListener( this );
 
-            this.viewer = null;
+            viewer = null;
         }
     }
 
 
-    public void doubleClick( DoubleClickEvent event )
-    {
-        if ( event.getSelection() instanceof IStructuredSelection )
-        {
-            Object obj = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-            if ( this.viewer.getExpandedState( obj ) )
-                this.viewer.collapseToLevel( obj, 1 );
-            else if ( ( ( ITreeContentProvider ) this.viewer.getContentProvider() ).hasChildren( obj ) )
-            {
-                this.viewer.expandToLevel( obj, 1 );
-            }
-        }
-    }
-
-
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the tree and collapses the 
+     * tree when the connection is closed.
+     */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
         if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_CLOSED )
         {
-            this.viewer.collapseAll();
+            viewer.collapseAll();
         }
         else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_OPENED )
         {
-            this.viewer.refresh( connectionUpdateEvent.getConnection() );
+            viewer.refresh( connectionUpdateEvent.getConnection() );
         }
         else
         {
-            this.viewer.refresh( connectionUpdateEvent.getConnection() );
+            viewer.refresh( connectionUpdateEvent.getConnection() );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the tree.
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
-
         // Don't handle attribute initalization, could cause double
         // retrieval of children. 
         //
@@ -119,29 +187,8 @@ public class BrowserUniversalListener implements ITreeViewerListener, IDoubleCli
             return;
         }
 
-        this.viewer.refresh( event.getModifiedEntry(), true );
+        viewer.refresh( event.getModifiedEntry(), true );
 
-    }
-
-
-    public void treeCollapsed( TreeExpansionEvent event )
-    {
-        // System.out.println("treeCollapsed() " + event + ", " +
-        // event.getElement());
-        if ( event.getElement() instanceof IEntry )
-        {
-            IEntry entry = ( IEntry ) event.getElement();
-            if ( entry.isChildrenInitialized() && entry.hasMoreChildren()
-                && entry.getChildrenCount() < entry.getConnection().getCountLimit() )
-            {
-                entry.setChildrenInitialized( false );
-            }
-        }
-    }
-
-
-    public void treeExpanded( TreeExpansionEvent event )
-    {
     }
 
 }

@@ -29,106 +29,176 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Menu;
 
 
+/**
+ * The BrowserConfiguration contains the content provider, the
+ * label provider, the sorter, the context menu manager and the
+ * preferences for the browser widget. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserConfiguration
 {
 
+    /** The disposed flag */
     private boolean disposed = false;
 
+    /** The sorter. */
     protected BrowserSorter sorter;
 
+    /** The preferences. */
     protected BrowserPreferences preferences;
 
+    /** The content provider. */
     protected BrowserContentProvider contentProvider;
 
+    /** The label provider. */
     protected BrowserLabelProvider labelProvider;
 
+    /** The decorating label provider. */
     protected DecoratingLabelProvider decoratingLabelProvider;
 
+    /** The context menu manager. */
     protected MenuManager contextMenuManager;
 
 
+    /**
+     * Creates a new instance of BrowserConfiguration.
+     */
     public BrowserConfiguration()
     {
     }
 
 
+    /**
+     * Disposes this configuration.
+     */
     public void dispose()
     {
-        if ( !this.disposed )
+        if ( !disposed )
         {
+            if ( sorter != null )
+            {
+                sorter.dispose();
+                sorter = null;
+            }
 
-            if ( this.sorter != null )
-                this.sorter.dispose();
-            this.sorter = null;
+            if ( preferences != null )
+            {
+                preferences.dispose();
+                preferences = null;
+            }
 
-            if ( this.preferences != null )
-                this.preferences.dispose();
-            this.preferences = null;
+            if ( contentProvider != null )
+            {
+                contentProvider.dispose();
+                contentProvider = null;
+            }
 
-            if ( this.contentProvider != null )
-                this.contentProvider.dispose();
-            this.contentProvider = null;
+            if ( labelProvider != null )
+            {
+                labelProvider.dispose();
+                labelProvider = null;
+                decoratingLabelProvider.dispose();
+                decoratingLabelProvider = null;
+            }
 
-            if ( this.labelProvider != null )
-                this.labelProvider.dispose();
-            this.labelProvider = null;
+            if ( contextMenuManager != null )
+            {
+                contextMenuManager.dispose();
+                contextMenuManager = null;
+            }
 
-            if ( this.contextMenuManager != null )
-                this.contextMenuManager.dispose();
-            this.contextMenuManager = null;
-
-            this.disposed = true;
+            disposed = true;
         }
     }
 
 
+    /**
+     * Gets the context menu manager.
+     * 
+     * @param viewer the browser widget's tree viewer 
+     * 
+     * @return the context menu manager
+     */
     public IMenuManager getContextMenuManager( TreeViewer viewer )
     {
-        if ( this.contextMenuManager == null )
+        if ( contextMenuManager == null )
         {
-            this.contextMenuManager = new MenuManager();
-            Menu menu = this.contextMenuManager.createContextMenu( viewer.getControl() );
+            contextMenuManager = new MenuManager();
+            Menu menu = contextMenuManager.createContextMenu( viewer.getControl() );
             viewer.getControl().setMenu( menu );
         }
-        return this.contextMenuManager;
+
+        return contextMenuManager;
     }
 
 
+    /**
+     * Gets the content provider.
+     * 
+     * @param viewer the browser widget's tree viewer 
+     * 
+     * @return the content provider
+     */
     public BrowserContentProvider getContentProvider( TreeViewer viewer )
     {
-        if ( this.contentProvider == null )
-            this.contentProvider = new BrowserContentProvider( this.getPreferences(), this.getSorter() );
+        if ( contentProvider == null )
+        {
+            contentProvider = new BrowserContentProvider( getPreferences(), getSorter() );
+        }
 
         return contentProvider;
     }
 
 
+    /**
+     * Gets the label provider.
+     * 
+     * @param viewer the browser widget's tree viewer 
+     * 
+     * @return the label provider
+     */
     public DecoratingLabelProvider getLabelProvider( TreeViewer viewer )
     {
-        if ( this.labelProvider == null )
+        if ( labelProvider == null )
         {
-            this.labelProvider = new BrowserLabelProvider( this.getPreferences() );
-            this.decoratingLabelProvider = new DecoratingLabelProvider( this.labelProvider, BrowserUIPlugin
-                .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() );
+            labelProvider = new BrowserLabelProvider( getPreferences() );
+            decoratingLabelProvider = new DecoratingLabelProvider( labelProvider, BrowserUIPlugin.getDefault()
+                .getWorkbench().getDecoratorManager().getLabelDecorator() );
         }
 
         return decoratingLabelProvider;
     }
 
 
+    /**
+     * Gets the sorter.
+     * 
+     * @return the sorter
+     */
     public BrowserSorter getSorter()
     {
-        if ( this.sorter == null )
-            this.sorter = new BrowserSorter( getPreferences() );
+        if ( sorter == null )
+        {
+            sorter = new BrowserSorter( getPreferences() );
+        }
 
         return sorter;
     }
 
 
+    /**
+     * Gets the preferences.
+     * 
+     * @return the preferences
+     */
     public BrowserPreferences getPreferences()
     {
-        if ( this.preferences == null )
-            this.preferences = new BrowserPreferences();
+        if ( preferences == null )
+        {
+            preferences = new BrowserPreferences();
+        }
 
         return preferences;
     }

@@ -25,7 +25,6 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -44,32 +43,55 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * This class represents the dialog used to change the browser's sort settings.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserSorterDialog extends Dialog
 {
 
+    /** The dialog title. */
     public static final String DIALOG_TITLE = "Browser Sorting";
 
+    /** The Constant SORT_BY_NONE. */
     public static final String SORT_BY_NONE = "No Sorting";
 
+    /** The Constant SORT_BY_RDN. */
     public static final String SORT_BY_RDN = "RDN";
 
+    /** The Constant SORT_BY_RDN_VALUE. */
     public static final String SORT_BY_RDN_VALUE = "RDN Value";
 
+    /** The browser preferences. */
     private BrowserPreferences preferences;
 
+    /** The sort by combo. */
     private Combo sortByCombo;
 
+    /** The sort acending button. */
     private Button sortAcendingButton;
 
+    /** The sort descending button. */
     private Button sortDescendingButton;
 
+    /** The leaf entries first button. */
     private Button leafEntriesFirstButton;
 
+    /** The meta entries last button. */
     private Button metaEntriesLastButton;
 
+    /** The sort limit text. */
     private Text sortLimitText;
 
 
+    /**
+     * Creates a new instance of BrowserSorterDialog.
+     *
+     * @param parentShell the parent shell
+     * @param preferences the browser preferences
+     */
     public BrowserSorterDialog( Shell parentShell, BrowserPreferences preferences )
     {
         super( parentShell );
@@ -77,6 +99,11 @@ public class BrowserSorterDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation calls its super implementation and sets the dialog title.
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
@@ -84,30 +111,35 @@ public class BrowserSorterDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation save the changed settings when OK is pressed.
+     */
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
         {
-            int sortLimit = this.preferences.getSortLimit();
+            int sortLimit = preferences.getSortLimit();
             try
             {
-                sortLimit = Integer.parseInt( this.sortLimitText.getText().trim() );
+                sortLimit = Integer.parseInt( sortLimitText.getText().trim() );
             }
             catch ( NumberFormatException nfe )
             {
             }
 
             IPreferenceStore store = BrowserUIPlugin.getDefault().getPreferenceStore();
-            store.setValue( BrowserUIConstants.PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST, this.leafEntriesFirstButton
+            store.setValue( BrowserUIConstants.PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST, leafEntriesFirstButton
                 .getSelection() );
-            store.setValue( BrowserUIConstants.PREFERENCE_BROWSER_META_ENTRIES_LAST, this.metaEntriesLastButton
+            store.setValue( BrowserUIConstants.PREFERENCE_BROWSER_META_ENTRIES_LAST, metaEntriesLastButton
                 .getSelection() );
             store.setValue( BrowserUIConstants.PREFERENCE_BROWSER_SORT_LIMIT, sortLimit );
             store.setValue( BrowserUIConstants.PREFERENCE_BROWSER_SORT_ORDER,
-                this.sortDescendingButton.getSelection() ? BrowserCoreConstants.SORT_ORDER_DESCENDING
+                sortDescendingButton.getSelection() ? BrowserCoreConstants.SORT_ORDER_DESCENDING
                     : BrowserCoreConstants.SORT_ORDER_ASCENDING );
             store.setValue( BrowserUIConstants.PREFERENCE_BROWSER_SORT_BY,
-                this.sortByCombo.getSelectionIndex() == 2 ? BrowserCoreConstants.SORT_BY_RDN_VALUE : this.sortByCombo
+                sortByCombo.getSelectionIndex() == 2 ? BrowserCoreConstants.SORT_BY_RDN_VALUE : sortByCombo
                     .getSelectionIndex() == 1 ? BrowserCoreConstants.SORT_BY_RDN : BrowserCoreConstants.SORT_BY_NONE );
         }
         else
@@ -119,6 +151,9 @@ public class BrowserSorterDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
 
@@ -132,12 +167,12 @@ public class BrowserSorterDialog extends Dialog
         leafEntriesFirstButton = BaseWidgetUtils.createCheckbox( groupingGroup, "Leaf enties first", 1 );
         leafEntriesFirstButton
             .setToolTipText( "This option displays entries without children before entries with children." );
-        leafEntriesFirstButton.setSelection( this.preferences.isLeafEntriesFirst() );
+        leafEntriesFirstButton.setSelection( preferences.isLeafEntriesFirst() );
 
         metaEntriesLastButton = BaseWidgetUtils.createCheckbox( groupingGroup, "Meta entries last", 1 );
         metaEntriesLastButton
             .setToolTipText( "This option displays meta entries after normal entries. Meta entries are e.g. the root DSE or the schema entry." );
-        metaEntriesLastButton.setSelection( this.preferences.isMetaEntriesLast() );
+        metaEntriesLastButton.setSelection( preferences.isMetaEntriesLast() );
 
         Group sortingGroup = BaseWidgetUtils.createGroup( composite, "Sort entries", 1 );
 
@@ -145,8 +180,8 @@ public class BrowserSorterDialog extends Dialog
         BaseWidgetUtils.createLabel( sortByComposite, "Sort by", 1 );
         sortByCombo = BaseWidgetUtils.createReadonlyCombo( sortByComposite, new String[]
             { SORT_BY_NONE, SORT_BY_RDN, SORT_BY_RDN_VALUE }, 0, 1 );
-        sortByCombo.select( this.preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE ? 2
-            : this.preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN ? 1 : 0 );
+        sortByCombo.select( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE ? 2 : preferences
+            .getSortBy() == BrowserCoreConstants.SORT_BY_RDN ? 1 : 0 );
         sortByCombo.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -158,19 +193,18 @@ public class BrowserSorterDialog extends Dialog
         } );
 
         sortAcendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, "Ascending", 1 );
-        sortAcendingButton.setSelection( this.preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING );
+        sortAcendingButton.setSelection( preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING );
         sortAcendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
         sortDescendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, "Descending", 1 );
-        sortDescendingButton
-            .setSelection( this.preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_DESCENDING );
+        sortDescendingButton.setSelection( preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_DESCENDING );
         sortDescendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
         Composite sortLimitComposite = BaseWidgetUtils.createColumnContainer( sortingGroup, 2, 1 );
         String sortLimitTooltip = "If there are more than the specified number of children they won't be sorted. Hint: For performance reason the maximum value should be 10.000!";
         Label sortLimitLabel = BaseWidgetUtils.createLabel( sortLimitComposite, "Sort limit:", 1 );
         sortLimitLabel.setToolTipText( sortLimitTooltip );
-        sortLimitText = BaseWidgetUtils.createText( sortLimitComposite, "" + this.preferences.getSortLimit(), 5, 1 );
+        sortLimitText = BaseWidgetUtils.createText( sortLimitComposite, "" + preferences.getSortLimit(), 5, 1 );
         sortLimitText.setToolTipText( sortLimitTooltip );
         sortLimitText.setEnabled( sortByCombo.getSelectionIndex() != 0 );
         sortLimitText.addVerifyListener( new VerifyListener()

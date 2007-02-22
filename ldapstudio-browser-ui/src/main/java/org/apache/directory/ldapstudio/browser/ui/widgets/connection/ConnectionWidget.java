@@ -21,6 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.connection;
 
 
+import org.apache.directory.ldapstudio.browser.ui.dialogs.SelectConnectionDialog;
+import org.apache.directory.ldapstudio.browser.ui.dialogs.SelectReferralConnectionDialog;
+import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
 import org.apache.directory.ldapstudio.browser.ui.widgets.ViewFormWidget;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -35,11 +38,12 @@ import org.eclipse.ui.IActionBars;
 
 /**
  * The ConnectionWidget is a reusable widget that displays all connections
- * in a table viewer. 
+ * in a table viewer. It is used by {@link ConnectionView}, {@link SelectConnectionDialog}
+ * and {@link SelectReferralConnectionDialog}. 
  * 
  * It includes a content and label provider to display connections with a nice icon.
  * 
- * Further is provides a context and a local toolbar menu with actions to
+ * Further is provides a context menu and a local toolbar with actions to
  * add, modify, delete, open and close connections.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

@@ -21,8 +21,6 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.browser;
 
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.internal.model.AliasBaseEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ReferralBaseEntry;
@@ -36,7 +34,6 @@ import org.apache.directory.ldapstudio.browser.core.model.RDNPart;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -50,18 +47,34 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * The BrowserLabelProvider implements the label provider for
+ * the browser widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserLabelProvider extends LabelProvider implements IFontProvider, IColorProvider
 {
 
+    /** The preferences. */
     private BrowserPreferences preferences;
 
 
+    /**
+     * Creates a new instance of BrowserLabelProvider.
+     *
+     * @param preferences the preferences
+     */
     public BrowserLabelProvider( BrowserPreferences preferences )
     {
         this.preferences = preferences;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText( Object obj )
     {
         if ( obj instanceof IEntry )
@@ -99,31 +112,25 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             {
 
                 String label = "";
-                if ( this.preferences.getEntryLabel() == BrowserUIConstants.SHOW_DN )
+                if ( preferences.getEntryLabel() == BrowserUIConstants.SHOW_DN )
                 {
                     label = entry.getDn().toString();
                 }
-                else if ( this.preferences.getEntryLabel() == BrowserUIConstants.SHOW_RDN )
+                else if ( preferences.getEntryLabel() == BrowserUIConstants.SHOW_RDN )
                 {
                     label = entry.getRdn().toString();
 
                 }
-                else if ( this.preferences.getEntryLabel() == BrowserUIConstants.SHOW_RDN_VALUE )
+                else if ( preferences.getEntryLabel() == BrowserUIConstants.SHOW_RDN_VALUE )
                 {
                     label = entry.getRdn().getValue();
                 }
 
                 label += append.toString();
 
-                if ( this.preferences.isEntryAbbreviate()
-                    && label.length() > this.preferences.getEntryAbbreviateMaxLength() )
+                if ( preferences.isEntryAbbreviate() && label.length() > preferences.getEntryAbbreviateMaxLength() )
                 {
-                    label = Utils.shorten( label, this.preferences.getEntryAbbreviateMaxLength() );
-                    // label =
-                    // label.substring(0,this.preferences.getEntryAbbreviateMaxLength()/2)
-                    // + "..." +
-                    // label.substring(label.length()-this.preferences.getEntryAbbreviateMaxLength()/2,
-                    // label.length());
+                    label = Utils.shorten( label, preferences.getEntryAbbreviateMaxLength() );
                 }
 
                 return label;
@@ -175,28 +182,23 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             else if ( sr.getEntry().hasParententry() )
             {
                 String label = "";
-                if ( this.preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_DN )
+                if ( preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_DN )
                 {
                     label = sr.getEntry().getDn().toString();
                 }
-                else if ( this.preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_RDN )
+                else if ( preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_RDN )
                 {
                     label = sr.getEntry().getRdn().toString();
                 }
-                else if ( this.preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_RDN_VALUE )
+                else if ( preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_RDN_VALUE )
                 {
                     label = sr.getEntry().getRdn().getValue();
                 }
 
-                if ( this.preferences.isSearchResultAbbreviate()
-                    && label.length() > this.preferences.getSearchResultAbbreviateMaxLength() )
+                if ( preferences.isSearchResultAbbreviate()
+                    && label.length() > preferences.getSearchResultAbbreviateMaxLength() )
                 {
-                    label = Utils.shorten( label, this.preferences.getSearchResultAbbreviateMaxLength() );
-                    // label =
-                    // label.substring(0,this.preferences.getSearchResultAbbreviateMaxLength()/2)
-                    // + "..." +
-                    // label.substring(label.length()-this.preferences.getSearchResultAbbreviateMaxLength()/2,
-                    // label.length());
+                    label = Utils.shorten( label, preferences.getSearchResultAbbreviateMaxLength() );
                 }
 
                 return label;
@@ -223,6 +225,9 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Image getImage( Object obj )
     {
         if ( obj instanceof IEntry )
@@ -252,7 +257,6 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         }
         else if ( obj instanceof IBookmark )
         {
-            // IBookmark bookmark = (IBookmark) obj;
             return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_BOOKMARK );
         }
         else if ( obj instanceof ISearchResult )
@@ -290,9 +294,14 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     }
 
 
+    /**
+     * Gets the image depending on the RDN attribute
+     *
+     * @param entry the entry
+     * @return the image
+     */
     private Image getImageByRdn( IEntry entry )
     {
-
         if ( entry instanceof IRootDSE )
         {
             return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ENTRY_ROOT );
@@ -305,15 +314,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
-        else if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS )
-            && entry.isAlias() )
+        else if ( preferences.isDerefAliasesAndReferralsWhileBrowsing() && entry.isAlias() )
         {
             return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ENTRY_ALIAS );
         }
-        else if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS )
-            && entry.isReferral() )
+        else if ( preferences.isDerefAliasesAndReferralsWhileBrowsing() && entry.isReferral() )
         {
             return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ENTRY_REF );
         }
@@ -323,7 +328,6 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         }
         else
         {
-
             RDN rdn = entry.getRdn();
             RDNPart[] rdnParts = rdn.getParts();
             for ( int i = 0; i < rdnParts.length; i++ )
@@ -431,6 +435,9 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     // BrowserUIPlugin.getDefault().getImage(BrowserUIConstants.IMG_ENTRY);
     // }
 
+    /**
+     * {@inheritDoc}
+     */
     public Font getFont( Object element )
     {
 
@@ -458,6 +465,9 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Color getForeground( Object element )
     {
 
@@ -485,6 +495,9 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Color getBackground( Object element )
     {
         return null;

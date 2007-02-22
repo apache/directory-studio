@@ -26,61 +26,80 @@ import java.util.Arrays;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * A BrowserEntryPage is a container for entries or other nested browser entry pages.
+ * It is used when folding large branches. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserEntryPage
 {
-
+    /** The tree sorter */
     private BrowserSorter sorter;
 
+    /** The index of the first child entry in this page */ 
     private int first;
 
+    /** The index of the last child entry in this page */
     private int last;
 
+    /** The parent entry */
     private IEntry entry;
 
+    /** The parent entry page or null if not nested */
     private BrowserEntryPage parentEntryPage;
 
+    /** The sub pages */
     private BrowserEntryPage[] subpages;
 
 
-    public BrowserEntryPage( IEntry entry, int first, int last, BrowserSorter sorter )
-    {
-        this( entry, first, last, null, sorter );
-    }
-
-
-    public BrowserEntryPage( IEntry entry, int first, int last, BrowserEntryPage[] subcontainers, BrowserSorter sorter )
+    /**
+     * Creates a new instance of BrowserEntryPage.
+     *
+     * @param entry the parent entry
+     * @param first the index of the first child entry in this page
+     * @param last the index of the last child entry in this page
+     * @param subpages the sub pages
+     * @param sorter the sorter
+     */
+    public BrowserEntryPage( IEntry entry, int first, int last, BrowserEntryPage[] subpages, BrowserSorter sorter )
     {
         this.entry = entry;
         this.first = first;
         this.last = last;
-        this.subpages = subcontainers;
-
+        this.subpages = subpages;
         this.sorter = sorter;
 
-        if ( this.subpages != null )
+        if ( subpages != null )
         {
-            for ( int i = 0; i < this.subpages.length; i++ )
-                subcontainers[i].parentEntryPage = this;
+            for ( int i = 0; i < subpages.length; i++ )
+            {
+                subpages[i].parentEntryPage = this;
+            }
         }
     }
 
 
-    public Object[] get()
+    /**
+     * Gets the children, either the sub pages or 
+     * the entries contained in this page.
+     *
+     * @return the children
+     */
+    public Object[] getChildren()
     {
-        if ( this.subpages != null )
+        if ( subpages != null )
         {
-            // return subpages
-            return this.subpages;
+            return subpages;
         }
         else
         {
-            // return children
-
             // 1. get children
-            IEntry[] children = this.entry.getChildren();
+            IEntry[] children = entry.getChildren();
 
             // 2. sort
-            this.sorter.sort( null, children );
+            sorter.sort( null, children );
 
             // 3. extraxt range
             if ( children != null )
@@ -100,27 +119,51 @@ public class BrowserEntryPage
     }
 
 
+    
+    /**
+     * Gets the first.
+     * 
+     * @return the first
+     */
     public int getFirst()
     {
-        return this.first;
+        return first;
     }
 
 
+    /**
+     * Gets the last.
+     * 
+     * @return the last
+     */
     public int getLast()
     {
-        return this.last;
+        return last;
     }
 
 
+    /**
+     * Gets the parent entry.
+     * 
+     * @return the parent entry
+     */
     public IEntry getEntry()
     {
-        return this.entry;
+        return entry;
     }
 
 
+    /**
+     * Gets the parent page if the given entry is contained in this page
+     * or one of the sub pages.
+     * 
+     * @param entry the entry
+     * 
+     * @return the parent page of the given entry.
+     */
     public BrowserEntryPage getParentOf( IEntry entry )
     {
-        if ( this.subpages != null )
+        if ( subpages != null )
         {
             BrowserEntryPage ep = null;
             for ( int i = 0; i < subpages.length && ep == null; i++ )
@@ -131,7 +174,7 @@ public class BrowserEntryPage
         }
         else
         {
-            IEntry[] sr = ( IEntry[] ) this.get();
+            IEntry[] sr = ( IEntry[] ) getChildren();
             if ( sr != null && Arrays.asList( sr ).contains( entry ) )
             {
                 return this;
@@ -144,15 +187,23 @@ public class BrowserEntryPage
     }
 
 
+    /**
+     * Gets the direct parent, either a page or the entry.
+     * 
+     * @return the direct parent
+     */
     public Object getParent()
     {
-        return ( this.parentEntryPage != null ) ? ( Object ) this.parentEntryPage : ( Object ) this.entry;
+        return ( parentEntryPage != null ) ? ( Object ) parentEntryPage : ( Object ) entry;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
-        return this.entry.toString() + "[" + this.first + "..." + this.last + "]" + this.hashCode();
+        return entry.toString() + "[" + first + "..." + last + "]" + hashCode();
     }
 
 }

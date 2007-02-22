@@ -21,6 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.browser;
 
 
+import org.apache.directory.ldapstudio.browser.ui.dialogs.SelectEntryDialog;
+import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
 import org.apache.directory.ldapstudio.browser.ui.widgets.ViewFormWidget;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -33,18 +35,39 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
 
 
+/**
+ * The BrowserWidget is a reusable widget that displays the DIT, searches
+ * and bookmarks of a connection a tree viewer.
+ * It is used by {@link BrowserView} and {@link SelectEntryDialog}.
+ * 
+ * It provides a context menu and a local toolbar with actions to
+ * manage entries, searches and bookmarks.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserWidget extends ViewFormWidget
 {
 
+    /** The widget's configuration with the content provider, label provider and menu manager */
     private BrowserConfiguration configuration;
 
+    /** The action bars. */
     private IActionBars actionBars;
 
+    /** The tree widget used by the tree viewer */
     private Tree tree;
 
+    /** The tree viewer. */
     private TreeViewer viewer;
 
 
+    /**
+     * Creates a new instance of BrowserWidget.
+     *
+     * @param configuration the configuration
+     * @param actionBars the action bars
+     */
     public BrowserWidget( BrowserConfiguration configuration, IActionBars actionBars )
     {
         this.configuration = configuration;
@@ -52,6 +75,9 @@ public class BrowserWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createWidget( Composite parent )
     {
         if ( actionBars == null )
@@ -65,6 +91,9 @@ public class BrowserWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IToolBarManager getToolBarManager()
     {
         if ( actionBars == null )
@@ -78,6 +107,9 @@ public class BrowserWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IMenuManager getMenuManager()
     {
         if ( actionBars == null )
@@ -91,6 +123,9 @@ public class BrowserWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IMenuManager getContextMenuManager()
     {
         if ( actionBars == null )
@@ -104,42 +139,56 @@ public class BrowserWidget extends ViewFormWidget
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContent( Composite parent )
     {
 
         // create tree widget and viewer
-        this.tree = new Tree( parent, SWT.VIRTUAL | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        tree = new Tree( parent, SWT.VIRTUAL | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.widthHint = 450;
         data.heightHint = 250;
-        this.tree.setLayoutData( data );
-        this.viewer = new TreeViewer( this.tree );
-        this.viewer.setUseHashlookup( true );
+        tree.setLayoutData( data );
+        viewer = new TreeViewer( tree );
+        viewer.setUseHashlookup( true );
 
         // setup sorter, filter and layout
-        this.configuration.getSorter().connect( this.viewer );
-        this.configuration.getPreferences().connect( this.viewer );
+        configuration.getSorter().connect( viewer );
+        configuration.getPreferences().connect( viewer );
 
         // setup providers
-        this.viewer.setContentProvider( configuration.getContentProvider( this.viewer ) );
-        this.viewer.setLabelProvider( configuration.getLabelProvider( this.viewer ) );
+        viewer.setContentProvider( configuration.getContentProvider( viewer ) );
+        viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
 
-        return this.tree;
+        return tree;
     }
 
 
+    /**
+     * Sets the input to the tree viewer.
+     *
+     * @param input the input
+     */
     public void setInput( Object input )
     {
-        this.viewer.setInput( input );
+        viewer.setInput( input );
     }
 
 
+    /**
+     * Sets focus to the table viewer.
+     */
     public void setFocus()
     {
-        this.viewer.getTree().setFocus();
+        viewer.getTree().setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         if ( this.viewer != null )
@@ -154,6 +203,11 @@ public class BrowserWidget extends ViewFormWidget
     }
 
 
+    /**
+     * Gets the tree viewer.
+     * 
+     * @return the tree viewer
+     */
     public TreeViewer getViewer()
     {
         return viewer;

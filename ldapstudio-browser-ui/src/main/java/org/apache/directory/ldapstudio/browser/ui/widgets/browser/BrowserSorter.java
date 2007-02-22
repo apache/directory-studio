@@ -29,39 +29,60 @@ import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.RDN;
-
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
 
+/**
+ * The BrowserSorter implements the sorter for the browser widget. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserSorter extends ViewerSorter
 {
 
-    private TreeViewer viewer;
-
+    /** The browser preferences, used to get the sort settings */
     private BrowserPreferences preferences;
 
 
+    /**
+     * Creates a new instance of BrowserSorter.
+     *
+     * @param preferences the browser preferences, used to get the sort settings
+     */
     public BrowserSorter( BrowserPreferences preferences )
     {
         this.preferences = preferences;
     }
 
 
+    /**
+     * Connects the tree viewer to this sorter.
+     *
+     * @param viewer the tree viewer
+     */
     public void connect( TreeViewer viewer )
     {
-        this.viewer = viewer;
-        this.viewer.setSorter( this );
+        viewer.setSorter( this );
     }
 
 
+    /**
+     * Disposes this sorter.
+     */
     public void dispose()
     {
-        this.viewer = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * For performance reasons this implemention first checks if sorting is enabled 
+     * and if the number of elements is less than the sort limit.
+     */
     public void sort( final Viewer viewer, final Object[] elements )
     {
         if ( elements != null && ( preferences.getSortLimit() <= 0 || elements.length < preferences.getSortLimit() )
@@ -72,6 +93,11 @@ public class BrowserSorter extends ViewerSorter
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This method is used to categorize leaf entries, meta entries and normal entries.
+     */
     public int category( Object element )
     {
         if ( preferences.isLeafEntriesFirst() || preferences.isMetaEntriesLast() )
@@ -110,62 +136,67 @@ public class BrowserSorter extends ViewerSorter
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation compares IEntry or ISearchResult objects. Depending on
+     * the sort settings it delegates comparation to {@link #compareRdns(IEntry, IEntry)}
+     * or {@link #compareRdnValues(IEntry, IEntry)}.
+     */
     public int compare( Viewer viewer, Object o1, Object o2 )
     {
-
         if ( o1 == null && o2 == null )
         {
-            return this.equal();
+            return equal();
         }
         else if ( o1 == null && o2 != null )
         {
-            return this.lessThan();
+            return lessThan();
         }
         else if ( o1 != null && o2 == null )
         {
-            return this.greaterThan();
+            return greaterThan();
         }
         else if ( o1 instanceof IEntry || o2 instanceof IEntry )
         {
-
             if ( !( o1 instanceof IEntry ) && !( o2 instanceof IEntry ) )
             {
-                return this.equal();
+                return equal();
             }
             else if ( !( o1 instanceof IEntry ) && ( o2 instanceof IEntry ) )
             {
-                return this.lessThan();
+                return lessThan();
             }
             else if ( ( o1 instanceof IEntry ) && !( o2 instanceof IEntry ) )
             {
-                return this.greaterThan();
+                return greaterThan();
             }
             else
             {
                 IEntry entry1 = ( IEntry ) o1;
                 IEntry entry2 = ( IEntry ) o2;
 
-                int cat1 = this.category( entry1 );
-                int cat2 = this.category( entry2 );
+                int cat1 = category( entry1 );
+                int cat2 = category( entry2 );
                 if ( cat1 != cat2 )
                 {
                     return cat1 - cat2;
                 }
                 else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_NONE )
                 {
-                    return this.equal();
+                    return equal();
                 }
                 else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN )
                 {
-                    return this.compareRdns( entry1, entry2 );
+                    return compareRdns( entry1, entry2 );
                 }
                 else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE )
                 {
-                    return this.compareRdnValues( entry1, entry2 );
+                    return compareRdnValues( entry1, entry2 );
                 }
                 else
                 {
-                    return this.equal();
+                    return equal();
                 }
             }
         }
@@ -173,55 +204,61 @@ public class BrowserSorter extends ViewerSorter
         {
             if ( !( o1 instanceof ISearchResult ) && !( o2 instanceof ISearchResult ) )
             {
-                return this.equal();
+                return equal();
             }
             else if ( !( o1 instanceof ISearchResult ) && ( o2 instanceof ISearchResult ) )
             {
-                return this.lessThan();
+                return lessThan();
             }
             else if ( ( o1 instanceof ISearchResult ) && !( o2 instanceof ISearchResult ) )
             {
-                return this.greaterThan();
+                return greaterThan();
             }
             else
             {
                 ISearchResult sr1 = ( ISearchResult ) o1;
                 ISearchResult sr2 = ( ISearchResult ) o2;
 
-                int cat1 = this.category( sr1 );
-                int cat2 = this.category( sr2 );
+                int cat1 = category( sr1 );
+                int cat2 = category( sr2 );
                 if ( cat1 != cat2 )
                 {
                     return cat1 - cat2;
                 }
                 else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_NONE )
                 {
-                    return this.equal();
+                    return equal();
                 }
                 else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN )
                 {
-                    return this.compareRdns( sr1.getEntry(), sr2.getEntry() );
+                    return compareRdns( sr1.getEntry(), sr2.getEntry() );
                 }
                 else if ( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE )
                 {
-                    return this.compareRdnValues( sr1.getEntry(), sr2.getEntry() );
+                    return compareRdnValues( sr1.getEntry(), sr2.getEntry() );
                 }
                 else
                 {
-                    return this.equal();
+                    return equal();
                 }
             }
         }
         else
         {
-            return this.equal();
+            return equal();
         }
     }
 
 
+    /**
+     * Compares the string representation of the RDNs of two IEntry objects.
+     *  
+     * @param entry1 the first entry
+     * @param entry2 the second entry
+     * @return a negative integer, zero, or a positive integer
+     */
     private int compareRdns( IEntry entry1, IEntry entry2 )
     {
-
         RDN rdn1 = entry1.getRdn();
         RDN rdn2 = entry2.getRdn();
 
@@ -244,6 +281,14 @@ public class BrowserSorter extends ViewerSorter
     }
 
 
+    /**
+     * Compares the RDN values of two IEntry objects.
+     * Numeric values are compared as numeric.
+     *  
+     * @param entry1 the first entry
+     * @param entry2 the second entry
+     * @return a negative integer, zero, or a positive integer
+     */
     private int compareRdnValues( IEntry entry1, IEntry entry2 )
     {
 
@@ -291,24 +336,48 @@ public class BrowserSorter extends ViewerSorter
     }
 
 
+    /**
+     * Returns +1 or -1, depending on the sort order.
+     *
+     * @return +1 or -1, depending on the sort order
+     */
     private int lessThan()
     {
         return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
     }
 
 
+    /**
+     * Returns 0.
+     *
+     * @return 0
+     */
     private int equal()
     {
         return 0;
     }
 
 
+    /**
+     * Returns +1 or -1, depending on the sort order.
+     *
+     * @return +1 or -1, depending on the sort order
+     */
     private int greaterThan()
     {
         return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
     }
 
 
+    /**
+     * Compares the two strings using the Strings's compareToIgnoreCase method, 
+     * pays attention for the sort order.
+     *
+     * @param s1 the first string to compare
+     * @param s2 the second string to compare
+     * @return a negative integer, zero, or a positive integer
+     * @see java.lang.String#compareToIgnoreCase(String)
+     */
     private int compare( String s1, String s2 )
     {
         return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 )
@@ -316,6 +385,16 @@ public class BrowserSorter extends ViewerSorter
     }
 
 
+    /**
+     * Compares the two numbers using the BigInteger compareTo method, 
+     * pays attention for the sort order.
+     *
+     * @param bi1 the first number to compare
+     * @param bi1 the second number to compare
+     * @return -1, 0 or 1 as this BigInteger is numerically less than, equal
+     *         to, or greater than
+     * @see java.math.BigInteger#compareTo(BigInteger)
+     */
     private int compare( BigInteger bi1, BigInteger bi2 )
     {
         return preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? bi1.compareTo( bi2 ) : bi2

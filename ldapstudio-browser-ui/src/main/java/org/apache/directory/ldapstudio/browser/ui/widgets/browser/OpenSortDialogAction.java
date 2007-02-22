@@ -27,12 +27,24 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This action opens the {@link BrowserSorterDialog}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenSortDialogAction extends Action
 {
 
+    /** The preferences. */
     private BrowserPreferences preferences;
 
 
+    /**
+     * Creates a new instance of OpenSortDialogAction.
+     *
+     * @param preferences the preferences
+     */
     public OpenSortDialogAction( BrowserPreferences preferences )
     {
         super( "Sorting...", BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_SORT ) );
@@ -42,17 +54,23 @@ public class OpenSortDialogAction extends Action
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         BrowserSorterDialog dlg = new BrowserSorterDialog( PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-            this.preferences );
+            preferences );
         dlg.open();
     }
 
 
+    /**
+     * Disposes this action.
+     */
     public void dispose()
     {
-        this.preferences = null;
+        preferences = null;
     }
 
 }

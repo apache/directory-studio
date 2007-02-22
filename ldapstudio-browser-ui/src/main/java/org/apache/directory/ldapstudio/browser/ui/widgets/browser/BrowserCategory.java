@@ -24,70 +24,92 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.browser;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 
 
+/**
+ * A BrowserCategory is the top-level node in the browser widget. 
+ * There are three types: DIT categories, searches categories
+ * and bookmarks categories.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserCategory
 {
 
+    /** The Constant TYPE_DIT identifies DIT categories. */
     public static final int TYPE_DIT = 0;
 
+    /** The Constant TYPE_SEARCHES identifies searches categories. */
     public static final int TYPE_SEARCHES = 1;
 
+    /** The Constant TYPE_BOOKMARKS identifies bookmark categories. */
     public static final int TYPE_BOOKMARKS = 2;
 
+    /** The title for the DIT categoy */
     public static final String TITLE_DIT = "DIT";
 
+    /** The title for the searches categoy */
     public static final String TITLE_SEARCHES = "Searches";
 
+    /** The title for the bookmarks categoy */
     public static final String TITLE_BOOKMARKS = "Bookmarks";
 
+    /** The category's connection */
     private IConnection parent;
 
+    /** The category's type */
     private int type;
 
-    private Object[] children;
 
-
-    public BrowserCategory( int type, IConnection parent, Object[] children )
+    public BrowserCategory( int type, IConnection parent )
     {
-        super();
-        this.children = children;
         this.parent = parent;
         this.type = type;
     }
 
 
-    public Object[] getChildren()
-    {
-        return children;
-    }
-
-
+    /**
+     * Gets the category's parent, which is always a connection.
+     * 
+     * @return the parent connection
+     */
     public IConnection getParent()
     {
         return parent;
     }
 
 
+    /**
+     * Gets the category's type, one of TYPE_DIT, TYPE_SEARCHES or TYPE_BOOKMARKS.
+     *
+     * @return the category's type.
+     */
     public int getType()
     {
         return type;
     }
 
 
+    /**
+     * Gets the category's title.
+     *
+     * @return the category's title
+     */
     public String getTitle()
     {
-        if ( type == TYPE_DIT )
-            return TITLE_DIT;
-        if ( type == TYPE_SEARCHES )
-            return TITLE_SEARCHES;
-        if ( type == TYPE_BOOKMARKS )
-            return TITLE_BOOKMARKS;
-        return "ERROR";
-    }
+        switch ( type )
+        {
+            case TYPE_DIT:
+                return TITLE_DIT;
 
+            case TYPE_SEARCHES:
+                return TITLE_SEARCHES;
 
-    public void setChildren( Object[] children )
-    {
-        this.children = children;
+            case TYPE_BOOKMARKS:
+                return TITLE_BOOKMARKS;
+
+            default:
+                return "ERROR";
+        }
     }
 
 }

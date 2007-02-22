@@ -40,28 +40,45 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 
+/**
+ * The BrowserContentProvider implements the content provider for
+ * the browser widget. It accepts an IConnection as input.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserContentProvider implements ITreeContentProvider
 {
 
-    protected BrowserPreferences layout;
+    /** The prefernces */
+    protected BrowserPreferences preferences;
 
+    /** The sorter */
     protected BrowserSorter sorter;
 
+    /** This map contains the pages for entries with many children (if folding is activated) */
     private Map<IEntry, BrowserEntryPage[]> entryToEntryPagesMap;
 
+    /** This map contains the pages for searches with many results (if folding is activated) */
     private Map<ISearch, BrowserSearchResultPage[]> searchToSearchResultPagesMap;
 
+    /** This map contains the top-level categories for each connection */
     private Map<IConnection, BrowserCategory[]> connectionToCategoriesMap;
 
 
-    public BrowserContentProvider( BrowserPreferences layout, BrowserSorter sorter )
+    /**
+     * Creates a new instance of BrowserContentProvider.
+     *
+     * @param preferences the preferences
+     * @param sorter the sorter
+     */
+    public BrowserContentProvider( BrowserPreferences preferences, BrowserSorter sorter )
     {
-        this.layout = layout;
+        this.preferences = preferences;
         this.sorter = sorter;
         this.entryToEntryPagesMap = new HashMap<IEntry, BrowserEntryPage[]>();
         this.searchToSearchResultPagesMap = new HashMap<ISearch, BrowserSearchResultPage[]>();
@@ -69,55 +86,69 @@ public class BrowserContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void inputChanged( Viewer v, Object oldInput, Object newInput )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-
-        if ( this.entryToEntryPagesMap != null )
+        if ( entryToEntryPagesMap != null )
         {
-            this.entryToEntryPagesMap.clear();
-            this.entryToEntryPagesMap = null;
+            entryToEntryPagesMap.clear();
+            entryToEntryPagesMap = null;
         }
-        if ( this.searchToSearchResultPagesMap != null )
+        if ( searchToSearchResultPagesMap != null )
         {
-            this.searchToSearchResultPagesMap.clear();
-            this.searchToSearchResultPagesMap = null;
+            searchToSearchResultPagesMap.clear();
+            searchToSearchResultPagesMap = null;
         }
-        if ( this.connectionToCategoriesMap != null )
+        if ( connectionToCategoriesMap != null )
         {
-            this.connectionToCategoriesMap.clear();
-            this.connectionToCategoriesMap = null;
+            connectionToCategoriesMap.clear();
+            connectionToCategoriesMap = null;
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object[] getElements( Object parent )
     {
         if ( parent instanceof IConnection )
         {
             IConnection connection = ( IConnection ) parent;
-            if ( !this.connectionToCategoriesMap.containsKey( connection ) )
+            if ( !connectionToCategoriesMap.containsKey( connection ) )
             {
                 BrowserCategory[] categories = new BrowserCategory[3];
-                categories[0] = new BrowserCategory( BrowserCategory.TYPE_DIT, connection, null );
-                categories[1] = new BrowserCategory( BrowserCategory.TYPE_SEARCHES, connection, null );
-                categories[2] = new BrowserCategory( BrowserCategory.TYPE_BOOKMARKS, connection, null );
-                this.connectionToCategoriesMap.put( connection, categories );
+                categories[0] = new BrowserCategory( BrowserCategory.TYPE_DIT, connection );
+                categories[1] = new BrowserCategory( BrowserCategory.TYPE_SEARCHES, connection );
+                categories[2] = new BrowserCategory( BrowserCategory.TYPE_BOOKMARKS, connection );
+                connectionToCategoriesMap.put( connection, categories );
             }
 
-            BrowserCategory[] categories = this.connectionToCategoriesMap.get( connection );
+            BrowserCategory[] categories = connectionToCategoriesMap.get( connection );
 
             List<BrowserCategory> catList = new ArrayList<BrowserCategory>( 3 );
-            if ( this.layout.isShowDIT() )
+            if ( preferences.isShowDIT() )
+            {
                 catList.add( categories[0] );
-            if ( this.layout.isShowSearches() )
+            }
+            if ( preferences.isShowSearches() )
+            {
                 catList.add( categories[1] );
-            if ( this.layout.isShowBookmarks() )
+            }
+            if ( preferences.isShowBookmarks() )
+            {
                 catList.add( categories[2] );
+            }
 
             return catList.toArray( new BrowserCategory[0] );
         }
@@ -132,6 +163,9 @@ public class BrowserContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getParent( final Object child )
     {
         if ( child instanceof BrowserCategory )
@@ -147,18 +181,18 @@ public class BrowserContentProvider implements ITreeContentProvider
             IEntry parentEntry = ( ( IEntry ) child ).getParententry();
             if ( parentEntry == null )
             {
-                if ( this.connectionToCategoriesMap.get( ( ( IEntry ) child ).getConnection() ) != null )
+                if ( connectionToCategoriesMap.get( ( ( IEntry ) child ).getConnection() ) != null )
                 {
-                    return this.connectionToCategoriesMap.get( ( ( IEntry ) child ).getConnection() )[0];
+                    return connectionToCategoriesMap.get( ( ( IEntry ) child ).getConnection() )[0];
                 }
                 else
                 {
                     return null;
                 }
             }
-            else if ( this.entryToEntryPagesMap.containsKey( parentEntry ) )
+            else if ( entryToEntryPagesMap.containsKey( parentEntry ) )
             {
-                BrowserEntryPage[] entryPages = this.entryToEntryPagesMap.get( parentEntry );
+                BrowserEntryPage[] entryPages = entryToEntryPagesMap.get( parentEntry );
                 BrowserEntryPage ep = null;
                 for ( int i = 0; i < entryPages.length && ep == null; i++ )
                 {
@@ -178,14 +212,14 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( child instanceof ISearch )
         {
             ISearch search = ( ( ISearch ) child );
-            return this.connectionToCategoriesMap.get( search.getConnection() )[1];
+            return connectionToCategoriesMap.get( search.getConnection() )[1];
         }
         else if ( child instanceof ISearchResult )
         {
             ISearch parentSearch = ( ( ISearchResult ) child ).getSearch();
-            if ( parentSearch != null && this.searchToSearchResultPagesMap.containsKey( parentSearch ) )
+            if ( parentSearch != null && searchToSearchResultPagesMap.containsKey( parentSearch ) )
             {
-                BrowserSearchResultPage[] srPages = this.searchToSearchResultPagesMap.get( parentSearch );
+                BrowserSearchResultPage[] srPages = searchToSearchResultPagesMap.get( parentSearch );
                 BrowserSearchResultPage srp = null;
                 for ( int i = 0; i < srPages.length && srp == null; i++ )
                 {
@@ -201,7 +235,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( child instanceof IBookmark )
         {
             IBookmark bookmark = ( ( IBookmark ) child );
-            return this.connectionToCategoriesMap.get( bookmark.getConnection() )[2];
+            return connectionToCategoriesMap.get( bookmark.getConnection() )[2];
         }
         else
         {
@@ -210,13 +244,15 @@ public class BrowserContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object[] getChildren( Object parent )
     {
-
         if ( parent instanceof BrowserEntryPage )
         {
             BrowserEntryPage entryPage = ( BrowserEntryPage ) parent;
-            Object[] objects = entryPage.get();
+            Object[] objects = entryPage.getChildren();
             if ( objects == null )
             {
                 return new String[]
@@ -245,11 +281,11 @@ public class BrowserContentProvider implements ITreeContentProvider
             }
 
             int childrenCount = parentEntry.getChildrenCount();
-            if ( childrenCount <= layout.getFoldingSize() || !layout.isUseFolding() )
+            if ( childrenCount <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
-                if ( this.entryToEntryPagesMap.containsKey( parentEntry ) )
+                if ( entryToEntryPagesMap.containsKey( parentEntry ) )
                 {
-                    this.entryToEntryPagesMap.remove( parentEntry );
+                    entryToEntryPagesMap.remove( parentEntry );
                 }
 
                 IEntry[] entries = parentEntry.getChildren();
@@ -266,18 +302,18 @@ public class BrowserContentProvider implements ITreeContentProvider
             else
             {
                 BrowserEntryPage[] entryPages = null;
-                if ( !this.entryToEntryPagesMap.containsKey( parentEntry ) )
+                if ( !entryToEntryPagesMap.containsKey( parentEntry ) )
                 {
                     entryPages = getEntryPages( parentEntry, 0, childrenCount - 1 );
-                    this.entryToEntryPagesMap.put( parentEntry, entryPages );
+                    entryToEntryPagesMap.put( parentEntry, entryPages );
                 }
                 else
                 {
-                    entryPages = this.entryToEntryPagesMap.get( parentEntry );
+                    entryPages = entryToEntryPagesMap.get( parentEntry );
                     if ( childrenCount - 1 != entryPages[entryPages.length - 1].getLast() )
                     {
                         entryPages = getEntryPages( parentEntry, 0, childrenCount - 1 );
-                        this.entryToEntryPagesMap.put( parentEntry, entryPages );
+                        entryToEntryPagesMap.put( parentEntry, entryPages );
                     }
                 }
                 return entryPages;
@@ -286,7 +322,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof BrowserSearchResultPage )
         {
             BrowserSearchResultPage srPage = ( BrowserSearchResultPage ) parent;
-            Object[] objects = srPage.get();
+            Object[] objects = srPage.getChildren();
             if ( objects == null )
             {
                 return new String[]
@@ -307,7 +343,6 @@ public class BrowserContentProvider implements ITreeContentProvider
             ISearch search = ( ISearch ) parent;
             if ( search.getSearchResults() == null )
             {
-                // return new Object[0];
                 new SearchJob( new ISearch[]
                     { search } ).execute();
                 return new String[]
@@ -318,7 +353,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 return new String[]
                     { "No Results" };
             }
-            else if ( search.getSearchResults().length <= layout.getFoldingSize() || !layout.isUseFolding() )
+            else if ( search.getSearchResults().length <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
                 ISearchResult[] results = search.getSearchResults();
                 return results;
@@ -326,18 +361,18 @@ public class BrowserContentProvider implements ITreeContentProvider
             else
             {
                 BrowserSearchResultPage[] srPages = null;
-                if ( !this.searchToSearchResultPagesMap.containsKey( search ) )
+                if ( !searchToSearchResultPagesMap.containsKey( search ) )
                 {
                     srPages = getSearchResultPages( search, 0, search.getSearchResults().length - 1 );
-                    this.searchToSearchResultPagesMap.put( search, srPages );
+                    searchToSearchResultPagesMap.put( search, srPages );
                 }
                 else
                 {
-                    srPages = this.searchToSearchResultPagesMap.get( search );
+                    srPages = searchToSearchResultPagesMap.get( search );
                     if ( search.getSearchResults().length - 1 != srPages[srPages.length - 1].getLast() )
                     {
                         srPages = getSearchResultPages( search, 0, search.getSearchResults().length - 1 );
-                        this.searchToSearchResultPagesMap.put( search, srPages );
+                        searchToSearchResultPagesMap.put( search, srPages );
                     }
                 }
                 return srPages;
@@ -350,10 +385,8 @@ public class BrowserContentProvider implements ITreeContentProvider
 
             switch ( category.getType() )
             {
-
                 case BrowserCategory.TYPE_DIT:
                 {
-
                     // open connection when expanding DIT
                     if ( !connection.isOpened() )
                     {
@@ -375,7 +408,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                     for ( Iterator<IEntry> it = entryList.iterator(); it.hasNext(); )
                     {
                         Object o = it.next();
-                        if ( !this.layout.isShowDirectoryMetaEntries()
+                        if ( !preferences.isShowDirectoryMetaEntries()
                             && ( o instanceof DirectoryMetadataEntry || o instanceof RootDSE ) )
                         {
                             it.remove();
@@ -394,7 +427,6 @@ public class BrowserContentProvider implements ITreeContentProvider
                 {
                     return connection.getBookmarkManager().getBookmarks();
                 }
-
             }
 
             return new Object[0];
@@ -406,6 +438,9 @@ public class BrowserContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasChildren( Object parent )
     {
         if ( parent instanceof IEntry )
@@ -430,15 +465,11 @@ public class BrowserContentProvider implements ITreeContentProvider
         }
         else if ( parent instanceof ISearch )
         {
-            // ISearch search = ((ISearch)parent);
-            // return search.getSearchResults() != null;
             return true;
         }
         else if ( parent instanceof BrowserCategory )
         {
             return true;
-            // BrowserCategory category = (BrowserCategory)parent;
-            // return category.getChildren().length > 0;
         }
         else
         {
@@ -447,10 +478,18 @@ public class BrowserContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * Creates and returns the entry pages for the given entry. The number of pages
+     * depends on the number of entries and the paging size. 
+     *
+     * @param entry the parent entry
+     * @param first the index of the first child entry
+     * @param last the index of the last child entry
+     * @return the created entry pages
+     */
     private BrowserEntryPage[] getEntryPages( IEntry entry, int first, int last )
     {
-
-        int pagingSize = this.layout.getFoldingSize();
+        int pagingSize = preferences.getFoldingSize();
 
         int diff = last - first;
         int factor = diff > 0 ? ( int ) ( Math.log( diff ) / Math.log( pagingSize ) ) : 0;
@@ -464,17 +503,25 @@ public class BrowserContentProvider implements ITreeContentProvider
             groupLast = ( int ) ( ( i + 1 ) * Math.pow( pagingSize, factor ) ) + first - 1;
             groupLast = groupLast > last ? last : groupLast;
             BrowserEntryPage[] subpages = ( factor > 1 ) ? getEntryPages( entry, groupFirst, groupLast ) : null;
-            pages[i] = new BrowserEntryPage( entry, groupFirst, groupLast, subpages, this.sorter );
+            pages[i] = new BrowserEntryPage( entry, groupFirst, groupLast, subpages, sorter );
         }
 
         return pages;
     }
 
 
+    /**
+     * Creates and returns the search result pages for the given search. The number of pages
+     * depends on the number of search results and the paging size. 
+     *
+     * @param search the parent search
+     * @param first the index of the first search result
+     * @param last the index of the last child search result
+     * @return the created search result pages
+     */
     private BrowserSearchResultPage[] getSearchResultPages( ISearch search, int first, int last )
     {
-
-        int pagingSize = this.layout.getFoldingSize();
+        int pagingSize = preferences.getFoldingSize();
 
         int diff = last - first;
         int factor = diff > 0 ? ( int ) ( Math.log( diff ) / Math.log( pagingSize ) ) : 0;
@@ -489,7 +536,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             groupLast = groupLast > last ? last : groupLast;
             BrowserSearchResultPage[] subpages = ( factor > 1 ) ? getSearchResultPages( search, groupFirst, groupLast )
                 : null;
-            pages[i] = new BrowserSearchResultPage( search, groupFirst, groupLast, subpages, this.sorter );
+            pages[i] = new BrowserSearchResultPage( search, groupFirst, groupLast, subpages, sorter );
         }
 
         return pages;

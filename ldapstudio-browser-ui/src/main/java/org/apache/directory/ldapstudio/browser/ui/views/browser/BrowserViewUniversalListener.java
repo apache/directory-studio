@@ -29,12 +29,10 @@ import org.apache.directory.ldapstudio.browser.core.events.AttributesInitialized
 import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EntryAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryMovedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryRenamedEvent;
-import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateListener;
@@ -73,7 +71,7 @@ import org.eclipse.ui.contexts.IContextService;
  * @version $Rev$, $Date$
  */
 public class BrowserViewUniversalListener extends BrowserUniversalListener implements SearchUpdateListener,
-    EntryUpdateListener, ConnectionUpdateListener, BookmarkUpdateListener
+    BookmarkUpdateListener
 {
 
     /** This map contains all expanded elements for a particular connection */
@@ -390,7 +388,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      * {@inheritDoc}
      * 
      * This implementation refreshes the tree and expands/collapses the 
-     * tree when the connection is opene/closed.
+     * tree when the connection is opened/closed.
      */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
@@ -469,7 +467,6 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      */
     public void entryUpdated( EntryModificationEvent event )
     {
-
         // Don't handle attribute initalization, could cause double
         // retrieval of children. 
         //

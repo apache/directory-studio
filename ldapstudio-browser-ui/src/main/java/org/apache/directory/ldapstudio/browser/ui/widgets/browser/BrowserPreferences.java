@@ -25,19 +25,28 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
+/**
+ * This class is a wrapper for the preferences of the browser widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserPreferences implements IPropertyChangeListener, Preferences.IPropertyChangeListener
 {
 
+    /** The tree viewer */
     protected TreeViewer viewer;
 
 
+    /**
+     * Creates a new instance of BrowserPreferences.
+     */
     public BrowserPreferences()
     {
         BrowserUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener( this );
@@ -45,26 +54,46 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Connects the tree viewer to this preferences.
+     *
+     * @param viewer the tree viewer
+     */
     public void connect( TreeViewer viewer )
     {
         this.viewer = viewer;
     }
 
 
+    /**
+     * Disposes this preferences.
+     */
     public void dispose()
     {
         BrowserUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener( this );
         BrowserCorePlugin.getDefault().getPluginPreferences().removePropertyChangeListener( this );
-        this.viewer = null;
+        viewer = null;
     }
 
 
+    /**
+     * Gets the sort by, one of BrowserCoreConstants.SORT_BY_NONE, 
+     * BrowserCoreConstants.SORT_BY_RDN or BrowserCoreConstants.SORT_BY_RDN_VALUE.
+     * 
+     * @return the sort by
+     */
     public int getSortBy()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt( BrowserUIConstants.PREFERENCE_BROWSER_SORT_BY );
     }
 
 
+    /**
+     * Gets the sort order, one of one of BrowserCoreConstants.SORT_ORDER_NONE, 
+     * BrowserCoreConstants.SORT_ORDER_ASCENDING or BrowserCoreConstants.SORT_ORDER_DESCENDING.
+     * 
+     * @return the sort order
+     */
     public int getSortOrder()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
@@ -72,6 +101,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Gets the sort limit.
+     * 
+     * @return the sort limit
+     */
     public int getSortLimit()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
@@ -79,6 +113,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if leaf entries should be shown before non-leaf entries.
+     * 
+     * @return true, if leaf entries should be shown first
+     */
     public boolean isLeafEntriesFirst()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -86,6 +125,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if meta entries should be shown after non-meta entries.
+     * 
+     * @return true, if meta entries should be shown first
+     */
     public boolean isMetaEntriesLast()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -93,6 +137,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if the bookmark category should be visible.
+     *
+     * @return true if the bookmark category should be visible
+     */
     public boolean isShowBookmarks()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -100,6 +149,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if the DIT category should be visible.
+     *
+     * @return true if the DIT category should be visible
+     */
     public boolean isShowDIT()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -107,6 +161,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if the searches category should be visible.
+     *
+     * @return true if the searches category should be visible
+     */
     public boolean isShowSearches()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -114,6 +173,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Gets the folding size.
+     * 
+     * @return the folding size
+     */
     public int getFoldingSize()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
@@ -121,6 +185,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if folding is enabled.
+     *
+     * @return true if folding is enabled
+     */
     public boolean isUseFolding()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -128,6 +197,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if meta entries should be visible.
+     *
+     * @return true if meta entries should be visible
+     */
     public boolean isShowDirectoryMetaEntries()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -135,6 +209,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if entry lables should be abbreviated.
+     *
+     * @return true if entry lables should be abbreviated
+     */
     public boolean isEntryAbbreviate()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -142,6 +221,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Gets the entry's maximum label length.
+     * 
+     * @return the entry's maximum label length
+     */
     public int getEntryAbbreviateMaxLength()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
@@ -149,6 +233,12 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Gets the entry label, one of BrowserUIConstants.SHOW_DN, 
+     * BrowserUIConstants.SHOW_RDN or BrowserUIConstants.SHOW_RDN_VALUE.
+     * 
+     * @return the entry label
+     */
     public int getEntryLabel()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
@@ -156,6 +246,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if search result lables should be abbreviated.
+     *
+     * @return true if search result lables should be abbreviated
+     */
     public boolean isSearchResultAbbreviate()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -163,6 +258,11 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Gets the search result's maximum label length.
+     * 
+     * @return the search result's maximum label length
+     */
     public int getSearchResultAbbreviateMaxLength()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
@@ -170,6 +270,12 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Gets the search result label, one of BrowserUIConstants.SHOW_DN, 
+     * BrowserUIConstants.SHOW_RDN or BrowserUIConstants.SHOW_RDN_VALUE.
+     * 
+     * @return the entry label
+     */
     public int getSearchResultLabel()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
@@ -177,6 +283,12 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if the base entries should be expanded when
+     * opening connection.
+     *
+     * @return true if the base entries should be expanded
+     */
     public boolean isExpandBaseEntries()
     {
         return BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
@@ -184,6 +296,12 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * Returns true if the browser should check for children
+     * while browsing the directory.
+     *
+     * @return true if the browser should check for children
+     */
     public boolean isCheckForChildren()
     {
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
@@ -191,13 +309,25 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
-    public boolean isDerefAliasWhileBrowsing()
+    /**
+     * Returns true if the browser should dereference aliases and referrals.
+     * 
+     *
+     * @return true if the browser should dereference aliases and referrals
+     */
+    public boolean isDerefAliasesAndReferralsWhileBrowsing()
     {
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
         return coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS );
     }
 
 
+    /**
+     * Returns true if subentries should be fetched while browsing.
+     * 
+     *
+     * @return true if subentries should be fetched while browsing
+     */
     public boolean isFetchSubentries()
     {
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
@@ -205,20 +335,26 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void propertyChange( PropertyChangeEvent event )
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.viewer.refresh();
+            viewer.refresh();
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void propertyChange( org.eclipse.core.runtime.Preferences.PropertyChangeEvent event )
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.viewer.refresh();
+            viewer.refresh();
         }
     }
 
