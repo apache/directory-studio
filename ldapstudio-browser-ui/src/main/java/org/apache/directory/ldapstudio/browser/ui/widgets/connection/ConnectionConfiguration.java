@@ -81,8 +81,8 @@ public class ConnectionConfiguration
 
             if ( contextMenuManager != null )
             {
-                contextMenuManager = null;
                 contextMenuManager.dispose();
+                contextMenuManager = null;
             }
 
             disposed = true;
