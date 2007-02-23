@@ -38,7 +38,7 @@ public class LdapMessageView extends ViewPart
 {
     /** The view ID*/
     public static final String ID = Activator.PLUGIN_ID + ".view.LdapMessageView";
-    
+
     /** The Source Viewer */
     private SourceViewer sourceViewer;
 

@@ -17,51 +17,15 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.proxy.controller;
-
-
-import org.apache.directory.ldapstudio.proxy.view.LdapMessageView;
+package org.apache.directory.ldapstudio.proxy.model;
 
 
 /**
- * This class implements the controller for the LDAP Message View.
+ * This interface defines a LDAP Proxy Listener.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class LdapMessageViewController
+public interface LdapProxyListener
 {
-    /** The associated view */
-    private LdapMessageView view;
-
-
-    /**
-     * Creates a new instance of LdapMessageViewController.
-     *
-     * @param view
-     *      the associated view
-     */
-    public LdapMessageViewController( LdapMessageView view )
-    {
-        this.view = view;
-
-        initActions();
-        initToolbar();
-    }
-
-
-    /**
-     * Initializes the actions.
-     */
-    private void initActions()
-    {
-    }
-
-
-    /**
-     * Initializes the toolbar.
-     */
-    private void initToolbar()
-    {
-    }
 }

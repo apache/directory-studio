@@ -24,11 +24,13 @@
       <view
             allowMultiple="false"
             class="org.apache.directory.ldapstudio.proxy.view.ProxyView"
+            icon="resources/icons/proxy_view.png"
             id="org.apache.directory.ldapstudio.proxy.view.ProxyView"
             name="Proxy"/>
       <view
             allowMultiple="false"
             class="org.apache.directory.ldapstudio.proxy.view.LdapMessageView"
+            icon="resources/icons/ldap-message_view.png"
             id="org.apache.directory.ldapstudio.proxy.view.LdapMessageView"
             name="LDAP Message"/>
    </extension>
@@ -37,6 +39,6 @@
       <perspective
             class="org.apache.directory.ldapstudio.proxy.view.Perspective"
             icon="resources/icons/perspective.png"
-            id="org.apache.directory.ldapstudio.proxy.perpective"
+            id="org.apache.directory.ldapstudio.proxy.perspective"
             name="LDAP Proxy"/>
    </extension></plugin>

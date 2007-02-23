@@ -19,13 +19,20 @@
  */
 package org.apache.directory.ldapstudio.proxy.controller.actions;
 
+
+import java.io.IOException;
+
 import org.apache.directory.ldapstudio.proxy.Activator;
+import org.apache.directory.ldapstudio.proxy.model.LdapProxy;
 import org.apache.directory.ldapstudio.proxy.view.IImageKeys;
+import org.apache.directory.ldapstudio.proxy.view.ProxyView;
 import org.apache.directory.ldapstudio.proxy.view.wizards.ConnectWizard;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+
 
 /**
  * This class implements the Connect action.
@@ -35,28 +42,50 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ConnectAction extends Action
 {
+    /** The associated view */
+    private ProxyView view;
+
+
     /**
      * Creates a new instance of ConnectAction.
+     *
+     * @param view
+     *      the associated view
      */
-    public ConnectAction()
+    public ConnectAction( ProxyView view )
     {
-        super( "Connect");
+        super( "Connect" );
         setToolTipText( getText() );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.CONNECT )  );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.CONNECT ) );
         setEnabled( true );
+        this.view = view;
     }
-    
+
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.action.Action#run()
      */
     public void run()
     {
-        WizardDialog dialog = new WizardDialog(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new ConnectWizard() );
+        ConnectWizard connectWizard = new ConnectWizard();
+
+        WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            connectWizard );
         dialog.create();
-        dialog.open();
-        
-        super.run();
+        if ( dialog.open() == Window.OK )
+        {
+            LdapProxy ldapProxy = new LdapProxy( connectWizard.getLocalPort(), connectWizard.getRemoteHost(),
+                connectWizard.getRemotePort() );
+            view.getController().setLdapProxy( ldapProxy );
+            try
+            {
+                ldapProxy.connect();
+            }
+            catch ( IOException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 }

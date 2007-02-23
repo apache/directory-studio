@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.proxy.controller.actions;
 
 import org.apache.directory.ldapstudio.proxy.Activator;
 import org.apache.directory.ldapstudio.proxy.view.IImageKeys;
+import org.apache.directory.ldapstudio.proxy.view.ProxyView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -34,14 +35,32 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class DisconnectAction extends Action
 {
+    /** The associated view */
+    private ProxyView view;
+
+
     /**
      * Creates a new instance of DisconnectAction.
+     * 
+     * @param view
+     *      the associated view
      */
-    public DisconnectAction()
+    public DisconnectAction( ProxyView view )
     {
         super( "Disconnect" );
         setToolTipText( getText() );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.DISCONNECT ) );
-        setEnabled( true );
+        setEnabled( false );
+        this.view = view;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
+     */
+    public void run()
+    {
+        view.getController().getLdapProxy().disconnect();
+        view.getController().setLdapProxy( null );
     }
 }

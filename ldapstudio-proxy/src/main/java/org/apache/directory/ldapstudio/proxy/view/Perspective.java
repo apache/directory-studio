@@ -20,6 +20,7 @@
 package org.apache.directory.ldapstudio.proxy.view;
 
 
+import org.apache.directory.ldapstudio.proxy.Activator;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -32,6 +33,10 @@ import org.eclipse.ui.IPerspectiveFactory;
  */
 public class Perspective implements IPerspectiveFactory
 {
+    /** The Perspective ID */
+    public static final String ID = Activator.PLUGIN_ID + ".perspective"; //$NON-NLS-1$
+
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
      */
@@ -45,5 +50,14 @@ public class Perspective implements IPerspectiveFactory
 
         layout.addStandaloneView( LdapMessageView.ID, true, IPageLayout.RIGHT, 0.5f, ProxyView.ID );
         layout.getViewLayout( LdapMessageView.ID ).setCloseable( false );
+
+        // Perspective shortcuts
+        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" );
+        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.schemas.perspective" );
+        layout.addPerspectiveShortcut( Perspective.ID );
+
+        // View shortcuts
+        layout.addShowViewShortcut( ProxyView.ID );
+        layout.addShowViewShortcut( LdapMessageView.ID );
     }
 }

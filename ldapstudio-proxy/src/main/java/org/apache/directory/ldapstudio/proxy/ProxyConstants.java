@@ -17,51 +17,32 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.proxy.controller;
-
-
-import org.apache.directory.ldapstudio.proxy.view.LdapMessageView;
+package org.apache.directory.ldapstudio.proxy;
 
 
 /**
- * This class implements the controller for the LDAP Message View.
+ * This class contains all the constants used by the Proxy Plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class LdapMessageViewController
+public interface ProxyConstants
 {
-    /** The associated view */
-    private LdapMessageView view;
+    /** The plugin ID */
+    public static final String PLUGIN_ID = "org.apache.directory.ldapstudio.proxy";
+    
+    /** The size of the Dialog History */
+    public static final int DIALOG_HISTORY_SIZE = 20;
 
+    /** The dialog setting key for Proxy Port History */
+    public static final String DIALOGSETTING_KEY_PROXY_PORT_HISTORY = "proxyPortHistory";
 
-    /**
-     * Creates a new instance of LdapMessageViewController.
-     *
-     * @param view
-     *      the associated view
-     */
-    public LdapMessageViewController( LdapMessageView view )
-    {
-        this.view = view;
+    /** The dialog setting key for Server Host History */
+    public static final String DIALOGSETTING_KEY_SERVER_HOST_HISTORY = "serverHostHistory";
 
-        initActions();
-        initToolbar();
-    }
+    /** The dialog setting key for Server Port History */
+    public static final String DIALOGSETTING_KEY_SERVER_PORT_HISTORY = "serverPortHistory";
 
-
-    /**
-     * Initializes the actions.
-     */
-    private void initActions()
-    {
-    }
-
-
-    /**
-     * Initializes the toolbar.
-     */
-    private void initToolbar()
-    {
-    }
+    /** The dialog setting value for Use Connection */
+    public static final String DIALOGSETTING_KEY_SERVER_USE_CONNECTION = "useConnection";
 }

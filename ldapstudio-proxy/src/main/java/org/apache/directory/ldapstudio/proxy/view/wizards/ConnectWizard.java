@@ -20,7 +20,11 @@
 package org.apache.directory.ldapstudio.proxy.view.wizards;
 
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.internal.util.BundleUtility;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 
 
 /**
@@ -32,7 +36,20 @@ import org.eclipse.jface.wizard.Wizard;
 public class ConnectWizard extends Wizard
 {
     /** The Settings page*/
-    private ConnectWizardSettingsPage settings;
+    private ConnectWizardBrowserAvailablePage browserAvailablePage;
+    private ConnectWizardBrowserNotAvailablePage browserNotAvailablePage;
+
+    /** The availability of the BrowserPlugin */
+    private boolean isBrowserPluginAvailable;
+
+    /** The proxy port */
+    private int localPort = 0;
+
+    /** The LDAP Server hostname */
+    private String remoteHost = "";
+
+    /** The LDAP Server port */
+    private int remotePort = 0;
 
 
     /* (non-Javadoc)
@@ -40,8 +57,30 @@ public class ConnectWizard extends Wizard
      */
     public void addPages()
     {
-        settings = new ConnectWizardSettingsPage();
-        addPage( settings );
+        isBrowserPluginAvailable = isBrowserPluginAvailable();
+
+        if ( isBrowserPluginAvailable )
+        {
+            browserAvailablePage = new ConnectWizardBrowserAvailablePage();
+            addPage( browserAvailablePage );
+        }
+        else
+        {
+            browserNotAvailablePage = new ConnectWizardBrowserNotAvailablePage();
+            addPage( browserNotAvailablePage );
+        }
+    }
+
+
+    /**
+     * Checks if the Browser Plugin is available.
+     *
+     * @return
+     *      true if the Browser Plugin is available, false if not
+     */
+    private boolean isBrowserPluginAvailable()
+    {
+        return ( isPluginAvailable( "org.apache.directory.ldapstudio.browser.core" ) && isPluginAvailable( "org.apache.directory.ldapstudio.browser.core" ) );
     }
 
 
@@ -50,6 +89,95 @@ public class ConnectWizard extends Wizard
      */
     public boolean performFinish()
     {
-        return false;
+        if ( isBrowserPluginAvailable )
+        {
+            browserAvailablePage.saveDialogHistory();
+            localPort = browserAvailablePage.getLocalPort();
+            remoteHost = browserAvailablePage.getRemoteHost();
+            remotePort = browserAvailablePage.getRemotePort();
+        }
+        else
+        {
+            browserNotAvailablePage.saveDialogHistory();
+            localPort = browserNotAvailablePage.getLocalPort();
+            remoteHost = browserNotAvailablePage.getRemoteHost();
+            remotePort = browserNotAvailablePage.getRemotePort();
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Checks if the given plugin is available (installed and active).
+     * The plugin is actived if it's not already active.
+     *
+     * @param bundleId
+     *      the id of the plugin
+     * @return
+     *      true if the given plugin is available, false if not.
+     */
+    public boolean isPluginAvailable( String bundleId )
+    {
+        Bundle pluginBundle = Platform.getBundle( bundleId );
+
+        if ( pluginBundle == null )
+        {
+            return false;
+        }
+
+        if ( BundleUtility.isActive( pluginBundle ) )
+        {
+            return true;
+        }
+        else
+        {
+            try
+            {
+                pluginBundle.start();
+            }
+            catch ( BundleException e )
+            {
+                return false;
+            }
+
+            return BundleUtility.isActive( pluginBundle );
+        }
+    }
+
+
+    /**
+     * Gets the local port defined by the user.
+     * 
+     * @return
+     *      the local port defined by the user
+     */
+    public int getLocalPort()
+    {
+        return localPort;
+    }
+
+
+    /**
+     * Gets the remote host defined by the user.
+     *
+     * @return
+     *      the remote host defined by the user
+     */
+    public String getRemoteHost()
+    {
+        return remoteHost;
+    }
+
+
+    /**
+     * Gets the remote port defined by the user.
+     *
+     * @return
+     *      the remote port defined by the user
+     */
+    public int getRemotePort()
+    {
+        return remotePort;
     }
 }

@@ -31,4 +31,8 @@ public interface IImageKeys
     // Images for Actions
     public static final String CONNECT = "resources/icons/connect.gif"; //$NON-NLS-1$
     public static final String DISCONNECT = "resources/icons/disconnect.gif"; //$NON-NLS-1$
+
+    // Images for Views
+    public static final String IN = "resources/icons/in.png";
+    public static final String OUT = "resources/icons/out.png";
 }

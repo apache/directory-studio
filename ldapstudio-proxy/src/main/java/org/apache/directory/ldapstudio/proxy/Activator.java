@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.proxy;
 
 
@@ -34,7 +33,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin
 {
     /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.ldapstudio.proxy"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = ProxyConstants.PLUGIN_ID; //$NON-NLS-1$
 
     /** The shared instance */
     private static Activator plugin;

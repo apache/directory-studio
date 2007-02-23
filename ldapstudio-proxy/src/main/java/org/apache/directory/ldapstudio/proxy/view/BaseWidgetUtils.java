@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.proxy.view;
 
 
@@ -38,9 +37,14 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * This class is a helper class that is used to create widgets.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BaseWidgetUtils
 {
-
     public static Group createGroup( Composite parent, String label, int span )
     {
         Group group = new Group( parent, SWT.NONE );
@@ -306,5 +310,4 @@ public class BaseWidgetUtils
         link.setLayoutData( gd );
         return link;
     }
-
 }

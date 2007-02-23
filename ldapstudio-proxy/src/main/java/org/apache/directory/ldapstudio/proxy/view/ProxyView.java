@@ -22,10 +22,12 @@ package org.apache.directory.ldapstudio.proxy.view;
 
 import org.apache.directory.ldapstudio.proxy.Activator;
 import org.apache.directory.ldapstudio.proxy.controller.ProxyViewController;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -39,8 +41,11 @@ public class ProxyView extends ViewPart
     /** The view ID*/
     public static final String ID = Activator.PLUGIN_ID + ".view.ProxyView";
 
+    /** The controller */
+    private ProxyViewController controller;
+
     /** The tree viewer */
-    private TreeViewer viewer;
+    private Tree viewer;
 
 
     /* (non-Javadoc)
@@ -48,9 +53,50 @@ public class ProxyView extends ViewPart
      */
     public void createPartControl( Composite parent )
     {
-        viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        
-        new ProxyViewController( this );
+        viewer = new Tree( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        controller = new ProxyViewController( this );
+
+        // TODO Remove
+        TreeItem treeItem = new TreeItem( viewer, SWT.NONE );
+        treeItem.setText( "Bind [id=1]" );
+
+        treeItem = new TreeItem( treeItem, SWT.NONE );
+        treeItem.setText( "Bind Request" );
+        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.IN )
+            .createImage() );
+
+        treeItem = new TreeItem( viewer.getTopItem(), SWT.NONE );
+        treeItem.setText( "Bind Response" );
+        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+            .createImage() );
+
+        TreeItem treeItem2 = new TreeItem( viewer, SWT.NONE );
+        treeItem2.setText( "Search [id=2]" );
+
+        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        treeItem.setText( "Search Request" );
+        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.IN )
+            .createImage() );
+
+        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        treeItem.setText( "Search Result Entry" );
+        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+            .createImage() );
+
+        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        treeItem.setText( "Search Result Entry" );
+        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+            .createImage() );
+
+        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        treeItem.setText( "Search Result Entry" );
+        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+            .createImage() );
+
+        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        treeItem.setText( "Search Result Done" );
+        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+            .createImage() );
     }
 
 
@@ -59,6 +105,12 @@ public class ProxyView extends ViewPart
      */
     public void setFocus()
     {
-        viewer.getControl().setFocus();
+        viewer.setFocus();
+    }
+
+
+    public ProxyViewController getController()
+    {
+        return controller;
     }
 }
