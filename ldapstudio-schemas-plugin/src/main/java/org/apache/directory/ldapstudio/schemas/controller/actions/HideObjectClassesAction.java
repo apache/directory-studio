@@ -21,9 +21,8 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer;
+import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -41,7 +40,7 @@ public class HideObjectClassesAction extends Action
         + ".dialogsettingkey";
 
     /** The associated view */
-    private HierarchicalViewer hierarchyView;
+    private HierarchyView hierarchyView;
 
 
     /**
@@ -50,11 +49,11 @@ public class HideObjectClassesAction extends Action
      * @param view
      *      the associated view
      */
-    public HideObjectClassesAction( HierarchicalViewer view )
+    public HideObjectClassesAction( HierarchyView view )
     {
         super( "Hide Object Classes", AS_CHECK_BOX );
         super.setActionDefinitionId( Activator.PLUGIN_ID + "hideObjectClasses" );
-        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             IImageKeys.HIDE_OBJECT_CLASSES ) );
         super.setEnabled( true );
         hierarchyView = view;

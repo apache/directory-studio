@@ -44,7 +44,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
     @Override
     public void initializeDefaultPreferences()
     {
-        IEclipsePreferences defaults = new DefaultScope().getNode( Application.PLUGIN_ID );
+        IEclipsePreferences defaults = new DefaultScope().getNode( Activator.PLUGIN_ID );
         defaults.put( GeneralPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
         defaults.putBoolean( GeneralPreferencePage.AUTO_OID, true );
         defaults.put( SchemaPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$

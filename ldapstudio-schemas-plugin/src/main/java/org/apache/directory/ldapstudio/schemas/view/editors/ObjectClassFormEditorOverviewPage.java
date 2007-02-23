@@ -27,8 +27,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
-import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -277,7 +277,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( SchemasViewController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
 
@@ -382,7 +382,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( SchemasViewController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
 
@@ -857,7 +857,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE, i );
             item.setImage( AbstractUIPlugin
-                .imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
+                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
             item.setText( mustArray[i] );
             if ( ( selectionIndex != -1 ) && ( mustArray[i].equals( selectAttribute ) ) )
             {
@@ -886,7 +886,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             TableItem item = new TableItem( optionalAttributesTable, SWT.NONE, i );
             item.setImage( AbstractUIPlugin
-                .imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
+                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
             item.setText( mayArray[i] );
             if ( ( selectionIndex != -1 ) && ( mayArray[i].equals( selectAttribute ) ) )
             {

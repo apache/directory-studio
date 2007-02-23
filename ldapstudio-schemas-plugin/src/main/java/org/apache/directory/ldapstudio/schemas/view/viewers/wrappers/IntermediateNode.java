@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers.wrappers;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -119,10 +119,10 @@ public class IntermediateNode implements DisplayableTreeElement
                 String imageKey = ISharedImages.IMG_OBJ_FOLDER;
                 return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );
             case ATTRIBUTE_TYPE_FOLDER:
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                     IImageKeys.FOLDER_ATTRIBUTE_TYPE ).createImage();
             case OBJECT_CLASS_FOLDER:
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                     IImageKeys.FOLDER_OBJECT_CLASS ).createImage();
         }
 

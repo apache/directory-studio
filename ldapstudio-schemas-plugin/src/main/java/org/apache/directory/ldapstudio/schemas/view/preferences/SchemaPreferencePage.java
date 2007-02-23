@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.schemas.view.preferences;
 
 import java.io.IOException;
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -52,7 +52,7 @@ public class SchemaPreferencePage extends FieldEditorPreferencePage implements I
     public SchemaPreferencePage()
     {
         super( GRID );
-        preferences = new ScopedPreferenceStore( new ConfigurationScope(), Application.PLUGIN_ID );
+        preferences = new ScopedPreferenceStore( new ConfigurationScope(), Activator.PLUGIN_ID );
         setPreferenceStore( preferences );
     }
 

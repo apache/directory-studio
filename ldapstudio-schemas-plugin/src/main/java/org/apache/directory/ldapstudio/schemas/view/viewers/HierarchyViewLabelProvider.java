@@ -39,16 +39,16 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchicalLabelProvider extends LabelProvider
+public class HierarchyViewLabelProvider extends LabelProvider
 {
     /** The preferences store */
     private IPreferenceStore store;
 
 
     /**
-     * Creates a new instance of HierarchicalLabelProvider.
+     * Creates a new instance of HierarchyViewLabelProvider.
      */
-    public HierarchicalLabelProvider()
+    public HierarchyViewLabelProvider()
     {
         store = Activator.getDefault().getPreferenceStore();
     }

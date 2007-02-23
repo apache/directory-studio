@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
-import org.apache.directory.ldapstudio.schemas.controller.HierarchicalViewerController;
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.controller.HierarchyViewController;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -39,16 +39,16 @@ import org.eclipse.ui.part.ViewPart;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchicalViewer extends ViewPart implements PoolListener
+public class HierarchyView extends ViewPart implements PoolListener
 {
     /** The view's ID */
-    public static final String ID = Application.PLUGIN_ID + ".view.HierarchicalViewer"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".view.HierarchyView"; //$NON-NLS-1$
 
     /** The tree viewer */
     private TreeViewer viewer;
 
     /** The content provider */
-    private HierarchicalContentProvider contentProvider;
+    private HierarchyViewContentProvider contentProvider;
 
 
     /* (non-Javadoc)
@@ -66,7 +66,7 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
         pool.addListener( this );
 
         // Adding the controller
-        new HierarchicalViewerController( this );
+        new HierarchyViewController( this );
     }
 
 
@@ -79,7 +79,7 @@ public class HierarchicalViewer extends ViewPart implements PoolListener
     private void initViewer( Composite parent )
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new HierarchicalContentProvider();
+        contentProvider = new HierarchyViewContentProvider();
         contentProvider.bindToTreeViewer( viewer );
     }
 

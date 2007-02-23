@@ -20,7 +20,7 @@
 
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyViewSorterDialog;
 import org.eclipse.jface.action.Action;
@@ -46,7 +46,7 @@ public class OpenSortDialogAction extends Action
     public OpenSortDialogAction()
     {
         super( "Sorting..." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.SORT )  );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SORT )  );
         setEnabled( true );
     }
     

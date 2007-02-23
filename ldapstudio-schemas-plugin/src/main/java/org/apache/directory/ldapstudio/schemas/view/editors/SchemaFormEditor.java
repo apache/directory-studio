@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.IEditorInput;
@@ -36,7 +36,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 public class SchemaFormEditor extends FormEditor
 {
     private static Logger logger = Logger.getLogger( SchemaFormEditor.class );
-    public static final String ID = Application.PLUGIN_ID + ".view.schemaformeditor"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".view.schemaformeditor"; //$NON-NLS-1$
     private SchemaFormEditorSourceCodePage sourceCode;
 
 

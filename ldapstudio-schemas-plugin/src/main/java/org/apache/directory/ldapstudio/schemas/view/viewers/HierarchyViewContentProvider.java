@@ -50,7 +50,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchicalContentProvider implements IStructuredContentProvider, ITreeContentProvider
+public class HierarchyViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
     /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
@@ -69,12 +69,12 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
 
 
     /**
-     * Creates a new instance of HierarchicalContentProvider.
+     * Creates a new instance of HierarchyViewContentProvider.
      *
      * @param schemaPool
      *      the associated Schema Pool
      */
-    public HierarchicalContentProvider()
+    public HierarchyViewContentProvider()
     {
         this.schemaPool = SchemaPool.getInstance();
 
@@ -417,7 +417,7 @@ public class HierarchicalContentProvider implements IStructuredContentProvider, 
     public void bindToTreeViewer( TreeViewer viewer )
     {
         viewer.setContentProvider( this );
-        viewer.setLabelProvider( new HierarchicalLabelProvider() );
+        viewer.setLabelProvider( new HierarchyViewLabelProvider() );
 
         IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$
         viewer.setInput( invisibleNode );

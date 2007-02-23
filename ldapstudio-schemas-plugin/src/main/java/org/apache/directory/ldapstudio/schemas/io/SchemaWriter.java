@@ -30,7 +30,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.Date;
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -73,7 +73,7 @@ public class SchemaWriter
         context.put( "objectClasses", schema.getObjectClassesAsArray() ); //$NON-NLS-1$
 
         // Schema generation
-        URL template = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/templates/Schema.template" ); //$NON-NLS-1$
+        URL template = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/templates/Schema.template" ); //$NON-NLS-1$
         Reader fileIn = new BufferedReader( new InputStreamReader( template.openStream() ) );
         Writer writer = new FileWriter( new File( src ) );
         ve.evaluate( context, writer, "LOG", fileIn ); //$NON-NLS-1$

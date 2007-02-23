@@ -48,7 +48,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PoolManagerContentProvider implements IStructuredContentProvider, ITreeContentProvider
+public class SchemasViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
     /** The Schema Pool */
     private SchemaPool pool;
@@ -57,7 +57,7 @@ public class PoolManagerContentProvider implements IStructuredContentProvider, I
     /**
      * Default constructor
      */
-    public PoolManagerContentProvider()
+    public SchemasViewContentProvider()
     {
         pool = SchemaPool.getInstance();
     }
@@ -165,7 +165,7 @@ public class PoolManagerContentProvider implements IStructuredContentProvider, I
     public void bindToTreeViewer( TreeViewer viewer )
     {
         viewer.setContentProvider( this );
-        viewer.setLabelProvider( new PoolManagerLabelProvider() );
+        viewer.setLabelProvider( new SchemasViewLabelProvider() );
 
         IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$
         viewer.setInput( invisibleNode );

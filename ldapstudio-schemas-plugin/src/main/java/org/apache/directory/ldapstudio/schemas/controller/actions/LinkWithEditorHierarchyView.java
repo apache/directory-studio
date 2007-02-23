@@ -21,7 +21,6 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -29,8 +28,8 @@ import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer;
-import org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager;
+import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -63,7 +62,7 @@ public class LinkWithEditorHierarchyView extends Action
         + ".dialogsettingkey";
 
     /** The associated view */
-    private HierarchicalViewer hierarchyView;
+    private HierarchyView hierarchyView;
 
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
@@ -77,9 +76,9 @@ public class LinkWithEditorHierarchyView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
-                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchicalViewer.ID, viewListener );
+                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchyView.ID, viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
-                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchicalViewer.ID, viewListener );
+                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
             }
         }
 
@@ -141,9 +140,9 @@ public class LinkWithEditorHierarchyView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
-                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchicalViewer.ID, viewListener );
+                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchyView.ID, viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
-                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchicalViewer.ID, viewListener );
+                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
             }
         }
     };
@@ -175,11 +174,11 @@ public class LinkWithEditorHierarchyView extends Action
      * @param view
      *      the associated view
      */
-    public LinkWithEditorHierarchyView( HierarchicalViewer view )
+    public LinkWithEditorHierarchyView( HierarchyView view )
     {
         super( "Link with Editor", AS_CHECK_BOX );
         super.setActionDefinitionId( Activator.PLUGIN_ID + "linkwitheditorschemasview" );
-        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             IImageKeys.LINK_WITH_EDITOR ) );
         super.setEnabled( true );
         hierarchyView = view;
@@ -198,7 +197,7 @@ public class LinkWithEditorHierarchyView extends Action
         if ( isChecked() )
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( editorListener );
-            hierarchyView.getSite().getPage().addPostSelectionListener( HierarchicalViewer.ID, viewListener );
+            hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
         }
     }
 
@@ -228,13 +227,13 @@ public class LinkWithEditorHierarchyView extends Action
                 linkViewWithEditor( editor.getPartName(), AttributeTypeFormEditor.ID );
             }
 
-            hierarchyView.getSite().getPage().addPostSelectionListener( HierarchicalViewer.ID, viewListener );
+            hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
         }
         else
         // Disabling the listeners
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().removePartListener( editorListener );
-            hierarchyView.getSite().getPage().removePostSelectionListener( PoolManager.ID, viewListener );
+            hierarchyView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
         }
     }
 

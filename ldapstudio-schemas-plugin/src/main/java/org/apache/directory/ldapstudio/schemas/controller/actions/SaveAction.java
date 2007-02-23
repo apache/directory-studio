@@ -21,11 +21,11 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
-import org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
@@ -66,7 +66,7 @@ public class SaveAction extends Action implements IWorkbenchWindowActionDelegate
         setId( ICommandIds.CMD_SAVE );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_SAVE );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.SAVE ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SAVE ) );
     }
 
 
@@ -75,8 +75,8 @@ public class SaveAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public void run()
     {
-        PoolManager view = ( PoolManager ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-            .findView( Application.PLUGIN_ID + ".view.PoolManager" ); //$NON-NLS-1$
+        SchemasView view = ( SchemasView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .findView( SchemasView.ID ); //$NON-NLS-1$
         Object selection = ( ( TreeSelection ) view.getViewer().getSelection() ).getFirstElement();
 
         // We have to check on which node we are to get the schema name
@@ -117,7 +117,7 @@ public class SaveAction extends Action implements IWorkbenchWindowActionDelegate
                     ErrorDialog
                         .openError(
                             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            Messages.getString( "SaveAction.Error" ), Messages.getString( "SaveAction.An_error_occurred_when_saving_schema" ) + schema.getName(), new Status( IStatus.ERROR, Application.PLUGIN_ID, 0, "Status Error Message", null ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            Messages.getString( "SaveAction.Error" ), Messages.getString( "SaveAction.An_error_occurred_when_saving_schema" ) + schema.getName(), new Status( IStatus.ERROR, Activator.PLUGIN_ID, 0, "Status Error Message", null ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     logger.debug( "An error occured when saving schema " + schema.getName() ); //$NON-NLS-1$
                 }
             }

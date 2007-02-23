@@ -21,7 +21,6 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -29,7 +28,7 @@ import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -62,7 +61,7 @@ public class LinkWithEditorSchemasView extends Action
         + ".dialogsettingkey";
 
     /** The associated view */
-    private PoolManager schemasView;
+    private SchemasView schemasView;
 
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
@@ -76,9 +75,9 @@ public class LinkWithEditorSchemasView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
-                schemasView.getSite().getPage().removePostSelectionListener( PoolManager.ID, viewListener );
+                schemasView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
-                schemasView.getSite().getPage().addPostSelectionListener( PoolManager.ID, viewListener );
+                schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
             }
         }
 
@@ -92,9 +91,9 @@ public class LinkWithEditorSchemasView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
-                schemasView.getSite().getPage().removePostSelectionListener( PoolManager.ID, viewListener );
+                schemasView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
-                schemasView.getSite().getPage().addPostSelectionListener( PoolManager.ID, viewListener );
+                schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
             }
         }
 
@@ -174,11 +173,11 @@ public class LinkWithEditorSchemasView extends Action
      * @param view
      *      the associated view
      */
-    public LinkWithEditorSchemasView( PoolManager view )
+    public LinkWithEditorSchemasView( SchemasView view )
     {
         super( "Link with Editor", AS_CHECK_BOX );
         super.setActionDefinitionId( Activator.PLUGIN_ID + "linkwitheditorschemasview" );
-        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             IImageKeys.LINK_WITH_EDITOR ) );
         super.setEnabled( true );
         schemasView = view;
@@ -197,7 +196,7 @@ public class LinkWithEditorSchemasView extends Action
         if ( isChecked() )
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( editorListener );
-            schemasView.getSite().getPage().addPostSelectionListener( PoolManager.ID, viewListener );
+            schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
         }
     }
 
@@ -227,13 +226,13 @@ public class LinkWithEditorSchemasView extends Action
                 linkViewWithEditor( editor.getPartName(), AttributeTypeFormEditor.ID );
             }
 
-            schemasView.getSite().getPage().addPostSelectionListener( PoolManager.ID, viewListener );
+            schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
         }
         else
         // Disabling the listeners
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().removePartListener( editorListener );
-            schemasView.getSite().getPage().removePostSelectionListener( PoolManager.ID, viewListener );
+            schemasView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
         }
     }
 

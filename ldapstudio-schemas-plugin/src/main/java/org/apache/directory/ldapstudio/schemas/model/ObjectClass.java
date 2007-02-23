@@ -23,13 +23,10 @@ package org.apache.directory.ldapstudio.schemas.model;
 
 import java.util.ArrayList;
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
-import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 

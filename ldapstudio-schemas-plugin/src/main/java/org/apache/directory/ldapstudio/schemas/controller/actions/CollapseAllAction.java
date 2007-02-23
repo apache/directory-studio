@@ -19,7 +19,7 @@
  */
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -45,7 +45,7 @@ public class CollapseAllAction extends Action
     {
         super( "Collapse All");
         setToolTipText( getText() );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.COLLAPSE_ALL )  );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.COLLAPSE_ALL )  );
         setEnabled( true );
 
         this.viewer = viewer;

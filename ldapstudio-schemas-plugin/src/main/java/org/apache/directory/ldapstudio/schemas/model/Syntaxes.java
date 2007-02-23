@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.eclipse.core.runtime.Platform;
 
 
@@ -45,7 +45,7 @@ public class Syntaxes
         try
         {
             syntaxes = new ArrayList<Syntax>();
-            URL url = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/utils/syntaxes.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/syntaxes.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of syntaxes to parse

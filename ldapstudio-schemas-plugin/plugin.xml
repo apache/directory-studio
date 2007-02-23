@@ -22,7 +22,7 @@
 <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.apache.directory.ldapstudio.schemas.view.perspectives.StandardPerspective"
+            class="org.apache.directory.ldapstudio.schemas.view.perspectives.Perspective"
             icon="ressources/icons/schemas_perspective.gif"
             id="org.apache.directory.ldapstudio.schemas.perspective"
             name="%ldapstudio-schemas-plugin.perspective.schemas.name"/>
@@ -42,21 +42,21 @@
       <view
             allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer"
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView"
             icon="ressources/icons/hierarchy_view.png"
-            id="org.apache.directory.ldapstudio.schemas.view.HierarchicalViewer"
+            id="org.apache.directory.ldapstudio.schemas.view.HierarchyView"
             name="%ldapstudio-schemas-plugin.views.hierarchy.name"/>
       <view
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager"
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView"
             icon="ressources/icons/schemas_view.png"
-            id="org.apache.directory.ldapstudio.schemas.view.PoolManager"
+            id="org.apache.directory.ldapstudio.schemas.view.SchemasView"
             name="%ldapstudio-schemas-plugin.views.schemas.name"/>
       <view
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.SearchViewer"
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.SearchView"
             icon="ressources/icons/find.png"
-            id="org.apache.directory.ldapstudio.schemas.view.SearchViewer"
+            id="org.apache.directory.ldapstudio.schemas.view.SearchView"
             name="%ldapstudio-schemas-plugin.views.search.name"/>
    </extension>
    <extension
@@ -112,16 +112,6 @@
             description="%ldapstudio-schemas-plugin.commands.createanewattributetype.description"
             id="org.apache.directory.ldapstudio.schemas.createanewattributetype"
             name="%ldapstudio-schemas-plugin.commands.createanewattributetype.name"/>
-      <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
-            description="%ldapstudio-schemas-plugin.commands.sorthierarchicalviewer.description"
-            id="org.apache.directory.ldapstudio.schemas.sorthierarchicalviewer"
-            name="%ldapstudio-schemas-plugin.commands.sorthierarchicalviewer.name"/>
-      <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
-            description="%ldapstudio-schemas-plugin.commands.sortpoolmanager.description"
-            id="org.apache.directory.ldapstudio.schemas.sortpoolmanager"
-            name="%ldapstudio-schemas-plugin.commands.sortpoolmanager.name"/>
       <category
             id="org.apache.directory.ldapstudio.schemas.category"
             name="%ldapstudio-schemas-plugin.commands.category.name"/>

@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
@@ -29,7 +29,7 @@ import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
@@ -71,7 +71,7 @@ public class DeleteAction extends Action
         setId( ICommandIds.CMD_DELETE );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_DELETE );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.DELETE ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.DELETE ) );
     }
 
 
@@ -80,8 +80,8 @@ public class DeleteAction extends Action
      */
     public void run()
     {
-        PoolManager view = ( PoolManager ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-            .findView( Application.PLUGIN_ID + ".view.PoolManager" ); //$NON-NLS-1$
+        SchemasView view = ( SchemasView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .findView( SchemasView.ID ); //$NON-NLS-1$
         Object selection = ( ( TreeSelection ) view.getViewer().getSelection() ).getFirstElement();
 
         String schemaName = null;

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
@@ -73,7 +73,7 @@ public class SchemaPool implements SchemaListener
     {
         try
         {
-            Preferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+            Preferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
             Preferences saved_workspace = prefs.node( SAVED_WORKSPACE );
 
             //we only store the references to schemas that have ALREADY
@@ -105,7 +105,7 @@ public class SchemaPool implements SchemaListener
     {
         try
         {
-            Preferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+            Preferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
             Preferences saved_workspace = prefs.node( SAVED_WORKSPACE );
             String[] schemaNames = saved_workspace.childrenNames();
             for ( String name : schemaNames )
@@ -137,14 +137,14 @@ public class SchemaPool implements SchemaListener
 
     private static void initializeWithBundled( SchemaPool pool )
     {
-        URL urlcore = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/schemas/core.schema" ); //$NON-NLS-1$
-        URL urljava = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/schemas/java.schema" ); //$NON-NLS-1$
-        URL urlnis = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/schemas/nis.schema" ); //$NON-NLS-1$
-        URL urlsystem = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/schemas/system.schema" ); //$NON-NLS-1$
-        URL urlautofs = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/schemas/autofs.schema" ); //$NON-NLS-1$
-        URL urlcorba = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/schemas/corba.schema" ); //$NON-NLS-1$
-        URL urlcosine = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/schemas/cosine.schema" ); //$NON-NLS-1$
-        URL urlinetorgperson = Platform.getBundle( Application.PLUGIN_ID ).getResource(
+        URL urlcore = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/core.schema" ); //$NON-NLS-1$
+        URL urljava = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/java.schema" ); //$NON-NLS-1$
+        URL urlnis = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/nis.schema" ); //$NON-NLS-1$
+        URL urlsystem = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/system.schema" ); //$NON-NLS-1$
+        URL urlautofs = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/autofs.schema" ); //$NON-NLS-1$
+        URL urlcorba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/corba.schema" ); //$NON-NLS-1$
+        URL urlcosine = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/cosine.schema" ); //$NON-NLS-1$
+        URL urlinetorgperson = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
             "ressources/schemas/inetorgperson.schema" ); //$NON-NLS-1$
 
         try
@@ -168,7 +168,7 @@ public class SchemaPool implements SchemaListener
 
     private static void initializeWithSpecified( SchemaPool pool )
     {
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
         String specificPath = prefs
             .get( SchemaPreferencePage.SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
 
@@ -224,7 +224,7 @@ public class SchemaPool implements SchemaListener
                     //1) create the pool instance
                     SchemaPool pool = new SchemaPool();
 
-                    IEclipsePreferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+                    IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
 
                     //2) initialize the pool
                     boolean initialize_with_specified = prefs.getBoolean( SchemaPreferencePage.SPECIFIC_CORE, false );

@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
@@ -61,7 +61,7 @@ public class SaveAllAction extends Action implements IWorkbenchWindowActionDeleg
         setId( ICommandIds.CMD_SAVE_ALL );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_SAVE_ALL );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.SAVE_ALL ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SAVE_ALL ) );
     }
 
 
@@ -80,7 +80,7 @@ public class SaveAllAction extends Action implements IWorkbenchWindowActionDeleg
             ErrorDialog
                 .openError(
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    Messages.getString( "SaveAllAction.Error" ), Messages.getString( "SaveAllAction.An_error_occured_when_saving_schemas" ), new Status( IStatus.ERROR, Application.PLUGIN_ID, 0, //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString( "SaveAllAction.Error" ), Messages.getString( "SaveAllAction.An_error_occured_when_saving_schemas" ), new Status( IStatus.ERROR, Activator.PLUGIN_ID, 0, //$NON-NLS-1$ //$NON-NLS-2$
                         "Status Error Message", null ) ); //$NON-NLS-1$
             logger.debug( "An error occured when saving schemas" ); //$NON-NLS-1$
         }

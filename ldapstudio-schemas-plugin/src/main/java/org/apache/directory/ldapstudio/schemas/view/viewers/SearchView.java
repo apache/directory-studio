@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
-import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
@@ -60,10 +60,10 @@ import org.eclipse.ui.part.ViewPart;
 /**
  * This class represents the Search View.
  */
-public class SearchViewer extends ViewPart implements PoolListener
+public class SearchView extends ViewPart implements PoolListener
 {
     /** The view's ID */
-    public static final String ID = Application.PLUGIN_ID + ".view.SearchViewer"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".view.SearchView"; //$NON-NLS-1$
 
     /** The Schema Pool */
     private SchemaPool pool;
@@ -74,32 +74,32 @@ public class SearchViewer extends ViewPart implements PoolListener
     private TableViewer tableViewer;
     private Text searchField;
     private Combo typeCombo;
-    private SearchContentProvider searchContentProvider;
+    private SearchViewContentProvider searchContentProvider;
 
     /** The Type column */
-    private final String TYPE_COLUMN = Messages.getString( "SearchViewer.Type_Column" ); //$NON-NLS-1$
+    private final String TYPE_COLUMN = Messages.getString( "SearchView.Type_Column" ); //$NON-NLS-1$
 
     /** The Name column*/
-    private final String NAME_COLUMN = Messages.getString( "SearchViewer.Name_Column" ); //$NON-NLS-1$
+    private final String NAME_COLUMN = Messages.getString( "SearchView.Name_Column" ); //$NON-NLS-1$
 
     /** The Schema column */
-    private final String SCHEMA_COLUMN = Messages.getString( "SearchViewer.Schema_Column" ); //$NON-NLS-1$
+    private final String SCHEMA_COLUMN = Messages.getString( "SearchView.Schema_Column" ); //$NON-NLS-1$
 
     /** The Columns names Array */
     private String[] columnNames = new String[]
         { TYPE_COLUMN, NAME_COLUMN, SCHEMA_COLUMN, };
 
     /** The Search All type */
-    public static final String SEARCH_ALL = Messages.getString( "SearchViewer.Search_All_metadata" ); //$NON-NLS-1$
+    public static final String SEARCH_ALL = Messages.getString( "SearchView.Search_All_metadata" ); //$NON-NLS-1$
 
     /** The Search Name type */
-    public static final String SEARCH_NAME = Messages.getString( "SearchViewer.Search_Name" ); //$NON-NLS-1$
+    public static final String SEARCH_NAME = Messages.getString( "SearchView.Search_Name" ); //$NON-NLS-1$
 
     /** The Search OID type */
-    public static final String SEARCH_OID = Messages.getString( "SearchViewer.Search_OID" ); //$NON-NLS-1$
+    public static final String SEARCH_OID = Messages.getString( "SearchView.Search_OID" ); //$NON-NLS-1$
 
     /** The Search Description type */
-    public static final String SEARCH_DESC = Messages.getString( "SearchViewer.Search_Description" ); //$NON-NLS-1$
+    public static final String SEARCH_DESC = Messages.getString( "SearchView.Search_Description" ); //$NON-NLS-1$
 
     /** The current Search type */
     public static String searchType = SEARCH_ALL;
@@ -180,9 +180,9 @@ public class SearchViewer extends ViewPart implements PoolListener
         // Create the table 
         createTable( top );
         createTableViewer();
-        this.searchContentProvider = new SearchContentProvider();
+        this.searchContentProvider = new SearchViewContentProvider();
         tableViewer.setContentProvider( searchContentProvider );
-        tableViewer.setLabelProvider( new SearchLabelProvider() );
+        tableViewer.setLabelProvider( new SearchViewLabelProvider() );
     }
 
 
@@ -276,7 +276,7 @@ public class SearchViewer extends ViewPart implements PoolListener
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( PoolManagerController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( SchemasViewController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
     }

@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers.wrappers;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.swt.graphics.Image;
@@ -128,10 +128,10 @@ public class ObjectClassWrapper implements DisplayableTreeElement
         String imageKey = ISharedImages.IMG_OBJS_WARN_TSK;
 
         if ( state == State.resolved )
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.OBJECT_CLASS )
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OBJECT_CLASS )
                 .createImage();
         else if ( state == State.unResolved )
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.OBJECT_CLASS_WARNING )
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OBJECT_CLASS_WARNING )
                 .createImage();
 
         return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );

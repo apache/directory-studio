@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
-import org.apache.directory.ldapstudio.schemas.controller.PoolManagerController;
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
@@ -43,14 +43,14 @@ import org.eclipse.ui.part.ViewPart;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PoolManager extends ViewPart implements PoolListener, ISaveablePart2
+public class SchemasView extends ViewPart implements PoolListener, ISaveablePart2
 {
-    public static final String ID = Application.PLUGIN_ID + ".view.PoolManager"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".view.SchemasView"; //$NON-NLS-1$
 
-    private static Logger logger = Logger.getLogger( PoolManager.class );
+    private static Logger logger = Logger.getLogger( SchemasView.class );
     private TreeViewer viewer;
     private Composite parent;
-    private PoolManagerContentProvider contentProvider;
+    private SchemasViewContentProvider contentProvider;
 
 
     /**
@@ -69,7 +69,7 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
         pool.addListener( this );
 
         // Adding the controller
-        new PoolManagerController( this );
+        new SchemasViewController( this );
     }
 
 
@@ -79,7 +79,7 @@ public class PoolManager extends ViewPart implements PoolListener, ISaveablePart
     private void initViewer()
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new PoolManagerContentProvider();
+        contentProvider = new SchemasViewContentProvider();
         contentProvider.bindToTreeViewer( viewer );
     }
 

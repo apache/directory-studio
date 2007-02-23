@@ -32,7 +32,7 @@ import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEdi
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchicalViewer;
+import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
@@ -58,13 +58,13 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchicalViewerController
+public class HierarchyViewController
 {
     /** The logger */
-    private static Logger logger = Logger.getLogger( HierarchicalViewerController.class );
+    private static Logger logger = Logger.getLogger( HierarchyViewController.class );
 
     /** The associated view */
-    private HierarchicalViewer view;
+    private HierarchyView view;
 
     // The Actions
     private HideObjectClassesAction hideObjectClasses;
@@ -76,10 +76,9 @@ public class HierarchicalViewerController
 
 
     /**
-     * Creates a new instance of HierarchicalViewerController.
-     *
+     * Creates a new instance of HierarchyViewController.
      */
-    public HierarchicalViewerController( HierarchicalViewer view )
+    public HierarchyViewController( HierarchyView view )
     {
         this.view = view;
 
@@ -144,8 +143,8 @@ public class HierarchicalViewerController
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-                HierarchicalViewer view = ( HierarchicalViewer ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                    .getActivePage().findView( HierarchicalViewer.ID );
+                HierarchyView view = ( HierarchyView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                    .getActivePage().findView( HierarchyView.ID );
                 TreeViewer viewer = view.getViewer();
 
                 // What we get from the treeViewer is a StructuredSelection

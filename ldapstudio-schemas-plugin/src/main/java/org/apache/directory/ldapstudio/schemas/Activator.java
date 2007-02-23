@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.schemas;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaCodeScanner;
@@ -76,7 +75,7 @@ public class Activator extends AbstractUIPlugin
     public void stop( BundleContext context ) throws Exception
     {
         // save workspace configuration
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
         boolean save_workspace = prefs.getBoolean( SchemaPreferencePage.SAVE_WORKSPACE, true );
         if ( save_workspace )
             SchemaPool.getInstance().savePool();

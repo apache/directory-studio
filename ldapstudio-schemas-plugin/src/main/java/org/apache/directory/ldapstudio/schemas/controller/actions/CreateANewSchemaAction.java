@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard;
@@ -50,7 +50,7 @@ public class CreateANewSchemaAction extends Action
         setId( ICommandIds.CMD_CREATE_A_NEW_SCHEMA );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_CREATE_A_NEW_SCHEMA );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             IImageKeys.CREATE_A_NEW_SCHEMA ) );
     }
 

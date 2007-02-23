@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.eclipse.core.runtime.Platform;
 
 
@@ -46,7 +46,7 @@ public class MatchingRules
         try
         {
             equalityMatchingRules = new ArrayList<MatchingRule>();
-            URL url = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of matching rules to parse for EQUALITY
@@ -78,7 +78,7 @@ public class MatchingRules
         {
             orderingMatchingRules = new ArrayList<MatchingRule>();
 
-            URL url = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of matching rules to parse for ORDERING
@@ -109,7 +109,7 @@ public class MatchingRules
         try
         {
             substringMatchingRules = new ArrayList<MatchingRule>();
-            URL url = Platform.getBundle( Application.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of matching rules to parse for SUBSTRING

@@ -42,7 +42,7 @@ import org.eclipse.ui.PlatformUI;
  * Content provider for the search view
  *
  */
-public class SearchContentProvider implements IStructuredContentProvider, PoolListener
+public class SearchViewContentProvider implements IStructuredContentProvider, PoolListener
 {
     private SchemaPool schemaPool;
     private Hashtable<String, ObjectClass> objectClassTable;
@@ -52,7 +52,7 @@ public class SearchContentProvider implements IStructuredContentProvider, PoolLi
     /**
      * Default constructor
      */
-    public SearchContentProvider()
+    public SearchViewContentProvider()
     {
         this.schemaPool = SchemaPool.getInstance();
         schemaPool.addListener( this );
@@ -74,8 +74,8 @@ public class SearchContentProvider implements IStructuredContentProvider, PoolLi
             String searchText = ( String ) parent;
 
             //reset the view title
-            SearchViewer view = ( SearchViewer ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                .findView( SearchViewer.ID );
+            SearchView view = ( SearchView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                .findView( SearchView.ID );
             view.setPartName( Messages.getString( "SearchContentProvider.Search" ) ); //$NON-NLS-1$
 
             if ( searchText.length() > 0 )
@@ -95,8 +95,8 @@ public class SearchContentProvider implements IStructuredContentProvider, PoolLi
                 for ( SchemaElement element : allList )
                 {
 
-                    if ( SearchViewer.searchType.equals( SearchViewer.SEARCH_NAME )
-                        || SearchViewer.searchType.equals( SearchViewer.SEARCH_ALL ) )
+                    if ( SearchView.searchType.equals( SearchView.SEARCH_NAME )
+                        || SearchView.searchType.equals( SearchView.SEARCH_ALL ) )
                     {
                         String[] names = element.getNames();
                         for ( String name : names )
@@ -113,8 +113,8 @@ public class SearchContentProvider implements IStructuredContentProvider, PoolLi
                         }
                     }
 
-                    if ( SearchViewer.searchType.equals( SearchViewer.SEARCH_OID )
-                        || SearchViewer.searchType.equals( SearchViewer.SEARCH_ALL ) )
+                    if ( SearchView.searchType.equals( SearchView.SEARCH_OID )
+                        || SearchView.searchType.equals( SearchView.SEARCH_ALL ) )
                     {
                         String oid = element.getOid();
                         Matcher m = pattern.matcher( oid );
@@ -128,8 +128,8 @@ public class SearchContentProvider implements IStructuredContentProvider, PoolLi
                         }
                     }
 
-                    if ( SearchViewer.searchType.equals( SearchViewer.SEARCH_DESC )
-                        || SearchViewer.searchType.equals( SearchViewer.SEARCH_ALL ) )
+                    if ( SearchView.searchType.equals( SearchView.SEARCH_DESC )
+                        || SearchView.searchType.equals( SearchView.SEARCH_ALL ) )
                     {
                         String desc = element.getDescription();
                         if ( desc == null )

@@ -40,7 +40,7 @@ import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEdi
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.PoolManager;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
@@ -80,13 +80,13 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PoolManagerController
+public class SchemasViewController
 {
     /** The logger */
-    private static Logger logger = Logger.getLogger( PoolManagerController.class );
+    private static Logger logger = Logger.getLogger( SchemasViewController.class );
 
     /** The associated view */
-    private PoolManager view;
+    private SchemasView view;
 
     /** The Drag'n'Drop FileTransfer Object */
     private final static FileTransfer fileTransfer = FileTransfer.getInstance();
@@ -109,12 +109,12 @@ public class PoolManagerController
 
 
     /**
-     * Creates a new instance of PoolManagerController.
+     * Creates a new instance of SchemasViewController.
      *
      * @param view
      *      the associated view
      */
-    public PoolManagerController( PoolManager view )
+    public SchemasViewController( SchemasView view )
     {
         this.view = view;
 
@@ -360,8 +360,8 @@ public class PoolManagerController
 
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-                PoolManager view = ( PoolManager ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                    .findView( PoolManager.ID );
+                SchemasView view = ( SchemasView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                    .findView( SchemasView.ID );
                 TreeViewer viewer = view.getViewer();
 
                 // What we get from the treeViewer is a StructuredSelection
@@ -417,7 +417,7 @@ public class PoolManagerController
     private void registerUpdateActions()
     {
         // Handling selection of the Browser View to enable/disable the Actions
-        view.getSite().getPage().addSelectionListener( PoolManager.ID, new ISelectionListener()
+        view.getSite().getPage().addSelectionListener( SchemasView.ID, new ISelectionListener()
         {
             /**
              * {@inheritDoc}

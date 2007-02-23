@@ -20,6 +20,8 @@
 
 package org.apache.directory.ldapstudio.schemas.controller;
 
+import org.apache.directory.ldapstudio.schemas.Activator;
+
 
 /**
  * Interface defining the application's command IDs.
@@ -30,18 +32,16 @@ package org.apache.directory.ldapstudio.schemas.controller;
  */
 public interface ICommandIds
 {
-    public static final String CMD_DELETE = Application.PLUGIN_ID + ".delete"; //$NON-NLS-1$
-    public static final String CMD_OPEN_LOCAL = Application.PLUGIN_ID + ".openlocal"; //$NON-NLS-1$
-    public static final String CMD_OPEN_SCHEMA_SOURCE_CODE = Application.PLUGIN_ID + ".openschemasourcecode"; //$NON-NLS-1$
-    public static final String CMD_SAVE = Application.PLUGIN_ID + ".save"; //$NON-NLS-1$
-    public static final String CMD_SAVE_AS = Application.PLUGIN_ID + ".saveas"; //$NON-NLS-1$
-    public static final String CMD_SAVE_ALL = Application.PLUGIN_ID + ".saveall"; //$NON-NLS-1$
-    public static final String CMD_REMOVE_SCHEMA = Application.PLUGIN_ID + ".removeschema"; //$NON-NLS-1$
-    public static final String CMD_CREATE_A_NEW_SCHEMA = Application.PLUGIN_ID + ".createanewschema"; //$NON-NLS-1$
-    public static final String CMD_CREATE_A_NEW_OBJECTCLASS = Application.PLUGIN_ID + ".createanewobjectclass"; //$NON-NLS-1$
-    public static final String CMD_CREATE_A_NEW_ATTRIBUTETYPE = Application.PLUGIN_ID + ".createanewattributetype"; //$NON-NLS-1$
-    public static final String CMD_SORT_HIERACHICAL_VIEWER = Application.PLUGIN_ID + ".sorthierarchicalviewer"; //$NON-NLS-1$
-    public static final String CMD_SORT_POOL_MANAGER = Application.PLUGIN_ID + ".sortpoolmanager"; //$NON-NLS-1$
-    public static final String LINK_WITH_EDITOR_HIERARCHY_VIEW = Application.PLUGIN_ID + ".linkwitheditorhierarchyview"; //$NON-NLS-1$
-    public static final String LINK_WITH_EDITOR_SCHEMA_VIEW = Application.PLUGIN_ID + ".linkwitheditorschemasview"; //$NON-NLS-1$
+    public static final String CMD_DELETE = Activator.PLUGIN_ID + ".delete"; //$NON-NLS-1$
+    public static final String CMD_OPEN_LOCAL = Activator.PLUGIN_ID + ".openlocal"; //$NON-NLS-1$
+    public static final String CMD_OPEN_SCHEMA_SOURCE_CODE = Activator.PLUGIN_ID + ".openschemasourcecode"; //$NON-NLS-1$
+    public static final String CMD_SAVE = Activator.PLUGIN_ID + ".save"; //$NON-NLS-1$
+    public static final String CMD_SAVE_AS = Activator.PLUGIN_ID + ".saveas"; //$NON-NLS-1$
+    public static final String CMD_SAVE_ALL = Activator.PLUGIN_ID + ".saveall"; //$NON-NLS-1$
+    public static final String CMD_REMOVE_SCHEMA = Activator.PLUGIN_ID + ".removeschema"; //$NON-NLS-1$
+    public static final String CMD_CREATE_A_NEW_SCHEMA = Activator.PLUGIN_ID + ".createanewschema"; //$NON-NLS-1$
+    public static final String CMD_CREATE_A_NEW_OBJECTCLASS = Activator.PLUGIN_ID + ".createanewobjectclass"; //$NON-NLS-1$
+    public static final String CMD_CREATE_A_NEW_ATTRIBUTETYPE = Activator.PLUGIN_ID + ".createanewattributetype"; //$NON-NLS-1$
+    public static final String LINK_WITH_EDITOR_HIERARCHY_VIEW = Activator.PLUGIN_ID + ".linkwitheditorhierarchyview"; //$NON-NLS-1$
+    public static final String LINK_WITH_EDITOR_SCHEMA_VIEW = Activator.PLUGIN_ID + ".linkwitheditorschemasview"; //$NON-NLS-1$
 }

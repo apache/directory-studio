@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
@@ -36,7 +36,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * Label provider for the search view
  *
  */
-public class SearchLabelProvider extends LabelProvider implements ITableLabelProvider
+public class SearchViewLabelProvider extends LabelProvider implements ITableLabelProvider
 {
 
     /* (non-Javadoc)
@@ -48,13 +48,13 @@ public class SearchLabelProvider extends LabelProvider implements ITableLabelPro
         {
             if ( element instanceof ObjectClass )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.OBJECT_CLASS )
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OBJECT_CLASS )
                     .createImage();
             }
 
             if ( element instanceof AttributeType )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE )
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE )
                     .createImage();
             }
         }

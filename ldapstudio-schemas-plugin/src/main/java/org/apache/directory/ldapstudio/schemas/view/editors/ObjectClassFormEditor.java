@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,7 +45,7 @@ public class ObjectClassFormEditor extends FormEditor
     private static Logger logger = Logger.getLogger( ObjectClassFormEditor.class );
 
     /** The ID of the Editor */
-    public static final String ID = Application.PLUGIN_ID + ".view.objectClassEditor"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".view.objectClassEditor"; //$NON-NLS-1$
 
     /** The Overview page */
     private ObjectClassFormEditorOverviewPage overview;

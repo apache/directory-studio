@@ -37,7 +37,7 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PoolManagerLabelProvider extends LabelProvider
+public class SchemasViewLabelProvider extends LabelProvider
 {
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)

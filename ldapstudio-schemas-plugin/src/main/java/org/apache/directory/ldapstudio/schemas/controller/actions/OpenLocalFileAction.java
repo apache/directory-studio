@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
-import org.apache.directory.ldapstudio.schemas.controller.Application;
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
@@ -55,7 +55,7 @@ public class OpenLocalFileAction extends Action
         setId( ICommandIds.CMD_OPEN_LOCAL );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_OPEN_LOCAL );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, IImageKeys.OPEN_LOCAL ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OPEN_LOCAL ) );
     }
 
 
@@ -67,7 +67,7 @@ public class OpenLocalFileAction extends Action
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN );
         fd.setText( Messages.getString( "OpenLocalFileAction.Open_a_schema_file" ) ); //$NON-NLS-1$
 
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
         String defaultPath = prefs.get( SchemaPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
         fd.setFilterPath( defaultPath );
         String[] filterExt =

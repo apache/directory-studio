@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 import java.util.Hashtable;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.controller.Application;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.OID;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
@@ -131,7 +130,7 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                IEclipsePreferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+                IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
 
                 prefs.putBoolean( GeneralPreferencePage.AUTO_OID, autoOID.getSelection() );
                 if ( autoOID.getSelection() )
@@ -146,7 +145,7 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
             }
         } );
 
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Application.PLUGIN_ID );
+        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
 
         boolean auto_oid = prefs.getBoolean( GeneralPreferencePage.AUTO_OID, true );
         autoOID.setSelection( auto_oid );
