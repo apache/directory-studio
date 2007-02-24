@@ -78,6 +78,8 @@
 		<xslt in="${project.src}/0_index.xml" out="${project.build}/index.html" style="${basedir}/docbook-xsl/eclipse/eclipse.xsl">
 
 			<classpath location="lib/xalan-2.7.0.jar" />
+			
+			<param name="ignore.image.scaling" expression="1" />
 
 			<param name="manifest.in.base.dir" expression="0" />
 			<param name="base.dir" expression="html/" />
@@ -157,6 +159,8 @@
 		<xslt in="${project.src}/0_index.xml" out="${project.html}/index.html" style="${basedir}/docbook-xsl/html/chunk.xsl">
 
 			<classpath location="lib/xalan-2.7.0.jar" />
+			
+			<param name="ignore.image.scaling" expression="1" />
 
 			<param name="manifest.in.base.dir" expression="0" />
 			<!-- <param name="base.dir" expression="html/" /> -->
