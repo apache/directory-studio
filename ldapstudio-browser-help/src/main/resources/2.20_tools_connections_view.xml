@@ -26,7 +26,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata
+					<imagedata scale="50"
 						fileref="images/tools_connections_view_1.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -43,8 +43,8 @@
 		</para>
 	 	<informaltable frame='all' >
 			<tgroup cols='2' align='left' colsep='1' rowsep='1'>
-				<colspec colname="Icon" align="center"/>
-				<colspec colname="Description"/>
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Description" colwidth="3*" />
 				<thead>
 					<row>
 					  <entry>Icon</entry>
@@ -53,11 +53,11 @@
 				</thead>
 				<tbody>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_connected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_connected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Connections is opened.</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_disconnected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_disconnected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Connection is closed.</entry>
 					</row>
 				</tbody>
@@ -69,9 +69,9 @@
 		<title>Toolbar</title>
 		<informaltable frame='all' >
 			<tgroup cols='3'>
-				<colspec colname="Icon" align="center"/>
-				<colspec colname="Action"/>
-				<colspec colname="Description"/>
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Action" colwidth="2*" />
+				<colspec colname="Description" colwidth="2*" />
 				<thead>
 					<row>
 					  <entry>Icon</entry>
@@ -81,17 +81,17 @@
 				</thead>
 				<tbody>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>New Connection...</entry>
 					  <entry>Starts the <link linkend="tools_newconnection_wizard">New Connection wizard</link></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_connect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_connect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Open Connection</entry>
 					  <entry>Opens the selected connection(s)</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_disconnect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_disconnect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Close Connection</entry>
 					  <entry>Closes the selected connection(s)</entry>
 					</row>
@@ -106,7 +106,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_connections_view_2.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -115,10 +115,10 @@
 		-->
 		<informaltable>
 			<tgroup cols='4'>
-				<colspec colname="Icon" align="center"/>
-				<colspec colname="Action"/>
-				<colspec colname="Description"/>
-				<colspec colname="Shortcut"/>
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Action" colwidth="2*" />
+				<colspec colname="Description" colwidth="4*" />
+				<colspec colname="Shortcut" colwidth="2*" />
 				<thead>
 					<row>
 					  <entry>Icon</entry>
@@ -129,31 +129,31 @@
 				</thead>
 				<tbody>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>New Connection...</entry>
 					  <entry>Starts the <link linkend="tools_newconnection_wizard">New Connection wizard</link></entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_connect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_connect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Open Connection</entry>
 					  <entry>Opens the selected connection(s)</entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/connection_disconnect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_disconnect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Close Connection</entry>
 					  <entry>Closes the selected connection(s)</entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/browser_schemabrowsereditor.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/browser_schemabrowsereditor.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Open Schema Browser</entry>
 					  <entry>Opens the Schema Browser and shows the schema of the selected connection</entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/copy.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/copy.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Copy Connection</entry>
 					  <entry>Copies the selected connections(s) to the clipboard. To duplicate an existing connection please combine copy and paste.</entry>
 					  <entry>
@@ -163,7 +163,7 @@
 					  </entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/paste.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/paste.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Paste Connection</entry>
 					  <entry>Pastes the copied connections(s) from clipboard. Only enabled if there are connections in clipboard.</entry>
 					  <entry>
@@ -173,7 +173,7 @@
 					  </entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/delete.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/delete.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Delete Connection</entry>
 					  <entry>Deletes the selected connections(s). Only enabled if the selected connections are closed.</entry>
 					  <entry><shortcut><keycap>Delete</keycap></shortcut></entry>
@@ -191,7 +191,7 @@
 					  <entry><shortcut><keycap>F2</keycap></shortcut></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/import_ldif.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/import_ldif.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Import</guimenu>
 						<guisubmenu>LDIF Import...</guisubmenu>
@@ -201,7 +201,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/import_dsml.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/import_dsml.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Import</guimenu>
 						<guisubmenu>DSML Import...</guisubmenu>
@@ -211,7 +211,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/export_ldif.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/export_ldif.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>LDIF Export...</guisubmenu>
@@ -221,7 +221,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/export_dsml.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/export_dsml.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>DSML Export...</guisubmenu>
@@ -231,7 +231,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/export_csv.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/export_csv.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>CSV Export...</guisubmenu>
@@ -241,7 +241,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata fileref="icons/export_xls.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/export_xls.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>Excel Export...</guisubmenu>

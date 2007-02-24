@@ -25,7 +25,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata
+					<imagedata scale="50"
 						fileref="images/tools_value_properties_1.png"
 						format="PNG" />
 				</imageobject>
@@ -34,8 +34,8 @@
 	</para>
 	<informaltable frame='all'>
 		<tgroup cols='2'>
-			<colspec colname="Field" />
-			<colspec colname="Description" />
+			<colspec colname="Field" colwidth="1*" />
+			<colspec colname="Description" colwidth="2*" />
 			<thead>
 				<row>
 					<entry>Field</entry>

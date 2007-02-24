@@ -40,7 +40,7 @@
 					<emphasis role="strong">
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata contentdepth="1em"
 									fileref="icons/search_new.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -57,7 +57,7 @@
 					<emphasis role="strong">
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata contentdepth="1em"
 									fileref="icons/search.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -73,7 +73,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata
+					<imagedata scale="50"
 						fileref="images/tools_search_dialog_1.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -83,9 +83,9 @@
 	<para>
 		<informaltable frame="all">
 			<tgroup cols="3">
-				<colspec colname="Option" />
-				<colspec colname="Description" />
-				<colspec colname="Default" />
+				<colspec colname="Option" colwidth="1*" />
+				<colspec colname="Description" colwidth="3*" />
+				<colspec colname="Default" colwidth="1*" />
 				<thead>
 					<row>
 						<entry>Option</entry>

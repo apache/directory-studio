@@ -33,7 +33,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/entry_add.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -70,7 +70,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/search_new.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -118,7 +118,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/bookmark_add.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -152,7 +152,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata fileref="icons/batch.gif"
+									<imagedata contentdepth="1em" fileref="icons/batch.gif"
 										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -193,7 +193,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/locate_searchresult_in_dit.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -202,7 +202,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/locate_bookmark_in_dit.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -243,7 +243,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/parent.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -282,7 +282,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata fileref="icons/copy.gif"
+									<imagedata contentdepth="1em" fileref="icons/copy.gif"
 										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -337,7 +337,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata fileref="icons/paste.gif"
+									<imagedata contentdepth="1em" fileref="icons/paste.gif"
 										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -357,7 +357,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata scale="50"
 										fileref="images/tools_browser_view_3.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
@@ -402,7 +402,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/delete.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -532,7 +532,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/copy_dn.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -565,7 +565,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/copy_url.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -606,7 +606,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_ldif.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -643,7 +643,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_ldif_searchresult.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -680,7 +680,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_ldif_user.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -717,7 +717,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_ldif_operational.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -772,7 +772,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_csv.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -809,7 +809,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_csv_searchresult.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -846,7 +846,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_csv_user.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -883,7 +883,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/copy_csv_operational.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -925,7 +925,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/filter_dit.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -957,7 +957,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/unfilter_dit.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -989,7 +989,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/import_ldif.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -1018,7 +1018,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/import_dsml.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -1047,7 +1047,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/export_ldif.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -1076,7 +1076,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/export_dsml.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -1105,7 +1105,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/export_csv.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -1134,7 +1134,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/export_xls.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -1164,7 +1164,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/refresh.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>

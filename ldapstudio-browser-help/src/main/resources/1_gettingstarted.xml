@@ -50,7 +50,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_install_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -66,7 +66,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_install_2.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -78,7 +78,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_install_3.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -91,7 +91,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_install_4.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -103,7 +103,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50" 
 							fileref="images/gettingstarted_install_5.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -115,7 +115,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50" 
 							fileref="images/gettingstarted_install_6.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -128,7 +128,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_install_7.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -155,7 +155,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_open_perspective_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -173,12 +173,12 @@
 		</para>
 		<para>
 			To create a new connection click the 
-			<inlinemediaobject><imageobject><imagedata fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject> 
+			<inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject> 
 			<emphasis role="strong">New Connection</emphasis> button.
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_create_connection_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -191,7 +191,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_create_connection_2.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -204,7 +204,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_create_connection_3.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -215,7 +215,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted_create_connection_4.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -230,14 +230,14 @@
 		<title>Browse the directory</title>
 		<para>
 			The <emphasis role="strong">LDAP Browser view</emphasis> is on the top left. 
-			The category <inlinemediaobject><imageobject><imagedata fileref="icons/dit.gif" format="GIF"/></imageobject></inlinemediaobject>
+			The category <inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/dit.gif" format="GIF"/></imageobject></inlinemediaobject>
 			<emphasis role="strong">DIT</emphasis> shows the hierarchical content of the directory. You may expand and collapse the tree.
 		</para>
 		<para>
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/gettingstarted_browse_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -261,7 +261,7 @@
 			<listitem>
 				<para>
 					In the Workbench toolbar, click the 
-					<inlinemediaobject><imageobject><imagedata fileref="icons/search.gif" format="GIF"/></imageobject></inlinemediaobject>
+					<inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/search.gif" format="GIF"/></imageobject></inlinemediaobject>
 					<emphasis role="strong">Search</emphasis> button.
 				</para>
 			</listitem>
@@ -269,14 +269,14 @@
 			<listitem>
 				<para>
 					If it is not already selected, select the 
-					<inlinemediaobject><imageobject><imagedata fileref="icons/browser_searchresulteditor.gif" format="GIF"/></imageobject></inlinemediaobject>
+					<inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/browser_searchresulteditor.gif" format="GIF"/></imageobject></inlinemediaobject>
 					<emphasis role="strong">LDAP Search</emphasis> tab.
 				</para>
 				<para>
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted_search_1.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -297,14 +297,14 @@
 
 			<listitem>
 				<para>
-					The category <inlinemediaobject><imageobject><imagedata fileref="icons/searches.gif" format="GIF"/></imageobject></inlinemediaobject>
+					The category <inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/searches.gif" format="GIF"/></imageobject></inlinemediaobject>
 					<emphasis role="strong">Searches</emphasis> in the LDAP Browser shows the searches. You may expand the search to see all search result enties.
 				</para>
 				<para>
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata width="15cm"
 									fileref="images/gettingstarted_search_2.png" format="PNG" />
 							</imageobject>
 						</mediaobject>

@@ -30,7 +30,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_search_result_editor_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -93,10 +93,10 @@
 			The toolbar contains the following items:
 			<informaltable frame="all">
 				<tgroup cols="4">
-					<colspec colname="Icon" align="center" />
-					<colspec colname="Action" />
-					<colspec colname="Description" />
-					<colspec colname="Shortcut" />
+					<colspec colname="Icon" align="center" colwidth="1*" />
+					<colspec colname="Action" colwidth="2*" />
+					<colspec colname="Description" colwidth="4*" />
+					<colspec colname="Shortcut" colwidth="2*" />
 					<thead>
 						<row>
 							<entry>Icon</entry>
@@ -111,7 +111,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/value_add.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -136,7 +136,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/delete.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -157,7 +157,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/refresh.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -176,7 +176,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/copy_table.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -205,7 +205,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/filter.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>

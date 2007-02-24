@@ -32,7 +32,7 @@
 						Import >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata contentdepth="1em"
 									fileref="icons/import_dsml.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -48,7 +48,7 @@
 						Import >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata contentdepth="1em"
 									fileref="icons/import_dsml.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -65,7 +65,7 @@
 					<emphasis role="strong">
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata contentdepth="1em"
 									fileref="icons/import_dsml.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -87,7 +87,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_dsmlimport_wizard_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -96,9 +96,9 @@
 		<para>
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Option" />
-					<colspec colname="Description" />
-					<colspec colname="Default" />
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
 					<thead>
 						<row>
 							<entry>Option</entry>

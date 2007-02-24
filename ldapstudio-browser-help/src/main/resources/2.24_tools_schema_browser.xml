@@ -38,7 +38,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata width="15cm"
 								fileref="images/tools_schema_browser_1.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -118,17 +118,15 @@
 			<para>
 				The toolbar contains the following items:
 				<informaltable frame="all">
-					<tgroup cols="4">
-						<colspec colname="Icon" align="center" />
-						<colspec colname="Action" />
-						<colspec colname="Description" />
-						<colspec colname="Shortcut" />
+					<tgroup cols="3">
+						<colspec colname="Icon" align="center" colwidth="1*" />
+						<colspec colname="Action" colwidth="2*" />
+						<colspec colname="Description" colwidth="4*" />
 						<thead>
 							<row>
 								<entry>Icon</entry>
 								<entry>Action</entry>
 								<entry>Description</entry>
-								<entry>Shortcut</entry>
 							</row>
 						</thead>
 						<tbody>
@@ -137,7 +135,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/defaultschema.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -149,14 +147,13 @@
 									the schema of the currently selected
 									connection.
 								</entry>
-								<entry></entry>
 							</row>
 							<row>
 								<entry>
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata
+												<imagedata contentdepth="1em"
 													fileref="icons/refresh.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -167,7 +164,6 @@
 									Reloads the schema of the currently
 									selected connection.
 								</entry>
-								<entry></entry>
 							</row>
 						</tbody>
 					</tgroup>
@@ -186,7 +182,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_schema_browser_2.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -253,7 +249,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_schema_browser_3.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -345,7 +341,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_schema_browser_5.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -390,7 +386,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_schema_browser_4.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -443,7 +439,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_schema_browser_6.png" format="PNG" />
 					</imageobject>
 				</mediaobject>

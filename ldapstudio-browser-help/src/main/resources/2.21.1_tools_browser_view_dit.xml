@@ -72,7 +72,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="images/tools_browser_view_7.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -88,8 +88,8 @@
 		</para>
 		<informaltable frame="all">
 			<tgroup cols="2" align="left" colsep="1" rowsep="1">
-				<colspec colname="Icon" align="center" />
-				<colspec colname="Description" />
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Description" colwidth="3*" />
 				<thead>
 					<row>
 						<entry>Icon</entry>
@@ -102,7 +102,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_person.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -115,7 +115,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_org.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -128,7 +128,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_dc.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -141,7 +141,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_alias.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -154,7 +154,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_ref.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -167,7 +167,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/browser_schemabrowsereditor.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -180,7 +180,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_root.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -193,7 +193,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_default.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -225,7 +225,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/entry_alias.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -234,7 +234,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/entry_ref.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -276,7 +276,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/folder.gif"
+						<imagedata contentdepth="1em" fileref="icons/folder.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -290,7 +290,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="5em"
 							fileref="images/tools_browser_view_6.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -305,7 +305,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/filter_dit.gif"
+						<imagedata contentdepth="1em" fileref="icons/filter_dit.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -317,7 +317,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="2em"
 							fileref="images/tools_browser_view_10.png" format="PNG" />
 					</imageobject>
 				</mediaobject>

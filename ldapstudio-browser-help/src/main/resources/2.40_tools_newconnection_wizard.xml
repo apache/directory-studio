@@ -31,7 +31,7 @@
 					In the Connections view select the
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="icons/connection_add.gif" format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -98,7 +98,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_newconnection_wizard_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -107,9 +107,9 @@
 		<para>
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Option" />
-					<colspec colname="Description" />
-					<colspec colname="Default" />
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
 					<thead>
 						<row>
 							<entry>Option</entry>
@@ -195,7 +195,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_newconnection_wizard_2.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -204,9 +204,9 @@
 		<para>
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Option" />
-					<colspec colname="Description" />
-					<colspec colname="Default" />
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
 					<thead>
 						<row>
 							<entry>Option</entry>
@@ -283,7 +283,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_newconnection_wizard_3.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -292,9 +292,9 @@
 		<para>
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Option" />
-					<colspec colname="Description" />
-					<colspec colname="Default" />
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
 					<thead>
 						<row>
 							<entry>Option</entry>

@@ -27,7 +27,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata
+					<imagedata width="15cm"
 						fileref="images/tools_ldap_perspective_1.png" format="PNG" />
 				</imageobject>
 			</mediaobject>

@@ -53,7 +53,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="15cm"
 							fileref="images/tools_entry_editor_1.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -84,10 +84,10 @@
 			and colors are used:
 			<informaltable frame="all">
 				<tgroup cols="4">
-					<colspec colname="Attribute class" />
-					<colspec colname="Default font" />
-					<colspec colname="Default color" />
-					<colspec colname="Example" />
+					<colspec colname="Attribute class" colwidth="2*" />
+					<colspec colname="Default font" colwidth="1*" />
+					<colspec colname="Default color" colwidth="1*" />
+					<colspec colname="Example" colwidth="5*" />
 					<thead>
 						<row>
 							<entry>Attribute class</entry>
@@ -105,7 +105,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="images/tools_entry_editor_3.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -120,7 +120,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="images/tools_entry_editor_4.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -135,7 +135,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="images/tools_entry_editor_5.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -150,7 +150,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="images/tools_entry_editor_6.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -176,10 +176,10 @@
 			The toolbar contains the following items:
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Icon" align="center" />
-					<colspec colname="Action" />
-					<colspec colname="Description" />
-					<colspec colname="Shortcut" />
+					<colspec colname="Icon" align="center" colwidth="1*" />
+					<colspec colname="Action" colwidth="2*" />
+					<colspec colname="Description" colwidth="5*" />
+					<colspec colname="Shortcut" colwidth="2*" />
 					<thead>
 						<row>
 							<entry>Icon</entry>
@@ -194,7 +194,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/value_add.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -219,7 +219,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/attribute_add.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -251,7 +251,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/delete.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -270,7 +270,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/delete_all.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -290,7 +290,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/refresh.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -312,7 +312,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/expandall.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -328,7 +328,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/collapseall.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -344,7 +344,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata
+											<imagedata contentdepth="1em"
 												fileref="icons/filter.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>

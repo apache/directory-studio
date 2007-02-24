@@ -38,7 +38,7 @@
 				<guiicon>
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata fileref="icons/sort.gif"
+							<imagedata contentdepth="1em" fileref="icons/sort.gif"
 								format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -57,7 +57,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="10cm"
 							fileref="images/tools_entry_editor_2.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -65,9 +65,9 @@
 		</para>
 		<informaltable frame="all">
 			<tgroup cols="3">
-				<colspec colname="Field" />
-				<colspec colname="Description" />
-				<colspec colname="Default" />
+				<colspec colname="Field"  colwidth="1*"/>
+				<colspec colname="Description"  colwidth="2*"/>
+				<colspec colname="Default"  colwidth="1*"/>
 				<thead>
 					<row>
 						<entry>Field</entry>
@@ -123,7 +123,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/filter.gif"
+						<imagedata contentdepth="1em" fileref="icons/filter.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -141,7 +141,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata width="10cm"
 							fileref="images/tools_entry_editor_7.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -175,7 +175,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="images/tools_entry_editor_9.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -188,7 +188,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/collapseall.gif"
+						<imagedata contentdepth="1em" fileref="icons/collapseall.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -197,7 +197,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/expandall.gif"
+						<imagedata contentdepth="1em" fileref="icons/expandall.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -206,7 +206,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="5em"
 							fileref="images/tools_entry_editor_8.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -227,7 +227,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/locate_dn_in_dit.gif"
+						<imagedata contentdepth="1em" fileref="icons/locate_dn_in_dit.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>

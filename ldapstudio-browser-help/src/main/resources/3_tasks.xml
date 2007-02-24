@@ -39,7 +39,7 @@
 						<listitem>
 							<para>
 								Select the connection you want to duplicate and select 
-								<inlinemediaobject><imageobject><imagedata fileref="icons/copy.gif" format="GIF"/></imageobject></inlinemediaobject>
+								<inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/copy.gif" format="GIF"/></imageobject></inlinemediaobject>
 								<emphasis role="strong">Copy Connection</emphasis> from context menu
 								or use the  
 								<shortcut><keycombo><keycap>Strg</keycap><keycap>C</keycap></keycombo></shortcut>
@@ -49,7 +49,7 @@
 						<listitem>
 							<para>
 								Afterward select
-								<inlinemediaobject><imageobject><imagedata fileref="icons/paste.gif" format="GIF"/></imageobject></inlinemediaobject>
+								<inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/paste.gif" format="GIF"/></imageobject></inlinemediaobject>
 								<emphasis role="strong">Paste Connection</emphasis> from context menu
 								or use the  
 								<shortcut><keycombo><keycap>Strg</keycap><keycap>V</keycap></keycombo></shortcut>
@@ -104,7 +104,7 @@
 				To delete a connection select a connection and choose 
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/delete.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -129,7 +129,7 @@
 							In the Connections view select a connection and choose
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/connection_connect.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -151,7 +151,7 @@
 				To close a connection select a connection and choose
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/connection_disconnect.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -197,7 +197,7 @@
 					Choose
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="icons/filter_dit.gif" format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -305,7 +305,7 @@
 				choose 
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/delete.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -352,7 +352,7 @@
 							Choose 
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata fileref="icons/value_add.gif"
+									<imagedata contentdepth="1em" fileref="icons/value_add.gif"
 										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -422,7 +422,7 @@
 				attributes and values you would like to delete and choose 
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/delete.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>

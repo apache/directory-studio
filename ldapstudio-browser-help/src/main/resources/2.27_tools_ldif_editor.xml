@@ -45,7 +45,7 @@
 				<guiicon>
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata fileref="icons/browser_ldifeditor.gif"
+							<imagedata contentdepth="1em" fileref="icons/browser_ldifeditor.gif"
 								format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -98,7 +98,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata fileref="icons/execute.gif"
+										<imagedata contentdepth="1em" fileref="icons/execute.gif"
 											format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -119,9 +119,9 @@
 		</para>	
 		<informaltable frame="all">
 			<tgroup cols="3">
-				<colspec colname="Element" />
-				<colspec colname="Color" />
-				<colspec colname="Example" />
+				<colspec colname="Element" colwidth="2*" />
+				<colspec colname="Color" colwidth="1*" />
+				<colspec colname="Example" colwidth="2*" />
 				<thead>
 					<row>
 						<entry>Element</entry>
@@ -137,7 +137,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_1.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -151,7 +151,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_2.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -165,7 +165,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_3.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -179,7 +179,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_4.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -193,7 +193,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_5.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -207,7 +207,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_6.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -221,7 +221,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_7.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -235,7 +235,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_8.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -249,7 +249,7 @@
 							<screenshot>
 								<mediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="images/tools_ldif_editor_9.png" format="PNG" />
 									</imageobject>
 								</mediaobject>
@@ -287,7 +287,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/tools_ldif_editor_10.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -301,7 +301,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/tools_ldif_editor_12.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -314,7 +314,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/tools_ldif_editor_11.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -368,7 +368,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_ldif_editor_13.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -389,7 +389,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/tools_ldif_editor_14.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -412,7 +412,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/error.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -435,8 +435,8 @@
 		</para>
 		<informaltable frame="all">
 			<tgroup cols="2">
-				<colspec colname="Icon" />
-				<colspec colname="Description" />
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
 				<thead>
 					<row>
 						<entry>Icon</entry>
@@ -449,7 +449,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/entry_default.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -462,7 +462,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_add.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -475,7 +475,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_modify.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -488,7 +488,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_delete.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -501,7 +501,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_rename.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -517,8 +517,8 @@
 		</para>
 		<informaltable frame="all">
 			<tgroup cols="2">
-				<colspec colname="Icon" />
-				<colspec colname="Description" />
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
 				<thead>
 					<row>
 						<entry>Icon</entry>
@@ -531,7 +531,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_attribute.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -544,7 +544,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_value.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -557,7 +557,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_mod_add.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -570,7 +570,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_mod_replace.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -583,7 +583,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata
+										<imagedata contentdepth="1em"
 											fileref="icons/ldif_mod_delete.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>

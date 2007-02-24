@@ -32,7 +32,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_preferences_attributes.png"
 							format="PNG" />
 					</imageobject>
@@ -67,7 +67,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_preferences_value_editors.png"
 							format="PNG" />
 					</imageobject>
@@ -95,7 +95,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_preferences_browser_view.png"
 							format="PNG" />
 					</imageobject>
@@ -105,9 +105,9 @@
 		<para>
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Option" />
-					<colspec colname="Description" />
-					<colspec colname="Default" />
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
 					<thead>
 						<row>
 							<entry>Option</entry>
@@ -210,7 +210,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_preferences_entry_editor.png"
 							format="PNG" />
 					</imageobject>
@@ -220,9 +220,9 @@
 		<para>
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Option" />
-					<colspec colname="Description" />
-					<colspec colname="Default" />
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
 					<thead>
 						<row>
 							<entry>Option</entry>
@@ -307,7 +307,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_preferences_search_result_editor.png"
 							format="PNG" />
 					</imageobject>
@@ -317,9 +317,9 @@
 		<para>
 			<informaltable frame="all">
 				<tgroup cols="3">
-					<colspec colname="Option" />
-					<colspec colname="Description" />
-					<colspec colname="Default" />
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
 					<thead>
 						<row>
 							<entry>Option</entry>
@@ -359,7 +359,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_preferences_text_formats_ldif.png"
 								format="PNG" />
 						</imageobject>
@@ -369,9 +369,9 @@
 			<para>
 				<informaltable frame="all">
 					<tgroup cols="3">
-						<colspec colname="Option" />
-						<colspec colname="Description" />
-						<colspec colname="Default" />
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -426,7 +426,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_preferences_text_formats_table.png"
 								format="PNG" />
 						</imageobject>
@@ -436,9 +436,9 @@
 			<para>
 				<informaltable frame="all">
 					<tgroup cols="3">
-						<colspec colname="Option" />
-						<colspec colname="Description" />
-						<colspec colname="Default" />
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -522,7 +522,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_preferences_text_formats_csv.png"
 								format="PNG" />
 						</imageobject>
@@ -532,9 +532,9 @@
 			<para>
 				<informaltable frame="all">
 					<tgroup cols="3">
-						<colspec colname="Option" />
-						<colspec colname="Description" />
-						<colspec colname="Default" />
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -628,7 +628,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_preferences_text_formats_excel.png"
 								format="PNG" />
 						</imageobject>
@@ -638,9 +638,9 @@
 			<para>
 				<informaltable frame="all">
 					<tgroup cols="3">
-						<colspec colname="Option" />
-						<colspec colname="Description" />
-						<colspec colname="Default" />
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -698,7 +698,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_preferences_ldif_editor.png"
 								format="PNG" />
 						</imageobject>
@@ -708,9 +708,9 @@
 			<para>
 				<informaltable frame="all">
 					<tgroup cols="3">
-						<colspec colname="Option" />
-						<colspec colname="Description" />
-						<colspec colname="Default" />
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -800,7 +800,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_preferences_ldif_editor_content_assistant.png"
 								format="PNG" />
 						</imageobject>
@@ -810,9 +810,9 @@
 			<para>
 				<informaltable frame="all">
 					<tgroup cols="3">
-						<colspec colname="Option" />
-						<colspec colname="Description" />
-						<colspec colname="Default" />
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -865,7 +865,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_preferences_ldif_editor_syntax_coloring.png"
 								format="PNG" />
 						</imageobject>

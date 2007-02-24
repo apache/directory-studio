@@ -35,7 +35,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/search_new.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -51,7 +51,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata contentdepth="1em"
 										fileref="icons/search.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -78,7 +78,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="6em"
 							fileref="images/tools_browser_view_9.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -89,7 +89,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/locate_searchresult_in_dit.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -107,7 +107,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/search_unperformed.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -126,7 +126,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/search.gif"
+						<imagedata contentdepth="1em" fileref="icons/search.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -161,7 +161,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="1em"
 							fileref="icons/ovr16/searchresult.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -176,7 +176,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/folder.gif"
+						<imagedata contentdepth="1em" fileref="icons/folder.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -190,7 +190,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata contentdepth="4em"
 							fileref="images/tools_browser_view_8.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -205,7 +205,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata fileref="icons/batch.gif"
+						<imagedata contentdepth="1em" fileref="icons/batch.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>

@@ -72,7 +72,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="images/tools_value_editors_1b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -91,7 +91,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="images/tools_value_editors_1a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -114,7 +114,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="3em"
 								fileref="images/tools_value_editors_2b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -133,7 +133,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_2a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -157,7 +157,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="images/tools_value_editors_3b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -175,7 +175,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_3a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -205,7 +205,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="6em"
 								fileref="images/tools_value_editors_4c.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -230,7 +230,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_4a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -248,7 +248,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_4b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -271,7 +271,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="images/tools_value_editors_5c.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -292,7 +292,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_5a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -310,7 +310,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_5b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -334,7 +334,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="3em"
 								fileref="images/tools_value_editors_6b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -351,7 +351,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_6a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -376,7 +376,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="images/tools_value_editors_7b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -393,7 +393,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_7a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -416,7 +416,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="images/tools_value_editors_8c.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -432,7 +432,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_8a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -457,7 +457,7 @@
 							By clicking
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata fileref="icons/parent.gif"
+									<imagedata contentdepth="1em" fileref="icons/parent.gif"
 										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -480,7 +480,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_8b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -503,7 +503,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata contentdepth="1em"
 								fileref="images/tools_value_editors_9a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>

@@ -28,7 +28,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_connection_properties_1.png"
 							format="PNG" />
 					</imageobject>
@@ -37,8 +37,8 @@
 		</para>
 		<informaltable frame='all'>
 			<tgroup cols='2'>
-				<colspec colname="Field" />
-				<colspec colname="Description" />
+				<colspec colname="Field" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
 				<thead>
 					<row>
 						<entry>Field</entry>
@@ -105,7 +105,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_connection_properties_2.png"
 							format="PNG" />
 					</imageobject>
@@ -114,8 +114,8 @@
 		</para>
 		<informaltable frame='all'>
 			<tgroup cols='2'>
-				<colspec colname="Field" />
-				<colspec colname="Description" />
+				<colspec colname="Field" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
 				<thead>
 					<row>
 						<entry>Field</entry>
@@ -182,7 +182,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_connection_properties_3.png"
 							format="PNG" />
 					</imageobject>
@@ -191,8 +191,8 @@
 		</para>
 		<informaltable frame='all'>
 			<tgroup cols='2'>
-				<colspec colname="Field" />
-				<colspec colname="Description" />
+				<colspec colname="Field" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
 				<thead>
 					<row>
 						<entry>Field</entry>
@@ -278,7 +278,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_connection_properties_4.png"
 							format="PNG" />
 					</imageobject>
@@ -297,7 +297,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/tools_connection_properties_5.png"
 							format="PNG" />
 					</imageobject>

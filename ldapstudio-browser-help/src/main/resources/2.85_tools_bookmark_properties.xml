@@ -26,7 +26,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata
+					<imagedata scale="50"
 						fileref="images/tools_bookmark_properties_1.png"
 						format="PNG" />
 				</imageobject>

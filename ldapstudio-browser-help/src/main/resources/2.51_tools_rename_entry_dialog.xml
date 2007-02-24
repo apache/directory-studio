@@ -40,7 +40,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata
+					<imagedata scale="50"
 						fileref="images/tools_browser_view_5.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -50,9 +50,9 @@
 	<para>
 		<informaltable frame="all">
 			<tgroup cols="3">
-				<colspec colname="Option" />
-				<colspec colname="Description" />
-				<colspec colname="Default" />
+				<colspec colname="Option" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
 				<thead>
 					<row>
 						<entry>Option</entry>
