@@ -21,6 +21,7 @@
     <property name="project.version" value="1.0.0" />
     <property name="ldapstudio-complete.output" value="${basedir}/target" />
     <property name="ldapstudio-complete.build" value="${ldapstudio-complete.output}/LDAP Studio" />    
+    <property name="ldapstudio-complete.userguides" value="${ldapstudio-complete.output}/userguides" />    
     
     <!-- Setting up OS Name-->
     <condition property="ldapstudio-rcp.os.name" value="macosx" >
@@ -65,6 +66,7 @@
 	<echo>          o -Dldapstudio-rcp.os.arch=ppc for PowerPC architecture</echo>
         <echo>  clean - Delete any generated file (javadoc, classes, jars, distribution)</echo>
         <echo>  javadoc - Generate Javadoc files</echo>
+        <echo>  userguides - Generate HTML and PDF user guides</echo>
 	<echo>  resolve - Resolves the library dependencies using Ivy</echo>
     </target>
 
@@ -216,6 +218,62 @@
     <!-- ================================== -->
     <target name="repackage_MacOSX" description="Special repackage for Mac OS X" if="isTargetMacOSX">        <property name="app.dir" location="${ldapstudio-complete.build}/LDAP Studio.app" />        <property name="java.dir" location="${app.dir}/Contents/Resources/Java" />
         <mkdir dir="${java.dir}"/>        <move todir="${java.dir}">          <fileset dir="${ldapstudio-complete.build}">               <exclude name="LDAP Studio.app/**"/>          </fileset>        </move>
+    </target>
+
+    <!-- ================================== -->
+    <!--             USERGUIDES             -->
+    <!-- ================================== -->
+    <target name="userguides" description="Generates the user guides">
+        <!-- Creation of the folders -->
+        <mkdir dir="${ldapstudio-complete.userguides}" />
+
+        <!-- Creation of the LDAP Studio RCP user guides -->
+        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="static-html" />
+        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="static-pdf" />
+        <!-- Copy of the RCP user guides -->
+        <mkdir dir="${ldapstudio-complete.userguides}/ldap_studio" />
+        <copy todir="${ldapstudio-complete.userguides}/ldap_studio">
+            <fileset dir="${basedir}/ldapstudio-rcp-help/target/html">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <copy todir="${ldapstudio-complete.userguides}">
+            <fileset dir="${basedir}/ldapstudio-rcp-help/target/pdf">
+                <include name="**/*.pdf" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDAP Studio Browser user guides -->
+        <ant dir="ldapstudio-browser-help" inheritAll="no" target="static-html" />
+        <ant dir="ldapstudio-browser-help" inheritAll="no" target="static-pdf" />
+        <!-- Copy of the browser user guides -->
+        <mkdir dir="${ldapstudio-complete.userguides}/ldap_browser" />
+        <copy todir="${ldapstudio-complete.userguides}/ldap_browser">
+            <fileset dir="${basedir}/ldapstudio-browser-help/target/html">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <copy todir="${ldapstudio-complete.userguides}">
+            <fileset dir="${basedir}/ldapstudio-browser-help/target/pdf">
+                <include name="**/*.pdf" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDAP Studio Schemas Editor user guides -->
+        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="static-html" />
+        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="static-pdf" />
+        <!-- Copy of the schemas user guides -->
+        <mkdir dir="${ldapstudio-complete.userguides}/schemas_editor" />
+        <copy todir="${ldapstudio-complete.userguides}/schemas_editor">
+            <fileset dir="${basedir}/ldapstudio-schemas-help/target/html">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <copy todir="${ldapstudio-complete.userguides}">
+            <fileset dir="${basedir}/ldapstudio-schemas-help/target/pdf">
+                <include name="**/*.pdf" />
+            </fileset>
+        </copy>
     </target>
 
     <!-- ================================== -->
