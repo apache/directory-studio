@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="avalon-framework"
+		module="avalon-framework-impl"
+		revision="4.2.0"
+		status="release"
+		publication="20060519182007"
+	/>
+	<configurations>
+		<conf name="default" visibility="public" />
+	</configurations>
+	<publications>
+		<artifact name="avalon-framework-impl" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>
