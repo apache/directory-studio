@@ -100,7 +100,7 @@
 		<section id="updating">
 			<title>Updating LDAP Studio</title>
 			<para>To check to see whether there are updates for features of LDAP Studio (requires Internet access):</para>
-			<para>1. Click  <emphasis role="strong">Help > Software Updates > <imageobject><imagedata fileref="images/search-updates.png" format="PNG" /></imageobject> Search for updates...</emphasis>. 
+			<para>1. Click  <emphasis role="strong">Help > Software Updates > <imageobject><imagedata contentdepth="1em" fileref="images/search-updates.png" format="PNG" /></imageobject> Search for updates...</emphasis>. 
 				This will contact LDAP Studio Web site to discover what versions of those features are available. The potential 
 				upgrades are presented in on the next page.</para>
 			<para>2. Select the feature versions that you wish to upgrade, and click <emphasis role="strong">Next</emphasis>.</para>
@@ -118,9 +118,9 @@
 			<!-- INSPECTING THE CURRENT CONFIGURATION SECTION -->
 			<section id="inspecting_configuration">
 				<title>Inspecting the current configuration</title>
-				<para>The <emphasis role="strong">Help > <imageobject><imagedata fileref="images/about.png" format="PNG" /></imageobject> About LDAP Studio</emphasis> dialog shows most of the important information about the features and plug-in configured
+				<para>The <emphasis role="strong">Help > <imageobject><imagedata contentdepth="1em" fileref="images/about.png" format="PNG" /></imageobject> About LDAP Studio</emphasis> dialog shows most of the important information about the features and plug-in configured
 					 in the product. To find out further detailed information about the current configuration:</para>
-				<para>1. Open the update configuration manager by clicking <emphasis role="strong"> Help > Software Updates > <imageobject><imagedata fileref="images/manage-configuration.png" format="PNG" /></imageobject> Manage Configuration</emphasis>. 
+				<para>1. Open the update configuration manager by clicking <emphasis role="strong"> Help > Software Updates > <imageobject><imagedata contentdepth="1em" fileref="images/manage-configuration.png" format="PNG" /></imageobject> Manage Configuration</emphasis>. 
 					This opens the Product Configuration dialog.</para>
 				<para>2. In the Product Configuration dialog expand the root node (current  configuration). The first tier of items are locations on 
 					the local computer where the files for features and plug-ins are stored. For a typical product, all features are installed in a single 
@@ -144,7 +144,7 @@
 			<section id="enabling_disabling_uninstalling_features">
 				<title>Enabling, disabling and uninstalling features</title>
 				<para>You can browse and manage your configuration from the <emphasis role="strong">Product Configuration dialog</emphasis>. Open the <emphasis role="strong">Product Configuration</emphasis> dialog by 
-					clicking <emphasis role="strong"> Help > Software Updates > <imageobject><imagedata fileref="images/manage-configuration.png" format="PNG" /></imageobject> Manage Configuration</emphasis>.</para>
+					clicking <emphasis role="strong"> Help > Software Updates > <imageobject><imagedata contentdepth="1em" fileref="images/manage-configuration.png" format="PNG" /></imageobject> Manage Configuration</emphasis>.</para>
 				<para>1. <emphasis role="strong">Disabling a feature</emphasis>: select the feature and click <emphasis role="strong">Disable</emphasis> in the right pane of the dialog. This option is available only when the 
 					feature is currently enabled, and the feature is either an optional feature or a root feature (not included by other features).</para>
 				<para>2. <emphasis role="strong">Enabling a feature</emphasis>: First, ensure <emphasis role="strong">Show Disabled Features</emphasis>  is turned on in the tool bar. Then, select a disabled optional or root 
@@ -159,10 +159,10 @@
 		<!-- REPORTING A BUG SECTION -->
 		<section id="reporting_a_bug">
 			<title>Reporting a bug</title>
-			<para>Use the <emphasis role="strong">Help > <imageobject><imagedata fileref="images/bug-report.png" format="PNG" /></imageobject> Report a bug...</emphasis> menu item to report any bug you find on LDAP Studio.</para>
+			<para>Use the <emphasis role="strong">Help > <imageobject><imagedata contentdepth="1em" fileref="images/bug-report.png" format="PNG" /></imageobject> Report a bug...</emphasis> menu item to report any bug you find on LDAP Studio.</para>
 			<para>You will be redirected on your default Web browser to our issue tracking software called Jira.</para>
 			<para>You can also reach it using this address : <ulink url="https://issues.apache.org/jira/browse/DIRSTUDIO">https://issues.apache.org/jira/browse/DIRSTUDIO</ulink></para>
-			<para><imageobject><imagedata fileref="images/jira-screenshot.png" format="PNG" /></imageobject></para>
+			<para><imageobject><imagedata scale="50" fileref="images/jira-screenshot.png" format="PNG" /></imageobject></para>
 			<para>To report a bug:</para>
 			<para>1. Click the <emphasis role="strong">Create a new issue</emphasis> link in the menu.</para>
 			<para>2. Make sure the selected project is 'Directory LDAP Studio' and the issue type is 'Bug'. Click <emphasis role="strong">Next</emphasis>.</para>
@@ -180,7 +180,7 @@
 		<section id="preferences">
 			<title>Preferences</title>
 			<para>The <emphasis role="strong">Preferences</emphasis> dialog is the dialog used to set user preferences. The Preferences dialog pages can be searched using the filter function. To filter by matching the page title, simply type the name of the page you are seeking and the available pages will be presented below. The filter also searches on keywords such as appearance and java. The history controls allow you to navigate through previously viewed pages. To step back or forward several pages at a time, click the drop down arrow and a list of the most recently viewed preference pages will appear.</para>
-			<para>The Preferences dialog can be found from the main workbench <emphasis role="strong">Window</emphasis> menu under <emphasis role="strong">Window > <imageobject><imagedata fileref="images/preferences.png" format="PNG" /></imageobject> Preferences</emphasis>. Preference pages contributed by plug-ins will be found in this dialog.</para>
+			<para>The Preferences dialog can be found from the main workbench <emphasis role="strong">Window</emphasis> menu under <emphasis role="strong">Window > <imageobject><imagedata contentdepth="1em" fileref="images/preferences.png" format="PNG" /></imageobject> Preferences</emphasis>. Preference pages contributed by plug-ins will be found in this dialog.</para>
 			
 			<!-- HELP SECTION -->
 			<section id="help">
@@ -189,6 +189,9 @@
 				<para>
 					<informaltable>
 						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1* "/>
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
 							<thead>
 								<row>
 									<entry>Option</entry>
@@ -231,7 +234,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/help_screen.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -246,6 +249,9 @@
 					<para>
 						<informaltable>
 							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1* "/>
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
 								<thead>
 									<row>
 										<entry>Option</entry>
@@ -273,7 +279,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata scale="50"
 										fileref="images/help-server_screen.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
@@ -289,6 +295,9 @@
 				<para>
 						<informaltable>
 							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1* "/>
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
 								<thead>
 									<row>
 										<entry>Option</entry>
@@ -337,7 +346,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata scale="50"
 										fileref="images/install-update_screen.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
@@ -352,6 +361,9 @@
 				<para>
 					<informaltable>
 						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1* "/>
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
 							<thead>
 								<row>
 									<entry>Option</entry>
@@ -419,7 +431,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/text-editors_screen.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -433,6 +445,9 @@
 					<para>
 						<informaltable>
 							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1* "/>
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
 								<thead>
 									<row>
 										<entry>Option</entry>
@@ -465,7 +480,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata scale="50"
 										fileref="images/accessibility_screen.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
@@ -480,6 +495,9 @@
 					<para>
 						<informaltable>
 							<tgroup cols="2">
+								<colspec colname="Option" colwidth="1* "/>
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
 								<thead>
 									<row>
 										<entry>Option</entry>
@@ -512,7 +530,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata scale="50"
 										fileref="images/annotations_screen.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
@@ -528,7 +546,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata scale="50"
 										fileref="images/linked-mode_screen.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
@@ -543,6 +561,9 @@
 					<para>
 						<informaltable>
 							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1* "/>
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
 								<thead>
 									<row>
 										<entry>Option</entry>
@@ -596,7 +617,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata scale="50"
 										fileref="images/quick-diff_screen.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
@@ -611,6 +632,9 @@
 					<para>
 						<informaltable>
 							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1* "/>
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
 								<thead>
 									<row>
 										<entry>Option</entry>
@@ -678,7 +702,7 @@
 						<screenshot>
 							<mediaobject>
 								<imageobject>
-									<imagedata
+									<imagedata width="15cm"
 										fileref="images/spelling_screen.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
