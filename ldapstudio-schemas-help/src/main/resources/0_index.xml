@@ -68,7 +68,7 @@
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
-						    <imagedata
+						    <imagedata scale="50"
 							    fileref="images/gettingstarted/install_1.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
@@ -84,7 +84,7 @@
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
-						    <imagedata
+						    <imagedata scale="50"
 							fileref="images/gettingstarted/install_2.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
@@ -96,7 +96,7 @@
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
-						    <imagedata
+						    <imagedata scale="50"
 							    fileref="images/gettingstarted/install_3.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
@@ -109,7 +109,7 @@
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
-						    <imagedata
+						    <imagedata scale="50"
 							    fileref="images/gettingstarted/install_4.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
@@ -121,7 +121,7 @@
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
-						    <imagedata
+						    <imagedata scale="50"
 							    fileref="images/gettingstarted/install_5.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
@@ -133,7 +133,7 @@
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
-						<imagedata
+						<imagedata scale="50"
 							fileref="images/gettingstarted/install_6.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
@@ -146,7 +146,7 @@
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
-						    <imagedata
+						    <imagedata scale="50"
 						    	fileref="images/gettingstarted/install_7.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
@@ -172,7 +172,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/views_hierarchy_view.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -206,6 +206,8 @@
 				<para>
 					<informaltable>
 						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
 							<thead>
 								<row>
 									<entry>Icon</entry>
@@ -217,7 +219,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/object_class.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -227,7 +229,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/object_class_warning.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class_warning.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -237,7 +239,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/folder.png" format="PNG" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/folder.png" format="PNG" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -247,7 +249,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -271,7 +273,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/views_schemas_view.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -323,6 +325,8 @@
 				<para>
 					<informaltable>
 						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
 							<thead>
 								<row>
 									<entry>Icon</entry>
@@ -334,7 +338,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/schema.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/schema.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -344,7 +348,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/schema_core.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/schema_core.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -354,7 +358,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/folder.png" format="PNG" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/folder.png" format="PNG" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -364,7 +368,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/object_class.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -374,7 +378,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -397,7 +401,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/views_search_view.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -440,6 +444,8 @@
 				<para>
 					<informaltable>
 						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
 							<thead>
 								<row>
 									<entry>Icon</entry>
@@ -451,7 +457,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/object_class.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -461,7 +467,7 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
@@ -486,7 +492,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/editors_attribute_type_overview.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -513,7 +519,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/editors_attribute_type_source_code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -530,7 +536,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/editors_object_class_overview.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -554,7 +560,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/editors_object_class_source_code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -571,7 +577,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/editors_schema_source_code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -582,7 +588,7 @@
 					<screenshot>
 						<mediaobject>
 							<imageobject>
-								<imagedata
+								<imagedata scale="50"
 									fileref="images/gettingstarted/editors_schema_source_code_context_menu.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
@@ -608,7 +614,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/opening_a_schema/toolbar_action.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -618,7 +624,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/opening_a_schema/file_menu.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -629,7 +635,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/opening_a_schema/open_dialog.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -646,7 +652,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_schema/toolbar_action.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -657,7 +663,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_schema/wizard.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -668,7 +674,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_schema/wizard_error.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -686,7 +692,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/removing_a_schema/toolbar_action.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -705,7 +711,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_object_class/toolbar_action.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -718,7 +724,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_object_class/wizard.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -729,7 +735,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_object_class/wizard_error_same_name.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -740,7 +746,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_object_class/wizard_error_same_oid.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -751,7 +757,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_object_class/wizard_error_malformed_oid.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -770,7 +776,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_attribute_type/toolbar_action.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -783,7 +789,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_attribute_type/wizard.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -794,7 +800,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_same_name.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -805,7 +811,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_same_oid.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -816,7 +822,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_malformed_oid.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -837,6 +843,9 @@
             <para>
 				<informaltable>
 					<tgroup cols="3">
+						<colspec colname="Option" colwidth="2* "/>
+						<colspec colname="Description" colwidth="3*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -864,7 +873,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/reference/preferences_OC_and_AT.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -879,6 +888,9 @@
             <para>
 				<informaltable>
 					<tgroup cols="3">
+						<colspec colname="Option" colwidth="2* "/>
+						<colspec colname="Description" colwidth="3*" />
+						<colspec colname="Default" colwidth="1*" />
 						<thead>
 							<row>
 								<entry>Option</entry>
@@ -916,7 +928,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata
+							<imagedata scale="50"
 								fileref="images/reference/preferences_schemas.png" format="PNG" />
 						</imageobject>
 					</mediaobject>

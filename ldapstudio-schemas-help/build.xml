@@ -23,6 +23,7 @@
 	<property name="project.output" value="${basedir}/target" />
 	<property name="project.build" value="${project.output}/build" />
 	<property name="project.html" value="${project.output}/html" />
+	<property name="project.pdf" value="${project.output}/pdf" />
 	<property name="project.src" value="${basedir}/src/main/resources" />
 
 	<property name="lib.dir" value="lib" />
@@ -195,6 +196,62 @@
 		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${project.html}/compile.timestamp" />
 	</target>
 
+	<!-- ================================== -->
+	<!--           STATIC PDF               -->
+	<!-- ================================== -->
+	<target name="static-pdf" depends="resolve" description="Generates the static pdf">
+				
+		<property name="fop.dir" value="${basedir}/lib"/>
+		<taskdef name="fop"
+		         classname="org.apache.fop.tools.anttasks.Fop">
+		         <classpath>
+		            <pathelement location="${fop.dir}/avalon-framework-api-4.2.0.jar"/>
+		            <pathelement location="${fop.dir}/avalon-framework-impl-4.2.0.jar"/>
+		            <pathelement location="${fop.dir}/commons-logging-1.1.jar"/>
+		            <pathelement location="${fop.dir}/commons-io-1.3.1.jar"/>
+		            <pathelement location="${fop.dir}/fop-0.9.3.jar"/>
+		            <pathelement location="${fop.dir}/batik-all-1.6.jar"/>
+		            <pathelement location="${fop.dir}/xmlgraphics-commons-1.1.jar"/>
+		         </classpath>
+		</taskdef>
+		
+		<mkdir dir="${project.pdf}" />
+		<copy todir="${project.pdf}">
+			<fileset dir="${basedir}/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<xslt in="${project.src}/0_index.xml" out="${project.pdf}/Apache_Directory_LDAP_Studio_Schemas_Editor.fo" style="${basedir}/docbook-xsl/fo/docbook.xsl">
+	
+			<classpath location="lib/xalan-2.7.0.jar" />
+			
+			<param name="manifest.in.base.dir" expression="0" />
+	
+			<param name="generate.section.toc.level" expression="5" />
+			<param name="toc.max.depth" expression="3" />
+	
+			<param name="ulink.target" expression="_self" />
+			<param name="suppress.navigation" expression="0" />
+			<param name="use.id.as.filename" expression="1" />
+			<param name="chapter.autolabel" expression="I" />
+			<param name="section.autolabel" expression="1" />
+
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="iso8859_1" />
+			<outputproperty name="indent" value="es" />
+		</xslt>
+
+		<fop format="application/pdf" basedir="${project.pdf}" 
+	        fofile="${project.pdf}/Apache_Directory_LDAP_Studio_Schemas_Editor.fo"
+	        outfile="${project.pdf}/Apache_Directory_LDAP_Studio_Schemas_Editor.pdf" />
+
+		<tstamp>
+			<format pattern="yyyy-MMM-dd, HH:mm 'GMT'Z" property="timestamp" locale="en" />
+		</tstamp>
+		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${project.pdf}/compile.timestamp" />
+	</target>
 
 	<!-- ================================== -->
 	<!--              JAR                   -->
