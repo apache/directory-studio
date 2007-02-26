@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteBase /ldapstudio/update
+
+RewriteRule ^site.xml$ site--xml.cgi [L]
+
