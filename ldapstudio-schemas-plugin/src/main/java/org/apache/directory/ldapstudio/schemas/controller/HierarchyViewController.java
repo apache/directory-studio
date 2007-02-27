@@ -229,7 +229,7 @@ public class HierarchyViewController
             { 
                 if ( authorizedPrefs.contains( event.getProperty() ) )
                 {
-                    view.getViewer().refresh();
+                    view.refresh();
                 }
             }
         } );

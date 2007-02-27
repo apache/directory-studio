@@ -94,17 +94,16 @@ public class HierarchyView extends ViewPart implements PoolListener
 
 
     /**
-     * Refreshes the entire view
+     * Refresh the viewer
      */
     public void refresh()
     {
-        //it seems there is a bug with the default element expanding system
         Object[] exp = viewer.getExpandedElements();
 
-        //refresh the tree viewer
+        // Refresh the tree viewer
         viewer.refresh();
 
-        //expand all the previsouly expanded elements
+        // Expand all the previsouly expanded elements
         for ( Object object : exp )
         {
             viewer.setExpandedState( object, true );

@@ -94,17 +94,16 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
 
 
     /**
-     * Refresh the entire view
+     * Refresh the viewer
      */
     public void refresh()
     {
-        //it seems there is a bug with the default element expanding system
         Object[] exp = viewer.getExpandedElements();
 
-        //refresh the tree viewer
+        // Refresh the tree viewer
         viewer.refresh();
 
-        //expand all the previsouly expanded elements
+        // Expand all the previsouly expanded elements
         for ( Object object : exp )
         {
             viewer.setExpandedState( object, true );
@@ -117,8 +116,7 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
      */
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
-        //refresh the tree viewer
-        viewer.refresh();
+        refresh();
     }
 
 
@@ -157,20 +155,6 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
         {
             logger.debug( "error when saving schemas on disk after asking for confirmation" ); //$NON-NLS-1$
         }
-        //		
-        //		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        //		IEditorPart[] editors = page.getDirtyEditors();
-        //		for (IEditorPart part : editors) {
-        //			if(part instanceof AttributeTypeFormEditor) {
-        //				AttributeTypeFormEditor editor = (AttributeTypeFormEditor) part;
-        //				editor.setDirty(false);
-        //			}
-        //			else if (part instanceof ObjectClassFormEditor) {
-        //				ObjectClassFormEditor editor = (ObjectClassFormEditor) part;
-        //				editor.setDirty(false);
-        //			}
-        //		}
-
     }
 
 
