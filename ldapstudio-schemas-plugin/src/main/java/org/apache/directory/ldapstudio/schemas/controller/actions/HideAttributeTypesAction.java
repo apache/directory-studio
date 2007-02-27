@@ -77,6 +77,6 @@ public class HideAttributeTypesAction extends Action
         setChecked( isChecked() );
         Activator.getDefault().getDialogSettings().put( HIDE_ATTRIBUTE_TYPES_DS_KEY, isChecked() );
 
-        hierarchyView.getViewer().refresh();
+        hierarchyView.refresh();
     }
 }
