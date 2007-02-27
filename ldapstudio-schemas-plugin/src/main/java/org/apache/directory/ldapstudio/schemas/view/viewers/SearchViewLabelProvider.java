@@ -22,10 +22,10 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -48,13 +48,13 @@ public class SearchViewLabelProvider extends LabelProvider implements ITableLabe
         {
             if ( element instanceof ObjectClass )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OBJECT_CLASS )
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
                     .createImage();
             }
 
             if ( element instanceof AttributeType )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE )
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
                     .createImage();
             }
         }

@@ -22,8 +22,8 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -59,7 +59,7 @@ public class CreateANewSchemaWizardPage extends WizardPage
         super( "CreateANewSchemaWizardPage" ); //$NON-NLS-1$
         setTitle( Messages.getString( "CreateANewSchemaWizardPage.Page_Title" ) ); //$NON-NLS-1$
         setDescription( Messages.getString( "CreateANewSchemaWizardPage.Page_Description" ) ); //$NON-NLS-1$
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SCHEMA_NEW_WIZARD ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA_NEW_WIZARD ) );
         this.selection = selection;
     }
 

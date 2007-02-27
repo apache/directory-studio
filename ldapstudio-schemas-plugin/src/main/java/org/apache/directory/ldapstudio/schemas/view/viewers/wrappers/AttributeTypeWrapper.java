@@ -22,8 +22,8 @@ package org.apache.directory.ldapstudio.schemas.view.viewers.wrappers;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -87,7 +87,7 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
      */
     public Image getDisplayImage()
     {
-        return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE )
+        return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
             .createImage();
     }
 

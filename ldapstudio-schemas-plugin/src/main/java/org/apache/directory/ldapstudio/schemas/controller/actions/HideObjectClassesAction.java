@@ -21,7 +21,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -54,7 +54,7 @@ public class HideObjectClassesAction extends Action
         super( "Hide Object Classes", AS_CHECK_BOX );
         super.setActionDefinitionId( Activator.PLUGIN_ID + "hideObjectClasses" );
         super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            IImageKeys.HIDE_OBJECT_CLASSES ) );
+            PluginConstants.IMG_HIDE_OBJECT_CLASSES ) );
         super.setEnabled( true );
         hierarchyView = view;
 

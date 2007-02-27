@@ -22,9 +22,9 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.apache.log4j.Logger;
@@ -64,7 +64,7 @@ public class SaveAsAction extends Action implements IWorkbenchWindowActionDelega
         setId( ICommandIds.CMD_SAVE_AS );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_SAVE_AS );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SAVE_AS ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SAVE_AS ) );
     }
 
 

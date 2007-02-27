@@ -22,10 +22,10 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -55,7 +55,7 @@ public class OpenLocalFileAction extends Action
         setId( ICommandIds.CMD_OPEN_LOCAL );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_OPEN_LOCAL );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OPEN_LOCAL ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OPEN ) );
     }
 
 

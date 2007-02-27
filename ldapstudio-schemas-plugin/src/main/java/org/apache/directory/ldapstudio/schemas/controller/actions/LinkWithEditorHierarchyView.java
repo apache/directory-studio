@@ -21,10 +21,10 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
@@ -179,7 +179,7 @@ public class LinkWithEditorHierarchyView extends Action
         super( "Link with Editor", AS_CHECK_BOX );
         super.setActionDefinitionId( Activator.PLUGIN_ID + "linkwitheditorschemasview" );
         super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            IImageKeys.LINK_WITH_EDITOR ) );
+            PluginConstants.IMG_LINK_WITH_EDITOR ) );
         super.setEnabled( true );
         hierarchyView = view;
 

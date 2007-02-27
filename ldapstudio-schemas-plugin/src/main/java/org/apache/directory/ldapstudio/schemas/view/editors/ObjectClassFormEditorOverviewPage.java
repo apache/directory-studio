@@ -28,11 +28,11 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -857,7 +857,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE, i );
             item.setImage( AbstractUIPlugin
-                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
+                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
             item.setText( mustArray[i] );
             if ( ( selectionIndex != -1 ) && ( mustArray[i].equals( selectAttribute ) ) )
             {
@@ -886,7 +886,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             TableItem item = new TableItem( optionalAttributesTable, SWT.NONE, i );
             item.setImage( AbstractUIPlugin
-                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE ).createImage() );
+                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
             item.setText( mayArray[i] );
             if ( ( selectionIndex != -1 ) && ( mayArray[i].equals( selectAttribute ) ) )
             {

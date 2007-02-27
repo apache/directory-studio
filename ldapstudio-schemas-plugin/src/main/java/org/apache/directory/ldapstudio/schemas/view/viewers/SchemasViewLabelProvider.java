@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
@@ -62,21 +62,21 @@ public class SchemasViewLabelProvider extends LabelProvider
     {
         String label = "";
 
-        int labelValue = store.getInt( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL );
-        boolean abbreviate = store.getBoolean( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_ABBREVIATE );
-        int abbreviateMaxLength = store.getInt( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH );
+        int labelValue = store.getInt( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL );
+        boolean abbreviate = store.getBoolean( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE );
+        int abbreviateMaxLength = store.getInt( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH );
 
         if ( obj instanceof AttributeTypeWrapper )
         {
-            if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME )
+            if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME )
             {
                 label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
             }
-            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
             {
                 label = concateNames( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
             }
-            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_OID )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_OID )
             {
                 label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getOid();
             }
@@ -88,15 +88,15 @@ public class SchemasViewLabelProvider extends LabelProvider
         }
         else if ( obj instanceof ObjectClassWrapper )
         {
-            if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME )
+            if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME )
             {
                 label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
             }
-            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
             {
                 label = concateNames( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
             }
-            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_OID )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_OID )
             {
                 label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getOid();
             }

@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.preferences;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -61,41 +62,6 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
     /** The OID category */
     private static final String OID = "OID";
-
-    /** The preference ID for Label */
-    public static final String PREFS_HIERARCHY_VIEW_LABEL = HierarchyViewPreferencePage.ID + ".label.labelValue";
-
-    /** The preference value for First Name label */
-    public static final int PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME = 0;
-
-    /** The preference value for All Aliases label */
-    public static final int PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES = 1;
-
-    /** The preference value for OID label */
-    public static final int PREFS_HIERARCHY_VIEW_LABEL_OID = 2;
-
-    /** The preference ID for Abbreviate */
-    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE = HierarchyViewPreferencePage.ID + ".label.abbreviate";
-
-    /** The preference ID for Abbreviate Max Length*/
-    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
-        + ".label.abbreviate.maxLength";
-
-    /** The preference ID for Display Secondary Label */
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.display";
-
-    /** The preference ID for Secondary Label */
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.labelValue";
-
-    /** The preference ID for Abbreviate Secondary Label */
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.abbreviate";
-
-    /** The preference ID for Abbreviate Secondary Label Max Length*/
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.abbreviate.maxLength";
 
     // UI fields
     private Combo labelCombo;
@@ -305,17 +271,17 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        labelCombo.select( store.getInt( PREFS_HIERARCHY_VIEW_LABEL ) );
-        limitButton.setSelection( store.getBoolean( PREFS_HIERARCHY_VIEW_ABBREVIATE ) );
+        labelCombo.select( store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL ) );
+        limitButton.setSelection( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE ) );
         lengthText.setEnabled( limitButton.getSelection() );
-        lengthText.setText( store.getString( PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH ) );
+        lengthText.setText( store.getString( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH ) );
 
-        secondaryLabelButtonDisplay.setSelection( store.getBoolean( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) );
-        secondaryLabelCombo.select( store.getInt( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL ) );
-        secondaryLabelLimitButton.setSelection( store.getBoolean( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
+        secondaryLabelButtonDisplay.setSelection( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) );
+        secondaryLabelCombo.select( store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL ) );
+        secondaryLabelLimitButton.setSelection( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
         secondaryLabelLengthText
-            .setText( store.getString( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
-        if ( store.getBoolean( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) )
+            .setText( store.getString( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
+        if ( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) )
         {
             secondaryLabelCombo.setEnabled( true );
             secondaryLabelLimitButton.setEnabled( true );
@@ -379,18 +345,18 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        labelCombo.select( store.getDefaultInt( PREFS_HIERARCHY_VIEW_LABEL ) );
-        limitButton.setSelection( store.getDefaultBoolean( PREFS_HIERARCHY_VIEW_ABBREVIATE ) );
+        labelCombo.select( store.getDefaultInt( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL ) );
+        limitButton.setSelection( store.getDefaultBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE ) );
         lengthText.setEnabled( limitButton.getSelection() );
-        lengthText.setText( store.getDefaultString( PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH ) );
+        lengthText.setText( store.getDefaultString( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH ) );
 
         secondaryLabelButtonDisplay.setSelection( store
-            .getDefaultBoolean( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) );
-        secondaryLabelCombo.select( store.getDefaultInt( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL ) );
+            .getDefaultBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) );
+        secondaryLabelCombo.select( store.getDefaultInt( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL ) );
         secondaryLabelLimitButton.setSelection( store
-            .getDefaultBoolean( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
+            .getDefaultBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
         secondaryLabelLengthText.setText( store
-            .getDefaultString( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
+            .getDefaultString( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
 
         if ( secondaryLabelButtonDisplay.getSelection() )
         {
@@ -418,34 +384,34 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PREFS_HIERARCHY_VIEW_LABEL, PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PREFS_HIERARCHY_VIEW_LABEL, PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( OID ) )
         {
-            store.setValue( PREFS_HIERARCHY_VIEW_LABEL, PREFS_HIERARCHY_VIEW_LABEL_OID );
+            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
         }
-        store.setValue( PREFS_HIERARCHY_VIEW_ABBREVIATE, limitButton.getSelection() );
-        store.setValue( PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, lengthText.getText() );
+        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE, limitButton.getSelection() );
+        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, lengthText.getText() );
 
-        store.setValue( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, secondaryLabelButtonDisplay.getSelection() );
+        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, secondaryLabelButtonDisplay.getSelection() );
         if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
         }
         else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( OID ) )
         {
-            store.setValue( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PREFS_HIERARCHY_VIEW_LABEL_OID );
+            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
         }
-        store.setValue( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, secondaryLabelLimitButton.getSelection() );
-        store.setValue( PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, secondaryLabelLengthText.getText() );
+        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, secondaryLabelLimitButton.getSelection() );
+        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, secondaryLabelLengthText.getText() );
 
         return true;
     }

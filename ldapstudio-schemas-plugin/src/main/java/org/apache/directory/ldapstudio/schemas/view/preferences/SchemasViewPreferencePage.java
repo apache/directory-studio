@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.preferences;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -61,25 +62,6 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
     /** The OID category */
     private static final String OID = "OID";
-
-    /** The preference ID for Label */
-    public static final String PREFS_SCHEMAS_VIEW_LABEL = SchemasViewPreferencePage.ID + ".label.labelValue";
-
-    /** The preference value for First Name label */
-    public static final int PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME = 0;
-
-    /** The preference value for All Aliases label */
-    public static final int PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES = 1;
-
-    /** The preference value for OID label */
-    public static final int PREFS_SCHEMAS_VIEW_LABEL_OID = 2;
-
-    /** The preference ID for Abbreviate */
-    public static final String PREFS_SCHEMAS_VIEW_ABBREVIATE = SchemasViewPreferencePage.ID + ".label.abbreviate";
-
-    /** The preference ID for Abbreviate Max Length*/
-    public static final String PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH = SchemasViewPreferencePage.ID
-        + ".label.abbreviate.maxLength";
 
     // UI fields
     private Combo labelCombo;
@@ -205,10 +187,10 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        labelCombo.select( store.getInt( PREFS_SCHEMAS_VIEW_LABEL ) );
-        limitButton.setSelection( store.getBoolean( PREFS_SCHEMAS_VIEW_ABBREVIATE ) );
+        labelCombo.select( store.getInt( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL ) );
+        limitButton.setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE ) );
         lengthText.setEnabled( limitButton.getSelection() );
-        lengthText.setText( store.getString( PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH ) );
+        lengthText.setText( store.getString( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH ) );
     }
 
 
@@ -234,10 +216,10 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        labelCombo.select( store.getDefaultInt( PREFS_SCHEMAS_VIEW_LABEL ) );
-        limitButton.setSelection( store.getDefaultBoolean( PREFS_SCHEMAS_VIEW_ABBREVIATE ) );
+        labelCombo.select( store.getDefaultInt( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL ) );
+        limitButton.setSelection( store.getDefaultBoolean( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE ) );
         lengthText.setEnabled( limitButton.getSelection() );
-        lengthText.setText( store.getDefaultString( PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH ) );
+        lengthText.setText( store.getDefaultString( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH ) );
 
         super.performDefaults();
     }
@@ -252,18 +234,18 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
         if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PREFS_SCHEMAS_VIEW_LABEL, PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL, PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PREFS_SCHEMAS_VIEW_LABEL, PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL, PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( OID ) )
         {
-            store.setValue( PREFS_SCHEMAS_VIEW_LABEL, PREFS_SCHEMAS_VIEW_LABEL_OID );
+            store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL, PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_OID );
         }
-        store.setValue( PREFS_SCHEMAS_VIEW_ABBREVIATE, limitButton.getSelection() );
-        store.setValue( PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH, lengthText.getText() );
+        store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE, limitButton.getSelection() );
+        store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH, lengthText.getText() );
 
         return true;
     }

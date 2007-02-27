@@ -22,8 +22,8 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -37,7 +37,7 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider imp
     {
         if ( columnIndex == 0 )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.ATTRIBUTE_TYPE )
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
                 .createImage();
         }
         return null;

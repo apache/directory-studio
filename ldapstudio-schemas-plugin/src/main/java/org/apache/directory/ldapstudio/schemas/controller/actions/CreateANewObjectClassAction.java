@@ -22,10 +22,10 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -61,7 +61,7 @@ public class CreateANewObjectClassAction extends Action
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_CREATE_A_NEW_OBJECTCLASS );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            IImageKeys.CREATE_A_NEW_OBJECTCLASS ) );
+            PluginConstants.IMG_CREATE_A_NEW_OBJECTCLASS ) );
     }
 
 

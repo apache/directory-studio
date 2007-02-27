@@ -22,9 +22,9 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -61,7 +61,7 @@ public class SaveAllAction extends Action implements IWorkbenchWindowActionDeleg
         setId( ICommandIds.CMD_SAVE_ALL );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_SAVE_ALL );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SAVE_ALL ) );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SAVE_ALL ) );
     }
 
 

@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasViewSortDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
@@ -46,7 +46,7 @@ public class OpenSchemasViewSortDialogAction extends Action
     public OpenSchemasViewSortDialogAction()
     {
         super( "Sorting..." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SORT )  );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SORT )  );
         setEnabled( true );
     }
     

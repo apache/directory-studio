@@ -22,8 +22,8 @@ package org.apache.directory.ldapstudio.schemas.view.viewers.wrappers;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
-import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -103,12 +103,12 @@ public class SchemaWrapper implements DisplayableTreeElement
     {
         if ( this.mySchema.type.equals( Schema.SchemaType.coreSchema ) )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SCHEMA_CORE )
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA_CORE )
                 .createImage();
         }
         else
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SCHEMA ).createImage();
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA ).createImage();
         }
     }
 
