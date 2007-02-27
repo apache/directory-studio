@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -53,39 +54,6 @@ public class HierarchyViewSortDialog extends Dialog
 
     /** The Sorting OID category */
     private static final String SORTING_OID = "OID";
-
-    /** The preference ID for Grouping */
-    public static final String PREFS_HIERARCHY_VIEW_GROUPING = Activator.PLUGIN_ID
-        + ".preferences.HierarchyView.grouping";
-
-    /** The preference value for grouping 'attribute types first' */
-    public static final int PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST = 0;
-
-    /** The preference value for grouping 'object classes first' */
-    public static final int PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST = 1;
-
-    /** The preference value for grouping 'mixed' */
-    public static final int PREFS_HIERARCHY_VIEW_GROUPING_MIXED = 2;
-
-    /** The preference ID for Sorting By */
-    public static final String PREFS_HIERARCHY_VIEW_SORTING_BY = Activator.PLUGIN_ID
-        + ".preferences.HierarchyView.sortingBy";
-
-    /** The preference value for sorting 'First Name' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME = 0;
-
-    /** The prefence value for sorting 'OID' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_BY_OID = 1;
-
-    /** The preference ID for Sorting Order */
-    public static final String PREFS_HIERARCHY_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
-        + ".preferences.HierarchyView.sortingOrder";
-
-    /** The preference value for sorting 'ascending' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING = 0;
-
-    /** The prefence value for sorting 'descending' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING = 1;
 
     // UI Fields
     private Button atFirstButton;
@@ -195,36 +163,36 @@ public class HierarchyViewSortDialog extends Dialog
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        int grouping = store.getInt( PREFS_HIERARCHY_VIEW_GROUPING );
-        if ( grouping == PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST )
+        int grouping = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING );
+        if ( grouping == PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST )
         {
             atFirstButton.setSelection( true );
         }
-        else if ( grouping == PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST )
+        else if ( grouping == PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST )
         {
             ocFirstButton.setSelection( true );
         }
-        else if ( grouping == PREFS_HIERARCHY_VIEW_GROUPING_MIXED )
+        else if ( grouping == PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_MIXED )
         {
             mixedButton.setSelection( true );
         }
 
-        int sortingBy = store.getInt( PREFS_HIERARCHY_VIEW_SORTING_BY );
-        if ( sortingBy == PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+        int sortingBy = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY );
+        if ( sortingBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
         {
             sortingCombo.select( 0 );
         }
-        else if ( sortingBy == PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+        else if ( sortingBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
         {
             sortingCombo.select( 1 );
         }
 
-        int sortingOrder = store.getInt( PREFS_HIERARCHY_VIEW_SORTING_ORDER );
-        if ( sortingOrder == PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING )
+        int sortingOrder = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER );
+        if ( sortingOrder == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING )
         {
             ascendingButton.setSelection( true );
         }
-        else if ( sortingOrder == PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+        else if ( sortingOrder == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
         {
             descendingButton.setSelection( true );
         }
@@ -242,35 +210,35 @@ public class HierarchyViewSortDialog extends Dialog
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             if ( ( atFirstButton.getSelection() ) & ( !ocFirstButton.getSelection() ) & ( !mixedButton.getSelection() ) )
             {
-                store.setValue( PREFS_HIERARCHY_VIEW_GROUPING, PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST );
+                store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING, PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST );
             }
             else if ( ( !atFirstButton.getSelection() ) & ( ocFirstButton.getSelection() )
                 & ( !mixedButton.getSelection() ) )
             {
-                store.setValue( PREFS_HIERARCHY_VIEW_GROUPING, PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST );
+                store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING, PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST );
             }
             else if ( ( !atFirstButton.getSelection() ) & ( !ocFirstButton.getSelection() )
                 & ( mixedButton.getSelection() ) )
             {
-                store.setValue( PREFS_HIERARCHY_VIEW_GROUPING, PREFS_HIERARCHY_VIEW_GROUPING_MIXED );
+                store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING, PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_MIXED );
             }
 
             if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( SORTING_FISTNAME ) )
             {
-                store.setValue( PREFS_HIERARCHY_VIEW_SORTING_BY, PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME );
+                store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY, PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME );
             }
             else if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( SORTING_OID ) )
             {
-                store.setValue( PREFS_HIERARCHY_VIEW_SORTING_BY, PREFS_HIERARCHY_VIEW_SORTING_BY_OID );
+                store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY, PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_OID );
             }
 
             if ( ascendingButton.getSelection() && !descendingButton.getSelection() )
             {
-                store.setValue( PREFS_HIERARCHY_VIEW_SORTING_ORDER, PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING );
+                store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER, PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING );
             }
             else if ( !ascendingButton.getSelection() && descendingButton.getSelection() )
             {
-                store.setValue( PREFS_HIERARCHY_VIEW_SORTING_ORDER, PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING );
+                store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER, PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING );
             }
         }
 

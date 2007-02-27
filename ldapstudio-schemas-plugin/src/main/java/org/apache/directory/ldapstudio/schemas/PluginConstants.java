@@ -35,7 +35,7 @@ public interface PluginConstants
 {
     // Preferences - Hierarchy View
     /** The preference ID for Hierarchy View Label */
-    public static final String PREFS_HIERARCHY_VIEW_LABEL = HierarchyViewPreferencePage.ID + ".label.labelValue";
+    public static final String PREFS_HIERARCHY_VIEW_LABEL = HierarchyViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
 
     /** The preference value for Hierarchy View First Name label */
     public static final int PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME = 0;
@@ -47,27 +47,60 @@ public interface PluginConstants
     public static final int PREFS_HIERARCHY_VIEW_LABEL_OID = 2;
 
     /** The preference ID for Hierarchy View Abbreviate */
-    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE = HierarchyViewPreferencePage.ID + ".label.abbreviate";
+    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE = HierarchyViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
 
     /** The preference ID for Hierarchy View Abbreviate Max Length*/
     public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
-        + ".label.abbreviate.maxLength";
+        + ".label.abbreviate.maxLength"; //$NON-NLS-1$
 
     /** The preference ID for Hierarchy View Display Secondary Label */
     public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.display";
+        + ".secondaryLabel.display"; //$NON-NLS-1$
 
     /** The preference ID for Hierarchy View Secondary Label */
     public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.labelValue";
+        + ".secondaryLabel.labelValue"; //$NON-NLS-1$
 
     /** The preference ID for Hierarchy View Abbreviate Secondary Label */
     public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.abbreviate";
+        + ".secondaryLabel.abbreviate"; //$NON-NLS-1$
 
     /** The preference ID for Hierarchy View Abbreviate Secondary Label Max Length*/
     public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
-        + ".secondaryLabel.abbreviate.maxLength";
+        + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
+
+    /** The preference ID for Hierarchy View Grouping */
+    public static final String PREFS_HIERARCHY_VIEW_GROUPING = Activator.PLUGIN_ID
+        + ".preferences.HierarchyView.grouping";
+
+    /** The preference value for Hierarchy View Grouping 'attribute types first' */
+    public static final int PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST = 0;
+
+    /** The preference value for Hierarchy View Grouping 'object classes first' */
+    public static final int PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST = 1;
+
+    /** The preference value for Hierarchy View Grouping 'mixed' */
+    public static final int PREFS_HIERARCHY_VIEW_GROUPING_MIXED = 2;
+
+    /** The preference ID for Hierarchy View Sorting By */
+    public static final String PREFS_HIERARCHY_VIEW_SORTING_BY = Activator.PLUGIN_ID
+        + ".preferences.HierarchyView.sortingBy";
+
+    /** The preference value for Hierarchy View Sorting 'First Name' */
+    public static final int PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME = 0;
+
+    /** The prefence value for Hierarchy View Sorting 'OID' */
+    public static final int PREFS_HIERARCHY_VIEW_SORTING_BY_OID = 1;
+
+    /** The preference ID for Hierarchy View Sorting Order */
+    public static final String PREFS_HIERARCHY_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
+        + ".preferences.HierarchyView.sortingOrder";
+
+    /** The preference value for Hierarchy View Sorting 'ascending' */
+    public static final int PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING = 0;
+
+    /** The prefence value for Hierarchy View Sorting 'descending' */
+    public static final int PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING = 1;
 
     // Preferences - Schemas View
     /** The preference ID for Schemas View Label */
@@ -83,11 +116,40 @@ public interface PluginConstants
     public static final int PREFS_SCHEMAS_VIEW_LABEL_OID = 2;
 
     /** The preference ID for Schemas View Abbreviate */
-    public static final String PREFS_SCHEMAS_VIEW_ABBREVIATE = SchemasViewPreferencePage.ID + ".label.abbreviate";
+    public static final String PREFS_SCHEMAS_VIEW_ABBREVIATE = SchemasViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
 
     /** The preference ID for Schemas View Abbreviate Max Length*/
     public static final String PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH = SchemasViewPreferencePage.ID
-        + ".label.abbreviate.maxLength";
+        + ".label.abbreviate.maxLength"; //$NON-NLS-1$
+
+    /** The preference ID for Schemas View Grouping */
+    public static final String PREFS_SCHEMAS_VIEW_GROUPING = Activator.PLUGIN_ID + ".preferences.SchemasView.grouping"; //$NON-NLS-1$
+
+    /** The preference value for Schemas View Grouping 'group ATs and OCs in folders' */
+    public static final int PREFS_SCHEMAS_VIEW_GROUPING_FOLDERS = 0;
+
+    /** The preference value for Schemas View Grouping 'mixed' */
+    public static final int PREFS_SCHEMAS_VIEW_GROUPING_MIXED = 1;
+
+    /** The preference ID for Schemas View Sorting By */
+    public static final String PREFS_SCHEMAS_VIEW_SORTING_BY = Activator.PLUGIN_ID
+        + ".preferences.SchemasView.sortingBy"; //$NON-NLS-1$
+
+    /** The preference value for Schemas View Sorting 'First Name' */
+    public static final int PREFS_SCHEMAS_VIEW_SORTING_BY_FIRSTNAME = 0;
+
+    /** The prefence value for Schemas View Sorting 'OID' */
+    public static final int PREFS_SCHEMAS_VIEW_SORTING_BY_OID = 1;
+
+    /** The preference ID for Sorting Order */
+    public static final String PREFS_SCHEMAS_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
+        + ".preferences.SchemasView.sortingOrder"; //$NON-NLS-1$
+
+    /** The preference value for Schemas View Sorting 'ascending' */
+    public static final int PREFS_SCHEMAS_VIEW_SORTING_ORDER_ASCENDING = 0;
+
+    /** The prefence value for Schemas View Sorting 'descending' */
+    public static final int PREFS_SCHEMAS_VIEW_SORTING_ORDER_DESCENDING = 1;
 
     // Images - Actions
     public static final String IMG_ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$
