@@ -21,7 +21,11 @@
 package org.apache.directory.ldapstudio.schemas.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttributeTypeAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction;
@@ -93,6 +97,9 @@ public class SchemasViewController
     /** The associated view */
     private SchemasView view;
 
+    /** The authorized Preferences keys*/
+    List<String> authorizedPrefs;
+
     /** The Drag'n'Drop FileTransfer Object */
     private final static FileTransfer fileTransfer = FileTransfer.getInstance();
 
@@ -125,6 +132,7 @@ public class SchemasViewController
     {
         this.view = view;
 
+        initAuthorizedPrefs();
         initActions();
         initToolbar();
         initMenu();
@@ -133,6 +141,18 @@ public class SchemasViewController
         initDoubleClickListener();
         registerUpdateActions();
         initPreferencesListener();
+    }
+
+
+    private void initAuthorizedPrefs()
+    {
+        authorizedPrefs = new ArrayList<String>();
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_GROUPING );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_SORTING_BY );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_SORTING_ORDER );
     }
 
 
@@ -569,7 +589,10 @@ public class SchemasViewController
              */
             public void propertyChange( PropertyChangeEvent event )
             {
-                view.getViewer().refresh();
+                if ( authorizedPrefs.contains( event.getProperty() ) )
+                {
+                    view.getViewer().refresh();
+                }
             }
         } );
     }

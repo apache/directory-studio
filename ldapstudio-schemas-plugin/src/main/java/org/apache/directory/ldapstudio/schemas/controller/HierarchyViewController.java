@@ -21,7 +21,11 @@
 package org.apache.directory.ldapstudio.schemas.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeTypesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
@@ -62,6 +66,9 @@ public class HierarchyViewController
 {
     /** The logger */
     private static Logger logger = Logger.getLogger( HierarchyViewController.class );
+    
+    /** The authorized Preferences keys*/
+    List<String> authorizedPrefs;
 
     /** The associated view */
     private HierarchyView view;
@@ -81,12 +88,29 @@ public class HierarchyViewController
     public HierarchyViewController( HierarchyView view )
     {
         this.view = view;
-
+        
+        initAuthorizedPrefs();
         initActions();
         initToolbar();
         initMenu();
         initDoubleClickListener();
         initPreferencesListener();
+    }
+
+
+    private void initAuthorizedPrefs()
+    {
+        authorizedPrefs = new ArrayList<String>();
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER );
     }
 
 
@@ -202,8 +226,11 @@ public class HierarchyViewController
              * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
              */
             public void propertyChange( PropertyChangeEvent event )
-            {
-                view.getViewer().refresh();
+            { 
+                if ( authorizedPrefs.contains( event.getProperty() ) )
+                {
+                    view.getViewer().refresh();
+                }
             }
         } );
     }
