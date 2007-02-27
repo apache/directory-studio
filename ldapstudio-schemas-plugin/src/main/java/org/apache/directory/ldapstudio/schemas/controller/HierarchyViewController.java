@@ -27,7 +27,7 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeT
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorHierarchyView;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenHierarchyViewPreferencesAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSortDialogAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenHierarchyViewSortDialogAction;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
@@ -71,7 +71,7 @@ public class HierarchyViewController
     private HideAttributeTypesAction hideAttributeTypes;
     private CollapseAllAction collapseAll;
     private LinkWithEditorHierarchyView linkWithEditor;
-    private OpenSortDialogAction openSortDialog;
+    private OpenHierarchyViewSortDialogAction openSortDialog;
     private OpenHierarchyViewPreferencesAction openPreferencePage;
 
 
@@ -99,7 +99,7 @@ public class HierarchyViewController
         hideAttributeTypes = new HideAttributeTypesAction( view );
         collapseAll = new CollapseAllAction( view.getViewer() );
         linkWithEditor = new LinkWithEditorHierarchyView( view );
-        openSortDialog = new OpenSortDialogAction();
+        openSortDialog = new OpenHierarchyViewSortDialogAction();
         openPreferencePage = new OpenHierarchyViewPreferencesAction();
     }
 
@@ -206,6 +206,5 @@ public class HierarchyViewController
                 view.getViewer().refresh();
             }
         } );
-
     }
 }

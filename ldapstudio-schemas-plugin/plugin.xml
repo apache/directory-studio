@@ -188,6 +188,10 @@
             class="org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage"
             id="org.apache.directory.ldapstudio.schemas.preferences.hierarchyView"
             name="Hierarchy View"/>
+      <page
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage"
+            id="org.apache.directory.ldapstudio.schemas.preferences.schemasView"
+            name="Schemas View"/>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

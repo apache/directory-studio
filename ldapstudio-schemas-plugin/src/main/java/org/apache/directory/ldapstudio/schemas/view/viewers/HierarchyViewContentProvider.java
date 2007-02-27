@@ -33,8 +33,8 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.HierarchyViewFirstNameSorter;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.HierarchyViewOidSorter;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.FirstNameSorter;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.OidSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -55,6 +55,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
 
+    /** The preferences store */
+    IPreferenceStore store;
+
     /** The HashTable containing all the object classes */
     private ObjectClass[] objectClasses;
 
@@ -62,10 +65,10 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     private AttributeType[] attributeTypes;
 
     /** The FirstName Sorter */
-    private HierarchyViewFirstNameSorter firstNameSorter;
+    private FirstNameSorter firstNameSorter;
 
     /** The OID Sorter */
-    private HierarchyViewOidSorter oidSorter;
+    private OidSorter oidSorter;
 
 
     /**
@@ -77,12 +80,13 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     public HierarchyViewContentProvider()
     {
         this.schemaPool = SchemaPool.getInstance();
+        store = Activator.getDefault().getPreferenceStore();
 
         objectClasses = schemaPool.getObjectClassesAsArray();
         attributeTypes = schemaPool.getAttributeTypesAsArray();
 
-        firstNameSorter = new HierarchyViewFirstNameSorter();
-        oidSorter = new HierarchyViewOidSorter();
+        firstNameSorter = new FirstNameSorter();
+        oidSorter = new OidSorter();
     }
 
 
@@ -102,10 +106,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     {
         List<DisplayableTreeElement> children = new ArrayList<DisplayableTreeElement>();
 
-        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        int group = store.getInt( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING );
-        int sortBy = store.getInt( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY );
-        int sortOrder = store.getInt( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER );
+        int group = store.getInt( HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_GROUPING );
+        int sortBy = store.getInt( HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY );
+        int sortOrder = store.getInt( HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER );
 
         if ( parentElement instanceof ObjectClassWrapper )
         {
@@ -139,19 +142,17 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             }
 
             // Sort by
-            if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+            if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
             {
-
                 Collections.sort( children, firstNameSorter );
             }
-            else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+            else if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
             {
-
                 Collections.sort( children, oidSorter );
             }
 
             // Sort order
-            if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+            if ( sortOrder == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
             {
                 Collections.reverse( children );
             }
@@ -188,19 +189,17 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             }
 
             // Sort by
-            if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+            if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
             {
-
                 Collections.sort( children, firstNameSorter );
             }
-            else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+            else if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
             {
-
                 Collections.sort( children, oidSorter );
             }
 
             // Sort order
-            if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+            if ( sortOrder == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
             {
                 Collections.reverse( children );
             }
@@ -224,7 +223,6 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                         ObjectClassWrapper topWrapper = new ObjectClassWrapper( top, intermediate );
                         ocList.add( topWrapper );
                     }
-
 
                     for ( int i = 0; i < objectClasses.length; i++ )
                     {
@@ -258,7 +256,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                 if ( !Activator.getDefault().getDialogSettings().getBoolean(
                     HideAttributeTypesAction.HIDE_ATTRIBUTE_TYPES_DS_KEY ) )
                 {
-                    
+
                     for ( int i = 0; i < attributeTypes.length; i++ )
                     {
                         AttributeType aType = attributeTypes[i];
@@ -272,22 +270,22 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     }
                 }
 
-                if ( group == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST )
+                if ( group == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST )
                 {
                     // Sort by
-                    if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
                     {
                         Collections.sort( atList, firstNameSorter );
                         Collections.sort( ocList, firstNameSorter );
                     }
-                    else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    else if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
                     {
                         Collections.sort( atList, oidSorter );
                         Collections.sort( ocList, oidSorter );
                     }
 
                     // Sort Order
-                    if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    if ( sortOrder == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
                     {
                         Collections.reverse( atList );
                         Collections.reverse( ocList );
@@ -297,22 +295,22 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     children.addAll( atList );
                     children.addAll( ocList );
                 }
-                else if ( group == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST )
+                else if ( group == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST )
                 {
                     // Sort by
-                    if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
                     {
                         Collections.sort( atList, firstNameSorter );
                         Collections.sort( ocList, firstNameSorter );
                     }
-                    else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    else if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
                     {
                         Collections.sort( atList, oidSorter );
                         Collections.sort( ocList, oidSorter );
                     }
 
                     // Sort Order
-                    if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    if ( sortOrder == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
                     {
                         Collections.reverse( atList );
                         Collections.reverse( ocList );
@@ -322,26 +320,24 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     children.addAll( ocList );
                     children.addAll( atList );
                 }
-                else if ( group == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_MIXED )
+                else if ( group == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_GROUPING_MIXED )
                 {
                     // Group
                     children.addAll( atList );
                     children.addAll( ocList );
 
                     // Sort by
-                    if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
                     {
-
                         Collections.sort( children, firstNameSorter );
                     }
-                    else if ( sortBy == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    else if ( sortBy == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
                     {
-
                         Collections.sort( children, oidSorter );
                     }
 
                     // Sort order
-                    if ( sortOrder == HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    if ( sortOrder == HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
                     {
                         Collections.reverse( children );
                     }

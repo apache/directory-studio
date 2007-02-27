@@ -21,10 +21,13 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -39,26 +42,87 @@ import org.eclipse.ui.PlatformUI;
  */
 public class SchemasViewLabelProvider extends LabelProvider
 {
+    /** The preferences store */
+    private IPreferenceStore store;
+
+
+    /**
+     * Creates a new instance of SchemasViewLabelProvider.
+     */
+    public SchemasViewLabelProvider()
+    {
+        store = Activator.getDefault().getPreferenceStore();
+    }
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
      */
     public String getText( Object obj )
     {
+        String label = "";
+
+        int labelValue = store.getInt( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL );
+        boolean abbreviate = store.getBoolean( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_ABBREVIATE );
+        int abbreviateMaxLength = store.getInt( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH );
+
         if ( obj instanceof AttributeTypeWrapper )
         {
-            return ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
+            if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME )
+            {
+                label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
+            }
+            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
+            {
+                label = concateNames( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
+            }
+            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_OID )
+            {
+                label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getOid();
+            }
+            else
+            // Default
+            {
+                label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
+            }
         }
         else if ( obj instanceof ObjectClassWrapper )
         {
-            return ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
+            if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME )
+            {
+                label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
+            }
+            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
+            {
+                label = concateNames( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
+            }
+            else if ( labelValue == SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_OID )
+            {
+                label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getOid();
+            }
+            else
+            // Default
+            {
+                label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
+            }
         }
         else if ( obj instanceof SchemaWrapper )
         {
-            return ( ( SchemaWrapper ) obj ).getMySchema().getName();
+            label = ( ( SchemaWrapper ) obj ).getMySchema().getName();
+        }
+        else
+        // Default
+        {
+            label = obj.toString();
         }
 
-        // Default
-        return obj.toString();
+        if ( abbreviate && ( abbreviateMaxLength < label.length() )
+            && ( ( obj instanceof ObjectClassWrapper ) || ( obj instanceof AttributeTypeWrapper ) ) )
+        {
+            label = label.substring( 0, abbreviateMaxLength ) + "...";
+        }
+
+        return label;
     }
 
 
@@ -74,5 +138,29 @@ public class SchemasViewLabelProvider extends LabelProvider
 
         // Default
         return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK );
+    }
+
+
+    /**
+     * Concatenates all aliases in a String format
+     *
+     * @param aliases
+     *      the aliases to concatenate
+     * @return
+     *      a String representing all aliases
+     */
+    private String concateNames( String[] aliases )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append( aliases[0] );
+
+        for ( int i = 1; i < aliases.length; i++ )
+        {
+            sb.append( ", " );
+            sb.append( aliases[i] );
+        }
+
+        return sb.toString();
     }
 }

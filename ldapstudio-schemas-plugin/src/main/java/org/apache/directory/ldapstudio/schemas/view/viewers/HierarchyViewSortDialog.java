@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyViewSorterDialog extends Dialog
+public class HierarchyViewSortDialog extends Dialog
 {
     /** The title of the dialog */
     private static final String DIALOG_TITLE = "Hierarchy View Sorting";
@@ -102,7 +102,7 @@ public class HierarchyViewSorterDialog extends Dialog
      * @param parentShell
      *      the parent shell
      */
-    public HierarchyViewSorterDialog( Shell parentShell )
+    public HierarchyViewSortDialog( Shell parentShell )
     {
         super( parentShell );
     }

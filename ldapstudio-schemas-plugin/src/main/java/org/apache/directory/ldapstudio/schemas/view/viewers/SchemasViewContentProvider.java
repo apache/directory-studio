@@ -25,17 +25,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.FirstNameSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.OidSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemasViewSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -51,7 +54,16 @@ import org.eclipse.jface.viewers.Viewer;
 public class SchemasViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
     /** The Schema Pool */
-    private SchemaPool pool;
+    private SchemaPool schemaPool;
+
+    /** The preferences store */
+    IPreferenceStore store;
+
+    /** The FirstName Sorter */
+    private FirstNameSorter firstNameSorter;
+
+    /** The OID Sorter */
+    private OidSorter oidSorter;
 
 
     /**
@@ -59,7 +71,11 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
      */
     public SchemasViewContentProvider()
     {
-        pool = SchemaPool.getInstance();
+        schemaPool = SchemaPool.getInstance();
+        store = Activator.getDefault().getPreferenceStore();
+
+        firstNameSorter = new FirstNameSorter();
+        oidSorter = new OidSorter();
     }
 
 
@@ -79,12 +95,16 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
     {
         List<DisplayableTreeElement> children = new ArrayList<DisplayableTreeElement>();
 
+        int group = store.getInt( SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_GROUPING );
+        int sortBy = store.getInt( SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY );
+        int sortOrder = store.getInt( SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_ORDER );
+
         if ( parentElement instanceof IntermediateNode )
         {
             IntermediateNode intermediate = ( IntermediateNode ) parentElement;
             if ( intermediate.getName().equals( "**Primary Node**" ) ) //$NON-NLS-1$
             {
-                Schema[] schemas = this.pool.getSchemas();
+                Schema[] schemas = this.schemaPool.getSchemas();
                 for ( int i = 0; i < schemas.length; i++ )
                 {
                     children.add( new SchemaWrapper( schemas[i], ( IntermediateNode ) parentElement ) );
@@ -99,6 +119,22 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
                 {
                     children.add( new AttributeTypeWrapper( attributeTypeList[i], intermediate ) );
                 }
+
+                // Sort by
+                if ( sortBy == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY_FIRSTNAME )
+                {
+                    Collections.sort( children, firstNameSorter );
+                }
+                else if ( sortBy == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY_OID )
+                {
+                    Collections.sort( children, oidSorter );
+                }
+
+                // Sort order
+                if ( sortOrder == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_ORDER_DESCENDING )
+                {
+                    Collections.reverse( children );
+                }
             }
             else if ( intermediate.getType().equals( IntermediateNodeType.OBJECT_CLASS_FOLDER ) )
             {
@@ -109,21 +145,69 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
                 {
                     children.add( new ObjectClassWrapper( objectClassList[i], intermediate ) );
                 }
+
+                // Sort by
+                if ( sortBy == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY_FIRSTNAME )
+                {
+                    Collections.sort( children, firstNameSorter );
+                }
+                else if ( sortBy == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY_OID )
+                {
+                    Collections.sort( children, oidSorter );
+                }
+
+                // Sort order
+                if ( sortOrder == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_ORDER_DESCENDING )
+                {
+                    Collections.reverse( children );
+                }
             }
         }
         else if ( parentElement instanceof SchemaWrapper )
         {
-            IntermediateNode attributeTypes = new IntermediateNode(
-                "Attribute Types", ( SchemaWrapper ) parentElement, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
-            IntermediateNode objectClasses = new IntermediateNode(
-                "Object Classes", ( SchemaWrapper ) parentElement, IntermediateNodeType.OBJECT_CLASS_FOLDER ); //$NON-NLS-1$
+            if ( group == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_GROUPING_FOLDERS )
+            {
+                IntermediateNode attributeTypes = new IntermediateNode(
+                    "Attribute Types", ( SchemaWrapper ) parentElement, IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ); //$NON-NLS-1$
+                IntermediateNode objectClasses = new IntermediateNode(
+                    "Object Classes", ( SchemaWrapper ) parentElement, IntermediateNodeType.OBJECT_CLASS_FOLDER ); //$NON-NLS-1$
 
-            children.add( attributeTypes );
-            children.add( objectClasses );
+                children.add( attributeTypes );
+                children.add( objectClasses );
+            }
+            else if ( group == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_GROUPING_MIXED )
+            {
+                Schema schema = ( ( SchemaWrapper ) parentElement ).getMySchema();
+
+                AttributeType[] attributeTypeList = schema.getAttributeTypesAsArray();
+                for ( int i = 0; i < attributeTypeList.length; i++ )
+                {
+                    children.add( new AttributeTypeWrapper( attributeTypeList[i], ( SchemaWrapper ) parentElement ) );
+                }
+
+                ObjectClass[] objectClassList = schema.getObjectClassesAsArray();
+                for ( int i = 0; i < objectClassList.length; i++ )
+                {
+                    children.add( new ObjectClassWrapper( objectClassList[i], ( SchemaWrapper ) parentElement ) );
+                }
+
+                // Sort by
+                if ( sortBy == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY_FIRSTNAME )
+                {
+                    Collections.sort( children, firstNameSorter );
+                }
+                else if ( sortBy == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY_OID )
+                {
+                    Collections.sort( children, oidSorter );
+                }
+
+                // Sort order
+                if ( sortOrder == SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_ORDER_DESCENDING )
+                {
+                    Collections.reverse( children );
+                }
+            }
         }
-
-        // Sorting children
-        Collections.sort( children, new SchemasViewSorter() );
 
         return children.toArray();
     }

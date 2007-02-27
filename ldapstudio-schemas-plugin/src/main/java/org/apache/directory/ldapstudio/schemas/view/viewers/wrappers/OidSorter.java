@@ -30,7 +30,7 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 /**
  * This class is used to compare and sort ascending two DisplayableTreeElement
  */
-public class HierarchyViewFirstNameSorter implements Comparator<DisplayableTreeElement>
+public class OidSorter implements Comparator<DisplayableTreeElement>
 {
     /* (non-Javadoc)
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -42,17 +42,17 @@ public class HierarchyViewFirstNameSorter implements Comparator<DisplayableTreeE
             AttributeType at1 = ( ( AttributeTypeWrapper ) o1 ).getMyAttributeType();
             AttributeType at2 = ( ( AttributeTypeWrapper ) o2 ).getMyAttributeType();
 
-            return at1.getNames()[0].compareToIgnoreCase( at2.getNames()[0] );
+            return at1.getOid().compareToIgnoreCase( at2.getOid() );
         }
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
             ObjectClass oc1 = ( ( ObjectClassWrapper ) o1 ).getMyObjectClass();
             ObjectClass oc2 = ( ( ObjectClassWrapper ) o2 ).getMyObjectClass();
 
-            return oc1.getNames()[0].compareToIgnoreCase( oc2.getNames()[0] );
+            return oc1.getOid().compareToIgnoreCase( oc2.getOid() );
         }
 
         // Default
-        return 0;
+        return o1.toString().compareToIgnoreCase( o2.toString() );
     }
 }

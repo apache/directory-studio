@@ -25,7 +25,9 @@ import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.preferences.GeneralPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyViewSorterDialog;
+import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyViewSortDialog;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasViewSortDialog;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -56,7 +58,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 
         // Hierarchy View Preference Page
         store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL,
-            HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
+            HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
         store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_ABBREVIATE, true );
         store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
         store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, true );
@@ -66,11 +68,25 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         store.setDefault( HierarchyViewPreferencePage.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" );
 
         // Hierarchy View Sorting
-        store.setDefault( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING,
-            HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST );
-        store.setDefault( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY,
-            HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME );
-        store.setDefault( HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER,
-            HierarchyViewSorterDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING );
+        store.setDefault( HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_GROUPING,
+            HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST );
+        store.setDefault( HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY,
+            HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME );
+        store.setDefault( HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER,
+            HierarchyViewSortDialog.PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING );
+
+        // Schemas View Preference Page
+        store.setDefault( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL,
+            SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES );
+        store.setDefault( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_ABBREVIATE, true );
+        store.setDefault( SchemasViewPreferencePage.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
+
+        // Schemas View Sorting
+        store.setDefault( SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_GROUPING,
+            SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_GROUPING_FOLDERS );
+        store.setDefault( SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY,
+            SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_BY_FIRSTNAME );
+        store.setDefault( SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_ORDER,
+            SchemasViewSortDialog.PREFS_SCHEMAS_VIEW_SORTING_ORDER_ASCENDING );
     }
 }

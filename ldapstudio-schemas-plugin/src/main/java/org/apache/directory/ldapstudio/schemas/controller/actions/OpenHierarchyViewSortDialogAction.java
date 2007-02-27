@@ -20,42 +20,45 @@
 
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
+
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.IImageKeys;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyViewSorterDialog;
+import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyViewSortDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This action opens the Sort Dialog of the Hierchy View.
+ * This action opens the Sort Dialog of the Hierarchy View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenSortDialogAction extends Action
+public class OpenHierarchyViewSortDialogAction extends Action
 {
-    
+
     /**
      * Creates a new instance of OpenSortDialogAction.
      *
      * @param view
      *      the associated view
      */
-    public OpenSortDialogAction()
+    public OpenHierarchyViewSortDialogAction()
     {
         super( "Sorting..." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SORT )  );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.SORT ) );
         setEnabled( true );
     }
-    
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.action.Action#run()
      */
     public void run()
     {
-        HierarchyViewSorterDialog hvsd = new HierarchyViewSorterDialog( PlatformUI.getWorkbench().getDisplay().getActiveShell() );
+        HierarchyViewSortDialog hvsd = new HierarchyViewSortDialog( PlatformUI.getWorkbench().getDisplay()
+            .getActiveShell() );
         hvsd.open();
     }
 }

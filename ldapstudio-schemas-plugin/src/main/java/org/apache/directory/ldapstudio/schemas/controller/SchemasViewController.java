@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller;
 
 
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttributeTypeAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction;
@@ -29,6 +30,8 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.DeleteAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemasView;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenLocalFileAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaSourceCode;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemasViewPreferencesAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemasViewSortDialogAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.RemoveSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAsAction;
@@ -54,6 +57,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -106,6 +111,8 @@ public class SchemasViewController
     private Action openSchemaSourceCode;
     private Action save;
     private Action saveAs;
+    private Action openSortDialog;
+    private Action openPreferencePage;
 
 
     /**
@@ -120,10 +127,12 @@ public class SchemasViewController
 
         initActions();
         initToolbar();
+        initMenu();
         initContextMenu();
         initDragAndDrop();
         initDoubleClickListener();
         registerUpdateActions();
+        initPreferencesListener();
     }
 
 
@@ -144,6 +153,8 @@ public class SchemasViewController
             "View source code" );
         save = new SaveAction();
         saveAs = new SaveAsAction();
+        openSortDialog = new OpenSchemasViewSortDialogAction();
+        openPreferencePage = new OpenSchemasViewPreferencesAction();
     }
 
 
@@ -163,6 +174,20 @@ public class SchemasViewController
         toolbar.add( new Separator() );
         toolbar.add( collapseAll );
         toolbar.add( linkWithEditor );
+    }
+
+
+    /**
+     * Initializes the Menu.
+     */
+    private void initMenu()
+    {
+        IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
+        menu.add( openSortDialog );
+        menu.add( new Separator() );
+        menu.add( linkWithEditor );
+        menu.add( new Separator() );
+        menu.add( openPreferencePage );
     }
 
 
@@ -356,8 +381,6 @@ public class SchemasViewController
              */
             public void doubleClick( DoubleClickEvent event )
             {
-                // TODO : /!\ Essayer de factoriser le code commun � la fenetre de vue hierarchique dans une classe abstraite
-
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
                 SchemasView view = ( SchemasView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -529,6 +552,24 @@ public class SchemasViewController
                         }
                     }
                 }
+            }
+        } );
+    }
+
+
+    /**
+     * Initializes the listener on the preferences store
+     */
+    private void initPreferencesListener()
+    {
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        {
+            /* (non-Javadoc)
+             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+             */
+            public void propertyChange( PropertyChangeEvent event )
+            {
+                view.getViewer().refresh();
             }
         } );
     }
