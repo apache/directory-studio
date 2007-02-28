@@ -177,18 +177,21 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.GeneralPreferencePage"
+            category="org.apache.directory.ldapstudio.schemas.preferences.general"
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage"
+            id="org.apache.directory.ldapstudio.schemas.preferences.oid"
+            name="%ldapstudio-schemas-plugin.preferencepages.oid.name"/>
+      <page
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage"
             id="org.apache.directory.ldapstudio.schemas.preferences.general"
-            name="%ldapstudio-schemas-plugin.preferencepages.objectclassandattributetype.name"/>
+            name="%ldapstudio-schemas-plugin.preferencepages.general.name"/>
       <page
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage"
-            id="org.apache.directory.ldapstudio.schemas.preferences.schema"
-            name="%ldapstudio-schemas-plugin.preferencepages.schema.name"/>
-      <page
+            category="org.apache.directory.ldapstudio.schemas.preferences.general"
             class="org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage"
             id="org.apache.directory.ldapstudio.schemas.preferences.hierarchyView"
             name="Hierarchy View"/>
       <page
+            category="org.apache.directory.ldapstudio.schemas.preferences.general"
             class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage"
             id="org.apache.directory.ldapstudio.schemas.preferences.schemasView"
             name="Schemas View"/>

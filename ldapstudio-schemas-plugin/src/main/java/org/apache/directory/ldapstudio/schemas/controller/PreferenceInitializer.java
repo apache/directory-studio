@@ -23,8 +23,8 @@ package org.apache.directory.ldapstudio.schemas.controller;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.view.preferences.GeneralPreferencePage;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -44,12 +44,12 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
     public void initializeDefaultPreferences()
     {
         IEclipsePreferences defaults = new DefaultScope().getNode( Activator.PLUGIN_ID );
-        defaults.put( GeneralPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
-        defaults.putBoolean( GeneralPreferencePage.AUTO_OID, true );
-        defaults.put( SchemaPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
-        defaults.putBoolean( SchemaPreferencePage.SAVE_WORKSPACE, true );
-        defaults.putBoolean( SchemaPreferencePage.SPECIFIC_CORE, false );
-        defaults.put( SchemaPreferencePage.SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        defaults.put( OidPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
+        defaults.putBoolean( OidPreferencePage.AUTO_OID, true );
+        defaults.put( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        defaults.putBoolean( SchemasEditorPreferencePage.SAVE_WORKSPACE, true );
+        defaults.putBoolean( SchemasEditorPreferencePage.SPECIFIC_CORE, false );
+        defaults.put( SchemasEditorPreferencePage.SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
 
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 

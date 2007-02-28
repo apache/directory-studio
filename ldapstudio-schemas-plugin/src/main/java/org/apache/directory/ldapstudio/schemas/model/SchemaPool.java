@@ -30,7 +30,7 @@ import java.util.Hashtable;
 import java.util.Set;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -170,7 +170,7 @@ public class SchemaPool implements SchemaListener
     {
         IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
         String specificPath = prefs
-            .get( SchemaPreferencePage.SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+            .get( SchemasEditorPreferencePage.SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
 
         File dir = new File( specificPath );
         String sCurPath = dir.getAbsolutePath() + File.separator;
@@ -227,7 +227,7 @@ public class SchemaPool implements SchemaListener
                     IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
 
                     //2) initialize the pool
-                    boolean initialize_with_specified = prefs.getBoolean( SchemaPreferencePage.SPECIFIC_CORE, false );
+                    boolean initialize_with_specified = prefs.getBoolean( SchemasEditorPreferencePage.SPECIFIC_CORE, false );
                     if ( initialize_with_specified )
                     {
                         //2a) with user-specified core schemas
@@ -244,7 +244,7 @@ public class SchemaPool implements SchemaListener
 
                     //4) load the pool with all the schemas that the user did select the last time
                     //LDAPStudio was launched
-                    boolean save_workspace = prefs.getBoolean( SchemaPreferencePage.SAVE_WORKSPACE, true );
+                    boolean save_workspace = prefs.getBoolean( SchemasEditorPreferencePage.SAVE_WORKSPACE, true );
                     if ( save_workspace )
                         instance_.loadPool();
                 }

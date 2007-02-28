@@ -29,7 +29,7 @@ import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.OID;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.preferences.GeneralPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.viewers.ISelection;
@@ -132,10 +132,10 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
             {
                 IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
 
-                prefs.putBoolean( GeneralPreferencePage.AUTO_OID, autoOID.getSelection() );
+                prefs.putBoolean( OidPreferencePage.AUTO_OID, autoOID.getSelection() );
                 if ( autoOID.getSelection() )
                 {
-                    String temp = prefs.get( GeneralPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
+                    String temp = prefs.get( OidPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
                     oidField.setText( temp + "." ); //$NON-NLS-1$
                 }
                 else
@@ -147,7 +147,7 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
 
         IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
 
-        boolean auto_oid = prefs.getBoolean( GeneralPreferencePage.AUTO_OID, true );
+        boolean auto_oid = prefs.getBoolean( OidPreferencePage.AUTO_OID, true );
         autoOID.setSelection( auto_oid );
 
         Label label = new Label( container, SWT.NULL );
@@ -155,7 +155,7 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
         oidField = new Text( container, SWT.BORDER | SWT.SINGLE );
         if ( auto_oid )
         {
-            String temp = prefs.get( GeneralPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
+            String temp = prefs.get( OidPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
             oidField.setText( temp + "." ); //$NON-NLS-1$
         }
         oidField.setLayoutData( gd );

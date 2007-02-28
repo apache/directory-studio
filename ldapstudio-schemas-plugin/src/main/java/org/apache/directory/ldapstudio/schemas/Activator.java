@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.schemas;
 
 
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaCodeScanner;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaTextAttributeProvider;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -76,7 +76,7 @@ public class Activator extends AbstractUIPlugin
     {
         // save workspace configuration
         IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-        boolean save_workspace = prefs.getBoolean( SchemaPreferencePage.SAVE_WORKSPACE, true );
+        boolean save_workspace = prefs.getBoolean( SchemasEditorPreferencePage.SAVE_WORKSPACE, true );
         if ( save_workspace )
             SchemaPool.getInstance().savePool();
         plugin = null;
