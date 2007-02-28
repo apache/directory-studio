@@ -21,7 +21,12 @@
 package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
@@ -35,21 +40,22 @@ import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEdito
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -72,7 +78,7 @@ public class SearchView extends ViewPart implements PoolListener
     private Composite top;
     private Table table;
     private TableViewer tableViewer;
-    private Text searchField;
+    private Combo searchField;
     private Combo typeCombo;
     private SearchViewContentProvider searchContentProvider;
 
@@ -127,30 +133,11 @@ public class SearchView extends ViewPart implements PoolListener
         top.setLayout( layout );
 
         //search field
-        searchField = new Text( top, SWT.BORDER );
+        searchField = new Combo( top, SWT.DROP_DOWN | SWT.BORDER );
         GridData gridData = new GridData( GridData.FILL, 0, true, false );
-        gridData.heightHint = searchField.getLineHeight();
+        gridData.heightHint = searchField.getItemHeight();
         gridData.verticalAlignment = SWT.CENTER;
         searchField.setLayoutData( gridData );
-        searchField.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                tableViewer.setInput( searchField.getText() );
-            }
-
-        } );
-
-        searchField.addKeyListener( new KeyAdapter()
-        {
-            public void keyPressed( KeyEvent e )
-            {
-                if ( e.keyCode == SWT.ARROW_DOWN )
-                {
-                    table.setFocus();
-                }
-            }
-        } );
 
         //search type combo
         typeCombo = new Combo( top, SWT.READ_ONLY | SWT.SINGLE );
@@ -158,13 +145,8 @@ public class SearchView extends ViewPart implements PoolListener
         gridData = new GridData( SWT.FILL, 0, false, false );
         gridData.verticalAlignment = SWT.CENTER;
         typeCombo.setLayoutData( gridData );
-        typeCombo.addSelectionListener( new SelectionListener()
+        typeCombo.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-            }
-
-
             public void widgetSelected( SelectionEvent e )
             {
                 searchType = typeCombo.getItem( typeCombo.getSelectionIndex() );
@@ -183,6 +165,9 @@ public class SearchView extends ViewPart implements PoolListener
         this.searchContentProvider = new SearchViewContentProvider();
         tableViewer.setContentProvider( searchContentProvider );
         tableViewer.setLabelProvider( new SearchViewLabelProvider() );
+
+        initSearchHistory();
+        initListeners();
     }
 
 
@@ -214,6 +199,44 @@ public class SearchView extends ViewPart implements PoolListener
         column = new TableColumn( table, SWT.LEFT, 2 );
         column.setText( columnNames[2] );
         column.setWidth( 100 );
+    }
+
+
+    /**
+     * Initializes the Listeners
+     */
+    private void initListeners()
+    {
+        searchField.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                tableViewer.setInput( searchField.getText() );
+            }
+        } );
+
+        searchField.addKeyListener( new KeyAdapter()
+        {
+            public void keyReleased( KeyEvent e )
+            {
+                if ( e.keyCode == 13 )
+                {
+                    table.setFocus();
+                }
+            }
+        } );
+
+        searchField.addFocusListener( new FocusAdapter()
+        {
+            public void focusLost( FocusEvent e )
+            {
+                if ( !"".equals( searchField.getText() ) )
+                {
+                    saveHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY, searchField.getText() );
+                    initSearchHistory();
+                }
+            }
+        } );
 
         table.addMouseListener( new MouseAdapter()
         {
@@ -235,6 +258,17 @@ public class SearchView extends ViewPart implements PoolListener
                 if ( e.keyCode == 13 ) // return key
                 {
                     openEditor( ( Table ) e.getSource() );
+                }
+            }
+        } );
+
+        table.addFocusListener( new FocusAdapter()
+        {
+            public void focusGained( FocusEvent e )
+            {
+                if ( ( table.getSelectionCount() == 0 ) && ( table.getItemCount() != 0 ) )
+                {
+                    table.select( 0 );
                 }
             }
         } );
@@ -303,7 +337,6 @@ public class SearchView extends ViewPart implements PoolListener
         {
             searchField.setFocus();
         }
-
     }
 
 
@@ -323,5 +356,66 @@ public class SearchView extends ViewPart implements PoolListener
     public void setPartName( String partName )
     {
         super.setPartName( partName );
+    }
+
+
+    /**
+     * Initializes the Search History.
+     */
+    private void initSearchHistory()
+    {
+        searchField.setItems( loadHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY ) );
+    }
+
+
+    /**
+     * Saves to the History.
+     *
+     * @param key
+     *      the key to save to
+     * @param value
+     *      the value to save
+     */
+    public static void saveHistory( String key, String value )
+    {
+        // get current history
+        String[] history = loadHistory( key );
+        List<String> list = new ArrayList<String>( Arrays.asList( history ) );
+
+        // add new value or move to first position
+        if ( list.contains( value ) )
+        {
+            list.remove( value );
+        }
+        list.add( 0, value );
+
+        // check history size
+        while ( list.size() > 15 )
+        {
+            list.remove( list.size() - 1 );
+        }
+
+        // save
+        history = ( String[] ) list.toArray( new String[list.size()] );
+        Activator.getDefault().getDialogSettings().put( key, history );
+
+    }
+
+
+    /**
+     * Loads History
+     *
+     * @param key
+     *      the preference key
+     * @return
+     */
+    public static String[] loadHistory( String key )
+    {
+        String[] history = Activator.getDefault().getDialogSettings().getArray( key );
+        if ( history == null )
+        {
+            history = new String[0];
+        }
+        return history;
     }
 }

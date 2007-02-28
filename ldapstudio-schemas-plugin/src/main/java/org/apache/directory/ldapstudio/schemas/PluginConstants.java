@@ -150,6 +150,13 @@ public interface PluginConstants
 
     /** The prefence value for Schemas View Sorting 'descending' */
     public static final int PREFS_SCHEMAS_VIEW_SORTING_ORDER_DESCENDING = 1;
+    
+    // Preferences - Search View
+    
+    /** The preference ID for Search History of the Search View */
+    public static final String PREFS_SEARCH_VIEW_SEARCH_HISTORY = Activator.PLUGIN_ID
+    + ".preferences.SearchView.searchHistory";;
+    
 
     // Images - Actions
     public static final String IMG_ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$
