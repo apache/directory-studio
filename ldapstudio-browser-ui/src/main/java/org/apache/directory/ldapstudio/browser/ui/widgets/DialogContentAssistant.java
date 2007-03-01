@@ -41,46 +41,79 @@ import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 
+/**
+ * The DialogContentAssistant is used to provide content assist and 
+ * a proposal popup within a SWT {@link Text}, {@link Combo} or
+ * {@link ITextViewer}. 
+ * 
+ * It provides a special handling of ESC keystrokes: 
+ * When the proposal popup is shown ESC is catched and the popup is closed.
+ * This ensures that a dialog isn't closed on a ESC keystroke
+ * while the proposal popup is opened. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DialogContentAssistant extends SubjectControlContentAssistant implements FocusListener
 {
 
+    /** The control */
     private Control control;
 
+    /** The handler activation. */
     private IHandlerActivation handlerActivation;
 
+    /** The possible completions visible. */
     private boolean possibleCompletionsVisible;
 
 
+    /**
+     * Creates a new instance of DialogContentAssistant.
+     */
     public DialogContentAssistant()
     {
-        super();
         this.possibleCompletionsVisible = false;
     }
 
 
+    /**
+     * Installs content assist on the given text.
+     *
+     * @param text the text
+     */
     public void install( Text text )
     {
-        this.control = text;
-        this.control.addFocusListener( this );
+        control = text;
+        control.addFocusListener( this );
         super.install( new TextContentAssistSubjectAdapter( text ) );
     }
 
 
+    /**
+     * Installs content assist on the given combo.
+     *
+     * @param combo the combo
+     */
     public void install( Combo combo )
     {
-        this.control = combo;
-        this.control.addFocusListener( this );
+        control = combo;
+        control.addFocusListener( this );
         super.install( new ComboContentAssistSubjectAdapter( combo ) );
     }
 
 
+    /**
+     * Installs content assist on the given text viewer.
+     *
+     * @param viewer the text viewer
+     */
     public void install( ITextViewer viewer )
     {
-        this.control = viewer.getTextWidget();
-        this.control.addFocusListener( this );
+        control = viewer.getTextWidget();
+        control.addFocusListener( this );
 
         // stop traversal (ESC) if popup is shown
-        this.control.addTraverseListener( new TraverseListener()
+        control.addTraverseListener( new TraverseListener()
         {
             public void keyTraversed( TraverseEvent e )
             {
@@ -95,25 +128,31 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
+    /**
+     * Uninstalls content assist on the control.
+     */
     public void uninstall()
     {
-        if ( this.handlerActivation != null )
+        if ( handlerActivation != null )
         {
             IHandlerService handlerService = ( IHandlerService ) PlatformUI.getWorkbench().getAdapter(
                 IHandlerService.class );
-            handlerService.deactivateHandler( this.handlerActivation );
-            this.handlerActivation = null;
+            handlerService.deactivateHandler( handlerActivation );
+            handlerActivation = null;
         }
 
-        if ( this.control != null )
+        if ( control != null )
         {
-            this.control.removeFocusListener( this );
+            control.removeFocusListener( this );
         }
 
         super.uninstall();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Point restoreCompletionProposalPopupSize()
     {
         possibleCompletionsVisible = true;
@@ -121,6 +160,9 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String showPossibleCompletions()
     {
         possibleCompletionsVisible = true;
@@ -128,13 +170,19 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void possibleCompletionsClosed()
     {
-        this.possibleCompletionsVisible = false;
+        possibleCompletionsVisible = false;
         super.possibleCompletionsClosed();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void focusGained( FocusEvent e )
     {
         IHandlerService handlerService = ( IHandlerService ) PlatformUI.getWorkbench().getAdapter(
@@ -149,20 +197,23 @@ public class DialogContentAssistant extends SubjectControlContentAssistant imple
                     return null;
                 }
             };
-            this.handlerActivation = handlerService.activateHandler(
+            handlerActivation = handlerService.activateHandler(
                 ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS, handler );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void focusLost( FocusEvent e )
     {
-        if ( this.handlerActivation != null )
+        if ( handlerActivation != null )
         {
             IHandlerService handlerService = ( IHandlerService ) PlatformUI.getWorkbench().getAdapter(
                 IHandlerService.class );
-            handlerService.deactivateHandler( this.handlerActivation );
-            this.handlerActivation = null;
+            handlerService.deactivateHandler( handlerActivation );
+            handlerActivation = null;
         }
     }
 

@@ -24,9 +24,26 @@ package org.apache.directory.ldapstudio.browser.ui.widgets;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 
 
+/**
+ * The BinaryEncodingInput is an OptionInput with fixed options. 
+ * It is used to select the encoding of binary attributes. The default
+ * value is always {@link BrowserCoreConstants#BINARYENCODING_IGNORE}.
+ * The other options are always {@link BrowserCoreConstants#BINARYENCODING_IGNORE},
+ * {@link BrowserCoreConstants#BINARYENCODING_BASE64} and
+ * {@link BrowserCoreConstants#BINARYENCODING_HEX}. No custom input is allowed.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BinaryEncodingInput extends OptionsInput
 {
 
+    /**
+     * Creates a new instance of BinaryEncodingInput.
+     *
+     * @param initialRawValue the initial raw value
+     * @param asGroup the asGroup flag
+     */
     public BinaryEncodingInput( String initialRawValue, boolean asGroup )
     {
         super( "Binary Encoding", getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(),
@@ -35,18 +52,34 @@ public class BinaryEncodingInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the default display value, always "Ignore".
+     * 
+     * @return the default display value
+     */
     private static String getDefaultDisplayValue()
     {
         return "Ignore";
     }
 
 
+    /**
+     * Gets the default raw value, always 
+     * {@link BrowserCoreConstants.BINARYENCODING_IGNORE}.
+     * 
+     * @return the default raw value
+     */
     private static String getDefaultRawValue()
     {
         return Integer.toString( BrowserCoreConstants.BINARYENCODING_IGNORE );
     }
 
 
+    /**
+     * Gets the other display values.
+     * 
+     * @return the other display values
+     */
     private static String[] getOtherDisplayValues()
     {
         return new String[]
@@ -54,6 +87,11 @@ public class BinaryEncodingInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the other raw values.
+     * 
+     * @return the other raw values
+     */
     private static String[] getOtherRawValues()
     {
         return new String[]

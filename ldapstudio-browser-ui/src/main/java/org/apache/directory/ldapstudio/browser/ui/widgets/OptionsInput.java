@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.browser.ui.widgets;
 
 import java.util.Arrays;
 
+import org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.TextFormatsPreferencePage;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -33,34 +34,80 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 
+/**
+ * The OptionsInput could be used to select one option out of several options.
+ * It consists of two radio buttons. With the first radio button you could 
+ * select the most likely default option. With the second radio button a combo 
+ * is activated where you could select another option from a drop-down list.
+ * <p>
+ * Both, the default option and the options in the drop-down list have a raw
+ * value that is returned by {@link #getRawValue()} and a display value
+ * that is shown to the user. 
+ * <p>
+ * If the initial raw value is equal to the default raw value then the 
+ * default radio is checked and the drop-down list is disabled. Otherwise 
+ * the second radio is checked, the drop-down list is enabled and the
+ * initial value is selected. 
+ * <p>
+ * The OptionsInput is used by {@link TextFormatsPreferencePage}.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OptionsInput extends BrowserWidget
 {
 
+    /** The option's title */
     private String title;
 
+    /** The group, only used when asGroup is true */
     private Group titleGroup;
 
+    /** The default raw value */
     private String defaultRawValue;
 
+    /** The default display value */
     private String defaultDisplayValue;
 
+    /** The radio button to select the default value */
     private Button defaultButton;
 
+    /** The other raw values */
     private String[] otherRawValues;
 
+    /** The other display values */
     private String[] otherDisplayValues;
 
+    /** The radio button to select a value from drop-down list */
     private Button otherButton;
 
+    /** The combo with the other values */
     private Combo otherCombo;
 
+    /** The initial raw value */
     private String initialRawValue;
 
+    /** If true the options are aggregated in a group widget */
     private boolean asGroup;
 
+    /** If true it is possible to enter a custom value into the combo field */
     private boolean allowCustomInput;
 
 
+    /**
+     * Creates a new instance of OptionsInput.
+     *
+     * @param title the option's title
+     * @param defaultDisplayValue the default display value
+     * @param defaultRawValue the default raw value
+     * @param otherDisplayValues the other display values
+     * @param otherRawValues the other raw vaues
+     * @param initialRawValue the initial raw value
+     * @param asGroup a flag indicating if the options should be 
+     *                aggregated in a group widget
+     * @param allowCustomInput true to make it possible to enter a 
+     *                         custom value into the combo field
+     */
     public OptionsInput( String title, String defaultDisplayValue, String defaultRawValue, String[] otherDisplayValues,
         String[] otherRawValues, String initialRawValue, boolean asGroup, boolean allowCustomInput )
     {
@@ -76,6 +123,11 @@ public class OptionsInput extends BrowserWidget
     }
 
 
+    /**
+     * Creates the widget.
+     *
+     * @param parent the parent
+     */
     public void createWidget( Composite parent )
     {
 
@@ -132,110 +184,30 @@ public class OptionsInput extends BrowserWidget
             }
         } );
 
-        // buttons = new Button[rawValues.length];
-        // for (int i = 0; i < rawValues.length; i++) {
-        // final String rawValue = rawValues[i];
-        // Composite buttonComposite =
-        // BaseWidgetUtils.createColumnContainer(composite, 1, 1);
-        // buttons[i] = BaseWidgetUtils.createRadiobutton(buttonComposite,
-        // displayValues[i], 1);
-        // buttons[i].addSelectionListener(new SelectionAdapter() {
-        // public void widgetSelected(SelectionEvent e) {
-        // for (int j = 0; j < buttons.length; j++) {
-        // if(buttons[j] != e.widget) {
-        // buttons[j].setSelection(false);
-        // }
-        // }
-        // otherButton.setSelection(false);
-        // otherText.setEnabled(false);
-        // selectedRawValue = rawValue;
-        // notifyListeners();
-        // }
-        // });
-        // }
-        //
-        // Composite otherComposite =
-        // BaseWidgetUtils.createColumnContainer(composite, 2, 1);
-        // otherButton = BaseWidgetUtils.createRadiobutton(otherComposite,
-        // "Other:", 1);
-        // otherButton.addSelectionListener(new SelectionAdapter() {
-        // public void widgetSelected(SelectionEvent e) {
-        // for (int j = 0; j < buttons.length; j++) {
-        // buttons[j].setSelection(false);
-        // }
-        // otherText.setEnabled(true);
-        // selectedRawValue = otherText.getText();
-        // notifyListeners();
-        // }
-        // });
-        // otherText = BaseWidgetUtils.createText(otherComposite, "", 2, 1);
-        // otherText.setEnabled(otherButton.getSelection());
-        // otherText.addModifyListener(new ModifyListener() {
-        // public void modifyText(ModifyEvent e) {
-        // selectedRawValue = otherText.getText();
-        // notifyListeners();
-        // }
-        // });
-        //		
-        // Composite predefinedComposite =
-        // BaseWidgetUtils.createColumnContainer(composite, 2, 1);
-        // predefinedButton =
-        // BaseWidgetUtils.createRadiobutton(predefinedComposite, "", 1);
-        // predefinedButton.addSelectionListener(new SelectionAdapter() {
-        // public void widgetSelected(SelectionEvent e) {
-        // predefinedCombo.setEnabled(true);
-        // otherButton.setSelection(false);
-        // otherText.setEnabled(false);
-        // notifyListeners();
-        // }
-        // });
-        // predefinedCombo =
-        // BaseWidgetUtils.createReadonlyCombo(predefinedComposite,
-        // displayValues, 0, 1);
-        // predefinedCombo.addModifyListener(new ModifyListener() {
-        // public void modifyText(ModifyEvent e) {
-        // notifyListeners();
-        // }
-        // });
-        //		
-        // Composite otherComposite =
-        // BaseWidgetUtils.createColumnContainer(composite, 2, 1);
-        // otherButton = BaseWidgetUtils.createRadiobutton(otherComposite,
-        // "Other:", 1);
-        // otherButton.addSelectionListener(new SelectionAdapter() {
-        // public void widgetSelected(SelectionEvent e) {
-        // predefinedButton.setSelection(false);
-        // predefinedCombo.setEnabled(false);
-        // otherText.setEnabled(true);
-        // notifyListeners();
-        // }
-        // });
-        // otherText = BaseWidgetUtils.createText(otherComposite, "", 2, 1);
-        // otherText.setEnabled(otherButton.getSelection());
-        // otherText.addModifyListener(new ModifyListener() {
-        // public void modifyText(ModifyEvent e) {
-        // notifyListeners();
-        // }
-        // });
-
         setRawValue( initialRawValue );
     }
 
 
+    /**
+     * Gets the raw value. Either the default value or
+     * the selected value from the combo.
+     *
+     * @return the raw value
+     */
     public String getRawValue()
     {
-        if ( this.defaultButton.getSelection() )
+        if ( defaultButton.getSelection() )
         {
-            return this.defaultRawValue;
+            return defaultRawValue;
         }
         else
         {
-            String t = this.otherCombo.getText();
-            for ( int i = 0; i < this.otherDisplayValues.length; i++ )
+            String t = otherCombo.getText();
+            for ( int i = 0; i < otherDisplayValues.length; i++ )
             {
-                if ( t.equals( this.otherDisplayValues[i] ) )
+                if ( t.equals( otherDisplayValues[i] ) )
                 {
-                    return this.otherRawValues[i];
+                    return otherRawValues[i];
                 }
             }
             return t;
@@ -243,15 +215,20 @@ public class OptionsInput extends BrowserWidget
     }
 
 
+    /**
+     * Sets the raw value.
+     *
+     * @param rawValue the raw value
+     */
     public void setRawValue( String rawValue )
     {
-        int index = Arrays.asList( this.otherRawValues ).indexOf( rawValue );
+        int index = Arrays.asList( otherRawValues ).indexOf( rawValue );
         if ( index == -1 )
         {
-            index = Arrays.asList( this.otherDisplayValues ).indexOf( rawValue );
+            index = Arrays.asList( otherDisplayValues ).indexOf( rawValue );
         }
 
-        if ( this.defaultRawValue.equals( rawValue ) )
+        if ( defaultRawValue.equals( rawValue ) )
         {
             defaultButton.setSelection( true );
             otherButton.setSelection( false );
@@ -273,54 +250,5 @@ public class OptionsInput extends BrowserWidget
             otherCombo.setText( rawValue );
         }
     }
-
-    // public String getRawValue() {
-    // if(predefinedButton.getSelection()) {
-    // int index = predefinedCombo.getSelectionIndex();
-    // return rawValues[index];
-    // }
-    //		
-    // return otherText.getText();
-    // }
-    //	
-    // public void setRawValue(String rawValue) {
-    //		
-    // int index = Arrays.asList(rawValues).indexOf(rawValue);
-    // if(index > -1) {
-    // predefinedButton.setSelection(true);
-    // predefinedCombo.setEnabled(true);
-    // predefinedCombo.select(index);
-    // otherButton.setSelection(false);
-    // otherText.setEnabled(false);
-    // }
-    // else {
-    // predefinedButton.setSelection(false);
-    // predefinedCombo.setEnabled(false);
-    // otherButton.setSelection(true);
-    // otherText.setEnabled(true);
-    // otherText.setText(rawValue);
-    // }
-    // }
-
-    // public String getSelectedRawValue() {
-    // for (int i = 0; i < buttons.length; i++) {
-    // Button button = buttons[i];
-    // if(button.getSelection()) {
-    // return rawValues[i];
-    // }
-    // }
-    // return otherText.getText();
-    // }
-    //	
-    // public void setSelectedRawValue(String rawValue) {
-    // this.selectedRawValue = rawValue;
-    //		
-    // for (int i = 0; i < buttons.length; i++) {
-    // Button button = buttons[i];
-    // button.setSelection(rawValue.equals(rawValues[i]));
-    // }
-    // otherButton.setSelection(!Arrays.asList(rawValues).contains(rawValue));
-    // otherText.setText(otherButton.getSelection() ? rawValue : "");
-    // }
 
 }

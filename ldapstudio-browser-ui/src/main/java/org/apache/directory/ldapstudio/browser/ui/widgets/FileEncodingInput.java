@@ -26,9 +26,25 @@ import java.nio.charset.Charset;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 
 
+/**
+ * The FileEncodingInput is an OptionInput with fixed options. 
+ * It is used to select the file encoding. The default
+ * value is always the platform's default encoding.
+ * The other options are the values return from 
+ * {@link Charset#availableCharsets()}. No custom input is allowed.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FileEncodingInput extends OptionsInput
 {
 
+    /**
+     * Creates a new instance of FileEncodingInput.
+     *
+     * @param initialRawValue the initial raw value
+     * @param asGroup the asGroup flag
+     */
     public FileEncodingInput( String initialRawValue, boolean asGroup )
     {
         super( "File Encoding", getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(),
@@ -37,18 +53,34 @@ public class FileEncodingInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the default display value.
+     * 
+     * @return the default display value
+     */
     private static String getDefaultDisplayValue()
     {
         return getCharsetDisplayValue( getDefaultRawValue() );
     }
 
 
+    /**
+     * Gets the default raw value, always the platform's
+     * default encoding.
+     * 
+     * @return the default raw value
+     */
     private static String getDefaultRawValue()
     {
         return BrowserCoreConstants.DEFAULT_ENCODING;
     }
 
 
+    /**
+     * Gets the other display values.
+     * 
+     * @return the other display values
+     */
     private static String[] getOtherDisplayValues()
     {
         String[] otherEncodingsRawValues = getOtherRawValues();
@@ -62,6 +94,12 @@ public class FileEncodingInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the other raw values. That are all values
+     * returned from {@link Charset#availableCharsets()}. 
+     * 
+     * @return the other raw values
+     */
     private static String[] getOtherRawValues()
     {
         String[] otherEncodingsRawValues = ( String[] ) Charset.availableCharsets().keySet().toArray( new String[0] );
@@ -69,6 +107,13 @@ public class FileEncodingInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the charset display value.
+     * 
+     * @param charsetRawValue the charset raw value
+     * 
+     * @return the charset display value
+     */
     private static String getCharsetDisplayValue( String charsetRawValue )
     {
         try

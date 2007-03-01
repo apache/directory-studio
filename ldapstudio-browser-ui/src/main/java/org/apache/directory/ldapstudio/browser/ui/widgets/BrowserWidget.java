@@ -26,25 +26,48 @@ import java.util.Iterator;
 import java.util.List;
 
 
+/**
+ * Base class that provides support for {@link WidgetModifyListener} 
+ * registration and notification.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class BrowserWidget
 {
 
-    protected List modifyListenerList;
+    /** The listener list */
+    protected List<WidgetModifyListener> modifyListenerList;
 
 
+    /**
+     * Creates a new instance of BrowserWidget.
+     */
     protected BrowserWidget()
     {
-        modifyListenerList = new ArrayList( 3 );
+        modifyListenerList = new ArrayList<WidgetModifyListener>( 3 );
     }
 
 
+    /**
+     * Adds the widget modify listener.
+     * 
+     * @param listener the listener
+     */
     public void addWidgetModifyListener( WidgetModifyListener listener )
     {
         if ( !modifyListenerList.contains( listener ) )
+        {
             modifyListenerList.add( listener );
+        }
     }
 
 
+    /**
+     * Removes the widget modify listener.
+     * 
+     * @param listener the listener
+     */
     public void removeWidgetModifyListener( WidgetModifyListener listener )
     {
         if ( modifyListenerList.contains( listener ) )
@@ -52,12 +75,15 @@ public abstract class BrowserWidget
     }
 
 
+    /**
+     * Notifies the listeners.
+     */
     protected void notifyListeners()
     {
         WidgetModifyEvent event = new WidgetModifyEvent( this );
-        for ( Iterator it = modifyListenerList.iterator(); it.hasNext(); )
+        for ( Iterator<WidgetModifyListener> it = modifyListenerList.iterator(); it.hasNext(); )
         {
-            WidgetModifyListener listener = ( WidgetModifyListener ) it.next();
+            WidgetModifyListener listener = it.next();
             listener.widgetModified( event );
         }
     }

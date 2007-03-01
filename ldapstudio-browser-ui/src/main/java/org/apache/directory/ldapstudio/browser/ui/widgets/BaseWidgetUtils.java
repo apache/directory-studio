@@ -38,9 +38,23 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * This class provides utility methods to create SWT widgets.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BaseWidgetUtils
 {
 
+    /**
+     * Creates a SWT {@link Group} under the given parent.
+     *
+     * @param parent the parent
+     * @param label the label of the group
+     * @param span the horizontal span
+     * @return the created group
+     */
     public static Group createGroup( Composite parent, String label, int span )
     {
         Group group = new Group( parent, SWT.NONE );
@@ -53,6 +67,15 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Composite} under the given parent. 
+     * A GridLayout with the given number of columns is used.
+     *
+     * @param parent the parent
+     * @param columnCount the number of columns
+     * @param span the horizontal span
+     * @return the created composite
+     */
     public static Composite createColumnContainer( Composite parent, int columnCount, int span )
     {
         Composite container = new Composite( parent, SWT.NONE );
@@ -66,6 +89,14 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Label} under the given parent. 
+     *
+     * @param parent the parent
+     * @param text the label's text
+     * @param span the horizontal span
+     * @return the created label
+     */
     public static Label createLabel( Composite parent, String text, int span )
     {
         Label l = new Label( parent, SWT.NONE );
@@ -78,6 +109,15 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Label} under the given parent. 
+     * The label is created with the SWT.WRAP style to enable line wrapping.
+     *
+     * @param parent the parent
+     * @param text the label's text
+     * @param span the horizontal span
+     * @return the created label
+     */
     public static Label createWrappedLabel( Composite parent, String text, int span )
     {
         Label l = new Label( parent, SWT.WRAP );
@@ -90,6 +130,15 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The created text control is modifyable.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Text createText( Composite parent, String text, int span )
     {
         Text t = new Text( parent, SWT.NONE | SWT.BORDER );
@@ -101,6 +150,16 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The created text control is modifyable.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param textWidth the width of the text control
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Text createText( Composite parent, String text, int textWidth, int span )
     {
         Text t = new Text( parent, SWT.NONE | SWT.BORDER );
@@ -114,6 +173,15 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The created text control is created with the SWT.PASSWORD style.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Text createPasswordText( Composite parent, String text, int span )
     {
         Text t = new Text( parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD );
@@ -125,6 +193,16 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The created text control is created with the SWT.PASSWORD and 
+     * SWT.READ_ONLY style. So the created controls is not modifyable.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Text createReadonlyPasswordText( Composite parent, String text, int span )
     {
         Text t = new Text( parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD | SWT.READ_ONLY );
@@ -138,6 +216,17 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The created text control behaves like a label: it has no border, 
+     * a grayed background and is not modifyable. 
+     * But the text is selectable and could be copied.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Text createLabeledText( Composite parent, String text, int span )
     {
         Text t = new Text( parent, SWT.NONE );
@@ -151,6 +240,18 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The created text control behaves like a label: it has no border, 
+     * a grayed background and is not modifyable. 
+     * But the text is selectable and could be copied.
+     * The label is created with the SWT.WRAP style to enable line wrapping.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Text createWrappedLabeledText( Composite parent, String text, int span )
     {
         Text t = new Text( parent, SWT.WRAP );
@@ -167,6 +268,16 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The text is not modifyable, but the text is selectable 
+     * and could be copied.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Text createReadonlyText( Composite parent, String text, int span )
     {
         Text t = new Text( parent, SWT.NONE | SWT.BORDER | SWT.READ_ONLY );
@@ -180,12 +291,17 @@ public class BaseWidgetUtils
     }
 
 
-    public static String getNonNullString( String s )
-    {
-        return s == null ? "-" : s;
-    }
-
-
+    /**
+     * Creates a SWT {@link Combo} under the given parent.
+     * Beside the selection of an item it is also possible to type
+     * free text into the combo.
+     *
+     * @param parent the parent
+     * @param items the initial visible items
+     * @param selectedIndex the initial selected item, zero-based
+     * @param span the horizontal span
+     * @return the created combo
+     */
     public static Combo createCombo( Composite parent, String[] items, int selectedIndex, int span )
     {
         Combo c = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
@@ -199,6 +315,17 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Combo} under the given parent.
+     * It is not possible to type free text into the combo, only 
+     * selection of predefined items is possible.
+     *
+     * @param parent the parent
+     * @param items the initial visible items
+     * @param selectedIndex the initial selected item, zero-based
+     * @param span the horizontal span
+     * @return the created combo
+     */
     public static Combo createReadonlyCombo( Composite parent, String[] items, int selectedIndex, int span )
     {
         Combo c = new Combo( parent, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -213,23 +340,17 @@ public class BaseWidgetUtils
     }
 
 
-    public static Combo createReadonlyReadonlyCombo( Composite parent, String[] items, int selectedIndex, int span )
+    /**
+     * Creates a checkbox under the given parent.
+     *
+     * @param parent the parent
+     * @param text the label of the checkbox 
+     * @param span the horizontal span
+     * @return the created checkbox
+     */
+    public static Button createCheckbox( Composite parent, String text, int span )
     {
-        Combo c = new Combo( parent, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        c.setLayoutData( gd );
-        c.setBackground( parent.getBackground() );
-        c.setItems( items );
-        c.select( selectedIndex );
-        c.setVisibleItemCount( 20 );
-        return c;
-    }
-
-
-    public static Button createCheckbox( Composite composite, String text, int span )
-    {
-        Button checkbox = new Button( composite, SWT.CHECK );
+        Button checkbox = new Button( parent, SWT.CHECK );
         checkbox.setText( text );
         GridData gd = new GridData();
         gd.horizontalSpan = span;
@@ -238,9 +359,17 @@ public class BaseWidgetUtils
     }
 
 
-    public static Button createRadiobutton( Composite composite, String text, int span )
+    /**
+     * Creates a radio button under the given parent.
+     *
+     * @param parent the parent
+     * @param text the label of the radio button 
+     * @param span the horizontal span
+     * @return the created radio button
+     */
+    public static Button createRadiobutton( Composite parent, String text, int span )
     {
-        Button radio = new Button( composite, SWT.RADIO );
+        Button radio = new Button( parent, SWT.RADIO );
         radio.setText( text );
         GridData gd = new GridData();
         gd.horizontalSpan = span;
@@ -249,14 +378,23 @@ public class BaseWidgetUtils
     }
 
 
-    public static Button createButton( Composite composite, String text, int span )
+    /**
+     * Creates a button under the given parent. 
+     * The button width is set to the default width.
+     *
+     * @param parent the parent
+     * @param text the label of the button 
+     * @param span the horizontal span
+     * @return the created button
+     */
+    public static Button createButton( Composite parent, String text, int span )
     {
-        GC gc = new GC( composite );
+        GC gc = new GC( parent );
         gc.setFont( JFaceResources.getDialogFont() );
         FontMetrics fontMetrics = gc.getFontMetrics();
         gc.dispose();
 
-        Button button = new Button( composite, SWT.PUSH );
+        Button button = new Button( parent, SWT.PUSH );
         GridData gd = new GridData();
         gd.widthHint = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
         button.setLayoutData( gd );
@@ -265,9 +403,15 @@ public class BaseWidgetUtils
     }
 
 
-    public static void createRadioIndent( Composite composite, int span )
+    /**
+     * Adds some space to indent radio buttons.
+     *
+     * @param parent the parent
+     * @param span the horizontal span
+     */
+    public static void createRadioIndent( Composite parent, int span )
     {
-        Label l = new Label( composite, SWT.NONE );
+        Label l = new Label( parent, SWT.NONE );
         GridData gd = new GridData();
         gd.horizontalSpan = span;
         gd.horizontalIndent = 22;
@@ -275,9 +419,15 @@ public class BaseWidgetUtils
     }
 
 
-    public static void createSpacer( Composite composite, int span )
+    /**
+     * Creates a spacer.
+     *
+     * @param parent the parent
+     * @param span the horizontal span
+     */
+    public static void createSpacer( Composite parent, int span )
     {
-        Label l = new Label( composite, SWT.NONE );
+        Label l = new Label( parent, SWT.NONE );
         // GridData gd = new GridData(GridData.FILL_HORIZONTAL);
         GridData gd = new GridData();
         gd.horizontalSpan = span;
@@ -286,9 +436,15 @@ public class BaseWidgetUtils
     }
 
 
-    public static void createSeparator( Composite composite, int span )
+    /**
+     * Creates a separator line.
+     *
+     * @param parent the parent
+     * @param span the horizontal span
+     */
+    public static void createSeparator( Composite parent, int span )
     {
-        Label l = new Label( composite, SWT.SEPARATOR | SWT.HORIZONTAL );
+        Label l = new Label( parent, SWT.SEPARATOR | SWT.HORIZONTAL );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = span;
         // gd.heightHint = 1;
@@ -296,6 +452,14 @@ public class BaseWidgetUtils
     }
 
 
+    /**
+     * Creates a SWT {@link Link} under the given parent.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @return the created text
+     */
     public static Link createLink( Composite parent, String text, int span )
     {
         Link link = new Link( parent, SWT.NONE );

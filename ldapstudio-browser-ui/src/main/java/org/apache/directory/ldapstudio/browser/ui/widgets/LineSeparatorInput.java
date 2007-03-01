@@ -25,13 +25,29 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-
 import org.eclipse.core.runtime.Platform;
 
 
+/**
+ * The LineSeparatorInput is an OptionInput with fixed options. 
+ * It is used to select the line separator. The default
+ * value is always the platform's default line separator.
+ * The other options are the values return from 
+ * {@link Platform#knownPlatformLineSeparators()}. 
+ * No custom input is allowed.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LineSeparatorInput extends OptionsInput
 {
 
+    /**
+     * Creates a new instance of LineSeparatorInput.
+     *
+     * @param initialRawValue the initial raw value
+     * @param asGroup the asGroup flag
+     */
     public LineSeparatorInput( String initialRawValue, boolean asGroup )
     {
         super( "Line Separator", getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(),
@@ -40,6 +56,11 @@ public class LineSeparatorInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the default display value.
+     * 
+     * @return the default display value
+     */
     private static String getDefaultDisplayValue()
     {
         Map lsMap = Platform.knownPlatformLineSeparators();
@@ -57,16 +78,28 @@ public class LineSeparatorInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the default raw value, always the platform's default
+     * line separator.
+     * 
+     * @return the default raw value
+     */
     private static String getDefaultRawValue()
     {
         return BrowserCoreConstants.LINE_SEPARATOR;
     }
 
 
+    /**
+     * Gets the other display values That are all values
+     * returned from {@link Platform#knownPlatformLineSeparators()}. 
+     * 
+     * @return the other display values
+     */
     private static String[] getOtherDisplayValues()
     {
-        Map lsMap = Platform.knownPlatformLineSeparators();
-        String[] displayValues = ( String[] ) lsMap.keySet().toArray( new String[lsMap.size()] );
+        Map<String, String> lsMap = Platform.knownPlatformLineSeparators();
+        String[] displayValues = lsMap.keySet().toArray( new String[lsMap.size()] );
         for ( int i = 0; i < displayValues.length; i++ )
         {
             displayValues[i] = displayValues[i]
@@ -78,10 +111,15 @@ public class LineSeparatorInput extends OptionsInput
     }
 
 
+    /**
+     * Gets the other raw values.
+     * 
+     * @return the other raw values
+     */
     private static String[] getOtherRawValues()
     {
-        Map lsMap = Platform.knownPlatformLineSeparators();
-        String[] displayValues = ( String[] ) lsMap.keySet().toArray( new String[lsMap.size()] );
+        Map<String, String> lsMap = Platform.knownPlatformLineSeparators();
+        String[] displayValues = lsMap.keySet().toArray( new String[lsMap.size()] );
         String[] rawValues = new String[displayValues.length];
         for ( int i = 0; i < rawValues.length; i++ )
         {

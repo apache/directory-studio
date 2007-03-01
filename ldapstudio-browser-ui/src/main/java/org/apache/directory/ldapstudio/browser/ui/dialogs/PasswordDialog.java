@@ -27,11 +27,11 @@ import org.apache.directory.ldapstudio.browser.core.jobs.CheckBindJob;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.Password;
+import org.apache.directory.ldapstudio.browser.core.utils.Utils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -356,11 +356,11 @@ public class PasswordDialog extends Dialog
     {
         if ( this.currentPassword != null )
         {
-            this.currentPasswordHashMethodText.setText( BaseWidgetUtils.getNonNullString( this.currentPassword
+            this.currentPasswordHashMethodText.setText( Utils.getNonNullString( this.currentPassword
                 .getHashMethod() ) );
-            this.currentPasswordValueHexText.setText( BaseWidgetUtils.getNonNullString( this.currentPassword
+            this.currentPasswordValueHexText.setText( Utils.getNonNullString( this.currentPassword
                 .getHashedPasswordAsHexString() ) );
-            this.currentPasswordSaltHexText.setText( BaseWidgetUtils.getNonNullString( this.currentPassword
+            this.currentPasswordSaltHexText.setText( Utils.getNonNullString( this.currentPassword
                 .getSaltAsHexString() ) );
             this.currentPasswordText.setText( this.currentPassword.toString() );
         }
@@ -432,9 +432,9 @@ public class PasswordDialog extends Dialog
         this.newPassword = new Password( this.newPasswordHashMethodCombo.getText(), this.newPasswordText.getText() );
         if ( !"".equals( this.newPasswordText.getText() ) || this.newPassword.getHashMethod() == null )
         {
-            newPasswordPreviewValueHexText.setText( BaseWidgetUtils.getNonNullString( this.newPassword
+            newPasswordPreviewValueHexText.setText( Utils.getNonNullString( this.newPassword
                 .getHashedPasswordAsHexString() ) );
-            newPasswordPreviewSaltHexText.setText( BaseWidgetUtils.getNonNullString( this.newPassword
+            newPasswordPreviewSaltHexText.setText( Utils.getNonNullString( this.newPassword
                 .getSaltAsHexString() ) );
             newPasswordPreviewText.setText( this.newPassword.toString() );
             newSaltButton.setEnabled( this.newPassword.getSalt() != null );
@@ -444,9 +444,9 @@ public class PasswordDialog extends Dialog
         else
         {
             this.newPassword = null;
-            newPasswordPreviewValueHexText.setText( BaseWidgetUtils.getNonNullString( null ) );
-            newPasswordPreviewSaltHexText.setText( BaseWidgetUtils.getNonNullString( null ) );
-            newPasswordPreviewText.setText( BaseWidgetUtils.getNonNullString( null ) );
+            newPasswordPreviewValueHexText.setText( Utils.getNonNullString( null ) );
+            newPasswordPreviewSaltHexText.setText( Utils.getNonNullString( null ) );
+            newPasswordPreviewText.setText( Utils.getNonNullString( null ) );
             newSaltButton.setEnabled( false );
             this.okButton.setEnabled( false );
         }

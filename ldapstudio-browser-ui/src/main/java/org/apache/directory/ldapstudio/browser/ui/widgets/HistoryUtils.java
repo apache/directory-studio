@@ -29,18 +29,32 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 
 
+/**
+ * The HistoryUtils are used to save and load the history of input fields.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class HistoryUtils
 {
 
+    /**
+     * Saves the the given value under the given key in the dialog settings.
+     *
+     * @param key the key
+     * @param value the value
+     */
     public static void save( String key, String value )
     {
         // get current history
         String[] history = load( key );
-        List list = new ArrayList( Arrays.asList( history ) );
+        List<String> list = new ArrayList<String>( Arrays.asList( history ) );
 
         // add new value or move to first position
         if ( list.contains( value ) )
+        {
             list.remove( value );
+        }
         list.add( 0, value );
 
         // check history size
@@ -50,12 +64,18 @@ public class HistoryUtils
         }
 
         // save
-        history = ( String[] ) list.toArray( new String[list.size()] );
+        history = list.toArray( new String[list.size()] );
         BrowserUIPlugin.getDefault().getDialogSettings().put( key, history );
 
     }
 
 
+    /**
+     * Loads the value of the given key from the dialog settings
+     *
+     * @param key the key
+     * @return the value
+     */
     public static String[] load( String key )
     {
         String[] history = BrowserUIPlugin.getDefault().getDialogSettings().getArray( key );

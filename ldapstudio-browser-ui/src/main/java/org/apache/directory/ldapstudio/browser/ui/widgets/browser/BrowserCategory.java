@@ -60,6 +60,12 @@ public class BrowserCategory
     private int type;
 
 
+    /**
+     * Creates a new instance of BrowserCategory.
+     *
+     * @param type the category's type, one of TYPE_DIT, TYPE_SEARCHES or TYPE_BOOKMARKS
+     * @param parent the category's connection
+     */
     public BrowserCategory( int type, IConnection parent )
     {
         this.parent = parent;

@@ -36,24 +36,45 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 
 
+/**
+ * The FileBrowserWidget provides a combo with a history of recently
+ * used files an a browse button to open the file browser.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FileBrowserWidget extends BrowserWidget
 {
 
+    /** The Constant TYPE_OPEN is used to create a Open file dialog. */
     public static final int TYPE_OPEN = SWT.OPEN;
 
+    /** The Constant TYPE_SAVE is used to create a Save file dialog. */
     public static final int TYPE_SAVE = SWT.SAVE;
 
+    /** The combo with the history of recently used files */
     private Combo fileCombo;
 
+    /** The button to launch the file browser */
     private Button browseButton;
 
+    /** The title */
     private String title;
 
+    /** File extensions used within the lauched file browser */
     private String[] extensions;
 
+    /** The type */
     private int type;
 
 
+    /**
+     * Creates a new instance of FileBrowserWidget.
+     *
+     * @param title The title
+     * @param extensions The valid file extensions
+     * @param type The type, one of {@link #TYPE_OPEN} or {@link #TYPE_SAVE}
+     */
     public FileBrowserWidget( String title, String[] extensions, int type )
     {
         this.title = title;
@@ -62,6 +83,11 @@ public class FileBrowserWidget extends BrowserWidget
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( final Composite parent )
     {
 
@@ -119,34 +145,55 @@ public class FileBrowserWidget extends BrowserWidget
     }
 
 
+    /**
+     * Gets the filename.
+     * 
+     * @return the filename
+     */
     public String getFilename()
     {
-        return this.fileCombo.getText();
+        return fileCombo.getText();
     }
 
 
+    /**
+     * Sets the filename.
+     * 
+     * @param filename the filename
+     */
     public void setFilename( String filename )
     {
-        this.fileCombo.setText( filename );
+        fileCombo.setText( filename );
     }
 
 
+    /**
+     * Saves dialog settings.
+     */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_FILE_HISTORY, this.fileCombo.getText() );
+        HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_FILE_HISTORY, fileCombo.getText() );
     }
 
 
+    /**
+     * Sets the focus.
+     */
     public void setFocus()
     {
         fileCombo.setFocus();
     }
 
 
+    /**
+     * Enables or disables the widget.
+     * 
+     * @param b true to enable the widget, false otherwise
+     */
     public void setEnabled( boolean b )
     {
-        this.fileCombo.setEnabled( b );
-        this.browseButton.setEnabled( b );
+        fileCombo.setEnabled( b );
+        browseButton.setEnabled( b );
     }
 
 }

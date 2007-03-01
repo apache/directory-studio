@@ -62,7 +62,7 @@ public class BrowserSearchResultPage
      * @param search the parent search
      * @param first the index of the first child search result in this page
      * @param last the index of the last child search result in this page
-     * @param subcontainers the sub pages
+     * @param subpages the sub pages
      * @param sorter the sorter
      */
     public BrowserSearchResultPage( ISearch search, int first, int last, BrowserSearchResultPage[] subpages,
