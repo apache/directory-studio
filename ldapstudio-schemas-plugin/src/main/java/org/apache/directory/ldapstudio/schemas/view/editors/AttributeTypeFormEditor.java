@@ -53,6 +53,9 @@ public class AttributeTypeFormEditor extends FormEditor
     /** The Source Code page */
     private AttributeTypeFormEditorSourceCodePage sourceCode;
 
+    /** The Used By page */
+    private AttributeTypeFormEditorUsedByPage usedBy;
+
     /** The dirty state flag */
     private boolean dirty = false;
 
@@ -146,8 +149,10 @@ public class AttributeTypeFormEditor extends FormEditor
         {
             overview = new AttributeTypeFormEditorOverviewPage( this );
             addPage( overview );
-            sourceCode = new AttributeTypeFormEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
+            sourceCode = new AttributeTypeFormEditorSourceCodePage( this );
             addPage( sourceCode );
+            usedBy = new AttributeTypeFormEditorUsedByPage( this );
+            addPage( usedBy );
         }
         catch ( PartInitException e )
         {
