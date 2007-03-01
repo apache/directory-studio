@@ -143,6 +143,14 @@ public class LinkWithEditorSchemasView extends Action
          */
         public void partVisible( IWorkbenchPartReference partRef )
         {
+            String id = partRef.getId();
+
+            if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
+            {
+                schemasView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
+                linkViewWithEditor( partRef.getPartName(), id );
+                schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
+            }
         }
     };
 

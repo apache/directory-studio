@@ -88,6 +88,14 @@ public class LinkWithEditorHierarchyView extends Action
          */
         public void partActivated( IWorkbenchPartReference partRef )
         {
+            String id = partRef.getId();
+
+            if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
+            {
+                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchyView.ID, viewListener );
+                linkViewWithEditor( partRef.getPartName(), id );
+                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
+            }
         }
 
 
