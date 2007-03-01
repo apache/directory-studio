@@ -59,6 +59,7 @@
 			<fileset dir="${basedir}">
 				<include name="log4j.conf" />
 				<include name="plugin.xml" />
+				<include name="plugin.properties" />
 				<include name="toc.xml" />
 			</fileset>
 		</copy>
@@ -143,6 +144,7 @@
 				<exclude name="log4j.conf" />
 				<exclude name="META-INF/**" />
 				<exclude name="plugin.xml" />
+				<exclude name="plugin.properties" />
 				<exclude name="ressources/**" />
 				<exclude name="src/**" />
 				<exclude name="toc.xml" />
