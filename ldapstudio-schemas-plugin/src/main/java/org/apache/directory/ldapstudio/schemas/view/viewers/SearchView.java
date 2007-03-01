@@ -232,8 +232,10 @@ public class SearchView extends ViewPart implements PoolListener
             {
                 if ( !"".equals( searchField.getText() ) )
                 {
-                    saveHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY, searchField.getText() );
+                	String searchString = searchField.getText();
+                    saveHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY, searchString);
                     initSearchHistory();
+                    searchField.setText( searchString );
                 }
             }
         } );
