@@ -54,6 +54,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IEditorInput;
@@ -75,9 +76,8 @@ public class SearchView extends ViewPart implements PoolListener
     private SchemaPool pool;
 
     // UI fields
-    private Composite top;
-    private Table table;
-    private TableViewer tableViewer;
+    private Table resultsTable;
+    private TableViewer resultsTableViewer;
     private Combo searchField;
     private Combo typeCombo;
     private SearchViewContentProvider searchContentProvider;
@@ -122,22 +122,27 @@ public class SearchView extends ViewPart implements PoolListener
         pool.addListener( this );
 
         //top container
-        this.top = new Composite( parent, SWT.NONE );
+        Composite top = new Composite( parent, SWT.NONE );
 
         GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
         layout.marginHeight = 0;
-        layout.numColumns = 2;
+        layout.numColumns = 4;
         layout.horizontalSpacing = 0;
         layout.verticalSpacing = 0;
         top.setLayout( layout );
 
+        Label searchLabel = new Label( top, SWT.NONE );
+        searchLabel.setText( "Search " );
+
         //search field
         searchField = new Combo( top, SWT.DROP_DOWN | SWT.BORDER );
         GridData gridData = new GridData( GridData.FILL, 0, true, false );
-        gridData.heightHint = searchField.getItemHeight();
         gridData.verticalAlignment = SWT.CENTER;
         searchField.setLayoutData( gridData );
+
+        Label inLabel = new Label( top, SWT.NONE );
+        inLabel.setText( " in " );
 
         //search type combo
         typeCombo = new Combo( top, SWT.READ_ONLY | SWT.SINGLE );
@@ -150,7 +155,7 @@ public class SearchView extends ViewPart implements PoolListener
             public void widgetSelected( SelectionEvent e )
             {
                 searchType = typeCombo.getItem( typeCombo.getSelectionIndex() );
-                tableViewer.refresh();
+                resultsTableViewer.refresh();
             }
         } );
         typeCombo.add( SEARCH_ALL, 0 );
@@ -163,8 +168,8 @@ public class SearchView extends ViewPart implements PoolListener
         createTable( top );
         createTableViewer();
         this.searchContentProvider = new SearchViewContentProvider();
-        tableViewer.setContentProvider( searchContentProvider );
-        tableViewer.setLabelProvider( new SearchViewLabelProvider() );
+        resultsTableViewer.setContentProvider( searchContentProvider );
+        resultsTableViewer.setLabelProvider( new SearchViewLabelProvider() );
 
         initSearchHistory();
         initListeners();
@@ -176,27 +181,27 @@ public class SearchView extends ViewPart implements PoolListener
      */
     private void createTable( Composite parent )
     {
-        table = new Table( parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+        resultsTable = new Table( parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
 
-        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 );
-        table.setLayoutData( gridData );
+        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true, 4, 1 );
+        resultsTable.setLayoutData( gridData );
 
-        table.setLinesVisible( false );
-        table.setHeaderVisible( true );
+        resultsTable.setLinesVisible( false );
+        resultsTable.setHeaderVisible( true );
 
         // 1st column with image - NOTE: The SWT.CENTER has no effect!!
-        TableColumn column = new TableColumn( table, SWT.CENTER, 0 );
+        TableColumn column = new TableColumn( resultsTable, SWT.CENTER, 0 );
         column.setText( columnNames[0] );
         column.setWidth( 40 );
 
         // 2nd column with name
-        column = new TableColumn( table, SWT.LEFT, 1 );
+        column = new TableColumn( resultsTable, SWT.LEFT, 1 );
         column.setText( columnNames[1] );
         column.setWidth( 400 );
 
         //3rd column with element defining schema
-        column = new TableColumn( table, SWT.LEFT, 2 );
+        column = new TableColumn( resultsTable, SWT.LEFT, 2 );
         column.setText( columnNames[2] );
         column.setWidth( 100 );
     }
@@ -211,7 +216,7 @@ public class SearchView extends ViewPart implements PoolListener
         {
             public void modifyText( ModifyEvent e )
             {
-                tableViewer.setInput( searchField.getText() );
+                resultsTableViewer.setInput( searchField.getText() );
             }
         } );
 
@@ -221,7 +226,7 @@ public class SearchView extends ViewPart implements PoolListener
             {
                 if ( e.keyCode == 13 )
                 {
-                    table.setFocus();
+                    resultsTable.setFocus();
                 }
             }
         } );
@@ -232,23 +237,23 @@ public class SearchView extends ViewPart implements PoolListener
             {
                 if ( !"".equals( searchField.getText() ) )
                 {
-                	String searchString = searchField.getText();
-                    saveHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY, searchString);
+                    String searchString = searchField.getText();
+                    saveHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY, searchString );
                     initSearchHistory();
                     searchField.setText( searchString );
                 }
             }
         } );
-        
+
         typeCombo.addFocusListener( new FocusAdapter()
         {
             public void focusGained( FocusEvent arg0 )
             {
-                table.setFocus();
+                resultsTable.setFocus();
             }
-        });
+        } );
 
-        table.addMouseListener( new MouseAdapter()
+        resultsTable.addMouseListener( new MouseAdapter()
         {
             public void mouseDoubleClick( MouseEvent e )
             {
@@ -256,7 +261,7 @@ public class SearchView extends ViewPart implements PoolListener
             }
         } );
 
-        table.addKeyListener( new KeyAdapter()
+        resultsTable.addKeyListener( new KeyAdapter()
         {
             public void keyPressed( KeyEvent e )
             {
@@ -272,13 +277,13 @@ public class SearchView extends ViewPart implements PoolListener
             }
         } );
 
-        table.addFocusListener( new FocusAdapter()
+        resultsTable.addFocusListener( new FocusAdapter()
         {
             public void focusGained( FocusEvent e )
             {
-                if ( ( table.getSelectionCount() == 0 ) && ( table.getItemCount() != 0 ) )
+                if ( ( resultsTable.getSelectionCount() == 0 ) && ( resultsTable.getItemCount() != 0 ) )
                 {
-                    table.select( 0 );
+                    resultsTable.select( 0 );
                 }
             }
         } );
@@ -331,9 +336,9 @@ public class SearchView extends ViewPart implements PoolListener
      */
     private void createTableViewer()
     {
-        tableViewer = new TableViewer( table );
-        tableViewer.setUseHashlookup( true );
-        tableViewer.setColumnProperties( columnNames );
+        resultsTableViewer = new TableViewer( resultsTable );
+        resultsTableViewer.setUseHashlookup( true );
+        resultsTableViewer.setColumnProperties( columnNames );
     }
 
 
@@ -356,7 +361,7 @@ public class SearchView extends ViewPart implements PoolListener
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
         searchContentProvider.refresh();
-        tableViewer.refresh();
+        resultsTableViewer.refresh();
     }
 
 
