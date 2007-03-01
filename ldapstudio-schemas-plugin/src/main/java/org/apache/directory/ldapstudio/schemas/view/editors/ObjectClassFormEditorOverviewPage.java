@@ -29,7 +29,6 @@ import java.util.HashSet;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -277,7 +276,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( SchemasViewController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
 
@@ -382,7 +381,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( SchemasViewController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
 
@@ -571,7 +570,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             .getString( "ObjectClassFormEditorOverviewPage.Description" ) ); //$NON-NLS-1$
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
         GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
-        descriptionGridData.heightHint = 37;
+        descriptionGridData.heightHint = 42;
         descriptionText.setLayoutData( descriptionGridData );
 
         // SUP Combo

@@ -143,7 +143,6 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
 
     /** The listener for the OID Text Widget */
     //    private Object oidTextListener;
-    
     /** The listener for the Schema Hyperlink Widget*/
     private HyperlinkAdapter schemaLinkListener = new HyperlinkAdapter()
     {
@@ -163,7 +162,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
             }
         }
     };
-    
+
     /** The listener for the Description Text Widget */
     private ModifyListener descriptionTextListener = new ModifyListener()
     {
@@ -464,11 +463,13 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Description" ) ); //$NON-NLS-1$
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
-        descriptionText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
-        
+        GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        descriptionGridData.heightHint = 42;
+        descriptionText.setLayoutData( descriptionGridData );
+
         // SCHEMA Field
-        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP  );
-        schemaLabel =  toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
+        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
+        schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
 
         // SUP Combo
@@ -683,7 +684,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         {
             this.oidText.setText( modifiedAttributeType.getOid() );
         }
-        
+
         // SCHEMA Field
         if ( modifiedAttributeType.getOriginatingSchema() != null )
         {
@@ -768,7 +769,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         }
     }
 
-    
+
     /**
      * Fills the the Sup Combo with the correct value
      *
@@ -895,7 +896,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
                 substringCombo.select( i );
                 return;
             }
-        } 
+        }
     }
 
 
