@@ -239,6 +239,14 @@ public class SearchView extends ViewPart implements PoolListener
                 }
             }
         } );
+        
+        typeCombo.addFocusListener( new FocusAdapter()
+        {
+            public void focusGained( FocusEvent arg0 )
+            {
+                table.setFocus();
+            }
+        });
 
         table.addMouseListener( new MouseAdapter()
         {
