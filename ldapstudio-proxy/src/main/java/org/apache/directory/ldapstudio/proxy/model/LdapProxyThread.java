@@ -28,6 +28,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.naming.NamingException;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.apache.directory.shared.asn1.ber.Asn1Decoder;
+import org.apache.directory.shared.asn1.ber.IAsn1Container;
+import org.apache.directory.shared.asn1.codec.DecoderException;
+import org.apache.directory.shared.asn1.util.Asn1StringUtils;
+import org.apache.directory.shared.ldap.codec.LdapConstants;
+import org.apache.directory.shared.ldap.codec.LdapDecoder;
+import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 
 
 /**
@@ -38,6 +52,9 @@ import java.util.Date;
  */
 public class LdapProxyThread extends Thread
 {
+    /** The LDAP proxy */
+    private LdapProxy ldapProxy;
+    
     /** The proxy port */
     private int localPort;
 
@@ -66,8 +83,9 @@ public class LdapProxyThread extends Thread
      * @param timeout
      * @param cSocket
      */
-    public LdapProxyThread( int localPort, String remoteHost, int remotePort, long timeout )
+    public LdapProxyThread( LdapProxy ldapProxy, int localPort, String remoteHost, int remotePort, long timeout )
     {
+        this.ldapProxy = ldapProxy;
         this.localPort = localPort;
         this.remoteHost = remoteHost;
         this.remotePort = remotePort;
@@ -150,10 +168,10 @@ public class LdapProxyThread extends Thread
                             bb.put( in );
                             bb.flip();
 
-                            //                    while ( bb.hasRemaining() )
-                            //                    {
-                            //                        decode( bb );
-                            //                    }
+                            while ( bb.hasRemaining() )
+                            {
+                                decode( bb );
+                            }
 
                             /*
                              * LdapProxy.setTextIn("--->>>\n", "regular");
@@ -280,6 +298,145 @@ public class LdapProxyThread extends Thread
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+    }
+    
+    private String decode( ByteBuffer buffer ) throws DecoderException, NamingException
+    {
+        int position = buffer.position();
 
+        DefaultMutableTreeNode mess;
+
+        // DefaultMutableTreeNode messTrue;
+        DefaultMutableTreeNode messTrue;
+
+        Asn1Decoder ldapDecoder = new LdapDecoder();
+
+        // Allocate a LdapMessageContainer Container
+        IAsn1Container ldapMessageContainer = new LdapMessageContainer();
+
+        // Decode the PDU
+        ldapDecoder.decode( buffer, ldapMessageContainer );
+        // Check that everything is OK
+        LdapMessage ldapmessage = ( (LdapMessageContainer) ldapMessageContainer ).getLdapMessage();
+        LdapMessageWithPDU message = new LdapMessageWithPDU();
+        
+
+        message.setLdapMessage( ldapmessage );
+        message.setMessageId( ldapmessage.getMessageId() );
+
+        // check the Id to verfy if it's a new Entry or not
+        if ( message.getMessageId() != lastMessageId )
+        {
+//            mess = new DefaultMutableTreeNode( transformToStringType( ldapmessage.getMessageType() ) + " [Id = "
+//                    + ( (LdapMessage) ldapmessage ).getMessageId() + " ]" );
+//
+//            messTrue = new DefaultMutableTreeNode( message );
+//            lastNode = mess;
+//            lastMessNode = messTrue;
+//            lastMessageId = message.getMessageId();
+//            // mainFrame.getTop().add(mess);
+//            mainFrame.getTreeModel().insertNodeInto( mess, mainFrame.getTop(), mainFrame.getTop().getChildCount() );
+//            mainFrame.getLdapMessageTree().add( messTrue );
+//            currentCount = 1;
+
+        }
+        else
+        {
+//            mess = lastNode;
+//            messTrue = lastMessNode;
+//            currentCount++;
+        }
+
+          String type = transformToStringType( ldapmessage.getMessageType() );
+
+        int pduLength = buffer.position() - position;
+        byte[] bytes = buffer.array();
+        byte[] newBytes = new byte[pduLength];
+        System.arraycopy(bytes, position, newBytes, 0, pduLength );
+
+        //TODO only one methode to Dump including buffer and position.
+        message.setDumpBytes( Asn1StringUtils.dumpBytes( newBytes ) );
+
+        ldapProxy.addReceivedLdapMessage( message );
+        
+        return message.getLdapMessage().toString();
+    }
+    
+    public String transformToStringType( int type )
+    {
+        String stringType;
+
+        switch ( type )
+        {
+            case LdapConstants.ABANDON_REQUEST :
+                stringType = "ABANDON REQUEST";
+                break;
+            case LdapConstants.ADD_REQUEST :
+                stringType = "ADD REQUEST";
+                break;
+            case LdapConstants.ADD_RESPONSE :
+                stringType = "ADD RESPONSE";
+                break;
+            case LdapConstants.BIND_REQUEST :
+                stringType = "BIND REQUEST";
+                break;
+            case LdapConstants.BIND_RESPONSE :
+                stringType = "BIND RESPONSE";
+                break;
+            case LdapConstants.COMPARE_REQUEST :
+                stringType = "COMPARE REQUEST";
+                break;
+            case LdapConstants.COMPARE_RESPONSE :
+                stringType = "COMPARE RESPONSE";
+                break;
+            case LdapConstants.DEL_REQUEST :
+                stringType = "DEL REQUEST";
+                break;
+            case LdapConstants.DEL_RESPONSE :
+                stringType = "DEL RESPONSE";
+                break;
+            case LdapConstants.EXTENDED_REQUEST :
+                stringType = "EXTENDED REQUEST";
+                break;
+            case LdapConstants.EXTENDED_RESPONSE :
+                stringType = "EXTENDED RESPONSE";
+                break;
+            case LdapConstants.MODIFYDN_REQUEST :
+                stringType = "MODIFYDN REQUEST";
+                break;
+            case LdapConstants.MODIFYDN_RESPONSE :
+                stringType = "MODIFYDN RESPONSE";
+                break;
+            case LdapConstants.MODIFY_REQUEST :
+                stringType = "MODIFY REQUEST";
+                break;
+            case LdapConstants.MODIFY_RESPONSE :
+                stringType = "MODIFY RESPONSE";
+                break;
+            case LdapConstants.SEARCH_REQUEST :
+                stringType = "SEARCH REQUEST";
+                break;
+            case LdapConstants.SEARCH_RESULT_DONE :
+                stringType = "SEARCH RESULT DONE";
+                break;
+            case LdapConstants.SEARCH_RESULT_ENTRY :
+                stringType = "SEARCH RESULT ENTRY";
+                break;
+            case LdapConstants.SEARCH_RESULT_REFERENCE :
+                stringType = "SEARCH RESULT REFERENCE";
+                break;
+            case LdapConstants.UNBIND_REQUEST :
+                stringType = "UNBIND REQUEST";
+                break;
+            case LdapConstants.UNKNOWN:
+                stringType = "UNKNOWN";
+                break;
+
+            default :
+                stringType = "UNKNOWN";
+                break;
+        }
+        
+        return stringType;
     }
 }

@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.proxy.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -39,6 +40,9 @@ public class LdapProxy
     /** The listeners list */
     private List<LdapProxyListener> listeners;
 
+    /** The received LDAP Messages */
+    private List<LdapMessageWithPDU> receivedLdapMessages;
+
     private LdapProxyThread proxyThread;
 
 
@@ -55,8 +59,8 @@ public class LdapProxy
     public LdapProxy( int localPort, String remoteHost, int remotePort )
     {
         listeners = new ArrayList<LdapProxyListener>();
-
-        proxyThread = new LdapProxyThread( localPort, remoteHost, remotePort, DEFAULT_TIMEOUT );
+        receivedLdapMessages = new ArrayList<LdapMessageWithPDU>();
+        proxyThread = new LdapProxyThread( this, localPort, remoteHost, remotePort, DEFAULT_TIMEOUT );
     }
 
 
@@ -101,5 +105,35 @@ public class LdapProxy
     public void removeListener( LdapProxyListener listener )
     {
         listeners.remove( listener );
+    }
+
+
+    public boolean addReceivedLdapMessage( LdapMessageWithPDU ldapMessage )
+    {
+        boolean bool = receivedLdapMessages.add( ldapMessage );
+        notifyListeners( ldapMessage );
+        return bool;
+    }
+
+
+    /**
+     * Notifies all listeners that a new LDAP Message has arrived.
+     *
+     * @param ldapMessage
+     *      the LDAP Message
+     */
+    private void notifyListeners( LdapMessageWithPDU ldapMessage )
+    {
+        for ( Iterator iter = listeners.iterator(); iter.hasNext(); )
+        {
+            LdapProxyListener proxyListener = ( LdapProxyListener ) iter.next();
+            proxyListener.ldapMessageReceived( ldapMessage );
+        }
+    }
+
+
+    public List<LdapMessageWithPDU> getReceivedLdapMessages()
+    {
+        return receivedLdapMessages;
     }
 }

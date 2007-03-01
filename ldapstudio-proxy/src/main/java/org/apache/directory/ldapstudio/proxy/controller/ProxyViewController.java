@@ -22,7 +22,6 @@ package org.apache.directory.ldapstudio.proxy.controller;
 
 import org.apache.directory.ldapstudio.proxy.controller.actions.ConnectAction;
 import org.apache.directory.ldapstudio.proxy.controller.actions.DisconnectAction;
-import org.apache.directory.ldapstudio.proxy.model.LdapProxy;
 import org.apache.directory.ldapstudio.proxy.view.ProxyView;
 import org.eclipse.jface.action.IToolBarManager;
 
@@ -37,9 +36,6 @@ public class ProxyViewController
 {
     /** The associated view */
     private ProxyView view;
-
-    /** The LDAP Proxy */
-    private LdapProxy ldapProxy;
 
     // Actions
     private ConnectAction connect;
@@ -83,36 +79,11 @@ public class ProxyViewController
 
 
     /**
-     * Gets the LDAP Proxy.
-     *
-     * @return
-     *      the LDAP Proxy
-     */
-    public LdapProxy getLdapProxy()
-    {
-        return ldapProxy;
-    }
-
-
-    /**
-     * Sets the LDAP Proxy.
-     *
-     * @param ldapProxy
-     *      the LDAP Proxy to set
-     */
-    public void setLdapProxy( LdapProxy ldapProxy )
-    {
-        this.ldapProxy = ldapProxy;
-        updateActions();
-    }
-
-
-    /**
      * Enables/Disables Actions.
      */
     private void updateActions()
     {
-        if ( ldapProxy == null )
+        if ( view.getLdapProxy() == null )
         {
             connect.setEnabled( true );
             disconnect.setEnabled( false );

@@ -20,14 +20,21 @@
 package org.apache.directory.ldapstudio.proxy.view;
 
 
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapOrFilterComponent;
 import org.apache.directory.ldapstudio.proxy.Activator;
 import org.apache.directory.ldapstudio.proxy.controller.ProxyViewController;
+import org.apache.directory.ldapstudio.proxy.model.LdapMessageWithPDU;
+import org.apache.directory.ldapstudio.proxy.model.LdapProxy;
+import org.apache.directory.ldapstudio.proxy.model.LdapProxyListener;
+import org.apache.directory.ldapstudio.proxy.view.wrappers.IWrapper;
+import org.apache.directory.ldapstudio.proxy.view.wrappers.LdapMessageWrapper;
+import org.apache.directory.ldapstudio.proxy.view.wrappers.LdapProxyWrapper;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -45,7 +52,30 @@ public class ProxyView extends ViewPart
     private ProxyViewController controller;
 
     /** The tree viewer */
-    private Tree viewer;
+    private TreeViewer viewer;
+
+    /** The LDAP Proxy */
+    private LdapProxy ldapProxy;
+
+    /** The LDAP Proxy Wrapper */
+    private LdapProxyWrapper ldapProxyWrapper;
+
+    /** The Proxy Listener */
+    private LdapProxyListener proxyListener = new LdapProxyListener()
+    {
+        public void ldapMessageReceived( final LdapMessageWithPDU ldapMessage )
+        {
+            System.out.println( ldapMessage.getLdapMessage() );
+            PlatformUI.getWorkbench().getDisplay().asyncExec( new Runnable()
+            {
+                public void run()
+                {
+//                    viewer.refresh();
+                    ( ( LdapProxyWrapper ) viewer.getInput() ).addChild( new LdapMessageWrapper( ( IWrapper ) viewer.getInput(), ldapMessage ) );
+                }
+            } );
+        }
+    };
 
 
     /* (non-Javadoc)
@@ -53,50 +83,55 @@ public class ProxyView extends ViewPart
      */
     public void createPartControl( Composite parent )
     {
-        viewer = new Tree( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        viewer.setContentProvider( new ProxyViewContentProvider() );
+        viewer.setLabelProvider( new ProxyViewLabelProvider() );
+        ldapProxyWrapper = new LdapProxyWrapper( this );
+        viewer.setInput( ldapProxyWrapper );
+
         controller = new ProxyViewController( this );
 
-        // TODO Remove
-        TreeItem treeItem = new TreeItem( viewer, SWT.NONE );
-        treeItem.setText( "Bind [id=1]" );
-
-        treeItem = new TreeItem( treeItem, SWT.NONE );
-        treeItem.setText( "Bind Request" );
-        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.IN )
-            .createImage() );
-
-        treeItem = new TreeItem( viewer.getTopItem(), SWT.NONE );
-        treeItem.setText( "Bind Response" );
-        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
-            .createImage() );
-
-        TreeItem treeItem2 = new TreeItem( viewer, SWT.NONE );
-        treeItem2.setText( "Search [id=2]" );
-
-        treeItem = new TreeItem( treeItem2, SWT.NONE );
-        treeItem.setText( "Search Request" );
-        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.IN )
-            .createImage() );
-
-        treeItem = new TreeItem( treeItem2, SWT.NONE );
-        treeItem.setText( "Search Result Entry" );
-        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
-            .createImage() );
-
-        treeItem = new TreeItem( treeItem2, SWT.NONE );
-        treeItem.setText( "Search Result Entry" );
-        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
-            .createImage() );
-
-        treeItem = new TreeItem( treeItem2, SWT.NONE );
-        treeItem.setText( "Search Result Entry" );
-        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
-            .createImage() );
-
-        treeItem = new TreeItem( treeItem2, SWT.NONE );
-        treeItem.setText( "Search Result Done" );
-        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
-            .createImage() );
+        //        // TODO Remove
+        //        TreeItem treeItem = new TreeItem( viewer, SWT.NONE );
+        //        treeItem.setText( "Bind [id=1]" );
+        //
+        //        treeItem = new TreeItem( treeItem, SWT.NONE );
+        //        treeItem.setText( "Bind Request" );
+        //        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.IN )
+        //            .createImage() );
+        //
+        //        treeItem = new TreeItem( viewer.getTopItem(), SWT.NONE );
+        //        treeItem.setText( "Bind Response" );
+        //        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+        //            .createImage() );
+        //
+        //        TreeItem treeItem2 = new TreeItem( viewer, SWT.NONE );
+        //        treeItem2.setText( "Search [id=2]" );
+        //
+        //        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        //        treeItem.setText( "Search Request" );
+        //        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.IN )
+        //            .createImage() );
+        //
+        //        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        //        treeItem.setText( "Search Result Entry" );
+        //        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+        //            .createImage() );
+        //
+        //        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        //        treeItem.setText( "Search Result Entry" );
+        //        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+        //            .createImage() );
+        //
+        //        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        //        treeItem.setText( "Search Result Entry" );
+        //        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+        //            .createImage() );
+        //
+        //        treeItem = new TreeItem( treeItem2, SWT.NONE );
+        //        treeItem.setText( "Search Result Done" );
+        //        treeItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, IImageKeys.OUT )
+        //            .createImage() );
     }
 
 
@@ -105,12 +140,38 @@ public class ProxyView extends ViewPart
      */
     public void setFocus()
     {
-        viewer.setFocus();
+        viewer.getControl().setFocus();
     }
 
 
     public ProxyViewController getController()
     {
         return controller;
+    }
+
+
+    public TreeViewer getViewer()
+    {
+        return viewer;
+    }
+
+
+    public LdapProxy getLdapProxy()
+    {
+        return ldapProxy;
+    }
+
+
+    public void setLdapProxy( LdapProxy ldapProxy )
+    {
+        if ( this.ldapProxy != null )
+        {
+            this.ldapProxy.removeListener( proxyListener );
+        }
+        this.ldapProxy = ldapProxy;
+        if ( ldapProxy != null )
+        {
+            ldapProxy.addListener( proxyListener );
+        }
     }
 }

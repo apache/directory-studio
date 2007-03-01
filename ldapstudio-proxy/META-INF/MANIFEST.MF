@@ -12,4 +12,9 @@ Require-Bundle: org.eclipse.ui,
  org.apache.directory.ldapstudio.browser.ui;resolution:=optional,
  org.apache.directory.ldapstudio.browser.core;resolution:=optional
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/shared-ldap-0.9.6-SNAPSHOT.jar,
+ lib/shared-asn1-0.9.6-SNAPSHOT.jar,
+ lib/nlog4j-1.2.24.jar,
+ lib/commons-collections-3.1.jar,
+ lib/antlr-2.7.6.jar

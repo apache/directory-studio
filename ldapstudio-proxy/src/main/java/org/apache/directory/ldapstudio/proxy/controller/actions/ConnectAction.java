@@ -76,7 +76,7 @@ public class ConnectAction extends Action
         {
             LdapProxy ldapProxy = new LdapProxy( connectWizard.getLocalPort(), connectWizard.getRemoteHost(),
                 connectWizard.getRemotePort() );
-            view.getController().setLdapProxy( ldapProxy );
+            view.setLdapProxy( ldapProxy );
             try
             {
                 ldapProxy.connect();

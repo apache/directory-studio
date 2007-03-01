@@ -17,22 +17,28 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.proxy.model;
+package org.apache.directory.ldapstudio.proxy.view;
 
+import org.apache.directory.ldapstudio.proxy.view.wrappers.IWrapper;
+import org.eclipse.jface.viewers.LabelProvider;
 
 /**
- * This interface defines a LDAP Proxy Listener.
+ * This class implements the Content Provider for the Proxy View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface LdapProxyListener
+public class ProxyViewLabelProvider extends LabelProvider
 {
-    /**
-     * This method is fired when a new LDAP Message is received by the proxy.
-     *
-     * @param ldapMessage
-     *      the received LDAP Message
-     */
-    public void ldapMessageReceived( LdapMessageWithPDU ldapMessage);
+    
+    public String getText( Object element )
+    {
+        if ( element instanceof IWrapper )
+        {
+            return ( ( IWrapper ) element ).getText();
+        }
+        
+        return super.getText( element );
+    }
+
 }

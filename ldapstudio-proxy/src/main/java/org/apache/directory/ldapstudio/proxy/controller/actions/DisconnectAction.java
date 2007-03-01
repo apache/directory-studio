@@ -60,7 +60,7 @@ public class DisconnectAction extends Action
      */
     public void run()
     {
-        view.getController().getLdapProxy().disconnect();
-        view.getController().setLdapProxy( null );
+        view.getLdapProxy().disconnect();
+        view.setLdapProxy( null );
     }
 }
