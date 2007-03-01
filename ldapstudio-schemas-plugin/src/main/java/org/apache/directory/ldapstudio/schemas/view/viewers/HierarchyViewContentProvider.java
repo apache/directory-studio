@@ -217,14 +217,6 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                 if ( !Activator.getDefault().getDialogSettings().getBoolean(
                     HideObjectClassesAction.HIDE_OBJECT_CLASSES_DS_KEY ) )
                 {
-                    //bootstrap the tree exploring process by adding the top node into the tree
-                    ObjectClass top = schemaPool.getObjectClass( "top" ); //$NON-NLS-1$
-                    if ( top != null )
-                    {
-                        ObjectClassWrapper topWrapper = new ObjectClassWrapper( top, intermediate );
-                        ocList.add( topWrapper );
-                    }
-
                     for ( int i = 0; i < objectClasses.length; i++ )
                     {
                         ObjectClass oClass = objectClasses[i];
@@ -233,7 +225,10 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                         if ( sups.length == 0 )
                         {
                             ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
-                            wrapper.setState( ObjectClassWrapper.State.unResolved );
+                            if ( !"2.5.6.0".equals( oClass.getOid() )  )
+                            {
+                                wrapper.setState( ObjectClassWrapper.State.unResolved );
+                            }
                             ocList.add( wrapper );
                             this.hasChildren( wrapper );
                         }
