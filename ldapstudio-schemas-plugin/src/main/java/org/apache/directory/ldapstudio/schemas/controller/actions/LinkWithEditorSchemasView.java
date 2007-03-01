@@ -67,9 +67,9 @@ public class LinkWithEditorSchemasView extends Action
     private IPartListener2 editorListener = new IPartListener2()
     {
         /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
+         * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
          */
-        public void partBroughtToTop( IWorkbenchPartReference partRef )
+        public void partVisible( IWorkbenchPartReference partRef )
         {
             String id = partRef.getId();
 
@@ -87,14 +87,6 @@ public class LinkWithEditorSchemasView extends Action
          */
         public void partActivated( IWorkbenchPartReference partRef )
         {
-            String id = partRef.getId();
-
-            if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
-            {
-                schemasView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
-                linkViewWithEditor( partRef.getPartName(), id );
-                schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
-            }
         }
 
 
@@ -139,18 +131,10 @@ public class LinkWithEditorSchemasView extends Action
 
 
         /* (non-Javadoc)
-         * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
+         * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
          */
-        public void partVisible( IWorkbenchPartReference partRef )
+        public void partBroughtToTop( IWorkbenchPartReference partRef )
         {
-            String id = partRef.getId();
-
-            if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
-            {
-                schemasView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
-                linkViewWithEditor( partRef.getPartName(), id );
-                schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
-            }
         }
     };
 
@@ -351,10 +335,12 @@ public class LinkWithEditorSchemasView extends Action
             IEditorReference reference = editorReferences[i];
             IWorkbenchPart workbenchPart = reference.getPart( true );
 
-            if ( ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) && ( reference.getPartName().equals( ( ( ObjectClassWrapper ) wrapper).getMyObjectClass().getNames()[0] ) ) )
-              || ( ( workbenchPart instanceof AttributeTypeFormEditor ) && ( wrapper instanceof AttributeTypeWrapper ) && ( reference.getPartName().equals( ( ( AttributeTypeWrapper ) wrapper).getMyAttributeType().getNames()[0] ) ) ) 
-              || ( ( workbenchPart instanceof SchemaFormEditor ) && ( wrapper instanceof SchemaWrapper ) && ( reference.getPartName().equals( ( ( SchemaWrapper ) wrapper).getMySchema().getName() ) ) ) 
-               )
+            if ( ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) && ( reference
+                .getPartName().equals( ( ( ObjectClassWrapper ) wrapper ).getMyObjectClass().getNames()[0] ) ) )
+                || ( ( workbenchPart instanceof AttributeTypeFormEditor ) && ( wrapper instanceof AttributeTypeWrapper ) && ( reference
+                    .getPartName().equals( ( ( AttributeTypeWrapper ) wrapper ).getMyAttributeType().getNames()[0] ) ) )
+                || ( ( workbenchPart instanceof SchemaFormEditor ) && ( wrapper instanceof SchemaWrapper ) && ( reference
+                    .getPartName().equals( ( ( SchemaWrapper ) wrapper ).getMySchema().getName() ) ) ) )
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( workbenchPart );
                 return;
