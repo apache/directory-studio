@@ -183,7 +183,7 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
 
         mandatoryAttributeTable = toolkit.createTable( mandatoryAttributeSectionClient, SWT.NONE );
         GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
-        gridData.heightHint = 100;
+        gridData.heightHint = 1;
         mandatoryAttributeTable.setLayoutData( gridData );
     }
 
@@ -214,7 +214,7 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
 
         optionalAttibuteTable = toolkit.createTable( optionalAttributeSectionClient, SWT.NONE );
         GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
-        gridData.heightHint = 100;
+        gridData.heightHint = 1;
         optionalAttibuteTable.setLayoutData( gridData );
     }
 
