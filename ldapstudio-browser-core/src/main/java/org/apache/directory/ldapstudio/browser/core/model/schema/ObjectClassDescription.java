@@ -286,6 +286,21 @@ public class ObjectClassDescription extends SchemaPart2
         this.superiorObjectClassDescriptionNames = superiorObjectClassDescriptionNames;
     }
 
+    
+    /**
+     * 
+     * @return all superior (parent) object class descriptions, may be an empty array
+     */
+    public ObjectClassDescription[] getSuperiorObjectClassDescriptions()
+    {
+        String[] names = getSuperiorObjectClassDescriptionNames();
+        ObjectClassDescription[] superiorOcds = new ObjectClassDescription[names.length];
+        for ( int i = 0; i < superiorOcds.length; i++ )
+        {
+            superiorOcds[i] = getSchema().getObjectClassDescription( names[i] );
+        }
+        return superiorOcds;
+    }
 
     /**
      * 
