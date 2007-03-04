@@ -34,12 +34,17 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
+import org.apache.directory.ldapstudio.browser.core.events.AttributesInitializedEvent;
+import org.apache.directory.ldapstudio.browser.core.events.BulkModificationEvent;
+import org.apache.directory.ldapstudio.browser.core.events.ChildrenInitializedEvent;
+import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.parser.LdifParser;
 
 
-public class ImportLdifJob extends AbstractEclipseJob
+public class ImportLdifJob extends AbstractAsyncBulkJob
 {
 
     private IConnection connection;
@@ -83,7 +88,7 @@ public class ImportLdifJob extends AbstractEclipseJob
     }
 
 
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__import_ldif_task, 2 );
@@ -136,6 +141,12 @@ public class ImportLdifJob extends AbstractEclipseJob
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__import_ldif_error;
+    }
+
+
+    protected void runNotification()
+    {
+        EventRegistry.fireEntryUpdated( new BulkModificationEvent( connection ), this );
     }
 
 }

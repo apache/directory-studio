@@ -46,6 +46,7 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifCha
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifChangeModDnRecord;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifChangeModifyRecord;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContentRecord;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifModSpec;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifRecord;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifAttrValLine;
@@ -383,15 +384,56 @@ class ConnectionModifyHandler
                     {
                         this.applyModificationAndLog( record, monitor );
 
-                        String dn = record.getDnLine().getValueAsString();
-                        IEntry entry = connection.getEntryFromCache( new DN( dn ) );
-                        if ( entry != null )
+                        // update cache and adjust attribute/children initialization flags
+                        DN dn = new DN( record.getDnLine().getValueAsString() );
+                        IEntry entry = connection.getEntryFromCache( dn );
+                        DN parentDn = dn.getParentDn();
+                        IEntry parentEntry = parentDn != null ? connection.getEntryFromCache( dn.getParentDn() ) : null;
+
+                        if ( record instanceof LdifChangeDeleteRecord )
                         {
-                            if ( record instanceof LdifChangeDeleteRecord )
+                            if ( entry != null )
                             {
+                                entry.setAttributesInitialized( false );
                                 connection.uncacheEntry( entry );
                             }
-                            else
+                            if ( parentEntry != null )
+                            {
+                                parentEntry.setChildrenInitialized( false );
+                            }
+                        }
+                        else if ( record instanceof LdifChangeModDnRecord )
+                        {
+                            if ( entry != null )
+                            {
+                                entry.setAttributesInitialized( false );
+                                connection.uncacheEntry( entry );
+                            }
+                            if ( parentEntry != null )
+                            {
+                                parentEntry.setChildrenInitialized( false );
+                            }
+                            LdifChangeModDnRecord modDnRecord = ( LdifChangeModDnRecord ) record;
+                            if ( modDnRecord.getNewsuperiorLine() != null )
+                            {
+                                DN newSuperiorDn = new DN( modDnRecord.getNewsuperiorLine().getValueAsString() );
+                                IEntry newSuperiorEntry = connection.getEntryFromCache( newSuperiorDn );
+                                if ( newSuperiorEntry != null )
+                                {
+                                    newSuperiorEntry.setChildrenInitialized( false );
+                                }
+                            }
+                        }
+                        else if ( record instanceof LdifChangeAddRecord || record instanceof LdifContentRecord )
+                        {
+                            if ( parentEntry != null )
+                            {
+                                parentEntry.setChildrenInitialized( false );
+                            }
+                        }
+                        else
+                        {
+                            if ( entry != null )
                             {
                                 entry.setAttributesInitialized( false );
                             }

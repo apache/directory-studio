@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
+import org.apache.directory.ldapstudio.browser.core.events.BulkModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EmptyValueDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
@@ -169,8 +170,8 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
     public void entryUpdated( EntryModificationEvent event )
     {
 
-        if ( viewer == null || viewer.getTree() == null || viewer.getTree().isDisposed()
-            || viewer.getInput() == null || event.getModifiedEntry() != viewer.getInput() )
+        if ( viewer == null || viewer.getTree() == null || viewer.getTree().isDisposed() || viewer.getInput() == null
+            || ( event.getModifiedEntry() != viewer.getInput() && !( event instanceof BulkModificationEvent ) ) )
         {
             return;
         }

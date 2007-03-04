@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.directory.ldapstudio.browser.core.events.AttributesInitializedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateListener;
+import org.apache.directory.ldapstudio.browser.core.events.BulkModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
@@ -502,6 +503,18 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             viewer.refresh( eme.getNewEntry().getParententry(), true );
             viewer.refresh( eme.getNewEntry(), true );
             viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
+        }
+        else if ( event instanceof EntryMovedEvent )
+        {
+            EntryMovedEvent eme = ( EntryMovedEvent ) event;
+            viewer.refresh( eme.getOldEntry().getParententry(), true );
+            viewer.refresh( eme.getNewEntry().getParententry(), true );
+            viewer.refresh( eme.getNewEntry(), true );
+            viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
+        }
+        else if ( event instanceof BulkModificationEvent )
+        {
+            viewer.refresh();
         }
 
         viewer.refresh( event.getModifiedEntry(), true );
