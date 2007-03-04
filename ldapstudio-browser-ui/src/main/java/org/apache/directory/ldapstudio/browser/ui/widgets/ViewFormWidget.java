@@ -42,24 +42,54 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 
+/**
+ * The ViewFormWidget is a widget that provides an info text,
+ * a tool bar, a menu and a main content composite including
+ * a context menu. 
+ * It looks like this:
+ * <pre>
+ * -----------------------------------
+ * | info text     | tool bar | menu |
+ * -----------------------------------
+ * |                                 |
+ * |          main content           |
+ * |                                 |
+ * -----------------------------------
+ * </pre>
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class ViewFormWidget
 {
 
+    /** The view form control */
     protected ViewForm control;
 
+    /** The info text, positioned at the top left */
     protected Text infoText;
 
+    /** The action tool bar */
     protected ToolBar actionToolBar;
 
+    /** The action tool bar manager */
     protected IToolBarManager actionToolBarManager;
 
+    /** The menu tool bar. */
     protected ToolBar menuToolBar;
 
+    /** The menu manager. */
     protected MenuManager menuManager;
 
+    /** The context menu manager. */
     protected MenuManager contextMenuManager;
 
 
+    /**
+     * Creates the widget.
+     *
+     * @param parent the parent composite
+     */
     public void createWidget( Composite parent )
     {
 
@@ -115,9 +145,20 @@ public abstract class ViewFormWidget
     }
 
 
+    
+    /**
+     * Creates the content.
+     * 
+     * @param control the control
+     * 
+     * @return the control
+     */
     protected abstract Control createContent( Composite control );
 
 
+    /**
+     * Shows the local view menu.
+     */
     private void showViewMenu()
     {
         Menu aMenu = menuManager.createContextMenu( control );
@@ -129,62 +170,85 @@ public abstract class ViewFormWidget
     }
 
 
+    /**
+     * Disposes this widget.
+     */
     public void dispose()
     {
-        if ( this.control != null )
+        if ( control != null )
         {
 
-            if ( this.contextMenuManager != null )
+            if ( contextMenuManager != null )
             {
-                this.contextMenuManager.removeAll();
-                this.contextMenuManager.dispose();
-                this.contextMenuManager = null;
+                contextMenuManager.removeAll();
+                contextMenuManager.dispose();
+                contextMenuManager = null;
             }
-            if ( this.menuToolBar != null )
+            if ( menuToolBar != null )
             {
-                this.menuToolBar.dispose();
-                this.menuToolBar = null;
-                this.menuManager.dispose();
-                this.menuManager = null;
+                menuToolBar.dispose();
+                menuToolBar = null;
+                menuManager.dispose();
+                menuManager = null;
             }
-            if ( this.actionToolBar != null )
+            if ( actionToolBar != null )
             {
-                this.actionToolBar.dispose();
-                this.actionToolBar = null;
-                this.actionToolBarManager.removeAll();
-                this.actionToolBarManager = null;
-            }
-
-            if ( this.infoText != null )
-            {
-                this.infoText.dispose();
-                this.infoText = null;
+                actionToolBar.dispose();
+                actionToolBar = null;
+                actionToolBarManager.removeAll();
+                actionToolBarManager = null;
             }
 
-            this.control.dispose();
-            this.control = null;
+            if ( infoText != null )
+            {
+                infoText.dispose();
+                infoText = null;
+            }
+
+            control.dispose();
+            control = null;
         }
     }
 
 
+    /**
+     * Gets the info text.
+     * 
+     * @return the info text
+     */
     public Text getInfoText()
     {
         return infoText;
     }
 
 
+    /**
+     * Gets the tool bar manager.
+     * 
+     * @return the tool bar manager
+     */
     public IToolBarManager getToolBarManager()
     {
         return this.actionToolBarManager;
     }
 
 
+    /**
+     * Gets the menu manager.
+     * 
+     * @return the menu manager
+     */
     public IMenuManager getMenuManager()
     {
         return menuManager;
     }
 
 
+    /**
+     * Gets the context menu manager.
+     * 
+     * @return the context menu manager
+     */
     public IMenuManager getContextMenuManager()
     {
         return this.contextMenuManager;

@@ -27,6 +27,8 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifCon
 import org.apache.directory.ldapstudio.browser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.browser.ui.widgets.ModWidget;
+import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -37,7 +39,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 
-public class BatchOperationModifyWizardPage extends WizardPage implements IPropertyChangeListener
+public class BatchOperationModifyWizardPage extends WizardPage implements WidgetModifyListener
 {
 
     private BatchOperationWizard wizard;
@@ -93,7 +95,7 @@ public class BatchOperationModifyWizardPage extends WizardPage implements IPrope
         modWidget = new ModWidget( wizard.getConnection() != null ? wizard.getConnection().getSchema()
             : Schema.DEFAULT_SCHEMA );
         modWidget.createContents( composite );
-        modWidget.addPropertyChangeListener( this );
+        modWidget.addWidgetModifyListener( this );
 
         validate();
 
@@ -107,10 +109,9 @@ public class BatchOperationModifyWizardPage extends WizardPage implements IPrope
         return modWidget.getLdifFragment();
     }
 
-
-    public void propertyChange( PropertyChangeEvent event )
+    public void widgetModified( WidgetModifyEvent event )
     {
-        this.validate();
+        validate();
     }
 
 }

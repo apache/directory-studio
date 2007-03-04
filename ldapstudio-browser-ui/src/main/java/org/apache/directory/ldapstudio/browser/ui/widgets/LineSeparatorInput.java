@@ -96,6 +96,7 @@ public class LineSeparatorInput extends OptionsInput
      * 
      * @return the other display values
      */
+    @SuppressWarnings("unchecked")
     private static String[] getOtherDisplayValues()
     {
         Map<String, String> lsMap = Platform.knownPlatformLineSeparators();
@@ -116,6 +117,7 @@ public class LineSeparatorInput extends OptionsInput
      * 
      * @return the other raw values
      */
+    @SuppressWarnings("unchecked")
     private static String[] getOtherRawValues()
     {
         Map<String, String> lsMap = Platform.knownPlatformLineSeparators();

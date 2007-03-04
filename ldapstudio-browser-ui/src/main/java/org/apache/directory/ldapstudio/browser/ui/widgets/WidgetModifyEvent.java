@@ -24,12 +24,25 @@ package org.apache.directory.ldapstudio.browser.ui.widgets;
 import java.util.EventObject;
 
 
+/**
+ * A WidgetModifyEvent indicates that a {@link BrowserWidget} has
+ * been modified.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class WidgetModifyEvent extends EventObject
 {
 
+    /** The serialVersionUID */
     private static final long serialVersionUID = 2421335730580648878L;
 
 
+    /**
+     * Creates a new instance of WidgetModifyEvent.
+     *
+     * @param source the event source
+     */
     public WidgetModifyEvent( Object source )
     {
         super( source );

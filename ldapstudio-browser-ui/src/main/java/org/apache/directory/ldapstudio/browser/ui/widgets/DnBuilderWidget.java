@@ -40,7 +40,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -169,7 +168,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                     rdnLineList.get( i ).rdnValueText.setText( parts[i].getUnencodedValue() );
                     if ( i == 0 )
                     {
-                        if("".equals(rdnLineList.get( i ).rdnNameCombo))
+                        if ( "".equals( rdnLineList.get( i ).rdnNameCombo ) )
                         {
                             rdnLineList.get( i ).rdnNameCombo.setFocus();
                         }
@@ -287,7 +286,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
 
     /**
-     * Validate.
+     * Validates the input elements.
      */
     public void validate()
     {
@@ -432,7 +431,6 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             rdnLineList.add( rdnLine );
         }
 
-        rdnComposite.layout( true, true );
         shell.layout( true, true );
     }
 
@@ -482,7 +480,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
         rdnLine.rdnAddButton = new Button( rdnComposite, SWT.PUSH );
         rdnLine.rdnAddButton.setText( "  +   " );
-        rdnLine.rdnAddButton.addSelectionListener( new SelectionListener()
+        rdnLine.rdnAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -498,11 +496,6 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 addRdnLine( rdnComposite, index );
 
                 validate();
-            }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
             }
         } );
 
@@ -558,38 +551,45 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
             if ( !rdnComposite.isDisposed() )
             {
-                rdnComposite.layout( true, true );
                 shell.layout( true, true );
             }
         }
     }
 
     /**
-     * The Class RdnLine.
+     * The Class RdnLine is a wrapper for all input elements
+     * of an RDN line. It contains a combo for the RDN attribute, 
+     * an input field for the RDN value and + and - buttons
+     * to add and remove other RDN lines. It looks like this:
+     * <pre>
+     * --------------------------------------------------
+     * | attribute type v | = | attribute value | + | - |
+     * --------------------------------------------------
+     * </pre>
      */
-    public class RdnLine
+    private class RdnLine
     {
 
         /** The rdn name combo. */
-        public DecoratedField rdnNameComboField;
+        private DecoratedField rdnNameComboField;
 
         /** The rdn name combo. */
-        public Combo rdnNameCombo;
+        private Combo rdnNameCombo;
 
         /** The content proposal adapter */
-        public ContentProposalAdapter rdnNameCPA;
+        private ContentProposalAdapter rdnNameCPA;
 
         /** The rdn value text. */
-        public Text rdnValueText;
+        private Text rdnValueText;
 
         /** The rdn equals label. */
-        public Label rdnEqualsLabel;
+        private Label rdnEqualsLabel;
 
         /** The rdn add button. */
-        public Button rdnAddButton;
+        private Button rdnAddButton;
 
         /** The rdn delete button. */
-        public Button rdnDeleteButton;
+        private Button rdnDeleteButton;
     }
 
 }

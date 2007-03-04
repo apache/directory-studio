@@ -21,9 +21,21 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets;
 
 
+/**
+ * A WidgetModifyListener listens for modifications of a
+ * {@link BrowserWidget}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface WidgetModifyListener
 {
 
+    /**
+     * Notified about the modification of a {@link BrowserWidget}.
+     * 
+     * @param event the event
+     */
     public void widgetModified( WidgetModifyEvent event );
 
 }

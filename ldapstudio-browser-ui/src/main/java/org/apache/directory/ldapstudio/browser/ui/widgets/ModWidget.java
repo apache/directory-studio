@@ -23,133 +23,135 @@ package org.apache.directory.ldapstudio.browser.ui.widgets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
-
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.fieldassist.ComboContentAdapter;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.DecoratedField;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
-public class ModWidget implements ModifyListener
+/**
+ * The ModWidget provides input elements to define an LDAP modify 
+ * operation.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class ModWidget extends BrowserWidget implements ModifyListener
 {
 
+    /** The schema with the possible attribute types */
     private Schema schema;
 
+    /** The shell */
     private Shell shell;
 
+    /** The composite that contains the ModSpecs */
     private Composite modComposite;
 
-    private ArrayList modGroupList;
+    /** The list of ModSpecs */
+    private ArrayList<ModSpec> modSpecList;
 
-    private int modCompositeHeight = -1;
-
+    /** The resulting LDIF */
     private String ldif;
 
 
+    /**
+     * Creates a new instance of ModWidget.
+     *
+     * @param schema the schema with the possible attribute types
+     */
     public ModWidget( Schema schema )
     {
         this.schema = schema;
-        this.modGroupList = new ArrayList();
+        this.modSpecList = new ArrayList<ModSpec>();
         this.ldif = null;
     }
 
 
+    /**
+     * Disposes this widget.
+     */
     public void dispose()
     {
     }
 
 
+    /**
+     * Gets the ldif.
+     * 
+     * @return the ldif
+     */
     public String getLdif()
     {
-        return this.ldif;
+        return ldif;
     }
 
 
+    /**
+     * Creates the contents.
+     * 
+     * @param parent the parent composite
+     * 
+     * @return the created composite
+     */
     public Composite createContents( Composite parent )
     {
-        this.shell = parent.getShell();
+        shell = parent.getShell();
 
         modComposite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
-        addModGroup( this.modComposite, 0 );
+        addModSpec( modComposite, 0 );
 
         return modComposite;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void modifyText( ModifyEvent e )
     {
-        this.validate();
-    }
-
-    private List listeners;
-
-
-    public void addPropertyChangeListener( IPropertyChangeListener listener )
-    {
-        if ( listeners == null )
-            listeners = new ArrayList();
-
-        if ( !listeners.contains( listener ) )
-            listeners.add( listener );
+        validate();
     }
 
 
-    public void removePropertyChangeListener( IPropertyChangeListener listener )
-    {
-        if ( listeners == null )
-            return;
-
-        if ( listeners.contains( listener ) )
-            listeners.remove( listener );
-    }
-
-
-    private void fire( String property, Object oldValue, Object newValue )
-    {
-        if ( listeners == null )
-            return;
-
-        for ( Iterator it = listeners.iterator(); it.hasNext(); )
-        {
-            ( ( IPropertyChangeListener ) it.next() ).propertyChange( new PropertyChangeEvent( this, property,
-                oldValue, newValue ) );
-        }
-    }
-
-
+    /**
+     * Validates the input elements.
+     */
     public void validate()
     {
-
-        for ( int i = 0; i < this.modGroupList.size(); i++ )
+        for ( int i = 0; i < modSpecList.size(); i++ )
         {
-            ModGroup modGroup = ( ModGroup ) this.modGroupList.get( i );
-            if ( this.modGroupList.size() > 1 )
+            ModSpec modSpec = ( ModSpec ) modSpecList.get( i );
+            if ( modSpecList.size() > 1 )
             {
-                modGroup.modDeleteButton.setEnabled( true );
+                modSpec.modDeleteButton.setEnabled( true );
             }
             else
             {
-                modGroup.modDeleteButton.setEnabled( false );
+                modSpec.modDeleteButton.setEnabled( false );
             }
-            for ( int k = 0; k < modGroup.valueLineList.size(); k++ )
+            for ( int k = 0; k < modSpec.valueLineList.size(); k++ )
             {
-                ValueLine valueLine = ( ValueLine ) modGroup.valueLineList.get( k );
-                if ( modGroup.valueLineList.size() > 1 )
+                ValueLine valueLine = ( ValueLine ) modSpec.valueLineList.get( k );
+                if ( modSpec.valueLineList.size() > 1 )
                 {
                     valueLine.valueDeleteButton.setEnabled( true );
                 }
@@ -160,174 +162,204 @@ public class ModWidget implements ModifyListener
             }
         }
 
-        fire( "ldif", null, null );
+        notifyListeners();
     }
 
 
-    private void addModGroup( Composite modComposite, int index )
+    /**
+     * Adds a modification spec at the given index.
+     * 
+     * @param modComposite the composite
+     * @param index the index
+     */
+    private void addModSpec( Composite modComposite, int index )
     {
 
-        ModGroup[] modGroups = ( ModGroup[] ) modGroupList.toArray( new ModGroup[modGroupList.size()] );
+        ModSpec[] modSpecs = ( ModSpec[] ) modSpecList.toArray( new ModSpec[modSpecList.size()] );
 
-        if ( modGroups.length > 0 )
+        if ( modSpecs.length > 0 )
         {
-            for ( int i = 0; i < modGroups.length; i++ )
+            for ( int i = 0; i < modSpecs.length; i++ )
             {
-                ModGroup oldModGroup = modGroups[i];
+                ModSpec oldModSpec = modSpecs[i];
 
                 // remember values
-                String oldType = oldModGroup.modType.getText();
-                String oldAttribute = oldModGroup.modAttribute.getText();
-                String[] oldValues = new String[oldModGroup.valueLineList.size()];
+                String oldType = oldModSpec.modType.getText();
+                String oldAttribute = oldModSpec.modAttributeCombo.getText();
+                String[] oldValues = new String[oldModSpec.valueLineList.size()];
                 for ( int k = 0; k < oldValues.length; k++ )
                 {
-                    oldValues[k] = ( ( ValueLine ) oldModGroup.valueLineList.get( k ) ).valueText.getText();
+                    oldValues[k] = ( ( ValueLine ) oldModSpec.valueLineList.get( k ) ).valueText.getText();
                 }
 
                 // delete old
-                oldModGroup.modGroup.dispose();
-                oldModGroup.modAddButton.dispose();
-                oldModGroup.modDeleteButton.dispose();
-                modGroupList.remove( oldModGroup );
+                oldModSpec.modGroup.dispose();
+                oldModSpec.modAddButton.dispose();
+                oldModSpec.modDeleteButton.dispose();
+                modSpecList.remove( oldModSpec );
 
                 // add new
-                ModGroup newModGroup = createModGroup( modComposite );
-                modGroupList.add( newModGroup );
+                ModSpec newModSpec = createModSpec( modComposite );
+                modSpecList.add( newModSpec );
 
                 // restore values
-                newModGroup.modType.setText( oldType );
-                newModGroup.modAttribute.setText( oldAttribute );
-                deleteValueLine( newModGroup, 0 );
+                newModSpec.modType.setText( oldType );
+                newModSpec.modAttributeCombo.setText( oldAttribute );
+                deleteValueLine( newModSpec, 0 );
                 for ( int k = 0; k < oldValues.length; k++ )
                 {
-                    addValueLine( newModGroup, k );
-                    ValueLine newValueLine = ( ValueLine ) newModGroup.valueLineList.get( k );
+                    addValueLine( newModSpec, k );
+                    ValueLine newValueLine = ( ValueLine ) newModSpec.valueLineList.get( k );
                     newValueLine.valueText.setText( oldValues[k] );
                 }
 
                 // check
                 if ( index == i + 1 )
                 {
-                    ModGroup modGroup = createModGroup( modComposite );
-                    modGroupList.add( modGroup );
-
+                    ModSpec modSpec = createModSpec( modComposite );
+                    modSpecList.add( modSpec );
                 }
             }
         }
         else
         {
-            ModGroup modGroup = createModGroup( modComposite );
-            modGroupList.add( modGroup );
+            ModSpec modSpec = createModSpec( modComposite );
+            modSpecList.add( modSpec );
         }
+
+        shell.layout( true, true );
     }
 
 
-    private ModGroup createModGroup( final Composite modComposite )
+    /**
+     * Creates and returns a modification spec.
+     * 
+     * @param modComposite the composite
+     * 
+     * @return the created modification spec
+     */
+    private ModSpec createModSpec( final Composite modComposite )
     {
-        final ModGroup modGroup = new ModGroup();
+        final ModSpec modSpec = new ModSpec();
 
-        // this.connection.getSchema().getAttributeTypeDescriptionNames()
-        modGroup.modGroup = BaseWidgetUtils.createGroup( modComposite, "", 1 );
-        Composite modGroupComposite = BaseWidgetUtils.createColumnContainer( modGroup.modGroup, 2, 1 );
-        modGroup.modType = BaseWidgetUtils.createCombo( modGroupComposite, new String[]
+        modSpec.modGroup = BaseWidgetUtils.createGroup( modComposite, "", 1 );
+        Composite modSpecComposite = BaseWidgetUtils.createColumnContainer( modSpec.modGroup, 2, 1 );
+        modSpec.modType = BaseWidgetUtils.createCombo( modSpecComposite, new String[]
             { "add", "replace", "delete" }, 0, 1 );
-        modGroup.modType.addModifyListener( this );
+        modSpec.modType.addModifyListener( this );
         String[] attributeDescriptions = schema.getAttributeTypeDescriptionNames();
         Arrays.sort( attributeDescriptions );
-        modGroup.modAttribute = BaseWidgetUtils.createCombo( modGroupComposite, attributeDescriptions, -1, 1 );
-        modGroup.modAttribute.addModifyListener( this );
 
-        modGroup.modAddButton = new Button( modComposite, SWT.PUSH );
-        modGroup.modAddButton.setText( "  +   " );
-        modGroup.modAddButton.addSelectionListener( new SelectionListener()
+        // attribute combo with field decoration
+        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
+            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
+        modSpec.modAttributeComboField = new DecoratedField( modSpecComposite, SWT.NONE, new IControlCreator()
+        {
+            public Control createControl( Composite parent, int style )
+            {
+                Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
+                combo.setVisibleItemCount( 20 );
+                return combo;
+            }
+        } );
+        modSpec.modAttributeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
+        modSpec.modAttributeComboField.getLayoutControl().setLayoutData(
+            new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        modSpec.modAttributeCombo = ( Combo ) modSpec.modAttributeComboField.getControl();
+        modSpec.modAttributeCombo.setItems( attributeDescriptions );
+        modSpec.modAttributeCombo.addModifyListener( this );
+
+        // content proposal adapter
+        modSpec.modAttributeCPA = new ContentProposalAdapter( modSpec.modAttributeCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( attributeDescriptions ), null, null );
+        modSpec.modAttributeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        modSpec.modAttributeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+
+        // add button with listener
+        modSpec.modAddButton = new Button( modComposite, SWT.PUSH );
+        modSpec.modAddButton.setText( "  +   " );
+        modSpec.modAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                int index = modGroupList.size();
-                for ( int i = 0; i < modGroupList.size(); i++ )
+                int index = modSpecList.size();
+                for ( int i = 0; i < modSpecList.size(); i++ )
                 {
-                    ModGroup modGroup = ( ModGroup ) modGroupList.get( i );
-                    if ( modGroup.modAddButton == e.widget )
+                    ModSpec modSpec = modSpecList.get( i );
+                    if ( modSpec.modAddButton == e.widget )
                     {
                         index = i + 1;
                     }
                 }
-                addModGroup( modComposite, index );
 
-                Point shellSize = shell.getSize();
-                Point modCompositeSize = modComposite.computeSize( SWT.DEFAULT, SWT.DEFAULT, true );
-                int newModCompositeSize = modCompositeSize.y;
-                shell.setSize( shellSize.x, shellSize.y + newModCompositeSize - modCompositeHeight );
-                modComposite.layout( true, true );
-                shell.layout( true, true );
-                modCompositeHeight = newModCompositeSize;
+                addModSpec( modComposite, index );
 
                 validate();
             }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-            }
         } );
 
-        modGroup.modDeleteButton = new Button( modComposite, SWT.PUSH );
-        modGroup.modDeleteButton.setText( "  \u2212  " ); // \u2013
-        modGroup.modDeleteButton.addSelectionListener( new SelectionListener()
+        // delete button with listener
+        modSpec.modDeleteButton = new Button( modComposite, SWT.PUSH );
+        modSpec.modDeleteButton.setText( "  \u2212  " ); // \u2013
+        modSpec.modDeleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 int index = 0;
-                for ( int i = 0; i < modGroupList.size(); i++ )
+                for ( int i = 0; i < modSpecList.size(); i++ )
                 {
-                    ModGroup modGroup = ( ModGroup ) modGroupList.get( i );
-                    if ( modGroup.modDeleteButton == e.widget )
+                    ModSpec modSpec = modSpecList.get( i );
+                    if ( modSpec.modDeleteButton == e.widget )
                     {
                         index = i;
                     }
                 }
-                deleteModGroup( modComposite, index );
 
-                Point shellSize = shell.getSize();
-                Point groupSize = modComposite.computeSize( SWT.DEFAULT, SWT.DEFAULT, true );
-                int newModCompositeSize = groupSize.y;
-                shell.setSize( shellSize.x, shellSize.y + newModCompositeSize - modCompositeHeight );
-                modComposite.layout( true, true );
-                shell.layout( true, true );
-                modCompositeHeight = newModCompositeSize;
+                deleteModSpec( modComposite, index );
 
                 validate();
             }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-            }
         } );
 
-        addValueLine( modGroup, 0 );
+        addValueLine( modSpec, 0 );
 
-        return modGroup;
+        return modSpec;
     }
 
 
-    private void deleteModGroup( Composite modComposite, int index )
+    /**
+     * Delets a modification spec.
+     *
+     * @param modComposite the composite
+     * @param index the index
+     */
+    private void deleteModSpec( Composite modComposite, int index )
     {
-        ModGroup modGroup = ( ModGroup ) modGroupList.remove( index );
-        if ( modGroup != null )
+        ModSpec modSpec = modSpecList.remove( index );
+        if ( modSpec != null )
         {
-            modGroup.modGroup.dispose();
-            modGroup.modAddButton.dispose();
-            modGroup.modDeleteButton.dispose();
+            modSpec.modGroup.dispose();
+            modSpec.modAddButton.dispose();
+            modSpec.modDeleteButton.dispose();
+
+            if ( !modComposite.isDisposed() )
+            {
+                shell.layout( true, true );
+            }
         }
     }
 
 
-    private void addValueLine( ModGroup modGroup, int index )
+    /**
+     * Adds a value line to the given modification spec.
+     * 
+     * @param modSpec the modification spec
+     * @param index the index
+     */
+    private void addValueLine( ModSpec modSpec, int index )
     {
 
-        ValueLine[] valueLines = ( ValueLine[] ) modGroup.valueLineList.toArray( new ValueLine[modGroup.valueLineList
-            .size()] );
+        ValueLine[] valueLines = modSpec.valueLineList.toArray( new ValueLine[modSpec.valueLineList.size()] );
 
         if ( valueLines.length > 0 )
         {
@@ -340,11 +372,11 @@ public class ModWidget implements ModifyListener
 
                 // delete old
                 oldValueLine.valueComposite.dispose();
-                modGroup.valueLineList.remove( oldValueLine );
+                modSpec.valueLineList.remove( oldValueLine );
 
                 // add new
-                ValueLine newValueLine = createValueLine( modGroup );
-                modGroup.valueLineList.add( newValueLine );
+                ValueLine newValueLine = createValueLine( modSpec );
+                modSpec.valueLineList.add( newValueLine );
 
                 // restore value
                 newValueLine.valueText.setText( oldValue );
@@ -352,93 +384,80 @@ public class ModWidget implements ModifyListener
                 // check
                 if ( index == i + 1 )
                 {
-                    ValueLine valueLine = createValueLine( modGroup );
-                    modGroup.valueLineList.add( valueLine );
+                    ValueLine valueLine = createValueLine( modSpec );
+                    modSpec.valueLineList.add( valueLine );
                 }
             }
         }
         else
         {
-            ValueLine valueLine = createValueLine( modGroup );
-            modGroup.valueLineList.add( valueLine );
+            ValueLine valueLine = createValueLine( modSpec );
+            modSpec.valueLineList.add( valueLine );
         }
+
+        shell.layout( true, true );
     }
 
 
-    private ValueLine createValueLine( final ModGroup modGroup )
+    /**
+     * Creates the value line.
+     * 
+     * @param modSpec the modification spec
+     * 
+     * @return the value line
+     */
+    private ValueLine createValueLine( final ModSpec modSpec )
     {
         final ValueLine valueLine = new ValueLine();
 
-        // this.connection.getSchema().getAttributeTypeDescriptionNames()
-        valueLine.valueComposite = BaseWidgetUtils.createColumnContainer( modGroup.modGroup, 3, 1 );
+        // text field
+        valueLine.valueComposite = BaseWidgetUtils.createColumnContainer( modSpec.modGroup, 3, 1 );
         valueLine.valueText = BaseWidgetUtils.createText( valueLine.valueComposite, "", 1 );
         valueLine.valueText.addModifyListener( this );
 
+        // add button with listener
         valueLine.valueAddButton = new Button( valueLine.valueComposite, SWT.PUSH );
         valueLine.valueAddButton.setText( "  +   " );
-        valueLine.valueAddButton.addSelectionListener( new SelectionListener()
+        valueLine.valueAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                int index = modGroup.valueLineList.size();
-                for ( int i = 0; i < modGroup.valueLineList.size(); i++ )
+                int index = modSpec.valueLineList.size();
+                for ( int i = 0; i < modSpec.valueLineList.size(); i++ )
                 {
-                    ValueLine valueLine = ( ValueLine ) modGroup.valueLineList.get( i );
+                    ValueLine valueLine = modSpec.valueLineList.get( i );
                     if ( valueLine.valueAddButton == e.widget )
                     {
                         index = i + 1;
                     }
                 }
-                addValueLine( modGroup, index );
 
-                Point shellSize = shell.getSize();
-                Point modCompositeSize = modComposite.computeSize( SWT.DEFAULT, SWT.DEFAULT, true );
-                int newModCompositeSize = modCompositeSize.y;
-                shell.setSize( shellSize.x, shellSize.y + newModCompositeSize - modCompositeHeight );
-                modComposite.layout( true, true );
-                shell.layout( true, true );
-                modCompositeHeight = newModCompositeSize;
+                addValueLine( modSpec, index );
 
                 validate();
             }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-            }
         } );
 
+        // delete button with listener
         valueLine.valueDeleteButton = new Button( valueLine.valueComposite, SWT.PUSH );
         valueLine.valueDeleteButton.setText( "  \u2212  " ); // \u2013
-        valueLine.valueDeleteButton.addSelectionListener( new SelectionListener()
+        valueLine.valueDeleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 int index = 0;
-                for ( int i = 0; i < modGroup.valueLineList.size(); i++ )
+                for ( int i = 0; i < modSpec.valueLineList.size(); i++ )
                 {
-                    ValueLine valueLine = ( ValueLine ) modGroup.valueLineList.get( i );
+                    ValueLine valueLine = modSpec.valueLineList.get( i );
                     if ( valueLine.valueDeleteButton == e.widget )
                     {
                         index = i;
                     }
                 }
-                deleteValueLine( modGroup, index );
 
-                Point shellSize = shell.getSize();
-                Point groupSize = modComposite.computeSize( SWT.DEFAULT, SWT.DEFAULT, true );
-                int newModCompositeSize = groupSize.y;
-                shell.setSize( shellSize.x, shellSize.y + newModCompositeSize - modCompositeHeight );
-                modComposite.layout( true, true );
-                shell.layout( true, true );
-                modCompositeHeight = newModCompositeSize;
+                deleteValueLine( modSpec, index );
 
                 validate();
-            }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
             }
         } );
 
@@ -446,37 +465,53 @@ public class ModWidget implements ModifyListener
     }
 
 
-    private void deleteValueLine( ModGroup modGroup, int index )
+    /**
+     * Delete value line.
+     * 
+     * @param modSpec the mod spec
+     * @param index the index
+     */
+    private void deleteValueLine( ModSpec modSpec, int index )
     {
-        ValueLine valueLine = ( ValueLine ) modGroup.valueLineList.remove( index );
+        ValueLine valueLine = ( ValueLine ) modSpec.valueLineList.remove( index );
         if ( valueLine != null )
         {
             valueLine.valueComposite.dispose();
+
+            if ( !modComposite.isDisposed() )
+            {
+                shell.layout( true, true );
+            }
         }
     }
 
 
+    /**
+     * Gets the LDIF fragment.
+     * 
+     * @return the LDIF fragment
+     */
     public String getLdifFragment()
     {
 
         StringBuffer sb = new StringBuffer();
         sb.append( "changetype: modify" ).append( BrowserCoreConstants.LINE_SEPARATOR );
 
-        ModGroup[] modGroups = ( ModGroup[] ) modGroupList.toArray( new ModGroup[modGroupList.size()] );
+        ModSpec[] modSpecs = ( ModSpec[] ) modSpecList.toArray( new ModSpec[modSpecList.size()] );
 
-        if ( modGroups.length > 0 )
+        if ( modSpecs.length > 0 )
         {
-            for ( int i = 0; i < modGroups.length; i++ )
+            for ( int i = 0; i < modSpecs.length; i++ )
             {
-                ModGroup modGroup = modGroups[i];
+                ModSpec modSpec = modSpecs[i];
 
                 // get values
-                String type = modGroup.modType.getText();
-                String attribute = modGroup.modAttribute.getText();
-                String[] values = new String[modGroup.valueLineList.size()];
+                String type = modSpec.modType.getText();
+                String attribute = modSpec.modAttributeCombo.getText();
+                String[] values = new String[modSpec.valueLineList.size()];
                 for ( int k = 0; k < values.length; k++ )
                 {
-                    values[k] = ( ( ValueLine ) modGroup.valueLineList.get( k ) ).valueText.getText();
+                    values[k] = ( ( ValueLine ) modSpec.valueLineList.get( k ) ).valueText.getText();
                 }
 
                 // build ldif
@@ -497,30 +532,73 @@ public class ModWidget implements ModifyListener
         return sb.toString();
     }
 
-    public class ModGroup
+    /**
+     * The Class ModSpec is a wrapper for all input elements
+     * of an modification. It contains a combo for the modify
+     * operation, a combo for the attribute to modify, 
+     * value lines and + and - buttons to add and remove 
+     * other modifications. It looks like this:
+     * <pre>
+     * ----------------------------------
+     * | operation v | attribute type v |--------
+     * ------------------------ --------| + | - |
+     * | value                  | + | - |--------
+     * ----------------------------------
+     * </pre>
+     */
+    private class ModSpec
     {
-        public Group modGroup;
 
-        public Combo modType;
+        /** The mod group. */
+        private Group modGroup;
 
-        public Combo modAttribute;
+        /** The mod type. */
+        private Combo modType;
 
-        public Button modAddButton;
+        /** The modification attribute field. */
+        private DecoratedField modAttributeComboField;
 
-        public Button modDeleteButton;
+        /** The modification attribute. */
+        private Combo modAttributeCombo;
 
-        public ArrayList valueLineList = new ArrayList();;
+        /** The modification content proposal adapter */
+        private ContentProposalAdapter modAttributeCPA;
+
+        /** The mod add button. */
+        private Button modAddButton;
+
+        /** The mod delete button. */
+        private Button modDeleteButton;
+
+        /** The value line list. */
+        private ArrayList<ValueLine> valueLineList = new ArrayList<ValueLine>();;
     }
 
-    public class ValueLine
+    /**
+     * The Class ValueLine is a wrapper for all input elements
+     * of an value line. It contains an input field for the value
+     * and + and - buttons to add and remove other value lines. 
+     * It looks like this:
+     * <pre>
+     * -------------------------------------
+     * | value                     | + | - |
+     * -------------------------------------
+     * </pre>
+     */
+    private class ValueLine
     {
-        public Composite valueComposite;
 
-        public Text valueText;
+        /** The value composite. */
+        private Composite valueComposite;
 
-        public Button valueAddButton;
+        /** The value text. */
+        private Text valueText;
 
-        public Button valueDeleteButton;
+        /** The value add button. */
+        private Button valueAddButton;
+
+        /** The value delete button. */
+        private Button valueDeleteButton;
     }
 
 }
