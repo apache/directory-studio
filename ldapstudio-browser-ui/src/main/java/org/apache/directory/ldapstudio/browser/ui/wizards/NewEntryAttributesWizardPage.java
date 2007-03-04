@@ -35,7 +35,8 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEdito
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetActionGroup;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetConfiguration;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetUniversalListener;
-
+import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.OpenDefaultEditorAction;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -95,6 +96,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         {
 
             DummyEntry newEntry = wizard.getNewEntry();
+            IValue editValue = null;
 
             try
             {
@@ -131,6 +133,11 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                         IAttribute att = new Attribute( newEntry, newMust[i] );
                         newEntry.addAttribute( att );
                         att.addEmptyValue();
+
+                        if ( editValue == null )
+                        {
+                            editValue = att.getValues()[0];
+                        }
                     }
                 }
             }
@@ -146,6 +153,20 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
             this.mainWidget.getViewer().setInput( newEntry );
             this.mainWidget.getViewer().refresh();
             validate();
+
+            // set focus to the viewer
+            mainWidget.getViewer().getControl().setFocus();
+
+            // start editing
+            if ( editValue != null )
+            {
+                mainWidget.getViewer().setSelection( new StructuredSelection( editValue ), true );
+                OpenDefaultEditorAction openDefaultEditorAction = actionGroup.getOpenDefaultEditorAction();
+                if ( openDefaultEditorAction.isEnabled() )
+                {
+                    openDefaultEditorAction.run();
+                }
+            }
         }
         else
         {

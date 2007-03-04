@@ -29,15 +29,23 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.RDN;
 import org.apache.directory.ldapstudio.browser.core.model.RDNPart;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.EntryWidget;
+import org.eclipse.jface.fieldassist.ComboContentAdapter;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.DecoratedField;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -132,6 +140,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 RdnLine rdnLine = rdnLineList.get( i );
                 String oldName = rdnLine.rdnNameCombo.getText();
                 rdnLine.rdnNameCombo.setItems( attributeNames );
+                rdnLine.rdnNameCPA.setContentProposalProvider( new ListContentProposalProvider( attributeNames ) );
                 if ( Arrays.asList( rdnLine.rdnNameCombo.getItems() ).contains( oldName ) )
                 {
                     rdnLine.rdnNameCombo.setText( oldName );
@@ -148,6 +157,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             if ( currentRdn == null || currentRdn.getParts().length == 0 )
             {
                 addRdnLine( rdnComposite, 0 );
+                rdnLineList.get( 0 ).rdnNameCombo.setFocus();
             }
             else
             {
@@ -159,7 +169,15 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                     rdnLineList.get( i ).rdnValueText.setText( parts[i].getUnencodedValue() );
                     if ( i == 0 )
                     {
-                        rdnLineList.get( i ).rdnValueText.setFocus();
+                        if("".equals(rdnLineList.get( i ).rdnNameCombo))
+                        {
+                            rdnLineList.get( i ).rdnNameCombo.setFocus();
+                        }
+                        else
+                        {
+                            rdnLineList.get( i ).rdnValueText.selectAll();
+                            rdnLineList.get( i ).rdnValueText.setFocus();
+                        }
                     }
                 }
             }
@@ -385,7 +403,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 String oldValue = oldRdnLine.rdnValueText.getText();
 
                 // delete old
-                oldRdnLine.rdnNameCombo.dispose();
+                oldRdnLine.rdnNameComboField.getLayoutControl().dispose();
                 oldRdnLine.rdnEqualsLabel.dispose();
                 oldRdnLine.rdnValueText.dispose();
                 oldRdnLine.rdnAddButton.dispose();
@@ -430,11 +448,30 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     {
         final RdnLine rdnLine = new RdnLine();
 
-        rdnLine.rdnNameCombo = new Combo( rdnComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
+        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
+            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
+        rdnLine.rdnNameComboField = new DecoratedField( rdnComposite, SWT.NONE, new IControlCreator()
+        {
+            public Control createControl( Composite parent, int style )
+            {
+                Combo combo = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
+                GridData gd = new GridData();
+                gd.widthHint = 180;
+                combo.setLayoutData( gd );
+                combo.setVisibleItemCount( 20 );
+                return combo;
+            }
+        } );
+        rdnLine.rdnNameComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
         GridData gd = new GridData();
         gd.widthHint = 180;
-        rdnLine.rdnNameCombo.setLayoutData( gd );
-        rdnLine.rdnNameCombo.setVisibleItemCount( 20 );
+        rdnLine.rdnNameComboField.getLayoutControl().setLayoutData( gd );
+        rdnLine.rdnNameCombo = ( Combo ) rdnLine.rdnNameComboField.getControl();
+
+        rdnLine.rdnNameCPA = new ContentProposalAdapter( rdnLine.rdnNameCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( attributeNames ), null, null );
+        rdnLine.rdnNameCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        rdnLine.rdnNameCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
 
         rdnLine.rdnEqualsLabel = new Label( rdnComposite, SWT.NONE );
         rdnLine.rdnEqualsLabel.setText( "=" );
@@ -471,7 +508,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
         rdnLine.rdnDeleteButton = new Button( rdnComposite, SWT.PUSH );
         rdnLine.rdnDeleteButton.setText( "  \u2212  " ); // \u2013
-        rdnLine.rdnDeleteButton.addSelectionListener( new SelectionListener()
+        rdnLine.rdnDeleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -487,11 +524,6 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 deleteRdnLine( rdnComposite, index );
 
                 validate();
-            }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
             }
         } );
 
@@ -518,14 +550,17 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         RdnLine rdnLine = ( RdnLine ) rdnLineList.remove( index );
         if ( rdnLine != null )
         {
-            rdnLine.rdnNameCombo.dispose();
+            rdnLine.rdnNameComboField.getLayoutControl().dispose();
             rdnLine.rdnEqualsLabel.dispose();
             rdnLine.rdnValueText.dispose();
             rdnLine.rdnAddButton.dispose();
             rdnLine.rdnDeleteButton.dispose();
 
-            rdnComposite.layout( true, true );
-            shell.layout( true, true );
+            if ( !rdnComposite.isDisposed() )
+            {
+                rdnComposite.layout( true, true );
+                shell.layout( true, true );
+            }
         }
     }
 
@@ -536,7 +571,13 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     {
 
         /** The rdn name combo. */
+        public DecoratedField rdnNameComboField;
+
+        /** The rdn name combo. */
         public Combo rdnNameCombo;
+
+        /** The content proposal adapter */
+        public ContentProposalAdapter rdnNameCPA;
 
         /** The rdn value text. */
         public Text rdnValueText;

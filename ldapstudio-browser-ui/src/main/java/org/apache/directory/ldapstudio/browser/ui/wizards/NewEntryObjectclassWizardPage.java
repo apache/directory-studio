@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
@@ -33,9 +34,14 @@ import org.apache.directory.ldapstudio.browser.core.internal.model.Value;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
+import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
+import org.eclipse.jface.fieldassist.DecoratedField;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -43,17 +49,24 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 
 public class NewEntryObjectclassWizardPage extends WizardPage
@@ -65,11 +78,13 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
     private NewEntryWizard wizard;
 
-    private List availableObjectClasses;
+    private List<ObjectClassDescription> availableObjectClasses;
+
+    private Text availabeObjectClassesInstantSearch;
 
     private ListViewer availableObjectClassesViewer;
 
-    private List selectedObjectClasses;
+    private List<ObjectClassDescription> selectedObjectClasses;
 
     private ListViewer selectedObjectClassesViewer;
 
@@ -90,8 +105,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         this.wizard = wizard;
 
-        this.availableObjectClasses = new ArrayList();
-        this.selectedObjectClasses = new ArrayList();
+        this.availableObjectClasses = new ArrayList<ObjectClassDescription>();
+        this.selectedObjectClasses = new ArrayList<ObjectClassDescription>();
     }
 
 
@@ -117,19 +132,21 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         if ( wizard.getSelectedConnection() != null )
         {
             availableObjectClasses.addAll( Arrays.asList( wizard.getSelectedConnection().getSchema()
-                .getObjectClassDescriptionNames() ) );
-        }
+                .getObjectClassDescriptions() ) );
 
-        DummyEntry newEntry = wizard.getNewEntry();
-        IAttribute ocAttribute = newEntry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
-        if ( ocAttribute != null )
-        {
-            String[] ocValues = ocAttribute.getStringValues();
-            for ( int i = 0; i < ocValues.length; i++ )
+            DummyEntry newEntry = wizard.getNewEntry();
+            IAttribute ocAttribute = newEntry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
+            if ( ocAttribute != null )
             {
-                String oc = ocValues[i];
-                availableObjectClasses.remove( oc );
-                selectedObjectClasses.add( oc );
+                String[] ocValues = ocAttribute.getStringValues();
+                for ( int i = 0; i < ocValues.length; i++ )
+                {
+                    String ocValue = ocValues[i];
+                    ObjectClassDescription ocd = wizard.getSelectedConnection().getSchema().getObjectClassDescription(
+                        ocValue );
+                    availableObjectClasses.remove( ocd );
+                    selectedObjectClasses.add( ocd );
+                }
             }
         }
 
@@ -158,10 +175,10 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             {
                 ocAttribute.deleteValue( values[i] );
             }
-            for ( Iterator it = selectedObjectClasses.iterator(); it.hasNext(); )
+            for ( Iterator<ObjectClassDescription> it = selectedObjectClasses.iterator(); it.hasNext(); )
             {
-                Object oc = ( Object ) it.next();
-                ocAttribute.addValue( new Value( ocAttribute, oc ) );
+                ObjectClassDescription ocd = it.next();
+                ocAttribute.addValue( new Value( ocAttribute, ocd.getNames()[0] ) );
             }
 
         }
@@ -184,6 +201,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         {
             loadState();
             validate();
+            availabeObjectClassesInstantSearch.setFocus();
         }
     }
 
@@ -221,7 +239,43 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         Label selectedLabel = new Label( composite, SWT.NONE );
         selectedLabel.setText( "Selected object classes" );
 
-        availableObjectClassesViewer = new ListViewer( composite );
+        Composite availableObjectClassesComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
+
+        if ( FieldDecorationRegistry.getDefault().getFieldDecoration( getClass().getName() ) == null )
+        {
+            FieldDecoration dummy = FieldDecorationRegistry.getDefault().getFieldDecoration(
+                FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
+            FieldDecorationRegistry.getDefault().registerFieldDecoration( getClass().getName(),
+                "You may enter a filter to restrict the list below", dummy.getImage() );
+        }
+        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
+            getClass().getName() );
+        final DecoratedField availabeObjectClassesInstantSearchField = new DecoratedField(
+            availableObjectClassesComposite, SWT.BORDER, new IControlCreator()
+            {
+                public Control createControl( Composite parent, int style )
+                {
+                    return BaseWidgetUtils.createText( parent, "", 1 );
+                }
+            } );
+        availabeObjectClassesInstantSearchField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
+        availabeObjectClassesInstantSearchField.getLayoutControl().setLayoutData(
+            new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        availabeObjectClassesInstantSearch = ( Text ) availabeObjectClassesInstantSearchField.getControl();
+        availabeObjectClassesInstantSearch.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                availableObjectClassesViewer.refresh();
+                if ( availableObjectClassesViewer.getList().getItemCount() == 1 )
+                {
+                    Object item = availableObjectClassesViewer.getElementAt( 0 );
+                    availableObjectClassesViewer.setSelection( new StructuredSelection( item ) );
+                }
+            }
+        } );
+
+        availableObjectClassesViewer = new ListViewer( availableObjectClassesComposite );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.heightHint = SIZING_SELECTION_WIDGET_HEIGHT;
         data.widthHint = ( int ) ( SIZING_SELECTION_WIDGET_WIDTH * 0.4 );
@@ -229,6 +283,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         availableObjectClassesViewer.setContentProvider( new ArrayContentProvider() );
         availableObjectClassesViewer.setLabelProvider( new LabelProvider() );
         availableObjectClassesViewer.setSorter( new ViewerSorter() );
+        availableObjectClassesViewer.addFilter( new InstantSearchFilter( availabeObjectClassesInstantSearch ) );
         availableObjectClassesViewer.setInput( availableObjectClasses );
         availableObjectClassesViewer.addDoubleClickListener( new IDoubleClickListener()
         {
@@ -299,15 +354,32 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private void add( ISelection iselection )
     {
         IStructuredSelection selection = ( IStructuredSelection ) iselection;
-        Iterator it = selection.iterator();
+        Iterator<ObjectClassDescription> it = selection.iterator();
         while ( it.hasNext() )
         {
-            Object oc = it.next();
-            availableObjectClasses.remove( oc );
-            selectedObjectClasses.add( oc );
-            availableObjectClassesViewer.refresh();
-            selectedObjectClassesViewer.refresh();
-            this.validate();
+            ObjectClassDescription ocd = it.next();
+            if ( availableObjectClasses.contains( ocd ) && !selectedObjectClasses.contains( ocd ) )
+            {
+                availableObjectClasses.remove( ocd );
+                selectedObjectClasses.add( ocd );
+
+                // recursively add superior object classes
+                ObjectClassDescription[] superiorObjectClassDescriptions = ocd.getSuperiorObjectClassDescriptions();
+                if ( superiorObjectClassDescriptions.length > 0 )
+                {
+                    add( new StructuredSelection( superiorObjectClassDescriptions ) );
+                }
+            }
+        }
+
+        availableObjectClassesViewer.refresh();
+        selectedObjectClassesViewer.refresh();
+        this.validate();
+
+        if ( !"".equals( availabeObjectClassesInstantSearch.getText() ) )
+        {
+            availabeObjectClassesInstantSearch.setText( "" );
+            availabeObjectClassesInstantSearch.setFocus();
         }
     }
 
@@ -315,16 +387,27 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private void remove( ISelection iselection )
     {
         IStructuredSelection selection = ( IStructuredSelection ) iselection;
-        Iterator it = selection.iterator();
+        Iterator<ObjectClassDescription> it = selection.iterator();
         while ( it.hasNext() )
         {
-            Object oc = it.next();
-            selectedObjectClasses.remove( oc );
-            availableObjectClasses.add( oc );
-            availableObjectClassesViewer.refresh();
-            selectedObjectClassesViewer.refresh();
-            this.validate();
+            ObjectClassDescription ocd = it.next();
+            if ( !availableObjectClasses.contains( ocd ) && selectedObjectClasses.contains( ocd ) )
+            {
+                selectedObjectClasses.remove( ocd );
+                availableObjectClasses.add( ocd );
+
+                // recursively remove sub object classes
+                ObjectClassDescription[] subObjectClassDescriptions = ocd.getSubObjectClassDescriptions();
+                if ( subObjectClassDescriptions.length > 0 )
+                {
+                    remove( new StructuredSelection( subObjectClassDescriptions ) );
+                }
+            }
         }
+
+        availableObjectClassesViewer.refresh();
+        selectedObjectClassesViewer.refresh();
+        this.validate();
     }
 
 
@@ -333,4 +416,36 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
     }
 
+    private class InstantSearchFilter extends ViewerFilter
+    {
+        private Text filterText;
+
+
+        private InstantSearchFilter( Text filterText )
+        {
+            this.filterText = filterText;
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean select( Viewer viewer, Object parentElement, Object element )
+        {
+            if ( element instanceof ObjectClassDescription )
+            {
+                ObjectClassDescription ocd = ( ObjectClassDescription ) element;
+                Set lowerCaseIdentifierSet = ocd.getLowerCaseIdentifierSet();
+                for ( Iterator<String> it = lowerCaseIdentifierSet.iterator(); it.hasNext(); )
+                {
+                    String s = it.next();
+                    if ( s.toLowerCase().startsWith( filterText.getText().toLowerCase() ) )
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
 }

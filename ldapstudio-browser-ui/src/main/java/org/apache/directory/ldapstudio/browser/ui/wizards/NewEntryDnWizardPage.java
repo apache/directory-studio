@@ -42,7 +42,6 @@ import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter
 import org.apache.directory.ldapstudio.browser.ui.widgets.DnBuilderWidget;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
