@@ -40,7 +40,8 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 /**
  * The ReturningAttributesContentAssistProcessor provides proposals for the 
- * {@link ReturningAttributesWidget}.
+ * {@link ReturningAttributesWidget}. It splits the comma separted text input
+ * into separate regions.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -134,6 +135,8 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
     {
         IDocument document = contentAssistSubjectControl.getDocument();
         String text = document.get();
+       
+        // search start of current attribute type
         int start = 0;
         for ( int i = documentOffset - 1; i >= 0; i-- )
         {
@@ -146,6 +149,7 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
         }
         String attribute = text.substring( start, documentOffset );
 
+        // create proposal list
         List<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>();
         for ( int k = 0; k < possibleAttributeTypes.length; k++ )
         {

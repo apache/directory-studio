@@ -25,7 +25,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.dialogs.SelectConnectionDialog;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BrowserWidget;
-
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -33,28 +32,52 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The ConnectionWidget could be used to select a connection. 
+ * It is composed of a text to display the selected connection
+ * and a browse button to open a {@link SelectConnectionDialog}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionWidget extends BrowserWidget
 {
 
+    /** The connection text, displays the selected connection */
     private Text connectionText;
 
+    /** The connection browse button, opens the dialog */
     private Button connectionBrowseButton;
 
+    /** The selected connection */
     private IConnection selectedConnection;
 
 
+    /**
+     * Creates a new instance of ConnectionWidget.
+     * 
+     * @param connection the initial connection
+     */
     public ConnectionWidget( IConnection connection )
     {
         this.selectedConnection = connection;
     }
 
 
+    /**
+     * Creates a new instance of ConnectionWidget with no initial connection.
+     */
     public ConnectionWidget()
     {
         this.selectedConnection = null;
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( final Composite parent )
     {
 
@@ -82,28 +105,43 @@ public class ConnectionWidget extends BrowserWidget
         } );
 
         // initial values
-        this.setConnection( this.selectedConnection );
+        setConnection( selectedConnection );
 
     }
 
 
+    /**
+     * Gets the selected connection.
+     * 
+     * @return the connection
+     */
     public IConnection getConnection()
     {
-        return this.selectedConnection;
+        return selectedConnection;
     }
 
 
+    /**
+     * Sets the selected connection.
+     * 
+     * @param connection the connection
+     */
     public void setConnection( IConnection connection )
     {
-        this.selectedConnection = connection;
-        connectionText.setText( this.selectedConnection != null ? this.selectedConnection.getName() : "" );
+        selectedConnection = connection;
+        connectionText.setText( selectedConnection != null ? selectedConnection.getName() : "" );
     }
 
 
+    /**
+     * Sets the enabled state of the widget.
+     * 
+     * @param b true to enable the widget, false to disable the widget
+     */
     public void setEnabled( boolean b )
     {
-        this.connectionText.setEnabled( b );
-        this.connectionBrowseButton.setEnabled( b );
+        connectionText.setEnabled( b );
+        connectionBrowseButton.setEnabled( b );
     }
 
 }

@@ -34,24 +34,44 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The LimitWidget could be used to select the limits of a connection
+ * or search. It is composed of a group with text input fields.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LimitWidget extends BrowserWidget
 {
 
+    /** The initial count limit. */
     private int initialCountLimit;
 
+    /** The initial time limit. */
     private int initialTimeLimit;
 
+    /** The limit group. */
     private Group limitGroup;
 
+    /** The count limit label. */
     private Label countLimitLabel;
 
+    /** The count limit text. */
     private Text countLimitText;
 
+    /** The time limit label. */
     private Label timeLimitLabel;
 
+    /** The time limit text. */
     private Text timeLimitText;
 
 
+    /**
+     * Creates a new instance of LimitWidget.
+     * 
+     * @param initialTimeLimit the initial time limit
+     * @param initialCountLimit the initial count limit
+     */
     public LimitWidget( int initialCountLimit, int initialTimeLimit )
     {
         this.initialCountLimit = initialCountLimit;
@@ -59,6 +79,9 @@ public class LimitWidget extends BrowserWidget
     }
 
 
+    /**
+     * Creates a new instance of LimitWidget with no limits.
+     */
     public LimitWidget()
     {
         this.initialCountLimit = 0;
@@ -66,14 +89,19 @@ public class LimitWidget extends BrowserWidget
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( Composite parent )
     {
 
         limitGroup = BaseWidgetUtils.createGroup( parent, "Limits", 1 );
-
         GridLayout gl = new GridLayout( 2, false );
         limitGroup.setLayout( gl );
 
+        // Count limit
         countLimitLabel = BaseWidgetUtils.createLabel( limitGroup, "&Count Limit:", 1 );
         countLimitText = BaseWidgetUtils.createText( limitGroup, "", 1 );
         countLimitText.addVerifyListener( new VerifyListener()
@@ -94,6 +122,7 @@ public class LimitWidget extends BrowserWidget
             }
         } );
 
+        // Time limit
         timeLimitLabel = BaseWidgetUtils.createLabel( limitGroup, "&Time Limit:", 1 );
         timeLimitText = BaseWidgetUtils.createText( limitGroup, "", 1 );
         timeLimitText.addVerifyListener( new VerifyListener()
@@ -114,31 +143,46 @@ public class LimitWidget extends BrowserWidget
             }
         } );
 
-        this.setCountLimit( this.initialCountLimit );
-        this.setTimeLimit( this.initialTimeLimit );
+        setCountLimit( initialCountLimit );
+        setTimeLimit( initialTimeLimit );
     }
 
 
+    /**
+     * Sets the count limit.
+     * 
+     * @param countLimit the count limit
+     */
     public void setCountLimit( int countLimit )
     {
-        this.initialCountLimit = countLimit;
-        this.countLimitText.setText( "" + this.initialCountLimit );
+        initialCountLimit = countLimit;
+        countLimitText.setText( Integer.toString( initialCountLimit ) );
     }
 
 
+    /**
+     * Sets the time limit.
+     * 
+     * @param timeLimit the time limit
+     */
     public void setTimeLimit( int timeLimit )
     {
-        this.initialTimeLimit = timeLimit;
-        this.timeLimitText.setText( "" + this.initialTimeLimit );
+        initialTimeLimit = timeLimit;
+        timeLimitText.setText( Integer.toString( initialTimeLimit ) );
     }
 
 
+    /**
+     * Gets the count limit.
+     * 
+     * @return the count limit
+     */
     public int getCountLimit()
     {
         int countLimit;
         try
         {
-            countLimit = new Integer( this.countLimitText.getText() ).intValue();
+            countLimit = new Integer( countLimitText.getText() ).intValue();
         }
         catch ( NumberFormatException e )
         {
@@ -148,12 +192,17 @@ public class LimitWidget extends BrowserWidget
     }
 
 
+    /**
+     * Gets the time limit.
+     * 
+     * @return the time limit
+     */
     public int getTimeLimit()
     {
         int timeLimit;
         try
         {
-            timeLimit = new Integer( this.timeLimitText.getText() ).intValue();
+            timeLimit = new Integer( timeLimitText.getText() ).intValue();
         }
         catch ( NumberFormatException e )
         {
@@ -163,6 +212,11 @@ public class LimitWidget extends BrowserWidget
     }
 
 
+    /**
+     * Sets the enabled state of the widget.
+     * 
+     * @param b true to enable the widget, false to disable the widget
+     */
     public void setEnabled( boolean b )
     {
         limitGroup.setEnabled( b );

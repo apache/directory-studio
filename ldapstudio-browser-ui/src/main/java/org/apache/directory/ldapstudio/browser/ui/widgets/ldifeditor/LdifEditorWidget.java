@@ -28,7 +28,6 @@ import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifDocumentProvi
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifSourceViewerConfiguration;
 import org.apache.directory.ldapstudio.browser.ui.editors.ldif.NonExistingLdifEditorInput;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BrowserWidget;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.IDocument;
@@ -42,32 +41,56 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * The LdifEditorWidget provides basic LDIF editor functionality like 
+ * syntax highlighting and content assistent.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITextListener
 {
 
+    /** The connection. */
     private IConnection connection;
 
+    /** The initial LDIF. */
     private String initialLdif;
 
+    /** The content assist enabled. */
     private boolean contentAssistEnabled;
 
+    /** The editor input. */
     private NonExistingLdifEditorInput editorInput;
 
+    /** The document provider. */
     private LdifDocumentProvider documentProvider;
 
+    /** The source viewer. */
     private SourceViewer sourceViewer;
 
+    /** The source viewer configuration. */
     private LdifSourceViewerConfiguration sourceViewerConfiguration;
 
 
-    public LdifEditorWidget( IConnection connection, String ldif, boolean contentAssistEnabled )
+    /**
+     * Creates a new instance of LdifEditorWidget.
+     * 
+     * @param contentAssistEnabled the content assist enabled
+     * @param initialLdif the initial ldif
+     * @param connection the connection
+     */
+    public LdifEditorWidget( IConnection connection, String initialLdif, boolean contentAssistEnabled )
     {
         this.connection = connection;
-        this.initialLdif = ldif;
+        this.initialLdif = initialLdif;
         this.contentAssistEnabled = contentAssistEnabled;
     }
 
 
+    /**
+     * Disposes this widget.
+     */
     public void dispose()
     {
         if ( editorInput != null )
@@ -80,9 +103,13 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         GridLayout layout = new GridLayout( 1, false );
@@ -125,40 +152,61 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
 
         // focus
         sourceViewer.getControl().setFocus();
-
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IConnection getConnection()
     {
         return connection;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public LdifFile getLdifModel()
     {
         return documentProvider.getLdifModel();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class adapter )
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void textChanged( TextEvent event )
     {
         super.notifyListeners();
     }
 
 
+    /**
+     * Gets the source viewer.
+     * 
+     * @return the source viewer
+     */
     public SourceViewer getSourceViewer()
     {
         return sourceViewer;
     }
 
 
+    /**
+     * Gets the source viewer configuration.
+     * 
+     * @return the source viewer configuration
+     */
     public LdifSourceViewerConfiguration getSourceViewerConfiguration()
     {
         return sourceViewerConfiguration;

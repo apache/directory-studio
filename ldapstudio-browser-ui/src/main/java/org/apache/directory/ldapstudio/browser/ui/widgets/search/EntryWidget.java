@@ -33,7 +33,6 @@ import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BrowserWidget;
 import org.apache.directory.ldapstudio.browser.ui.widgets.HistoryUtils;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -45,20 +44,41 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * The EntryWidget could be used to select an entry. 
+ * It is composed
+ * <ul>
+ * <li>a combo to manually enter an DN or to choose one from
+ *     the history
+ * <li>an up button to switch to the parent's DN
+ * <li>a browse button to open a {@link SelectEntryDialog}
+ * </ul>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryWidget extends BrowserWidget
 {
-
+    
+    /** The DN combo. */
     private Combo dnCombo;
 
+    /** The up button. */
     private Button upButton;
 
+    /** The entry browse button. */
     private Button entryBrowseButton;
 
+    /** The connection. */
     private IConnection connection;
 
+    /** The selected DN. */
     private DN dn;
 
 
+    /**
+     * Creates a new instance of EntryWidget.
+     */
     public EntryWidget()
     {
         this.connection = null;
@@ -66,6 +86,12 @@ public class EntryWidget extends BrowserWidget
     }
 
 
+    /**
+     * Creates a new instance of EntryWidget.
+     *
+     * @param connection the connection
+     * @param dn the initial DN
+     */
     public EntryWidget( IConnection connection, DN dn )
     {
         this.connection = connection;
@@ -73,17 +99,23 @@ public class EntryWidget extends BrowserWidget
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( final Composite parent )
     {
 
-        // Text and up
+        // DN combo
         Composite textAndUpComposite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
         dnCombo = BaseWidgetUtils.createCombo( textAndUpComposite, new String[0], -1, 1 );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 1;
         gd.widthHint = 200;
         dnCombo.setLayoutData( gd );
-        // dn history
+        
+        // DN history
         String[] history = HistoryUtils.load( BrowserUIConstants.DIALOGSETTING_KEY_DN_HISTORY );
         dnCombo.setItems( history );
         dnCombo.addModifyListener( new ModifyListener()
@@ -110,6 +142,8 @@ public class EntryWidget extends BrowserWidget
                 notifyListeners();
             }
         } );
+        
+        // Up button
         upButton = new Button( textAndUpComposite, SWT.PUSH );
         upButton.setToolTipText( "Parent" );
         upButton.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_PARENT ) );
@@ -128,16 +162,14 @@ public class EntryWidget extends BrowserWidget
             }
         } );
 
-        // Button
+        // Browse button
         entryBrowseButton = BaseWidgetUtils.createButton( parent, "Br&owse...", 1 );
         entryBrowseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-
                 if ( connection != null )
                 {
-
                     IEntry entry = null;
                     if ( dn != null && dn.getRdns().length > 0 )
                     {
@@ -178,15 +210,23 @@ public class EntryWidget extends BrowserWidget
     }
 
 
+    /**
+     * Notifies that the DN has been changed.
+     */
     private void dnChanged()
     {
-        if ( this.dnCombo != null && this.entryBrowseButton != null )
+        if ( dnCombo != null && entryBrowseButton != null )
         {
             dnCombo.setText( dn != null ? dn.toString() : "" );
         }
     }
 
 
+    /**
+     * Sets the enabled state of the widget.
+     * 
+     * @param b true to enable the widget, false to disable the widget
+     */
     public void setEnabled( boolean b )
     {
         dnCombo.setEnabled( b );
@@ -200,31 +240,53 @@ public class EntryWidget extends BrowserWidget
     }
 
 
+    /**
+     * Internal set enabled.
+     */
     private void internalSetEnabled()
     {
         upButton.setEnabled( dn != null && dn.getParentDn() != null && dnCombo.isEnabled() );
-        entryBrowseButton.setEnabled( this.connection != null && dnCombo.isEnabled() );
+        entryBrowseButton.setEnabled( connection != null && dnCombo.isEnabled() );
     }
 
 
+    /**
+     * Saves dialog settings.
+     */
     public void saveDialogSettings()
     {
         HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_DN_HISTORY, this.dnCombo.getText() );
     }
 
 
+    /**
+     * Gets the DN.
+     * 
+     * @return the DN
+     */
     public DN getDn()
     {
-        return this.dn;
+        return dn;
     }
 
 
+    /**
+     * Gets the connection.
+     * 
+     * @return the connection
+     */
     public IConnection getConnection()
     {
-        return this.connection;
+        return connection;
     }
 
 
+    /**
+     * Sets the input.
+     * 
+     * @param dn the DN
+     * @param connection the connection
+     */
     public void setInput( IConnection connection, DN dn )
     {
         if ( this.connection != connection || this.dn != dn )

@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.search;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BrowserWidget;
-
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -32,30 +31,59 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 
+/**
+ * The ReferralsHandlingWidget could be used to select the
+ * referrals handling method. It is composed of a group with 
+ * two radio buttons.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ReferralsHandlingWidget extends BrowserWidget
 {
 
+    /** The initial referrals handling method. */
     private int initialReferralsHandlingMethod;
 
+    /** The group. */
     private Group group;
 
+    /** The ignore button. */
     private Button ignoreButton;
 
+    /** The follow button. */
     private Button followButton;
 
 
+    /**
+     * Creates a new instance of ReferralsHandlingWidget with the given
+     * referrals handling method. This must be one of
+     * {@link IConnection#HANDLE_REFERRALS_IGNORE} or
+     * {@link IConnection#HANDLE_REFERRALS_FOLLOW}.  
+     * 
+     * @param initialReferralsHandlingMethod the initial referrals handling method
+     */
     public ReferralsHandlingWidget( int initialReferralsHandlingMethod )
     {
         this.initialReferralsHandlingMethod = initialReferralsHandlingMethod;
     }
 
 
+    /**
+     * Creates a new instance of ReferralsHandlingWidget with initial 
+     * referrals handling method {@link IConnection#HANDLE_REFERRALS_IGNORE}.
+     */
     public ReferralsHandlingWidget()
     {
         this.initialReferralsHandlingMethod = IConnection.HANDLE_REFERRALS_IGNORE;
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( Composite parent )
     {
 
@@ -80,36 +108,55 @@ public class ReferralsHandlingWidget extends BrowserWidget
             }
         } );
 
-        this.setReferralsHandlingMethod( this.initialReferralsHandlingMethod );
+        setReferralsHandlingMethod( initialReferralsHandlingMethod );
     }
 
 
+    /**
+     * Sets the referrals handling method must be one of
+     *  {@link IConnection#HANDLE_REFERRALS_IGNORE} or
+     * {@link IConnection#HANDLE_REFERRALS_FOLLOW}. 
+     * 
+     * @param referralsHandlingMethod the referrals handling method
+     */
     public void setReferralsHandlingMethod( int referralsHandlingMethod )
     {
-        this.initialReferralsHandlingMethod = referralsHandlingMethod;
+        initialReferralsHandlingMethod = referralsHandlingMethod;
         ignoreButton.setSelection( initialReferralsHandlingMethod == IConnection.HANDLE_REFERRALS_IGNORE );
         followButton.setSelection( initialReferralsHandlingMethod == IConnection.HANDLE_REFERRALS_FOLLOW );
     }
 
 
+    /**
+     * Gets the referrals handling method, one of
+     * {@link IConnection#HANDLE_REFERRALS_IGNORE} or
+     * {@link IConnection#HANDLE_REFERRALS_FOLLOW}.
+     * 
+     * @return the referrals handling method
+     */
     public int getReferralsHandlingMethod()
     {
-        if ( this.ignoreButton.getSelection() )
+        if ( ignoreButton.getSelection() )
         {
             return IConnection.HANDLE_REFERRALS_IGNORE;
         }
         else
-        /* if(this.handleButton.getSelection()) */{
+        {
             return IConnection.HANDLE_REFERRALS_FOLLOW;
         }
     }
 
 
+    /**
+     * Sets the enabled state of the widget.
+     * 
+     * @param b true to enable the widget, false to disable the widget
+     */
     public void setEnabled( boolean b )
     {
-        this.group.setEnabled( b );
-        this.ignoreButton.setEnabled( b );
-        this.followButton.setEnabled( b );
+        group.setEnabled( b );
+        ignoreButton.setEnabled( b );
+        followButton.setEnabled( b );
     }
 
 }

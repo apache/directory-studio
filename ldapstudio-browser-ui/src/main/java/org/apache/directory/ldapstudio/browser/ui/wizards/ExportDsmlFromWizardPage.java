@@ -47,10 +47,10 @@ public class ExportDsmlFromWizardPage extends ExportBaseFromWizardPage
     {
         super( pageName, wizard, new SearchPageWrapper(
             SearchPageWrapper.NAME_INVISIBLE
-                | SearchPageWrapper.ALLATTRIBUTES_VISIBLE
-                | SearchPageWrapper.OPERATIONALATTRIBUTES_VISIBLE
+                | SearchPageWrapper.RETURN_ALLATTRIBUTES_VISIBLE
+                | SearchPageWrapper.RETURN_OPERATIONALATTRIBUTES_VISIBLE
                 | ( ( wizard.getSearch().getReturningAttributes() == null || wizard.getSearch()
-                    .getReturningAttributes().length == 0 ) ? SearchPageWrapper.ALLATTRIBUTES_CHECKED
+                    .getReturningAttributes().length == 0 ) ? SearchPageWrapper.RETURN_ALLATTRIBUTES_CHECKED
                     : SearchPageWrapper.NONE ) ) );
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_EXPORT_DSML_WIZARD ) );

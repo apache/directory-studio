@@ -37,7 +37,6 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BrowserWidget;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
-
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,98 +48,157 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The SearchPageWrapper is used to arrange all input elements of a
+ * search page. It is used by the search page, the search properties page,
+ * the batch operation wizard and the export wizards.
+ * 
+ * The style is used to specify the invisible and readonly elements. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchPageWrapper extends BrowserWidget
 {
 
+    /** The default style */
     public static final int NONE = 0;
 
+    /** Style for invisible name field */
     public static final int NAME_INVISIBLE = 1 << 1;
 
+    /** Style for read-only name field */
     public static final int NAME_READONLY = 1 << 2;
 
+    /** Style for invisible connection field */
     public static final int CONNECTION_INVISIBLE = 1 << 3;
 
+    /** Style for read-only connection field */
     public static final int CONNECTION_READONLY = 1 << 4;
 
+    /** Style for invisible search base field */
     public static final int SEARCHBASE_INVISIBLE = 1 << 5;
 
+    /** Style for read-only search base field */
     public static final int SEARCHBASE_READONLY = 1 << 6;
 
+    /** Style for invisible filter field */
     public static final int FILTER_INVISIBLE = 1 << 7;
 
+    /** Style for read-only filter field */
     public static final int FILTER_READONLY = 1 << 8;
 
+    /** Style for invisible returning attributes field */
     public static final int RETURNINGATTRIBUTES_INVISIBLE = 1 << 9;
 
+    /** Style for read-only returning attributes field */
     public static final int RETURNINGATTRIBUTES_READONLY = 1 << 10;
 
-    public static final int DN_VISIBLE = 1 << 11;
+    /** Style for visible return DN checkbox */
+    public static final int RETURN_DN_VISIBLE = 1 << 11;
 
-    public static final int DN_CHECKED = 1 << 12;
+    /** Style for checked return DN checkbox */
+    public static final int RETURN_DN_CHECKED = 1 << 12;
 
-    public static final int ALLATTRIBUTES_VISIBLE = 1 << 13;
+    /** Style for visible return all attributes checkbox */
+    public static final int RETURN_ALLATTRIBUTES_VISIBLE = 1 << 13;
 
-    public static final int ALLATTRIBUTES_CHECKED = 1 << 14;
+    /** Style for checked return all attributes checkbox */
+    public static final int RETURN_ALLATTRIBUTES_CHECKED = 1 << 14;
 
-    public static final int OPERATIONALATTRIBUTES_VISIBLE = 1 << 15;
+    /** Style for visible return operational attributes checkbox */
+    public static final int RETURN_OPERATIONALATTRIBUTES_VISIBLE = 1 << 15;
 
-    public static final int OPERATIONALATTRIBUTES_CHECKED = 1 << 16;
+    /** Style for checked return operational attributes checkbox */
+    public static final int RETURN_OPERATIONALATTRIBUTES_CHECKED = 1 << 16;
 
+    /** Style for invisible options */
     public static final int OPTIONS_INVISIBLE = 1 << 21;
 
+    /** Style for read-only scope options */
     public static final int SCOPEOPTIONS_READONLY = 1 << 22;
 
+    /** Style for read-only limit options */
     public static final int LIMITOPTIONS_READONLY = 1 << 23;
 
+    /** Style for read-only alias options */
     public static final int ALIASOPTIONS_READONLY = 1 << 24;
 
+    /** Style for read-only referrals options */
     public static final int REFERRALOPTIONS_READONLY = 1 << 25;
 
+    /** Style for invisible controls fields */
     public static final int CONTROLS_INVISIBLE = 1 << 30;
 
+    /** The style. */
     protected int style;
 
+    /** The filter parser. */
     protected LdapFilterParser parser;
 
+    /** The search name label. */
     protected Label searchNameLabel;
 
+    /** The search name text. */
     protected Text searchNameText;
 
+    /** The connection label. */
     protected Label connectionLabel;
 
+    /** The connection widget. */
     protected ConnectionWidget connectionWidget;
 
+    /** The search base label. */
     protected Label searchBaseLabel;
 
+    /** The search base widget. */
     protected EntryWidget searchBaseWidget;
 
+    /** The filter label. */
     protected Label filterLabel;
 
+    /** The filter widget. */
     protected FilterWidget filterWidget;
 
+    /** The returning attributes label. */
     protected Label returningAttributesLabel;
 
+    /** The returning attributes widget. */
     protected ReturningAttributesWidget returningAttributesWidget;
 
-    protected Button dnButton;
+    /** The return dn button. */
+    protected Button returnDnButton;
 
-    protected Button allAttributesButton;
+    /** The return all attributes button. */
+    protected Button returnAllAttributesButton;
 
-    protected Button operationalAttributesButton;
+    /** The return operational attributes button. */
+    protected Button returnOperationalAttributesButton;
 
+    /** The scope widget. */
     protected ScopeWidget scopeWidget;
 
+    /** The limit widget. */
     protected LimitWidget limitWidget;
 
+    /** The aliases dereferencing widget. */
     protected AliasesDereferencingWidget aliasesDereferencingWidget;
 
+    /** The referrals handling widget. */
     protected ReferralsHandlingWidget referralsHandlingWidget;
 
+    /** The control label. */
     protected Label controlLabel;
 
+    /** The subentries control button. */
     protected Button subentriesControlButton;
 
 
+    /**
+     * Creates a new instance of SearchPageWrapper.
+     * 
+     * @param style the style
+     */
     public SearchPageWrapper( int style )
     {
         this.parser = new LdapFilterParser();
@@ -148,9 +206,13 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Creates the contents.
+     * 
+     * @param composite the composite
+     */
     public void createContents( final Composite composite )
     {
-
         // Search Name
         createSearchNameLine( composite );
 
@@ -171,20 +233,33 @@ public class SearchPageWrapper extends BrowserWidget
 
         // scope, limit, alias, referral
         createOptionsComposite( composite );
-
     }
 
 
+    /**
+     * Checks if the given style is active.
+     * 
+     * @param requiredStyle the required style to check
+     * 
+     * @return true, if the required style is active
+     */
     protected boolean isActive( int requiredStyle )
     {
-        return ( this.style & requiredStyle ) != 0;
+        return ( style & requiredStyle ) != 0;
     }
 
 
+    /**
+     * Creates the search name line.
+     * 
+     * @param composite the composite
+     */
     protected void createSearchNameLine( final Composite composite )
     {
         if ( isActive( NAME_INVISIBLE ) )
+        {
             return;
+        }
 
         searchNameLabel = BaseWidgetUtils.createLabel( composite, "Search Name:", 1 );
         if ( isActive( NAME_READONLY ) )
@@ -207,10 +282,17 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Creates the connection line.
+     * 
+     * @param composite the composite
+     */
     protected void createConnectionLine( final Composite composite )
     {
         if ( isActive( CONNECTION_INVISIBLE ) )
+        {
             return;
+        }
 
         connectionLabel = BaseWidgetUtils.createLabel( composite, "Connection:", 1 );
         connectionWidget = new ConnectionWidget();
@@ -227,10 +309,17 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Creates the search base line.
+     * 
+     * @param composite the composite
+     */
     protected void createSearchBaseLine( final Composite composite )
     {
         if ( isActive( SEARCHBASE_INVISIBLE ) )
+        {
             return;
+        }
 
         searchBaseLabel = BaseWidgetUtils.createLabel( composite, "Search Base:", 1 );
         searchBaseWidget = new EntryWidget();
@@ -247,10 +336,17 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Creates the filter line.
+     * 
+     * @param composite the composite
+     */
     protected void createFilterLine( final Composite composite )
     {
         if ( isActive( FILTER_INVISIBLE ) )
+        {
             return;
+        }
 
         filterLabel = BaseWidgetUtils.createLabel( composite, "Filter:", 1 );
         filterWidget = new FilterWidget();
@@ -267,10 +363,17 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Creates the returning attributes line.
+     * 
+     * @param composite the composite
+     */
     protected void createReturningAttributesLine( final Composite composite )
     {
         if ( isActive( RETURNINGATTRIBUTES_INVISIBLE ) )
+        {
             return;
+        }
 
         BaseWidgetUtils.createLabel( composite, "Returning Attributes:", 1 );
         Composite retComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 2 );
@@ -285,46 +388,48 @@ public class SearchPageWrapper extends BrowserWidget
             }
         } );
 
-        if ( isActive( DN_VISIBLE ) || isActive( ALLATTRIBUTES_VISIBLE ) || isActive( OPERATIONALATTRIBUTES_VISIBLE ) )
+        // special returning attributes options
+        if ( isActive( RETURN_DN_VISIBLE ) || isActive( RETURN_ALLATTRIBUTES_VISIBLE )
+            || isActive( RETURN_OPERATIONALATTRIBUTES_VISIBLE ) )
         {
             BaseWidgetUtils.createSpacer( composite, 1 );
             Composite buttonComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
-            if ( isActive( DN_VISIBLE ) )
+            if ( isActive( RETURN_DN_VISIBLE ) )
             {
-                dnButton = BaseWidgetUtils.createCheckbox( buttonComposite, "Export DN", 1 );
-                dnButton.addSelectionListener( new SelectionAdapter()
+                returnDnButton = BaseWidgetUtils.createCheckbox( buttonComposite, "Export DN", 1 );
+                returnDnButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
                     {
                         validate();
                     }
                 } );
-                dnButton.setSelection( isActive( DN_CHECKED ) );
+                returnDnButton.setSelection( isActive( RETURN_DN_CHECKED ) );
             }
-            if ( isActive( ALLATTRIBUTES_VISIBLE ) )
+            if ( isActive( RETURN_ALLATTRIBUTES_VISIBLE ) )
             {
-                allAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite, "All user attributes", 1 );
-                allAttributesButton.addSelectionListener( new SelectionAdapter()
+                returnAllAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite, "All user attributes", 1 );
+                returnAllAttributesButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
                     {
                         validate();
                     }
                 } );
-                allAttributesButton.setSelection( isActive( ALLATTRIBUTES_CHECKED ) );
+                returnAllAttributesButton.setSelection( isActive( RETURN_ALLATTRIBUTES_CHECKED ) );
             }
-            if ( isActive( OPERATIONALATTRIBUTES_VISIBLE ) )
+            if ( isActive( RETURN_OPERATIONALATTRIBUTES_VISIBLE ) )
             {
-                operationalAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite,
+                returnOperationalAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite,
                     "Operational attributes", 1 );
-                operationalAttributesButton.addSelectionListener( new SelectionAdapter()
+                returnOperationalAttributesButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
                     {
                         validate();
                     }
                 } );
-                operationalAttributesButton.setSelection( isActive( OPERATIONALATTRIBUTES_CHECKED ) );
+                returnOperationalAttributesButton.setSelection( isActive( RETURN_OPERATIONALATTRIBUTES_CHECKED ) );
             }
         }
 
@@ -332,12 +437,21 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Creates the options composite, this includes the
+     * scope, limit, alias and referral widgets.
+     * 
+     * @param composite the composite
+     */
     protected void createOptionsComposite( final Composite composite )
     {
         if ( isActive( OPTIONS_INVISIBLE ) )
+        {
             return;
+        }
 
         Composite optionsComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 3 );
+
         scopeWidget = new ScopeWidget();
         scopeWidget.createWidget( optionsComposite );
         scopeWidget.setEnabled( !isActive( SCOPEOPTIONS_READONLY ) );
@@ -348,6 +462,7 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
+
         limitWidget = new LimitWidget();
         limitWidget.createWidget( optionsComposite );
         limitWidget.setEnabled( !isActive( LIMITOPTIONS_READONLY ) );
@@ -358,6 +473,7 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
+
         aliasesDereferencingWidget = new AliasesDereferencingWidget();
         aliasesDereferencingWidget.createWidget( optionsComposite );
         aliasesDereferencingWidget.setEnabled( !isActive( ALIASOPTIONS_READONLY ) );
@@ -368,6 +484,7 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
+
         referralsHandlingWidget = new ReferralsHandlingWidget();
         referralsHandlingWidget.createWidget( optionsComposite );
         referralsHandlingWidget.setEnabled( !isActive( REFERRALOPTIONS_READONLY ) );
@@ -381,10 +498,17 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Creates the control composite.
+     * 
+     * @param composite the composite
+     */
     protected void createControlComposite( final Composite composite )
     {
         if ( isActive( CONTROLS_INVISIBLE ) )
+        {
             return;
+        }
 
         controlLabel = BaseWidgetUtils.createLabel( composite, "Controls:", 1 );
 
@@ -401,10 +525,12 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
-
     }
 
 
+    /**
+     * Validates all elements.
+     */
     protected void validate()
     {
 
@@ -419,20 +545,28 @@ public class SearchPageWrapper extends BrowserWidget
 
         filterWidget.setConnection( connectionWidget.getConnection() );
 
-        // this.fireSearchPageModified();
         super.notifyListeners();
     }
 
 
-    public boolean isExportDn()
+    /**
+     * Checks if the DNs should be returned/exported.
+     * 
+     * @return true, if DNs should be returnde/exported
+     */
+    public boolean isReturnDn()
     {
-        return dnButton != null && dnButton.getSelection();
+        return returnDnButton != null && returnDnButton.getSelection();
     }
 
 
+    /**
+     * Initializes all search page widgets from the given search.
+     * 
+     * @param search the search
+     */
     public void loadFromSearch( ISearch search )
     {
-
         if ( searchNameText != null )
         {
             searchNameText.setText( search.getName() );
@@ -465,24 +599,24 @@ public class SearchPageWrapper extends BrowserWidget
                 returningAttributesWidget.setInitialReturningAttributes( search.getReturningAttributes() );
             }
 
-            if ( this.scopeWidget != null )
+            if ( scopeWidget != null )
             {
                 scopeWidget.setScope( search.getScope() );
             }
-            if ( this.limitWidget != null )
+            if ( limitWidget != null )
             {
                 limitWidget.setCountLimit( search.getCountLimit() );
                 limitWidget.setTimeLimit( search.getTimeLimit() );
             }
-            if ( this.aliasesDereferencingWidget != null )
+            if ( aliasesDereferencingWidget != null )
             {
                 aliasesDereferencingWidget.setAliasesDereferencingMethod( search.getAliasesDereferencingMethod() );
             }
-            if ( this.referralsHandlingWidget != null )
+            if ( referralsHandlingWidget != null )
             {
                 referralsHandlingWidget.setReferralsHandlingMethod( search.getReferralsHandlingMethod() );
             }
-            if ( this.subentriesControlButton != null )
+            if ( subentriesControlButton != null )
             {
                 Control[] searchControls = search.getControls();
                 if ( searchControls != null && searchControls.length > 0 )
@@ -492,78 +626,82 @@ public class SearchPageWrapper extends BrowserWidget
                         Control c = searchControls[i];
                         if ( Control.SUBENTRIES_CONTROL.equals( c ) )
                         {
-                            this.subentriesControlButton.setSelection( true );
+                            subentriesControlButton.setSelection( true );
                         }
                     }
-
                 }
             }
         }
     }
 
 
+    /**
+     * Saves all search pages element to the given search.
+     * 
+     * @param search the search
+     * 
+     * @return true, if the given search has been modified.
+     */
     public boolean saveToSearch( ISearch search )
     {
         boolean searchModified = false;
 
-        if ( this.searchNameText != null && !this.searchNameText.getText().equals( search.getName() ) )
+        if ( searchNameText != null && !searchNameText.getText().equals( search.getName() ) )
         {
-            search.getSearchParameter().setName( this.searchNameText.getText() );
+            search.getSearchParameter().setName( searchNameText.getText() );
             searchModified = true;
         }
-        if ( this.connectionWidget != null && this.connectionWidget.getConnection() != null
-            && this.connectionWidget.getConnection() != search.getConnection() )
+        if ( connectionWidget != null && connectionWidget.getConnection() != null
+            && connectionWidget.getConnection() != search.getConnection() )
         {
-            search.setConnection( this.connectionWidget.getConnection() );
+            search.setConnection( connectionWidget.getConnection() );
             searchModified = true;
         }
-        if ( this.searchBaseWidget != null && this.searchBaseWidget.getDn() != null
-            && !this.searchBaseWidget.getDn().equals( search.getSearchBase() ) )
+        if ( searchBaseWidget != null && searchBaseWidget.getDn() != null
+            && !searchBaseWidget.getDn().equals( search.getSearchBase() ) )
         {
-            search.getSearchParameter().setSearchBase( this.searchBaseWidget.getDn() );
+            search.getSearchParameter().setSearchBase( searchBaseWidget.getDn() );
             searchModified = true;
-            this.searchBaseWidget.saveDialogSettings();
+            searchBaseWidget.saveDialogSettings();
         }
-        if ( this.filterWidget != null )
+        if ( filterWidget != null )
         {
-            this.parser.parse( filterWidget.getFilter() );
-            if ( !this.parser.getModel().toString().equals( search.getFilter() ) )
+            parser.parse( filterWidget.getFilter() );
+            if ( !parser.getModel().toString().equals( search.getFilter() ) )
             {
-                search.getSearchParameter().setFilter( this.parser.getModel().toString() );
+                search.getSearchParameter().setFilter( parser.getModel().toString() );
                 searchModified = true;
             }
-            this.filterWidget.saveDialogSettings();
+            filterWidget.saveDialogSettings();
         }
 
         if ( returningAttributesWidget != null )
         {
-            if ( !Arrays.equals( this.returningAttributesWidget.getReturningAttributes(), search
-                .getReturningAttributes() ) )
+            if ( !Arrays.equals( returningAttributesWidget.getReturningAttributes(), search.getReturningAttributes() ) )
             {
-                search.getSearchParameter().setReturningAttributes(
-                    this.returningAttributesWidget.getReturningAttributes() );
+                search.getSearchParameter().setReturningAttributes( returningAttributesWidget.getReturningAttributes() );
                 searchModified = true;
             }
-            this.returningAttributesWidget.saveDialogSettings();
+            returningAttributesWidget.saveDialogSettings();
 
-            if ( allAttributesButton != null || operationalAttributesButton != null )
+            if ( returnAllAttributesButton != null || returnOperationalAttributesButton != null )
             {
-                List raList = new ArrayList();
+                List<String> raList = new ArrayList<String>();
                 raList.addAll( Arrays.asList( search.getReturningAttributes() ) );
-                if ( allAttributesButton != null )
+                if ( returnAllAttributesButton != null )
                 {
-                    if ( allAttributesButton.getSelection() )
+                    if ( returnAllAttributesButton.getSelection() )
                     {
                         raList.add( ISearch.ALL_USER_ATTRIBUTES );
                     }
-                    if ( allAttributesButton.getSelection() != isActive( ALLATTRIBUTES_CHECKED ) )
+                    if ( returnAllAttributesButton.getSelection() != isActive( RETURN_ALLATTRIBUTES_CHECKED ) )
                     {
                         searchModified = true;
                     }
                 }
-                if ( operationalAttributesButton != null )
+                if ( returnOperationalAttributesButton != null )
                 {
-                    if ( operationalAttributesButton.getSelection() )
+                    if ( returnOperationalAttributesButton.getSelection() )
                     {
                         AttributeTypeDescription[] opAtds = SchemaUtils
                             .getOperationalAttributeDescriptions( connectionWidget.getConnection().getSchema() );
@@ -571,17 +709,17 @@ public class SearchPageWrapper extends BrowserWidget
                         raList.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
                         raList.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
                     }
-                    if ( operationalAttributesButton.getSelection() != isActive( OPERATIONALATTRIBUTES_CHECKED ) )
+                    if ( returnOperationalAttributesButton.getSelection() != isActive( RETURN_OPERATIONALATTRIBUTES_CHECKED ) )
                     {
                         searchModified = true;
                     }
                 }
-                String[] returningAttributes = ( String[] ) raList.toArray( new String[raList.size()] );
+                String[] returningAttributes = raList.toArray( new String[raList.size()] );
                 search.getSearchParameter().setReturningAttributes( returningAttributes );
             }
         }
 
-        if ( this.scopeWidget != null )
+        if ( scopeWidget != null )
         {
             int scope = scopeWidget.getScope();;
             if ( scope != search.getScope() )
@@ -590,7 +728,7 @@ public class SearchPageWrapper extends BrowserWidget
                 searchModified = true;
             }
         }
-        if ( this.limitWidget != null )
+        if ( limitWidget != null )
         {
             int countLimit = limitWidget.getCountLimit();
             int timeLimit = limitWidget.getTimeLimit();
@@ -605,7 +743,7 @@ public class SearchPageWrapper extends BrowserWidget
                 searchModified = true;
             }
         }
-        if ( this.aliasesDereferencingWidget != null )
+        if ( aliasesDereferencingWidget != null )
         {
             int aliasesDereferencingMethod = aliasesDereferencingWidget.getAliasesDereferencingMethod();
             if ( aliasesDereferencingMethod != search.getAliasesDereferencingMethod() )
@@ -614,7 +752,7 @@ public class SearchPageWrapper extends BrowserWidget
                 searchModified = true;
             }
         }
-        if ( this.referralsHandlingWidget != null )
+        if ( referralsHandlingWidget != null )
         {
             int referralsHandlingMethod = referralsHandlingWidget.getReferralsHandlingMethod();
             if ( referralsHandlingMethod != search.getReferralsHandlingMethod() )
@@ -623,10 +761,9 @@ public class SearchPageWrapper extends BrowserWidget
                 searchModified = true;
             }
         }
-        if ( this.subentriesControlButton != null )
+        if ( subentriesControlButton != null )
         {
-            Control selectedSubControl = this.subentriesControlButton.getSelection() ? Control.SUBENTRIES_CONTROL
-                : null;
+            Control selectedSubControl = subentriesControlButton.getSelection() ? Control.SUBENTRIES_CONTROL : null;
             Control searchSubentriesControl = null;
             Control[] searchControls = search.getControls();
             if ( searchControls != null && searchControls.length > 0 )
@@ -661,6 +798,13 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Performs the search.
+     * 
+     * @param search the search
+     * 
+     * @return true, if perform search
+     */
     public boolean performSearch( final ISearch search )
     {
         if ( search.getConnection() != null )
@@ -676,21 +820,26 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Checks if is valid.
+     * 
+     * @return true, if is valid
+     */
     public boolean isValid()
     {
-        if ( this.connectionWidget != null && this.connectionWidget.getConnection() == null )
+        if ( connectionWidget != null && connectionWidget.getConnection() == null )
         {
             return false;
         }
-        if ( this.searchBaseWidget != null && this.searchBaseWidget.getDn() == null )
+        if ( searchBaseWidget != null && searchBaseWidget.getDn() == null )
         {
             return false;
         }
-        if ( this.searchNameText != null && "".equals( this.searchNameText.getText() ) )
+        if ( searchNameText != null && "".equals( searchNameText.getText() ) )
         {
             return false;
         }
-        if ( this.filterWidget != null && "".equals( this.filterWidget.getFilter() ) )
+        if ( filterWidget != null && "".equals( filterWidget.getFilter() ) )
         {
             return false;
         }
@@ -699,67 +848,71 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    /**
+     * Sets the enabled state of the widget.
+     * 
+     * @param b true to enable the widget, false to disable the widget
+     */
     public void setEnabled( boolean b )
     {
-        if ( this.searchNameText != null )
+        if ( searchNameText != null )
         {
-            this.searchNameLabel.setEnabled( b );
-            this.searchNameText.setEnabled( b );
+            searchNameLabel.setEnabled( b );
+            searchNameText.setEnabled( b );
         }
-        if ( this.connectionWidget != null )
+        if ( connectionWidget != null )
         {
-            this.connectionLabel.setEnabled( b );
-            this.connectionWidget.setEnabled( b && !isActive( CONNECTION_READONLY ) );
+            connectionLabel.setEnabled( b );
+            connectionWidget.setEnabled( b && !isActive( CONNECTION_READONLY ) );
         }
-        if ( this.searchBaseWidget != null )
+        if ( searchBaseWidget != null )
         {
-            this.searchBaseLabel.setEnabled( b );
-            this.searchBaseWidget.setEnabled( b && !isActive( SEARCHBASE_READONLY ) );
+            searchBaseLabel.setEnabled( b );
+            searchBaseWidget.setEnabled( b && !isActive( SEARCHBASE_READONLY ) );
         }
-        if ( this.filterWidget != null )
+        if ( filterWidget != null )
         {
-            this.filterLabel.setEnabled( b );
-            this.filterWidget.setEnabled( b && !isActive( FILTER_READONLY ) );
+            filterLabel.setEnabled( b );
+            filterWidget.setEnabled( b && !isActive( FILTER_READONLY ) );
         }
-        if ( this.returningAttributesWidget != null )
+        if ( returningAttributesWidget != null )
         {
-            this.returningAttributesLabel.setEnabled( b );
-            this.returningAttributesWidget.setEnabled( b && !isActive( RETURNINGATTRIBUTES_READONLY ) );
+            returningAttributesLabel.setEnabled( b );
+            returningAttributesWidget.setEnabled( b && !isActive( RETURNINGATTRIBUTES_READONLY ) );
         }
-        if ( this.dnButton != null )
+        if ( returnDnButton != null )
         {
-            this.dnButton.setEnabled( b );
+            returnDnButton.setEnabled( b );
         }
-        if ( this.allAttributesButton != null )
+        if ( returnAllAttributesButton != null )
         {
-            this.allAttributesButton.setEnabled( b );
+            returnAllAttributesButton.setEnabled( b );
         }
-        if ( this.operationalAttributesButton != null )
+        if ( returnOperationalAttributesButton != null )
         {
-            this.operationalAttributesButton.setEnabled( b );
+            returnOperationalAttributesButton.setEnabled( b );
         }
-        if ( this.scopeWidget != null )
+        if ( scopeWidget != null )
         {
-            this.scopeWidget.setEnabled( b && !isActive( SCOPEOPTIONS_READONLY ) );
+            scopeWidget.setEnabled( b && !isActive( SCOPEOPTIONS_READONLY ) );
         }
-        if ( this.limitWidget != null )
+        if ( limitWidget != null )
         {
-            this.limitWidget.setEnabled( b && !isActive( LIMITOPTIONS_READONLY ) );
+            limitWidget.setEnabled( b && !isActive( LIMITOPTIONS_READONLY ) );
         }
-        if ( this.aliasesDereferencingWidget != null )
+        if ( aliasesDereferencingWidget != null )
         {
-            this.aliasesDereferencingWidget.setEnabled( b && !isActive( ALIASOPTIONS_READONLY ) );
+            aliasesDereferencingWidget.setEnabled( b && !isActive( ALIASOPTIONS_READONLY ) );
         }
-        if ( this.referralsHandlingWidget != null )
+        if ( referralsHandlingWidget != null )
         {
-            this.referralsHandlingWidget.setEnabled( b && !isActive( REFERRALOPTIONS_READONLY ) );
+            referralsHandlingWidget.setEnabled( b && !isActive( REFERRALOPTIONS_READONLY ) );
         }
-        if ( this.controlLabel != null )
+        if ( controlLabel != null )
         {
-            this.controlLabel.setEnabled( b );
-            this.subentriesControlButton.setEnabled( b );
+            controlLabel.setEnabled( b );
+            subentriesControlButton.setEnabled( b );
         }
-
     }
 
 }

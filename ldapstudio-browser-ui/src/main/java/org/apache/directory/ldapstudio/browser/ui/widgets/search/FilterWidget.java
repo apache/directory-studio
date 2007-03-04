@@ -27,10 +27,9 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.dialogs.FilterDialog;
 import org.apache.directory.ldapstudio.browser.ui.editors.filter.FilterContentAssistProcessor;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.DialogContentAssistant;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BrowserWidget;
+import org.apache.directory.ldapstudio.browser.ui.widgets.DialogContentAssistant;
 import org.apache.directory.ldapstudio.browser.ui.widgets.HistoryUtils;
-
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -42,20 +41,39 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * The FileterWidget could be used to specify an LDAP filter. 
+ * It is composed of a text with a content assit to enter 
+ * a filter and a button to open a {@link FilterDialog}.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FilterWidget extends BrowserWidget
 {
 
+    /** The filter combo. */
     private Combo filterCombo;
 
+    /** The button to open the filter editor. */
     private Button filterEditorButton;
 
+    /** The content assist processor. */
     private FilterContentAssistProcessor contentAssistProcessor;
 
+    /** The connection. */
     private IConnection connection;
 
+    /** The inital filter. */
     private String initalFilter;
 
 
+    /**
+     * Creates a new instance of FilterWidget.
+     * 
+     * @param connection the connection
+     * @param initalFilter the inital filter
+     */
     public FilterWidget( IConnection connection, String initalFilter )
     {
         this.connection = connection;
@@ -63,6 +81,10 @@ public class FilterWidget extends BrowserWidget
     }
 
 
+    /**
+     * Creates a new instance of FilterWidget with no connection and
+     * no initial filter.
+     */
     public FilterWidget()
     {
         this.connection = null;
@@ -70,9 +92,13 @@ public class FilterWidget extends BrowserWidget
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( final Composite parent )
     {
-
         // Combo
         filterCombo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
@@ -87,6 +113,8 @@ public class FilterWidget extends BrowserWidget
                 notifyListeners();
             }
         } );
+
+        // Content assist
         LdapFilterParser parser = new LdapFilterParser();
         contentAssistProcessor = new FilterContentAssistProcessor( parser );
         DialogContentAssistant fca = new DialogContentAssistant();
@@ -96,7 +124,7 @@ public class FilterWidget extends BrowserWidget
         fca.setContentAssistProcessor( contentAssistProcessor, IDocument.DEFAULT_CONTENT_TYPE );
         fca.install( filterCombo );
 
-        // Button
+        // Filter editor button
         filterEditorButton = BaseWidgetUtils.createButton( parent, "F&ilter Editor...", 1 );
         filterEditorButton.addSelectionListener( new SelectionAdapter()
         {
@@ -121,24 +149,38 @@ public class FilterWidget extends BrowserWidget
         filterCombo.setItems( history );
 
         // initial values
-        this.setConnection( this.connection );
+        setConnection( connection );
         filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter );
-
     }
 
 
+    /**
+     * Gets the filter.
+     * 
+     * @return the filter
+     */
     public String getFilter()
     {
-        return this.filterCombo.getText();
+        return filterCombo.getText();
     }
 
 
+    /**
+     * Sets the filter.
+     * 
+     * @param filter the filter
+     */
     public void setFilter( String filter )
     {
-        this.filterCombo.setText( filter );
+        filterCombo.setText( filter );
     }
 
 
+    /**
+     * Sets the connection.
+     * 
+     * @param connection the connection
+     */
     public void setConnection( IConnection connection )
     {
         this.connection = connection;
@@ -147,22 +189,33 @@ public class FilterWidget extends BrowserWidget
     }
 
 
+    /**
+     * Saves dialog settings.
+     */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_SEARCH_FILTER_HISTORY, this.filterCombo.getText() );
+        HistoryUtils.save( BrowserUIConstants.DIALOGSETTING_KEY_SEARCH_FILTER_HISTORY, filterCombo.getText() );
     }
 
 
+    /**
+     * Sets the focus.
+     */
     public void setFocus()
     {
         // filterCombo.setFocus();
     }
 
 
+    /**
+     * Sets the enabled state of the widget.
+     * 
+     * @param b true to enable the widget, false to disable the widget
+     */
     public void setEnabled( boolean b )
     {
-        this.filterCombo.setEnabled( b );
-        this.filterEditorButton.setEnabled( b );
+        filterCombo.setEnabled( b );
+        filterEditorButton.setEnabled( b );
     }
 
 }

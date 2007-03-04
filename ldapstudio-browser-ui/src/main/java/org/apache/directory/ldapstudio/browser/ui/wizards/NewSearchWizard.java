@@ -30,35 +30,60 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 
 
+/**
+ * The NewSearchWizard is used to add a "New Search" action to the platforms
+ * "New..." menu. It just opens the platform's search dialog.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewSearchWizard extends Wizard implements INewWizard
 {
 
+    /** The window. */
     private IWorkbenchWindow window;
 
 
+    /**
+     * Creates a new instance of NewSearchWizard.
+     */
     public NewSearchWizard()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         window = workbench.getActiveWorkbenchWindow();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         window = null;
     }
 
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public static String getId()
     {
         return NewSearchWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
         NewSearchUI.openSearchDialog( window, SearchPage.getId() );

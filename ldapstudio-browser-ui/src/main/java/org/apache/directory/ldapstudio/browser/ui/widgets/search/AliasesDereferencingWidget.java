@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.search;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BrowserWidget;
-
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -32,30 +31,59 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 
+/**
+ * The AliasesDereferencingWidget could be used to select the
+ * alias dereferencing method. It is composed of a group with 
+ * two check boxes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AliasesDereferencingWidget extends BrowserWidget
 {
 
+    /** The initial aliases dereferencing method */
     private int initialAliasesDereferencingMethod;
 
+    /** The group. */
     private Group group;
 
+    /** The finding button. */
     private Button findingButton;
 
+    /** The search button. */
     private Button searchButton;
 
 
+    /**
+     * Creates a new instance of AliasesDereferencingWidget with the given
+     * derefenencing method. This must be one of {@link IConnection#DEREFERENCE_ALIASES_NEVER},
+     * {@link IConnection#DEREFERENCE_ALIASES_SEARCH}, {@link IConnection#DEREFERENCE_ALIASES_FINDING}
+     * or {@link IConnection#DEREFERENCE_ALIASES_ALWAYS}.
+     * 
+     * @param initialAliasesDereferencingMethod the initial aliases dereferencing method
+     */
     public AliasesDereferencingWidget( int initialAliasesDereferencingMethod )
     {
         this.initialAliasesDereferencingMethod = initialAliasesDereferencingMethod;
     }
 
 
+    /**
+     * Creates a new instance of AliasesDereferencingWidget. The initial 
+     * dereferncing method is set to {@link IConnection#DEREFERENCE_ALIASES_NEVER}.
+     */
     public AliasesDereferencingWidget()
     {
         this.initialAliasesDereferencingMethod = IConnection.DEREFERENCE_ALIASES_NEVER;
     }
 
 
+    /**
+     * Creates the widget.
+     * 
+     * @param parent the parent
+     */
     public void createWidget( Composite parent )
     {
 
@@ -80,13 +108,20 @@ public class AliasesDereferencingWidget extends BrowserWidget
             }
         } );
 
-        this.setAliasesDereferencingMethod( this.initialAliasesDereferencingMethod );
+        setAliasesDereferencingMethod( initialAliasesDereferencingMethod );
     }
 
 
+    /**
+     * Sets the aliases dereferencing method, must be one of {@link IConnection#DEREFERENCE_ALIASES_NEVER},
+     * {@link IConnection#DEREFERENCE_ALIASES_SEARCH}, {@link IConnection#DEREFERENCE_ALIASES_FINDING}
+     * or {@link IConnection#DEREFERENCE_ALIASES_ALWAYS}.
+     * 
+     * @param aliasesDereferencingMethod the aliases dereferencing method
+     */
     public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
     {
-        this.initialAliasesDereferencingMethod = aliasesDereferencingMethod;
+        initialAliasesDereferencingMethod = aliasesDereferencingMethod;
         findingButton.setSelection( initialAliasesDereferencingMethod == IConnection.DEREFERENCE_ALIASES_FINDING
             || initialAliasesDereferencingMethod == IConnection.DEREFERENCE_ALIASES_ALWAYS );
         searchButton.setSelection( initialAliasesDereferencingMethod == IConnection.DEREFERENCE_ALIASES_SEARCH
@@ -94,17 +129,24 @@ public class AliasesDereferencingWidget extends BrowserWidget
     }
 
 
+    /**
+     * Gets the aliases dereferencing method, one of {@link IConnection#DEREFERENCE_ALIASES_NEVER},
+     * {@link IConnection#DEREFERENCE_ALIASES_SEARCH}, {@link IConnection#DEREFERENCE_ALIASES_FINDING}
+     * or {@link IConnection#DEREFERENCE_ALIASES_ALWAYS}.
+     * 
+     * @return the aliases dereferencing method
+     */
     public int getAliasesDereferencingMethod()
     {
-        if ( this.findingButton.getSelection() && this.searchButton.getSelection() )
+        if ( findingButton.getSelection() && searchButton.getSelection() )
         {
             return IConnection.DEREFERENCE_ALIASES_ALWAYS;
         }
-        else if ( this.findingButton.getSelection() )
+        else if ( findingButton.getSelection() )
         {
             return IConnection.DEREFERENCE_ALIASES_FINDING;
         }
-        else if ( this.searchButton.getSelection() )
+        else if ( searchButton.getSelection() )
         {
             return IConnection.DEREFERENCE_ALIASES_SEARCH;
         }
@@ -115,11 +157,16 @@ public class AliasesDereferencingWidget extends BrowserWidget
     }
 
 
+    /**
+     * Sets the enabled state of the widget.
+     * 
+     * @param b true to enable the widget, false to disable the widget
+     */
     public void setEnabled( boolean b )
     {
-        this.group.setEnabled( b );
-        this.findingButton.setEnabled( b );
-        this.searchButton.setEnabled( b );
+        group.setEnabled( b );
+        findingButton.setEnabled( b );
+        searchButton.setEnabled( b );
     }
 
 }

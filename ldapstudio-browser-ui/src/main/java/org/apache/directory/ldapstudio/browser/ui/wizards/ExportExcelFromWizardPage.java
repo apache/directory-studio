@@ -33,12 +33,12 @@ public class ExportExcelFromWizardPage extends ExportBaseFromWizardPage
     {
         super( pageName, wizard, new SearchPageWrapper(
             SearchPageWrapper.NAME_INVISIBLE
-                | SearchPageWrapper.DN_VISIBLE
-                | SearchPageWrapper.DN_CHECKED
-                | SearchPageWrapper.ALLATTRIBUTES_VISIBLE
-                | SearchPageWrapper.OPERATIONALATTRIBUTES_VISIBLE
+                | SearchPageWrapper.RETURN_DN_VISIBLE
+                | SearchPageWrapper.RETURN_DN_CHECKED
+                | SearchPageWrapper.RETURN_ALLATTRIBUTES_VISIBLE
+                | SearchPageWrapper.RETURN_OPERATIONALATTRIBUTES_VISIBLE
                 | ( ( wizard.getSearch().getReturningAttributes() == null || wizard.getSearch()
-                    .getReturningAttributes().length == 0 ) ? SearchPageWrapper.ALLATTRIBUTES_CHECKED
+                    .getReturningAttributes().length == 0 ) ? SearchPageWrapper.RETURN_ALLATTRIBUTES_CHECKED
                     : SearchPageWrapper.NONE ) ) );
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_EXPORT_XLS_WIZARD ) );
@@ -47,7 +47,7 @@ public class ExportExcelFromWizardPage extends ExportBaseFromWizardPage
 
     public boolean isExportDn()
     {
-        return spw.isExportDn();
+        return spw.isReturnDn();
     }
 
 }

@@ -33,38 +33,63 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 
 
+/**
+ * The NewLdifFileWizard is used to add a "New LDIF" action to the platforms
+ * "New..." menu. It just opens an editor with a dummy LDIF editor input.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+
 public class NewLdifFileWizard extends Wizard implements INewWizard
 {
 
+    /** The window. */
     private IWorkbenchWindow window;
 
 
+    /**
+     * Creates a new instance of NewLdifFileWizard.
+     */
     public NewLdifFileWizard()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         window = workbench.getActiveWorkbenchWindow();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         window = null;
     }
 
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public static String getId()
     {
         return NewLdifFileWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
-
         IEditorInput input = new NonExistingLdifEditorInput();
         String editorId = LdifEditor.getId();
 

@@ -36,24 +36,42 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * The AttributeWizard is used to create a new attribute or
+ * to modify an existing attribute description. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeWizard extends Wizard implements INewWizard
 {
 
+    /** The type page. */
     private AttributeTypeWizardPage typePage;
 
+    /** The options page. */
     private AttributeOptionsWizardPage optionsPage;
 
+    /** The initial show subschema attributes only. */
     private boolean initialShowSubschemaAttributesOnly;
 
+    /** The initial hide existing attributes. */
     private boolean initialHideExistingAttributes;
 
+    /** The initial attribute description. */
     private String initialAttributeDescription;
 
+    /** The initial entry. */
     private IEntry initialEntry;
 
+    /** The final attribute description. */
     private String finalAttributeDescription = null;
 
 
+    /**
+     * Creates a new instance of AttributeWizard with an empty
+     * attriute description.
+     */
     public AttributeWizard()
     {
         super.setWindowTitle( "New Attribute" );
@@ -65,6 +83,15 @@ public class AttributeWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * Creates a new instance of AttributeWizard with the given initial attribute desription
+     * 
+     * @param title the title
+     * @param entry the entry
+     * @param showSubschemaAttributesOnly the show subschema attributes only
+     * @param hideExistingAttributes the hide existing attributes
+     * @param attributeDescription the attribute description
+     */
     public AttributeWizard( String title, boolean showSubschemaAttributesOnly, boolean hideExistingAttributes,
         String attributeDescription, IEntry entry )
     {
@@ -77,28 +104,38 @@ public class AttributeWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public static String getId()
     {
         return AttributeWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
     }
 
 
+    /**
+     * {@inheritDoc}}
+     */
     public void addPages()
     {
-        if ( this.initialEntry != null )
+        if ( initialEntry != null )
         {
-            typePage = new AttributeTypeWizardPage( AttributeTypeWizardPage.class.getName(), this.initialEntry,
-                this.initialAttributeDescription, this.initialShowSubschemaAttributesOnly,
-                this.initialHideExistingAttributes, this );
+            typePage = new AttributeTypeWizardPage( AttributeTypeWizardPage.class.getName(), initialEntry,
+                initialAttributeDescription, initialShowSubschemaAttributesOnly, initialHideExistingAttributes, this );
             addPage( typePage );
 
             optionsPage = new AttributeOptionsWizardPage( AttributeOptionsWizardPage.class.getName(),
-                this.initialAttributeDescription, this );
+                initialAttributeDescription, this );
             addPage( optionsPage );
         }
         else
@@ -115,7 +152,7 @@ public class AttributeWizard extends Wizard implements INewWizard
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_attribute_wizard" );
@@ -123,10 +160,18 @@ public class AttributeWizard extends Wizard implements INewWizard
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_attribute_wizard" );
     }
 
-
+    /** 
+     * A dummy wizard page to show the user that no entry is selected.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     class DummyWizardPage extends WizardPage
     {
 
+        /**
+         * Creates a new instance of DummyWizardPage.
+         */
         protected DummyWizardPage()
         {
             super( "" );
@@ -137,6 +182,9 @@ public class AttributeWizard extends Wizard implements INewWizard
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public void createControl( Composite parent )
         {
             Composite composite = new Composite( parent, SWT.NONE );
@@ -149,12 +197,9 @@ public class AttributeWizard extends Wizard implements INewWizard
     }
 
 
-    public boolean performCancel()
-    {
-        return true;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
         finalAttributeDescription = getAttributeDescription();
@@ -162,6 +207,11 @@ public class AttributeWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * Gets the attribute description.
+     * 
+     * @return the attribute description
+     */
     public String getAttributeDescription()
     {
         if ( finalAttributeDescription != null )
