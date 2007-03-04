@@ -504,14 +504,6 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             viewer.refresh( eme.getNewEntry(), true );
             viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
         }
-        else if ( event instanceof EntryMovedEvent )
-        {
-            EntryMovedEvent eme = ( EntryMovedEvent ) event;
-            viewer.refresh( eme.getOldEntry().getParententry(), true );
-            viewer.refresh( eme.getNewEntry().getParententry(), true );
-            viewer.refresh( eme.getNewEntry(), true );
-            viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
-        }
         else if ( event instanceof BulkModificationEvent )
         {
             viewer.refresh();

@@ -58,7 +58,7 @@ public class BrowserCoreMessages extends NLS
 
     public static String event__dn_children_initialized;
     
-    public static String event__buld_modification;
+    public static String event__bulk_modification;
 
     public static String event__empty_value_added_to_att_at_dn;
 

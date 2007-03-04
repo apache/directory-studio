@@ -37,7 +37,7 @@ public class BulkModificationEvent extends EntryModificationEvent
 
     public String toString()
     {
-        return BrowserCoreMessages.event__buld_modification;
+        return BrowserCoreMessages.event__bulk_modification;
     }
 
 }
