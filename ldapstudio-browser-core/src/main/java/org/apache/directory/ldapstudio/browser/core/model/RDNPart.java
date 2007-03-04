@@ -254,16 +254,16 @@ public class RDNPart implements Serializable
 
 
     /**
-     * Returns the string representation of this RDNPart, but with
-     * the numerid OID instead of the type.
+     * Returns the string representation of this RDNPart, but 
+     * lowercased and with the numerid OID instead of the type.
      *
      * @param schema the schema
-     * @return the OID-fizied string representation of this RDNPart
+     * @return the lowercased and OID-fizied string representation of this RDNPart
      */
     public String toOidString( Schema schema )
     {
         String oid = schema != null ? schema.getAttributeTypeDescription( getType() ).getNumericOID() : getType();
-        return oid + "=" + getValue(); //$NON-NLS-1$
+        return oid.toLowerCase() + "=" + getValue().toLowerCase(); //$NON-NLS-1$
     }
 
 }

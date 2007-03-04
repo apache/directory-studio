@@ -310,11 +310,11 @@ public class RDN implements Serializable
 
 
     /**
-     * Returns the string representation of this RDN, but with
-     * the numerid OIDs instead of the types.
+     * Returns the string representation of this RDN, but 
+     * lowercased and with the numerid OIDs instead of the types.
      *
      * @param schema the schema
-     * @return the OID-fizied string representation of this RDN
+     * @return the lowercased and OID-fizied string representation of this RDN
      */
     public String toOidString( Schema schema )
     {

@@ -231,11 +231,11 @@ public class DN implements Serializable
 
 
     /**
-     * Returns the string representation of this DN, but with
-     * the numerid OIDs instead of the types.
+     * Returns the string representation of this DN, but 
+     * lowercased and with the numerid OIDs instead of the types.
      *
      * @param schema the schema
-     * @return the OID-fizied string representation of this DN
+     * @return the lowercased and OID-fizied string representation of this DN
      */
     public String toOidString( Schema schema )
     {
