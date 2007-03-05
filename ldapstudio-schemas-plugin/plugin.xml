@@ -55,7 +55,7 @@
       <view
             category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.SearchView"
-            icon="ressources/icons/find.png"
+            icon="ressources/icons/search.gif"
             id="org.apache.directory.ldapstudio.schemas.view.SearchView"
             name="%ldapstudio-schemas-plugin.views.search.name"/>
    </extension>
@@ -224,5 +224,16 @@
           		Decorates Schemas Editor icons
        		</description>
        	</decorator>
+   </extension>
+   <extension
+         point="org.eclipse.search.searchPages">
+      <page
+            class="org.apache.directory.ldapstudio.schemas.view.search.SearchPage"
+            enabled="true"
+            icon="ressources/icons/search.gif"
+            id="org.apache.directory.ldapstudio.schemas.search"
+            label="Schemas Search"
+            showScopeSection="false"
+            sizeHint="450,300"/>
    </extension>
 </plugin>

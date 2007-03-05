@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.directory.ldapstudio.jars,
  org.eclipse.jface.text,
- org.eclipse.ui.forms
+ org.eclipse.ui.forms,
+ org.eclipse.search
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/commons-collections-3.1.jar,

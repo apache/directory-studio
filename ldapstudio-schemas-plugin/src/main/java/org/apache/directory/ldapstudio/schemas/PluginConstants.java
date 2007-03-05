@@ -175,6 +175,7 @@ public interface PluginConstants
     public static final String IMG_HIDE_OBJECT_CLASSES = "ressources/icons/hide_object_classes.png"; //$NON-NLS-1$
     public static final String IMG_HIDE_ATTRIBUTE_TYPES = "ressources/icons/hide_attribute_types.png"; //$NON-NLS-1$
     public static final String IMG_SORT = "ressources/icons/sort.gif"; //$NON-NLS-1$
+    public static final String IMG_ERASE_SEARCH = "ressources/icons/erase_search.gif"; //$NON-NLS-1$
 
     // Images - Views
     public static final String IMG_FOLDER_ATTRIBUTE_TYPE = "ressources/icons/folder_at.gif"; //$NON-NLS-1$

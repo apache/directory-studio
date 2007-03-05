@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
+import org.apache.directory.ldapstudio.schemas.controller.actions.EraseSearchAction;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
@@ -38,6 +39,7 @@ import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEdi
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -79,7 +81,7 @@ public class SearchView extends ViewPart implements PoolListener
     private Table resultsTable;
     private TableViewer resultsTableViewer;
     private Combo searchField;
-    private Combo typeCombo;
+    private Combo scopeCombo;
     private SearchViewContentProvider searchContentProvider;
 
     /** The Type column */
@@ -95,20 +97,20 @@ public class SearchView extends ViewPart implements PoolListener
     private String[] columnNames = new String[]
         { TYPE_COLUMN, NAME_COLUMN, SCHEMA_COLUMN, };
 
-    /** The Search All type */
+    /** The Search All scope */
     public static final String SEARCH_ALL = Messages.getString( "SearchView.Search_All_metadata" ); //$NON-NLS-1$
 
-    /** The Search Name type */
+    /** The Search Name scope */
     public static final String SEARCH_NAME = Messages.getString( "SearchView.Search_Name" ); //$NON-NLS-1$
 
-    /** The Search OID type */
+    /** The Search OID scope */
     public static final String SEARCH_OID = Messages.getString( "SearchView.Search_OID" ); //$NON-NLS-1$
 
-    /** The Search Description type */
+    /** The Search Description scope */
     public static final String SEARCH_DESC = Messages.getString( "SearchView.Search_Description" ); //$NON-NLS-1$
 
     /** The current Search type */
-    public static String searchType = SEARCH_ALL;
+    public static String currentSearchScope = SEARCH_ALL;
 
 
     /* (non-Javadoc)
@@ -124,12 +126,7 @@ public class SearchView extends ViewPart implements PoolListener
         //top container
         Composite top = new Composite( parent, SWT.NONE );
 
-        GridLayout layout = new GridLayout();
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        layout.numColumns = 4;
-        layout.horizontalSpacing = 0;
-        layout.verticalSpacing = 0;
+        GridLayout layout = new GridLayout( 4, false );
         top.setLayout( layout );
 
         Label searchLabel = new Label( top, SWT.NONE );
@@ -144,25 +141,25 @@ public class SearchView extends ViewPart implements PoolListener
         Label inLabel = new Label( top, SWT.NONE );
         inLabel.setText( " in " );
 
-        //search type combo
-        typeCombo = new Combo( top, SWT.READ_ONLY | SWT.SINGLE );
+        //search scope combo
+        scopeCombo = new Combo( top, SWT.READ_ONLY | SWT.SINGLE );
 
         gridData = new GridData( SWT.FILL, 0, false, false );
         gridData.verticalAlignment = SWT.CENTER;
-        typeCombo.setLayoutData( gridData );
-        typeCombo.addSelectionListener( new SelectionAdapter()
+        scopeCombo.setLayoutData( gridData );
+        scopeCombo.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                searchType = typeCombo.getItem( typeCombo.getSelectionIndex() );
+                currentSearchScope = scopeCombo.getText();
                 resultsTableViewer.refresh();
             }
         } );
-        typeCombo.add( SEARCH_ALL, 0 );
-        typeCombo.add( SEARCH_NAME, 1 );
-        typeCombo.add( SEARCH_OID, 2 );
-        typeCombo.add( SEARCH_DESC, 3 );
-        typeCombo.select( 0 );
+        scopeCombo.add( SEARCH_ALL, 0 );
+        scopeCombo.add( SEARCH_NAME, 1 );
+        scopeCombo.add( SEARCH_OID, 2 );
+        scopeCombo.add( SEARCH_DESC, 3 );
+        scopeCombo.select( 0 );
 
         // Create the table 
         createTable( top );
@@ -174,6 +171,14 @@ public class SearchView extends ViewPart implements PoolListener
 
         initSearchHistory();
         initListeners();
+        initToolbar();
+    }
+
+
+    private void initToolbar()
+    {
+        IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+        toolbar.add( new EraseSearchAction( this ) );
     }
 
 
@@ -246,7 +251,7 @@ public class SearchView extends ViewPart implements PoolListener
             }
         } );
 
-        typeCombo.addFocusListener( new FocusAdapter()
+        scopeCombo.addFocusListener( new FocusAdapter()
         {
             public void focusGained( FocusEvent arg0 )
             {
@@ -433,5 +438,15 @@ public class SearchView extends ViewPart implements PoolListener
             history = new String[0];
         }
         return history;
+    }
+
+
+    public void setSearch( String searchString, String scope )
+    {
+        scopeCombo.setText( scope );
+        currentSearchScope = scopeCombo.getText();
+        searchField.setText( searchString );
+        resultsTableViewer.setInput( searchString );
+        resultsTable.setFocus();
     }
 }

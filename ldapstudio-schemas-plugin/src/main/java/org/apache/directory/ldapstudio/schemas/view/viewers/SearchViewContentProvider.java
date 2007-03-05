@@ -97,8 +97,8 @@ public class SearchViewContentProvider implements IStructuredContentProvider, Po
                 for ( SchemaElement element : allList )
                 {
 
-                    if ( SearchView.searchType.equals( SearchView.SEARCH_NAME )
-                        || SearchView.searchType.equals( SearchView.SEARCH_ALL ) )
+                    if ( SearchView.currentSearchScope.equals( SearchView.SEARCH_NAME )
+                        || SearchView.currentSearchScope.equals( SearchView.SEARCH_ALL ) )
                     {
                         String[] names = element.getNames();
                         for ( String name : names )
@@ -115,8 +115,8 @@ public class SearchViewContentProvider implements IStructuredContentProvider, Po
                         }
                     }
 
-                    if ( SearchView.searchType.equals( SearchView.SEARCH_OID )
-                        || SearchView.searchType.equals( SearchView.SEARCH_ALL ) )
+                    if ( SearchView.currentSearchScope.equals( SearchView.SEARCH_OID )
+                        || SearchView.currentSearchScope.equals( SearchView.SEARCH_ALL ) )
                     {
                         String oid = element.getOid();
                         Matcher m = pattern.matcher( oid );
@@ -130,8 +130,8 @@ public class SearchViewContentProvider implements IStructuredContentProvider, Po
                         }
                     }
 
-                    if ( SearchView.searchType.equals( SearchView.SEARCH_DESC )
-                        || SearchView.searchType.equals( SearchView.SEARCH_ALL ) )
+                    if ( SearchView.currentSearchScope.equals( SearchView.SEARCH_DESC )
+                        || SearchView.currentSearchScope.equals( SearchView.SEARCH_ALL ) )
                     {
                         String desc = element.getDescription();
                         if ( desc == null )
