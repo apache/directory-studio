@@ -27,25 +27,42 @@ import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * Action to refresh the view from logfile.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RefreshAction extends BrowserAction
 {
 
+    /** The modification logs view. */
     private ModificationLogsView view;
 
 
+    /**
+     * Creates a new instance of RefreshAction.
+     *
+     * @param view the modification logs view
+     */
     public RefreshAction( ModificationLogsView view )
     {
-        super();
         this.view = view;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         // int topIndex = view.getMainWidget().getSourceViewer().getTopIndex();
@@ -55,24 +72,36 @@ public class RefreshAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Refresh";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_REFRESH );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getInput() != null && ( getInput() instanceof ModificationLogsViewInput );

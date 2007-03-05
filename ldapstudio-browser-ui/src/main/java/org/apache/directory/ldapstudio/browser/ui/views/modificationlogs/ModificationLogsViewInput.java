@@ -24,18 +24,55 @@ package org.apache.directory.ldapstudio.browser.ui.views.modificationlogs;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 
 
+/**
+ * A ModificationLogsViewInput represents the input of the modification logs view.
+ * It consists of a connection and the index of the displayed log file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ModificationLogsViewInput
 {
 
-    IConnection connection;
+    /** The connection. */
+    private IConnection connection;
 
-    int index;
+    /** The index of the displayed log file */
+    private int index;
 
 
+    /**
+     * Creates a new instance of ModificationLogsViewInput.
+     * 
+     * @param connection the connection
+     * @param index the index of the displayed log file
+     */
     public ModificationLogsViewInput( IConnection connection, int index )
     {
         this.connection = connection;
         this.index = index;
+    }
+
+
+    /**
+     * Gets the connection.
+     * 
+     * @return the connection
+     */
+    public IConnection getConnection()
+    {
+        return connection;
+    }
+
+
+    /**
+     * Gets the index of the displayed log file.
+     * 
+     * @return the index
+     */
+    public int getIndex()
+    {
+        return index;
     }
 
 }

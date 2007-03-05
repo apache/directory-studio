@@ -21,66 +21,88 @@
 package org.apache.directory.ldapstudio.browser.ui.views.modificationlogs;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.ldifeditor.LdifEditorWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
+/**
+ * The ModificationLogsView displays all modifications applied 
+ * to a connection using LDIF change format.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ModificationLogsView extends ViewPart
 {
 
+    /** The action group. */
     private ModificationLogsViewActionGroup actionGroup;
 
+    /** The main widget. */
     private LdifEditorWidget mainWidget;
 
+    /** The universal listener. */
     private ModificationLogsViewUniversalListener universalListener;
 
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public static String getId()
     {
         return ModificationLogsView.class.getName();
     }
 
 
+    /**
+     * Creates a new instance of ModificationLogsView.
+     */
     public ModificationLogsView()
     {
         super();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setFocus()
     {
         mainWidget.getSourceViewer().getTextWidget().setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.mainWidget != null )
+        if ( mainWidget != null )
         {
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
+            actionGroup.dispose();
+            actionGroup = null;
+            universalListener.dispose();
+            universalListener = null;
+            mainWidget.dispose();
+            mainWidget = null;
         }
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createPartControl( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         GridLayout layout = new GridLayout();
@@ -94,12 +116,12 @@ public class ModificationLogsView extends ViewPart
         mainWidget.getSourceViewer().setEditable( false );
 
         // create actions and context menu (and register global actions)
-        this.actionGroup = new ModificationLogsViewActionGroup( this );
-        this.actionGroup.fillActionBars( getViewSite().getActionBars() );
+        actionGroup = new ModificationLogsViewActionGroup( this );
+        actionGroup.fillActionBars( getViewSite().getActionBars() );
         // this.actionGroup.fillContextMenu(this.configuration.getContextMenuManager(this.mainWidget.getViewer()));
 
         // create the listener
-        this.universalListener = new ModificationLogsViewUniversalListener( this );
+        universalListener = new ModificationLogsViewUniversalListener( this );
 
         // set help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
@@ -107,61 +129,33 @@ public class ModificationLogsView extends ViewPart
     }
 
 
+    /**
+     * Gets the main widget.
+     * 
+     * @return the main widget
+     */
     public LdifEditorWidget getMainWidget()
     {
         return mainWidget;
     }
 
 
-    public static void setInput( IConnection connection )
-    {
-        try
-        {
-            String targetId = ModificationLogsView.getId();
-            IViewPart targetView = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-                targetId );
-
-            if ( targetView == null && connection != null )
-            {
-                try
-                {
-                    targetView = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-                        targetId, null, IWorkbenchPage.VIEW_VISIBLE );
-                }
-                catch ( PartInitException e )
-                {
-                }
-            }
-
-            try
-            {
-                targetView = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( targetId,
-                    null, IWorkbenchPage.VIEW_VISIBLE );
-            }
-            catch ( PartInitException e )
-            {
-            }
-
-            // set input
-            if ( targetView != null && targetView instanceof ModificationLogsView )
-            {
-                ModificationLogsViewInput input = new ModificationLogsViewInput( connection, 0 );
-                ( ( ModificationLogsView ) targetView ).universalListener.setInput( input );
-                ( ( ModificationLogsView ) targetView ).universalListener.scrollToNewest();
-            }
-        }
-        catch ( NullPointerException npe )
-        {
-        }
-    }
-
-
+    /**
+     * Gets the universal listener.
+     * 
+     * @return the universal listener
+     */
     public ModificationLogsViewUniversalListener getUniversalListener()
     {
         return universalListener;
     }
 
 
+    /**
+     * Gets the action group.
+     * 
+     * @return the action group
+     */
     public ModificationLogsViewActionGroup getActionGroup()
     {
         return actionGroup;

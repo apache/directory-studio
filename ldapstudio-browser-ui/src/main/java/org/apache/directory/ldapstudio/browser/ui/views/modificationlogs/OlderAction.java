@@ -29,62 +29,89 @@ import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * Action to switch to an older logfile.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OlderAction extends BrowserAction
 {
 
+    /** The modification logs view. */
     private ModificationLogsView view;
 
 
+    /**
+     * Creates a new instance of OlderAction.
+     *
+     * @param view the modification logs view
+     */
     public OlderAction( ModificationLogsView view )
     {
-        super();
         this.view = view;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         ModificationLogsViewInput oldInput = ( ModificationLogsViewInput ) getInput();
-        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.connection, oldInput.index + 1 );
+        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.getConnection(), oldInput
+            .getIndex() + 1 );
         view.getUniversalListener().setInput( newInput );
         view.getUniversalListener().scrollToNewest();
-
-        // go to bottom
-        // view.getMainWidget().getSourceViewer().setTopIndex(Integer.MAX_VALUE);
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Older";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_PREVIOUS );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         if ( getInput() != null && ( getInput() instanceof ModificationLogsViewInput ) )
         {
             ModificationLogsViewInput input = ( ModificationLogsViewInput ) getInput();
-            File[] files = input.connection.getModificationLogger().getFiles();
-            int i = input.index + 1;
+            File[] files = input.getConnection().getModificationLogger().getFiles();
+            int i = input.getIndex() + 1;
             if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
             {
                 return true;

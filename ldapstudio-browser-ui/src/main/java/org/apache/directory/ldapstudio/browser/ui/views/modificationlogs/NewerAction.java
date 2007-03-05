@@ -27,29 +27,46 @@ import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
+/**
+ * Action to switch to a newer logfile.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewerAction extends BrowserAction
 {
+    
+    /** The modification logs view. */
+    private ModificationLogsView view;
 
-    ModificationLogsView view;
 
-
+    /**
+     * Creates a new instance of NewerAction.
+     *
+     * @param view the modification logs view
+     */
     public NewerAction( ModificationLogsView view )
     {
-        super();
         this.view = view;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         ModificationLogsViewInput oldInput = ( ModificationLogsViewInput ) getInput();
-        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.connection, oldInput.index - 1 );
+        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.getConnection(), oldInput.getIndex() - 1 );
         view.getUniversalListener().setInput( newInput );
         view.getUniversalListener().scrollToOldest();
 
@@ -58,28 +75,40 @@ public class NewerAction extends BrowserAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getText()
     {
         return "Newer";
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_NEXT );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCommandId()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isEnabled()
     {
         return getInput() != null && ( getInput() instanceof ModificationLogsViewInput )
-            && ( ( ModificationLogsViewInput ) getInput() ).index > 0;
+            && ( ( ModificationLogsViewInput ) getInput() ).getIndex() > 0;
     }
 
 }

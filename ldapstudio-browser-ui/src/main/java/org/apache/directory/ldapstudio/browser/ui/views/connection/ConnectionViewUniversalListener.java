@@ -25,6 +25,7 @@ import org.apache.directory.ldapstudio.browser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
+import org.apache.directory.ldapstudio.browser.ui.views.modificationlogs.ModificationLogsView;
 import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionUniversalListener;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -56,7 +57,7 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
             IConnection[] connections = SelectionUtils.getConnections( event.getSelection() );
             if ( connections.length == 1 )
             {
-                ensureBrowserViewVisible( connections[0] );
+                ensureViewVisible( connections[0] );
             }
         }
     };
@@ -78,7 +79,7 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
     /**
      * Creates a new instance of ConnectionViewUniversalListener.
      *
-     * @param view
+     * @param view the connection view
      */
     public ConnectionViewUniversalListener( ConnectionView view )
     {
@@ -102,17 +103,30 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
 
 
     /**
-     * Ensures that the browser view is opended and ready to show the given selection.
+     * Ensures that the browser view and modification log viewa are opended 
+     * and ready to show the given selection.
      *
      * @param selection the view's selection.
      */
-    private void ensureBrowserViewVisible( IConnection selection )
+    private void ensureViewVisible( IConnection selection )
     {
-        if ( this.view != null )
+        if ( view != null )
         {
             try
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( BrowserView.getId(),
+                    null, IWorkbenchPage.VIEW_VISIBLE );
+            }
+            catch ( PartInitException e )
+            {
+            }
+            catch ( NullPointerException e )
+            {
+            }
+            
+            try
+            {
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( ModificationLogsView.getId(),
                     null, IWorkbenchPage.VIEW_VISIBLE );
             }
             catch ( PartInitException e )

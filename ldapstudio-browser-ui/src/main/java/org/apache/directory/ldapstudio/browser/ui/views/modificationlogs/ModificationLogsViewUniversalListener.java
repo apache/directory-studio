@@ -29,57 +29,116 @@ import org.apache.directory.ldapstudio.browser.core.events.ChildrenInitializedEv
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
+import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
+import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ui.INullSelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 
 
+/**
+ * The ModificationLogsViewUniversalListener manages all events for the modification logs view.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ModificationLogsViewUniversalListener implements EntryUpdateListener
 {
 
+    /** The modification log view. */
     private ModificationLogsView view;
 
-    ModificationLogsViewInput input;
+    /** The current input */
+    private ModificationLogsViewInput input;
+
+    /** Listener that listens for selections of connections */
+    private INullSelectionListener connectionSelectionListener = new INullSelectionListener()
+    {
+        /**
+         * {@inheritDoc}
+         * 
+         * This implementation sets the input when another connection was selected.
+         */
+        public void selectionChanged( IWorkbenchPart part, ISelection selection )
+        {
+            if ( view != null && part != null )
+            {
+                if ( view.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
+                {
+                    IConnection[] connections = SelectionUtils.getConnections( selection );
+                    if ( connections.length == 1 )
+                    {
+                        ModificationLogsViewInput input = new ModificationLogsViewInput( connections[0], 0 );
+                        setInput( input );
+                        scrollToNewest();
+                    }
+                }
+            }
+        }
+    };
 
 
+    /**
+     * Creates a new instance of ModificationLogsViewUniversalListener.
+     *
+     * @param view the modification logs view
+     */
     public ModificationLogsViewUniversalListener( ModificationLogsView view )
     {
         this.view = view;
-
         this.input = null;
+
         EventRegistry.addEntryUpdateListener( this );
+        view.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( ConnectionView.getId(),
+            connectionSelectionListener );
     }
 
 
+    /**
+     * Disposed this listener
+     */
     public void dispose()
     {
-        if ( this.view != null )
+        if ( view != null )
         {
+            view.getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(
+                ConnectionView.getId(), connectionSelectionListener );
+
             EventRegistry.removeEntryUpdateListener( this );
-            this.view = null;
+            view = null;
         }
     }
 
 
+    /**
+     * Refreshes the input.
+     */
     void refreshInput()
     {
-        ModificationLogsViewInput input = this.input;
-        this.input = null;
-        setInput( input );
+        ModificationLogsViewInput newInput = input;
+        input = null;
+        setInput( newInput );
     }
 
 
+    /**
+     * Sets the input.
+     * 
+     * @param input the input
+     */
     void setInput( ModificationLogsViewInput input )
     {
-
         // only if another connection is selected
         if ( this.input != input )
         {
-
             this.input = input;
 
             // load file %u %g
             StringBuffer sb = new StringBuffer();
-            File[] files = input.connection.getModificationLogger().getFiles();
-            int i = input.index;
+            File[] files = input.getConnection().getModificationLogger().getFiles();
+            int i = input.getIndex();
             if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
             {
                 try
@@ -98,13 +157,17 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
             }
 
             // change input
-            this.view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
-            this.view.getActionGroup().setInput( input );
-
+            view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
+            view.getActionGroup().setInput( input );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation refreshes the input.
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
         if ( !( event instanceof AttributesInitializedEvent ) && !( event instanceof ChildrenInitializedEvent ) )
@@ -115,22 +178,28 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
     }
 
 
+    /**
+     * Scroll to oldest log entry.
+     */
     public void scrollToOldest()
     {
-        this.view.getMainWidget().getSourceViewer().setTopIndex( 0 );
+        view.getMainWidget().getSourceViewer().setTopIndex( 0 );
     }
 
 
+    /**
+     * Scroll to newest log entry.
+     */
     public void scrollToNewest()
     {
         try
         {
-            LdifContainer record = this.view.getMainWidget().getLdifModel().getLastContainer();
+            LdifContainer record = view.getMainWidget().getLdifModel().getLastContainer();
             int offset = record.getOffset();
-            int line = this.view.getMainWidget().getSourceViewer().getDocument().getLineOfOffset( offset );
+            int line = view.getMainWidget().getSourceViewer().getDocument().getLineOfOffset( offset );
             if ( line > 3 )
                 line -= 3;
-            this.view.getMainWidget().getSourceViewer().setTopIndex( line );
+            view.getMainWidget().getSourceViewer().setTopIndex( line );
         }
         catch ( Exception e )
         {
