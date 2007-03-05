@@ -142,7 +142,15 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     };
 
     /** The listener for the OID Text Widget */
-    //    private Object oidTextListener;
+    private ModifyListener oidTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            modifiedAttributeType.setOid( oidText.getText() );
+            setEditorDirty();
+        }
+    };
+    
     /** The listener for the Schema Hyperlink Widget*/
     private HyperlinkAdapter schemaLinkListener = new HyperlinkAdapter()
     {
@@ -909,6 +917,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         {
             // If the attribute type is in a core-schema file, we disable editing
             nameText.setEditable( false );
+            oidText.setEditable( false );
             descriptionText.setEditable( false );
             supCombo.setEnabled( false );
             usageCombo.setEnabled( false );
@@ -922,9 +931,6 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
             orderingCombo.setEnabled( false );
             substringCombo.setEnabled( false );
         }
-
-        // AT THE MOMENT, WE CANNOT SET A NEW OID TO THE ATTRIBUTE TYPE, SO WE DISABLE THIS FUNCTIONNALITY
-        oidText.setEditable( false );
     }
 
 
@@ -936,6 +942,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
             nameText.addModifyListener( nameTextListener );
+            oidText.addModifyListener( oidTextListener );
             descriptionText.addModifyListener( descriptionTextListener );
             supLabel.addHyperlinkListener( supLabelListener );
             supCombo.addModifyListener( supComboListener );
@@ -965,6 +972,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     private void removeListeners()
     {
         nameText.removeModifyListener( nameTextListener );
+        oidText.removeModifyListener( oidTextListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
         schemaLink.removeHyperlinkListener( schemaLinkListener );
         descriptionText.removeModifyListener( descriptionTextListener );

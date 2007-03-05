@@ -231,7 +231,6 @@ public class AttributeType implements SchemaElement
     }
 
 
-    //set
     public void setDescription( String description )
     {
         literal.setDescription( description );
@@ -294,7 +293,14 @@ public class AttributeType implements SchemaElement
         notifyChanged();
     }
 
-
+    
+    public void setOid( String oid )
+    {
+        literal.setOid( oid );
+        notifyChanged();
+    }
+    
+    
     public void setObsolete( boolean bool )
     {
         literal.setObsolete( bool );
@@ -323,7 +329,6 @@ public class AttributeType implements SchemaElement
     }
 
 
-    //test
     public boolean isObsolete()
     {
         return literal.isObsolete();

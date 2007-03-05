@@ -275,7 +275,7 @@ public class AttributeTypeFormEditor extends FormEditor
         at2.setNames( at1.getNames() );
         at2.setNoUserModification( at1.isNoUserModification() );
         at2.setObsolete( at1.isObsolete() );
-        // TODO Need to update the Shared LDAP lirary to be able to modify the OID
+        at2.setOid( at1.getOid() );
         at2.setOrdering( at1.getOrdering() );
         at2.setSingleValue( at1.isSingleValue() );
         at2.setSubstr( at1.getSubstr() );
