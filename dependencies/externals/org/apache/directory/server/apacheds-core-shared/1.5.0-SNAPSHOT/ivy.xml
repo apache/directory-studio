@@ -3,7 +3,7 @@
 		module="apacheds-core-shared"
 		revision="1.5.0-SNAPSHOT"
 		status="release"
-		publication="20070116095145"
+		publication="20070305113004"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

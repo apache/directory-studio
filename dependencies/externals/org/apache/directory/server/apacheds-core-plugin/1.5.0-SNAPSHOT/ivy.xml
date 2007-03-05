@@ -3,7 +3,7 @@
 		module="apacheds-core-plugin"
 		revision="1.5.0-SNAPSHOT"
 		status="release"
-		publication="20070116095000"
+		publication="20070305113205"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
