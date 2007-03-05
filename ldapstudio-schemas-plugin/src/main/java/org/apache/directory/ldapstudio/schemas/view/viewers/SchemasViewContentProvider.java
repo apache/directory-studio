@@ -37,6 +37,7 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.FirstNameSo
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.OidSorter;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -65,6 +66,9 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
 
     /** The OID Sorter */
     private OidSorter oidSorter;
+    
+    /** The Schema Sorter */
+    private SchemaSorter schemaSorter;
 
 
     /**
@@ -77,6 +81,7 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
 
         firstNameSorter = new FirstNameSorter();
         oidSorter = new OidSorter();
+        schemaSorter = new SchemaSorter();
     }
 
 
@@ -110,6 +115,8 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
                 {
                     children.add( new SchemaWrapper( schemas[i], ( IntermediateNode ) parentElement ) );
                 }
+                
+                Collections.sort( children, schemaSorter );
             }
             else if ( intermediate.getType().equals( IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ) )
             {
