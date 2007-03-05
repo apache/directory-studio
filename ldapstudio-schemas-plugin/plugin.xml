@@ -200,4 +200,29 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.apache.directory.ldapstudio.schemas.controller.PreferenceInitializer"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="false"
+            class="org.apache.directory.ldapstudio.schemas.view.SchemasEditorLabelDecorator"
+            id="org.apache.directory.ldapstudio.schemas.decorator"
+            label="Schemas Editor Decorator"
+            lightweight="true"
+            location="BOTTOM_RIGHT"
+            state="true">
+            <enablement>
+          		<or>
+            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper"/>
+            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper"/>
+            		<objectClass name="org.apache.directory.ldapstudio.schemas.model.AttributeType"/>
+            		<objectClass name="org.apache.directory.ldapstudio.schemas.model.ObjectClass"/>
+          		
+          		
+          		</or>
+       		</enablement>
+       		<description>
+          		Decorates Schemas Editor icons
+       		</description>
+       	</decorator>
+   </extension>
 </plugin>

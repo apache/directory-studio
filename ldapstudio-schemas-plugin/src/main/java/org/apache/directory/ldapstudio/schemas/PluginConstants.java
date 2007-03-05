@@ -150,13 +150,12 @@ public interface PluginConstants
 
     /** The prefence value for Schemas View Sorting 'descending' */
     public static final int PREFS_SCHEMAS_VIEW_SORTING_ORDER_DESCENDING = 1;
-    
+
     // Preferences - Search View
-    
+
     /** The preference ID for Search History of the Search View */
     public static final String PREFS_SEARCH_VIEW_SEARCH_HISTORY = Activator.PLUGIN_ID
-    + ".preferences.SearchView.searchHistory";;
-    
+        + ".preferences.SearchView.searchHistory";;
 
     // Images - Actions
     public static final String IMG_ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$
@@ -185,6 +184,11 @@ public interface PluginConstants
     public static final String IMG_OBJECT_CLASS_WARNING = "ressources/icons/object_class_warning.gif"; //$NON-NLS-1$
     public static final String IMG_SCHEMA = "ressources/icons/schema.gif"; //$NON-NLS-1$
     public static final String IMG_SCHEMA_CORE = "ressources/icons/schema_core.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_OVERLAY_ABSTRACT = "ressources/icons/object_class_overlay_abstract.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL = "ressources/icons/object_class_overlay_structural.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_OVERLAY_AUXILIARY = "ressources/icons/object_class_overlay_auxiliary.gif"; //$NON-NLS-1$
+    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION = "ressources/icons/attribute_type_overlay_userApplication.gif"; //$NON-NLS-1$
+    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION = "ressources/icons/attribute_type_overlay_operation.gif"; //$NON-NLS-1$
 
     // Images - Wizards
     public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "ressources/icons/attribute_type_new_wizard.png"; //$NON-NLS-1$

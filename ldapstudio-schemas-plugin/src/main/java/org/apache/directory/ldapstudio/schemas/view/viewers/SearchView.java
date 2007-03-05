@@ -169,7 +169,8 @@ public class SearchView extends ViewPart implements PoolListener
         createTableViewer();
         this.searchContentProvider = new SearchViewContentProvider();
         resultsTableViewer.setContentProvider( searchContentProvider );
-        resultsTableViewer.setLabelProvider( new SearchViewLabelProvider() );
+        resultsTableViewer.setLabelProvider( new TableDecoratingLabelProvider( new SearchViewLabelProvider(), Activator
+            .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );
 
         initSearchHistory();
         initListeners();

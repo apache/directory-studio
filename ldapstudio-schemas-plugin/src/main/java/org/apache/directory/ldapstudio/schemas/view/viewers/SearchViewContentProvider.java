@@ -41,6 +41,8 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Content provider for the search view
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class SearchViewContentProvider implements IStructuredContentProvider, PoolListener
 {

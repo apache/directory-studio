@@ -41,6 +41,7 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaSorte
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode.IntermediateNodeType;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -66,7 +67,7 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
 
     /** The OID Sorter */
     private OidSorter oidSorter;
-    
+
     /** The Schema Sorter */
     private SchemaSorter schemaSorter;
 
@@ -115,7 +116,7 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
                 {
                     children.add( new SchemaWrapper( schemas[i], ( IntermediateNode ) parentElement ) );
                 }
-                
+
                 Collections.sort( children, schemaSorter );
             }
             else if ( intermediate.getType().equals( IntermediateNodeType.ATTRIBUTE_TYPE_FOLDER ) )
@@ -257,7 +258,8 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
     public void bindToTreeViewer( TreeViewer viewer )
     {
         viewer.setContentProvider( this );
-        viewer.setLabelProvider( new SchemasViewLabelProvider() );
+        viewer.setLabelProvider( new DecoratingLabelProvider( new SchemasViewLabelProvider(), Activator.getDefault()
+            .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
 
         IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$
         viewer.setInput( invisibleNode );

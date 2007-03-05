@@ -35,10 +35,11 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.FirstNameSorter;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.OidSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.OidSorter;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -225,7 +226,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                         if ( sups.length == 0 )
                         {
                             ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
-                            if ( !"2.5.6.0".equals( oClass.getOid() )  )
+                            if ( !"2.5.6.0".equals( oClass.getOid() ) )
                             {
                                 wrapper.setState( ObjectClassWrapper.State.unResolved );
                             }
@@ -409,7 +410,8 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     public void bindToTreeViewer( TreeViewer viewer )
     {
         viewer.setContentProvider( this );
-        viewer.setLabelProvider( new HierarchyViewLabelProvider() );
+        viewer.setLabelProvider( new DecoratingLabelProvider( new HierarchyViewLabelProvider(), Activator.getDefault()
+            .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
 
         IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$
         viewer.setInput( invisibleNode );
