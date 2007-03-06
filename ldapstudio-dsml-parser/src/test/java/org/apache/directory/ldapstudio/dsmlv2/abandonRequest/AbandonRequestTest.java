@@ -254,4 +254,15 @@ public class AbandonRequestTest extends AbstractTest
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
+    
+    
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( AbandonRequestTest.class, "request_with_needed_requestID.xml" );
+    }
 }
