@@ -95,7 +95,7 @@ public class CompareRequestTest extends AbstractTest
         assertEquals( 456, compareRequest.getMessageId() );
     }
 
-    
+
     /**
      * Test parsing of a request with the (optional) requestID attribute equals to 0
      */
@@ -103,6 +103,7 @@ public class CompareRequestTest extends AbstractTest
     {
         testParsingFail( CompareRequestTest.class, "request_with_requestID_equals_0.xml" );
     }
+
 
     /**
      * Test parsing of a request with a (optional) Control element
@@ -135,7 +136,8 @@ public class CompareRequestTest extends AbstractTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 value
      */
@@ -299,6 +301,7 @@ public class CompareRequestTest extends AbstractTest
         assertEquals( "Johnson", ( String ) compareRequest.getAssertionValue() );
     }
 
+
     /**
      * Test parsing of a request with a complete assertion with base64 value
      */
@@ -309,8 +312,8 @@ public class CompareRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( CompareRequestTest.class.getResource( "request_with_1_complete_assertion_base64_value.xml" )
-                .getFile() );
+            parser.setInputFile( CompareRequestTest.class.getResource(
+                "request_with_1_complete_assertion_base64_value.xml" ).getFile() );
 
             parser.parse();
         }
@@ -325,8 +328,9 @@ public class CompareRequestTest extends AbstractTest
 
         assertEquals( "sn", ( String ) compareRequest.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) compareRequest.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) compareRequest.getAssertionValue() ) );
     }
+
 
     /**
      * Test parsing of a request with an Attr elements with empty value
@@ -400,5 +404,16 @@ public class CompareRequestTest extends AbstractTest
     public void testRequestWith1AssertionWith2Value()
     {
         testParsingFail( CompareRequestTest.class, "request_with_1_assertion_with_2_values.xml" );
+    }
+
+
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( CompareRequestTest.class, "request_with_needed_requestID.xml" );
     }
 }

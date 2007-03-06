@@ -1140,6 +1140,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 abandonRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
+            }
             // abandonID
             attributeValue = xpp.getAttributeValue( "", "abandonID" );
             if ( attributeValue != null )
@@ -1180,6 +1187,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             if ( attributeValue != null )
             {
                 addRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1288,6 +1302,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 authRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
+            }
             // principal
             attributeValue = xpp.getAttributeValue( "", "principal" );
             if ( attributeValue != null )
@@ -1327,6 +1348,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             if ( attributeValue != null )
             {
                 compareRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1432,6 +1460,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 delRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
+            }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
             if ( attributeValue != null )
@@ -1471,6 +1506,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             if ( attributeValue != null )
             {
                 extendedRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
             }
         }
     };
@@ -1564,6 +1606,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 modifyDNRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
+            }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
             if ( attributeValue != null )
@@ -1656,6 +1705,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             if ( attributeValue != null )
             {
                 modifyRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -1784,6 +1840,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             if ( attributeValue != null )
             {
                 searchRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+            }
+            else
+            {
+                if ( ParserUtils.isRequestIdNeeded( container ) )
+                {
+                    throw new XmlPullParserException( "requestID attribute is required", xpp, null );
+                }
             }
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
@@ -2155,7 +2218,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 searchRequest.setCurrentFilter( null );
             }
-                
+
         }
     };
 

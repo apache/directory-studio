@@ -93,8 +93,8 @@ public class AuthRequestTest extends AbstractTest
 
         assertEquals( 456, abandonRequest.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute equals to 0
      */
@@ -125,13 +125,14 @@ public class AuthRequestTest extends AbstractTest
 
         BindRequest abandonRequest = ( BindRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 1, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 value
      */
@@ -142,7 +143,8 @@ public class AuthRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AuthRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+            parser.setInputFile( AuthRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -153,7 +155,7 @@ public class AuthRequestTest extends AbstractTest
 
         BindRequest abandonRequest = ( BindRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 1, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -183,7 +185,7 @@ public class AuthRequestTest extends AbstractTest
 
         BindRequest abandonRequest = ( BindRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 1, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -212,7 +214,7 @@ public class AuthRequestTest extends AbstractTest
 
         BindRequest abandonRequest = ( BindRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 2, abandonRequest.getControls().size() );
         assertFalse( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
@@ -242,10 +244,21 @@ public class AuthRequestTest extends AbstractTest
 
         BindRequest abandonRequest = ( BindRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 3, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
+    }
+
+
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( AuthRequestTest.class, "request_with_needed_requestID.xml" );
     }
 }

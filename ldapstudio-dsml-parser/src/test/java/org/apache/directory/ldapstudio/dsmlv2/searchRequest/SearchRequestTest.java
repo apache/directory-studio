@@ -112,8 +112,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( 456, searchRequest.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute equals to 0
      */
@@ -144,13 +144,14 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = searchRequest.getCurrentControl();
-        
+
         assertEquals( 1, searchRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 value
      */
@@ -161,7 +162,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -172,7 +174,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = searchRequest.getCurrentControl();
-        
+
         assertEquals( 1, searchRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -202,7 +204,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = searchRequest.getCurrentControl();
-        
+
         assertEquals( 1, searchRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -231,7 +233,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = searchRequest.getCurrentControl();
-        
+
         assertEquals( 2, searchRequest.getControls().size() );
         assertFalse( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
@@ -261,7 +263,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = searchRequest.getCurrentControl();
-        
+
         assertEquals( 3, searchRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
@@ -945,7 +947,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
+
+
     /**
      * Test parsing of a request with an approxMatch Filter with base64 value
      */
@@ -956,8 +959,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_approxMatch_base64_value.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_approxMatch_base64_value.xml" ).getFile() );
 
             parser.parse();
         }
@@ -980,7 +983,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
     }
 
 
@@ -1085,7 +1088,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
+
+
     /**
      * Test parsing of a request with an greaterOrEqual Filter with base64 value
      */
@@ -1096,8 +1100,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_greaterOrEqual_base64_value.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_greaterOrEqual_base64_value.xml" ).getFile() );
 
             parser.parse();
         }
@@ -1120,7 +1124,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
     }
 
 
@@ -1225,7 +1229,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
+
+
     /**
      * Test parsing of a request with an lessOrEqual Filter with Base64 value
      */
@@ -1236,8 +1241,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_lessOrEqual_base64_value.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_lessOrEqual_base64_value.xml" ).getFile() );
 
             parser.parse();
         }
@@ -1260,7 +1265,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
     }
 
 
@@ -1365,7 +1370,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "foobar", assertion.getAssertionValue() );
     }
-    
+
+
     /**
      * Test parsing of a request with an Equality Filter with base64 value
      */
@@ -1376,8 +1382,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_equalityMatch_base64_value.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_equalityMatch_base64_value.xml" ).getFile() );
 
             parser.parse();
         }
@@ -1400,7 +1406,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) assertion.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
     }
 
 
@@ -1541,7 +1547,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( false, extensibleMatchFilter.isDnAttributes() );
     }
-    
+
+
     /**
      * Test parsing of a request with an ExtensibleMatch Filter
      */
@@ -1552,8 +1559,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_extensibleMatch_base64_value.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_extensibleMatch_base64_value.xml" ).getFile() );
 
             parser.parse();
         }
@@ -1570,7 +1577,7 @@ public class SearchRequestTest extends AbstractTest
 
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) extensibleMatchFilter.getMatchValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) extensibleMatchFilter.getMatchValue() ) );
 
         assertEquals( false, extensibleMatchFilter.isDnAttributes() );
     }
@@ -1900,7 +1907,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "jack", substringFilter.getInitialSubstrings().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Initial element with Base64 value
      */
@@ -1911,8 +1919,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_base64_initial.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_base64_initial.xml" ).getFile() );
 
             parser.parse();
         }
@@ -2065,12 +2073,13 @@ public class SearchRequestTest extends AbstractTest
 
         SubstringFilter substringFilter = ( SubstringFilter ) filter;
 
-        List<String>initials = substringFilter.getAnySubstrings();
+        List<String> initials = substringFilter.getAnySubstrings();
 
         assertEquals( 1, initials.size() );
         assertEquals( "kate", initials.get( 0 ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Any element
      */
@@ -2081,8 +2090,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_base64_any.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_base64_any.xml" ).getFile() );
 
             parser.parse();
         }
@@ -2246,7 +2255,8 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "john", substringFilter.getFinalSubstrings().toString() );
     }
-    
+
+
     /**
      * Test parsing of a request with a Substrings Filter with 1 Final element
      */
@@ -2257,8 +2267,8 @@ public class SearchRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( SearchRequestTest.class.getResource( "filters/request_with_substrings_1_base64_final.xml" )
-                .getFile() );
+            parser.setInputFile( SearchRequestTest.class.getResource(
+                "filters/request_with_substrings_1_base64_final.xml" ).getFile() );
 
             parser.parse();
         }
@@ -2342,6 +2352,16 @@ public class SearchRequestTest extends AbstractTest
         assertEquals( "1.3.6.1.4.1.4203.1.10.1", control.getControlType() );
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
+    }
 
+
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( SearchRequestTest.class, "request_with_needed_requestID.xml" );
     }
 }

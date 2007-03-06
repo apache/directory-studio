@@ -23,6 +23,9 @@ package org.apache.directory.ldapstudio.dsmlv2;
 
 import java.util.List;
 
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.Processing;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.ResponseOrder;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.util.Base64;
@@ -225,5 +228,28 @@ public class ParserUtils
                 }
             }
         }
+    }
+
+
+    /**
+     * Indicates if a request ID is needed.
+     *
+     * @param container
+     *      the associated container
+     * @return
+     *      true if a request ID is needed (ie Processing=Parallel and ResponseOrder=Unordered)
+     * @throws XmlPullParserException
+     *      if the batch request has not been parsed yet
+     */
+    public static boolean isRequestIdNeeded( Dsmlv2Container container ) throws XmlPullParserException
+    {
+        BatchRequest batchRequest = container.getBatchRequest();
+
+        if ( batchRequest == null )
+        {
+            throw new XmlPullParserException( "unable to find the batch request", container.getParser(), null );
+        }
+
+        return ( ( batchRequest.getProcessing() == Processing.PARALLEL ) && ( batchRequest.getResponseOrder() == ResponseOrder.UNORDERED ) );
     }
 }

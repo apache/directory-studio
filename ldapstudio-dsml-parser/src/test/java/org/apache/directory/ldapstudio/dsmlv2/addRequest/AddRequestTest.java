@@ -98,8 +98,8 @@ public class AddRequestTest extends AbstractTest
 
         assertEquals( 456, addRequest.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute equals to 0
      */
@@ -140,7 +140,8 @@ public class AddRequestTest extends AbstractTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 value
      */
@@ -151,7 +152,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -162,7 +164,7 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = addRequest.getCurrentControl();
-        
+
         assertEquals( 1, addRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -192,7 +194,7 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = addRequest.getCurrentControl();
-        
+
         assertEquals( 1, addRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -432,7 +434,8 @@ public class AddRequestTest extends AbstractTest
 
         assertEquals( "top", value );
     }
-    
+
+
     /**
      * Test parsing of a request with an Attr elements with value
      */
@@ -443,7 +446,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_with_base64_value.xml" ).getFile() );
+            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_with_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -494,7 +498,7 @@ public class AddRequestTest extends AbstractTest
             fail( e.getMessage() );
         }
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( (byte[]) value ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) value ) );
     }
 
 
@@ -656,5 +660,16 @@ public class AddRequestTest extends AbstractTest
         }
 
         assertEquals( "person", value );
+    }
+
+
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( AddRequestTest.class, "request_with_needed_requestID.xml" );
     }
 }

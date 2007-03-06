@@ -68,8 +68,8 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( 456, modifyRequest.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute equals to 0
      */
@@ -100,13 +100,14 @@ public class ModifyRequestTest extends AbstractTest
 
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertEquals( 1, modifyRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 Value
      */
@@ -117,7 +118,8 @@ public class ModifyRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -128,7 +130,7 @@ public class ModifyRequestTest extends AbstractTest
 
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertEquals( 1, modifyRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -158,7 +160,7 @@ public class ModifyRequestTest extends AbstractTest
 
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertEquals( 1, modifyRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -187,7 +189,7 @@ public class ModifyRequestTest extends AbstractTest
 
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertEquals( 2, modifyRequest.getControls().size() );
         assertFalse( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
@@ -217,7 +219,7 @@ public class ModifyRequestTest extends AbstractTest
 
         ModifyRequest modifyRequest = ( ModifyRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyRequest.getCurrentControl();
-        
+
         assertEquals( 3, modifyRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
@@ -270,7 +272,8 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a Modification element with Base64 Value
      * @throws NamingException 
@@ -282,7 +285,8 @@ public class ModifyRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_modification_base64_value.xml" ).getFile() );
+            parser.setInputFile( ModifyRequestTest.class.getResource( "request_with_1_modification_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -305,7 +309,7 @@ public class ModifyRequestTest extends AbstractTest
 
         Attribute attribute = modification.getAttribute();
 
-        assertEquals( "cn=Emmanuel Lécharny, ou=people, dc=example, dc=com", new String( (byte[]) attribute.get( 0 ) ) );
+        assertEquals( "cn=Emmanuel Lécharny, ou=people, dc=example, dc=com", new String( ( byte[] ) attribute.get( 0 ) ) );
     }
 
 
@@ -335,7 +339,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "sn", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl>  modifications = modifyRequest.getModifications();
+        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
 
         assertEquals( 2, modifications.size() );
 
@@ -479,7 +483,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl>  modifications = modifyRequest.getModifications();
+        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
 
         ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
 
@@ -516,7 +520,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl>  modifications = modifyRequest.getModifications();
+        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
@@ -557,7 +561,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl>  modifications = modifyRequest.getModifications();
+        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
@@ -567,5 +571,16 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( 1, attribute.size() );
         assertEquals( "", attribute.get( 0 ) );
+    }
+
+
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( ModifyRequestTest.class, "request_with_needed_requestID.xml" );
     }
 }

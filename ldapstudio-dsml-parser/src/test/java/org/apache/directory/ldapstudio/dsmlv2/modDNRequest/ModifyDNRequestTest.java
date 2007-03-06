@@ -60,7 +60,8 @@ public class ModifyDNRequestTest extends AbstractTest
 
         assertEquals( 456, modifyDNRequest.getMessageId() );
     }
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute equals to 0
      */
@@ -91,13 +92,14 @@ public class ModifyDNRequestTest extends AbstractTest
 
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertEquals( 1, modifyDNRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 Value
      */
@@ -108,7 +110,8 @@ public class ModifyDNRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+            parser.setInputFile( ModifyDNRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -119,7 +122,7 @@ public class ModifyDNRequestTest extends AbstractTest
 
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertEquals( 1, modifyDNRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -149,7 +152,7 @@ public class ModifyDNRequestTest extends AbstractTest
 
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertEquals( 1, modifyDNRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -178,7 +181,7 @@ public class ModifyDNRequestTest extends AbstractTest
 
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertEquals( 2, modifyDNRequest.getControls().size() );
         assertFalse( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
@@ -208,7 +211,7 @@ public class ModifyDNRequestTest extends AbstractTest
 
         ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = modifyDNRequest.getCurrentControl();
-        
+
         assertEquals( 3, modifyDNRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
@@ -398,4 +401,14 @@ public class ModifyDNRequestTest extends AbstractTest
         assertEquals( "cn=Steve Jobs,ou=Dev,dc=apple,dc=com", modifyDNRequest.getNewSuperior().toString() );
     }
 
+
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( ModifyDNRequestTest.class, "request_with_needed_requestID.xml" );
+    }
 }

@@ -60,7 +60,8 @@ public class ExtendedRequestTest extends AbstractTest
 
         assertEquals( 456, extendedRequest.getMessageId() );
     }
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute equals to 0
      */
@@ -97,7 +98,8 @@ public class ExtendedRequestTest extends AbstractTest
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 value
      */
@@ -108,7 +110,8 @@ public class ExtendedRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -119,7 +122,7 @@ public class ExtendedRequestTest extends AbstractTest
 
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = extendedRequest.getCurrentControl();
-        
+
         assertEquals( 1, extendedRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -149,7 +152,7 @@ public class ExtendedRequestTest extends AbstractTest
 
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = extendedRequest.getCurrentControl();
-        
+
         assertEquals( 1, extendedRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -208,7 +211,7 @@ public class ExtendedRequestTest extends AbstractTest
 
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = extendedRequest.getCurrentControl();
-        
+
         assertEquals( 3, extendedRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
@@ -237,9 +240,10 @@ public class ExtendedRequestTest extends AbstractTest
 
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "foobar", new String ( extendedRequest.getRequestValue() ) );
+        assertEquals( "foobar", new String( extendedRequest.getRequestValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a RequestValue element with Base64 value
      */
@@ -250,7 +254,8 @@ public class ExtendedRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_base64_requestValue.xml" ).getFile() );
+            parser.setInputFile( ExtendedRequestTest.class.getResource( "request_with_base64_requestValue.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -261,7 +266,7 @@ public class ExtendedRequestTest extends AbstractTest
 
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "DSMLv2.0 rocks!!", new String ( extendedRequest.getRequestValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( extendedRequest.getRequestValue() ) );
     }
 
 
@@ -314,5 +319,16 @@ public class ExtendedRequestTest extends AbstractTest
 
         ExtendedRequest extendedRequest = ( ExtendedRequest ) parser.getBatchRequest().getCurrentRequest();
         assertNull( extendedRequest.getRequestValue() );
+    }
+
+
+    /**
+     * Test parsing of a request with a needed requestID attribute
+     * 
+     * DIRSTUDIO-1
+     */
+    public void testRequestWithNeededRequestId()
+    {
+        testParsingFail( ExtendedRequestTest.class, "request_with_needed_requestID.xml" );
     }
 }
