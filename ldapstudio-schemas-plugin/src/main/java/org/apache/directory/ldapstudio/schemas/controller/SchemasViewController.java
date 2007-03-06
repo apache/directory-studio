@@ -169,8 +169,7 @@ public class SchemasViewController
         deleteAction = new DeleteAction();
         collapseAll = new CollapseAllAction( view.getViewer() );
         linkWithEditor = new LinkWithEditorSchemasView( view );
-        openSchemaSourceCode = new OpenSchemaSourceCode( PlatformUI.getWorkbench().getActiveWorkbenchWindow(),
-            "View source code" );
+        openSchemaSourceCode = new OpenSchemaSourceCode();
         save = new SaveAction();
         saveAs = new SaveAsAction();
         openSortDialog = new OpenSchemasViewSortDialogAction();

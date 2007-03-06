@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.IEditorInput;
@@ -31,46 +32,52 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 
 /**
- * This class is the Schema Editor main class
+ * This class is the Schema Editor main class.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class SchemaFormEditor extends FormEditor
 {
+    /** The logger */
     private static Logger logger = Logger.getLogger( SchemaFormEditor.class );
+
+    /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.schemaformeditor"; //$NON-NLS-1$
+
+    /** The Overview Page */
+    private SchemaFormEditorOverviewPage overview;
+
+    /** The Source Code page */
     private SchemaFormEditorSourceCodePage sourceCode;
 
-
-    /**
-     * Default constructor
-     */
-    public SchemaFormEditor()
-    {
-        super();
-    }
+    /** The associated schema */
+    private Schema schema;
 
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
      */
-    @Override
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         setSite( site );
         setInput( input );
         setPartName( input.getName() );
+
+        schema = ( ( SchemaFormEditorInput ) getEditorInput() ).getSchema();
     }
 
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
      */
-    @Override
     protected void addPages()
     {
         try
         {
-            sourceCode = new SchemaFormEditorSourceCodePage( this,
-                "sourceCode", Messages.getString( "SchemaFormEditor.Source_code" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            overview = new SchemaFormEditorOverviewPage( this );
+            addPage( overview );
+            sourceCode = new SchemaFormEditorSourceCodePage( this );
             addPage( sourceCode );
         }
         catch ( PartInitException e )
@@ -83,7 +90,6 @@ public class SchemaFormEditor extends FormEditor
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
      */
-    @Override
     public void doSave( IProgressMonitor monitor )
     {
         // There's nothing to save
@@ -93,7 +99,6 @@ public class SchemaFormEditor extends FormEditor
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.EditorPart#doSaveAs()
      */
-    @Override
     public void doSaveAs()
     {
     }
@@ -102,10 +107,20 @@ public class SchemaFormEditor extends FormEditor
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
      */
-    @Override
     public boolean isSaveAsAllowed()
     {
         return false;
     }
 
+
+    /**
+     * Gets the associated schema.
+     *
+     * @return
+     *      the associated schema
+     */
+    public Schema getSchema()
+    {
+        return schema;
+    }
 }

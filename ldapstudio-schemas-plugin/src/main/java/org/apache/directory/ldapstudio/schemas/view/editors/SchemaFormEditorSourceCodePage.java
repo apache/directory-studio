@@ -42,13 +42,26 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
- * This class is the Source Code Page of the Schema Editor
+ * This class is the Source Code Page of the Schema Editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class SchemaFormEditorSourceCodePage extends FormPage
 {
+    /** The page ID */
+    public static final String ID = SchemaFormEditor.ID + "sourceCode";
+
+    /** The page title */
+    public static final String TITLE = Messages.getString( "SchemaFormEditor.Source_code" );
+
+    /** The associated schema */
     private Schema schema;
+
+    // UI Field
     private SchemaSourceViewer schemaSourceViewer;
 
+    // Listerner
     private SchemaListener schemaListener = new SchemaListener()
     {
         public void schemaChanged( Schema originatingSchema, LDAPModelEvent e )
@@ -59,14 +72,14 @@ public class SchemaFormEditorSourceCodePage extends FormPage
 
 
     /**
-     * Default constructor
+     * Creates a new instance of SchemaFormEditorSourceCodePage.
+     * 
      * @param editor
-     * @param id
-     * @param title
+     *      the associated editor
      */
-    public SchemaFormEditorSourceCodePage( FormEditor editor, String id, String title )
+    public SchemaFormEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, id, title );
+        super( editor, ID, TITLE );
     }
 
 
@@ -75,17 +88,14 @@ public class SchemaFormEditorSourceCodePage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        schema = ( ( SchemaFormEditor ) getEditor() ).getSchema();
+        schema.addListener( schemaListener );
+
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
         GridLayout layout = new GridLayout();
         form.getBody().setLayout( layout );
         toolkit.paintBordersFor( form.getBody() );
-
-        // Getting the input and the objectClass
-        SchemaFormEditorInput input = ( SchemaFormEditorInput ) getEditorInput();
-        schema = input.getSchema();
-
-        schema.addListener( schemaListener );
 
         // SOURCE CODE Field
         schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
@@ -107,9 +117,11 @@ public class SchemaFormEditorSourceCodePage extends FormPage
     }
 
 
+    /**
+     * Fills in the fields of the User Interface.
+     */
     private void fillInUiFields()
     {
-        // SOURCE CODE Field
         AttributeType[] attributeTypes = schema.getAttributeTypesAsArray();
         ObjectClass[] objectClasses = schema.getObjectClassesAsArray();
 

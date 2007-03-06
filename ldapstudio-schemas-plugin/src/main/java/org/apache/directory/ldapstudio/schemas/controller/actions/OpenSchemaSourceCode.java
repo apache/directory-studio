@@ -26,43 +26,40 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditorSourceCodePage;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class implements the Action for deleting an element (object class or attribute type)
+ * This class implements the Action for deleting an element (object class or attribute type).
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
-@SuppressWarnings("unused")//$NON-NLS-1$
 public class OpenSchemaSourceCode extends Action
 {
-    private static Logger logger = Logger.getLogger( OpenSchemaSourceCode.class );
-    private final IWorkbenchWindow window;
-
-
     /**
-     * Default constructor
-     * @param window
-     * @param label
+     * Creates a new instance of OpenSchemaSourceCode.
      */
-    public OpenSchemaSourceCode( IWorkbenchWindow window, String label )
+    public OpenSchemaSourceCode()
     {
-        this.window = window;
-        setText( label );
+        setText( "View source code" );
 
         // The id is used to refer to the action in a menu or toolbar
         setId( ICommandIds.CMD_OPEN_SCHEMA_SOURCE_CODE );
         // Associate the action with a pre-defined command, to allow key bindings.
         setActionDefinitionId( ICommandIds.CMD_OPEN_SCHEMA_SOURCE_CODE );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA ) );
+        setImageDescriptor( AbstractUIPlugin
+            .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA ) );
     }
 
 
@@ -82,11 +79,13 @@ public class OpenSchemaSourceCode extends Action
             try
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                page.openEditor( new SchemaFormEditorInput( schemaWrapper.getMySchema() ), SchemaFormEditor.ID );
+                FormEditor editor = ( FormEditor ) page.openEditor( new SchemaFormEditorInput( schemaWrapper
+                    .getMySchema() ), SchemaFormEditor.ID );
+                editor.setActivePage( SchemaFormEditorSourceCodePage.ID );
             }
             catch ( PartInitException e )
             {
-                logger.debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( OpenSchemaSourceCode.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
     }
