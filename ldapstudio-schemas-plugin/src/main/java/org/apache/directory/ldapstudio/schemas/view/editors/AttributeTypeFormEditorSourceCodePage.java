@@ -185,7 +185,7 @@ public class AttributeTypeFormEditorSourceCodePage extends FormPage
         modifiedAttributeType.setNames( atl.getNames() );
         modifiedAttributeType.setNoUserModification( atl.isNoUserModification() );
         modifiedAttributeType.setObsolete( atl.isObsolete() );
-        // TODO Need to update the Shared LDAP lirary to be able to modify the OID
+        modifiedAttributeType.setOid( atl.getOid() );
         modifiedAttributeType.setOrdering( atl.getOrdering() );
         modifiedAttributeType.setSingleValue( atl.isSingleValue() );
         modifiedAttributeType.setSubstr( atl.getSubstr() );
