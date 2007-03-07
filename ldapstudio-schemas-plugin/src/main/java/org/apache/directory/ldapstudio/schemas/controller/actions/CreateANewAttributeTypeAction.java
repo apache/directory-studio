@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
@@ -55,13 +54,12 @@ public class CreateANewAttributeTypeAction extends Action
      */
     public CreateANewAttributeTypeAction()
     {
-        setText( Messages.getString( "CreateANewAttributeTypeAction.Create_a_new_attribute_type" ) ); //$NON-NLS-1$
-        // The id is used to refer to the action in a menu or toolbar
-        setId( ICommandIds.CMD_CREATE_A_NEW_ATTRIBUTETYPE );
-        // Associate the action with a pre-defined command, to allow key bindings.
-        setActionDefinitionId( ICommandIds.CMD_CREATE_A_NEW_ATTRIBUTETYPE );
+        super( Messages.getString( "CreateANewAttributeTypeAction.Create_a_new_attribute_type" ) ); //$NON-NLS-1$
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_CREATE_A_NEW_ATTRIBUTETYPE );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_CREATE_A_NEW_ATTRIBUTETYPE ) );
+        setEnabled( true );
     }
 
 

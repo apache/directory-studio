@@ -20,6 +20,8 @@
 
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
+
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Display;
@@ -41,16 +43,19 @@ public class OpenHierarchyViewPreferencesAction extends Action
     public OpenHierarchyViewPreferencesAction()
     {
         super( "Preferences..." );
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_HIERARCHY_VIEW_PREFERENCES );
         setEnabled( true );
     }
-    
-    
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.action.Action#run()
      */
     public void run()
     {
         Shell shell = Display.getCurrent().getActiveShell();
-        PreferencesUtil.createPreferenceDialogOn( shell, HierarchyViewPreferencePage.ID, new String[] { HierarchyViewPreferencePage.ID }, null ).open();
+        PreferencesUtil.createPreferenceDialogOn( shell, HierarchyViewPreferencePage.ID, new String[]
+            { HierarchyViewPreferencePage.ID }, null ).open();
     }
 }

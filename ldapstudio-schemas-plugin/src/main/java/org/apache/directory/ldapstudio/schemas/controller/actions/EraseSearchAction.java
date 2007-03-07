@@ -19,12 +19,13 @@
  */
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
+
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SearchView;
 import org.eclipse.jface.action.Action;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+
 
 /**
  * This action collapses all nodes of the viewer's tree, starting with the root.
@@ -36,6 +37,7 @@ public class EraseSearchAction extends Action
 {
     protected SearchView view;
 
+
     /**
      * Creates a new instance of CollapseAllAction.
      *
@@ -44,9 +46,11 @@ public class EraseSearchAction extends Action
      */
     public EraseSearchAction( SearchView view )
     {
-        super( "Erase Search");
+        super( "Erase Search" );
         setToolTipText( getText() );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ERASE_SEARCH )  );
+        setId( PluginConstants.CMD_ERASE_SEARCH );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_ERASE_SEARCH ) );
         setEnabled( true );
 
         this.view = view;
@@ -58,10 +62,7 @@ public class EraseSearchAction extends Action
      */
     public void run()
     {
-        SearchView searchView = ( SearchView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-        .findView( SearchView.ID );
-        
-        searchView.setSearch( "", SearchView.SEARCH_ALL );
+        view.setSearch( "", SearchView.SEARCH_ALL );
     }
 
 

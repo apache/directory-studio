@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Display;
@@ -42,6 +43,8 @@ public class OpenSchemasViewPreferencesAction extends Action
     public OpenSchemasViewPreferencesAction()
     {
         super( "Preferences..." );
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_SCHEMAS_VIEW_PREFERENCES );
         setEnabled( true );
     }
 

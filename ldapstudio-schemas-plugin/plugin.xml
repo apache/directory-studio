@@ -57,53 +57,53 @@
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.openalocalschema.description"
-            id="org.apache.directory.ldapstudio.schemas.openlocal"
+            id="org.apache.directory.ldapstudio.schemas.cmd.OpenLocal"
             name="%ldapstudio-schemas-plugin.commands.openalocalschema.name">
       </command>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.saveselectedschema.description"
-            id="org.apache.directory.ldapstudio.schemas.save"
+            id="org.apache.directory.ldapstudio.schemas.cmd.Save"
             name="%ldapstudio-schemas-plugin.commands.saveselectedschema.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.saveselectedschemaas.description"
-            id="org.apache.directory.ldapstudio.schemas.saveas"
+            id="org.apache.directory.ldapstudio.schemas.cmd.SaveAs"
             name="%ldapstudio-schemas-plugin.commands.saveselectedschemaas.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.saveallschemas.description"
-            id="org.apache.directory.ldapstudio.schemas.saveall"
+            id="org.apache.directory.ldapstudio.schemas.cmd.SaveAll"
             name="%ldapstudio-schemas-plugin.commands.saveallschemas.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.removeselectedschema.description"
-            id="org.apache.directory.ldapstudio.schemas.removeschema"
+            id="org.apache.directory.ldapstudio.schemas.cmd.RemoveSchema"
             name="%ldapstudio-schemas-plugin.commands.removeselectedschema.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.viewschemasourcecode.description"
-            id="org.apache.directory.ldapstudio.schemas.openschemasourcecode"
+            id="org.apache.directory.ldapstudio.schemas.cmd.OpenSchemaSourceCode"
             name="%ldapstudio-schemas-plugin.commands.viewschemasourcecode.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.delete.description"
-            id="org.apache.directory.ldapstudio.schemas.delete"
+            id="org.apache.directory.ldapstudio.schemas.cmd.Delete"
             name="%ldapstudio-schemas-plugin.commands.delete.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.createanewschema.description"
-            id="org.apache.directory.ldapstudio.schemas.createanewschema"
+            id="org.apache.directory.ldapstudio.schemas.cmd.CreateANewSchema"
             name="%ldapstudio-schemas-plugin.commands.createanewschema.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.createanewobjectclass.description"
-            id="org.apache.directory.ldapstudio.schemas.createanewobjectclass"
+            id="org.apache.directory.ldapstudio.schemas.cmd.CreateANewObjectClass"
             name="%ldapstudio-schemas-plugin.commands.createanewobjectclass.name"/>
       <command
             categoryId="org.apache.directory.ldapstudio.schemas.category"
             description="%ldapstudio-schemas-plugin.commands.createanewattributetype.description"
-            id="org.apache.directory.ldapstudio.schemas.createanewattributetype"
+            id="org.apache.directory.ldapstudio.schemas.cmd.CreateANewAttributeType"
             name="%ldapstudio-schemas-plugin.commands.createanewattributetype.name"/>
       <category
             id="org.apache.directory.ldapstudio.schemas.category"
@@ -112,14 +112,9 @@
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="org.apache.directory.ldapstudio.schemas.openlocal"
+            commandId="org.apache.directory.ldapstudio.schemas.cmd.OpenLocal"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+O">
-      </key>
-      <key
-            commandId="org.eclipse.ui.file.exit"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+Q">
       </key>
    </extension>
    <extension

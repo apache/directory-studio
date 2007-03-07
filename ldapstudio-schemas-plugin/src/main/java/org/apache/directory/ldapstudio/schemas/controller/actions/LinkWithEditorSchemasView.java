@@ -168,10 +168,11 @@ public class LinkWithEditorSchemasView extends Action
     public LinkWithEditorSchemasView( SchemasView view )
     {
         super( "Link with Editor", AS_CHECK_BOX );
-        super.setActionDefinitionId( Activator.PLUGIN_ID + "linkwitheditorschemasview" );
-        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_LINK_WITH_EDITOR_SCHEMA_VIEW );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
-        super.setEnabled( true );
+        setEnabled( true );
         schemasView = view;
 
         // Setting up the default key value (if needed)
@@ -181,14 +182,13 @@ public class LinkWithEditorSchemasView extends Action
         }
 
         // Setting state from the dialog settings
-        super
-            .setChecked( Activator.getDefault().getDialogSettings().getBoolean( LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY ) );
+        setChecked( Activator.getDefault().getDialogSettings().getBoolean( LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY ) );
 
         // Enabling the listeners
         if ( isChecked() )
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( editorListener );
-            schemasView.getSite().getPage().addPostSelectionListener( SchemasView.ID, viewListener );
+            schemasView.getSite().getPage().addPostSelectionListener( viewListener );
         }
     }
 

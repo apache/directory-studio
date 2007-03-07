@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditorSourceCodePage;
@@ -52,14 +51,12 @@ public class OpenSchemaSourceCode extends Action
      */
     public OpenSchemaSourceCode()
     {
-        setText( "View source code" );
-
-        // The id is used to refer to the action in a menu or toolbar
-        setId( ICommandIds.CMD_OPEN_SCHEMA_SOURCE_CODE );
-        // Associate the action with a pre-defined command, to allow key bindings.
-        setActionDefinitionId( ICommandIds.CMD_OPEN_SCHEMA_SOURCE_CODE );
+        super( "View source code" );
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_OPEN_SCHEMA_SOURCE_CODE );
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA ) );
+        setEnabled( true );
     }
 
 

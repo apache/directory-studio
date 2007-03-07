@@ -47,6 +47,8 @@ public class OpenHierarchyViewSortDialogAction extends Action
     public OpenHierarchyViewSortDialogAction()
     {
         super( "Sorting..." );
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_HIERARCHY_VIEW_SORT_DIALOG );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SORT ) );
         setEnabled( true );
     }

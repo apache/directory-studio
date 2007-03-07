@@ -169,10 +169,11 @@ public class LinkWithEditorHierarchyView extends Action
     public LinkWithEditorHierarchyView( HierarchyView view )
     {
         super( "Link with Editor", AS_CHECK_BOX );
-        super.setActionDefinitionId( Activator.PLUGIN_ID + "linkwitheditorschemasview" );
-        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_LINK_WITH_EDITOR_HIERARCHY_VIEW );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
-        super.setEnabled( true );
+        setEnabled( true );
         hierarchyView = view;
 
         // Setting up the default key value (if needed)
@@ -182,14 +183,13 @@ public class LinkWithEditorHierarchyView extends Action
         }
 
         // Setting state from the dialog settings
-        super
-            .setChecked( Activator.getDefault().getDialogSettings().getBoolean( LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY ) );
+        setChecked( Activator.getDefault().getDialogSettings().getBoolean( LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY ) );
 
         // Enabling the listeners
         if ( isChecked() )
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( editorListener );
-            hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
+            hierarchyView.getSite().getPage().addPostSelectionListener( viewListener );
         }
     }
 

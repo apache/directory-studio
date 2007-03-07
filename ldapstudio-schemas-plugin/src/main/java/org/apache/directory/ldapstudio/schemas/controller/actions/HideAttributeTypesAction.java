@@ -52,10 +52,11 @@ public class HideAttributeTypesAction extends Action
     public HideAttributeTypesAction( HierarchyView view )
     {
         super( "Hide Attribute Types", AS_CHECK_BOX );
-        super.setActionDefinitionId( Activator.PLUGIN_ID + "hideAttributeTypes" );
-        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_HIDE_ATTRIBUTE_TYPES );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_HIDE_ATTRIBUTE_TYPES ) );
-        super.setEnabled( true );
+        setEnabled( true );
         hierarchyView = view;
 
         // Setting up the default key value (if needed)

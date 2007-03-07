@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
+
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasViewSortDialog;
@@ -36,7 +37,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class OpenSchemasViewSortDialogAction extends Action
 {
-    
+
     /**
      * Creates a new instance of OpenSortDialogAction.
      *
@@ -46,10 +47,13 @@ public class OpenSchemasViewSortDialogAction extends Action
     public OpenSchemasViewSortDialogAction()
     {
         super( "Sorting..." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SORT )  );
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_SCHEMAS_VIEW_SORT_DIALOG );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SORT ) );
         setEnabled( true );
     }
-    
+
+
     /* (non-Javadoc)
      * @see org.eclipse.jface.action.Action#run()
      */

@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
@@ -65,13 +64,12 @@ public class DeleteAction extends Action
      */
     public DeleteAction()
     {
-        setText( Messages.getString( "DeleteAction.Delete_the_selected_item" ) ); //$NON-NLS-1$
-
-        // The id is used to refer to the action in a menu or toolbar
-        setId( ICommandIds.CMD_DELETE );
-        // Associate the action with a pre-defined command, to allow key bindings.
-        setActionDefinitionId( ICommandIds.CMD_DELETE );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
+        super( Messages.getString( "DeleteAction.Delete_the_selected_item" ) ); //$NON-NLS-1$
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_DELETE );
+        setImageDescriptor( AbstractUIPlugin
+            .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
+        setEnabled( true );
     }
 
 

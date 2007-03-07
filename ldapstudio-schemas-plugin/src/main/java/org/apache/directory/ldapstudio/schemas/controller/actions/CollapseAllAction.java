@@ -19,14 +19,16 @@
  */
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
+
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+
 /**
- * This action collapses all nodes of the viewer's tree, starting with the root.
+ * This action collapses all nodes of the viewer's tree, starting from the root.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -34,6 +36,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class CollapseAllAction extends Action
 {
     protected TreeViewer viewer;
+
 
     /**
      * Creates a new instance of CollapseAllAction.
@@ -43,9 +46,11 @@ public class CollapseAllAction extends Action
      */
     public CollapseAllAction( TreeViewer viewer )
     {
-        super( "Collapse All");
+        super( "Collapse All" );
         setToolTipText( getText() );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_COLLAPSE_ALL )  );
+        setId( PluginConstants.CMD_COLLAPSE_ALL );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_COLLAPSE_ALL ) );
         setEnabled( true );
 
         this.viewer = viewer;

@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.controller.ICommandIds;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
@@ -58,13 +57,12 @@ public class SaveAsAction extends Action implements IWorkbenchWindowActionDelega
      */
     public SaveAsAction()
     {
-        setText( Messages.getString( "SaveAsAction.Save_schema_as" ) ); //$NON-NLS-1$
-
-        // The id is used to refer to the action in a menu or toolbar
-        setId( ICommandIds.CMD_SAVE_AS );
-        // Associate the action with a pre-defined command, to allow key bindings.
-        setActionDefinitionId( ICommandIds.CMD_SAVE_AS );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SAVE_AS ) );
+        super( Messages.getString( "SaveAsAction.Save_schema_as" ) ); //$NON-NLS-1$
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_SAVE_AS );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_SAVE_AS ) );
+        setEnabled( true );
     }
 
 

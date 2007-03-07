@@ -52,10 +52,11 @@ public class HideObjectClassesAction extends Action
     public HideObjectClassesAction( HierarchyView view )
     {
         super( "Hide Object Classes", AS_CHECK_BOX );
-        super.setActionDefinitionId( Activator.PLUGIN_ID + "hideObjectClasses" );
-        super.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        setToolTipText( getText() );
+        setId( PluginConstants.CMD_HIDE_OBJECT_CLASSES );
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_HIDE_OBJECT_CLASSES ) );
-        super.setEnabled( true );
+        setEnabled( true );
         hierarchyView = view;
 
         // Setting up the default key value (if needed)
@@ -65,7 +66,7 @@ public class HideObjectClassesAction extends Action
         }
 
         // Setting state from the dialog settings
-        super.setChecked( Activator.getDefault().getDialogSettings().getBoolean( HIDE_OBJECT_CLASSES_DS_KEY ) );
+        setChecked( Activator.getDefault().getDialogSettings().getBoolean( HIDE_OBJECT_CLASSES_DS_KEY ) );
     }
 
 
@@ -76,7 +77,7 @@ public class HideObjectClassesAction extends Action
     {
         setChecked( isChecked() );
         Activator.getDefault().getDialogSettings().put( HIDE_OBJECT_CLASSES_DS_KEY, isChecked() );
-        
+
         hierarchyView.refresh();
     }
 }
