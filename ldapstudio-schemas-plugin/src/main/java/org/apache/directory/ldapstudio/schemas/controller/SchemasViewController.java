@@ -71,8 +71,8 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.IEditorInput;
@@ -219,7 +219,6 @@ public class SchemasViewController
 
         contextMenu = new MenuManager( "" ); //$NON-NLS-1$
         contextMenu.setRemoveAllWhenShown( true );
-
         contextMenu.addMenuListener( new IMenuListener()
         {
             /**
@@ -301,7 +300,7 @@ public class SchemasViewController
         Transfer[] types = new Transfer[]
             { FileTransfer.getInstance() };
         target.setTransfer( types );
-        target.addDropListener( new DropTargetListener()
+        target.addDropListener( new DropTargetAdapter()
         {
             /**
              * {@inheritDoc}
@@ -332,38 +331,6 @@ public class SchemasViewController
             /**
              * {@inheritDoc}
              */
-            public void dragOver( DropTargetEvent event )
-            {
-            }
-
-
-            /**
-             * {@inheritDoc}
-             */
-            public void dragOperationChanged( DropTargetEvent event )
-            {
-            }
-
-
-            /**
-             * {@inheritDoc}
-             */
-            public void dragLeave( DropTargetEvent event )
-            {
-            }
-
-
-            /**
-             * {@inheritDoc}
-             */
-            public void dropAccept( DropTargetEvent event )
-            {
-            }
-
-
-            /**
-             * {@inheritDoc}
-             */
             public void drop( DropTargetEvent event )
             {
                 if ( fileTransfer.isSupportedType( event.currentDataType ) )
@@ -384,7 +351,6 @@ public class SchemasViewController
                 }
             }
         } );
-
     }
 
 
@@ -402,8 +368,6 @@ public class SchemasViewController
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-                SchemasView view = ( SchemasView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                    .findView( SchemasView.ID );
                 TreeViewer viewer = view.getViewer();
 
                 // What we get from the treeViewer is a StructuredSelection
@@ -448,7 +412,6 @@ public class SchemasViewController
                 }
             }
         } );
-
     }
 
 
@@ -459,7 +422,7 @@ public class SchemasViewController
     private void registerUpdateActions()
     {
         // Handling selection of the Browser View to enable/disable the Actions
-        view.getSite().getPage().addSelectionListener( SchemasView.ID, new ISelectionListener()
+        view.getSite().getPage().addSelectionListener( new ISelectionListener()
         {
             /**
              * {@inheritDoc}
