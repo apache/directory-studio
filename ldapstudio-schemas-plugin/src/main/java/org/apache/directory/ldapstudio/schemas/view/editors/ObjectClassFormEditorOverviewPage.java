@@ -43,6 +43,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -559,6 +561,16 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassFormEditorOverviewPage.OID" ) ); //$NON-NLS-1$
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        oidText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "([0-9]*\\.?)*" ) )
+                {
+                    e.doit = false;
+                }
+            }
+        } );
 
         // SCHEMA Field
         schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
