@@ -472,7 +472,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "([0-9]+\\.?)*" ) )
+                if ( e.text.length() < 20  && !e.text.matches( "([0-9]+\\.?)*" ) )
                 {
                     e.doit = false;
                 }
