@@ -565,7 +565,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "([0-9]*\\.?)*" ) )
+                if ( !e.text.matches( "([0-9]+\\.?)*" ) )
                 {
                     e.doit = false;
                 }
