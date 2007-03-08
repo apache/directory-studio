@@ -29,7 +29,6 @@ import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEdi
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -76,9 +75,9 @@ public class LinkWithEditorHierarchyView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
-                hierarchyView.getSite().getPage().removePostSelectionListener( HierarchyView.ID, viewListener );
+                hierarchyView.getSite().getPage().removePostSelectionListener( viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
-                hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
+                hierarchyView.getSite().getPage().addPostSelectionListener( viewListener );
             }
         }
 
@@ -219,13 +218,13 @@ public class LinkWithEditorHierarchyView extends Action
                 linkViewWithEditor( editor.getPartName(), AttributeTypeFormEditor.ID );
             }
 
-            hierarchyView.getSite().getPage().addPostSelectionListener( HierarchyView.ID, viewListener );
+            hierarchyView.getSite().getPage().addPostSelectionListener( viewListener );
         }
         else
         // Disabling the listeners
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().removePartListener( editorListener );
-            hierarchyView.getSite().getPage().removePostSelectionListener( SchemasView.ID, viewListener );
+            hierarchyView.getSite().getPage().removePostSelectionListener( viewListener );
         }
     }
 
