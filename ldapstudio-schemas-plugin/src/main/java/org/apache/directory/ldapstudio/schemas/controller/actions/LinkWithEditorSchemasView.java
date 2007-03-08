@@ -63,6 +63,9 @@ public class LinkWithEditorSchemasView extends Action
 
     /** The associated view */
     private SchemasView schemasView;
+    
+    /** The Schema Pool */
+    private SchemaPool schemaPool;
 
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
@@ -176,6 +179,7 @@ public class LinkWithEditorSchemasView extends Action
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         schemasView = view;
+        schemaPool = SchemaPool.getInstance();
 
         // Setting up the default key value (if needed)
         if ( Activator.getDefault().getDialogSettings().get( LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY ) == null )
@@ -247,7 +251,7 @@ public class LinkWithEditorSchemasView extends Action
         // Only editors for attribute types and object class are accepted
         if ( editorID.equals( AttributeTypeFormEditor.ID ) )
         {
-            AttributeType at = SchemaPool.getInstance().getAttributeType( editorName );
+            AttributeType at = schemaPool.getAttributeType( editorName );
             wrapper = new AttributeTypeWrapper( at, null );
             structuredSelection = new StructuredSelection( wrapper );
 
@@ -255,13 +259,13 @@ public class LinkWithEditorSchemasView extends Action
         }
         else if ( editorID.equals( ObjectClassFormEditor.ID ) )
         {
-            ObjectClass oc = SchemaPool.getInstance().getObjectClass( editorName );
+            ObjectClass oc = schemaPool.getObjectClass( editorName );
             wrapper = new ObjectClassWrapper( oc, null );
             structuredSelection = new StructuredSelection( wrapper );
         }
         else if ( editorID.equals( SchemaFormEditor.ID ) )
         {
-            Schema schema = SchemaPool.getInstance().getSchema( editorName );
+            Schema schema = schemaPool.getSchema( editorName );
             wrapper = new SchemaWrapper( schema, null );
             structuredSelection = new StructuredSelection( wrapper );
         }
