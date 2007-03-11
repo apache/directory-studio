@@ -23,15 +23,31 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
+/**
+ * 
+ * The OpenBestEditorAction is used to edit a value with the best value editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenBestEditorAction extends AbstractOpenEditorAction
 {
 
+    /** The best value editor. */
     private IValueEditor bestValueEditor;
 
 
+    /**
+     * Creates a new instance of OpenBestEditorAction.
+     * 
+     * @param viewer the viewer
+     * @param actionGroup the action group
+     * @param valueEditorManager the value editor manager
+     */
     public OpenBestEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
         ValueEditorManager valueEditorManager )
     {
@@ -39,42 +55,78 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
     }
 
 
+    /**
+     * Gets the best value editor.
+     * 
+     * @return the best value editor
+     */
     public IValueEditor getBestValueEditor()
     {
         return this.bestValueEditor;
     }
 
 
-    protected void updateEnabledState()
+    /**
+     * {@inheritDoc}
+     */
+    public void dispose()
     {
-
-        if ( this.selectedValues.length == 1
-            && this.selectedAttributes.length == 0
-            && this.viewer.getCellModifier().canModify( this.selectedValues[0],
-                EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
-        {
-            this.bestValueEditor = this.valueEditorManager.getCurrentValueEditor( this.selectedValues[0] );
-            super.cellEditor = this.bestValueEditor.getCellEditor();
-            this.setEnabled( true );
-            this.setText( "" + this.bestValueEditor.getValueEditorName() );
-            this.setToolTipText( "" + this.bestValueEditor.getValueEditorName() );
-            this.setImageDescriptor( this.bestValueEditor.getValueEditorImageDescriptor() );
-        }
-        else
-        {
-            // super.cellEditor = null;
-            this.setEnabled( false );
-            this.setText( "Best Editor" );
-            this.setToolTipText( "Best Editor" );
-            this.setImageDescriptor( null );
-        }
+        bestValueEditor = null;
+        super.dispose();
     }
 
 
-    public void dispose()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getCommandId()
     {
-        this.bestValueEditor = null;
-        super.dispose();
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageDescriptor getImageDescriptor()
+    {
+        return isEnabled() ? bestValueEditor.getValueEditorImageDescriptor() : null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText()
+    {
+        return isEnabled() ? bestValueEditor.getValueEditorName() : null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnabled()
+    {
+        if ( getSelectedValues().length == 1
+            && getSelectedAttributes().length == 0
+            && viewer.getCellModifier().canModify( getSelectedValues()[0],
+                EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
+        {
+            // update value editor
+            bestValueEditor = valueEditorManager.getCurrentValueEditor( getSelectedValues()[0] );
+            super.cellEditor = bestValueEditor.getCellEditor();
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

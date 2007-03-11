@@ -25,65 +25,122 @@ import java.util.Arrays;
 
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
+/**
+ * The OpenEditorAction is used to edit a value with a specific value editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenEditorAction extends AbstractOpenEditorAction
 {
 
+    /** The specific value editor. */
     private IValueEditor valueEditor;
 
 
+    /**
+     * Creates a new instance of OpenEditorAction.
+     * 
+     * @param viewer the viewer
+     * @param actionGroup the action group
+     * @param valueEditorManager the value editor manager
+     * @param valueEditor the specific value editor
+     */
     public OpenEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
         ValueEditorManager valueEditorManager, IValueEditor valueEditor )
     {
         super( viewer, actionGroup, valueEditorManager );
         super.cellEditor = valueEditor.getCellEditor();
         this.valueEditor = valueEditor;
-
-        this.setText( "" + this.valueEditor.getValueEditorName() );
-        this.setToolTipText( "" + this.valueEditor.getValueEditorName() );
-        this.setImageDescriptor( this.valueEditor.getValueEditorImageDescriptor() );
     }
 
 
+    /**
+     * Gets the value editor.
+     * 
+     * @return the value editor
+     */
     public IValueEditor getValueEditor()
     {
-        return this.valueEditor;
+        return valueEditor;
     }
 
 
-    protected void updateEnabledState()
-    {
-        if ( this.selectedValues.length == 1
-            && this.selectedAttributes.length == 0
-            && this.viewer.getCellModifier().canModify( this.selectedValues[0],
-                EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
-        {
-            IValueEditor[] alternativeVps = this.valueEditorManager
-                .getAlternativeValueEditors( this.selectedValues[0] );
-            this.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueEditor )
-                && this.valueEditor.getRawValue( this.selectedValues[0] ) != null );
-        }
-        else
-        {
-            this.setEnabled( false );
-        }
-
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-        this.valueEditorManager.setUserSelectedValueEditor( this.valueEditor );
+        // ensure that the specific value editor is activated 
+        valueEditorManager.setUserSelectedValueEditor( valueEditor );
+
         super.run();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         this.valueEditor = null;
         super.dispose();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getCommandId()
+    {
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageDescriptor getImageDescriptor()
+    {
+        return valueEditor.getValueEditorImageDescriptor();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText()
+    {
+        return valueEditor.getValueEditorName();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnabled()
+    {
+        if ( getSelectedValues().length == 1
+            && getSelectedAttributes().length == 0
+            && viewer.getCellModifier().canModify( getSelectedValues()[0],
+                EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
+        {
+            IValueEditor[] alternativeVps = valueEditorManager.getAlternativeValueEditors( getSelectedValues()[0] );
+            return Arrays.asList( alternativeVps ).contains( valueEditor )
+                && valueEditor.getRawValue( getSelectedValues()[0] ) != null;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

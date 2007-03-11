@@ -24,49 +24,103 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 import org.apache.directory.ldapstudio.browser.core.jobs.RenameValuesJob;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
+import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.DeleteAction;
+import org.apache.directory.ldapstudio.browser.ui.actions.proxy.EntryEditorActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.wizards.AttributeWizard;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 
 
-public class EditAttributeDescriptionAction extends AbstractEntryEditorListenerAction
+/**
+ * This Action is used to edit an attribute description within the entry edtitor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class EditAttributeDescriptionAction extends BrowserAction
 {
 
-    private DeleteAction deleteAction;
+    /** To avoid duplicate implementations of the isEnabled() code we use a delete action */
+    private EntryEditorActionProxy deleteActionProxy;
 
 
-    public EditAttributeDescriptionAction( ISelectionProvider selectionProvider )
+    /**
+     * Creates a new instance of EditAttributeDescriptionAction.
+     * 
+     * @param viewer the viewer
+     */
+    public EditAttributeDescriptionAction( Viewer viewer )
     {
-        super( selectionProvider, "Edit Attribute Description", null,
-            BrowserUIConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
-        this.deleteAction = new DeleteAction();
+        deleteActionProxy = new EntryEditorActionProxy( viewer, new DeleteAction() );
     }
 
 
-    public void dispose()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getCommandId()
     {
-        super.dispose();
-        this.deleteAction.dispose();
-        this.deleteAction = null;
+        return BrowserUIConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageDescriptor getImageDescriptor()
+    {
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText()
+    {
+        return "Edit Attribute Description";
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnabled()
+    {
+        return deleteActionProxy.getAction().isEnabled();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void run()
     {
-        if ( this.selectedAttributes.length == 1 )
+        if ( getSelectedAttributes().length == 1 )
         {
-            this.renameValues( this.selectedAttributes[0].getValues() );
+            renameValues( getSelectedAttributes()[0].getValues() );
         }
-        else if ( this.selectedValues.length > 0 )
+        else if ( getSelectedValues().length > 0 )
         {
-            this.renameValues( this.selectedValues );
+            renameValues( getSelectedValues() );
         }
     }
 
 
+    /**
+     * Rename the given values.
+     * 
+     * @param values the values
+     */
     private void renameValues( final IValue[] values )
     {
         AttributeWizard wizard = new AttributeWizard( "Edit Attribute Description", true, false, values[0]
@@ -80,24 +134,8 @@ public class EditAttributeDescriptionAction extends AbstractEntryEditorListenerA
             if ( newAttributeName != null && !"".equals( newAttributeName )
                 && !newAttributeName.equals( values[0].getAttribute().getDescription() ) )
             {
-                new RenameValuesJob( this.selectedEntry, values, newAttributeName ).execute();
+                new RenameValuesJob( values[0].getAttribute().getEntry(), values, newAttributeName ).execute();
             }
-        }
-    }
-
-
-    protected void updateEnabledState()
-    {
-
-        if ( this.deleteAction != null )
-        {
-            deleteAction.setSelectedAttributes( this.selectedAttributes );
-            deleteAction.setSelectedValues( this.selectedValues );
-            super.setEnabled( deleteAction.isEnabled() );
-        }
-        else
-        {
-            super.setEnabled( false );
         }
     }
 

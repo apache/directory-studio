@@ -53,143 +53,185 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.commands.ICommandService;
 
 
+/**
+ * The EntryEditorWidgetActionGroup manages all actions of the entry editor widget.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetActionGroup implements IMenuListener
 {
 
+    /** The open sort dialog action. */
     protected OpenSortDialogAction openSortDialogAction;
 
+    /** The show raw values action. */
     protected ShowRawValuesAction showRawValuesAction;
 
+    /** The show quick filter action. */
     protected ShowQuickFilterAction showQuickFilterAction;
 
-    protected OpenDefaultEditorAction openDefaultEditorAction;
+    /** The open default editor action. */
+    protected EntryEditorActionProxy openDefaultValueEditorActionProxy;
 
-    protected OpenBestEditorAction openBestEditorAction;
+    /** The open best editor action. */
+    protected EntryEditorActionProxy openBestValueEditorActionProxy;
 
-    protected OpenEditorAction[] openEditorActions;
+    /** The open editor actions. */
+    protected EntryEditorActionProxy[] openValueEditorActionProxies;
 
+    /** The open value editor preferences action. */
     protected ValueEditorPreferencesAction openValueEditorPreferencesAction;
 
+    /** The Constant newValueAction. */
     protected final static String newValueAction = "newValueAction";
 
+    /** The Constant copyAction. */
     protected final static String copyAction = "copyAction";
 
+    /** The Constant pasteAction. */
     protected final static String pasteAction = "pasteAction";
 
+    /** The Constant deleteAction. */
     protected final static String deleteAction = "deleteAction";
 
+    /** The Constant selectAllAction. */
     protected final static String selectAllAction = "selectAllAction";
 
+    /** The Constant propertyDialogAction. */
     protected final static String propertyDialogAction = "propertyDialogAction";
 
-    protected Map entryEditorActionMap;
+    /** The entry editor action map. */
+    protected Map<String, EntryEditorActionProxy> entryEditorActionMap;
 
+    /** The action bars. */
     protected IActionBars actionBars;
 
+    /** The main widget. */
     private EntryEditorWidget mainWidget;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidgetActionGroup.
+     * 
+     * @param mainWidget the main widget
+     * @param configuration the configuration
+     */
     public EntryEditorWidgetActionGroup( EntryEditorWidget mainWidget, EntryEditorWidgetConfiguration configuration )
     {
-
         this.mainWidget = mainWidget;
-        this.entryEditorActionMap = new HashMap();
+
+        entryEditorActionMap = new HashMap<String, EntryEditorActionProxy>();
         TreeViewer viewer = mainWidget.getViewer();
 
-        this.openSortDialogAction = new OpenSortDialogAction( configuration.getPreferences() );
-        this.showRawValuesAction = new ShowRawValuesAction();
-        this.showQuickFilterAction = new ShowQuickFilterAction( mainWidget.getQuickFilterWidget() );
+        openSortDialogAction = new OpenSortDialogAction( configuration.getPreferences() );
+        showRawValuesAction = new ShowRawValuesAction();
+        showQuickFilterAction = new ShowQuickFilterAction( mainWidget.getQuickFilterWidget() );
 
-        this.openBestEditorAction = new OpenBestEditorAction( viewer, this, configuration
-            .getValueEditorManager( viewer ) );
-        this.openDefaultEditorAction = new OpenDefaultEditorAction( viewer, this.openBestEditorAction );
+        openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenBestEditorAction( viewer, this,
+            configuration.getValueEditorManager( viewer ) ) );
+        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
+            openBestValueEditorActionProxy, false ) );
         IValueEditor[] valueEditors = configuration.getValueEditorManager( viewer ).getAllValueEditors();
-        this.openEditorActions = new OpenEditorAction[valueEditors.length];
-        for ( int i = 0; i < this.openEditorActions.length; i++ )
+        openValueEditorActionProxies = new EntryEditorActionProxy[valueEditors.length];
+        for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
-            this.openEditorActions[i] = new OpenEditorAction( viewer, this, configuration
-                .getValueEditorManager( viewer ), valueEditors[i] );
+            openValueEditorActionProxies[i] = new EntryEditorActionProxy( viewer, new OpenEditorAction( viewer, this,
+                configuration.getValueEditorManager( viewer ), valueEditors[i] ) );
         }
-        this.openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
+        openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
-        this.entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
+        entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
 
-        this.entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new PasteAction() ) );
-        this.entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
-            ( BrowserActionProxy ) this.entryEditorActionMap.get( pasteAction ) ) ) );
-        this.entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );
-        this.entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer,
-            new SelectAllAction( viewer ) ) );
+        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new PasteAction() ) );
+        entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
+            ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ) ) ) );
+        entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );
+        entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer, new SelectAllAction( viewer ) ) );
 
-        this.entryEditorActionMap.put( propertyDialogAction,
-            new EntryEditorActionProxy( viewer, new PropertiesAction() ) );
-
+        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer, new PropertiesAction() ) );
     }
 
 
+    /**
+     * Disposes this action group.
+     */
     public void dispose()
     {
-        if ( this.mainWidget != null )
+        if ( mainWidget != null )
         {
+            openSortDialogAction = null;
+            showQuickFilterAction.dispose();
+            showQuickFilterAction = null;
+            showRawValuesAction = null;
 
-            this.openSortDialogAction = null;
-            this.showQuickFilterAction.dispose();
-            this.showQuickFilterAction = null;
-            this.showRawValuesAction = null;
-
-            this.openDefaultEditorAction.dispose();
-            this.openDefaultEditorAction = null;
-            this.openBestEditorAction.dispose();
-            this.openBestEditorAction = null;
-            for ( int i = 0; i < this.openEditorActions.length; i++ )
+            openDefaultValueEditorActionProxy.dispose();
+            openDefaultValueEditorActionProxy = null;
+            openBestValueEditorActionProxy.dispose();
+            openBestValueEditorActionProxy = null;
+            for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
             {
-                this.openEditorActions[i].dispose();
-                this.openEditorActions[i] = null;
+                openValueEditorActionProxies[i].dispose();
+                openValueEditorActionProxies[i] = null;
             }
-            this.openValueEditorPreferencesAction = null;
+            openValueEditorPreferencesAction = null;
 
-            for ( Iterator it = this.entryEditorActionMap.keySet().iterator(); it.hasNext(); )
+            for ( Iterator it = entryEditorActionMap.keySet().iterator(); it.hasNext(); )
             {
                 String key = ( String ) it.next();
-                EntryEditorActionProxy action = ( EntryEditorActionProxy ) this.entryEditorActionMap.get( key );
+                EntryEditorActionProxy action = ( EntryEditorActionProxy ) entryEditorActionMap.get( key );
                 action.dispose();
                 action = null;
                 it.remove();
             }
-            this.entryEditorActionMap.clear();
-            this.entryEditorActionMap = null;
+            entryEditorActionMap.clear();
+            entryEditorActionMap = null;
 
-            this.actionBars = null;
-            this.mainWidget = null;
+            actionBars = null;
+            mainWidget = null;
         }
-
     }
 
 
+    /**
+     * Enables global action handlers.
+     * 
+     * @param actionBars the action bars
+     */
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-        this.activateGlobalActionHandlers();
+        activateGlobalActionHandlers();
     }
 
 
+    /**
+     * Fill the tool bar.
+     * 
+     * @param toolBarManager the tool bar manager
+     */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
 
-        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( newValueAction ) );
+        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAction ) );
+        toolBarManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( this.showQuickFilterAction );
+        toolBarManager.add( showQuickFilterAction );
         toolBarManager.update( true );
 
     }
 
 
+    /**
+     * Fills the menu.
+     * 
+     * @param menuManager the menu manager
+     */
     public void fillMenu( IMenuManager menuManager )
     {
-        menuManager.add( this.openSortDialogAction );
-        menuManager.add( this.showRawValuesAction );
+        menuManager.add( openSortDialogAction );
+        menuManager.add( showRawValuesAction );
         menuManager.addMenuListener( new IMenuListener()
         {
             public void menuAboutToShow( IMenuManager manager )
@@ -201,6 +243,11 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
     }
 
 
+    /**
+     * Fills the context menu.
+     * 
+     * @param menuManager the menu manager
+     */
     public void fillContextMenu( IMenuManager menuManager )
     {
         menuManager.setRemoveAllWhenShown( true );
@@ -208,18 +255,23 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
     }
 
 
+    /**
+     * {@inheritDoc}.
+     * 
+     * @param menuManager the menu manager
+     */
     public void menuAboutToShow( IMenuManager menuManager )
     {
 
         // new
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( newValueAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAction ) );
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( selectAllAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( copyAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( pasteAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( selectAllAction ) );
         menuManager.add( new Separator() );
 
         // edit
@@ -227,54 +279,61 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( propertyDialogAction ) );
     }
 
 
+    /**
+     * Adds the value editors to the menu.
+     * 
+     * @param menuManager the menu manager
+     */
     protected void addEditMenu( IMenuManager menuManager )
     {
-        // edit
-        menuManager.add( this.openDefaultEditorAction );
+        menuManager.add( openDefaultValueEditorActionProxy );
         MenuManager editorMenuManager = new MenuManager( "Edit Value With" );
-        if ( this.openBestEditorAction.isEnabled() )
+        if ( openBestValueEditorActionProxy.isEnabled() )
         {
-            editorMenuManager.add( this.openBestEditorAction );
+            editorMenuManager.add( openBestValueEditorActionProxy );
             editorMenuManager.add( new Separator() );
         }
-        for ( int i = 0; i < this.openEditorActions.length; i++ )
+        for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
-            if ( this.openEditorActions[i].isEnabled()
-                && this.openEditorActions[i].getValueEditor().getClass() != this.openBestEditorAction
-                    .getBestValueEditor().getClass() )
+            if ( openValueEditorActionProxies[i].isEnabled()
+                && ( ( OpenEditorAction ) openValueEditorActionProxies[i].getAction() ).getValueEditor().getClass() != ( ( OpenBestEditorAction ) openBestValueEditorActionProxy
+                    .getAction() ).getBestValueEditor().getClass() )
             {
-                editorMenuManager.add( this.openEditorActions[i] );
+                editorMenuManager.add( openValueEditorActionProxies[i] );
             }
         }
         editorMenuManager.add( new Separator() );
-        editorMenuManager.add( this.openValueEditorPreferencesAction );
+        editorMenuManager.add( openValueEditorPreferencesAction );
         menuManager.add( editorMenuManager );
     }
 
 
+    /**
+     * Activates global action handlers.
+     */
     public void activateGlobalActionHandlers()
     {
 
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) this.entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) entryEditorActionMap
                 .get( copyAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) this.entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) entryEditorActionMap
                 .get( pasteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) this.entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) entryEditorActionMap
                 .get( deleteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), ( IAction ) this.entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), ( IAction ) entryEditorActionMap
                 .get( selectAllAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) this.entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) entryEditorActionMap
                 .get( propertyDialogAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), this.showQuickFilterAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
+            actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickFilterAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
 
             actionBars.updateActionBars();
         }
@@ -282,15 +341,15 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
         {
             if ( commandService != null )
             {
-                IAction da = ( IAction ) this.entryEditorActionMap.get( deleteAction );
+                IAction da = ( IAction ) entryEditorActionMap.get( deleteAction );
                 da.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.delete" );
                 commandService.getCommand( da.getActionDefinitionId() ).setHandler( new ActionHandler( da ) );
 
-                IAction ca = ( IAction ) this.entryEditorActionMap.get( copyAction );
+                IAction ca = ( IAction ) entryEditorActionMap.get( copyAction );
                 ca.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.copy" );
                 commandService.getCommand( ca.getActionDefinitionId() ).setHandler( new ActionHandler( ca ) );
 
-                IAction pa = ( IAction ) this.entryEditorActionMap.get( pasteAction );
+                IAction pa = ( IAction ) entryEditorActionMap.get( pasteAction );
                 pa.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.paste" );
                 commandService.getCommand( pa.getActionDefinitionId() ).setHandler( new ActionHandler( pa ) );
 
@@ -298,7 +357,7 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
                 commandService.getCommand( showQuickFilterAction.getActionDefinitionId() ).setHandler(
                     new ActionHandler( showQuickFilterAction ) );
 
-                IAction pda = ( IAction ) this.entryEditorActionMap.get( propertyDialogAction );
+                IAction pda = ( IAction ) entryEditorActionMap.get( propertyDialogAction );
                 pda.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.properties" );
                 commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
             }
@@ -306,22 +365,25 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
 
         if ( commandService != null )
         {
-            IAction nva = ( IAction ) this.entryEditorActionMap.get( newValueAction );
+            IAction nva = ( IAction ) entryEditorActionMap.get( newValueAction );
             commandService.getCommand( nva.getActionDefinitionId() ).setHandler( new ActionHandler( nva ) );
-            commandService.getCommand( openDefaultEditorAction.getActionDefinitionId() ).setHandler(
-                new ActionHandler( openDefaultEditorAction ) );
+            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler(
+                new ActionHandler( openDefaultValueEditorActionProxy ) );
         }
 
     }
 
 
+    /**
+     * Deactivates global action handlers.
+     */
     public void deactivateGlobalActionHandlers()
     {
 
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
 
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), null );
             actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), null );
@@ -336,41 +398,40 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
         {
             if ( commandService != null )
             {
-                IAction da = ( IAction ) this.entryEditorActionMap.get( deleteAction );
+                IAction da = ( IAction ) entryEditorActionMap.get( deleteAction );
                 commandService.getCommand( da.getActionDefinitionId() ).setHandler( null );
 
-                IAction ca = ( IAction ) this.entryEditorActionMap.get( copyAction );
+                IAction ca = ( IAction ) entryEditorActionMap.get( copyAction );
                 commandService.getCommand( ca.getActionDefinitionId() ).setHandler( null );
 
-                IAction pa = ( IAction ) this.entryEditorActionMap.get( pasteAction );
+                IAction pa = ( IAction ) entryEditorActionMap.get( pasteAction );
                 commandService.getCommand( pa.getActionDefinitionId() ).setHandler( null );
 
                 commandService.getCommand( showQuickFilterAction.getActionDefinitionId() ).setHandler( null );
 
-                IAction pda = ( IAction ) this.entryEditorActionMap.get( propertyDialogAction );
+                IAction pda = ( IAction ) entryEditorActionMap.get( propertyDialogAction );
                 commandService.getCommand( pda.getActionDefinitionId() ).setHandler( null );
             }
         }
 
         if ( commandService != null )
         {
-            IAction nva = ( IAction ) this.entryEditorActionMap.get( newValueAction );
+            IAction nva = ( IAction ) entryEditorActionMap.get( newValueAction );
             commandService.getCommand( nva.getActionDefinitionId() ).setHandler( null );
-            commandService.getCommand( openDefaultEditorAction.getActionDefinitionId() ).setHandler( null );
+            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler( null );
         }
 
     }
 
 
-    public OpenBestEditorAction getOpenBestEditorAction()
-    {
-        return openBestEditorAction;
-    }
-
-
+    /**
+     * Gets the open default editor action.
+     * 
+     * @return the open default editor action
+     */
     public OpenDefaultEditorAction getOpenDefaultEditorAction()
     {
-        return openDefaultEditorAction;
+        return ( OpenDefaultEditorAction ) openDefaultValueEditorActionProxy.getAction();
     }
 
 }

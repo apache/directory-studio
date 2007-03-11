@@ -39,48 +39,54 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 
 
+/**
+ * This class manages all the actions of the attribute page of the new entry wizard.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewEntryAttributesWizardPageActionGroup extends EntryEditorWidgetActionGroup
 {
 
-    private EditAttributeDescriptionAction editAttributeDescriptionAction;
+    /** The Constant editAttributeDescriptionAction. */
+    private static final String editAttributeDescriptionAction = "editAttributeDescriptionAction";
 
+    /** The Constant newAttributeAction. */
     private static final String newAttributeAction = "newAttributeAction";
 
+    /** The Constant deleteAllValuesAction. */
     private static final String deleteAllValuesAction = "deleteAllValuesAction";
 
 
+    /**
+     * 
+     * Creates a new instance of NewEntryAttributesWizardPageActionGroup.
+     *
+     * @param mainWidget
+     * @param configuration
+     */
     public NewEntryAttributesWizardPageActionGroup( EntryEditorWidget mainWidget,
         EntryEditorWidgetConfiguration configuration )
     {
         super( mainWidget, configuration );
         TreeViewer viewer = mainWidget.getViewer();
 
-        this.editAttributeDescriptionAction = new EditAttributeDescriptionAction( viewer );
-
-        this.entryEditorActionMap.put( newAttributeAction,
-            new EntryEditorActionProxy( viewer, new NewAttributeAction() ) );
-        this.entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( editAttributeDescriptionAction, new EntryEditorActionProxy( viewer,
+            new EditAttributeDescriptionAction( viewer ) ) );
+        entryEditorActionMap.put( newAttributeAction, new EntryEditorActionProxy( viewer, new NewAttributeAction() ) );
+        entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer,
             new DeleteAllValuesAction() ) );
 
     }
 
 
-    public void dispose()
-    {
-        if ( this.editAttributeDescriptionAction != null )
-        {
-
-            this.editAttributeDescriptionAction.dispose();
-            this.editAttributeDescriptionAction = null;
-        }
-        super.dispose();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( newValueAction ) );
-        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( newAttributeAction ) );
+        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
+        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newAttributeAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAction ) );
         toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAllValuesAction ) );
@@ -90,63 +96,70 @@ public class NewEntryAttributesWizardPageActionGroup extends EntryEditorWidgetAc
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void menuAboutToShow( IMenuManager menuManager )
     {
-
         // new
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( newAttributeAction ) );
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( newValueAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( newAttributeAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAction ) );
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( selectAllAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( copyAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( pasteAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( selectAllAction ) );
         MenuManager copyMenuManager = new MenuManager( "Advanced" );
-        copyMenuManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAllValuesAction ) );
+        copyMenuManager.add( ( IAction ) entryEditorActionMap.get( deleteAllValuesAction ) );
         menuManager.add( copyMenuManager );
         menuManager.add( new Separator() );
 
         // edit
-        menuManager.add( this.editAttributeDescriptionAction );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction ) );
         super.addEditMenu( menuManager );
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) this.entryEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( propertyDialogAction ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void activateGlobalActionHandlers()
     {
-
         super.activateGlobalActionHandlers();
 
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
         if ( commandService != null )
         {
-            IAction naa = ( IAction ) this.entryEditorActionMap.get( newAttributeAction );
+            IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
             commandService.getCommand( naa.getActionDefinitionId() ).setHandler( new ActionHandler( naa ) );
-            commandService.getCommand( editAttributeDescriptionAction.getActionDefinitionId() ).setHandler(
-                new ActionHandler( editAttributeDescriptionAction ) );
+            IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
+            commandService.getCommand( eada.getActionDefinitionId() ).setHandler( new ActionHandler( eada ) );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deactivateGlobalActionHandlers()
     {
-
         super.deactivateGlobalActionHandlers();
 
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
         if ( commandService != null )
         {
-            IAction naa = ( IAction ) this.entryEditorActionMap.get( newAttributeAction );
+            IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
             commandService.getCommand( naa.getActionDefinitionId() ).setHandler( null );
-            commandService.getCommand( editAttributeDescriptionAction.getActionDefinitionId() ).setHandler( null );
+            IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
+            commandService.getCommand( eada.getActionDefinitionId() ).setHandler( null );
         }
     }
 

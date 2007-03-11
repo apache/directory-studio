@@ -34,6 +34,7 @@ import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -181,6 +182,7 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
             this.setText( this.action.getText() );
             this.setToolTipText( this.action.getText() );
             this.setEnabled( this.action.isEnabled() );
+            this.setImageDescriptor( this.action.getImageDescriptor() );
         }
     }
 

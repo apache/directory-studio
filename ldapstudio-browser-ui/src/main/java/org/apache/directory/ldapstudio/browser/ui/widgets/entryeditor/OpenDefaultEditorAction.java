@@ -22,104 +22,157 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
+import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.RenameAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.EntryEditorActionProxy;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 
 
-public class OpenDefaultEditorAction extends AbstractEntryEditorListenerAction
+/**
+ * 
+ * The OpenBestEditorAction is used to edit a value with the default value editor.
+ * This is either the best value editor or in case of an RDN attribute the rename
+ * action is invoked.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class OpenDefaultEditorAction extends BrowserAction
 {
 
-    private OpenBestEditorAction valueEditorProxy;
+    /** The best value editor proxy. */
+    private EntryEditorActionProxy bestValueEditorProxy;
 
+    /** The rename proxy. */
     private EntryEditorActionProxy renameProxy;
+    
 
-
-    public OpenDefaultEditorAction( TreeViewer viewer, OpenBestEditorAction proxy )
+    /**
+     * Creates a new instance of OpenDefaultEditorAction.
+     * 
+     * @param viewer the viewer
+     * @param bestValueEditorProxy the best value editor proxy
+     * @param enableRenameAction true to enable rename action
+     */
+    public OpenDefaultEditorAction( TreeViewer viewer, EntryEditorActionProxy bestValueEditorProxy, boolean enableRenameAction )
     {
-        super( viewer, "Edit Value", null, BrowserUIConstants.ACTION_ID_EDIT_VALUE );
-
-        this.valueEditorProxy = proxy;
-        this.renameProxy = null;
+        this.bestValueEditorProxy = bestValueEditorProxy;
+        this.renameProxy = enableRenameAction ? new EntryEditorActionProxy( viewer, new RenameAction() ) : null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        this.valueEditorProxy = null;
-        this.renameProxy = null;
+        bestValueEditorProxy = null;
+        renameProxy = null;
 
         super.dispose();
     }
-
-
-    public void run()
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getCommandId()
     {
-        if ( this.valueEditorProxy != null && this.valueEditorProxy.isEnabled() )
-        {
-            this.valueEditorProxy.run();
-        }
-        else if ( this.renameProxy != null && this.renameProxy.isEnabled() )
-        {
-            this.renameProxy.run();
-        }
+        return BrowserUIConstants.ACTION_ID_EDIT_VALUE;
     }
-
-
-    protected void updateEnabledState()
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageDescriptor getImageDescriptor()
     {
-
-        // update proxy selections
-        if ( this.valueEditorProxy != null )
+        if ( bestValueEditorProxy != null )
         {
-            if ( this.currentSelectionChangedEvent != null )
-            {
-                this.valueEditorProxy.selectionChanged( currentSelectionChangedEvent );
-            }
-            this.valueEditorProxy.updateEnabledState();
+            return bestValueEditorProxy.getImageDescriptor();
         }
-        if ( this.renameProxy != null )
+        else if ( renameProxy != null )
         {
-            if ( this.currentSelectionChangedEvent != null )
-            {
-                this.renameProxy.selectionChanged( currentSelectionChangedEvent );
-            }
-            this.renameProxy.updateAction();
-        }
-
-        // update my state
-        if ( this.valueEditorProxy != null && this.renameProxy != null )
-        {
-            this.setEnabled( this.valueEditorProxy.isEnabled() || this.renameProxy.isEnabled() );
-        }
-        else if ( this.renameProxy != null )
-        {
-            this.setEnabled( this.renameProxy.isEnabled() );
-        }
-        else if ( this.valueEditorProxy != null )
-        {
-            this.setEnabled( this.valueEditorProxy.isEnabled() );
+            return renameProxy.getImageDescriptor();
         }
         else
         {
-            this.setEnabled( false );
+            return null;
         }
-
-        if ( this.valueEditorProxy != null )
-        {
-            this.setImageDescriptor( this.valueEditorProxy.getImageDescriptor() );
-        }
-        else if ( this.renameProxy != null )
-        {
-            this.setImageDescriptor( this.renameProxy.getImageDescriptor() );
-        }
-
     }
-
-
-    public void enableRenameEntryAction()
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText()
     {
-        this.renameProxy = new EntryEditorActionProxy( valueEditorProxy.viewer, new RenameAction() );
+        return "Edit Value";
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnabled()
+    {
+//      // update proxy selections
+//      if ( bestValueEditorProxy != null )
+//      {
+//          if ( this.currentSelectionChangedEvent != null )
+//          {
+//              this.valueEditorProxy.selectionChanged( currentSelectionChangedEvent );
+//          }
+//          this.valueEditorProxy.updateEnabledState();
+//      }
+//      if ( this.renameProxy != null )
+//      {
+//          if ( this.currentSelectionChangedEvent != null )
+//          {
+//              this.renameProxy.selectionChanged( currentSelectionChangedEvent );
+//          }
+//          this.renameProxy.updateAction();
+//      }
+
+      if ( bestValueEditorProxy != null && renameProxy != null )
+      {
+          return bestValueEditorProxy.isEnabled() || renameProxy.isEnabled();
+      }
+      else if ( renameProxy != null )
+      {
+          return renameProxy.isEnabled();
+      }
+      else if ( bestValueEditorProxy != null )
+      {
+          return bestValueEditorProxy.isEnabled();
+      }
+      else
+      {
+          return false;
+      }
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void run()
+    {
+      if ( bestValueEditorProxy != null && bestValueEditorProxy.isEnabled() )
+      {
+          bestValueEditorProxy.run();
+      }
+      else if ( renameProxy != null && renameProxy.isEnabled() )
+      {
+          renameProxy.run();
+      }
+        
     }
 
 }

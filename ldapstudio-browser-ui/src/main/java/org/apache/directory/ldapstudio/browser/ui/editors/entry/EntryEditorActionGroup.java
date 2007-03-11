@@ -43,6 +43,7 @@ import org.apache.directory.ldapstudio.browser.ui.actions.RefreshAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.EntryEditorActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EditAttributeDescriptionAction;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetActionGroup;
+import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.OpenDefaultEditorAction;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -70,8 +71,8 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
     private ExpandAllAction expandAllAction;
 
-    private EditAttributeDescriptionAction editAttributeDescriptionAction;
-
+    private static final String editAttributeDescriptionAction = "editAttributeDescriptionAction";
+    
     private static final String refreshAttributesAction = "refreshAttributesAction";
 
     private static final String newAttributeAction = "newAttributeAction";
@@ -124,14 +125,17 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         super( entryEditor.getMainWidget(), entryEditor.getConfiguration() );
         TreeViewer viewer = entryEditor.getMainWidget().getViewer();
 
-        this.openDefaultEditorAction.enableRenameEntryAction();
+        openDefaultValueEditorActionProxy.dispose();
+        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer , new OpenDefaultEditorAction( viewer, openBestValueEditorActionProxy, true ) );
 
         this.showOperationalAttributesAction = new ShowOperationalAttributesAction();
         this.openEntryEditorPreferencePage = new OpenEntryEditorPreferencePageAction();
         this.collapseAllAction = new CollapseAllAction( viewer );
         this.expandAllAction = new ExpandAllAction( viewer );
-        this.editAttributeDescriptionAction = new EditAttributeDescriptionAction( viewer );
-
+        
+        this.entryEditorActionMap.put( editAttributeDescriptionAction,
+            new EntryEditorActionProxy( viewer, new EditAttributeDescriptionAction( viewer ) ) );
+        
         this.entryEditorActionMap.put( refreshAttributesAction,
             new EntryEditorActionProxy( viewer, new RefreshAction() ) );
 
@@ -198,8 +202,6 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             this.expandAllAction = null;
             this.collapseAllAction.dispose();
             this.collapseAllAction = null;
-            this.editAttributeDescriptionAction.dispose();
-            this.editAttributeDescriptionAction = null;
         }
 
         super.dispose();
@@ -301,7 +303,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         menuManager.add( new Separator() );
 
         // edit
-        menuManager.add( this.editAttributeDescriptionAction );
+        menuManager.add( ( IAction ) this.entryEditorActionMap.get( editAttributeDescriptionAction ) );
         super.addEditMenu( menuManager );
         menuManager.add( new Separator() );
 
@@ -336,8 +338,9 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             commandService.getCommand( naa.getActionDefinitionId() ).setHandler( new ActionHandler( naa ) );
             IAction lid = ( IAction ) this.entryEditorActionMap.get( locateDnInDitAction );
             commandService.getCommand( lid.getActionDefinitionId() ).setHandler( new ActionHandler( lid ) );
-            commandService.getCommand( editAttributeDescriptionAction.getActionDefinitionId() ).setHandler(
-                new ActionHandler( editAttributeDescriptionAction ) );
+            IAction eada = ( IAction ) this.entryEditorActionMap.get( editAttributeDescriptionAction );
+            commandService.getCommand( eada.getActionDefinitionId() ).setHandler(
+                new ActionHandler( eada ) );
         }
     }
 
@@ -360,7 +363,8 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             commandService.getCommand( naa.getActionDefinitionId() ).setHandler( null );
             IAction lid = ( IAction ) this.entryEditorActionMap.get( locateDnInDitAction );
             commandService.getCommand( lid.getActionDefinitionId() ).setHandler( null );
-            commandService.getCommand( editAttributeDescriptionAction.getActionDefinitionId() ).setHandler( null );
+            IAction eada = ( IAction ) this.entryEditorActionMap.get( editAttributeDescriptionAction );
+            commandService.getCommand( eada.getActionDefinitionId() ).setHandler( null );
         }
     }
 

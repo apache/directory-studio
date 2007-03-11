@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
+import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -31,129 +32,174 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 
 
-public abstract class AbstractOpenEditorAction extends AbstractEntryEditorListenerAction implements FocusListener,
-    KeyListener
+/**
+ * The base class for all value editor actions of the entry editor widget.
+ * It manages activation and closing of value editors. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public abstract class AbstractOpenEditorAction extends BrowserAction implements FocusListener, KeyListener
 {
 
+    /** The action group. */
     protected EntryEditorWidgetActionGroup actionGroup;
 
+    /** The value editor manager. */
     protected ValueEditorManager valueEditorManager;
 
+    /** The viewer. */
     protected TreeViewer viewer;
 
+    /** The cell editor. */
     protected CellEditor cellEditor;
 
 
+    /**
+     * Creates a new instance of AbstractOpenEditorAction.
+     * 
+     * @param viewer the viewer
+     * @param actionGroup the action group
+     * @param valueEditorManager the value editor manager
+     */
     protected AbstractOpenEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
         ValueEditorManager valueEditorManager )
     {
-        super( viewer, "Editor", null, null );
         this.viewer = viewer;
         this.actionGroup = actionGroup;
         this.valueEditorManager = valueEditorManager;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        this.valueEditorManager = null;
-        this.actionGroup = null;
-        this.viewer = null;
-        this.cellEditor = null;
+        valueEditorManager = null;
+        actionGroup = null;
+        viewer = null;
+        cellEditor = null;
         super.dispose();
     }
 
 
+    /**
+     * Gets the cell editor.
+     * 
+     * @return the cell editor
+     */
     public CellEditor getCellEditor()
     {
-        return this.cellEditor;
+        return cellEditor;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-        this.activateEditor();
+        activateEditor();
     }
 
 
+    /**
+     * Activates the editor.
+     */
     private void activateEditor()
     {
 
-        if ( !this.viewer.isCellEditorActive()
-            && this.selectedValues.length == 1
-            && this.selectedAttributes.length == 0
-            && viewer.getCellModifier().canModify( this.selectedValues[0],
+        if ( !viewer.isCellEditorActive()
+            && getSelectedValues().length == 1
+            && getSelectedAttributes().length == 0
+            && viewer.getCellModifier().canModify( getSelectedValues()[0],
                 EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
         {
 
             // set cell editor to viewer
-            this.viewer.getCellEditors()[EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX] = this.cellEditor;
+            viewer.getCellEditors()[EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX] = cellEditor;
 
             // add listener for end of editing
-            if ( this.cellEditor.getControl() != null )
+            if ( cellEditor.getControl() != null )
             {
-                this.cellEditor.getControl().addFocusListener( this );
-                this.cellEditor.getControl().addKeyListener( this );
+                cellEditor.getControl().addFocusListener( this );
+                cellEditor.getControl().addKeyListener( this );
             }
 
             // deactivate global actions
-            if ( this.actionGroup != null )
-                this.actionGroup.deactivateGlobalActionHandlers();
+            if ( actionGroup != null )
+            {
+                actionGroup.deactivateGlobalActionHandlers();
+            }
 
             // start editing
-            this.viewer.editElement( this.selectedValues[0], EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX );
+            viewer.editElement( getSelectedValues()[0], EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX );
 
-            if ( !this.viewer.isCellEditorActive() )
+            if ( !viewer.isCellEditorActive() )
             {
-                this.editorClosed();
+                editorClosed();
             }
         }
         else
         {
-            this.valueEditorManager.setUserSelectedValueEditor( null );
+            valueEditorManager.setUserSelectedValueEditor( null );
         }
     }
 
 
+    /**
+     * Editor closed.
+     */
     private void editorClosed()
     {
 
         // remove cell editors from viewer to prevend auto-editing
-        for ( int i = 0; i < this.viewer.getCellEditors().length; i++ )
+        for ( int i = 0; i < viewer.getCellEditors().length; i++ )
         {
-            this.viewer.getCellEditors()[i] = null;
+            viewer.getCellEditors()[i] = null;
         }
 
         // remove listener
-        if ( this.cellEditor.getControl() != null )
+        if ( cellEditor.getControl() != null )
         {
-            this.cellEditor.getControl().removeFocusListener( this );
-            this.cellEditor.getControl().removeKeyListener( this );
+            cellEditor.getControl().removeFocusListener( this );
+            cellEditor.getControl().removeKeyListener( this );
         }
 
         // activate global actions
-        if ( this.actionGroup != null )
-            this.actionGroup.activateGlobalActionHandlers();
+        if ( actionGroup != null )
+        {
+            actionGroup.activateGlobalActionHandlers();
+        }
 
         // reset custom value editor and set selection to notify all
-        // openeditoractions to update their
-        // enabled state.
-        this.valueEditorManager.setUserSelectedValueEditor( null );
-        this.viewer.setSelection( this.viewer.getSelection() );
+        // openeditoractions to update their enabled state.
+        valueEditorManager.setUserSelectedValueEditor( null );
+        viewer.setSelection( viewer.getSelection() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void focusGained( FocusEvent e )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void focusLost( FocusEvent e )
     {
-        this.editorClosed();
+        editorClosed();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void keyPressed( KeyEvent e )
     {
         if ( e.character == SWT.ESC && e.stateMask == SWT.NONE )
@@ -163,6 +209,9 @@ public abstract class AbstractOpenEditorAction extends AbstractEntryEditorListen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void keyReleased( KeyEvent e )
     {
     }
