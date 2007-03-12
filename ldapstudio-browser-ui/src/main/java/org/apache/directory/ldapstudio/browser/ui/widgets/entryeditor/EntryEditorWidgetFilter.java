@@ -21,26 +21,36 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
-import java.util.ArrayList;
-
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
-
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 
+/**
+ * The EntryEditorWidgetFilter implements the filter for
+ * the entry editor widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetFilter extends ViewerFilter
 {
 
+    /** The viewer to filter. */
     protected TreeViewer viewer;
 
+    /** The quick filter attribute. */
     protected String quickFilterAttribute;
 
+    /** The quick filter value. */
     protected String quickFilterValue;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidgetFilter.
+     */
     public EntryEditorWidgetFilter()
     {
         this.quickFilterAttribute = "";
@@ -48,32 +58,23 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     }
 
 
+    /**
+     * Connects this filter with the given viewer.
+     * 
+     * @param viewer the viewer
+     */
     public void connect( TreeViewer viewer )
     {
         this.viewer = viewer;
-        this.viewer.addFilter( this );
+        viewer.addFilter( this );
     }
 
 
-    public Object[] filter( Viewer viewer, Object parent, Object[] elements )
-    {
-
-        int size = elements.length;
-        ArrayList out = new ArrayList( size );
-        for ( int i = 0; i < size; ++i )
-        {
-            Object element = elements[i];
-            if ( select( viewer, parent, element ) )
-                out.add( element );
-        }
-
-        return out.toArray();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean select( Viewer viewer, Object parentElement, Object element )
     {
-
         if ( element instanceof IAttribute )
         {
             IAttribute attribute = ( IAttribute ) element;
@@ -83,7 +84,7 @@ public class EntryEditorWidgetFilter extends ViewerFilter
             IValue[] values = attribute.getValues();
             for ( int i = 0; i < values.length; i++ )
             {
-                if ( this.goesThroughQuickFilter( values[i] ) )
+                if ( goesThroughQuickFilter( values[i] ) )
                 {
                     oneGoesThrough = true;
                     break;
@@ -101,22 +102,32 @@ public class EntryEditorWidgetFilter extends ViewerFilter
             IValue value = ( IValue ) element;
 
             // check quick filter
-            if ( !this.goesThroughQuickFilter( value ) )
+            if ( !goesThroughQuickFilter( value ) )
             {
                 return false;
             }
 
             // filter attribute types
             if ( value.getAttribute().isObjectClassAttribute() )
-                return this.isShowObjectClassAttribute();
+            {
+                return isShowObjectClassAttribute();
+            }
             else if ( value.getAttribute().isMustAttribute() )
-                return this.isShowMustAttributes();
+            {
+                return isShowMustAttributes();
+            }
             else if ( value.getAttribute().isMayAttribute() )
-                return this.isShowMayAttributes();
+            {
+                return isShowMayAttributes();
+            }
             else if ( value.getAttribute().isOperationalAttribute() )
-                return this.isShowOperationalAttributes();
+            {
+                return isShowOperationalAttributes();
+            }
             else
+            {
                 return true;
+            }
         }
         else
         {
@@ -125,22 +136,29 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     }
 
 
+    /**
+     * Checks if the given value goes through quick filter.
+     * 
+     * @param value the value
+     * 
+     * @return true, if goes through quick filter
+     */
     private boolean goesThroughQuickFilter( IValue value )
     {
         // filter attribute description
-        if ( this.quickFilterAttribute != null && !"".equals( this.quickFilterAttribute ) )
+        if ( quickFilterAttribute != null && !"".equals( quickFilterAttribute ) )
         {
-            if ( value.getAttribute().getDescription().toUpperCase().indexOf( this.quickFilterAttribute.toUpperCase() ) == -1 )
+            if ( value.getAttribute().getDescription().toUpperCase().indexOf( quickFilterAttribute.toUpperCase() ) == -1 )
             {
                 return false;
             }
         }
 
         // fitler value
-        if ( this.quickFilterValue != null && !"".equals( this.quickFilterValue ) )
+        if ( quickFilterValue != null && !"".equals( quickFilterValue ) )
         {
             if ( value.isString()
-                && value.getStringValue().toUpperCase().indexOf( this.quickFilterValue.toUpperCase() ) == -1 )
+                && value.getStringValue().toUpperCase().indexOf( quickFilterValue.toUpperCase() ) == -1 )
             {
                 return false;
             }
@@ -154,64 +172,111 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     }
 
 
+    /**
+     * Disposes this filter.
+     */
     public void dispose()
     {
-        this.viewer = null;
+        viewer = null;
     }
 
 
+    /**
+     * Gets the quick filter attribute.
+     * 
+     * @return the quick filter attribute
+     */
     public String getQuickFilterAttribute()
     {
         return quickFilterAttribute;
     }
 
 
+    /**
+     * Sets the quick filter attribute.
+     * 
+     * @param quickFilterAttribute the quick filter attribute
+     */
     public void setQuickFilterAttribute( String quickFilterAttribute )
     {
         if ( !this.quickFilterAttribute.equals( quickFilterAttribute ) )
         {
             this.quickFilterAttribute = quickFilterAttribute;
-            if ( this.viewer != null )
-                this.viewer.refresh();
+            if ( viewer != null )
+            {
+                viewer.refresh();
+            }
         }
     }
 
 
+    /**
+     * Gets the quick filter value.
+     * 
+     * @return the quick filter value
+     */
     public String getQuickFilterValue()
     {
         return quickFilterValue;
     }
 
 
+    /**
+     * Sets the quick filter value.
+     * 
+     * @param quickFilterValue the quick filter value
+     */
     public void setQuickFilterValue( String quickFilterValue )
     {
         if ( !this.quickFilterValue.equals( quickFilterValue ) )
         {
             this.quickFilterValue = quickFilterValue;
-            if ( this.viewer != null )
-                this.viewer.refresh();
+            if ( viewer != null )
+            {
+                viewer.refresh();
+            }
         }
     }
 
 
+    /**
+     * Checks if may attributes should be shown.
+     * 
+     * @return true, if may attributes should be shown
+     */
     public boolean isShowMayAttributes()
     {
         return true;
     }
 
 
+    /**
+     * Checks if must attributes should be shown.
+     * 
+     * @return true, if must attributes should be shown
+     */
     public boolean isShowMustAttributes()
     {
         return true;
     }
 
 
+    /**
+     * Checks if the objectClass attribute should be shown.
+     * 
+     * @return true, if the objectClass attribute should be shown
+     */
     public boolean isShowObjectClassAttribute()
     {
         return true;
     }
 
 
+    /**
+     * Checks if operational attributes should be shown.
+     * 
+     * @return true, if operational attributes should be shown
+     */
     public boolean isShowOperationalAttributes()
     {
         return true;

@@ -27,7 +27,6 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
-
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -40,29 +39,52 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 
 
+/**
+ * The EntryEditorWidgetLabelProvider implements the label provider for
+ * the entry editor widget.
+ * 
+ * It provides the type value pairs for {@link IValue} objects and type plus 
+ * the number of values for {@link IAttribute} objects. It also implements 
+ * {@link IFontProvider} and {@link IColorProvider} to set the font and color
+ * depending on whether the attribte is a must, may or operational attribute.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider,
     IColorProvider
 {
 
+    /** The value editor manager. */
     private ValueEditorManager valueEditorManager;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidgetLabelProvider.
+     * 
+     * @param valueEditorManager the value editor manager
+     */
     public EntryEditorWidgetLabelProvider( ValueEditorManager valueEditorManager )
     {
         this.valueEditorManager = valueEditorManager;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
-        this.valueEditorManager = null;
+        valueEditorManager = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public final String getColumnText( Object obj, int index )
     {
-
         if ( obj != null && obj instanceof IValue )
         {
             IValue value = ( IValue ) obj;
@@ -97,15 +119,20 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public final Image getColumnImage( Object element, int index )
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Font getFont( Object element )
     {
-
         IAttribute attribute = null;
         IValue value = null;
         if ( element instanceof IAttribute )
@@ -173,9 +200,11 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Color getForeground( Object element )
     {
-
         IAttribute attribute = null;
         IValue value = null;
         if ( element instanceof IAttribute )
@@ -243,6 +272,9 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Color getBackground( Object element )
     {
         return null;

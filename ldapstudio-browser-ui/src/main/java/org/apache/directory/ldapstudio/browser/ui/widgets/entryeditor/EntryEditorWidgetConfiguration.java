@@ -25,127 +25,219 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEdi
 import org.eclipse.jface.viewers.TreeViewer;
 
 
+/**
+ * The BrowserConfiguration contains the content provider, 
+ * label provider, sorter, filter the context menu manager and the
+ * preferences for the browser widget. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetConfiguration
 {
 
+    /** The disposed flag */
     private boolean disposed = false;
 
+    /** The sorter. */
     protected EntryEditorWidgetSorter sorter;
 
+    /** The filter. */
     protected EntryEditorWidgetFilter filter;
 
+    /** The preferences. */
     protected EntryEditorWidgetPreferences preferences;
 
+    /** The content provider. */
     protected EntryEditorWidgetContentProvider contentProvider;
 
+    /** The label provider. */
     protected EntryEditorWidgetLabelProvider labelProvider;
 
+    /** The cell modifier. */
     protected EntryEditorWidgetCellModifier cellModifier;
 
+    /** The value editor manager. */
     protected ValueEditorManager valueEditorManager;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidgetConfiguration.
+     */
     public EntryEditorWidgetConfiguration()
     {
     }
 
 
+    /**
+     * Disposes this configuration.
+     */
     public void dispose()
     {
-        if ( !this.disposed )
+        if ( !disposed )
         {
+            if ( sorter != null )
+            {
+                sorter.dispose();
+                sorter = null;
+            }
 
-            if ( this.sorter != null )
-                this.sorter.dispose();
-            this.sorter = null;
+            if ( filter != null )
+            {
+                filter.dispose();
+                filter = null;
+            }
 
-            if ( this.filter != null )
-                this.filter.dispose();
-            this.filter = null;
+            if ( preferences != null )
+            {
+                preferences.dispose();
+                preferences = null;
+            }
 
-            if ( this.preferences != null )
-                this.preferences.dispose();
-            this.preferences = null;
+            if ( contentProvider != null )
+            {
+                contentProvider.dispose();
+                contentProvider = null;
+            }
 
-            if ( this.contentProvider != null )
-                this.contentProvider.dispose();
-            this.contentProvider = null;
+            if ( labelProvider != null )
+            {
+                labelProvider.dispose();
+                labelProvider = null;
+            }
 
-            if ( this.labelProvider != null )
-                this.labelProvider.dispose();
-            this.labelProvider = null;
+            if ( cellModifier != null )
+            {
+                cellModifier.dispose();
+                cellModifier = null;
+            }
 
-            if ( this.cellModifier != null )
-                this.cellModifier.dispose();
-            this.cellModifier = null;
+            if ( valueEditorManager != null )
+            {
+                valueEditorManager.dispose();
+                valueEditorManager = null;
+            }
 
-            if ( this.valueEditorManager != null )
-                this.valueEditorManager.dispose();
-            this.valueEditorManager = null;
-
-            this.disposed = true;
+            disposed = true;
         }
     }
 
 
+    /**
+     * Gets the content provider.
+     * 
+     * @param mainWidget the main widget
+     * 
+     * @return the content provider
+     */
     public EntryEditorWidgetContentProvider getContentProvider( EntryEditorWidget mainWidget )
     {
-        if ( this.contentProvider == null )
-            this.contentProvider = new EntryEditorWidgetContentProvider( this.getPreferences(), mainWidget );
+        if ( contentProvider == null )
+        {
+            contentProvider = new EntryEditorWidgetContentProvider( getPreferences(), mainWidget );
+        }
 
         return contentProvider;
     }
 
 
+    /**
+     * Gets the label provider.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the label provider
+     */
     public EntryEditorWidgetLabelProvider getLabelProvider( TreeViewer viewer )
     {
-        if ( this.labelProvider == null )
-            this.labelProvider = new EntryEditorWidgetLabelProvider( this.getValueEditorManager( viewer ) );
+        if ( labelProvider == null )
+        {
+            labelProvider = new EntryEditorWidgetLabelProvider( getValueEditorManager( viewer ) );
+        }
 
         return labelProvider;
     }
 
 
+    /**
+     * Gets the cell modifier.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the cell modifier
+     */
     public EntryEditorWidgetCellModifier getCellModifier( TreeViewer viewer )
     {
-        if ( this.cellModifier == null )
-            this.cellModifier = new EntryEditorWidgetCellModifier( this.getValueEditorManager( viewer ) );
+        if ( cellModifier == null )
+        {
+            cellModifier = new EntryEditorWidgetCellModifier( getValueEditorManager( viewer ) );
+        }
 
         return cellModifier;
     }
 
 
+    /**
+     * Gets the value editor manager.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the value editor manager
+     */
     public ValueEditorManager getValueEditorManager( TreeViewer viewer )
     {
-        if ( this.valueEditorManager == null )
-            this.valueEditorManager = new ValueEditorManager( viewer.getTree() );
+        if ( valueEditorManager == null )
+        {
+            valueEditorManager = new ValueEditorManager( viewer.getTree() );
+        }
 
         return valueEditorManager;
     }
 
 
+    /**
+     * Gets the sorter.
+     * 
+     * @return the sorter
+     */
     public EntryEditorWidgetSorter getSorter()
     {
-        if ( this.sorter == null )
-            this.sorter = new EntryEditorWidgetSorter( getPreferences() );
+        if ( sorter == null )
+        {
+            sorter = new EntryEditorWidgetSorter( getPreferences() );
+        }
 
         return sorter;
     }
 
 
+    /**
+     * Gets the filter.
+     * 
+     * @return the filter
+     */
     public EntryEditorWidgetFilter getFilter()
     {
-        if ( this.filter == null )
-            this.filter = new EntryEditorWidgetFilter();
+        if ( filter == null )
+        {
+            filter = new EntryEditorWidgetFilter();
+        }
 
         return filter;
     }
 
 
+    /**
+     * Gets the preferences.
+     * 
+     * @return the preferences
+     */
     public EntryEditorWidgetPreferences getPreferences()
     {
-        if ( this.preferences == null )
-            this.preferences = new EntryEditorWidgetPreferences();
+        if ( preferences == null )
+        {
+            preferences = new EntryEditorWidgetPreferences();
+        }
 
         return preferences;
     }

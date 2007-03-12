@@ -31,19 +31,34 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 
+/**
+ * The EntryEditorWidgetContentProvider implements the content provider for
+ * the entry editor widget. It accepts an {@link IEntry} or an 
+ * {@link AttributeHierarchy} as input.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetContentProvider implements ITreeContentProvider
 {
 
+    /** The preferences. */
     protected EntryEditorWidgetPreferences preferences;
 
+    /** The main widget. */
     protected EntryEditorWidget mainWidget;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidgetContentProvider.
+     * 
+     * @param preferences the preferences
+     * @param mainWidget the main widget
+     */
     public EntryEditorWidgetContentProvider( EntryEditorWidgetPreferences preferences, EntryEditorWidget mainWidget )
     {
         this.preferences = preferences;
@@ -51,6 +66,11 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementations updates the enabled state and the info text.
+     */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
 
@@ -73,26 +93,34 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             enabled = false;
         }
 
-        if ( this.mainWidget.getInfoText() != null && !this.mainWidget.getInfoText().isDisposed() )
+        if ( mainWidget.getInfoText() != null && !mainWidget.getInfoText().isDisposed() )
         {
-            this.mainWidget.getInfoText().setText( dn );
+            mainWidget.getInfoText().setText( dn );
         }
-        if ( this.mainWidget.getQuickFilterWidget() != null )
+        if ( mainWidget.getQuickFilterWidget() != null )
         {
-            this.mainWidget.getQuickFilterWidget().setEnabled( enabled );
+            mainWidget.getQuickFilterWidget().setEnabled( enabled );
         }
-        if ( this.mainWidget.getViewer() != null && !this.mainWidget.getViewer().getTree().isDisposed() )
+        if ( mainWidget.getViewer() != null && !mainWidget.getViewer().getTree().isDisposed() )
         {
-            this.mainWidget.getViewer().getTree().setEnabled( enabled );
+            mainWidget.getViewer().getTree().setEnabled( enabled );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
+        preferences = null;
+        mainWidget = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object[] getElements( Object inputElement )
     {
 
@@ -107,8 +135,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
                 InitializeAttributesJob job = new InitializeAttributesJob( new IEntry[]
                     { entry }, soa );
                 job.execute();
-                return new Object[]
-                    {};
+                return new Object[0];
             }
             else
             {
@@ -126,15 +153,21 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         }
         else
         {
-            return new Object[]
-                {};
+            return new Object[0];
         }
     }
 
 
+    /**
+     * Gets the values of the given attributes.
+     * 
+     * @param attributes the attributes
+     * 
+     * @return the values
+     */
     private Object[] getValues( IAttribute[] attributes )
     {
-        List valueList = new ArrayList();
+        List<Object> valueList = new ArrayList<Object>();
         for ( int i = 0; attributes != null && i < attributes.length; i++ )
         {
             IValue[] values = attributes[i].getValues();
@@ -148,6 +181,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             }
             else
             {
+                // if folding threshold is exceeded then return the attribute itself
                 valueList.add( attributes[i] );
             }
         }
@@ -155,6 +189,9 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object[] getChildren( Object parentElement )
     {
         if ( parentElement instanceof IAttribute )
@@ -167,6 +204,9 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getParent( Object element )
     {
         if ( element instanceof IValue )
@@ -177,6 +217,9 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasChildren( Object element )
     {
         return ( element instanceof IAttribute );

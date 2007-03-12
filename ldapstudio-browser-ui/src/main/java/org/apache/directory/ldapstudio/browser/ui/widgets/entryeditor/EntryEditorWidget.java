@@ -21,7 +21,11 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
+import org.apache.directory.ldapstudio.browser.ui.dialogs.LdifEntryEditorDialog;
+import org.apache.directory.ldapstudio.browser.ui.dialogs.MultivaluedDialog;
+import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor;
 import org.apache.directory.ldapstudio.browser.ui.widgets.ViewFormWidget;
+import org.apache.directory.ldapstudio.browser.ui.wizards.NewEntryAttributesWizardPage;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -34,53 +38,76 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
 
+/**
+ * The EntryEditorWidget is a reusable widget to display and edit the attributes of an entry.
+ * It is used by {@link EntryEditor}, {@link MultivaluedDialog}, 
+ * {@link LdifEntryEditorDialog} and {@link NewEntryAttributesWizardPage}. 
+ * 
+ * It provides a context menu and a local toolbar with actions to
+ * manage attributes. Further there is an instant search feature to filter 
+ * the visible attributes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidget extends ViewFormWidget
 {
 
+    /** The configuration. */
     private EntryEditorWidgetConfiguration configuration;
 
+    /** The quick filter widget. */
     private EntryEditorWidgetQuickFilterWidget quickFilterWidget;
 
+    /** The tree. */
     private Tree tree;
 
+    /** The viewer. */
     private TreeViewer viewer;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidget.
+     * 
+     * @param configuration the configuration
+     */
     public EntryEditorWidget( EntryEditorWidgetConfiguration configuration )
     {
         this.configuration = configuration;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContent( Composite parent )
     {
-
-        this.quickFilterWidget = new EntryEditorWidgetQuickFilterWidget( this.configuration.getFilter(), this );
-        this.quickFilterWidget.createComposite( parent );
+        quickFilterWidget = new EntryEditorWidgetQuickFilterWidget( configuration.getFilter(), this );
+        quickFilterWidget.createComposite( parent );
 
         // create tree widget and viewer
-        this.tree = new Tree( parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+        tree = new Tree( parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.widthHint = 450;
         data.heightHint = 250;
-        this.tree.setLayoutData( data );
-        this.tree.setHeaderVisible( true );
-        this.tree.setLinesVisible( true );
-        this.viewer = new TreeViewer( this.tree );
-        this.viewer.setUseHashlookup( true );
+        tree.setLayoutData( data );
+        tree.setHeaderVisible( true );
+        tree.setLinesVisible( true );
+        viewer = new TreeViewer( tree );
+        viewer.setUseHashlookup( true );
 
         // set tree columns
         for ( int i = 0; i < EntryEditorWidgetTableMetadata.COLUM_NAMES.length; i++ )
         {
-            TreeColumn column = new TreeColumn( this.tree, SWT.LEFT, i );
+            TreeColumn column = new TreeColumn( tree, SWT.LEFT, i );
             column.setText( EntryEditorWidgetTableMetadata.COLUM_NAMES[i] );
             column.setWidth( 200 );
             column.setResizable( true );
 
         }
-        this.viewer.setColumnProperties( EntryEditorWidgetTableMetadata.COLUM_NAMES );
-        this.tree.addControlListener( new ControlAdapter()
+        viewer.setColumnProperties( EntryEditorWidgetTableMetadata.COLUM_NAMES );
+        tree.addControlListener( new ControlAdapter()
         {
             public void controlResized( ControlEvent e )
             {
@@ -98,67 +125,88 @@ public class EntryEditorWidget extends ViewFormWidget
         } );
 
         // setup sorter, filter and layout
-        this.configuration.getSorter().connect( this.viewer );
-        this.configuration.getFilter().connect( this.viewer );
-        this.configuration.getPreferences().connect( this.viewer );
+        configuration.getSorter().connect( viewer );
+        configuration.getFilter().connect( viewer );
+        configuration.getPreferences().connect( viewer );
 
         // setup providers
-        this.viewer.setContentProvider( configuration.getContentProvider( this ) );
-        this.viewer.setLabelProvider( configuration.getLabelProvider( this.viewer ) );
+        viewer.setContentProvider( configuration.getContentProvider( this ) );
+        viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
 
         // set table cell editors
-        this.viewer.setCellModifier( configuration.getCellModifier( this.viewer ) );
+        viewer.setCellModifier( configuration.getCellModifier( viewer ) );
         CellEditor[] editors = new CellEditor[EntryEditorWidgetTableMetadata.COLUM_NAMES.length];
-        this.viewer.setCellEditors( editors );
+        viewer.setCellEditors( editors );
 
-        return this.tree;
+        return tree;
 
     }
 
 
+    /**
+     * Sets the focus to the tree viewer.
+     */
     public void setFocus()
     {
-        this.viewer.getTree().setFocus();
+        viewer.getTree().setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.configuration.dispose();
-            this.configuration = null;
+            configuration.dispose();
+            configuration = null;
 
-            if ( this.quickFilterWidget != null )
+            if ( quickFilterWidget != null )
             {
-                this.quickFilterWidget.dispose();
-                this.quickFilterWidget = null;
+                quickFilterWidget.dispose();
+                quickFilterWidget = null;
             }
 
-            this.tree.dispose();
-            this.tree = null;
-            this.viewer = null;
+            tree.dispose();
+            tree = null;
+            viewer = null;
         }
 
         super.dispose();
     }
 
 
+    /**
+     * Gets the viewer.
+     * 
+     * @return the viewer
+     */
     public TreeViewer getViewer()
     {
         return viewer;
     }
 
 
+    /**
+     * Gets the quick filter widget.
+     * 
+     * @return the quick filter widget
+     */
     public EntryEditorWidgetQuickFilterWidget getQuickFilterWidget()
     {
         return quickFilterWidget;
     }
 
 
+    /**
+     * Enables or disables this widget.
+     *
+     * @param enabled true to enable this widget, false to disable this widget
+     */
     public void setEnabled( boolean enabled )
     {
-        this.tree.setEnabled( enabled );
+        tree.setEnabled( enabled );
     }
 
 }

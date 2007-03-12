@@ -25,31 +25,49 @@ import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Item;
 
 
+/**
+ * The EntryEditorWidgetCellModifier implements the {@link ICellModifier} interface
+ * for the entry editor widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetCellModifier implements ICellModifier
 {
 
+    /** The value editor manager. */
     private ValueEditorManager valueEditorManager;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidgetCellModifier.
+     *
+     * @param valueEditorManager
+     */
     public EntryEditorWidgetCellModifier( ValueEditorManager valueEditorManager )
     {
         this.valueEditorManager = valueEditorManager;
     }
 
 
+    /**
+     * Disposes this object.
+     */
     public void dispose()
     {
-        this.valueEditorManager = null;
+        valueEditorManager = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean canModify( Object element, String property )
     {
         if ( element != null && element instanceof IValue )
@@ -78,6 +96,9 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getValue( Object element, String property )
     {
         if ( element != null && element instanceof IValue )
@@ -106,9 +127,13 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * TODO: Remove value modification from value editors 
+     */
     public void modify( Object element, String property, Object newRawValue )
     {
-
         if ( element != null && element instanceof Item )
         {
             element = ( ( Item ) element ).getData();
@@ -118,11 +143,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
         {
             IValue attributeValue = ( IValue ) element;
 
-            if ( EntryEditorWidgetTableMetadata.KEY_COLUMN_NAME.equals( property ) )
-            {
-                // no modification
-            }
-            else if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
+            if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
                 try
                 {
@@ -135,14 +156,6 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
                         .getMessage() );
                 }
             }
-            else
-            {
-                // no modification
-            }
-        }
-        else
-        {
-            ;
         }
     }
 

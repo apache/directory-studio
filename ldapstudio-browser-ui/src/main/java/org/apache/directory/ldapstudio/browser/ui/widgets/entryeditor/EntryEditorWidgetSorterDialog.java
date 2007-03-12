@@ -25,7 +25,6 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -40,30 +39,52 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * This class represents the dialog used to change the entry editors's  default sort preferences.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorWidgetSorterDialog extends Dialog
 {
 
+    /** The Constant DIALOG_TITLE. */
     public static final String DIALOG_TITLE = "Entry Editor Sorting";
 
+    /** The Constant SORT_BY_NONE. */
     public static final String SORT_BY_NONE = "No Default Sorting";
 
+    /** The Constant SORT_BY_ATTRIBUTE. */
     public static final String SORT_BY_ATTRIBUTE = "Attribute Description";
 
+    /** The Constant SORT_BY_VALUE. */
     public static final String SORT_BY_VALUE = "Value";
 
+    /** The preferences. */
     private EntryEditorWidgetPreferences preferences;
 
+    /** The object class and must attributes first button. */
     private Button objectClassAndMustAttributesFirstButton;
 
+    /** The operational attributes last button. */
     private Button operationalAttributesLastButton;
 
+    /** The sort by combo. */
     private Combo sortByCombo;
 
+    /** The sort acending button. */
     private Button sortAcendingButton;
 
+    /** The sort descending button. */
     private Button sortDescendingButton;
 
 
+    /**
+     * Creates a new instance of EntryEditorWidgetSorterDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param preferences the preferences
+     */
     public EntryEditorWidgetSorterDialog( Shell parentShell, EntryEditorWidgetPreferences preferences )
     {
         super( parentShell );
@@ -71,6 +92,11 @@ public class EntryEditorWidgetSorterDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation calls its super implementation and sets the dialog's title.
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
@@ -78,32 +104,36 @@ public class EntryEditorWidgetSorterDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation saves the changed settings when OK is pressed.
+     */
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
         {
             IPreferenceStore store = BrowserUIPlugin.getDefault().getPreferenceStore();
             store.setValue( BrowserUIConstants.PREFERENCE_ENTRYEDITOR_OBJECTCLASS_AND_MUST_ATTRIBUTES_FIRST,
-                this.objectClassAndMustAttributesFirstButton.getSelection() );
+                objectClassAndMustAttributesFirstButton.getSelection() );
             store.setValue( BrowserUIConstants.PREFERENCE_ENTRYEDITOR_OPERATIONAL_ATTRIBUTES_LAST,
-                this.operationalAttributesLastButton.getSelection() );
-            store.setValue( BrowserUIConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_ORDER, this.sortDescendingButton
+                operationalAttributesLastButton.getSelection() );
+            store.setValue( BrowserUIConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_ORDER, sortDescendingButton
                 .getSelection() ? BrowserCoreConstants.SORT_ORDER_DESCENDING
                 : BrowserCoreConstants.SORT_ORDER_ASCENDING );
-            store.setValue( BrowserUIConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_BY, this.sortByCombo
-                .getSelectionIndex() == 2 ? BrowserCoreConstants.SORT_BY_VALUE
-                : this.sortByCombo.getSelectionIndex() == 1 ? BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION
+            store.setValue( BrowserUIConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_BY,
+                sortByCombo.getSelectionIndex() == 2 ? BrowserCoreConstants.SORT_BY_VALUE : sortByCombo
+                    .getSelectionIndex() == 1 ? BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION
                     : BrowserCoreConstants.SORT_BY_NONE );
-        }
-        else
-        {
-            // no changes
         }
 
         super.buttonPressed( buttonId );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -115,10 +145,10 @@ public class EntryEditorWidgetSorterDialog extends Dialog
 
         objectClassAndMustAttributesFirstButton = BaseWidgetUtils.createCheckbox( group,
             "ObjectClass and must attributes first", 1 );
-        objectClassAndMustAttributesFirstButton.setSelection( this.preferences.isObjectClassAndMustAttributesFirst() );
+        objectClassAndMustAttributesFirstButton.setSelection( preferences.isObjectClassAndMustAttributesFirst() );
 
         operationalAttributesLastButton = BaseWidgetUtils.createCheckbox( group, "Operational attributes last", 1 );
-        operationalAttributesLastButton.setSelection( this.preferences.isOperationalAttributesLast() );
+        operationalAttributesLastButton.setSelection( preferences.isOperationalAttributesLast() );
 
         Group sortingGroup = BaseWidgetUtils.createGroup( composite, "Sort attributes", 1 );
 
@@ -126,8 +156,8 @@ public class EntryEditorWidgetSorterDialog extends Dialog
         BaseWidgetUtils.createLabel( sortByComposite, "Sort by", 1 );
         sortByCombo = BaseWidgetUtils.createReadonlyCombo( sortByComposite, new String[]
             { SORT_BY_NONE, SORT_BY_ATTRIBUTE, SORT_BY_VALUE }, 0, 1 );
-        sortByCombo.select( this.preferences.getDefaultSortBy() == BrowserCoreConstants.SORT_BY_VALUE ? 2
-            : this.preferences.getDefaultSortBy() == BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION ? 1 : 0 );
+        sortByCombo.select( preferences.getDefaultSortBy() == BrowserCoreConstants.SORT_BY_VALUE ? 2 : preferences
+            .getDefaultSortBy() == BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION ? 1 : 0 );
         sortByCombo.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -139,12 +169,12 @@ public class EntryEditorWidgetSorterDialog extends Dialog
 
         sortAcendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, "Ascending", 1 );
         sortAcendingButton
-            .setSelection( this.preferences.getDefaultSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING );
+            .setSelection( preferences.getDefaultSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING );
         sortAcendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
         sortDescendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, "Descending", 1 );
         sortDescendingButton
-            .setSelection( this.preferences.getDefaultSortOrder() == BrowserCoreConstants.SORT_ORDER_DESCENDING );
+            .setSelection( preferences.getDefaultSortOrder() == BrowserCoreConstants.SORT_ORDER_DESCENDING );
         sortDescendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
         BaseWidgetUtils.createSpacer( composite, 2 );

@@ -21,17 +21,29 @@
 package org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor;
 
 
+/**
+ * The EntryEditorWidgetTableMetadata interface contains some constants used
+ * by the entry editor widget.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface EntryEditorWidgetTableMetadata
 {
 
+    /** The Constant KEY_COLUMN_INDEX. */
     public static final int KEY_COLUMN_INDEX = 0;
 
+    /** The Constant VALUE_COLUMN_INDEX. */
     public static final int VALUE_COLUMN_INDEX = 1;
 
+    /** The Constant KEY_COLUMN_NAME. */
     public static final String KEY_COLUMN_NAME = "Attribute Description";
 
+    /** The Constant VALUE_COLUMN_NAME. */
     public static final String VALUE_COLUMN_NAME = "Value";
 
+    /** The Constant COLUM_NAMES. */
     public static final String[] COLUM_NAMES =
         { KEY_COLUMN_NAME, VALUE_COLUMN_NAME };
 
