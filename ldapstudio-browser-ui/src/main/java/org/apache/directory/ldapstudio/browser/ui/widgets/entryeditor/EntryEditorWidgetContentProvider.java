@@ -73,37 +73,39 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
+        if ( mainWidget != null )
+        {
+            String dn = "";
+            boolean enabled = true;
 
-        String dn = "";
-        boolean enabled = true;
+            if ( newInput != null && newInput instanceof IEntry )
+            {
+                IEntry entry = ( IEntry ) newInput;
+                dn = "DN: " + entry.getDn().toString();
+            }
+            else if ( newInput != null && newInput instanceof AttributeHierarchy )
+            {
+                AttributeHierarchy ah = ( AttributeHierarchy ) newInput;
+                dn = "DN: " + ah.getAttribute().getEntry().getDn().toString();
+            }
+            else
+            {
+                dn = "No entry selected";
+                enabled = false;
+            }
 
-        if ( newInput != null && newInput instanceof IEntry )
-        {
-            IEntry entry = ( IEntry ) newInput;
-            dn = "DN: " + entry.getDn().toString();
-        }
-        else if ( newInput != null && newInput instanceof AttributeHierarchy )
-        {
-            AttributeHierarchy ah = ( AttributeHierarchy ) newInput;
-            dn = "DN: " + ah.getAttribute().getEntry().getDn().toString();
-        }
-        else
-        {
-            dn = "No entry selected";
-            enabled = false;
-        }
-
-        if ( mainWidget.getInfoText() != null && !mainWidget.getInfoText().isDisposed() )
-        {
-            mainWidget.getInfoText().setText( dn );
-        }
-        if ( mainWidget.getQuickFilterWidget() != null )
-        {
-            mainWidget.getQuickFilterWidget().setEnabled( enabled );
-        }
-        if ( mainWidget.getViewer() != null && !mainWidget.getViewer().getTree().isDisposed() )
-        {
-            mainWidget.getViewer().getTree().setEnabled( enabled );
+            if ( mainWidget.getInfoText() != null && !mainWidget.getInfoText().isDisposed() )
+            {
+                mainWidget.getInfoText().setText( dn );
+            }
+            if ( mainWidget.getQuickFilterWidget() != null )
+            {
+                mainWidget.getQuickFilterWidget().setEnabled( enabled );
+            }
+            if ( mainWidget.getViewer() != null && !mainWidget.getViewer().getTree().isDisposed() )
+            {
+                mainWidget.getViewer().getTree().setEnabled( enabled );
+            }
         }
     }
 

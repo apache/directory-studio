@@ -70,7 +70,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
      */
     public boolean canModify( Object element, String property )
     {
-        if ( element != null && element instanceof IValue )
+        if ( element != null && element instanceof IValue && valueEditorManager != null )
         {
             IValue attributeValue = ( IValue ) element;
 
@@ -101,7 +101,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
      */
     public Object getValue( Object element, String property )
     {
-        if ( element != null && element instanceof IValue )
+        if ( element != null && element instanceof IValue && valueEditorManager != null )
         {
             IValue attributeValue = ( IValue ) element;
             Object returnValue;
@@ -139,7 +139,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             element = ( ( Item ) element ).getData();
         }
 
-        if ( element != null && element instanceof IValue )
+        if ( element != null && element instanceof IValue && valueEditorManager != null )
         {
             IValue attributeValue = ( IValue ) element;
 
