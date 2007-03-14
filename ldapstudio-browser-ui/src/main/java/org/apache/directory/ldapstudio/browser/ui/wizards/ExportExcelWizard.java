@@ -27,26 +27,45 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This class implements the Wizard for Exporting to Excel
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportExcelWizard extends ExportBaseWizard
 {
 
+    /** The from page, used to select the exported data. */
     private ExportExcelFromWizardPage fromPage;
 
+    /** The to page, used to select the target file. */
     private ExportExcelToWizardPage toPage;
 
 
+    /**
+     * Creates a new instance of ExportExcelWizard.
+     */
     public ExportExcelWizard()
     {
         super( "Excel Export" );
     }
 
 
+    /**
+     * Gets the ID of the Export Excel Wizard
+     * 
+     * @return The ID of the Export Excel Wizard
+     */
     public static String getId()
     {
         return ExportExcelWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addPages()
     {
         fromPage = new ExportExcelFromWizardPage( ExportExcelFromWizardPage.class.getName(), this );
@@ -62,7 +81,7 @@ public class ExportExcelWizard extends ExportBaseWizard
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_excelexport_wizard" );
@@ -71,15 +90,17 @@ public class ExportExcelWizard extends ExportBaseWizard
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
-
-        this.fromPage.saveDialogSettings();
-        this.toPage.saveDialogSettings();
+        fromPage.saveDialogSettings();
+        toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportXlsJob eej = new ExportXlsJob( this.exportFilename, this.search.getConnection(), this.search
-            .getSearchParameter(), exportDn );
+        ExportXlsJob eej = new ExportXlsJob( exportFilename, search.getConnection(), search.getSearchParameter(),
+            exportDn );
         eej.execute();
 
         return true;

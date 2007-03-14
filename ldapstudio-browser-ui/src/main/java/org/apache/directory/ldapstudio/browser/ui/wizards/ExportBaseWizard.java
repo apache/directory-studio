@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
@@ -31,49 +30,85 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This class is a base implementation of the export wizard.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class ExportBaseWizard extends Wizard implements IExportWizard
 {
 
+    /** The export filename. */
     protected String exportFilename = "";
 
+    /** The search. */
     protected ISearch search;
 
 
+    /**
+     * Creates a new instance of ExportBaseWizard.
+     * 
+     * @param title the title
+     */
     public ExportBaseWizard( String title )
     {
         super();
-        super.setWindowTitle( title );
+        setWindowTitle( title );
         init( null, ( IStructuredSelection ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
             .getSelection() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-        this.search = SelectionUtils.getExampleSearch( selection );
-        this.search.setName( null );
-        this.exportFilename = "";
+        search = SelectionUtils.getExampleSearch( selection );
+        search.setName( null );
+        exportFilename = "";
     }
 
 
+    /**
+     * Sets the export filename.
+     * 
+     * @param exportFilename the export filename
+     */
     public void setExportFilename( String exportFilename )
     {
         this.exportFilename = exportFilename;
     }
 
 
+    /**
+     * Gets the export filename.
+     * 
+     * @return the export filename
+     */
     public String getExportFilename()
     {
         return exportFilename;
     }
 
 
+    /**
+     * Gets the search.
+     * 
+     * @return the search
+     */
     public ISearch getSearch()
     {
         return search;
     }
 
 
+    /**
+     * Sets the search.
+     * 
+     * @param search the search
+     */
     public void setSearch( ISearch search )
     {
         this.search = search;

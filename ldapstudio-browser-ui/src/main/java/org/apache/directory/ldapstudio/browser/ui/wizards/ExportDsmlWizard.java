@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
+
 import org.apache.directory.ldapstudio.browser.core.jobs.ExportDsmlJob;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.swt.widgets.Composite;
@@ -34,10 +35,14 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ExportDsmlWizard extends ExportBaseWizard
 {
+    
+    /** The title. */
     public static final String WIZARD_TITLE = "DSML Export";
 
+    /** The from page, used to select the exported data. */
     private ExportDsmlFromWizardPage fromPage;
 
+    /** The to page, used to select the target file. */
     private ExportDsmlToWizardPage toPage;
 
 
@@ -60,8 +65,8 @@ public class ExportDsmlWizard extends ExportBaseWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
+    /**
+     * {@inheritDoc}
      */
     public void addPages()
     {
@@ -78,7 +83,7 @@ public class ExportDsmlWizard extends ExportBaseWizard
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_dsmlexport_wizard" );
@@ -87,18 +92,17 @@ public class ExportDsmlWizard extends ExportBaseWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+    /**
+     * {@inheritDoc}
      */
     public boolean performFinish()
     {
-        this.fromPage.saveDialogSettings();
-        this.toPage.saveDialogSettings();
+        fromPage.saveDialogSettings();
+        toPage.saveDialogSettings();
 
-        ExportDsmlJob edj = new ExportDsmlJob( this.exportFilename, this.search.getConnection(), this.search
-            .getSearchParameter() );
+        ExportDsmlJob edj = new ExportDsmlJob( exportFilename, search.getConnection(), search.getSearchParameter() );
         edj.execute();
-        
+
         return true;
     }
 }

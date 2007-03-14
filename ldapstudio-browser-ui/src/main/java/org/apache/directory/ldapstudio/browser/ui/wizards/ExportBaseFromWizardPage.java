@@ -29,61 +29,80 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * This class is a base implementation of the page to select the data to export.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class ExportBaseFromWizardPage extends WizardPage implements WidgetModifyListener
 {
 
+    /** The wizard. */
     protected ExportBaseWizard wizard;
 
+    /** The search page wrapper. */
     protected SearchPageWrapper spw;
 
 
+    /**
+     * Creates a new instance of ExportBaseFromWizardPage.
+     * 
+     * @param spw the search page wrapper
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ExportBaseFromWizardPage( String pageName, ExportBaseWizard wizard, SearchPageWrapper spw )
     {
         super( pageName );
-        super.setTitle( "Data to Export" );
-        super.setDescription( "Please define search parameters for the export." );
-        super.setPageComplete( true );
+        setTitle( "Data to Export" );
+        setDescription( "Please define search parameters for the export." );
+        setPageComplete( true );
 
         this.wizard = wizard;
         this.spw = spw;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
-        this.spw.createContents( composite );
-        this.spw.loadFromSearch( wizard.getSearch() );
-        this.spw.addWidgetModifyListener( this );
+        spw.createContents( composite );
+        spw.loadFromSearch( wizard.getSearch() );
+        spw.addWidgetModifyListener( this );
 
         setControl( composite );
-        // this.spw.setFocus();
     }
 
 
-    public void setVisible( boolean visible )
-    {
-        super.setVisible( visible );
-    }
-
-
+    /**
+     * Validates this page
+     */
     protected void validate()
     {
         setPageComplete( spw.isValid() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
         validate();
     }
 
 
+    /**
+     * Saves the dialog settings.
+     */
     public void saveDialogSettings()
     {
-        this.spw.saveToSearch( wizard.getSearch() );
+        spw.saveToSearch( wizard.getSearch() );
     }
 
 }

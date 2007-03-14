@@ -27,26 +27,45 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This class implements the Wizard for Exporting to LDIF
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportLdifWizard extends ExportBaseWizard
 {
 
+    /** The from page, used to select the exported data. */
     private ExportLdifFromWizardPage fromPage;
 
+    /** The to page, used to select the target file. */
     private ExportLdifToWizardPage toPage;
 
 
+    /**
+     * Creates a new instance of ExportLdifWizard.
+     */
     public ExportLdifWizard()
     {
         super( "LDIF Export" );
     }
 
 
+    /**
+     * Gets the ID of the Export LDIF Wizard
+     * 
+     * @return The ID of the Export LDIF Wizard
+     */
     public static String getId()
     {
         return ExportLdifWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addPages()
     {
         fromPage = new ExportLdifFromWizardPage( ExportLdifFromWizardPage.class.getName(), this );
@@ -54,15 +73,15 @@ public class ExportLdifWizard extends ExportBaseWizard
         toPage = new ExportLdifToWizardPage( ExportLdifToWizardPage.class.getName(), this );
         addPage( toPage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_ldifexport_wizard" );
@@ -71,14 +90,15 @@ public class ExportLdifWizard extends ExportBaseWizard
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
+        fromPage.saveDialogSettings();
+        toPage.saveDialogSettings();
 
-        this.fromPage.saveDialogSettings();
-        this.toPage.saveDialogSettings();
-
-        ExportLdifJob elj = new ExportLdifJob( this.exportFilename, this.search.getConnection(), this.search
-            .getSearchParameter() );
+        ExportLdifJob elj = new ExportLdifJob( exportFilename, search.getConnection(), search.getSearchParameter() );
         elj.execute();
 
         return true;

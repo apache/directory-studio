@@ -38,6 +38,7 @@ import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+
 /**
  * This class implements the Import DSML Wizard.
  *
@@ -48,13 +49,13 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
 {
     /** Page Title */
     public static final String WIZARD_TITLE = "DSML Import";
-    
+
     /** The connection attached to the import */
     private IConnection importConnection;
-    
+
     /** The main page of the wizard */
     private ImportDsmlMainWizardPage mainPage;
-    
+
     /** The DSML Filename */
     private String dsmlFilename;
 
@@ -63,16 +64,18 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
 
     /** The Save Response flag */
     private boolean saveResponse;
-    
+
+
     /**
      * Creates a new instance of ImportDsmlWizard.
      */
     public ImportDsmlWizard()
     {
         super();
-        super.setWindowTitle( WIZARD_TITLE );
+        setWindowTitle( WIZARD_TITLE );
     }
-    
+
+
     /**
      * Creates a new instance of ImportDsmlWizard.
      * @param selectedConnection
@@ -80,10 +83,11 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
      */
     public ImportDsmlWizard( IConnection selectedConnection )
     {
-        super.setWindowTitle( WIZARD_TITLE );
+        setWindowTitle( WIZARD_TITLE );
         this.importConnection = selectedConnection;
     }
-    
+
+
     /**
      * Gets the ID of the Import DSML Wizard
      * @return The ID of the Import DSML Wizard
@@ -92,27 +96,27 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     {
         return ImportDsmlWizard.class.getName();
     }
-    
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+
+
+    /**
+     * {@inheritDoc}
      */
     public boolean performFinish()
     {
+        mainPage.saveDialogSettings();
 
-        this.mainPage.saveDialogSettings();
-
-        if ( this.dsmlFilename != null && !"".equals( this.dsmlFilename ) )
+        if ( dsmlFilename != null && !"".equals( dsmlFilename ) )
         {
-            File dsmlFile = new File( this.dsmlFilename );
+            File dsmlFile = new File( dsmlFilename );
 
-            if ( this.saveResponse )
+            if ( saveResponse )
             {
-                File responseFile = new File( this.responseFilename );
-                new ImportDsmlJob( this.importConnection, dsmlFile, responseFile ).execute();
+                File responseFile = new File( responseFilename );
+                new ImportDsmlJob( importConnection, dsmlFile, responseFile ).execute();
             }
             else
             {
-                new ImportDsmlJob( this.importConnection, dsmlFile ).execute();
+                new ImportDsmlJob( importConnection, dsmlFile ).execute();
             }
 
             return true;
@@ -121,65 +125,66 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+    /**
+     * {@inheritDoc}
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         Object o = selection.getFirstElement();
         if ( o instanceof IEntry )
         {
-            this.importConnection = ( ( IEntry ) o ).getConnection();
+            importConnection = ( ( IEntry ) o ).getConnection();
         }
         else if ( o instanceof ISearchResult )
         {
-            this.importConnection = ( ( ISearchResult ) o ).getEntry().getConnection();
+            importConnection = ( ( ISearchResult ) o ).getEntry().getConnection();
         }
         else if ( o instanceof IBookmark )
         {
-            this.importConnection = ( ( IBookmark ) o ).getConnection();
+            importConnection = ( ( IBookmark ) o ).getConnection();
         }
         else if ( o instanceof IAttribute )
         {
-            this.importConnection = ( ( IAttribute ) o ).getEntry().getConnection();
+            importConnection = ( ( IAttribute ) o ).getEntry().getConnection();
         }
         else if ( o instanceof IValue )
         {
-            this.importConnection = ( ( IValue ) o ).getAttribute().getEntry().getConnection();
+            importConnection = ( ( IValue ) o ).getAttribute().getEntry().getConnection();
         }
         else if ( o instanceof IConnection )
         {
-            this.importConnection = ( IConnection ) o;
+            importConnection = ( IConnection ) o;
         }
         else
         {
-            this.importConnection = null;
+            importConnection = null;
         }
     }
-    
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
+
+
+    /**
+     * {@inheritDoc}
      */
     public void addPages()
     {
         mainPage = new ImportDsmlMainWizardPage( ImportDsmlMainWizardPage.class.getName(), this );
         addPage( mainPage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_dsmlimport_wizard" );
     }
-    
-    
+
+
     /**
      * Get the connection attached to the Import
      * @return The connection attached to the Import
@@ -188,7 +193,8 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     {
         return importConnection;
     }
-    
+
+
     /**
      * Sets the connection attached to the Import
      * @param connection
@@ -198,6 +204,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     {
         this.importConnection = connection;
     }
+
 
     /**
      * Sets the DSML Filename
@@ -209,6 +216,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
         this.dsmlFilename = dsmlFilename;
     }
 
+
     /**
      * Sets the Save Filename
      * @param saveFilename
@@ -218,6 +226,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     {
         this.responseFilename = saveFilename;
     }
+
 
     /**
      * Sets the SaveResponse flag

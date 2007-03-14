@@ -27,7 +27,7 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.search.SearchPageWrapp
 
 
 /**
- * This class implements the From Page of the DSML Export Wizard.
+ * This class implements the page used to select the data to export to DSML.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -36,7 +36,13 @@ public class ExportDsmlFromWizardPage extends ExportBaseFromWizardPage
 {
 
     /**
-     * Creates a new instance of ExportDsmlFromWizardPage.
+     * Creates a new instance of ExportDsmlFromWizardPage using a 
+     * {@link SearchPageWrapper} with
+     * <ul> 
+     * <li>hidden name
+     * <li>visible all attributes checkbox
+     * <li>visible operational attributes checkbox
+     * </ul> 
      *
      * @param pageName
      *          the name of the page

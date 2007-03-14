@@ -26,9 +26,28 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.SearchPageWrapper;
 
 
+/**
+ * This class implements the page used to select the data to export to Excel.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportExcelFromWizardPage extends ExportBaseFromWizardPage
 {
 
+    /**
+     * Creates a new instance of ExportExcelFromWizardPage using a 
+     * {@link SearchPageWrapper} with
+     * <ul> 
+     * <li>hidden name
+     * <li>visible and checked return DN checkbox
+     * <li>visible all attributes checkbox
+     * <li>visible operational attributes checkbox
+     * </ul> 
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ExportExcelFromWizardPage( String pageName, ExportBaseWizard wizard )
     {
         super( pageName, wizard, new SearchPageWrapper(
@@ -45,6 +64,11 @@ public class ExportExcelFromWizardPage extends ExportBaseFromWizardPage
     }
 
 
+    /**
+     * Checks if the DNs should be exported.
+     * 
+     * @return true, if the DNs should be exported
+     */
     public boolean isExportDn()
     {
         return spw.isReturnDn();

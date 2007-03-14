@@ -34,36 +34,48 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * This class is a base implementation of the page to select the target export file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class ExportBaseToPage extends WizardPage
 {
 
+    /** The wizard. */
     protected ExportBaseWizard wizard;
 
+    /** The file browser widget. */
     protected FileBrowserWidget fileBrowserWidget;
 
+    /** The overwrite file button. */
     protected Button overwriteFileButton;
 
 
+    /**
+     * Creates a new instance of ExportBaseToPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ExportBaseToPage( String pageName, ExportBaseWizard wizard )
     {
         super( pageName );
-        super.setPageComplete( false );
-        super.setTitle( getFileType() + " File" );
-        super.setDescription( "Please enter the target " + getFileType() + " file." );
+        setPageComplete( false );
+        setTitle( getFileType() + " File" );
+        setDescription( "Please enter the target " + getFileType() + " file." );
 
         this.wizard = wizard;
     }
 
 
-    public void setVisible( boolean visible )
-    {
-        super.setVisible( visible );
-    }
-
-
+    /**
+     * Validates this page. This method is responsible for displaying errors, 
+     * as well as enabling/disabling the "Finish" button
+     */
     protected void validate()
     {
-
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
         File fileDirectory = file.getParentFile();
@@ -77,7 +89,7 @@ public abstract class ExportBaseToPage extends WizardPage
             setErrorMessage( "Selected " + getFileType() + " is no file." );
             ok = false;
         }
-        else if ( file.exists() && !this.overwriteFileButton.getSelection() )
+        else if ( file.exists() && !overwriteFileButton.getSelection() )
         {
             setErrorMessage( "Selected " + getFileType() + " file already exists. Select option 'Overwrite existing "
                 + getFileType() + " file' if you want to overwrite the " + getFileType() + " file." );
@@ -108,9 +120,11 @@ public abstract class ExportBaseToPage extends WizardPage
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite composite )
     {
-
         // Export file
         BaseWidgetUtils.createLabel( composite, getFileType() + " File:", 1 );
         fileBrowserWidget = new FileBrowserWidget( "Select " + getFileType() + " File", getExtensions(),
@@ -141,15 +155,28 @@ public abstract class ExportBaseToPage extends WizardPage
     }
 
 
+    /**
+     * Gets the valid file extensions.
+     * 
+     * @return the valid file extensions
+     */
     protected abstract String[] getExtensions();
 
 
+    /**
+     * Gets the file type.
+     * 
+     * @return the file type
+     */
     protected abstract String getFileType();
 
 
+    /**
+     * Saves the dialog settings.
+     */
     public void saveDialogSettings()
     {
-        this.fileBrowserWidget.saveDialogSettings();
+        fileBrowserWidget.saveDialogSettings();
     }
 
 }

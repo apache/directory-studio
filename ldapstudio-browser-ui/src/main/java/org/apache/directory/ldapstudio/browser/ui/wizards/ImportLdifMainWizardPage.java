@@ -38,66 +38,78 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
 
+/**
+ * This class implements the Main Page of the LDIF Import Wizard
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ImportLdifMainWizardPage extends WizardPage
 {
 
+    /** The continue on error flag key */
     public static final String CONTINUE_ON_ERROR_DIALOGSETTING_KEY = ImportLdifMainWizardPage.class.getName()
         + ".continueOnError";
 
+    /** The valid extension. */
     private static final String[] EXTENSIONS = new String[]
         { "*.ldif", "*.*" };
 
+    /** The wizard. */
     private ImportLdifWizard wizard;
 
-    // private Text ldifFilenameText;
+    /** The ldif file browser widget. */
     private FileBrowserWidget ldifFileBrowserWidget;
 
+    /** The connection widget. */
     private ConnectionWidget connectionWidget;
 
+    /** The enable logging button. */
     private Button enableLoggingButton;
 
+    /** The use default logfile button. */
     private Button useDefaultLogfileButton;
 
+    /** The use custom logfile button. */
     private Button useCustomLogfileButton;
 
+    /** The custom logfile name. */
     private String customLogfileName;
 
+    /** The log file browser widget. */
     private FileBrowserWidget logFileBrowserWidget;
 
-    // private Text logfileText;
+    /** The overwrite logfile button. */
     private Button overwriteLogfileButton;
 
+    /** The continue on error button. */
     private Button continueOnErrorButton;
 
 
+    /**
+     * Creates a new instance of ImportLdifMainWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ImportLdifMainWizardPage( String pageName, ImportLdifWizard wizard )
     {
         super( pageName );
-        super.setTitle( "LDIF Import" );
-        super.setDescription( "Please select a connection and the LDIF to import" );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_IMPORT_LDIF_WIZARD ) );
-        super.setPageComplete( false );
+        setTitle( "LDIF Import" );
+        setDescription( "Please select a connection and the LDIF to import" );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_LDIF_WIZARD ) );
+        setPageComplete( false );
 
         this.wizard = wizard;
     }
 
 
-    public void dispose()
-    {
-        super.dispose();
-    }
-
-
-    public void setVisible( boolean visible )
-    {
-        super.setVisible( visible );
-    }
-
-
+    /**
+     * Validates the page. This method is responsible for displaying errors, 
+     * as well as enabling/disabling the "Finish" button
+     */
     private void validate()
     {
-
         boolean ok = true;
 
         File ldifFile = new File( ldifFileBrowserWidget.getFilename() );
@@ -116,7 +128,7 @@ public class ImportLdifMainWizardPage extends WizardPage
             setErrorMessage( "Selected LDIF file is not readable." );
             ok = false;
         }
-        else if ( this.enableLoggingButton.getSelection() )
+        else if ( enableLoggingButton.getSelection() )
         {
             File logFile = new File( logFileBrowserWidget.getFilename() );
             File logFileDirectory = logFile.getParentFile();
@@ -131,7 +143,7 @@ public class ImportLdifMainWizardPage extends WizardPage
                 setErrorMessage( "Selected logfile is no file." );
                 ok = false;
             }
-            else if ( logFile.exists() && !this.overwriteLogfileButton.getSelection() )
+            else if ( logFile.exists() && !overwriteLogfileButton.getSelection() )
             {
                 setErrorMessage( "Selected logfile already exists. Select option 'Overwrite existing logfile' if you want to overwrite the logfile." );
                 ok = false;
@@ -167,9 +179,11 @@ public class ImportLdifMainWizardPage extends WizardPage
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
         // LDIF file
@@ -299,9 +313,12 @@ public class ImportLdifMainWizardPage extends WizardPage
     }
 
 
+    /**
+     * Saves the dialog settings.
+     */
     public void saveDialogSettings()
     {
-        this.ldifFileBrowserWidget.saveDialogSettings();
+        ldifFileBrowserWidget.saveDialogSettings();
         BrowserUIPlugin.getDefault().getDialogSettings().put( CONTINUE_ON_ERROR_DIALOGSETTING_KEY,
             continueOnErrorButton.getSelection() );
     }

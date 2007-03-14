@@ -27,26 +27,45 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This class implements the Wizard for Exporting to CSV
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportCsvWizard extends ExportBaseWizard
 {
 
+    /** The from page, used to select the exported data. */
     private ExportCsvFromWizardPage fromPage;
 
+    /** The to page, used to select the target file. */
     private ExportCsvToWizardPage toPage;
 
 
+    /**
+     * Creates a new instance of ExportCsvWizard.
+     */
     public ExportCsvWizard()
     {
         super( "CSV Export" );
     }
 
 
+    /**
+     * Gets the ID of the Export CSV Wizard
+     * 
+     * @return The ID of the Export CSV Wizard
+     */
     public static String getId()
     {
         return ExportCsvWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addPages()
     {
         fromPage = new ExportCsvFromWizardPage( ExportCsvFromWizardPage.class.getName(), this );
@@ -62,7 +81,7 @@ public class ExportCsvWizard extends ExportBaseWizard
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_csvexport_wizard" );
@@ -71,15 +90,17 @@ public class ExportCsvWizard extends ExportBaseWizard
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
-
-        this.fromPage.saveDialogSettings();
-        this.toPage.saveDialogSettings();
+        fromPage.saveDialogSettings();
+        toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportCsvJob ecj = new ExportCsvJob( this.exportFilename, this.search.getConnection(), this.search
-            .getSearchParameter(), exportDn );
+        ExportCsvJob ecj = new ExportCsvJob( exportFilename, search.getConnection(), search.getSearchParameter(),
+            exportDn );
         ecj.execute();
 
         return true;

@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 
 
 /**
- * This class implements the To Page of the DSML Export Wizard
+ * This class implements the page to select the target DSML file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -56,8 +56,8 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.browser.ui.wizards.ExportBaseToPage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
@@ -66,8 +66,8 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.browser.ui.wizards.ExportBaseToPage#getExtensions()
+    /**
+     * {@inheritDoc}
      */
     protected String[] getExtensions()
     {
@@ -75,8 +75,8 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.browser.ui.wizards.ExportBaseToPage#getFileType()
+    /**
+     * {@inheritDoc}
      */
     protected String getFileType()
     {

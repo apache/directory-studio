@@ -20,8 +20,8 @@
 
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
-import java.io.File;
 
+import java.io.File;
 
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
+
 /**
  * This class implements the Main Page of the DSML Import Wizard
  *
@@ -44,24 +45,39 @@ import org.eclipse.swt.widgets.Group;
  * @version $Rev$, $Date$
  */
 public class ImportDsmlMainWizardPage extends WizardPage
-{    
+{
     /** The wizard the page is attached to */
     private ImportDsmlWizard wizard;
-    
+
     /** The extensions used by DSML files*/
-    private static final String[] EXTENSIONS = new String[] { "*.xml", "*.*" };
-    
-    // UI elements    
+    private static final String[] EXTENSIONS = new String[]
+        { "*.xml", "*.*" };
+
+    /** The dsml file browser widget. */
     private FileBrowserWidget dsmlFileBrowserWidget;
+
+    /** The connection widget. */
     private ConnectionWidget connectionWidget;
+
+    /** The save response button. */
     private Button saveResponseButton;
+
+    /** The use default response file button. */
     private Button useDefaultResponseFileButton;
+
+    /** The use custom response file button. */
     private Button useCustomResponseFileButton;
+
+    /** The response file browser widget. */
     private FileBrowserWidget responseFileBrowserWidget;
+
+    /** The overwrite response file button. */
     private Button overwriteResponseFileButton;
-    
+
+    /** The custom response file name. */
     private String customResponseFileName;
-    
+
+
     /**
      * Creates a new instance of ImportDsmlMainWizardPage.
      *
@@ -73,15 +89,16 @@ public class ImportDsmlMainWizardPage extends WizardPage
     public ImportDsmlMainWizardPage( String pageName, ImportDsmlWizard wizard )
     {
         super( pageName );
-        super.setTitle( ImportDsmlWizard.WIZARD_TITLE );
-        super.setDescription( "Please select a connection and the DSML file to import" );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_DSML_WIZARD ) );
-        super.setPageComplete( false );
+        setTitle( ImportDsmlWizard.WIZARD_TITLE );
+        setDescription( "Please select a connection and the DSML file to import" );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_DSML_WIZARD ) );
+        setPageComplete( false );
         this.wizard = wizard;
     }
-    
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+
+
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
@@ -103,7 +120,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
                 validate();
             }
         } );
-        
+
         // Connection
         BaseWidgetUtils.createLabel( composite, "Import into:", 1 );
         connectionWidget = new ConnectionWidget( wizard.getImportConnection() );
@@ -116,7 +133,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
                 validate();
             }
         } );
-        
+
         // Save Response
         Composite responseOuterComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
         Group responseGroup = BaseWidgetUtils.createGroup( responseOuterComposite, "Response", 1 );
@@ -140,7 +157,8 @@ public class ImportDsmlMainWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        useDefaultResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer, "Use default response file", 2 );
+        useDefaultResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer,
+            "Use default response file", 2 );
         useDefaultResponseFileButton.setSelection( true );
         useDefaultResponseFileButton.addSelectionListener( new SelectionAdapter()
         {
@@ -155,7 +173,8 @@ public class ImportDsmlMainWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        useCustomResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer, "Use custom response file", 2 );
+        useCustomResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer, "Use custom response file",
+            2 );
         useCustomResponseFileButton.setSelection( false );
         useCustomResponseFileButton.addSelectionListener( new SelectionAdapter()
         {
@@ -182,7 +201,8 @@ public class ImportDsmlMainWizardPage extends WizardPage
         responseFileBrowserWidget.setEnabled( false );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        overwriteResponseFileButton = BaseWidgetUtils.createCheckbox( responseContainer, "Overwrite existing response file", 2 );
+        overwriteResponseFileButton = BaseWidgetUtils.createCheckbox( responseContainer,
+            "Overwrite existing response file", 2 );
         overwriteResponseFileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
@@ -190,10 +210,11 @@ public class ImportDsmlMainWizardPage extends WizardPage
                 validate();
             }
         } );
-        
+
         setControl( composite );
     }
-    
+
+
     /**
      * Validates the page. This method is responsible for displaying errors, as well as enabling/disabling the "Finish" button
      */
@@ -217,7 +238,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
             setErrorMessage( "Selected DSML file is not readable." );
             ok = false;
         }
-        else if ( this.saveResponseButton.getSelection() )
+        else if ( saveResponseButton.getSelection() )
         {
             File responseFile = new File( responseFileBrowserWidget.getFilename() );
             File responseFileDirectory = responseFile.getParentFile();
@@ -232,7 +253,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
                 setErrorMessage( "Selected response file is not a file." );
                 ok = false;
             }
-            else if ( responseFile.exists() && !this.overwriteResponseFileButton.getSelection() )
+            else if ( responseFile.exists() && !overwriteResponseFileButton.getSelection() )
             {
                 setErrorMessage( "Selected response file already exists. Select option 'Overwrite existing response file' if you want to overwrite the response file." );
                 ok = false;
@@ -253,8 +274,8 @@ public class ImportDsmlMainWizardPage extends WizardPage
                 ok = false;
             }
         }
-        
-        if ( ( wizard.getImportConnection() == null ) || (connectionWidget.getConnection() == null ) )
+
+        if ( ( wizard.getImportConnection() == null ) || ( connectionWidget.getConnection() == null ) )
         {
             setErrorMessage( "Please select a Connection." );
             ok = false;
@@ -268,12 +289,12 @@ public class ImportDsmlMainWizardPage extends WizardPage
         getContainer().updateButtons();
     }
 
-    
+
     /**
      * Saves the Dialog Settings of the Page
      */
     public void saveDialogSettings()
     {
-        this.dsmlFileBrowserWidget.saveDialogSettings();
+        dsmlFileBrowserWidget.saveDialogSettings();
     }
 }

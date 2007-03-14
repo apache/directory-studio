@@ -32,25 +32,38 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * This class implements the page to select the target CSV file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportCsvToWizardPage extends ExportBaseToPage
 {
 
+    /** The extensions used by CSV files */
     private static final String[] EXTENSIONS = new String[]
         { "*.csv", "*.txt", "*.*" };
 
 
+    /**
+     * Creates a new instance of ExportCsvToWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ExportCsvToWizardPage( String pageName, ExportBaseWizard wizard )
     {
         super( pageName, wizard );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_EXPORT_CSV_WIZARD ) );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPORT_CSV_WIZARD ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-        // wizard.getContainer().getShell().setSize(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH),
-        // convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH));
         final Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
         super.createControl( composite );
 
@@ -67,22 +80,21 @@ public class ExportCsvToWizardPage extends ExportBaseToPage
                     TextFormatsPreferencePage.CSV_TAB ).open();
             }
         } );
-
     }
 
 
-    protected static char getChar( String s )
-    {
-        return s != null && s.length() > 0 ? s.charAt( 0 ) : '\u0000';
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     protected String[] getExtensions()
     {
         return EXTENSIONS;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String getFileType()
     {
         return "CSV";

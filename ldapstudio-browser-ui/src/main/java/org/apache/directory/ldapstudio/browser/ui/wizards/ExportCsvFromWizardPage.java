@@ -26,18 +26,42 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.SearchPageWrapper;
 
 
+/**
+ * This class implements the page used to select the data to export to CSV.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportCsvFromWizardPage extends ExportBaseFromWizardPage
 {
 
+    /**
+     * Creates a new instance of ExportExcelFromWizardPage using a 
+     * {@link SearchPageWrapper} with
+     * <ul> 
+     * <li>hidden name
+     * <li>visible and checked return DN checkbox
+     * <li>invisible all attributes checkbox
+     * <li>invisible operational attributes checkbox
+     * </ul> 
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ExportCsvFromWizardPage( String pageName, ExportBaseWizard wizard )
     {
-        super( pageName, wizard, new SearchPageWrapper( SearchPageWrapper.NAME_INVISIBLE | SearchPageWrapper.RETURN_DN_VISIBLE
-            | SearchPageWrapper.RETURN_DN_CHECKED ) );
+        super( pageName, wizard, new SearchPageWrapper( SearchPageWrapper.NAME_INVISIBLE
+            | SearchPageWrapper.RETURN_DN_VISIBLE | SearchPageWrapper.RETURN_DN_CHECKED ) );
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_EXPORT_CSV_WIZARD ) );
     }
 
 
+    /**
+     * Checks if the DNs should be exported.
+     * 
+     * @return true, if the DNs should be exported
+     */
     public boolean isExportDn()
     {
         return spw.isReturnDn();

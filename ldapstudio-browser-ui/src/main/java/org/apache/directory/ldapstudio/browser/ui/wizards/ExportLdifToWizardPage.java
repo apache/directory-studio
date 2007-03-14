@@ -32,21 +32,37 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * This class implements the page to select the target LDIF file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportLdifToWizardPage extends ExportBaseToPage
 {
 
+    /** The extensions used by LDIF files */
     private static final String[] EXTENSIONS = new String[]
         { "*.ldif", "*.*" };
 
 
+    /**
+     * Creates a new instance of ExportLdifToWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ExportLdifToWizardPage( String pageName, ExportBaseWizard wizard )
     {
         super( pageName, wizard );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_EXPORT_LDIF_WIZARD ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
         final Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
@@ -68,12 +84,18 @@ public class ExportLdifToWizardPage extends ExportBaseToPage
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String[] getExtensions()
     {
         return EXTENSIONS;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String getFileType()
     {
         return "LDIF";

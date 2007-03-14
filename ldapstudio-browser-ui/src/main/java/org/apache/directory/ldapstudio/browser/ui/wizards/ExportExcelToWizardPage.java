@@ -32,24 +32,38 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * This class implements the page to select the target Excel file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportExcelToWizardPage extends ExportBaseToPage
 {
 
+    /** The extensions used by Excel files */
     private static final String[] EXTENSIONS = new String[]
         { "*.xls", "*.*" };
 
 
+    /**
+     * Creates a new instance of ExportExcelToWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public ExportExcelToWizardPage( String pageName, ExportBaseWizard wizard )
     {
         super( pageName, wizard );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_EXPORT_XLS_WIZARD ) );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPORT_XLS_WIZARD ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-
         final Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
         super.createControl( composite );
 
@@ -71,22 +85,21 @@ public class ExportExcelToWizardPage extends ExportBaseToPage
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createWrappedLabel( composite,
             "Warning: Excel export is memory intensive! Maximum number of exportable entries is limited to 65000!", 2 );
-
     }
 
 
-    protected static char getChar( String s )
-    {
-        return s != null && s.length() > 0 ? s.charAt( 0 ) : '\u0000';
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     protected String[] getExtensions()
     {
         return EXTENSIONS;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String getFileType()
     {
         return "Excel";
