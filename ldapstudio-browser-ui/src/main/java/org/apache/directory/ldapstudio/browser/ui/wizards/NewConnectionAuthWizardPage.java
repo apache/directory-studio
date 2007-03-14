@@ -25,33 +25,48 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionPageModifyListener;
-
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * The NewConnectionAuthWizardPage is used to specify the 
+ * authentication method of the new connection.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewConnectionAuthWizardPage extends WizardPage implements ConnectionPageModifyListener
 {
 
+    /** The wizard. */
     private NewConnectionWizard wizard;
 
 
+    /**
+     * Creates a new instance of NewConnectionAuthWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public NewConnectionAuthWizardPage( String pageName, NewConnectionWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Authentification" );
-        super.setDescription( "Please select an authentification method and input authentification data." );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_CONNECTION_WIZARD ) );
-        super.setPageComplete( false );
+        setTitle( "Authentification" );
+        setDescription( "Please select an authentification method and input authentification data." );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_CONNECTION_WIZARD ) );
+        setPageComplete( false );
 
         this.wizard = wizard;
         wizard.getCpw().addConnectionPageModifyListener( this );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void connectionPageModified()
     {
         if ( isCurrentPage() )
@@ -61,6 +76,9 @@ public class NewConnectionAuthWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setMessage( String message )
     {
         if ( isCurrentPage() )
@@ -71,6 +89,9 @@ public class NewConnectionAuthWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setErrorMessage( String errorMessage )
     {
         if ( isCurrentPage() )
@@ -81,19 +102,18 @@ public class NewConnectionAuthWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IConnection getRealConnection()
     {
         return null;
     }
 
 
-    public void setVisible( boolean visible )
-    {
-        super.setVisible( visible );
-        // this.validate();
-    }
-
-
+    /**
+     * Validates this page.
+     */
     private void validate()
     {
         setPageComplete( getMessage() == null );
@@ -101,6 +121,9 @@ public class NewConnectionAuthWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );

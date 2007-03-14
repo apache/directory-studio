@@ -149,14 +149,21 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     /**
      * Creates a new instance of ConnectionPageWrapper.
      *
-     * @param listener the initial modify listener
+     * @param listener the initial modify listener, may be null
      * @param runnableContext the runnable context
      */
     public ConnectionPageWrapper( ConnectionPageModifyListener listener, IRunnableContext runnableContext )
     {
         this.listenerList = new ArrayList<ConnectionPageModifyListener>( 5 );
-        this.listenerList.add( listener );
-        this.isConnectionOpened = listener.getRealConnection() != null && listener.getRealConnection().isOpened();
+        if(listener != null) 
+        {
+            this.listenerList.add( listener );
+            this.isConnectionOpened = listener.getRealConnection() != null && listener.getRealConnection().isOpened();
+        }
+        else
+        {
+            this.isConnectionOpened = false;
+        }
         this.runnableContext = runnableContext;
     }
 

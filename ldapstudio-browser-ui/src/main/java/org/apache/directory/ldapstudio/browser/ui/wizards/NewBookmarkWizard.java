@@ -40,63 +40,86 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 
+/**
+ * The NewConnectionWizard is used to create a new bookmark.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewBookmarkWizard extends Wizard implements INewWizard
 {
 
+    /** The main page. */
     private NewBookmarkMainWizardPage mainPage;
 
+    /** The selected entry. */
     private IEntry selectedEntry;
 
 
+    /**
+     * Creates a new instance of NewBookmarkWizard.
+     */
     public NewBookmarkWizard()
     {
-        super.setWindowTitle( "New Bookmark" );
-        super.setNeedsProgressMonitor( false );
+        setWindowTitle( "New Bookmark" );
+        setNeedsProgressMonitor( false );
     }
 
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public static String getId()
     {
         return NewBookmarkWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
+        // determine the currently selected entry, used 
+        // to preset the bookmark target DN
         Object o = selection.getFirstElement();
         if ( o instanceof IEntry )
         {
-            this.selectedEntry = ( ( IEntry ) o );
+            selectedEntry = ( ( IEntry ) o );
         }
         else if ( o instanceof ISearchResult )
         {
-            this.selectedEntry = ( ( ISearchResult ) o ).getEntry();
+            selectedEntry = ( ( ISearchResult ) o ).getEntry();
         }
         else if ( o instanceof Bookmark )
         {
-            this.selectedEntry = ( ( Bookmark ) o ).getEntry();
+            selectedEntry = ( ( Bookmark ) o ).getEntry();
         }
         else if ( o instanceof IAttribute )
         {
-            this.selectedEntry = ( ( IAttribute ) o ).getEntry();
+            selectedEntry = ( ( IAttribute ) o ).getEntry();
         }
         else if ( o instanceof IValue )
         {
-            this.selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
+            selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
         }
         else
         {
-            this.selectedEntry = null;
+            selectedEntry = null;
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addPages()
     {
-        if ( this.selectedEntry != null )
+        if ( selectedEntry != null )
         {
-            mainPage = new NewBookmarkMainWizardPage( NewBookmarkMainWizardPage.class.getName(), this.selectedEntry,
-                this );
+            mainPage = new NewBookmarkMainWizardPage( NewBookmarkMainWizardPage.class.getName(), selectedEntry, this );
             addPage( mainPage );
         }
         else
@@ -106,19 +129,31 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         }
     }
 
+    /**
+     * Just a dummy page.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     class DummyWizardPage extends WizardPage
     {
 
+        /**
+         * Creates a new instance of DummyWizardPage.
+         */
         protected DummyWizardPage()
         {
             super( "" );
-            super.setTitle( "No entry selected" );
-            super.setDescription( "In order to use the bookmark creation wizard please select an entry." );
-            // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
-            super.setPageComplete( true );
+            setTitle( "No entry selected" );
+            setDescription( "In order to use the bookmark creation wizard please select an entry." );
+            // setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
+            setPageComplete( true );
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public void createControl( Composite parent )
         {
             Composite composite = new Composite( parent, SWT.NONE );
@@ -131,12 +166,9 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
     }
 
 
-    public boolean performCancel()
-    {
-        return true;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
         if ( selectedEntry != null )

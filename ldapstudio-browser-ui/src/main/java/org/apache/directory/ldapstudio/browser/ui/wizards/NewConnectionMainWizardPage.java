@@ -25,45 +25,48 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionPageModifyListener;
-
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * The NewConnectionMainWizardPage is used to specify the connection name
+ * and the network parameters of the new connection.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewConnectionMainWizardPage extends WizardPage implements ConnectionPageModifyListener
 {
 
+    /** The wizard. */
     private NewConnectionWizard wizard;
 
 
+    /**
+     * Creates a new instance of NewConnectionMainWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public NewConnectionMainWizardPage( String pageName, NewConnectionWizard wizard )
     {
         super( pageName );
-        super.setTitle( "New LDAP Connection" );
-        super.setDescription( "Please enter connection name and network parameters." );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_CONNECTION_WIZARD ) );
-        super.setPageComplete( false );
+        setTitle( "New LDAP Connection" );
+        setDescription( "Please enter connection name and network parameters." );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_CONNECTION_WIZARD ) );
+        setPageComplete( false );
 
         this.wizard = wizard;
         wizard.getCpw().addConnectionPageModifyListener( this );
     }
 
 
-    public void dispose()
-    {
-        super.dispose();
-    }
-
-
-    public void setVisible( boolean visible )
-    {
-        super.setVisible( visible );
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void connectionPageModified()
     {
         if ( isCurrentPage() )
@@ -73,6 +76,9 @@ public class NewConnectionMainWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setMessage( String message )
     {
         if ( isCurrentPage() )
@@ -83,6 +89,9 @@ public class NewConnectionMainWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setErrorMessage( String errorMessage )
     {
         if ( isCurrentPage() )
@@ -93,12 +102,18 @@ public class NewConnectionMainWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IConnection getRealConnection()
     {
         return null;
     }
 
 
+    /**
+     * Validates this page.
+     */
     private void validate()
     {
         setPageComplete( getMessage() == null );
@@ -106,6 +121,9 @@ public class NewConnectionMainWizardPage extends WizardPage implements Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
@@ -116,7 +134,6 @@ public class NewConnectionMainWizardPage extends WizardPage implements Connectio
         wizard.getCpw().addOpenConnectionInput( true, composite );
 
         setControl( composite );
-        // nameText.setFocus();
     }
 
 }

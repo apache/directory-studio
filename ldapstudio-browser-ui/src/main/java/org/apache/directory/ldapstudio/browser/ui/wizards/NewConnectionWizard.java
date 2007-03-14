@@ -25,11 +25,8 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionPageModifyListener;
 import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionPageWrapper;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
@@ -37,48 +34,63 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 
-public class NewConnectionWizard extends Wizard implements INewWizard, ConnectionPageModifyListener
+/**
+ * The NewConnectionWizard is used to create a new connection.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class NewConnectionWizard extends Wizard implements INewWizard
 {
 
+    /** The connection page wrapper. */
     private ConnectionPageWrapper cpw;
 
+    /** The main page. */
     private NewConnectionMainWizardPage mainPage;
 
+    /** The auth page. */
     private NewConnectionAuthWizardPage authPage;
 
+    /** The options page. */
     private NewConnectionOptionsWizardPage optionsPage;
 
 
+    /**
+     * Creates a new instance of NewConnectionWizard.
+     */
     public NewConnectionWizard()
     {
-        super.setWindowTitle( "New LDAP Connection" );
-        super.setNeedsProgressMonitor( true );
-
+        setWindowTitle( "New LDAP Connection" );
+        setNeedsProgressMonitor( true );
     }
 
 
-    public boolean needsProgressMonitor()
-    {
-        return true;
-    }
-
-
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public static String getId()
     {
         return NewConnectionWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addPages()
     {
-
-        cpw = new ConnectionPageWrapper( this, this.getContainer() );
+        cpw = new ConnectionPageWrapper( null, getContainer() );
 
         mainPage = new NewConnectionMainWizardPage( NewConnectionMainWizardPage.class.getName(), this );
         addPage( mainPage );
@@ -97,7 +109,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard, Connectio
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_newconnection_wizard" );
@@ -108,37 +120,18 @@ public class NewConnectionWizard extends Wizard implements INewWizard, Connectio
     }
 
 
-    public IWizardPage getNextPage( IWizardPage page )
-    {
-        if ( page == this.mainPage )
-        {
-            return this.authPage;
-        }
-        else if ( page == this.authPage )
-        {
-            return this.optionsPage;
-        }
-        else if ( page == this.optionsPage )
-        {
-            return null;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean canFinish()
     {
         if ( cpw.getAuthenticationMethod() == IConnection.AUTH_ANONYMOUS )
         {
-            return this.mainPage.isPageComplete() && this.optionsPage.isPageComplete();
+            return mainPage.isPageComplete() && optionsPage.isPageComplete();
         }
         else if ( cpw.getAuthenticationMethod() == IConnection.AUTH_SIMPLE )
         {
-            return this.mainPage.isPageComplete() && this.authPage.isPageComplete()
-                && this.optionsPage.isPageComplete();
+            return mainPage.isPageComplete() && authPage.isPageComplete() && optionsPage.isPageComplete();
         }
         else
         {
@@ -147,6 +140,9 @@ public class NewConnectionWizard extends Wizard implements INewWizard, Connectio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
         final IConnection conn = cpw.getTestConnection();
@@ -165,28 +161,11 @@ public class NewConnectionWizard extends Wizard implements INewWizard, Connectio
     }
 
 
-    public void connectionPageModified()
-    {
-
-    }
-
-
-    public void setMessage( String message )
-    {
-    }
-
-
-    public void setErrorMessage( String errorMessage )
-    {
-    }
-
-
-    public IConnection getRealConnection()
-    {
-        return null;
-    }
-
-
+    /**
+     * Gets the connection page wrapper.
+     * 
+     * @return the connection page wrapper
+     */
     public ConnectionPageWrapper getCpw()
     {
         return cpw;

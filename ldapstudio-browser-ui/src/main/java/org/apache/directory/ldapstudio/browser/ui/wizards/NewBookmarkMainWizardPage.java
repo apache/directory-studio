@@ -27,7 +27,6 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.EntryWidget;
-
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -38,58 +37,85 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The NewBookmarkMainWizardPage is used to specify the bookmark name
+ * and the DN of the target entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModifyListener
 {
 
+    /** The entry. */
     private IEntry entry;
 
+    /** The bookmark name text. */
     private Text bookmarkNameText;
 
+    /** The bookmark entry widget. */
     private EntryWidget bookmarkEntryWidget;
 
 
+    /**
+     * Creates a new instance of NewBookmarkMainWizardPage.
+     * 
+     * @param pageName the page name
+     * @param entry the entry
+     * @param wizard the wizard
+     */
     public NewBookmarkMainWizardPage( String pageName, IEntry entry, NewBookmarkWizard wizard )
     {
         super( pageName );
-        super.setTitle( "New Bookmark" );
-        super.setDescription( "Please enter the bookmark parameters." );
-        // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
-        super.setPageComplete( false );
+        setTitle( "New Bookmark" );
+        setDescription( "Please enter the bookmark parameters." );
+        // setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
+        setPageComplete( false );
 
         this.entry = entry;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         super.dispose();
-        this.bookmarkEntryWidget.removeWidgetModifyListener( this );
+        bookmarkEntryWidget.removeWidgetModifyListener( this );
     }
 
 
+    /**
+     * Validates this page.
+     */
     private void validate()
     {
-        if ( this.bookmarkNameText != null && !this.bookmarkNameText.isDisposed() )
+        if ( bookmarkNameText != null && !bookmarkNameText.isDisposed() )
         {
-            this.setPageComplete( this.bookmarkEntryWidget.getDn() != null
-                && !"".equals( this.bookmarkNameText.getText() ) );
+            setPageComplete( bookmarkEntryWidget.getDn() != null && !"".equals( bookmarkNameText.getText() ) );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setVisible( boolean visible )
     {
         super.setVisible( visible );
         if ( visible )
         {
-            this.validate();
+            validate();
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         GridLayout gl = new GridLayout( 1, false );
         composite.setLayout( gl );
@@ -98,9 +124,9 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
 
         BaseWidgetUtils.createLabel( innerComposite, "Bookmark Name:", 1 );
-        this.bookmarkNameText = BaseWidgetUtils.createText( innerComposite, this.entry.getDn().toString(), 2 );
-        this.bookmarkNameText.setFocus();
-        this.bookmarkNameText.addModifyListener( new ModifyListener()
+        bookmarkNameText = BaseWidgetUtils.createText( innerComposite, entry.getDn().toString(), 2 );
+        bookmarkNameText.setFocus();
+        bookmarkNameText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -109,36 +135,52 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
         } );
 
         BaseWidgetUtils.createLabel( innerComposite, "Bookmark DN:", 1 );
-        this.bookmarkEntryWidget = new EntryWidget();
-        this.bookmarkEntryWidget.addWidgetModifyListener( this );
-        this.bookmarkEntryWidget.createWidget( innerComposite );
-        this.bookmarkEntryWidget.setInput( this.entry.getConnection(), this.entry.getDn() );
+        bookmarkEntryWidget = new EntryWidget();
+        bookmarkEntryWidget.addWidgetModifyListener( this );
+        bookmarkEntryWidget.createWidget( innerComposite );
+        bookmarkEntryWidget.setInput( entry.getConnection(), entry.getDn() );
 
         setControl( composite );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
         validate();
     }
 
 
+    /**
+     * Gets the bookmark dn.
+     * 
+     * @return the bookmark dn
+     */
     public DN getBookmarkDn()
     {
-        return this.bookmarkEntryWidget.getDn();
+        return bookmarkEntryWidget.getDn();
     }
 
 
+    /**
+     * Gets the bookmark name.
+     * 
+     * @return the bookmark name
+     */
     public String getBookmarkName()
     {
-        return this.bookmarkNameText.getText();
+        return bookmarkNameText.getText();
     }
 
 
+    /**
+     * Saves the dialog settings.
+     */
     public void saveDialogSettings()
     {
-        this.bookmarkEntryWidget.saveDialogSettings();
+        bookmarkEntryWidget.saveDialogSettings();
     }
 
 }

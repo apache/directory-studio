@@ -85,8 +85,8 @@ public class NewEntryWizard extends Wizard implements INewWizard
      */
     public NewEntryWizard()
     {
-        super.setWindowTitle( "New Entry" );
-        super.setNeedsProgressMonitor( true );
+        setWindowTitle( "New Entry" );
+        setNeedsProgressMonitor( true );
     }
 
 
@@ -217,11 +217,11 @@ public class NewEntryWizard extends Wizard implements INewWizard
         protected DummyWizardPage()
         {
             super( "" );
-            super.setTitle( "No connection selected or connection is closed" );
-            super.setDescription( "In order to use the entry creation wizard please select an opened connection." );
-            super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
+            setTitle( "No connection selected or connection is closed" );
+            setDescription( "In order to use the entry creation wizard please select an opened connection." );
+            setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
                 BrowserUIConstants.IMG_ENTRY_WIZARD ) );
-            super.setPageComplete( true );
+            setPageComplete( true );
         }
 
 
