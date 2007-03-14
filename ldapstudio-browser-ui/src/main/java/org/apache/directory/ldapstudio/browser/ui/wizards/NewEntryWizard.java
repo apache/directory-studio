@@ -48,24 +48,41 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * The NewEntryWizard is used to create a new entry from scratch or by 
+ * using another entry as template.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewEntryWizard extends Wizard implements INewWizard
 {
 
+    /** The type page. */
     private NewEntryTypeWizardPage typePage;
 
+    /** The object class page. */
     private NewEntryObjectclassWizardPage ocPage;
 
+    /** The dn page. */
     private NewEntryDnWizardPage dnPage;
 
+    /** The attributes page. */
     private NewEntryAttributesWizardPage attributePage;
 
+    /** The selected entry. */
     private IEntry selectedEntry;
 
+    /** The selected connection. */
     private IConnection selectedConnection;
 
-    private DummyEntry newEntry;
+    /** The prototype entry. */
+    private DummyEntry prototypeEntry;
 
 
+    /**
+     * Creates a new instance of NewEntryWizard.
+     */
     public NewEntryWizard()
     {
         super.setWindowTitle( "New Entry" );
@@ -73,67 +90,79 @@ public class NewEntryWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
     public static String getId()
     {
         return NewEntryWizard.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
+        // determine the currently selected entry
         Object o = selection.getFirstElement();
         if ( o instanceof IEntry )
         {
-            this.selectedEntry = ( ( IEntry ) o );
-            this.selectedConnection = this.selectedEntry.getConnection();
+            selectedEntry = ( ( IEntry ) o );
+            selectedConnection = selectedEntry.getConnection();
         }
         else if ( o instanceof ISearchResult )
         {
-            this.selectedEntry = ( ( ISearchResult ) o ).getEntry();
-            this.selectedConnection = this.selectedEntry.getConnection();
+            selectedEntry = ( ( ISearchResult ) o ).getEntry();
+            selectedConnection = selectedEntry.getConnection();
         }
         else if ( o instanceof Bookmark )
         {
-            this.selectedEntry = ( ( Bookmark ) o ).getEntry();
-            this.selectedConnection = this.selectedEntry.getConnection();
+            selectedEntry = ( ( Bookmark ) o ).getEntry();
+            selectedConnection = selectedEntry.getConnection();
         }
         else if ( o instanceof IAttribute )
         {
-            this.selectedEntry = ( ( IAttribute ) o ).getEntry();
-            this.selectedConnection = this.selectedEntry.getConnection();
+            selectedEntry = ( ( IAttribute ) o ).getEntry();
+            selectedConnection = selectedEntry.getConnection();
         }
         else if ( o instanceof IValue )
         {
-            this.selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
-            this.selectedConnection = this.selectedEntry.getConnection();
+            selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
+            selectedConnection = selectedEntry.getConnection();
         }
         else if ( o instanceof ISearch )
         {
-            this.selectedEntry = null;
-            this.selectedConnection = ( ( ISearch ) o ).getConnection();
+            selectedEntry = null;
+            selectedConnection = ( ( ISearch ) o ).getConnection();
         }
         else if ( o instanceof IConnection )
         {
-            this.selectedEntry = null;
-            this.selectedConnection = ( IConnection ) o;
+            selectedEntry = null;
+            selectedConnection = ( IConnection ) o;
         }
         else
         {
-            this.selectedEntry = null;
-            this.selectedConnection = null;
+            selectedEntry = null;
+            selectedConnection = null;
         }
 
-        if ( this.selectedConnection != null )
+        if ( selectedConnection != null )
         {
-            this.selectedConnection.suspend();
-            this.newEntry = new DummyEntry( new DN(), this.selectedConnection );
+            selectedConnection.suspend();
+            prototypeEntry = new DummyEntry( new DN(), selectedConnection );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addPages()
     {
-        if ( this.selectedConnection != null && this.selectedConnection.isOpened() )
+        if ( selectedConnection != null && selectedConnection.isOpened() )
         {
             typePage = new NewEntryTypeWizardPage( NewEntryTypeWizardPage.class.getName(), this );
             addPage( typePage );
@@ -161,7 +190,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
@@ -173,21 +202,32 @@ public class NewEntryWizard extends Wizard implements INewWizard
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
     }
 
-
+    /**
+     * Just a dummy page.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     class DummyWizardPage extends WizardPage
     {
 
+        /**
+         * Creates a new instance of DummyWizardPage.
+         */
         protected DummyWizardPage()
         {
             super( "" );
             super.setTitle( "No connection selected or connection is closed" );
-            super.setDescription( "In order to use the entry creation wizard please select a opened connection." );
+            super.setDescription( "In order to use the entry creation wizard please select an opened connection." );
             super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
                 BrowserUIConstants.IMG_ENTRY_WIZARD ) );
             super.setPageComplete( true );
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public void createControl( Composite parent )
         {
             Composite composite = new Composite( parent, SWT.NONE );
@@ -200,72 +240,106 @@ public class NewEntryWizard extends Wizard implements INewWizard
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performCancel()
     {
-        if ( this.selectedConnection != null && this.selectedConnection.isOpened() )
+        if ( selectedConnection != null && selectedConnection.isOpened() )
         {
             EventRegistry.suspendEventFireingInCurrentThread();
-            this.selectedConnection.reset();
+            selectedConnection.reset();
             EventRegistry.resumeEventFireingInCurrentThread();
-            this.selectedConnection.reset();
+            selectedConnection.reset();
         }
 
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performFinish()
     {
-        if ( this.selectedConnection != null && this.selectedConnection.isOpened() )
+        try
         {
-            this.typePage.saveDialogSettings();
-            this.ocPage.saveDialogSettings();
-            this.dnPage.saveDialogSettings();
-
-            this.getSelectedConnection().reset();
-
-            CreateEntryJob job = new CreateEntryJob( new IEntry[]
-                { this.getNewEntry() } );
-            RunnableContextJobAdapter.execute( job, getContainer() );
-
-            if ( !job.getExternalResult().isOK() )
+            if ( selectedConnection != null && selectedConnection.isOpened() )
             {
-                this.getSelectedConnection().suspend();
-                return false;
+                typePage.saveDialogSettings();
+                ocPage.saveDialogSettings();
+                dnPage.saveDialogSettings();
+
+                getSelectedConnection().reset();
+
+                CreateEntryJob job = new CreateEntryJob( new IEntry[]
+                    { getPrototypeEntry() } );
+                RunnableContextJobAdapter.execute( job, getContainer() );
+
+                if ( !job.getExternalResult().isOK() )
+                {
+                    getSelectedConnection().suspend();
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {
                 return true;
             }
         }
-        else
+        catch ( Throwable t )
         {
-            return true;
+            t.printStackTrace();
+            return false;
         }
     }
 
 
+    /**
+     * Gets the selected entry.
+     * 
+     * @return the selected entry
+     */
     public IEntry getSelectedEntry()
     {
         return selectedEntry;
     }
 
 
+    /**
+     * Gets the selected connection.
+     * 
+     * @return the selected connection
+     */
     public IConnection getSelectedConnection()
     {
         return selectedConnection;
     }
 
 
-    public DummyEntry getNewEntry()
+    /**
+     * Gets the prototype entry.
+     * 
+     * @return the prototype entry
+     */
+    public DummyEntry getPrototypeEntry()
     {
-        return newEntry;
+        return prototypeEntry;
     }
 
 
-    public void setNewEntry( DummyEntry newEntry )
+    /**
+     * Sets the prototype entry.
+     * 
+     * @param getPrototypeEntry the prototype entry
+     */
+    public void setPrototypeEntry( DummyEntry getPrototypeEntry )
     {
-        this.newEntry = newEntry;
+        this.prototypeEntry = getPrototypeEntry;
     }
 
 }

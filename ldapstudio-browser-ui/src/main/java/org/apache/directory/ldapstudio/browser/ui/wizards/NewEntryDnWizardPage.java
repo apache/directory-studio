@@ -48,57 +48,80 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * The NewEntryDnWizardPage is used to compose the new entry's 
+ * distinguished name.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyListener
 {
 
+    /** The wizard. */
     private NewEntryWizard wizard;
 
+    /** The DN builder widget. */
     private DnBuilderWidget dnBuilderWidget;
 
 
+    /**
+     * Creates a new instance of NewEntryDnWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public NewEntryDnWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Distinguished Name" );
-        super.setDescription( "Please select the parent of the new entry and enter the RDN." );
-        super
-            .setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
-        super.setPageComplete( false );
+        setTitle( "Distinguished Name" );
+        setDescription( "Please select the parent of the new entry and enter the RDN." );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
+        setPageComplete( false );
 
         this.wizard = wizard;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.dnBuilderWidget != null )
+        if ( dnBuilderWidget != null )
         {
-            this.dnBuilderWidget.removeWidgetModifyListener( this );
-            this.dnBuilderWidget.dispose();
-            this.dnBuilderWidget = null;
+            dnBuilderWidget.removeWidgetModifyListener( this );
+            dnBuilderWidget.dispose();
+            dnBuilderWidget = null;
         }
         super.dispose();
     }
 
 
+    /**
+     * Validates the input fields.
+     */
     private void validate()
     {
-        if ( this.dnBuilderWidget.getRdn() != null && this.dnBuilderWidget.getParentDn() != null )
+        if ( dnBuilderWidget.getRdn() != null && dnBuilderWidget.getParentDn() != null )
         {
-            super.setPageComplete( true );
+            setPageComplete( true );
             saveState();
         }
         else
         {
-            super.setPageComplete( false );
+            setPageComplete( false );
         }
     }
 
 
+    /**
+     * Initializes the DN builder widget with the DN of 
+     * the prototype entry. Called when this page becomes visible.
+     */
     private void loadState()
     {
-
-        DummyEntry newEntry = this.wizard.getNewEntry();
+        DummyEntry newEntry = wizard.getPrototypeEntry();
 
         Subschema subschema = newEntry.getSubschema();
         String[] attributeNames = subschema.getAllAttributeNames();
@@ -115,13 +138,16 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
         RDN rdn = newEntry.getRdn();
 
-        this.dnBuilderWidget.setInput( wizard.getSelectedConnection(), attributeNames, rdn, parentDn );
+        dnBuilderWidget.setInput( wizard.getSelectedConnection(), attributeNames, rdn, parentDn );
     }
 
 
+    /**
+     * Saves the DN of the DN builder widget to the prototype entry.
+     */
     private void saveState()
     {
-        DummyEntry newEntry = wizard.getNewEntry();
+        DummyEntry newEntry = wizard.getPrototypeEntry();
 
         try
         {
@@ -146,7 +172,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             }
 
             // set new DN
-            DN dn = new DN( this.dnBuilderWidget.getRdn(), this.dnBuilderWidget.getParentDn() );
+            DN dn = new DN( dnBuilderWidget.getRdn(), dnBuilderWidget.getParentDn() );
             newEntry.setDn( dn );
 
             // add new RDN
@@ -179,6 +205,12 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation initializes DN builder widghet with the
+     * DN of the protoype entry.
+     */
     public void setVisible( boolean visible )
     {
         super.setVisible( visible );
@@ -191,20 +223,33 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation just checks if this page is complete. It 
+     * doesn't call {@link #getNextPage()} to avoid unneeded 
+     * invokings of {@link ReadEntryJob}s.
+     */
     public boolean canFlipToNextPage()
     {
         return isPageComplete();
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation invokes a {@link ReadEntryJob} to check if an
+     * entry with the composed DN already exists.
+     */
     public IWizardPage getNextPage()
     {
 
-        this.dnBuilderWidget.validate();
+        dnBuilderWidget.validate();
         final RDN[] rdns = new RDN[]
-            { this.dnBuilderWidget.getRdn() };
+            { dnBuilderWidget.getRdn() };
         final DN[] parentDns = new DN[]
-            { this.dnBuilderWidget.getParentDn() };
+            { dnBuilderWidget.getParentDn() };
         final DN dn = new DN( rdns[0], parentDns[0] );
 
         // check if parent exists or new entry already exists
@@ -242,31 +287,34 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     }
 
 
-    public IWizardPage getPreviousPage()
-    {
-        return super.getPreviousPage();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-        this.dnBuilderWidget = new DnBuilderWidget( true, true );
-        this.dnBuilderWidget.addWidgetModifyListener( this );
-        Composite composite = this.dnBuilderWidget.createContents( parent );
+        dnBuilderWidget = new DnBuilderWidget( true, true );
+        dnBuilderWidget.addWidgetModifyListener( this );
+        Composite composite = dnBuilderWidget.createContents( parent );
 
         setControl( composite );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
         validate();
     }
 
 
+    /**
+     * Saves the dialogs settings.
+     */
     public void saveDialogSettings()
     {
-        this.dnBuilderWidget.saveDialogSettings();
+        dnBuilderWidget.saveDialogSettings();
     }
 
 }

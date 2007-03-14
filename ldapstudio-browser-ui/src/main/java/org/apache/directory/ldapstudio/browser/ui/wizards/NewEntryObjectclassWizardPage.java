@@ -53,7 +53,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -69,61 +68,87 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The NewEntryTypeWizardPage is used to select the entry's object classes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewEntryObjectclassWizardPage extends WizardPage
 {
 
+    /** The Constant SIZING_SELECTION_WIDGET_HEIGHT. */
     private final static int SIZING_SELECTION_WIDGET_HEIGHT = 250;
 
+    /** The Constant SIZING_SELECTION_WIDGET_WIDTH. */
     private final static int SIZING_SELECTION_WIDGET_WIDTH = 400;
 
+    /** The wizard. */
     private NewEntryWizard wizard;
 
+    /** The available object classes. */
     private List<ObjectClassDescription> availableObjectClasses;
 
-    private Text availabeObjectClassesInstantSearch;
+    /** The available object classes instant search. */
+    private Text availableObjectClassesInstantSearch;
 
+    /** The available object classes viewer. */
     private ListViewer availableObjectClassesViewer;
 
+    /** The selected object classes. */
     private List<ObjectClassDescription> selectedObjectClasses;
 
+    /** The selected object classes viewer. */
     private ListViewer selectedObjectClassesViewer;
 
+    /** The add button. */
     private Button addButton;
 
+    /** The remove button. */
     private Button removeButton;
 
 
+    /**
+     * Creates a new instance of NewEntryObjectclassWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public NewEntryObjectclassWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Object Classes" );
-        super
-            .setDescription( "Please select object classes of the new entry. Select at least one structural object class." );
-        super
-            .setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
-        super.setPageComplete( false );
+        setTitle( "Object Classes" );
+        setDescription( "Please select object classes of the new entry. Select at least one structural object class." );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
+        setPageComplete( false );
 
         this.wizard = wizard;
-
         this.availableObjectClasses = new ArrayList<ObjectClassDescription>();
         this.selectedObjectClasses = new ArrayList<ObjectClassDescription>();
     }
 
 
+    /**
+     * Validates the input fields.
+     */
     private void validate()
     {
-        if ( !this.selectedObjectClasses.isEmpty() )
+        if ( !selectedObjectClasses.isEmpty() )
         {
-            super.setPageComplete( true );
+            setPageComplete( true );
             saveState();
         }
         else
         {
-            super.setPageComplete( false );
+            setPageComplete( false );
         }
     }
 
 
+    /**
+     * Loads the state of selected and available object classes from
+     * the prototype entry. Called when this page becomes visible.
+     */
     private void loadState()
     {
         availableObjectClasses.clear();
@@ -134,7 +159,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             availableObjectClasses.addAll( Arrays.asList( wizard.getSelectedConnection().getSchema()
                 .getObjectClassDescriptions() ) );
 
-            DummyEntry newEntry = wizard.getNewEntry();
+            DummyEntry newEntry = wizard.getPrototypeEntry();
             IAttribute ocAttribute = newEntry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
             if ( ocAttribute != null )
             {
@@ -155,9 +180,12 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     }
 
 
+    /**
+     * Saves the state of selected object classes to the entry.
+     */
     private void saveState()
     {
-        DummyEntry newEntry = wizard.getNewEntry();
+        DummyEntry newEntry = wizard.getPrototypeEntry();
 
         try
         {
@@ -180,7 +208,6 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 ObjectClassDescription ocd = it.next();
                 ocAttribute.addValue( new Value( ocAttribute, ocd.getNames()[0] ) );
             }
-
         }
         catch ( ModelModificationException e )
         {
@@ -193,6 +220,12 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation initializes the list of available and selected
+     * object classes when this page becomes visible.
+     */
     public void setVisible( boolean visible )
     {
         super.setVisible( visible );
@@ -201,29 +234,14 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         {
             loadState();
             validate();
-            availabeObjectClassesInstantSearch.setFocus();
+            availableObjectClassesInstantSearch.setFocus();
         }
     }
 
 
-    public boolean canFlipToNextPage()
-    {
-        return isPageComplete();
-    }
-
-
-    public IWizardPage getNextPage()
-    {
-        return super.getNextPage();
-    }
-
-
-    public IWizardPage getPreviousPage()
-    {
-        return super.getPreviousPage();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
 
@@ -261,8 +279,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         availabeObjectClassesInstantSearchField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
         availabeObjectClassesInstantSearchField.getLayoutControl().setLayoutData(
             new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        availabeObjectClassesInstantSearch = ( Text ) availabeObjectClassesInstantSearchField.getControl();
-        availabeObjectClassesInstantSearch.addModifyListener( new ModifyListener()
+        availableObjectClassesInstantSearch = ( Text ) availabeObjectClassesInstantSearchField.getControl();
+        availableObjectClassesInstantSearch.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -283,7 +301,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         availableObjectClassesViewer.setContentProvider( new ArrayContentProvider() );
         availableObjectClassesViewer.setLabelProvider( new LabelProvider() );
         availableObjectClassesViewer.setSorter( new ViewerSorter() );
-        availableObjectClassesViewer.addFilter( new InstantSearchFilter( availabeObjectClassesInstantSearch ) );
+        availableObjectClassesViewer.addFilter( new InstantSearchFilter( availableObjectClassesInstantSearch ) );
         availableObjectClassesViewer.setInput( availableObjectClasses );
         availableObjectClassesViewer.addDoubleClickListener( new IDoubleClickListener()
         {
@@ -351,13 +369,19 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     }
 
 
+    /**
+     * Adds the selected object classes to the list of selected 
+     * object classes.
+     * 
+     * @param iselection the selection
+     */
     private void add( ISelection iselection )
     {
         IStructuredSelection selection = ( IStructuredSelection ) iselection;
-        Iterator<ObjectClassDescription> it = selection.iterator();
+        Iterator it = selection.iterator();
         while ( it.hasNext() )
         {
-            ObjectClassDescription ocd = it.next();
+            ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
             if ( availableObjectClasses.contains( ocd ) && !selectedObjectClasses.contains( ocd ) )
             {
                 availableObjectClasses.remove( ocd );
@@ -374,23 +398,29 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         availableObjectClassesViewer.refresh();
         selectedObjectClassesViewer.refresh();
-        this.validate();
+        validate();
 
-        if ( !"".equals( availabeObjectClassesInstantSearch.getText() ) )
+        if ( !"".equals( availableObjectClassesInstantSearch.getText() ) )
         {
-            availabeObjectClassesInstantSearch.setText( "" );
-            availabeObjectClassesInstantSearch.setFocus();
+            availableObjectClassesInstantSearch.setText( "" );
+            availableObjectClassesInstantSearch.setFocus();
         }
     }
 
 
+    /**
+     * Removes the selected object classes from the list of selected
+     * object classes.
+     * 
+     * @param iselection the iselection
+     */
     private void remove( ISelection iselection )
     {
         IStructuredSelection selection = ( IStructuredSelection ) iselection;
-        Iterator<ObjectClassDescription> it = selection.iterator();
+        Iterator it = selection.iterator();
         while ( it.hasNext() )
         {
-            ObjectClassDescription ocd = it.next();
+            ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
             if ( !availableObjectClasses.contains( ocd ) && selectedObjectClasses.contains( ocd ) )
             {
                 selectedObjectClasses.remove( ocd );
@@ -407,20 +437,33 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         availableObjectClassesViewer.refresh();
         selectedObjectClassesViewer.refresh();
-        this.validate();
+        validate();
     }
 
 
+    /**
+     * Saves dialog settings.
+     */
     public void saveDialogSettings()
     {
 
     }
 
+    /**
+     * The Class InstantSearchFilter.
+     */
     private class InstantSearchFilter extends ViewerFilter
     {
+
+        /** The filter text. */
         private Text filterText;
 
 
+        /**
+         * Creates a new instance of InstantSearchFilter.
+         * 
+         * @param filterText the filter text
+         */
         private InstantSearchFilter( Text filterText )
         {
             this.filterText = filterText;
@@ -435,7 +478,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             if ( element instanceof ObjectClassDescription )
             {
                 ObjectClassDescription ocd = ( ObjectClassDescription ) element;
-                Set lowerCaseIdentifierSet = ocd.getLowerCaseIdentifierSet();
+                Set<String> lowerCaseIdentifierSet = ocd.getLowerCaseIdentifierSet();
                 for ( Iterator<String> it = lowerCaseIdentifierSet.iterator(); it.hasNext(); )
                 {
                     String s = it.next();

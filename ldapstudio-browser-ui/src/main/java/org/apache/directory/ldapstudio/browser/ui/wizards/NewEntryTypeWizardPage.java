@@ -39,7 +39,6 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.EntryWidget;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -52,67 +51,92 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * The NewEntryTypeWizardPage is used to choose the entry creation method.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyListener, SelectionListener
 {
 
+    /** The Constant PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY. */
     public static final String PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY = NewEntryTypeWizardPage.class
         .getName()
         + ".preferredEntryCreationMethod";
 
+    /** The wizard. */
     private NewEntryWizard wizard;
 
+    /** The schema button. */
     private Button schemaButton;
 
+    /** The template button. */
     private Button templateButton;
 
+    /** The entry widget to select the template entry. */
     private EntryWidget entryWidget;
 
 
+    /**
+     * Creates a new instance of NewEntryTypeWizardPage.
+     * 
+     * @param pageName the page name
+     * @param wizard the wizard
+     */
     public NewEntryTypeWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Entry Creation Method" );
-        super.setDescription( "Please select the entry creation method." );
-        super
-            .setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
-        super.setPageComplete( false );
+        setTitle( "Entry Creation Method" );
+        setDescription( "Please select the entry creation method." );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
+        setPageComplete( false );
 
         this.wizard = wizard;
     }
 
 
+    /**
+     * Validates the input fields.
+     */
     private void validate()
     {
         if ( schemaButton.getSelection() )
         {
-            super.setPageComplete( true );
+            setPageComplete( true );
         }
         else if ( templateButton.getSelection() )
         {
-            super.setPageComplete( entryWidget.getConnection() != null && entryWidget.getDn() != null );
+            setPageComplete( entryWidget.getConnection() != null && entryWidget.getDn() != null );
         }
         else
         {
-            super.setPageComplete( false );
+            setPageComplete( false );
         }
     }
 
-
-    public void setVisible( boolean visible )
-    {
-        super.setVisible( visible );
-    }
-
-
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation just checks if this page is complete. IIt 
+     * doesn't call {@link #getNextPage()} to avoid unneeded 
+     * creations of new prototype entries.
+     */
     public boolean canFlipToNextPage()
     {
         return isPageComplete();
     }
+    
 
-
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation creates the prototype entry depending on the 
+     * selected entry creation method before flipping to the next page.
+     */
     public IWizardPage getNextPage()
     {
-
         if ( templateButton.getSelection() )
         {
             final IConnection connection = entryWidget.getConnection();
@@ -171,16 +195,16 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 EventRegistry.suspendEventFireingInCurrentThread();
 
                 LdifContentRecord record = ModelConverter.entryToLdifContentRecord( templateEntries[0] );
-                DummyEntry newEntry = ModelConverter.ldifContentRecordToEntry( record, connection );
-                IAttribute[] attributes = newEntry.getAttributes();
+                DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, connection );
+                IAttribute[] attributes = prototypeEntry.getAttributes();
                 for ( int i = 0; i < attributes.length; i++ )
                 {
                     if ( !SchemaUtils.isModifyable( attributes[i].getAttributeTypeDescription() ) )
                     {
-                        newEntry.deleteAttribute( attributes[i] );
+                        prototypeEntry.deleteAttribute( attributes[i] );
                     }
                 }
-                wizard.setNewEntry( newEntry );
+                wizard.setPrototypeEntry( prototypeEntry );
             }
             catch ( Exception e )
             {
@@ -193,16 +217,18 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         }
         else
         {
-            wizard.setNewEntry( new DummyEntry( new DN(), wizard.getSelectedConnection() ) );
+            wizard.setPrototypeEntry( new DummyEntry( new DN(), wizard.getSelectedConnection() ) );
         }
 
         return super.getNextPage();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         GridLayout gl = new GridLayout( 1, false );
         composite.setLayout( gl );
@@ -215,8 +241,8 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
 
         Composite entryComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
         BaseWidgetUtils.createRadioIndent( entryComposite, 1 );
-        entryWidget = new EntryWidget( this.wizard.getSelectedConnection(),
-            this.wizard.getSelectedEntry() != null ? this.wizard.getSelectedEntry().getDn() : null );
+        entryWidget = new EntryWidget( wizard.getSelectedConnection(), wizard.getSelectedEntry() != null ? wizard
+            .getSelectedEntry().getDn() : null );
         entryWidget.createWidget( entryComposite );
         entryWidget.addWidgetModifyListener( this );
 
@@ -233,17 +259,26 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
         validate();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetDefaultSelected( SelectionEvent e )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetSelected( SelectionEvent e )
     {
         entryWidget.setEnabled( templateButton.getSelection() );
@@ -251,10 +286,13 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
     }
 
 
+    /**
+     * Saves the dialog settings.
+     */
     public void saveDialogSettings()
     {
         BrowserUIPlugin.getDefault().getDialogSettings().put( PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY,
-            this.schemaButton.getSelection() );
+            schemaButton.getSelection() );
     }
 
 }
