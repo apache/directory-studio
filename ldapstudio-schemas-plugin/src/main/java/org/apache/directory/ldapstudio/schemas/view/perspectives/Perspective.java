@@ -49,22 +49,25 @@ public class Perspective implements IPerspectiveFactory
      */
     public void createInitialLayout( IPageLayout layout )
     {
-        String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible( true );
+        String editorAreaId = layout.getEditorArea();
 
-        IFolderLayout topLeftFolder = layout.createFolder( "placeholder", IPageLayout.LEFT, 0.3f, editorArea );
-
-        layout.addPlaceholder( "placeholder", IPageLayout.LEFT, 0.3f, editorArea );
+        // Creating top left folder 
+        IFolderLayout topLeftFolder = layout.createFolder( "placeholder", IPageLayout.LEFT, 0.3f, editorAreaId );
+        layout.addPlaceholder( "placeholder", IPageLayout.LEFT, 0.3f, editorAreaId );
+        
+        // Adding views
         topLeftFolder.addView( SchemaElementsView.ID );
         topLeftFolder.addView( HierarchyView.ID );
-
         layout.addStandaloneView( SchemasView.ID, true, IPageLayout.BOTTOM, 0.5f, "placeholder" );
-        layout.addStandaloneView( SearchView.ID, true, IPageLayout.BOTTOM, 0.7f, editorArea );
+        layout.addStandaloneView( SearchView.ID, true, IPageLayout.BOTTOM, 0.7f, editorAreaId );
 
+        // Setting up non-closeable views
         layout.getViewLayout( SchemaElementsView.ID ).setCloseable( false );
         layout.getViewLayout( SchemasView.ID ).setCloseable( false );
         layout.getViewLayout( SearchView.ID ).setCloseable( false );
 
+        // Adding Perspective shortcuts
         layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
         layout.addPerspectiveShortcut( Perspective.ID );
 
