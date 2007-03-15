@@ -31,12 +31,22 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
 
 
+/**
+ * This class implements the label decorator for the browser view. It adds
+ * an overlay image to the main image to mark search results, filtered
+ * entries and inconsistent entries.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserViewLabelDecorator extends LabelProvider implements ILightweightLabelDecorator
 {
 
+    /**
+     * {@inheritDoc}
+     */
     public void decorate( Object element, IDecoration decoration )
     {
-
         IEntry entry = null;
 
         if ( element instanceof ISearchResult )

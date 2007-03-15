@@ -136,12 +136,8 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         {
             linkWithEditorAction.dispose();
             linkWithEditorAction = null;
-
-            dragConnectionListener.dispose();
             dragConnectionListener = null;
-            dropConnectionListener.dispose();
             dropConnectionListener = null;
-
             view = null;
         }
     }

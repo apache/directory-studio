@@ -26,33 +26,49 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.dnd.ConnectionTransfer;
-
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 
+/**
+ * This class implements a {@link DragSourceListener} that is used to
+ * drag and drop connections withing the connections view.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DragConnectionListener implements DragSourceListener
 {
 
+    /**
+     * Creates a new instance of DragConnectionListener.
+     */
     public DragConnectionListener()
     {
     }
 
 
-    public void dispose()
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation does nothing.
+     */
+    public void dragStart( DragSourceEvent event )
     {
     }
 
 
-    public void dragStart( org.eclipse.swt.dnd.DragSourceEvent event )
-    {
-    }
-
-
-    public void dragSetData( org.eclipse.swt.dnd.DragSourceEvent event )
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation adds the dragged connections to the 
+     * given event data.
+     */
+    public void dragSetData( DragSourceEvent event )
     {
         if ( ConnectionTransfer.getInstance().isSupportedType( event.dataType ) )
         {
@@ -63,22 +79,27 @@ public class DragConnectionListener implements DragSourceListener
                 {
                     Table table = ( Table ) dragSource.getControl();
                     TableItem[] items = table.getSelection();
-                    List connectionList = new ArrayList();
+                    List<IConnection> connectionList = new ArrayList<IConnection>();
                     for ( int i = 0; i < items.length; i++ )
                     {
                         if ( items[i].getData() instanceof IConnection )
                         {
-                            connectionList.add( items[i].getData() );
+                            connectionList.add( ( IConnection ) items[i].getData() );
                         }
                     }
-                    event.data = ( IConnection[] ) connectionList.toArray( new IConnection[connectionList.size()] );
+                    event.data = connectionList.toArray( new IConnection[connectionList.size()] );
                 }
             }
         }
     }
 
 
-    public void dragFinished( org.eclipse.swt.dnd.DragSourceEvent event )
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation does nothing.
+     */
+    public void dragFinished( DragSourceEvent event )
     {
         if ( event.detail == DND.DROP_MOVE && event.doit )
         {

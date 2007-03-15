@@ -24,11 +24,10 @@ package org.apache.directory.ldapstudio.browser.ui.views.connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
+import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.dnd.ConnectionTransfer;
-
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -37,19 +36,30 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 
+/**
+ * This class implements a {@link DropTargetListener} that is used to
+ * drag and drop connections withing the connections view.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DropConnectionListener implements DropTargetListener
 {
 
+    /**
+     * Creates a new instance of DropConnectionListener.
+     */
     public DropConnectionListener()
     {
     }
 
 
-    public void dispose()
-    {
-    }
-
-
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation checks if the event's data type is 
+     * supported. If not supported dropping is rejected.
+     */
     public void dragEnter( DropTargetEvent event )
     {
         if ( !ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
@@ -59,17 +69,33 @@ public class DropConnectionListener implements DropTargetListener
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation just calls {@link #dragOver(DropTargetEvent)}.
+     */
     public void dragOperationChanged( DropTargetEvent event )
     {
-        this.dragOver( event );
+        dragOver( event );
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation does nothing.
+     */
     public void dragLeave( DropTargetEvent event )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation checks if the event's data type is 
+     * supported. If not supported dropping is rejected.
+     */
     public void dragOver( DropTargetEvent event )
     {
         boolean isOverSelection = false;
@@ -87,12 +113,12 @@ public class DropConnectionListener implements DropTargetListener
                         {
                             Table table = ( Table ) dropTarget.getControl();
                             TableItem[] items = table.getSelection();
-                            List connectionList = new ArrayList();
+                            List<IConnection> connectionList = new ArrayList<IConnection>();
                             for ( int i = 0; i < items.length; i++ )
                             {
                                 if ( items[i].getData() instanceof IConnection )
                                 {
-                                    connectionList.add( items[i].getData() );
+                                    connectionList.add( ( IConnection ) items[i].getData() );
                                 }
                             }
                             if ( connectionList.contains( overConn ) )
@@ -125,15 +151,25 @@ public class DropConnectionListener implements DropTargetListener
         {
             event.detail = DND.DROP_DEFAULT;
         }
-
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation does nothing.
+     */
     public void dropAccept( DropTargetEvent event )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation drops the dragged connection to
+     * the selected position.
+     */
     public void drop( DropTargetEvent event )
     {
         ConnectionManager connectionManager = BrowserCorePlugin.getDefault().getConnectionManager();
@@ -166,7 +202,6 @@ public class DropConnectionListener implements DropTargetListener
                         {
                             connectionManager.addConnection( index, connections[i] );
                         }
-
                     }
                 }
                 else if ( event.detail == DND.DROP_COPY )

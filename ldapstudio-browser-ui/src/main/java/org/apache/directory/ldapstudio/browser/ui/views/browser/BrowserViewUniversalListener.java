@@ -223,6 +223,11 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     };
 
 
+    /**
+     * Creates a new instance of BrowserViewUniversalListener.
+     * 
+     * @param view the browser view
+     */
     public BrowserViewUniversalListener( BrowserView view )
     {
         super( view.getMainWidget().getViewer() );
@@ -346,7 +351,6 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      */
     void setInput( IConnection connection )
     {
-
         // only if another connection is selected
         if ( connection != viewer.getInput() )
         {

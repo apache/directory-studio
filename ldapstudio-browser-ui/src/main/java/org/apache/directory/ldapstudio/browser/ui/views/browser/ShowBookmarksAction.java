@@ -27,27 +27,35 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 
 
+/**
+ * The ShowBookmarksAction is used to select wheater the bookmark category
+ * should be visible in the browser view or not.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ShowBookmarksAction extends Action
 {
 
+    /**
+     * Creates a new instance of ShowBookmarksAction.
+     */
     public ShowBookmarksAction()
     {
         super( "Show Bookmarks", IAction.AS_CHECK_BOX );
-        super.setEnabled( true );
-        super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
+        setEnabled( true );
+        setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_BROWSER_SHOW_BOOKMARKS ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
-            BrowserUIConstants.PREFERENCE_BROWSER_SHOW_BOOKMARKS, super.isChecked() );
-    }
-
-
-    public void dispose()
-    {
+            BrowserUIConstants.PREFERENCE_BROWSER_SHOW_BOOKMARKS, isChecked() );
     }
 
 }

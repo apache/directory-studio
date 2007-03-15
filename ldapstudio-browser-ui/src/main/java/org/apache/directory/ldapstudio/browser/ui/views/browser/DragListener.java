@@ -20,7 +20,17 @@
 
 package org.apache.directory.ldapstudio.browser.ui.views.browser;
 
+import org.eclipse.swt.dnd.DragSourceListener;
 
+
+/**
+ * This class implements the {@link DragSourceListener} for the browser view.
+ * 
+ * TODO: The code isn't working yet, just a test implementation.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DragListener /* implements DragSourceListener */
 {
 

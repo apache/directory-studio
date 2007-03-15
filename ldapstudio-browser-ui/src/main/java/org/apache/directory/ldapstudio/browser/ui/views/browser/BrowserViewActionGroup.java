@@ -239,17 +239,10 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             linkWithEditorAction.dispose();
             linkWithEditorAction = null;
 
-            showDITAction.dispose();
             showDITAction = null;
-            showSearchesAction.dispose();
             showSearchesAction = null;
-            showBookmarksAction.dispose();
             showBookmarksAction = null;
-            showDirectoryMetadataEntriesAction.dispose();
             showDirectoryMetadataEntriesAction = null;
-            openBrowserPreferencePageAction.dispose();
-            openBrowserPreferencePageAction = null;
-
             openBrowserPreferencePageAction = null;
         }
 

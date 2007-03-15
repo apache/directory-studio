@@ -28,28 +28,36 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * The OpenBrowserPreferencePageAction is used to open the 
+ * preference dialog with the browser's preference page.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenBrowserPreferencePageAction extends Action
 {
 
+    /**
+     * Creates a new instance of OpenBrowserPreferencePageAction.
+     */
     public OpenBrowserPreferencePageAction()
     {
         super.setText( "Preferences..." );
-        super.setToolTipText( "Preferences..." );
-        super.setEnabled( true );
+        setToolTipText( "Preferences..." );
+        setEnabled( true );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         Shell shell = Display.getCurrent().getActiveShell();
         String pageId = BrowserUIConstants.PREFERENCEPAGEID_BROWSER;
         PreferencesUtil.createPreferenceDialogOn( shell, pageId, new String[]
             { pageId }, null ).open();
-    }
-
-
-    public void dispose()
-    {
     }
 
 }

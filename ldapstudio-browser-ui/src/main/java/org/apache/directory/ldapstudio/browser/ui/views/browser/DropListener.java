@@ -20,7 +20,17 @@
 
 package org.apache.directory.ldapstudio.browser.ui.views.browser;
 
+import org.eclipse.swt.dnd.DropTargetListener;
 
+
+/**
+ * This class implements the {@link DropTargetListener} for the browser view.
+ * 
+ * TODO: The code isn't working yet, just a test implementation.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DropListener /* implements DropTargetListener, ModelModifier */
 {/*
  * 
