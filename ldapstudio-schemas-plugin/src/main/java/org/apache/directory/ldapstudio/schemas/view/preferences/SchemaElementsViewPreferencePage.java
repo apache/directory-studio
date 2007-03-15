@@ -44,15 +44,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 /**
- * This class implements the Preference page for the Hierarchy View
+ * This class implements the Preference page for the Schema Elements View
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyViewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
+public class SchemaElementsViewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
     /** The preference page ID */
-    public static final String ID = Activator.PLUGIN_ID + ".preferences.hierarchyView";
+    public static final String ID = Activator.PLUGIN_ID + ".preferences.schemaElementsView";
 
     /** The First Name category */
     private static final String FIRST_NAME = "First Name";
@@ -74,13 +74,13 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
 
     /**
-     * Creates a new instance of HierarchyViewPreferencePage.
+     * Creates a new instance of SchemaElementsViewPreferencePage.
      */
-    public HierarchyViewPreferencePage()
+    public SchemaElementsViewPreferencePage()
     {
         super();
         super.setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the Schemas Editor Hierarchy View" );
+        super.setDescription( "General settings for the Schema Elements View of the Schemas Editor Plugin" );
     }
 
 
@@ -271,17 +271,17 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        labelCombo.select( store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL ) );
-        limitButton.setSelection( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE ) );
+        labelCombo.select( store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL ) );
+        limitButton.setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE ) );
         lengthText.setEnabled( limitButton.getSelection() );
-        lengthText.setText( store.getString( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH ) );
+        lengthText.setText( store.getString( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH ) );
 
-        secondaryLabelButtonDisplay.setSelection( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) );
-        secondaryLabelCombo.select( store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL ) );
-        secondaryLabelLimitButton.setSelection( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
+        secondaryLabelButtonDisplay.setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY ) );
+        secondaryLabelCombo.select( store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL ) );
+        secondaryLabelLimitButton.setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
         secondaryLabelLengthText
-            .setText( store.getString( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
-        if ( store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) )
+            .setText( store.getString( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
+        if ( store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY ) )
         {
             secondaryLabelCombo.setEnabled( true );
             secondaryLabelLimitButton.setEnabled( true );
@@ -345,18 +345,18 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        labelCombo.select( store.getDefaultInt( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL ) );
-        limitButton.setSelection( store.getDefaultBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE ) );
+        labelCombo.select( store.getDefaultInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL ) );
+        limitButton.setSelection( store.getDefaultBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE ) );
         lengthText.setEnabled( limitButton.getSelection() );
-        lengthText.setText( store.getDefaultString( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH ) );
+        lengthText.setText( store.getDefaultString( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH ) );
 
         secondaryLabelButtonDisplay.setSelection( store
-            .getDefaultBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY ) );
-        secondaryLabelCombo.select( store.getDefaultInt( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL ) );
+            .getDefaultBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY ) );
+        secondaryLabelCombo.select( store.getDefaultInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL ) );
         secondaryLabelLimitButton.setSelection( store
-            .getDefaultBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
+            .getDefaultBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
         secondaryLabelLengthText.setText( store
-            .getDefaultString( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
+            .getDefaultString( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
 
         if ( secondaryLabelButtonDisplay.getSelection() )
         {
@@ -384,34 +384,34 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( OID ) )
         {
-            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
         }
-        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE, limitButton.getSelection() );
-        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, lengthText.getText() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE, limitButton.getSelection() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH, lengthText.getText() );
 
-        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, secondaryLabelButtonDisplay.getSelection() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY, secondaryLabelButtonDisplay.getSelection() );
         if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME );
         }
         else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( OID ) )
         {
-            store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
         }
-        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, secondaryLabelLimitButton.getSelection() );
-        store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, secondaryLabelLengthText.getText() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE, secondaryLabelLimitButton.getSelection() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, secondaryLabelLengthText.getText() );
 
         return true;
     }

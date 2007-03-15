@@ -53,24 +53,24 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        // Hierarchy View Preference Page
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL,
-            PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE, true );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, true );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL,
-            PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" );
+        // Schema Elements View Preference Page
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL,
+            PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE, true );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY, true );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL,
+            PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" );
 
-        // Hierarchy View Sorting
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING,
-            PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY,
-            PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER,
-            PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING );
+        // Schema Elements View Sorting
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING,
+            PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY,
+            PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER,
+            PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_ASCENDING );
 
         // Schemas View Preference Page
         store.setDefault( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL,

@@ -35,10 +35,10 @@
       <view
             allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView"
-            icon="ressources/icons/hierarchy_view.png"
-            id="org.apache.directory.ldapstudio.schemas.view.HierarchyView"
-            name="%ldapstudio-schemas-plugin.views.hierarchy.name"/>
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView"
+            icon="ressources/icons/schema_elements_view.png"
+            id="org.apache.directory.ldapstudio.schemas.view.SchemaElementsView"
+            name="%ldapstudio-schemas-plugin.views.schemaElements.name"/>
       <view
             category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView"
@@ -175,9 +175,9 @@
             name="%ldapstudio-schemas-plugin.preferencepages.general.name"/>
       <page
             category="org.apache.directory.ldapstudio.schemas.preferences.general"
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage"
-            id="org.apache.directory.ldapstudio.schemas.preferences.hierarchyView"
-            name="Hierarchy View"/>
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemaElementsViewPreferencePage"
+            id="org.apache.directory.ldapstudio.schemas.preferences.schemaElementsView"
+            name="Schema Elements View"/>
       <page
             category="org.apache.directory.ldapstudio.schemas.preferences.general"
             class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage"

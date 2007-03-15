@@ -47,12 +47,12 @@ import org.eclipse.jface.viewers.Viewer;
 
 
 /**
- * This class implements the content provider for the Hierarchy View.
+ * This class implements the content provider for the Schema Elements View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
+public class SchemaElementsContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
     /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
@@ -74,12 +74,12 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
 
 
     /**
-     * Creates a new instance of HierarchyViewContentProvider.
+     * Creates a new instance of SchemaElementsContentProvider.
      *
      * @param schemaPool
      *      the associated Schema Pool
      */
-    public HierarchyViewContentProvider()
+    public SchemaElementsContentProvider()
     {
         this.schemaPool = SchemaPool.getInstance();
         store = Activator.getDefault().getPreferenceStore();
@@ -108,9 +108,9 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     {
         List<ITreeNode> children = new ArrayList<ITreeNode>();
 
-        int group = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING );
-        int sortBy = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY );
-        int sortOrder = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER );
+        int group = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING );
+        int sortBy = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY );
+        int sortOrder = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER );
 
         if ( parentElement instanceof ObjectClassWrapper )
         {
@@ -142,17 +142,17 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             }
 
             // Sort by
-            if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+            if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
             {
                 Collections.sort( children, firstNameSorter );
             }
-            else if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+            else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
             {
                 Collections.sort( children, oidSorter );
             }
 
             // Sort order
-            if ( sortOrder == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+            if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
             {
                 Collections.reverse( children );
             }
@@ -187,17 +187,17 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             }
 
             // Sort by
-            if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+            if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
             {
                 Collections.sort( children, firstNameSorter );
             }
-            else if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+            else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
             {
                 Collections.sort( children, oidSorter );
             }
 
             // Sort order
-            if ( sortOrder == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+            if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
             {
                 Collections.reverse( children );
             }
@@ -259,22 +259,22 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     }
                 }
 
-                if ( group == PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST )
+                if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST )
                 {
                     // Sort by
-                    if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
                     {
                         Collections.sort( atList, firstNameSorter );
                         Collections.sort( ocList, firstNameSorter );
                     }
-                    else if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
                     {
                         Collections.sort( atList, oidSorter );
                         Collections.sort( ocList, oidSorter );
                     }
 
                     // Sort Order
-                    if ( sortOrder == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
                     {
                         Collections.reverse( atList );
                         Collections.reverse( ocList );
@@ -284,22 +284,22 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     children.addAll( atList );
                     children.addAll( ocList );
                 }
-                else if ( group == PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST )
+                else if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_OCFIRST )
                 {
                     // Sort by
-                    if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
                     {
                         Collections.sort( atList, firstNameSorter );
                         Collections.sort( ocList, firstNameSorter );
                     }
-                    else if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
                     {
                         Collections.sort( atList, oidSorter );
                         Collections.sort( ocList, oidSorter );
                     }
 
                     // Sort Order
-                    if ( sortOrder == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
                     {
                         Collections.reverse( atList );
                         Collections.reverse( ocList );
@@ -309,24 +309,24 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     children.addAll( ocList );
                     children.addAll( atList );
                 }
-                else if ( group == PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING_MIXED )
+                else if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_MIXED )
                 {
                     // Group
                     children.addAll( atList );
                     children.addAll( ocList );
 
                     // Sort by
-                    if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME )
+                    if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
                     {
                         Collections.sort( children, firstNameSorter );
                     }
-                    else if ( sortBy == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY_OID )
+                    else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
                     {
                         Collections.sort( children, oidSorter );
                     }
 
                     // Sort order
-                    if ( sortOrder == PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING )
+                    if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
                     {
                         Collections.reverse( children );
                     }
@@ -392,7 +392,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     public void bindToTreeViewer( TreeViewer viewer )
     {
         viewer.setContentProvider( this );
-        viewer.setLabelProvider( new DecoratingLabelProvider( new HierarchyViewLabelProvider(), Activator.getDefault()
+        viewer.setLabelProvider( new DecoratingLabelProvider( new SchemaElementsViewLabelProvider(), Activator.getDefault()
             .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
 
         IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$

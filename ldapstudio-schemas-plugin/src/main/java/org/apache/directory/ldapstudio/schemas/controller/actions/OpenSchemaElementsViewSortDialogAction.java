@@ -23,19 +23,19 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyViewSortDialog;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasElementsSortDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This action opens the Sort Dialog of the Hierarchy View.
+ * This action opens the Sort Dialog of the Schema Elements View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenHierarchyViewSortDialogAction extends Action
+public class OpenSchemaElementsViewSortDialogAction extends Action
 {
 
     /**
@@ -44,11 +44,11 @@ public class OpenHierarchyViewSortDialogAction extends Action
      * @param view
      *      the associated view
      */
-    public OpenHierarchyViewSortDialogAction()
+    public OpenSchemaElementsViewSortDialogAction()
     {
         super( "Sorting..." );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_HIERARCHY_VIEW_SORT_DIALOG );
+        setId( PluginConstants.CMD_SCHEMA_ELEMENTS_VIEW_SORT_DIALOG );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SORT ) );
         setEnabled( true );
     }
@@ -59,7 +59,7 @@ public class OpenHierarchyViewSortDialogAction extends Action
      */
     public void run()
     {
-        HierarchyViewSortDialog hvsd = new HierarchyViewSortDialog( PlatformUI.getWorkbench().getDisplay()
+        SchemasElementsSortDialog hvsd = new SchemasElementsSortDialog( PlatformUI.getWorkbench().getDisplay()
             .getActiveShell() );
         hvsd.open();
     }

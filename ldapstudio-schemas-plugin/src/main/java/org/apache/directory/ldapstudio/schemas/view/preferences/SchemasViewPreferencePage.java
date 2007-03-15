@@ -70,13 +70,13 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
 
     /**
-     * Creates a new instance of HierarchyViewPreferencePage.
+     * Creates a new instance of SchemasViewPreferencePage.
      */
     public SchemasViewPreferencePage()
     {
         super();
         super.setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the Schemas Editor Schemas View" );
+        super.setDescription( "General settings for the Schemas View of the Schemas Editor Plugin" );
     }
 
 

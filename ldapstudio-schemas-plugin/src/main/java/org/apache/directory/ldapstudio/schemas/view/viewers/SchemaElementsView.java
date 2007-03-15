@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.controller.HierarchyViewController;
+import org.apache.directory.ldapstudio.schemas.controller.SchemaElementsController;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -35,21 +35,21 @@ import org.eclipse.ui.part.ViewPart;
 
 
 /**
- * This class implements the Hierarchy View where all the hierarchy of object classes and attribute types is displayed.
+ * This class implements the Schema Elements View where all the object classes and attribute types are displayed.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyView extends ViewPart implements PoolListener
+public class SchemaElementsView extends ViewPart implements PoolListener
 {
     /** The view's ID */
-    public static final String ID = Activator.PLUGIN_ID + ".view.HierarchyView"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".view.SchemaElementsView"; //$NON-NLS-1$
 
     /** The tree viewer */
     private TreeViewer viewer;
 
     /** The content provider */
-    private HierarchyViewContentProvider contentProvider;
+    private SchemaElementsContentProvider contentProvider;
 
 
     /* (non-Javadoc)
@@ -67,7 +67,7 @@ public class HierarchyView extends ViewPart implements PoolListener
         pool.addListener( this );
 
         // Adding the controller
-        new HierarchyViewController( this );
+        new SchemaElementsController( this );
     }
 
 
@@ -80,7 +80,7 @@ public class HierarchyView extends ViewPart implements PoolListener
     private void initViewer( Composite parent )
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new HierarchyViewContentProvider();
+        contentProvider = new SchemaElementsContentProvider();
         contentProvider.bindToTreeViewer( viewer );
     }
 

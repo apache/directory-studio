@@ -26,12 +26,12 @@ import java.util.List;
 
 
 /**
- * This class is used to represent the root entry of the TreeViewer used in the Hierarchy View.
+ * This class is used to represent the root entry of the TreeViewer used in the Schema Elements View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyViewRoot extends TreeNode
+public class SchemaElementsViewRoot extends TreeNode
 {
     /** The AT children */
     private List<AttributeTypeWrapper> aTChildren;
@@ -44,7 +44,7 @@ public class HierarchyViewRoot extends TreeNode
      * Creates a new instance of SchemasViewRoot.
      *
      */
-    public HierarchyViewRoot()
+    public SchemaElementsViewRoot()
     {
         super( null );
     }
@@ -55,7 +55,7 @@ public class HierarchyViewRoot extends TreeNode
      */
     public String toString()
     {
-        return "HierarchyViewRoot";
+        return "SchemaElementsViewRoot";
     }
 
 

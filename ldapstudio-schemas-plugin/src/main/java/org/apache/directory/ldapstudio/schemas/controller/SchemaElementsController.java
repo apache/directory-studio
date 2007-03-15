@@ -29,14 +29,14 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeTypesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorHierarchyView;
-import org.apache.directory.ldapstudio.schemas.controller.actions.OpenHierarchyViewPreferencesAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.OpenHierarchyViewSortDialogAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemaElementsView;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpencSchemaElementsViewPreferencesAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewSortDialogAction;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
@@ -57,35 +57,35 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the Controller for the Hierarchy View.
+ * This class implements the Controller for the Schema Elements View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyViewController
+public class SchemaElementsController
 {
     /** The logger */
-    private static Logger logger = Logger.getLogger( HierarchyViewController.class );
+    private static Logger logger = Logger.getLogger( SchemaElementsController.class );
     
     /** The authorized Preferences keys*/
     List<String> authorizedPrefs;
 
     /** The associated view */
-    private HierarchyView view;
+    private SchemaElementsView view;
 
     // The Actions
     private HideObjectClassesAction hideObjectClasses;
     private HideAttributeTypesAction hideAttributeTypes;
     private CollapseAllAction collapseAll;
-    private LinkWithEditorHierarchyView linkWithEditor;
-    private OpenHierarchyViewSortDialogAction openSortDialog;
-    private OpenHierarchyViewPreferencesAction openPreferencePage;
+    private LinkWithEditorSchemaElementsView linkWithEditor;
+    private OpenSchemaElementsViewSortDialogAction openSortDialog;
+    private OpencSchemaElementsViewPreferencesAction openPreferencePage;
 
 
     /**
-     * Creates a new instance of HierarchyViewController.
+     * Creates a new instance of SchemaElementsController.
      */
-    public HierarchyViewController( HierarchyView view )
+    public SchemaElementsController( SchemaElementsView view )
     {
         this.view = view;
         
@@ -101,16 +101,16 @@ public class HierarchyViewController
     private void initAuthorizedPrefs()
     {
         authorizedPrefs = new ArrayList<String>();
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY );
-        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_ORDER );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER );
     }
 
 
@@ -122,9 +122,9 @@ public class HierarchyViewController
         hideObjectClasses = new HideObjectClassesAction( view.getViewer() );
         hideAttributeTypes = new HideAttributeTypesAction( view.getViewer() );
         collapseAll = new CollapseAllAction( view.getViewer() );
-        linkWithEditor = new LinkWithEditorHierarchyView( view );
-        openSortDialog = new OpenHierarchyViewSortDialogAction();
-        openPreferencePage = new OpenHierarchyViewPreferencesAction();
+        linkWithEditor = new LinkWithEditorSchemaElementsView( view );
+        openSortDialog = new OpenSchemaElementsViewSortDialogAction();
+        openPreferencePage = new OpencSchemaElementsViewPreferencesAction();
     }
 
 
@@ -167,8 +167,8 @@ public class HierarchyViewController
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-                HierarchyView view = ( HierarchyView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                    .getActivePage().findView( HierarchyView.ID );
+                SchemaElementsView view = ( SchemaElementsView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                    .getActivePage().findView( SchemaElementsView.ID );
                 TreeViewer viewer = view.getViewer();
 
                 // What we get from the treeViewer is a StructuredSelection
@@ -229,7 +229,7 @@ public class HierarchyViewController
             { 
                 if ( authorizedPrefs.contains( event.getProperty() ) )
                 {
-                    if ( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING == event.getProperty() )
+                    if ( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING == event.getProperty() )
                     {
                         view.completeRefresh();
                     }

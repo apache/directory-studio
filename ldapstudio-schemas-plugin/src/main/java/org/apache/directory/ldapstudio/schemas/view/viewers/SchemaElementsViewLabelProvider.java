@@ -34,21 +34,21 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the label provider for the Hierarchy View.
+ * This class implements the label provider for the Schema Elements View.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyViewLabelProvider extends LabelProvider
+public class SchemaElementsViewLabelProvider extends LabelProvider
 {
     /** The preferences store */
     private IPreferenceStore store;
 
 
     /**
-     * Creates a new instance of HierarchyViewLabelProvider.
+     * Creates a new instance of SchemaElementsViewLabelProvider.
      */
-    public HierarchyViewLabelProvider()
+    public SchemaElementsViewLabelProvider()
     {
         store = Activator.getDefault().getPreferenceStore();
     }
@@ -61,28 +61,28 @@ public class HierarchyViewLabelProvider extends LabelProvider
     {
         String label = "";
 
-        int labelValue = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL );
-        boolean abbreviate = store.getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE );
-        int abbreviateMaxLength = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH );
+        int labelValue = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL );
+        boolean abbreviate = store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE );
+        int abbreviateMaxLength = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH );
         boolean secondaryLabelDisplay = store
-            .getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY );
-        int secondaryLabelValue = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL );
+            .getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY );
+        int secondaryLabelValue = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL );
         boolean secondaryLabelAbbreviate = store
-            .getBoolean( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE );
+            .getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE );
         int secondaryLabelAbbreviateMaxLength = store
-            .getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+            .getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
 
         if ( obj instanceof AttributeTypeWrapper )
         {
-            if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+            if ( labelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME )
             {
                 label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
             }
-            else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES )
             {
                 label = concateNames( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
             }
-            else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID )
             {
                 label = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getOid();
             }
@@ -94,15 +94,15 @@ public class HierarchyViewLabelProvider extends LabelProvider
         }
         else if ( obj instanceof ObjectClassWrapper )
         {
-            if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+            if ( labelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME )
             {
                 label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
             }
-            else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES )
             {
                 label = concateNames( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
             }
-            else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
+            else if ( labelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID )
             {
                 label = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getOid();
             }
@@ -128,30 +128,30 @@ public class HierarchyViewLabelProvider extends LabelProvider
             String secondaryLabel = "";
             if ( obj instanceof AttributeTypeWrapper )
             {
-                if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+                if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME )
                 {
                     secondaryLabel = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames()[0];
                 }
-                else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+                else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES )
                 {
                     secondaryLabel = concateNames( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
                 }
-                else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
+                else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID )
                 {
                     secondaryLabel = ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getOid();
                 }
             }
             else if ( obj instanceof ObjectClassWrapper )
             {
-                if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME )
+                if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME )
                 {
                     secondaryLabel = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames()[0];
                 }
-                else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
+                else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES )
                 {
                     secondaryLabel = concateNames( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
                 }
-                else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
+                else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID )
                 {
                     secondaryLabel = ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getOid();
                 }

@@ -28,7 +28,7 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -54,14 +54,14 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class LinkWithEditorHierarchyView extends Action
+public class LinkWithEditorSchemaElementsView extends Action
 {
     /** The String for storing the checked state of the action */
-    private static final String LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY = LinkWithEditorHierarchyView.class.getName()
+    private static final String LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY = LinkWithEditorSchemaElementsView.class.getName()
         + ".dialogsettingkey";
 
     /** The associated view */
-    private HierarchyView hierarchyView;
+    private SchemaElementsView view;
     
     /** The Schema Pool */
     private SchemaPool schemaPool;
@@ -78,9 +78,9 @@ public class LinkWithEditorHierarchyView extends Action
 
             if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
             {
-                hierarchyView.getSite().getPage().removePostSelectionListener( viewListener );
+                view.getSite().getPage().removePostSelectionListener( viewListener );
                 linkViewWithEditor( partRef.getPartName(), id );
-                hierarchyView.getSite().getPage().addPostSelectionListener( viewListener );
+                view.getSite().getPage().addPostSelectionListener( viewListener );
             }
         }
 
@@ -163,20 +163,20 @@ public class LinkWithEditorHierarchyView extends Action
 
 
     /**
-     * Creates a new instance of LinkWithEditorHierarchyView.
+     * Creates a new instance of LinkWithEditorSchemaElementsView.
      *
      * @param view
      *      the associated view
      */
-    public LinkWithEditorHierarchyView( HierarchyView view )
+    public LinkWithEditorSchemaElementsView( SchemaElementsView view )
     {
         super( "Link with Editor", AS_CHECK_BOX );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_LINK_WITH_EDITOR_HIERARCHY_VIEW );
+        setId( PluginConstants.CMD_LINK_WITH_EDITOR_SCHEMA_ELEMENTS_VIEW );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
-        hierarchyView = view;
+        this.view = view;
         schemaPool = SchemaPool.getInstance();
 
         // Setting up the default key value (if needed)
@@ -192,7 +192,7 @@ public class LinkWithEditorHierarchyView extends Action
         if ( isChecked() )
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( editorListener );
-            hierarchyView.getSite().getPage().addPostSelectionListener( viewListener );
+            view.getSite().getPage().addPostSelectionListener( viewListener );
         }
     }
 
@@ -222,13 +222,13 @@ public class LinkWithEditorHierarchyView extends Action
                 linkViewWithEditor( editor.getPartName(), AttributeTypeFormEditor.ID );
             }
 
-            hierarchyView.getSite().getPage().addPostSelectionListener( viewListener );
+            view.getSite().getPage().addPostSelectionListener( viewListener );
         }
         else
         // Disabling the listeners
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().removePartListener( editorListener );
-            hierarchyView.getSite().getPage().removePostSelectionListener( viewListener );
+            view.getSite().getPage().removePostSelectionListener( viewListener );
         }
     }
 
@@ -253,7 +253,7 @@ public class LinkWithEditorHierarchyView extends Action
             wrapper = new AttributeTypeWrapper( at, null );
             structuredSelection = new StructuredSelection( wrapper );
 
-            hierarchyView.getViewer().setSelection( structuredSelection, true );
+            view.getViewer().setSelection( structuredSelection, true );
         }
         else if ( editorID.equals( ObjectClassFormEditor.ID ) )
         {
@@ -267,20 +267,20 @@ public class LinkWithEditorHierarchyView extends Action
             return;
         }
 
-        Object foundItem = hierarchyView.getViewer().testFindItem( wrapper );
+        Object foundItem = view.getViewer().testFindItem( wrapper );
         if ( foundItem != null ) // The node we are looking for is already loaded in the TreeViewer
         {
-            hierarchyView.getViewer().setSelection( structuredSelection, true );
+            view.getViewer().setSelection( structuredSelection, true );
         }
         else
         // The node we are looking for is not yet loaded in the TreeViewer, we have to find and load it.
         {
-            ITreeNode foundElement = hierarchyView.findElementInTree( wrapper );
+            ITreeNode foundElement = view.findElementInTree( wrapper );
 
             if ( foundElement != null )
             {
                 expandFromTopToBottom( foundElement );
-                hierarchyView.getViewer().setSelection( structuredSelection );
+                view.getViewer().setSelection( structuredSelection );
             }
         }
     }
@@ -297,28 +297,28 @@ public class LinkWithEditorHierarchyView extends Action
         if ( element instanceof SchemaWrapper )
         {
             SchemaWrapper schemaWrapper = ( SchemaWrapper ) element;
-            if ( !hierarchyView.getViewer().getExpandedState( schemaWrapper ) )
+            if ( !view.getViewer().getExpandedState( schemaWrapper ) )
             {
-                hierarchyView.getViewer().setExpandedState( schemaWrapper, true );
+                view.getViewer().setExpandedState( schemaWrapper, true );
             }
         }
         else if ( element instanceof ObjectClassWrapper )
         {
             ObjectClassWrapper objectClassWrapper = ( ObjectClassWrapper ) element;
             expandFromTopToBottom( objectClassWrapper.getParent() );
-            hierarchyView.getViewer().setExpandedState( objectClassWrapper, true );
+            view.getViewer().setExpandedState( objectClassWrapper, true );
         }
         else if ( element instanceof AttributeTypeWrapper )
         {
             AttributeTypeWrapper attributeTypeWrapper = ( AttributeTypeWrapper ) element;
             expandFromTopToBottom( attributeTypeWrapper.getParent() );
-            hierarchyView.getViewer().setExpandedState( attributeTypeWrapper, true );
+            view.getViewer().setExpandedState( attributeTypeWrapper, true );
         }
         else if ( element instanceof IntermediateNode )
         {
             IntermediateNode intermediateNode = ( IntermediateNode ) element;
             expandFromTopToBottom( intermediateNode.getParent() );
-            hierarchyView.getViewer().setExpandedState( intermediateNode, true );
+            view.getViewer().setExpandedState( intermediateNode, true );
         }
     }
 

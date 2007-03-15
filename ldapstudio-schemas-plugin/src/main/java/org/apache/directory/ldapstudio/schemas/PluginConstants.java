@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.schemas;
 
 
-import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaElementsViewPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
 
 
@@ -33,74 +33,74 @@ import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPrefe
  */
 public interface PluginConstants
 {
-    // Preferences - Hierarchy View
-    /** The preference ID for Hierarchy View Label */
-    public static final String PREFS_HIERARCHY_VIEW_LABEL = HierarchyViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
+    // Preferences - Schema Elements View
+    /** The preference ID for Schema Elements View Label */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_LABEL = SchemaElementsViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
 
-    /** The preference value for Hierarchy View First Name label */
-    public static final int PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME = 0;
+    /** The preference value for Schema Elements View First Name label */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME = 0;
 
-    /** The preference value for Hierarchy View All Aliases label */
-    public static final int PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES = 1;
+    /** The preference value for Schema Elements View All Aliases label */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES = 1;
 
-    /** The preference value for Hierarchy View OID label */
-    public static final int PREFS_HIERARCHY_VIEW_LABEL_OID = 2;
+    /** The preference value for Schema Elements View OID label */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID = 2;
 
-    /** The preference ID for Hierarchy View Abbreviate */
-    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE = HierarchyViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
+    /** The preference ID for Schema Elements View Abbreviate */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE = SchemaElementsViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
 
-    /** The preference ID for Hierarchy View Abbreviate Max Length*/
-    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
+    /** The preference ID for Schema Elements View Abbreviate Max Length*/
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH = SchemaElementsViewPreferencePage.ID
         + ".label.abbreviate.maxLength"; //$NON-NLS-1$
 
-    /** The preference ID for Hierarchy View Display Secondary Label */
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY = HierarchyViewPreferencePage.ID
+    /** The preference ID for Schema Elements View Display Secondary Label */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY = SchemaElementsViewPreferencePage.ID
         + ".secondaryLabel.display"; //$NON-NLS-1$
 
-    /** The preference ID for Hierarchy View Secondary Label */
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL = HierarchyViewPreferencePage.ID
+    /** The preference ID for Schema Elements View Secondary Label */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL = SchemaElementsViewPreferencePage.ID
         + ".secondaryLabel.labelValue"; //$NON-NLS-1$
 
-    /** The preference ID for Hierarchy View Abbreviate Secondary Label */
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE = HierarchyViewPreferencePage.ID
+    /** The preference ID for Schema Elements View Abbreviate Secondary Label */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE = SchemaElementsViewPreferencePage.ID
         + ".secondaryLabel.abbreviate"; //$NON-NLS-1$
 
-    /** The preference ID for Hierarchy View Abbreviate Secondary Label Max Length*/
-    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
+    /** The preference ID for Schema Elements View Abbreviate Secondary Label Max Length*/
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = SchemaElementsViewPreferencePage.ID
         + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
 
-    /** The preference ID for Hierarchy View Grouping */
-    public static final String PREFS_HIERARCHY_VIEW_GROUPING = Activator.PLUGIN_ID
-        + ".preferences.HierarchyView.grouping";
+    /** The preference ID for Schema Elements View Grouping */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING = Activator.PLUGIN_ID
+        + ".preferences.SchemaElementsView.grouping";
 
-    /** The preference value for Hierarchy View Grouping 'attribute types first' */
-    public static final int PREFS_HIERARCHY_VIEW_GROUPING_ATFIRST = 0;
+    /** The preference value for Schema Elements View Grouping 'attribute types first' */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST = 0;
 
-    /** The preference value for Hierarchy View Grouping 'object classes first' */
-    public static final int PREFS_HIERARCHY_VIEW_GROUPING_OCFIRST = 1;
+    /** The preference value for Schema Elements View Grouping 'object classes first' */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_OCFIRST = 1;
 
-    /** The preference value for Hierarchy View Grouping 'mixed' */
-    public static final int PREFS_HIERARCHY_VIEW_GROUPING_MIXED = 2;
+    /** The preference value for Schema Elements View Grouping 'mixed' */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_MIXED = 2;
 
-    /** The preference ID for Hierarchy View Sorting By */
-    public static final String PREFS_HIERARCHY_VIEW_SORTING_BY = Activator.PLUGIN_ID
-        + ".preferences.HierarchyView.sortingBy";
+    /** The preference ID for Schema Elements View Sorting By */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY = Activator.PLUGIN_ID
+        + ".preferences.SchemaElementsView.sortingBy";
 
-    /** The preference value for Hierarchy View Sorting 'First Name' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_BY_FIRSTNAME = 0;
+    /** The preference value for Schema Elements View Sorting 'First Name' */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME = 0;
 
-    /** The prefence value for Hierarchy View Sorting 'OID' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_BY_OID = 1;
+    /** The prefence value for Schema Elements View Sorting 'OID' */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID = 1;
 
-    /** The preference ID for Hierarchy View Sorting Order */
-    public static final String PREFS_HIERARCHY_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
-        + ".preferences.HierarchyView.sortingOrder";
+    /** The preference ID for Schema Elements View Sorting Order */
+    public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
+        + ".preferences.SchemaElementsView.sortingOrder";
 
-    /** The preference value for Hierarchy View Sorting 'ascending' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_ORDER_ASCENDING = 0;
+    /** The preference value for Schema Elements View Sorting 'ascending' */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_ASCENDING = 0;
 
-    /** The prefence value for Hierarchy View Sorting 'descending' */
-    public static final int PREFS_HIERARCHY_VIEW_SORTING_ORDER_DESCENDING = 1;
+    /** The prefence value for Schema Elements View Sorting 'descending' */
+    public static final int PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING = 1;
 
     // Preferences - Schemas View
     /** The preference ID for Schemas View Label */
@@ -207,11 +207,11 @@ public interface PluginConstants
     public static final String CMD_ERASE_SEARCH = Activator.PLUGIN_ID + ".cmd.EraseSearch"; //$NON-NLS-1$
     public static final String CMD_HIDE_ATTRIBUTE_TYPES = Activator.PLUGIN_ID + ".cmd.HideAttributesTypes"; //$NON-NLS-1$
     public static final String CMD_HIDE_OBJECT_CLASSES = Activator.PLUGIN_ID + ".cmd.HideObjectClasses"; //$NON-NLS-1$
-    public static final String CMD_LINK_WITH_EDITOR_HIERARCHY_VIEW = Activator.PLUGIN_ID + ".cmd.LinkWithEditorHierarchyView"; //$NON-NLS-1$
+    public static final String CMD_LINK_WITH_EDITOR_SCHEMA_ELEMENTS_VIEW = Activator.PLUGIN_ID + ".cmd.LinkWithEditorSchemaElementsView"; //$NON-NLS-1$
     public static final String CMD_LINK_WITH_EDITOR_SCHEMA_VIEW = Activator.PLUGIN_ID + ".cmd.LinkWithEditorSchemasView"; //$NON-NLS-1$
     public static final String CMD_OPEN_LOCAL = Activator.PLUGIN_ID + ".cmd.OpenLocal"; //$NON-NLS-1$
-    public static final String CMD_HIERARCHY_VIEW_PREFERENCES = Activator.PLUGIN_ID + ".cmd.OpenHierarchyViewPreferences"; //$NON-NLS-1$
-    public static final String CMD_HIERARCHY_VIEW_SORT_DIALOG = Activator.PLUGIN_ID + ".cmd.OpenHierarchyViewSortDialog"; //$NON-NLS-1$
+    public static final String CMD_SCHEMA_ELEMENTS_VIEW_PREFERENCES = Activator.PLUGIN_ID + ".cmd.OpenSchemaElementsViewPreferences"; //$NON-NLS-1$
+    public static final String CMD_SCHEMA_ELEMENTS_VIEW_SORT_DIALOG = Activator.PLUGIN_ID + ".cmd.OpenSchemaElementsViewSortDialog"; //$NON-NLS-1$
     public static final String CMD_OPEN_SCHEMA_SOURCE_CODE = Activator.PLUGIN_ID + ".cmd.OpenSchemaSourceSode"; //$NON-NLS-1$
     public static final String CMD_SCHEMAS_VIEW_PREFERENCES = Activator.PLUGIN_ID + ".cmd.OpenSchemasViewPreferences"; //$NON-NLS-1$
     public static final String CMD_SCHEMAS_VIEW_SORT_DIALOG = Activator.PLUGIN_ID + ".cmd.OpenSchemasViewSortDialog"; //$NON-NLS-1$
