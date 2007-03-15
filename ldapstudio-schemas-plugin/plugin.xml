@@ -40,17 +40,26 @@
             id="org.apache.directory.ldapstudio.schemas.view.SchemaElementsView"
             name="%ldapstudio-schemas-plugin.views.schemaElements.name"/>
       <view
+            allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView"
             icon="ressources/icons/schemas_view.png"
             id="org.apache.directory.ldapstudio.schemas.view.SchemasView"
             name="%ldapstudio-schemas-plugin.views.schemas.name"/>
       <view
+            allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
             class="org.apache.directory.ldapstudio.schemas.view.viewers.SearchView"
             icon="ressources/icons/search.gif"
             id="org.apache.directory.ldapstudio.schemas.view.SearchView"
             name="%ldapstudio-schemas-plugin.views.search.name"/>
+      <view
+            allowMultiple="false"
+            category="org.apache.directory.ldapstudio.schemas.view.category"
+            class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView"
+            icon="ressources/icons/hierarchy_view.png"
+            id="org.apache.directory.ldapstudio.schemas.view.HierarchyView"
+            name="Hierarchy"/>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
