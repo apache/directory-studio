@@ -41,6 +41,8 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation opens the PasswordDialog.
      */
     protected boolean openDialog( Shell shell )
@@ -65,6 +67,8 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns information about the 
      * used hash algorithm. The value stored in directory
      * is only display when the showRawValues option is 
@@ -111,6 +115,8 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a PasswordValueEditorRawValueWrapper with empty 
      * password.
      */
@@ -121,6 +127,8 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a PasswordValueEditorRawValueWrapper.
      */
     public Object getRawValue( IValue value )
@@ -131,6 +139,8 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a PasswordValueEditorRawValueWrapper with 
      * null entry.
      */

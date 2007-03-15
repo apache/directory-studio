@@ -46,6 +46,9 @@ import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
 public abstract class AbstractDialogStringValueEditor extends AbstractDialogValueEditor
 {
 
+    /**
+     * Creates a new instance of AbstractDialogStringValueEditor.
+     */
     protected AbstractDialogStringValueEditor()
     {
         super();
@@ -53,6 +56,8 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation just returns the raw value
      */
     public String getDisplayValue( IValue value )
@@ -63,6 +68,8 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns IValue.EMPTY_STRING_VALUE if
      * the attribute is string.
      */
@@ -80,6 +87,8 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns the string value 
      * of the given value. 
      */
@@ -105,6 +114,8 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns the value itself if it is
      * of type String. If the value is of type byte[] then the binary
      * data is converted to a String using UTF-8 encoding.  
@@ -161,6 +172,8 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation always return the string value
      * as String.
      */
@@ -217,9 +230,6 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private final void modify( IAttribute attribute, Object newRawValue ) throws ModelModificationException
     {
         if ( attribute != null && newRawValue != null && newRawValue instanceof String )

@@ -40,6 +40,8 @@ public class HexValueEditor extends AbstractDialogBinaryValueEditor
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation opens the HexDialog.
      */
     protected boolean openDialog( Shell shell )

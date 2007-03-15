@@ -36,6 +36,8 @@ public class TextValueEditor extends AbstractDialogStringValueEditor
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation opens the TextDialog.
      */
     public boolean openDialog( Shell shell )

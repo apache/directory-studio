@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * A ValueEditor knows how to display and edit values of a LDAP attribute.
  * ValueEditors are used from the entry editor or search result editor 
- * to display values to edit values in a user-friendly way.  
+ * to display and edit values in a user-friendly way.  
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -119,10 +119,10 @@ public interface IValueEditor
      * could be used for editors handling connection-dependent values. 
      * 
      * @param connection the connection
-     * @param value the value either String or byte[]
+     * @param stringOrBinaryValue the value either String or byte[]
      * @return the raw value of the value or null
      */
-    public abstract Object getRawValue( IConnection connecton, Object stringOrBinaryValue );
+    public abstract Object getRawValue( IConnection connection, Object stringOrBinaryValue );
 
 
     /**
@@ -217,11 +217,11 @@ public interface IValueEditor
      * It is called from a ICellModfier if the attribute exists and the raw
      * value returned by the CellEditor is null.
      * 
-     * @param attributes
+     * @param attributeHierarchy the attribute hierarchy
      * @throws ModelModificationException
      * @deprecated This functionality will be removed from IValueEditor soon.
      */
-    public abstract void deleteAttribute( AttributeHierarchy ah ) throws ModelModificationException;
+    public abstract void deleteAttribute( AttributeHierarchy attributeHierarchy ) throws ModelModificationException;
 
 
     /**

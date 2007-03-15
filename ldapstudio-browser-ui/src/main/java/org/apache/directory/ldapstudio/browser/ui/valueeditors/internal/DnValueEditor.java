@@ -43,6 +43,8 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation opens the DnDialog.
      */
     protected boolean openDialog( Shell shell )
@@ -63,6 +65,8 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a DnValueEditorRawValueWrapper with the connection of 
      * the attribute hierarchy and a null DN if there are no values
      * in attributeHierarchy.
@@ -104,6 +108,8 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a DnValueEditorRawValueWrapper with the connection of 
      * the value and a DN build from the given value. 
      * 
@@ -132,6 +138,8 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a DnValueEditorRawValueWrapper with the given 
      * connection and a DN build from the given value.
      * 
@@ -159,6 +167,8 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns always the string value.
      * 
      * Reimplementation, because getRawValue() returns a 

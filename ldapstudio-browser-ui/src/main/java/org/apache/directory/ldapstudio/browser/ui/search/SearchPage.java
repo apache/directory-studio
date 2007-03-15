@@ -28,7 +28,6 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.SearchPageWrapper;
-
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -40,71 +39,110 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This class implements the {@link ISearchPage} to perform an LDAP search.
+ * It uses the {@link SearchPageWrapper} to render all UI elements. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyListener
 {
 
+    /** The search page container. */
     private ISearchPageContainer container;
 
+    /** The search. */
     private ISearch search;
 
+    /** The search page wrapper. */
     private SearchPageWrapper spw;
 
 
+    /**
+     * Gets the ID of the LDAP search page.
+     * 
+     * @return the ID of the LDAP search page
+     */
     public static String getId()
     {
         return SearchPage.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        this.spw.removeWidgetModifyListener( this );
+        spw.removeWidgetModifyListener( this );
         super.dispose();
     }
 
 
+    /**
+     * Creates a new instance of SearchPage.
+     */
     public SearchPage()
     {
-        super();
     }
 
 
+    /**
+     * Creates a new instance of SearchPage.
+     * 
+     * @param title the title
+     */
     public SearchPage( String title )
     {
         super( title );
     }
 
 
+    /**
+     * Creates a new instance of SearchPage.
+     * 
+     * @param title the title
+     * @param image the image
+     */
     public SearchPage( String title, ImageDescriptor image )
     {
         super( title, image );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performAction()
     {
-        this.spw.saveToSearch( this.search );
-        if ( this.search.getConnection() != null )
+        spw.saveToSearch( search );
+        if ( search.getConnection() != null )
         {
-            this.search.getConnection().getSearchManager().addSearch( this.search );
-            return this.spw.performSearch( this.search );
+            search.getConnection().getSearchManager().addSearch( search );
+            return spw.performSearch( search );
         }
 
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setContainer( ISearchPageContainer container )
     {
         this.container = container;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
-
         // declare search
-        this.search = SelectionUtils.getExampleSearch( this.container.getSelection() );
+        search = SelectionUtils.getExampleSearch( container.getSelection() );
 
         // create search page content
         GridLayout gl = new GridLayout();
@@ -116,11 +154,11 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
         parent.setLayoutData( gd );
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
-        this.spw = new SearchPageWrapper( SearchPageWrapper.NONE );
-        this.spw.createContents( composite );
-        this.spw.loadFromSearch( this.search );
-        this.spw.addWidgetModifyListener( this );
-        
+        spw = new SearchPageWrapper( SearchPageWrapper.NONE );
+        spw.createContents( composite );
+        spw.loadFromSearch( search );
+        spw.addWidgetModifyListener( this );
+
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_dialog" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
@@ -130,16 +168,22 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setVisible( boolean visible )
     {
-        this.container.setPerformActionEnabled( this.spw.isValid() );
+        container.setPerformActionEnabled( spw.isValid() );
         super.setVisible( visible );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
-        this.container.setPerformActionEnabled( this.spw.isValid() );
+        container.setPerformActionEnabled( spw.isValid() );
     }
 
 }

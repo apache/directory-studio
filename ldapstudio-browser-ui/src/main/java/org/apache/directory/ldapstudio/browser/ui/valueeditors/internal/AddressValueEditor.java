@@ -41,6 +41,8 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation opens the AddressDialog.
      */
     protected boolean openDialog( Shell shell )
@@ -60,6 +62,8 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementatiosn replaces the $ separators by commas.
      */
     public String getDisplayValue( IValue value )

@@ -233,7 +233,7 @@ public class ValueEditorManager
      * @param entry the entry
      * @param attributeType the attributge type
      * @return the current value editor
-     * @see getCurrentValueEditor( Schema, String )
+     * @see #getCurrentValueEditor( Schema, String )
      */
     public IValueEditor getCurrentValueEditor( IEntry entry, String attributeType )
     {
@@ -246,7 +246,7 @@ public class ValueEditorManager
      * 
      * @param value the value
      * @return the current value editor
-     * @see getCurrentValueEditor( Schema, String )
+     * @see #getCurrentValueEditor( Schema, String )
      */
     public IValueEditor getCurrentValueEditor( IValue value )
     {
@@ -276,7 +276,7 @@ public class ValueEditorManager
      * 
      * @param attributeHierarchy the attribute hierarchy
      * @return the current value editor
-     * @see getCurrentValueEditor( Schema, String )
+     * @see #getCurrentValueEditor( Schema, String )
      */
     public IValueEditor getCurrentValueEditor( AttributeHierarchy attributeHierarchy )
     {
@@ -396,9 +396,9 @@ public class ValueEditorManager
     /**
      * Returns alternative value editors for the given value. For now these
      * are the three default editors.
-     *
-     * @param objectClass the value
-     * @return lternative value editors
+     * 
+     * @param ah the attribute hierarchy
+     * @return alternative value editors
      */
     public IValueEditor[] getAlternativeValueEditors( AttributeHierarchy ah )
     {
@@ -491,8 +491,8 @@ public class ValueEditorManager
     /**
      * Creates and returns the value editors specified by value editors extensions.
      *
-     * @param parent
-     * @return
+     * @param parent the parent composite
+     * @return the value editors
      */
     private Collection<IValueEditor> createValueEditors( Composite parent )
     {
@@ -524,7 +524,7 @@ public class ValueEditorManager
     /**
      * Returns all value editor proxies specified by value editor extensions.
      *
-     * @return
+     * @return the value editor proxies
      */
     public static Collection<ValueEditorExtension> getValueEditorProxys()
     {
@@ -583,12 +583,23 @@ public class ValueEditorManager
      */
     public static class ValueEditorExtension
     {
+        
+        /** The name. */
         public String name = null;
+        
+        /** The icon. */
         public ImageDescriptor icon = null;
+        
+        /** The class name. */
         public String className = null;
+        
+        /** The syntax oids. */
         public Collection<String> syntaxOids = new ArrayList<String>( 3 );
+        
+        /** The attribute types. */
         public Collection<String> attributeTypes = new ArrayList<String>( 3 );
 
+        /** The configuration element. */
         private IConfigurationElement member = null;
     }
 

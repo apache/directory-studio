@@ -40,6 +40,8 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation opens the ImageDialog.
      */
     protected boolean openDialog( Shell shell )
@@ -62,6 +64,8 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns the image info text created by 
      * ImageDialog.getImageInfo().
      */

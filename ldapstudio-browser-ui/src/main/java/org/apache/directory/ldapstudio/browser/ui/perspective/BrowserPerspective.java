@@ -36,15 +36,30 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 
+/**
+ * This class implements the {@link IPerspectiveFactory} for the browser
+ * plugin. It is responsible for creating the perspective layout.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserPerspective implements IPerspectiveFactory
 {
 
+    /**
+     * Gets the ID of the browser perspective.
+     * 
+     * @return the ID of the browser perspective
+     */
     public static String getId()
     {
         return BrowserPerspective.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createInitialLayout( IPageLayout layout )
     {
         defineActions( layout );
@@ -55,9 +70,13 @@ public class BrowserPerspective implements IPerspectiveFactory
     }
 
 
+    /**
+     * Defines the actions in the "New..." menu and the "Show views..." menu.
+     * 
+     * @param layout the layout
+     */
     private void defineActions( IPageLayout layout )
     {
-
         // Add "new wizards".
         layout.addNewWizardShortcut( NewConnectionWizard.getId() );
         layout.addNewWizardShortcut( NewEntryWizard.getId() );
@@ -75,6 +94,11 @@ public class BrowserPerspective implements IPerspectiveFactory
     }
 
 
+    /**
+     * Defines the layout.
+     * 
+     * @param layout the layout
+     */
     private void defineLayout( IPageLayout layout )
     {
 

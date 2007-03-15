@@ -44,6 +44,8 @@ public class InPlaceGeneralizedTimeValueEditor extends AbstractInPlaceStringValu
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns the proper formatted date and time, Timezone is 
      * convertet to the default locale. 
      * 

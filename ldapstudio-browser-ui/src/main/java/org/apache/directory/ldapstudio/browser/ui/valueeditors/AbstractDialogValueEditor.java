@@ -64,8 +64,6 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
     /**
      * 
      * Creates a new instance of AbstractDialogEditor.
-     *
-     * @param parent The parent composite, used to open the dialog.
      */
     protected AbstractDialogValueEditor()
     {
@@ -87,9 +85,9 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
 
     /**
-     * This implementation simple returns itself.
+     * {@inheritDoc}
      * 
-     * @see IValueEditor.getCellEditor()
+     * This implementation simple returns itself.
      */
     public CellEditor getCellEditor()
     {
@@ -98,6 +96,8 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This is a dialog editor, it doesn't create a control. 
      * It just extracts and saves the shell reference from parent.
      */
@@ -109,6 +109,8 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This is a dialog editor, doesn't set focus. 
      */
     protected final void doSetFocus()
@@ -117,6 +119,8 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns the value object stored in a member.
      */
     protected final Object doGetValue()
@@ -126,6 +130,8 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Stores the value object in a member.
      */
     protected final void doSetValue( Object value )
@@ -143,9 +149,10 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
 
     /**
+     * {@inheritDoc}
+     * 
      * The activate method is called from the JFace framework
      * to start editing. 
-     * 
      */
     public final void activate()
     {
@@ -180,12 +187,14 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
      * Returns a raw value that represents an empty value.
      * 
      * @param attribute the attribute
-     * @return 
+     * @return a raw value that represents an empty value
      */
     protected abstract Object getEmptyRawValue( IAttribute attribute );
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation of getDisplayValue() returns a 
      * comma-separated list of all values. 
      */
@@ -216,6 +225,8 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation calls getEmptyRawValue(IAttribute) if there are no values
      * in attributeHierarchy and getRawValue(IValue) if attributeHierarchy
      * contains exactly one value. Otherwise null is returned.

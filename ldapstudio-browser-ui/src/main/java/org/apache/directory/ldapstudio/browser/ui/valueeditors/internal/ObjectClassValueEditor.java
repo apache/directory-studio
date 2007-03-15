@@ -42,6 +42,8 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
 {
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation opens the ObjectClassDialog.
      */
     public boolean openDialog( Shell shell )
@@ -62,6 +64,8 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation appends the kind of object class,
      * on of structural, abstract, auxiliary or obsolete. 
      * 
@@ -104,6 +108,8 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns null.
      * Modification in search result editor not supported.
      */
@@ -114,6 +120,8 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a ObjectClassValueEditorRawValueWrapper.
      */
     public Object getRawValue( IValue value )
@@ -130,6 +138,8 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns a ObjectClassValueEditorRawValueWrapper.
      */
     public Object getRawValue( IConnection connection, Object value )

@@ -81,6 +81,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This is a dialog editor, it doesn't create a control. 
      */
     protected Control createControl( Composite parent )
@@ -90,6 +92,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns the value object stored in a member.
      */
     protected final Object doGetValue()
@@ -99,6 +103,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This is a dialog editor, doesn't set focus. 
      */
     protected void doSetFocus()
@@ -107,6 +113,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Stores the value object in a member.
      */
     protected void doSetValue( Object value )
@@ -116,6 +124,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Opens the MulitvaluedDialog. Expects that an AttributeHierarchy
      * object is in value member. 
      */
@@ -136,6 +146,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns this.
      */
     public CellEditor getCellEditor()
@@ -145,6 +157,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation of getDisplayValue() returns a 
      * comma-separated list of all values. 
      */
@@ -174,6 +188,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * It doesn't make sense to use the MultivaluedValueEditor with a single value.
      * Returns an empty string.
      */
@@ -184,6 +200,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Returns the attributeHierarchy.
      */
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
@@ -193,6 +211,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * It doesn't make sense to use the MultivaluedValueEditor with a single value.
      * Returns null.
      */
@@ -203,6 +223,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * It doesn't make sense to use the MultivaluedValueEditor with a single value.
      * Returns null.
      */
@@ -213,6 +235,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Modification is performed in the concrete single-ValueEditors.
      */
     public void modifyValue( IValue oldValue, Object newRawValue ) throws ModelModificationException
@@ -221,6 +245,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Creationg is performed in the concrete single-ValueEditors.
      */
     public void createValue( IEntry entry, String attributeName, Object newRawValue ) throws ModelModificationException
@@ -229,6 +255,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Deletion is performed in the concrete single-ValueEditors.
      */
     public void deleteAttribute( AttributeHierarchy ah ) throws ModelModificationException
@@ -237,6 +265,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Deletion is performed in the concrete single-ValueEditors.
      */
     public void deleteValue( IValue oldValue ) throws ModelModificationException
@@ -245,6 +275,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
+     * {@inheritDoc}
+     * 
      * Modification is performed in the concrete single-ValueEditors. No need 
      * to return a value.
      */
@@ -254,8 +286,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
     }
 
 
-    /*
-     * @see org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor#setValueEditorName(java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     public void setValueEditorName( String name )
     {
@@ -263,8 +295,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
     }
 
 
-    /*
-     * @see org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor#getValueEditorName()
+    /**
+     * {@inheritDoc}
      */
     public String getValueEditorName()
     {
@@ -272,8 +304,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
     }
 
 
-    /*
-     * @see org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor#setValueEditorImageDescriptor(org.eclipse.jface.resource.ImageDescriptor)
+    /**
+     * {@inheritDoc}
      */
     public void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor )
     {
@@ -281,8 +313,8 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
     }
 
 
-    /*
-     * @see org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor#getValueEditorImageDescriptor()
+    /**
+     * {@inheritDoc}
      */
     public ImageDescriptor getValueEditorImageDescriptor()
     {

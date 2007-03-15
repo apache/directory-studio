@@ -65,6 +65,9 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     private ImageDescriptor imageDescriptor;
 
 
+    /**
+     * Creates a new instance of AbstractInPlaceStringValueEditor.
+     */
     protected AbstractInPlaceStringValueEditor()
     {
         super();
@@ -87,6 +90,8 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation of getDisplayValue() returns a 
      * comma-separated list of all values. 
      */
@@ -117,6 +122,8 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation just returns the raw value
      */
     public String getDisplayValue( IValue value )
@@ -127,6 +134,8 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns IValue.EMPTY_xx_VALUE if there are no values
      * in attributeHierarchy or calls getRawValue(IValue) if attributeHierarchy
      * contains exactly one value. Otherwise null is returned.
@@ -160,6 +169,8 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns the string value 
      * of the given value. 
      */
@@ -207,6 +218,8 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns the value itself if it is
      * of type byte[] or a byte[] with the UTF-8 encoded string
      * value if it is of type String.  
@@ -241,6 +254,8 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation always return the string value
      * as String.
      */
@@ -261,18 +276,27 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public CellEditor getCellEditor()
     {
         return this;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Object doGetValue()
     {
         return "".equals( text.getText() ) ? null : text.getText();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void doSetValue( Object value )
     {
         if ( value != null && value instanceof IValue.EmptyValue )

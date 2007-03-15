@@ -47,13 +47,17 @@ import org.apache.directory.ldapstudio.browser.core.utils.Utils;
 public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValueEditor
 {
 
+    /**
+     * Creates a new instance of AbstractDialogBinaryValueEditor.
+     */
     protected AbstractDialogBinaryValueEditor()
     {
-        super();
     }
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation of getDisplayValue just returns a note,
      * that the value is binary and the size of the data.
      */
@@ -83,8 +87,12 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
 
 
     /**
-     * Help method, returns a printable string if the value 
+     * Helper method, returns a printable string if the value
      * is binary.
+     * 
+     * @param value the value
+     * 
+     * @return the printable string
      */
     public static String getPrintableString( IValue value )
     {
@@ -117,6 +125,8 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns IValue.EMPTY_BINARY_VALUE if
      * the attribute is binary.
      */
@@ -134,6 +144,8 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns the binary (byte[]) value 
      * of the given value. 
      */
@@ -159,6 +171,8 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation returns the value itself if it is
      * of type byte[] or a byte[] with the UTF-8 encoded string 
      * value if it is of type String.  
@@ -185,6 +199,8 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
 
 
     /**
+     * {@inheritDoc}
+     * 
      * This implementation always return the binary value
      * as byte[].
      */
@@ -241,9 +257,6 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     private final void modify( IAttribute attribute, Object newRawValue ) throws ModelModificationException
     {
         if ( attribute != null && newRawValue != null && newRawValue instanceof byte[] )
