@@ -179,9 +179,10 @@ public class SchemaElementsViewRoot extends TreeNode
 
 
     /**
-     * TODO removeAttributeType.
+     * Removes an Attribute Type Wrapper.
      *
      * @param wrapper
+     *      the Attribute Type Wrapper to remove
      */
     private void removeAttributeType( AttributeTypeWrapper wrapper )
     {
@@ -193,9 +194,10 @@ public class SchemaElementsViewRoot extends TreeNode
 
 
     /**
-     * TODO removeObjectClass.
+     * Removes an Object Class Wrapper.
      *
      * @param wrapper
+     *      the Object Class Wrapper to remove
      */
     private void removeObjectClass( ObjectClassWrapper wrapper )
     {
@@ -204,13 +206,16 @@ public class SchemaElementsViewRoot extends TreeNode
             ocChildren.remove( wrapper );
         }
     }
-    
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.TreeNode#getChildren()
+     */
     public List<ITreeNode> getChildren()
     {
         List<ITreeNode> children = new ArrayList<ITreeNode>();
-        children.addAll( aTChildren );
-        children.addAll( ocChildren );
-        
+        children.addAll( getAttributeTypes() );
+        children.addAll( getObjectClasses() );
         return children;
     }
 }

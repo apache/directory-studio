@@ -23,11 +23,9 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.SchemaElementsController;
-import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
-import org.apache.directory.ldapstudio.schemas.model.PoolListener;
-import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemasViewRoot;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaElementsViewRoot;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +38,7 @@ import org.eclipse.ui.part.ViewPart;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaElementsView extends ViewPart implements PoolListener
+public class SchemaElementsView extends ViewPart
 {
     /** The view's ID */
     public static final String ID = Activator.PLUGIN_ID + ".view.SchemaElementsView"; //$NON-NLS-1$
@@ -62,10 +60,6 @@ public class SchemaElementsView extends ViewPart implements PoolListener
         // Registering the Viewer, so other views can be notified when the viewer selection changes
         getSite().setSelectionProvider( viewer );
 
-        SchemaPool pool = SchemaPool.getInstance();
-        //we want to be notified if the pool has been modified
-        pool.addListener( this );
-
         // Adding the controller
         new SchemaElementsController( this );
     }
@@ -81,7 +75,10 @@ public class SchemaElementsView extends ViewPart implements PoolListener
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
         contentProvider = new SchemaElementsContentProvider();
-        contentProvider.bindToTreeViewer( viewer );
+        viewer.setContentProvider( contentProvider );
+        viewer.setLabelProvider( new DecoratingLabelProvider( new SchemaElementsViewLabelProvider(), Activator
+            .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );
+        viewer.setInput( new SchemaElementsViewRoot() );
     }
 
 
@@ -93,51 +90,22 @@ public class SchemaElementsView extends ViewPart implements PoolListener
         viewer.getControl().setFocus();
     }
 
-    
-    /**
-     * Refreshes completely the view (reload model and re-display).
-     * 
-     * @see refresh() for refreshing only the display.
-     */
-    public void completeRefresh()
-    {
-        Object[] exp = viewer.getExpandedElements();
-
-        // Refresh the tree viewer
-        viewer.setInput( new SchemasViewRoot() );
-
-        // Expand all the previsouly expanded elements
-        for ( Object object : exp )
-        {
-            viewer.setExpandedState( object, true );
-        }
-    }
-    
 
     /**
      * Refresh the viewer
      */
     public void refresh()
     {
-        Object[] exp = viewer.getExpandedElements();
-
-        // Refresh the tree viewer
         viewer.refresh();
-
-        // Expand all the previsouly expanded elements
-        for ( Object object : exp )
-        {
-            viewer.setExpandedState( object, true );
-        }
     }
 
 
     /**
-     * refresh the view if the pool has been modified
+     * Updates the viewer
      */
-    public void poolChanged( SchemaPool p, LDAPModelEvent e )
+    public void update()
     {
-        refresh();
+        viewer.update( viewer.getInput(), null );
     }
 
 
@@ -151,41 +119,17 @@ public class SchemaElementsView extends ViewPart implements PoolListener
      */
     public ITreeNode findElementInTree( ITreeNode element )
     {
-        ITreeNode input = ( ITreeNode ) getViewer().getInput();
+        Object[] children = contentProvider.getChildren( ( ITreeNode ) getViewer().getInput() );
 
-        return findElementInTree( element, input );
-    }
-
-
-    /**
-     * Search for the given element in the Tree and returns it if it has been found.
-     *
-     * @param element
-     *      the element to find
-     * @param current
-     *      the current element
-     * @return
-     */
-    private ITreeNode findElementInTree( ITreeNode element, ITreeNode current )
-    {
-        if ( element.equals( current ) )
+        for ( Object child : children )
         {
-            return current;
-        }
-        else
-        {
-            Object[] children = contentProvider.getChildren( current );
-
-            for ( int i = 0; i < children.length; i++ )
+            ITreeNode item = ( ITreeNode ) child;
+            if ( item.equals( element ) )
             {
-                ITreeNode item = ( ITreeNode ) children[i];
-                ITreeNode foundElement = findElementInTree( element, item );
-                if ( foundElement != null )
-                {
-                    return foundElement;
-                }
+                return item;
             }
         }
+
         return null;
     }
 

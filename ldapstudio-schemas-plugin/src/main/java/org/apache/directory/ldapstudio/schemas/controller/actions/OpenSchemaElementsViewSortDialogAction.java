@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasElementsSortDialog;
+import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsSortDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -59,7 +59,7 @@ public class OpenSchemaElementsViewSortDialogAction extends Action
      */
     public void run()
     {
-        SchemasElementsSortDialog hvsd = new SchemasElementsSortDialog( PlatformUI.getWorkbench().getDisplay()
+        SchemaElementsSortDialog hvsd = new SchemaElementsSortDialog( PlatformUI.getWorkbench().getDisplay()
             .getActiveShell() );
         hvsd.open();
     }

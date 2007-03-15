@@ -26,12 +26,11 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.controller.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeTypesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemaElementsView;
-import org.apache.directory.ldapstudio.schemas.controller.actions.OpencSchemaElementsViewPreferencesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewSortDialogAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpencSchemaElementsViewPreferencesAction;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
@@ -76,7 +75,6 @@ public class SchemaElementsController
     // The Actions
     private HideObjectClassesAction hideObjectClasses;
     private HideAttributeTypesAction hideAttributeTypes;
-    private CollapseAllAction collapseAll;
     private LinkWithEditorSchemaElementsView linkWithEditor;
     private OpenSchemaElementsViewSortDialogAction openSortDialog;
     private OpencSchemaElementsViewPreferencesAction openPreferencePage;
@@ -121,7 +119,6 @@ public class SchemaElementsController
     {
         hideObjectClasses = new HideObjectClassesAction( view.getViewer() );
         hideAttributeTypes = new HideAttributeTypesAction( view.getViewer() );
-        collapseAll = new CollapseAllAction( view.getViewer() );
         linkWithEditor = new LinkWithEditorSchemaElementsView( view );
         openSortDialog = new OpenSchemaElementsViewSortDialogAction();
         openPreferencePage = new OpencSchemaElementsViewPreferencesAction();
@@ -137,7 +134,6 @@ public class SchemaElementsController
         toolbar.add( hideObjectClasses );
         toolbar.add( hideAttributeTypes );
         toolbar.add( new Separator() );
-        toolbar.add( collapseAll );
         toolbar.add( linkWithEditor );
     }
 
@@ -231,11 +227,11 @@ public class SchemaElementsController
                 {
                     if ( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING == event.getProperty() )
                     {
-                        view.completeRefresh();
+                        view.refresh();
                     }
                     else
                     {
-                        view.refresh();
+                        view.update();
                     }
                 }
             }

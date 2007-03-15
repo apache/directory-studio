@@ -30,19 +30,19 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeTypesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.FirstNameSorter;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.OidSorter;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaElementsViewRoot;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 
@@ -52,19 +52,13 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaElementsContentProvider implements IStructuredContentProvider, ITreeContentProvider
+public class SchemaElementsContentProvider implements IStructuredContentProvider, ITreeContentProvider, PoolListener
 {
     /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
 
     /** The preferences store */
     IPreferenceStore store;
-
-    /** The HashTable containing all the object classes */
-    private List<ObjectClass> objectClasses;
-
-    /** The HashTable containing all the attribute types */
-    private List<AttributeType> attributeTypes;
 
     /** The FirstName Sorter */
     private FirstNameSorter firstNameSorter;
@@ -81,11 +75,9 @@ public class SchemaElementsContentProvider implements IStructuredContentProvider
      */
     public SchemaElementsContentProvider()
     {
-        this.schemaPool = SchemaPool.getInstance();
+        schemaPool = SchemaPool.getInstance();
+        schemaPool.addListener( this );
         store = Activator.getDefault().getPreferenceStore();
-
-        objectClasses = schemaPool.getObjectClasses();
-        attributeTypes = schemaPool.getAttributeTypes();
 
         firstNameSorter = new FirstNameSorter();
         oidSorter = new OidSorter();
@@ -106,235 +98,126 @@ public class SchemaElementsContentProvider implements IStructuredContentProvider
      */
     public Object[] getChildren( Object parentElement )
     {
-        List<ITreeNode> children = new ArrayList<ITreeNode>();
-
-        int group = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING );
-        int sortBy = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY );
-        int sortOrder = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER );
-
-        if ( parentElement instanceof ObjectClassWrapper )
+        if ( parentElement instanceof SchemaElementsViewRoot )
         {
-            //we are looking for the childrens of the contained objectClass
-            ObjectClass objectClass = ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
+            SchemaElementsViewRoot root = ( SchemaElementsViewRoot ) parentElement;
 
-            for ( ObjectClass oClass : objectClasses )
+            List<ITreeNode> children = new ArrayList<ITreeNode>();
+
+            int group = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING );
+            int sortBy = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY );
+            int sortOrder = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER );
+            boolean hideAttributeTypes = Activator.getDefault().getDialogSettings().getBoolean(
+                HideAttributeTypesAction.HIDE_ATTRIBUTE_TYPES_DS_KEY );
+            boolean hideObjectClasses = Activator.getDefault().getDialogSettings().getBoolean(
+                HideObjectClassesAction.HIDE_OBJECT_CLASSES_DS_KEY );
+
+            if ( root.getChildren().isEmpty() )
             {
-                //not this object class
-                if ( oClass.getOid() != objectClass.getOid() )
+                // ATTRIBUTE TYPES
+                List<AttributeType> attributeTypes = schemaPool.getAttributeTypes();
+                for ( AttributeType attributeType : attributeTypes )
                 {
-                    String[] sups = oClass.getSuperiors();
-                    for ( String sup : sups )
-                    {
-                        ObjectClass oClassSup = schemaPool.getObjectClass( sup );
-                        if ( oClassSup != null )
-                        {
-                            //the current object class is a sup of oClass
-                            if ( oClassSup.equals( objectClass ) )
-                            {
-                                //we use an objectClass wrapper
-                                children
-                                    .add( new ObjectClassWrapper( oClass, ( ITreeNode ) parentElement ) );
-                                break; //break only the inner for
-                            }
-                        }
-                    }
+                    root.addChild( new AttributeTypeWrapper( attributeType, root ) );
+                }
+
+                // OBJECT CLASSES
+                List<ObjectClass> objectClasses = schemaPool.getObjectClasses();
+                for ( ObjectClass objectClass : objectClasses )
+                {
+                    root.addChild( new ObjectClassWrapper( objectClass, root ) );
                 }
             }
 
-            // Sort by
-            if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
+            List<AttributeTypeWrapper> atList = new ArrayList<AttributeTypeWrapper>();
+            List<ObjectClassWrapper> ocList = new ArrayList<ObjectClassWrapper>();
+
+            if ( !hideAttributeTypes )
             {
-                Collections.sort( children, firstNameSorter );
+                atList = root.getAttributeTypes();
             }
-            else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
+            if ( !hideObjectClasses )
             {
-                Collections.sort( children, oidSorter );
+                ocList = root.getObjectClasses();
             }
 
-            // Sort order
-            if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
+            if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST )
             {
-                Collections.reverse( children );
-            }
-        }
-        if ( parentElement instanceof AttributeTypeWrapper )
-        {
-            //we are looking for the childrens of the contained attribute type
-            AttributeType attributeType = ( ( AttributeTypeWrapper ) parentElement ).getMyAttributeType();
-
-            for (AttributeType aType : attributeTypes)
-            {
-                //not this attribute type
-                if ( aType.getOid() != attributeType.getOid() )
+                // Sort by
+                if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
                 {
-                    String aTypeSupName = aType.getSuperior();
-                    if ( aTypeSupName != null )
-                    {
-                        AttributeType aTypeSup = schemaPool.getAttributeType( aType.getSuperior() );
-                        if ( aTypeSup != null )
-                        {
-                            //the current object class is a sup of oClass
-                            if ( aTypeSup.equals( attributeType ) )
-                            {
-                                //we use an objectClass wrapper
-                                children
-                                    .add( new AttributeTypeWrapper( aType, ( ITreeNode ) parentElement ) );
-                                break; //break only the inner for
-                            }
-                        }
-                    }
+                    Collections.sort( atList, firstNameSorter );
+                    Collections.sort( ocList, firstNameSorter );
                 }
-            }
-
-            // Sort by
-            if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
-            {
-                Collections.sort( children, firstNameSorter );
-            }
-            else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
-            {
-                Collections.sort( children, oidSorter );
-            }
-
-            // Sort order
-            if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
-            {
-                Collections.reverse( children );
-            }
-        }
-        else if ( parentElement instanceof IntermediateNode )
-        {
-            IntermediateNode intermediate = ( IntermediateNode ) parentElement;
-
-            if ( intermediate.getName().equals( "**Primary Node**" ) ) //$NON-NLS-1$
-            {
-                List<ObjectClassWrapper> ocList = new ArrayList<ObjectClassWrapper>();
-                if ( !Activator.getDefault().getDialogSettings().getBoolean(
-                    HideObjectClassesAction.HIDE_OBJECT_CLASSES_DS_KEY ) )
+                else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
                 {
-                    for (ObjectClass oClass : objectClasses)
-                    {
-                        String[] sups = oClass.getSuperiors();
-                        //if no supperiors had been set
-                        if ( sups.length == 0 )
-                        {
-                            ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
-                            if ( !"2.5.6.0".equals( oClass.getOid() ) )
-                            {
-                                wrapper.setState( ObjectClassWrapper.State.unResolved );
-                            }
-                            ocList.add( wrapper );
-                            this.hasChildren( wrapper );
-                        }
-                        else
-                        {
-                            for ( String sup : sups )
-                            {
-                                ObjectClass oClassSup = schemaPool.getObjectClass( sup );
-                                if ( oClassSup == null )
-                                {
-                                    ObjectClassWrapper wrapper = new ObjectClassWrapper( oClass, intermediate );
-                                    wrapper.setState( ObjectClassWrapper.State.unResolved );
-                                    ocList.add( wrapper );
-                                }
-                            }
-                        }
-                    }
+                    Collections.sort( atList, oidSorter );
+                    Collections.sort( ocList, oidSorter );
                 }
 
-                List<AttributeTypeWrapper> atList = new ArrayList<AttributeTypeWrapper>();
-                if ( !Activator.getDefault().getDialogSettings().getBoolean(
-                    HideAttributeTypesAction.HIDE_ATTRIBUTE_TYPES_DS_KEY ) )
+                // Sort Order
+                if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
                 {
-
-                    for (AttributeType aType : attributeTypes )
-                    {
-                        String sup = aType.getSuperior();
-                        //if no superior had been set
-                        if ( sup == null )
-                        {
-                            AttributeTypeWrapper wrapper = new AttributeTypeWrapper( aType, intermediate );
-                            atList.add( wrapper );
-                        }
-                    }
+                    Collections.reverse( atList );
+                    Collections.reverse( ocList );
                 }
 
-                if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST )
+                // Group
+                children.addAll( atList );
+                children.addAll( ocList );
+            }
+            else if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_OCFIRST )
+            {
+                // Sort by
+                if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
                 {
-                    // Sort by
-                    if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
-                    {
-                        Collections.sort( atList, firstNameSorter );
-                        Collections.sort( ocList, firstNameSorter );
-                    }
-                    else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
-                    {
-                        Collections.sort( atList, oidSorter );
-                        Collections.sort( ocList, oidSorter );
-                    }
-
-                    // Sort Order
-                    if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
-                    {
-                        Collections.reverse( atList );
-                        Collections.reverse( ocList );
-                    }
-
-                    // Group
-                    children.addAll( atList );
-                    children.addAll( ocList );
+                    Collections.sort( atList, firstNameSorter );
+                    Collections.sort( ocList, firstNameSorter );
                 }
-                else if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_OCFIRST )
+                else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
                 {
-                    // Sort by
-                    if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
-                    {
-                        Collections.sort( atList, firstNameSorter );
-                        Collections.sort( ocList, firstNameSorter );
-                    }
-                    else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
-                    {
-                        Collections.sort( atList, oidSorter );
-                        Collections.sort( ocList, oidSorter );
-                    }
-
-                    // Sort Order
-                    if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
-                    {
-                        Collections.reverse( atList );
-                        Collections.reverse( ocList );
-                    }
-
-                    // Group
-                    children.addAll( ocList );
-                    children.addAll( atList );
+                    Collections.sort( atList, oidSorter );
+                    Collections.sort( ocList, oidSorter );
                 }
-                else if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_MIXED )
+
+                // Sort Order
+                if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
                 {
-                    // Group
-                    children.addAll( atList );
-                    children.addAll( ocList );
+                    Collections.reverse( atList );
+                    Collections.reverse( ocList );
+                }
 
-                    // Sort by
-                    if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
-                    {
-                        Collections.sort( children, firstNameSorter );
-                    }
-                    else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
-                    {
-                        Collections.sort( children, oidSorter );
-                    }
+                // Group
+                children.addAll( ocList );
+                children.addAll( atList );
+            }
+            else if ( group == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_MIXED )
+            {
+                // Group
+                children.addAll( atList );
+                children.addAll( ocList );
 
-                    // Sort order
-                    if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
-                    {
-                        Collections.reverse( children );
-                    }
+                // Sort by
+                if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME )
+                {
+                    Collections.sort( children, firstNameSorter );
+                }
+                else if ( sortBy == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID )
+                {
+                    Collections.sort( children, oidSorter );
+                }
+
+                // Sort order
+                if ( sortOrder == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING )
+                {
+                    Collections.reverse( children );
                 }
             }
+            return children.toArray();
         }
 
-        return children.toArray();
+        // Default
+        return new Object[0];
     }
 
 
@@ -343,17 +226,9 @@ public class SchemaElementsContentProvider implements IStructuredContentProvider
      */
     public Object getParent( Object element )
     {
-        if ( element instanceof ObjectClassWrapper )
+        if ( element instanceof ITreeNode )
         {
-            return ( ( ObjectClassWrapper ) element ).getParent();
-        }
-        else if ( element instanceof AttributeTypeWrapper )
-        {
-            return ( ( AttributeTypeWrapper ) element ).getParent();
-        }
-        else if ( element instanceof IntermediateNode )
-        {
-            return ( ( IntermediateNode ) element ).getParent();
+            return ( ( ITreeNode ) element ).getParent();
         }
 
         return null;
@@ -365,38 +240,22 @@ public class SchemaElementsContentProvider implements IStructuredContentProvider
      */
     public boolean hasChildren( Object element )
     {
-        if ( element instanceof ObjectClassWrapper )
+        if ( element instanceof SchemaElementsViewRoot )
         {
-            return getChildren( ( ObjectClassWrapper ) element ).length > 0;
-        }
-        else if ( element instanceof AttributeTypeWrapper )
-        {
-            return getChildren( ( AttributeTypeWrapper ) element ).length > 0;
-        }
-        else if ( element instanceof IntermediateNode )
-        {
-            return getChildren( ( IntermediateNode ) element ).length > 0;
+            return true;
         }
 
         return false;
     }
 
 
-    /**
-     * Initialize a tree viewer to display the information provided by the specified content
-     * provider.
-     * 
-     * @param viewer
-     *      the tree viewer
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.PoolListener#poolChanged(org.apache.directory.ldapstudio.schemas.model.SchemaPool, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
      */
-    public void bindToTreeViewer( TreeViewer viewer )
+    public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
-        viewer.setContentProvider( this );
-        viewer.setLabelProvider( new DecoratingLabelProvider( new SchemaElementsViewLabelProvider(), Activator.getDefault()
-            .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
+        // TODO Auto-generated method stub
 
-        IntermediateNode invisibleNode = new IntermediateNode( "**Primary Node**", null ); //$NON-NLS-1$
-        viewer.setInput( invisibleNode );
     }
 
 
