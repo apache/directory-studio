@@ -23,14 +23,13 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
-import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
-import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -39,36 +38,34 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * Content provider for the search view
+ * Content provider for the search view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SearchViewContentProvider implements IStructuredContentProvider, PoolListener
+public class SearchViewContentProvider implements IStructuredContentProvider/*, PoolListener*/
 {
-    private SchemaPool schemaPool;
-    private Hashtable<String, ObjectClass> objectClassTable;
-    private Hashtable<String, AttributeType> attributeTypeTable;
+    /** The object classes Map */
+    private Map<String, ObjectClass> objectClassTable;
+
+    /** The attribute types Map*/
+    private Map<String, AttributeType> attributeTypeTable;
 
 
     /**
-     * Default constructor
+     * Creates a new instance of SearchViewContentProvider.
      */
     public SearchViewContentProvider()
     {
-        this.schemaPool = SchemaPool.getInstance();
-        schemaPool.addListener( this );
-
-        objectClassTable = schemaPool.getObjectClassesAsHashTableByName();
-
-        attributeTypeTable = schemaPool.getAttributeTypesAsHashTableByName();
+        SchemaPool schemaPool = SchemaPool.getInstance();
+        objectClassTable = schemaPool.getObjectClassesAsMap();
+        attributeTypeTable = schemaPool.getAttributeTypesAsMap();
     }
 
 
-    /**
-     * returns the matched elements as an array of objects
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
-    @SuppressWarnings("unchecked")//$NON-NLS-1$
     public Object[] getElements( Object parent )
     {
         if ( parent instanceof String )
@@ -84,12 +81,12 @@ public class SearchViewContentProvider implements IStructuredContentProvider, Po
             {
                 String searchRegexp = searchText + ".*"; //$NON-NLS-1$
                 Pattern pattern = Pattern.compile( searchRegexp, Pattern.CASE_INSENSITIVE );
-                ArrayList resultsList = new ArrayList();
+                List<SchemaElement> resultsList = new ArrayList<SchemaElement>();
 
                 Collection<ObjectClass> OCs = objectClassTable.values();
                 Collection<AttributeType> ATs = attributeTypeTable.values();
 
-                ArrayList<SchemaElement> allList = new ArrayList<SchemaElement>();
+                List<SchemaElement> allList = new ArrayList<SchemaElement>();
                 allList.addAll( OCs );
                 allList.addAll( ATs );
 
@@ -173,28 +170,5 @@ public class SearchViewContentProvider implements IStructuredContentProvider, Po
      */
     public void dispose()
     {
-        schemaPool.removeListener( this );
     }
-
-
-    /**
-     * Pool listener method
-     */
-    public void poolChanged( SchemaPool p, LDAPModelEvent e )
-    {
-        refresh();
-    }
-
-
-    /**
-     * Refresh the content of the provider
-     * (you can trigger it manually or it will be called when the pool has changed)
-     */
-    public void refresh()
-    {
-        objectClassTable = schemaPool.getObjectClassesAsHashTableByName();
-
-        attributeTypeTable = schemaPool.getAttributeTypesAsHashTableByName();
-    }
-
 }

@@ -190,6 +190,8 @@ public interface PluginConstants
     public static final String IMG_OBJECT_CLASS_WARNING = "ressources/icons/object_class_warning.gif"; //$NON-NLS-1$
     public static final String IMG_SCHEMA = "ressources/icons/schema.gif"; //$NON-NLS-1$
     public static final String IMG_SCHEMA_CORE = "ressources/icons/schema_core.gif"; //$NON-NLS-1$
+    public static final String IMG_WARNING_OVERLAY = "ressources/icons/warning_overlay.gif"; //$NON-NLS-1$
+
 
     // Images - Wizards
     public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "ressources/icons/attribute_type_new_wizard.png"; //$NON-NLS-1$

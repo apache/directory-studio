@@ -34,14 +34,17 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeTypeWrapper implements DisplayableTreeElement
+public class AttributeTypeWrapper extends TreeNode
 {
-    /** The parent element */
-    private DisplayableTreeElement parent;
-
     /** The associated attribute type */
     private AttributeType myAttributeType;
+    private State state;
 
+    
+    public enum State
+    {
+        resolved, unResolved
+    }
 
     /**
      * Creates a new instance of AttributeTypeWrapper.
@@ -51,10 +54,12 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
      * @param parent
      *      the parent element
      */
-    public AttributeTypeWrapper( AttributeType myAttributeType, DisplayableTreeElement parent )
+    public AttributeTypeWrapper( AttributeType myAttributeType, ITreeNode parent )
     {
+        super( parent );
+
         this.myAttributeType = myAttributeType;
-        this.parent = parent;
+        this.state = State.resolved;
     }
 
 
@@ -70,22 +75,10 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
     }
 
 
-    /**
-     * Gets the parent element.
-     * 
-     * @return
-     *      the parent element
-     */
-    public DisplayableTreeElement getParent()
-    {
-        return parent;
-    }
-
-
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayImage()
+     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.TreeNode#getImage()
      */
-    public Image getDisplayImage()
+    public Image getImage()
     {
         return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
             .createImage();
@@ -113,5 +106,28 @@ public class AttributeTypeWrapper implements DisplayableTreeElement
     public String toString()
     {
         return myAttributeType + " wrapper"; //$NON-NLS-1$
+    }
+    
+    /**
+     * Gets the state of the object class wrapper.
+     * 
+     * @return
+     *      the state of the object class wrapper
+     */
+    public State getState()
+    {
+        return state;
+    }
+
+
+    /**
+     * Sets the state of the object class wrapper.
+     * 
+     * @param state
+     *      the state of the object class wrapper
+     */
+    public void setState( State state )
+    {
+        this.state = state;
     }
 }

@@ -22,8 +22,8 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -40,16 +40,16 @@ public class HideAttributeTypesAction extends Action
         + ".dialogsettingkey";
 
     /** The associated view */
-    private HierarchyView hierarchyView;
+    private TreeViewer viewer;
 
 
     /**
      * Creates a new instance of HideObjectClassesAction.
      *
-     * @param view
-     *      the associated view
+     * @param viewer
+     *      the associated viewer
      */
-    public HideAttributeTypesAction( HierarchyView view )
+    public HideAttributeTypesAction( TreeViewer viewer )
     {
         super( "Hide Attribute Types", AS_CHECK_BOX );
         setToolTipText( getText() );
@@ -57,7 +57,7 @@ public class HideAttributeTypesAction extends Action
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_HIDE_ATTRIBUTE_TYPES ) );
         setEnabled( true );
-        hierarchyView = view;
+        this.viewer = viewer;
 
         // Setting up the default key value (if needed)
         if ( Activator.getDefault().getDialogSettings().get( HIDE_ATTRIBUTE_TYPES_DS_KEY ) == null )
@@ -78,6 +78,6 @@ public class HideAttributeTypesAction extends Action
         setChecked( isChecked() );
         Activator.getDefault().getDialogSettings().put( HIDE_ATTRIBUTE_TYPES_DS_KEY, isChecked() );
 
-        hierarchyView.refresh();
+        viewer.refresh();
     }
 }

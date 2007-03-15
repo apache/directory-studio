@@ -255,14 +255,15 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
     {
         List<String> ocList = new ArrayList<String>();
 
-        ObjectClass[] objectClasses = schemaPool.getObjectClassesAsArray();
-        for ( int i = 0; i < objectClasses.length; i++ )
+        List<ObjectClass> objectClasses = schemaPool.getObjectClasses();
+        for ( int i = 0; i < objectClasses.size(); i++ )
         {
-            ObjectClass oc = objectClasses[i];
+            ObjectClass oc = objectClasses.get( i );
 
             String[] musts = oc.getMust();
             for ( int j = 0; j < musts.length; j++ )
             {
+                // TODO Match all aliases
                 if ( modifiedAttributeType.getNames()[0].equals( musts[j] ) )
                 {
                     ocList.add( oc.getNames()[0] );
@@ -299,10 +300,10 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
     {
         List<String> ocList = new ArrayList<String>();
 
-        ObjectClass[] objectClasses = schemaPool.getObjectClassesAsArray();
-        for ( int i = 0; i < objectClasses.length; i++ )
+        List<ObjectClass> objectClasses = schemaPool.getObjectClasses();
+        for ( int i = 0; i < objectClasses.size(); i++ )
         {
-            ObjectClass oc = objectClasses[i];
+            ObjectClass oc = objectClasses.get( i );
 
             String[] mays = oc.getMay();
             for ( int j = 0; j < mays.length; j++ )

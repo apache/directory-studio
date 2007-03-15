@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
@@ -789,7 +790,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private void initSupCombo()
     {
         SchemaPool pool = SchemaPool.getInstance();
-        ArrayList<ObjectClass> ocList = new ArrayList<ObjectClass>( pool.getObjectClassesAsHashTableByName().values() );
+        List<ObjectClass> ocList =  pool.getObjectClasses();
 
         //remove duplicate entries
         HashSet<ObjectClass> set = new HashSet<ObjectClass>( ocList );

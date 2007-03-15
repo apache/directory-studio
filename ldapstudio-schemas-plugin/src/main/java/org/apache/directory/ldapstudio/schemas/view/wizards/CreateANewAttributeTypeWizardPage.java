@@ -21,11 +21,10 @@
 package org.apache.directory.ldapstudio.schemas.view.wizards;
 
 
-import java.util.Hashtable;
+import java.util.Map;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.OID;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -59,9 +58,7 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
     @SuppressWarnings("unused")//$NON-NLS-1$
     private ISelection selection;
 
-    private Hashtable<String, AttributeType> typesByName;
-
-    private Hashtable<String, SchemaElement> elementsByOID;
+    private Map<String, SchemaElement> elements;
 
     private Text oidField;
 
@@ -80,9 +77,8 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
         setDescription( Messages.getString( "CreateANewAttributeTypeWizardPage.Page_Description" ) ); //$NON-NLS-1$
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
         this.selection = selection;
-
-        typesByName = SchemaPool.getInstance().getAttributeTypesAsHashTableByName();
-        elementsByOID = SchemaPool.getInstance().getSchemaElementsAsHashTableByOID();
+        
+        elements = SchemaPool.getInstance().getSchemaElements();
     }
 
 
@@ -218,17 +214,17 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
             return;
         }
 
-        if ( elementsByOID.containsKey( getOidField() ) )
+        if ( elements.containsKey( getOidField() ) )
         {
             updateStatus( Messages
                 .getString( "CreateANewAttributeTypeWizardPage.An_element_of_the_same_OID_already_exists" ) ); //$NON-NLS-1$
             return;
         }
 
-        if ( typesByName.containsKey( getNameField() ) )
+        if ( elements.containsKey( getNameField() ) )
         {
             updateStatus( Messages
-                .getString( "CreateANewAttributeTypeWizardPage.An_attribute_type_of_the_same_name_already_exists" ) ); //$NON-NLS-1$
+                .getString( "CreateANewAttributeTypeWizardPage.An_element_of_the_same_name_already_exists" ) ); //$NON-NLS-1$
             return;
         }
 

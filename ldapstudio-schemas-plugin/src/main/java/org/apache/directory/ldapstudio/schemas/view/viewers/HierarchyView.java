@@ -26,7 +26,8 @@ import org.apache.directory.ldapstudio.schemas.controller.HierarchyViewControlle
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemasViewRoot;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -92,6 +93,26 @@ public class HierarchyView extends ViewPart implements PoolListener
         viewer.getControl().setFocus();
     }
 
+    
+    /**
+     * Refreshes completely the view (reload model and re-display).
+     * 
+     * @see refresh() for refreshing only the display.
+     */
+    public void completeRefresh()
+    {
+        Object[] exp = viewer.getExpandedElements();
+
+        // Refresh the tree viewer
+        viewer.setInput( new SchemasViewRoot() );
+
+        // Expand all the previsouly expanded elements
+        for ( Object object : exp )
+        {
+            viewer.setExpandedState( object, true );
+        }
+    }
+    
 
     /**
      * Refresh the viewer
@@ -128,9 +149,9 @@ public class HierarchyView extends ViewPart implements PoolListener
      * @return
      *      the element if it has been found, null if has not been found
      */
-    public DisplayableTreeElement findElementInTree( DisplayableTreeElement element )
+    public ITreeNode findElementInTree( ITreeNode element )
     {
-        DisplayableTreeElement input = ( DisplayableTreeElement ) getViewer().getInput();
+        ITreeNode input = ( ITreeNode ) getViewer().getInput();
 
         return findElementInTree( element, input );
     }
@@ -145,7 +166,7 @@ public class HierarchyView extends ViewPart implements PoolListener
      *      the current element
      * @return
      */
-    private DisplayableTreeElement findElementInTree( DisplayableTreeElement element, DisplayableTreeElement current )
+    private ITreeNode findElementInTree( ITreeNode element, ITreeNode current )
     {
         if ( element.equals( current ) )
         {
@@ -157,8 +178,8 @@ public class HierarchyView extends ViewPart implements PoolListener
 
             for ( int i = 0; i < children.length; i++ )
             {
-                DisplayableTreeElement item = ( DisplayableTreeElement ) children[i];
-                DisplayableTreeElement foundElement = findElementInTree( element, item );
+                ITreeNode item = ( ITreeNode ) children[i];
+                ITreeNode foundElement = findElementInTree( element, item );
                 if ( foundElement != null )
                 {
                     return foundElement;

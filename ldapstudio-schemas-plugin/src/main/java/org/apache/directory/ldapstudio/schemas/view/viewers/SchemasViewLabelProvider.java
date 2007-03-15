@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -131,9 +131,9 @@ public class SchemasViewLabelProvider extends LabelProvider
      */
     public Image getImage( Object obj )
     {
-        if ( obj instanceof DisplayableTreeElement )
+        if ( obj instanceof ITreeNode )
         {
-            return ( ( DisplayableTreeElement ) obj ).getDisplayImage();
+            return ( ( ITreeNode ) obj ).getImage();
         }
 
         // Default

@@ -35,8 +35,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * elements it's based on the ASN.1 description.
  *
  */
-@SuppressWarnings("unused")//$NON-NLS-1$
-public class ObjectClass implements SchemaElement
+public class ObjectClass implements SchemaElement, Cloneable
 {
     private static Logger logger = Logger.getLogger( ObjectClass.class );
     private ObjectClassLiteral literal;
@@ -44,10 +43,6 @@ public class ObjectClass implements SchemaElement
     private ArrayList<SchemaElementListener> listeners;
     private ObjectClassFormEditor editor;
 
-
-    /******************************************
-     *             Constructors               *
-     ******************************************/
 
     /**
      * Default constructor
@@ -61,10 +56,6 @@ public class ObjectClass implements SchemaElement
         listeners = new ArrayList<SchemaElementListener>();
     }
 
-
-    /******************************************
-     *               Accessors                *
-     ******************************************/
 
     /**
      * @return the openldap parser literal associated with this objectClass 
@@ -103,10 +94,6 @@ public class ObjectClass implements SchemaElement
         this.editor = editor;
     }
 
-
-    /******************************************
-     *                 Logic                  *
-     ******************************************/
 
     /**
      * Call this method to remove the objectClass<->Editor association
@@ -163,10 +150,6 @@ public class ObjectClass implements SchemaElement
     }
 
 
-    /******************************************
-     *            Wrapper Methods             *
-     ******************************************/
-    //get
     public String[] getNames()
     {
         return literal.getNames();
@@ -215,67 +198,54 @@ public class ObjectClass implements SchemaElement
     }
 
 
-    //set
-
     public void setNames( String[] names )
     {
         literal.setNames( names );
-        notifyChanged();
     }
 
 
     public void setOid( String oid )
     {
         literal.setOid( oid );
-        notifyChanged();
     }
 
 
     public void setDescription( String description )
     {
         literal.setDescription( description );
-        notifyChanged();
     }
 
 
     public void setClassType( ObjectClassTypeEnum type )
     {
         literal.setClassType( type );
-        notifyChanged();
     }
 
 
     public void setObsolete( boolean bool )
     {
         literal.setObsolete( bool );
-        notifyChanged();
     }
 
 
     public void setSuperiors( String[] superiors )
     {
         literal.setSuperiors( superiors );
-        notifyChanged();
     }
 
 
     public void setMay( String[] may )
     {
         literal.setMay( may );
-        notifyChanged();
     }
 
 
     public void setMust( String[] must )
     {
         literal.setMust( must );
-        notifyChanged();
     }
 
 
-    /******************************************
-     *                  I/O                   *
-     ******************************************/
     public String write()
     {
         StringBuffer sb = new StringBuffer();
@@ -316,7 +286,19 @@ public class ObjectClass implements SchemaElement
         String[] superiors = literal.getSuperiors();
         if ( superiors.length != 0 )
         {
-            sb.append( "\tSUP " + superiors[0] + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( superiors.length > 1 )
+            {
+                sb.append( "\tSUP (" + superiors[0] );
+                for ( int i = 1; i < superiors.length; i++ )
+                {
+                    sb.append( " $ " + superiors[i] );
+                }
+                sb.append( ") \n" );
+            }
+            else
+            {
+                sb.append( "\tSUP " + superiors[0] + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
 
         // CLASSTYPE
@@ -380,19 +362,11 @@ public class ObjectClass implements SchemaElement
     }
 
 
-    /******************************************
-     *           Object Redefinition          *
-     ******************************************/
-
     public String toString()
     {
         return getNames()[0];
     }
 
-
-    /******************************************
-     *            Events emmiting             *
-     ******************************************/
 
     public void addListener( SchemaElementListener listener )
     {
@@ -407,18 +381,69 @@ public class ObjectClass implements SchemaElement
     }
 
 
-    private void notifyChanged()
+    private void notifyChanged( ObjectClass oldObjectClass )
     {
         for ( SchemaElementListener listener : listeners )
         {
             try
             {
-                listener.schemaElementChanged( this, new LDAPModelEvent( LDAPModelEvent.Reason.OCModified, this ) );
+                listener.schemaElementChanged( this, new LDAPModelEvent( LDAPModelEvent.Reason.OCModified,
+                    oldObjectClass, this ) );
             }
             catch ( Exception e )
             {
                 logger.debug( "error when notifying " + listener + " of " + this.getNames()[0] + " modification" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
+        }
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() throws CloneNotSupportedException
+    {
+        ObjectClass oc = ( ObjectClass ) super.clone();
+
+        oc.literal = new ObjectClassLiteral( literal.getOid() );
+        oc.literal.setClassType( literal.getClassType() );
+        oc.literal.setDescription( literal.getDescription() );
+        oc.literal.setMay( literal.getMay() );
+        oc.literal.setMust( literal.getMust() );
+        oc.literal.setNames( literal.getNames() );
+        oc.literal.setObsolete( literal.isObsolete() );
+        oc.literal.setSuperiors( literal.getSuperiors() );
+
+        return oc;
+    }
+
+
+    /**
+     * Update the object class.
+     *
+     * @param oc
+     *      the object class to get values from
+     */
+    public void update( ObjectClass oc )
+    {
+        try
+        {
+            ObjectClass oldObjectClass = ( ObjectClass ) clone();
+
+            literal.setClassType( oc.getClassType() );
+            literal.setDescription( oc.getDescription() );
+            literal.setMay( oc.getMay() );
+            literal.setMust( oc.getMust() );
+            literal.setNames( oc.getNames() );
+            literal.setObsolete( oc.isObsolete() );
+            literal.setOid( oc.getOid() );
+            literal.setSuperiors( oc.getSuperiors() );
+
+            notifyChanged( oldObjectClass );
+        }
+        catch ( CloneNotSupportedException e )
+        {
+            // Will never occurr.
         }
     }
 }

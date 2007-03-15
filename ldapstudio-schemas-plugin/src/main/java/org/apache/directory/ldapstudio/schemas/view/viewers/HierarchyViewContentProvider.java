@@ -33,8 +33,8 @@ import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.FirstNameSorter;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.OidSorter;
@@ -61,10 +61,10 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
     IPreferenceStore store;
 
     /** The HashTable containing all the object classes */
-    private ObjectClass[] objectClasses;
+    private List<ObjectClass> objectClasses;
 
     /** The HashTable containing all the attribute types */
-    private AttributeType[] attributeTypes;
+    private List<AttributeType> attributeTypes;
 
     /** The FirstName Sorter */
     private FirstNameSorter firstNameSorter;
@@ -84,8 +84,8 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
         this.schemaPool = SchemaPool.getInstance();
         store = Activator.getDefault().getPreferenceStore();
 
-        objectClasses = schemaPool.getObjectClassesAsArray();
-        attributeTypes = schemaPool.getAttributeTypesAsArray();
+        objectClasses = schemaPool.getObjectClasses();
+        attributeTypes = schemaPool.getAttributeTypes();
 
         firstNameSorter = new FirstNameSorter();
         oidSorter = new OidSorter();
@@ -106,7 +106,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
      */
     public Object[] getChildren( Object parentElement )
     {
-        List<DisplayableTreeElement> children = new ArrayList<DisplayableTreeElement>();
+        List<ITreeNode> children = new ArrayList<ITreeNode>();
 
         int group = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING );
         int sortBy = store.getInt( PluginConstants.PREFS_HIERARCHY_VIEW_SORTING_BY );
@@ -117,10 +117,8 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             //we are looking for the childrens of the contained objectClass
             ObjectClass objectClass = ( ( ObjectClassWrapper ) parentElement ).getMyObjectClass();
 
-            for ( int i = 0; i < objectClasses.length; i++ )
+            for ( ObjectClass oClass : objectClasses )
             {
-                ObjectClass oClass = objectClasses[i];
-
                 //not this object class
                 if ( oClass.getOid() != objectClass.getOid() )
                 {
@@ -135,7 +133,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                             {
                                 //we use an objectClass wrapper
                                 children
-                                    .add( new ObjectClassWrapper( oClass, ( DisplayableTreeElement ) parentElement ) );
+                                    .add( new ObjectClassWrapper( oClass, ( ITreeNode ) parentElement ) );
                                 break; //break only the inner for
                             }
                         }
@@ -164,10 +162,8 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             //we are looking for the childrens of the contained attribute type
             AttributeType attributeType = ( ( AttributeTypeWrapper ) parentElement ).getMyAttributeType();
 
-            for ( int i = 0; i < attributeTypes.length; i++ )
+            for (AttributeType aType : attributeTypes)
             {
-                AttributeType aType = attributeTypes[i];
-
                 //not this attribute type
                 if ( aType.getOid() != attributeType.getOid() )
                 {
@@ -182,7 +178,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                             {
                                 //we use an objectClass wrapper
                                 children
-                                    .add( new AttributeTypeWrapper( aType, ( DisplayableTreeElement ) parentElement ) );
+                                    .add( new AttributeTypeWrapper( aType, ( ITreeNode ) parentElement ) );
                                 break; //break only the inner for
                             }
                         }
@@ -212,15 +208,12 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
 
             if ( intermediate.getName().equals( "**Primary Node**" ) ) //$NON-NLS-1$
             {
-                refreshOcsAndAts();
-
                 List<ObjectClassWrapper> ocList = new ArrayList<ObjectClassWrapper>();
                 if ( !Activator.getDefault().getDialogSettings().getBoolean(
                     HideObjectClassesAction.HIDE_OBJECT_CLASSES_DS_KEY ) )
                 {
-                    for ( int i = 0; i < objectClasses.length; i++ )
+                    for (ObjectClass oClass : objectClasses)
                     {
-                        ObjectClass oClass = objectClasses[i];
                         String[] sups = oClass.getSuperiors();
                         //if no supperiors had been set
                         if ( sups.length == 0 )
@@ -254,9 +247,8 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     HideAttributeTypesAction.HIDE_ATTRIBUTE_TYPES_DS_KEY ) )
                 {
 
-                    for ( int i = 0; i < attributeTypes.length; i++ )
+                    for (AttributeType aType : attributeTypes )
                     {
-                        AttributeType aType = attributeTypes[i];
                         String sup = aType.getSuperior();
                         //if no superior had been set
                         if ( sup == null )
@@ -387,16 +379,6 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
         }
 
         return false;
-    }
-
-
-    /**
-     * Refreshes the object classes and attribute types HahshTables.
-     */
-    private void refreshOcsAndAts()
-    {
-        objectClasses = schemaPool.getObjectClassesAsArray();
-        attributeTypes = schemaPool.getAttributeTypesAsArray();
     }
 
 

@@ -25,9 +25,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
@@ -61,8 +61,14 @@ public class SchemaPool implements SchemaListener
     private static SchemaPool instance_;
     private static Object syncObject_ = new Object();
 
-    private ArrayList<Schema> schemaList;
-    private ArrayList<PoolListener> listeners;
+    private List<Schema> schemaList;
+    private List<PoolListener> listeners;
+
+    private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
+
+    private Map<String, AttributeType> attributeTypesMap = new HashMap<String, AttributeType>();
+    private Map<String, ObjectClass> objectClassesMap = new HashMap<String, ObjectClass>();
 
 
     /**
@@ -169,8 +175,8 @@ public class SchemaPool implements SchemaListener
     private static void initializeWithSpecified( SchemaPool pool )
     {
         IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-        String specificPath = prefs
-            .get( SchemasEditorPreferencePage.SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        String specificPath = prefs.get( SchemasEditorPreferencePage.SPECIFIC_CORE_DIRECTORY, System
+            .getProperty( "user.home" ) ); //$NON-NLS-1$
 
         File dir = new File( specificPath );
         String sCurPath = dir.getAbsolutePath() + File.separator;
@@ -227,7 +233,8 @@ public class SchemaPool implements SchemaListener
                     IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
 
                     //2) initialize the pool
-                    boolean initialize_with_specified = prefs.getBoolean( SchemasEditorPreferencePage.SPECIFIC_CORE, false );
+                    boolean initialize_with_specified = prefs.getBoolean( SchemasEditorPreferencePage.SPECIFIC_CORE,
+                        false );
                     if ( initialize_with_specified )
                     {
                         //2a) with user-specified core schemas
@@ -283,8 +290,7 @@ public class SchemaPool implements SchemaListener
      */
     public Schema[] getSchemas()
     {
-        return schemaList.toArray( new Schema[]
-            {} );
+        return schemaList.toArray( new Schema[0] );
     }
 
 
@@ -335,7 +341,7 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsObjectClass( String name )
     {
-        return getObjectClass( name ) != null;
+        return objectClassesMap.containsKey( name );
     }
 
 
@@ -346,7 +352,7 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsAttributeType( String name )
     {
-        return getAttributeType( name ) != null;
+        return attributeTypesMap.containsKey( name );
     }
 
 
@@ -358,13 +364,7 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsObjectClass( ObjectClass objectClass )
     {
-        String[] names = objectClass.getNames();
-        for ( String name : names )
-        {
-            if ( getObjectClass( name ) != null )
-                return true;
-        }
-        return false;
+        return objectClassesMap.containsKey( objectClass.getOid() );
     }
 
 
@@ -376,13 +376,7 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsAttributeType( AttributeType attributeType )
     {
-        String[] names = attributeType.getNames();
-        for ( String name : names )
-        {
-            if ( getAttributeType( name ) != null )
-                return true;
-        }
-        return false;
+        return attributeTypesMap.containsKey( attributeType.getOid() );
     }
 
 
@@ -393,9 +387,7 @@ public class SchemaPool implements SchemaListener
      */
     public ObjectClass getObjectClass( String name )
     {
-        Hashtable<String, ObjectClass> objectClassTable = getObjectClassesAsHashTableByName();
-
-        return objectClassTable.get( name );
+        return objectClassesMap.get( name );
     }
 
 
@@ -406,81 +398,19 @@ public class SchemaPool implements SchemaListener
      */
     public AttributeType getAttributeType( String name )
     {
-        Hashtable<String, AttributeType> attributeTypeTable = getAttributeTypesAsHashTableByName();
-
-        return attributeTypeTable.get( name );
+        return attributeTypesMap.get( name );
     }
 
 
-    /**
-     * Accessor to all the objectClasses defined by the schemas stored in the pool
-     * @return as an (name, objectClass) hashtable 
-     */
-    public Hashtable<String, ObjectClass> getObjectClassesAsHashTableByName()
+    public Map<String, ObjectClass> getObjectClassesAsMap()
     {
-        Hashtable<String, ObjectClass> objectClassTable = new Hashtable<String, ObjectClass>();
-
-        for ( Schema schema : schemaList )
-        {
-            Hashtable<String, ObjectClass> temp = schema.getObjectClassesAsHashTable();
-            if ( temp != null )
-                objectClassTable.putAll( temp );
-        }
-        return objectClassTable;
+        return objectClassesMap;
     }
 
 
-    /**
-     * Accessor to all the objectClasses defined by the schemas stored in the pool
-     * @return as an (oid, ObjectClass) hashtable
-     */
-    public Hashtable<String, ObjectClass> getObjectClassesAsHashTableByOID()
+    public Map<String, AttributeType> getAttributeTypesAsMap()
     {
-        Hashtable<String, ObjectClass> classesTable = new Hashtable<String, ObjectClass>();
-
-        ObjectClass[] ObjectClasses = getObjectClassesAsArray();
-        for ( ObjectClass class1 : ObjectClasses )
-        {
-            classesTable.put( class1.getOid(), class1 );
-        }
-
-        return classesTable;
-    }
-
-
-    /**
-     * Accessor to all the attributeType defined by the schemas stored in the pool
-     * @return as an (name, attributeType) hashtable
-     */
-    public Hashtable<String, AttributeType> getAttributeTypesAsHashTableByName()
-    {
-        Hashtable<String, AttributeType> attributeTypeTable = new Hashtable<String, AttributeType>();
-
-        for ( Schema schema : schemaList )
-        {
-            Hashtable<String, AttributeType> temp = schema.getAttributeTypesAsHashTable();
-            if ( temp != null )
-                attributeTypeTable.putAll( temp );
-        }
-        return attributeTypeTable;
-    }
-
-
-    /**
-     * Accessor to all the attributeType defined by the schemas stored in the pool
-     * @return as an (oid, attributeType) hashtable
-     */
-    public Hashtable<String, AttributeType> getAttributeTypesAsHashTableByOID()
-    {
-        Hashtable<String, AttributeType> attributeTypeTable = new Hashtable<String, AttributeType>();
-
-        AttributeType[] attributeTypes = getAttributeTypesAsArray();
-        for ( AttributeType type : attributeTypes )
-        {
-            attributeTypeTable.put( type.getOid(), type );
-        }
-
-        return attributeTypeTable;
+        return attributeTypesMap;
     }
 
 
@@ -489,22 +419,12 @@ public class SchemaPool implements SchemaListener
      * the schemas stored in the pool
      * @return as an (oid, SchemaElement) hashtable
      */
-    public Hashtable<String, SchemaElement> getSchemaElementsAsHashTableByOID()
+    public Map<String, SchemaElement> getSchemaElements()
     {
-        Hashtable<String, SchemaElement> elementsTable = new Hashtable<String, SchemaElement>();
+        Map<String, SchemaElement> elementsTable = new HashMap<String, SchemaElement>();
 
-        AttributeType[] attributeTypes = getAttributeTypesAsArray();
-        ObjectClass[] objectClasses = getObjectClassesAsArray();
-
-        for ( ObjectClass class1 : objectClasses )
-        {
-            elementsTable.put( class1.getOid(), class1 );
-        }
-
-        for ( AttributeType type : attributeTypes )
-        {
-            elementsTable.put( type.getOid(), type );
-        }
+        elementsTable.putAll( attributeTypesMap );
+        elementsTable.putAll( objectClassesMap );
 
         return elementsTable;
     }
@@ -514,11 +434,9 @@ public class SchemaPool implements SchemaListener
      * Accessor to all the objectClasses defined by the schemas stored in the pool
      * @return as an array
      */
-    public ObjectClass[] getObjectClassesAsArray()
+    public List<ObjectClass> getObjectClasses()
     {
-        Set<ObjectClass> set = new HashSet<ObjectClass>();
-        set.addAll(getObjectClassesAsHashTableByName().values());
-        return set.toArray(new ObjectClass[0]);
+        return objectClasses;
     }
 
 
@@ -526,11 +444,9 @@ public class SchemaPool implements SchemaListener
      * Accessor to all the attributeType defined by the schemas stored in the pool
      * @return as an array
      */
-    public AttributeType[] getAttributeTypesAsArray()
+    public List<AttributeType> getAttributeTypes()
     {
-        Set<AttributeType> set = new HashSet<AttributeType>();
-        set.addAll(getAttributeTypesAsHashTableByName().values());
-        return set.toArray(new AttributeType[0]);
+        return attributeTypes;
     }
 
 
@@ -560,9 +476,20 @@ public class SchemaPool implements SchemaListener
             if ( !containsSchema( s.getName() ) )
             {
                 schemaList.add( s );
-                //we register as a listener of the schema
                 s.addListener( this );
-                //we notify our listeners that a schema has been added
+
+                AttributeType[] ats = s.getAttributeTypesAsArray();
+                for ( int i = 0; i < ats.length; i++ )
+                {
+                    addAttributeType( ats[i] );
+                }
+
+                ObjectClass[] ocs = s.getObjectClassesAsArray();
+                for ( int i = 0; i < ocs.length; i++ )
+                {
+                    addObjectClass( ocs[i] );
+                }
+
                 notifyChanged( LDAPModelEvent.Reason.SchemaAdded, s );
                 return true;
             }
@@ -660,7 +587,19 @@ public class SchemaPool implements SchemaListener
             schemaList.remove( s );
             s.removeListener( this );
             s.closeAssociatedEditors();
-            //notify of the changement
+
+            AttributeType[] ats = s.getAttributeTypesAsArray();
+            for ( int i = 0; i < ats.length; i++ )
+            {
+                removeAttributeType( ats[i] );
+            }
+
+            ObjectClass[] ocs = s.getObjectClassesAsArray();
+            for ( int i = 0; i < ocs.length; i++ )
+            {
+                removeObjectClass( ocs[i] );
+            }
+
             notifyChanged( LDAPModelEvent.Reason.SchemaRemoved, s );
         }
     }
@@ -774,12 +713,35 @@ public class SchemaPool implements SchemaListener
     }
 
 
-    /******************************************
-     *           Schema Listener Impl         *
-     ******************************************/
-
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.SchemaListener#schemaChanged(org.apache.directory.ldapstudio.schemas.model.Schema, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+     */
     public void schemaChanged( Schema originatingSchema, LDAPModelEvent e )
     {
+        switch ( e.getReason() )
+        {
+            case ATAdded:
+            case OCAdded:
+                elementAdded( e );
+                break;
+
+            case ATModified:
+                attributeTypeModified( e );
+                break;
+
+            case OCModified:
+                objectClassModified( e );
+                break;
+
+            case ATRemoved:
+            case OCRemoved:
+                elementRemoved( e );
+                break;
+
+            default:
+                break;
+        }
+
         for ( PoolListener listener : listeners )
         {
             try
@@ -789,7 +751,176 @@ public class SchemaPool implements SchemaListener
             catch ( Exception e1 )
             {
                 logger.debug( "error when notifying " + listener + " of pool modification" ); //$NON-NLS-1$ //$NON-NLS-2$
+                e1.printStackTrace(); // TODO remove this
             }
         }
+    }
+
+
+    /**
+     * Updates the SchemaPool after an event of type ATAdded or case OCAdded.
+     *
+     * @param e
+     *      the associated event
+     */
+    private void elementAdded( LDAPModelEvent e )
+    {
+        SchemaElement schemaElement = ( SchemaElement ) e.getNewValue();
+
+        if ( schemaElement instanceof AttributeType )
+        {
+            addAttributeType( ( AttributeType ) schemaElement );
+        }
+        else if ( schemaElement instanceof ObjectClass )
+        {
+            addObjectClass( ( ObjectClass ) schemaElement );
+        }
+    }
+
+
+    /**
+     * Updates the SchemaPool after an event of type ATModified.
+     *
+     * @param e
+     *      the associated event
+     */
+    private void attributeTypeModified( LDAPModelEvent e )
+    {
+        AttributeType oldAttributeType = ( AttributeType ) e.getOldValue();
+        AttributeType newAttributeType = ( AttributeType ) e.getNewValue();
+
+        String[] names = oldAttributeType.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            attributeTypesMap.remove( names[j] );
+        }
+        attributeTypesMap.remove( oldAttributeType.getOid() );
+
+        names = newAttributeType.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            attributeTypesMap.put( names[j], newAttributeType );
+        }
+        attributeTypesMap.put( newAttributeType.getOid(), newAttributeType );
+    }
+
+
+    /**
+     * Updates the SchemaPool after an event of type OCModified.
+     *
+     * @param e
+     *      the associated event
+     */
+    private void objectClassModified( LDAPModelEvent e )
+    {
+        ObjectClass oldObjectClass = ( ObjectClass ) e.getOldValue();
+        ObjectClass newObjectClass = ( ObjectClass ) e.getNewValue();
+
+        String[] names = oldObjectClass.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            objectClassesMap.remove( names[j] );
+        }
+        objectClassesMap.remove( oldObjectClass.getOid() );
+
+        names = newObjectClass.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            objectClassesMap.put( names[j], newObjectClass );
+        }
+        objectClassesMap.put( newObjectClass.getOid(), newObjectClass );
+    }
+
+
+    /**
+     * Updates the SchemaPool after an event of type ATRemoved or case OCRemoved.
+     *
+     * @param e
+     *      the associated event
+     */
+    private void elementRemoved( LDAPModelEvent e )
+    {
+        SchemaElement schemaElement = ( SchemaElement ) e.getOldValue();
+
+        if ( schemaElement instanceof AttributeType )
+        {
+            removeAttributeType( ( AttributeType ) schemaElement );
+        }
+        else if ( schemaElement instanceof ObjectClass )
+        {
+            removeObjectClass( ( ObjectClass ) schemaElement );
+        }
+    }
+
+
+    /**
+     * Adds an attribute type.
+     *
+     * @param at
+     *      the attribute type to add
+     */
+    private void addAttributeType( AttributeType at )
+    {
+        String[] names = at.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            attributeTypesMap.put( names[j], at );
+        }
+        attributeTypesMap.put( at.getOid(), at );
+        attributeTypes.add( at );
+    }
+
+
+    /**
+     * Removes an attribute type.
+     *
+     * @param at
+     *      the attribute type to remove
+     */
+    private void removeAttributeType( AttributeType at )
+    {
+        String[] names = at.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            attributeTypesMap.remove( names[j] );
+        }
+        attributeTypesMap.remove( at.getOid() );
+        attributeTypes.remove( at );
+    }
+
+
+    /**
+     * Adds an object class.
+     *
+     * @param oc
+     *      the object class to add
+     */
+    private void addObjectClass( ObjectClass oc )
+    {
+        String[] names = oc.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            objectClassesMap.put( names[j], oc );
+        }
+        objectClassesMap.put( oc.getOid(), oc );
+        objectClasses.add( oc );
+    }
+
+
+    /**
+     * Removes an object class
+     *
+     * @param oc
+     *      the object class to remove
+     */
+    private void removeObjectClass( ObjectClass oc )
+    {
+        String[] names = oc.getNames();
+        for ( int j = 0; j < names.length; j++ )
+        {
+            objectClassesMap.remove( names[j] );
+        }
+        objectClassesMap.remove( oc.getOid() );
+        objectClasses.remove( oc );
     }
 }

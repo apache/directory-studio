@@ -21,12 +21,11 @@
 package org.apache.directory.ldapstudio.schemas.view.wizards;
 
 
-import java.util.Hashtable;
+import java.util.Map;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.OID;
-import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage;
@@ -58,10 +57,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
 
     @SuppressWarnings("unused")//$NON-NLS-1$
     private ISelection selection;
-
-    private Hashtable<String, ObjectClass> classesByName;
-
-    private Hashtable<String, SchemaElement> elementsByOID;
+    private Map<String, SchemaElement> elements;
 
     private Text oidField;
 
@@ -81,8 +77,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
         this.selection = selection;
 
-        classesByName = SchemaPool.getInstance().getObjectClassesAsHashTableByName();
-        elementsByOID = SchemaPool.getInstance().getSchemaElementsAsHashTableByOID();
+        elements = SchemaPool.getInstance().getSchemaElements();
     }
 
 
@@ -219,14 +214,14 @@ public class CreateANewObjectClassWizardPage extends WizardPage
             return;
         }
 
-        if ( elementsByOID.containsKey( getOidField() ) )
+        if ( elements.containsKey( getOidField() ) )
         {
             updateStatus( Messages
                 .getString( "CreateANewObjectClassWizardPage.An_element_of_the_same_OID_already_exists" ) ); //$NON-NLS-1$
             return;
         }
 
-        if ( classesByName.containsKey( getNameField() ) )
+        if ( elements.containsKey( getNameField() ) )
         {
             updateStatus( Messages
                 .getString( "CreateANewObjectClassWizardPage.An_object_class_of_the_same_name_already_exists" ) ); //$NON-NLS-1$

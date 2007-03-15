@@ -39,7 +39,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  *
  */
 @SuppressWarnings("unused")//$NON-NLS-1$
-public class AttributeType implements SchemaElement
+public class AttributeType implements SchemaElement, Cloneable
 {
     private static Logger logger = Logger.getLogger( AttributeType.class );
     private AttributeTypeLiteral literal;
@@ -47,10 +47,6 @@ public class AttributeType implements SchemaElement
     private ArrayList<SchemaElementListener> listeners;
     private AttributeTypeFormEditor editor;
 
-
-    /******************************************
-     *             Constructors               *
-     ******************************************/
 
     /**
      * Default constructor
@@ -64,10 +60,6 @@ public class AttributeType implements SchemaElement
         listeners = new ArrayList<SchemaElementListener>();
     }
 
-
-    /******************************************
-     *               Accessors                *
-     ******************************************/
 
     /**
      * @return the openldap parser literal associated with this attributeType 
@@ -106,10 +98,6 @@ public class AttributeType implements SchemaElement
         this.editor = editor;
     }
 
-
-    /******************************************
-     *                 Logic                  *
-     ******************************************/
 
     /**
      * Call this method to remove the attributeType<->Editor association
@@ -166,11 +154,6 @@ public class AttributeType implements SchemaElement
     }
 
 
-    /******************************************
-     *            Wrapper Methods             *
-     ******************************************/
-
-    //get
     public String getDescription()
     {
         return literal.getDescription();
@@ -234,98 +217,84 @@ public class AttributeType implements SchemaElement
     public void setDescription( String description )
     {
         literal.setDescription( description );
-        notifyChanged();
     }
 
 
     public void setEquality( String equality )
     {
         literal.setEquality( equality );
-        notifyChanged();
     }
 
 
     public void setLength( int length )
     {
         literal.setLength( length );
-        notifyChanged();
     }
 
 
     public void setNames( String[] names )
     {
         literal.setNames( names );
-        notifyChanged();
     }
 
 
     public void setOrdering( String ordering )
     {
         literal.setOrdering( ordering );
-        notifyChanged();
     }
 
 
     public void setSubstr( String substr )
     {
         literal.setSubstr( substr );
-        notifyChanged();
     }
 
 
     public void setSuperior( String superior )
     {
         literal.setSuperior( superior );
-        notifyChanged();
     }
 
 
     public void setSyntax( String syntax )
     {
         literal.setSyntax( syntax );
-        notifyChanged();
     }
 
 
     public void setUsage( UsageEnum usage )
     {
         literal.setUsage( usage );
-        notifyChanged();
     }
 
     
     public void setOid( String oid )
     {
         literal.setOid( oid );
-        notifyChanged();
     }
     
     
     public void setObsolete( boolean bool )
     {
         literal.setObsolete( bool );
-        notifyChanged();
     }
 
 
     public void setSingleValue( boolean bool )
     {
         literal.setSingleValue( bool );
-        notifyChanged();
     }
 
 
     public void setCollective( boolean bool )
     {
         literal.setCollective( bool );
-        notifyChanged();
     }
 
 
     public void setNoUserModification( boolean bool )
     {
         literal.setNoUserModification( bool );
-        notifyChanged();
     }
 
 
@@ -352,10 +321,6 @@ public class AttributeType implements SchemaElement
         return literal.isSingleValue();
     }
 
-
-    /******************************************
-     *                  I/O                   *
-     ******************************************/
 
     public String write()
     {
@@ -475,19 +440,11 @@ public class AttributeType implements SchemaElement
     }
 
 
-    /******************************************
-     *           Object Redefinition          *
-     ******************************************/
-
     public String toString()
     {
         return getNames()[0];
     }
 
-
-    /******************************************
-     *            Events emmiting             *
-     ******************************************/
 
     public void addListener( SchemaElementListener listener )
     {
@@ -502,18 +459,81 @@ public class AttributeType implements SchemaElement
     }
 
 
-    private void notifyChanged()
+    private void notifyChanged( AttributeType oldAttributeType )
     {
         for ( SchemaElementListener listener : listeners )
         {
             try
             {
-                listener.schemaElementChanged( this, new LDAPModelEvent( LDAPModelEvent.Reason.ATModified, this ) );
+                listener.schemaElementChanged( this, new LDAPModelEvent( LDAPModelEvent.Reason.ATModified,
+                    oldAttributeType, this ) );
             }
             catch ( Exception e )
             {
                 logger.debug( "error when notifying listener: " + listener ); //$NON-NLS-1$
             }
+        }
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() throws CloneNotSupportedException
+    {
+        AttributeType at = ( AttributeType ) super.clone();
+
+        at.literal = new AttributeTypeLiteral( literal.getOid() );
+        at.literal.setCollective( literal.isCollective() );
+        at.literal.setDescription( literal.getDescription() );
+        at.literal.setEquality( literal.getEquality() );
+        at.literal.setLength( literal.getLength() );
+        at.literal.setNames( literal.getNames() );
+        at.literal.setNoUserModification( literal.isNoUserModification() );
+        at.literal.setObsolete( literal.isObsolete() );
+        at.literal.setOrdering( literal.getOrdering() );
+        at.literal.setSingleValue( literal.isSingleValue() );
+        at.literal.setSubstr( literal.getSubstr() );
+        at.literal.setSuperior( literal.getSuperior() );
+        at.literal.setSyntax( literal.getSyntax() );
+        at.literal.setUsage( literal.getUsage() );
+
+        return at;
+    }
+
+
+    /**
+     * Updates the attribute type.
+     *
+     * @param at
+     *      the attribute type to get values from
+     */
+    public void update( AttributeType at )
+    {
+        try
+        {
+            AttributeType oldAttributeType = ( AttributeType ) clone();
+
+            literal.setCollective( at.isCollective() );
+            literal.setDescription( at.getDescription() );
+            literal.setEquality( at.getEquality() );
+            literal.setLength( at.getLength() );
+            literal.setNames( at.getNames() );
+            literal.setNoUserModification( at.isNoUserModification() );
+            literal.setObsolete( at.isObsolete() );
+            literal.setOid( at.getOid() );
+            literal.setOrdering( at.getOrdering() );
+            literal.setSingleValue( at.isSingleValue() );
+            literal.setSubstr( at.getSubstr() );
+            literal.setSuperior( at.getSuperior() );
+            literal.setSyntax( at.getSyntax() );
+            literal.setUsage( at.getUsage() );
+
+            notifyChanged( oldAttributeType );
+        }
+        catch ( CloneNotSupportedException e )
+        {
+            // Will never occurr.
         }
     }
 }

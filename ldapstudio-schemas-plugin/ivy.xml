@@ -19,7 +19,7 @@
 <ivy-module version="1.0">
     <info organisation="org.apache.directory.ldapstudio" module="ldapdtudio-schemas-plugin"/>
     <dependencies>
-		<dependency org="commons-collections" name="commons-collections" rev="3.1"/>
+		<dependency org="commons-collections" name="commons-collections" rev="3.2"/>
 		<dependency org="commons-configuration" name="commons-configuration" rev="1.2"/>
 		<dependency org="commons-lang" name="commons-lang" rev="2.1"/>
 		<dependency org="commons-logging" name="commons-logging" rev="1.1"/>

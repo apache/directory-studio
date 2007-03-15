@@ -24,6 +24,7 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,8 +58,7 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
 
             SchemaPool schemaPool = SchemaPool.getInstance();
 
-            ArrayList<AttributeType> atList = new ArrayList<AttributeType>( schemaPool
-                .getAttributeTypesAsHashTableByName().values() );
+            List<AttributeType> atList = schemaPool.getAttributeTypes();
 
             // Sorting the list
             Collections.sort( atList, new Comparator<AttributeType>()

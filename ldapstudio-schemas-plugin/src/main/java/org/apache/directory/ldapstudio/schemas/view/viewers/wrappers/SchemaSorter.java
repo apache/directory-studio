@@ -29,12 +29,12 @@ import org.apache.directory.ldapstudio.schemas.model.Schema;
 /**
  * This class is used to compare and sort ascending two Schemas
  */
-public class SchemaSorter implements Comparator<DisplayableTreeElement>
+public class SchemaSorter implements Comparator<ITreeNode>
 {
     /* (non-Javadoc)
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
-    public int compare( DisplayableTreeElement o1, DisplayableTreeElement o2 )
+    public int compare( ITreeNode o1, ITreeNode o2 )
     {
         if ( ( o1 instanceof SchemaWrapper ) && ( o2 instanceof SchemaWrapper ) )
         {

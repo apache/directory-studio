@@ -14,7 +14,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.search
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
- lib/commons-collections-3.1.jar,
  lib/commons-configuration-1.2.jar,
  lib/commons-lang-2.1.jar,
  lib/commons-logging-1.1.jar,
@@ -23,4 +22,5 @@ Bundle-ClassPath: .,
  lib/velocity-dep-1.4.jar,
  lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar,
  lib/apacheds-core-shared-1.5.0-SNAPSHOT.jar,
- lib/shared-asn1-0.9.6-SNAPSHOT.jar
+ lib/shared-asn1-0.9.6-SNAPSHOT.jar,
+ lib/commons-collections-3.2.jar

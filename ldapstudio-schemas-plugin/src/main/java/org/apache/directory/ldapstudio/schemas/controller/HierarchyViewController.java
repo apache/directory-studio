@@ -119,8 +119,8 @@ public class HierarchyViewController
      */
     private void initActions()
     {
-        hideObjectClasses = new HideObjectClassesAction( view );
-        hideAttributeTypes = new HideAttributeTypesAction( view );
+        hideObjectClasses = new HideObjectClassesAction( view.getViewer() );
+        hideAttributeTypes = new HideAttributeTypesAction( view.getViewer() );
         collapseAll = new CollapseAllAction( view.getViewer() );
         linkWithEditor = new LinkWithEditorHierarchyView( view );
         openSortDialog = new OpenHierarchyViewSortDialogAction();
@@ -229,7 +229,14 @@ public class HierarchyViewController
             { 
                 if ( authorizedPrefs.contains( event.getProperty() ) )
                 {
-                    view.refresh();
+                    if ( PluginConstants.PREFS_HIERARCHY_VIEW_GROUPING == event.getProperty() )
+                    {
+                        view.completeRefresh();
+                    }
+                    else
+                    {
+                        view.refresh();
+                    }
                 }
             }
         } );

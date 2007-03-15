@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -198,8 +198,8 @@ public class HierarchyViewLabelProvider extends LabelProvider
      */
     public Image getImage( Object obj )
     {
-        if ( obj instanceof DisplayableTreeElement )
-            return ( ( DisplayableTreeElement ) obj ).getDisplayImage();
+        if ( obj instanceof ITreeNode )
+            return ( ( ITreeNode ) obj ).getImage();
 
         // Default
         return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK );

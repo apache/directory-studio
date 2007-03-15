@@ -17,34 +17,32 @@
  *  under the License. 
  *  
  */
-
-package org.apache.directory.ldapstudio.schemas.tests;
-
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
+package org.apache.directory.ldapstudio.schemas.view.viewers.wrappers;
 
 
 /**
- * Main test class -> activate all the other tests
+ * This class is used to represent the root entry of the TreeViewer used in the Schemas View.
  *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
-public class AllTests
+public class SchemasViewRoot extends TreeNode
 {
-
-    public static Test suite()
+    /**
+     * Creates a new instance of SchemasViewRoot.
+     *
+     */
+    public SchemasViewRoot()
     {
-        TestSuite suite = new TestSuite( "Test for org.apache.directory.ldapstudio.tests" ); //$NON-NLS-1$
-        //$JUnit-BEGIN$
-        suite.addTestSuite( ObjectClassTest.class );
-        suite.addTestSuite( AttributeTypeTest.class );
-        suite.addTestSuite( SchemaPoolTest.class );
-        suite.addTestSuite( PoolListenerTest.class );
-        suite.addTestSuite( SchemaListenerTest.class );
-        suite.addTestSuite( SchemaElementListenerTest.class );
-        suite.addTestSuite( OIDTest.class );
-        //$JUnit-END$
-        return suite;
+        super( null );
     }
 
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return "SchemasViewRoot";
+    }
 }

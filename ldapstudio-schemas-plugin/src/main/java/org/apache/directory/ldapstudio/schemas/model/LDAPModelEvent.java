@@ -33,21 +33,32 @@ package org.apache.directory.ldapstudio.schemas.model;
 public class LDAPModelEvent
 {
 
+    /**
+     * This Enum is used to indicate the reason of the launch of the event.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
     public enum Reason
     {
         SchemaAdded, SchemaRemoved, multipleSchemaRemoved, multipleSchemaAdded, SchemaSaved, OCAdded, OCRemoved, ATAdded, ATRemoved, OCModified, ATModified, poolCleared
     }
 
-    private Reason reason = null;
-    private Object element = null;
+    /** The reason */
+    private Reason reason;
 
+    /** The old value of the element */
+    private Object oldValue;
 
-    /******************************************
-     *               Constructors             *
-     ******************************************/
+    /** The new value of the element */
+    private Object newValue;
+
 
     /**
-     * Default constructor, takes only a reason as argument
+     * Creates a new instance of LDAPModelEvent.
+     *
+     * @param reason
+     *      the reason
      */
     public LDAPModelEvent( Reason reason )
     {
@@ -56,46 +67,69 @@ public class LDAPModelEvent
 
 
     /**
-     * Constructor for objectClass motivated events
-     * @param reason takes only OCAdded, OCRemoved or OCModified reasons
-     * @param objectClass the incriminated objectClass
-     * @throws Exception if bad reason
+     * Creates a new instance of LDAPModelEvent for object class motivated events.
+     *
+     * @param reason
+     *      the reason (must be OCAdded, OCRemoved or OCModified)
+     * @param oldObjectClass
+     *      the old object class
+     * @param newObjectClass
+     *      the new object class
+     * @throws Exception
+     *      if bad reason
      */
-    public LDAPModelEvent( Reason reason, ObjectClass objectClass ) throws Exception
+    public LDAPModelEvent( Reason reason, ObjectClass oldObjectClass, ObjectClass newObjectClass ) throws Exception
     {
         this( reason );
         if ( ( reason == Reason.OCAdded ) || ( reason == Reason.OCModified ) || ( reason == Reason.OCRemoved ) )
         {
-            this.element = objectClass;
+            newValue = newObjectClass;
+            oldValue = oldObjectClass;
         }
         else
-            throw new Exception( "Event creation exception " + reason + " " + objectClass ); //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            throw new Exception( "Event creation exception " + reason + " " + newObjectClass ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 
 
     /**
-     * Constructor for attributeType motivated events
-     * @param reason takes only ATAdded, ATRemoved or ATModified reasons
-     * @param attributeType the incriminated attributeType
-     * @throws Exception if bad reason
+     * Creates a new instance of LDAPModelEvent for attribute type motivated events.
+     *
+     * @param reason
+     *      the reason (must be ATAdded, ATRemoved or ATModified)
+     * @param oldAttributeType
+     *      the old attribute type
+     * @param newAttributeType
+     *      the new attribute type
+     * @throws Exception
+     *      if bad reason
      */
-    public LDAPModelEvent( Reason reason, AttributeType attributeType ) throws Exception
+    public LDAPModelEvent( Reason reason, AttributeType oldAttributeType, AttributeType newAttributeType )
+        throws Exception
     {
         this( reason );
         if ( ( reason == Reason.ATAdded ) || ( reason == Reason.ATModified ) || ( reason == Reason.ATRemoved ) )
         {
-            this.element = attributeType;
+            newValue = newAttributeType;
+            oldValue = oldAttributeType;
         }
         else
-            throw new Exception( "Event creation exception " + reason + " " + attributeType ); //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            throw new Exception( "Event creation exception " + reason + " " + oldAttributeType ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 
 
     /**
-     * Constructor for schema motivated events
-     * @param reason takes only SchemaAdded or SchemaRemoved reasons
-     * @param schema the incriminated schema
-     * @throws Exception if bad reason
+     * Creates a new instance of LDAPModelEvent for schema motivated events.
+     *
+     * @param reason
+     *      the reason (must be SchemaAdded or SchemaRemoved)
+     * @param schema
+     *      the associated schema
+     * @throws Exception
+     *      if bad reason
      */
     public LDAPModelEvent( Reason reason, Schema schema ) throws Exception
     {
@@ -103,32 +137,47 @@ public class LDAPModelEvent
 
         if ( ( reason == Reason.SchemaAdded ) || ( reason == Reason.SchemaRemoved ) )
         {
-            this.element = schema;
+            newValue = schema;
         }
         else
+        {
             throw new Exception( "Event creation exception " + reason + " " + schema ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-
-    /******************************************
-     *              Accessors                 *
-     ******************************************/
-
-    /**
-     * If specified, returns the element that was the cause of the Event
-     * @return an ObjectClass, an AttributeType, a Schema or null if not specified
-     */
-    public Object getElement()
-    {
-        return element;
+        }
     }
 
 
     /**
-     * @return Returns the reason of the event
+     * Gets the reason of the the event.
+     * 
+     * @return
+     *      the reason of the event
      */
     public Reason getReason()
     {
         return reason;
+    }
+
+
+    /**
+     * Gets the new value of the element.
+     *
+     * @return
+     *      the new value of the element.
+     */
+    public Object getNewValue()
+    {
+        return newValue;
+    }
+
+
+    /**
+     * Gets the new value of the element.
+     *
+     * @return
+     *      the new value of the element.
+     */
+    public Object getOldValue()
+    {
+        return oldValue;
     }
 }

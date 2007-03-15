@@ -31,48 +31,23 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * Nasty trick to display object-classes attributes in the tree-viewer
  */
-public class SchemaWrapper implements DisplayableTreeElement
+public class SchemaWrapper extends TreeNode
 {
-    /******************************************
-     *               Fields                   *
-     ******************************************/
-
-    private IntermediateNode parent;
+    /** The associated schema */
     private Schema mySchema;
 
-
-    /******************************************
-     *              Constructors              *
-     ******************************************/
 
     /**
      * Default constructor
      * @param mySchema
      * @param parent
      */
-    public SchemaWrapper( Schema mySchema, IntermediateNode parent )
+    public SchemaWrapper( Schema mySchema, ITreeNode parent )
     {
+        super( parent );
         this.mySchema = mySchema;
-        this.parent = parent;
     }
 
-
-    /******************************************
-     *             Wrapper Methods            *
-     ******************************************/
-
-    /**
-     * @return the name of the wrapped schema
-     */
-    public String getName()
-    {
-        return mySchema.getName();
-    }
-
-
-    /******************************************
-     *               Accessors                *
-     ******************************************/
 
     /**
      * @return the wrapped schema
@@ -83,23 +58,10 @@ public class SchemaWrapper implements DisplayableTreeElement
     }
 
 
-    /**
-     * @return the parent element
-     */
-    public IntermediateNode getParent()
-    {
-        return parent;
-    }
-
-
-    /******************************************
-     *       DisplayableTreeElement Impl.     *
-     ******************************************/
-
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayImage()
+     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.TreeNode#getImage()
      */
-    public Image getDisplayImage()
+    public Image getImage()
     {
         if ( this.mySchema.type.equals( Schema.SchemaType.coreSchema ) )
         {
@@ -108,15 +70,20 @@ public class SchemaWrapper implements DisplayableTreeElement
         }
         else
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA ).createImage();
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
+                .createImage();
         }
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayName()
+
+    /**
+     * Gets the name of the schema.
+     *
+     * @return
+     *      the name of the schema
      */
-    public String getDisplayName()
+    public String getName()
     {
         String res = ""; //$NON-NLS-1$
         if ( mySchema.hasBeenModified() )
@@ -124,10 +91,6 @@ public class SchemaWrapper implements DisplayableTreeElement
         return res + mySchema.getName();
     }
 
-
-    /******************************************
-     *           Object Redefinition          *
-     ******************************************/
 
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
@@ -148,6 +111,6 @@ public class SchemaWrapper implements DisplayableTreeElement
      */
     public String toString()
     {
-        return mySchema + " wrapper"; //$NON-NLS-1$
+        return mySchema.getName() + " wrapper"; //$NON-NLS-1$
     }
 }

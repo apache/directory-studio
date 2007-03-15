@@ -30,7 +30,7 @@ import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEdito
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
@@ -156,7 +156,7 @@ public class LinkWithEditorHierarchyView extends Action
             if ( ( selectedObject instanceof SchemaWrapper ) || ( selectedObject instanceof ObjectClassWrapper )
                 || ( selectedObject instanceof AttributeTypeWrapper ) )
             {
-                linkEditorWithView( ( DisplayableTreeElement ) selectedObject );
+                linkEditorWithView( ( ITreeNode ) selectedObject );
             }
         }
     };
@@ -244,7 +244,7 @@ public class LinkWithEditorHierarchyView extends Action
     private void linkViewWithEditor( String editorName, String editorID )
     {
         StructuredSelection structuredSelection = null;
-        DisplayableTreeElement wrapper = null;
+        ITreeNode wrapper = null;
 
         // Only editors for attribute types and object class are accepted
         if ( editorID.equals( AttributeTypeFormEditor.ID ) )
@@ -275,7 +275,7 @@ public class LinkWithEditorHierarchyView extends Action
         else
         // The node we are looking for is not yet loaded in the TreeViewer, we have to find and load it.
         {
-            DisplayableTreeElement foundElement = hierarchyView.findElementInTree( wrapper );
+            ITreeNode foundElement = hierarchyView.findElementInTree( wrapper );
 
             if ( foundElement != null )
             {
@@ -329,7 +329,7 @@ public class LinkWithEditorHierarchyView extends Action
      * @param wrapper
      *      the selected element in the view
      */
-    private void linkEditorWithView( DisplayableTreeElement wrapper )
+    private void linkEditorWithView( ITreeNode wrapper )
     {
         IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
             .getEditorReferences();

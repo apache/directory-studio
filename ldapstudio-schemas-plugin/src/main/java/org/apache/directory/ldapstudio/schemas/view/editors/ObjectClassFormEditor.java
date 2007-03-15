@@ -112,8 +112,14 @@ public class ObjectClassFormEditor extends FormEditor
         originalObjectClass = ( ( ObjectClassFormEditorInput ) getEditorInput() ).getObjectClass();
         originalObjectClass.setEditor( this );
 
-        modifiedObjectClass = new ObjectClass( originalObjectClass.getLiteral(), originalObjectClass
-            .getOriginatingSchema() );
+        try
+        {
+            modifiedObjectClass = ( ObjectClass ) originalObjectClass.clone();
+        }
+        catch ( CloneNotSupportedException e )
+        {
+            // Will never occurr.
+        }
 
         addPageChangedListener( pageChangedListener );
     }
@@ -163,7 +169,7 @@ public class ObjectClassFormEditor extends FormEditor
             return;
         }
 
-        updateObjectClass( modifiedObjectClass, originalObjectClass );
+        originalObjectClass.update( modifiedObjectClass );
 
         setPartName( getEditorInput().getName() );
         if ( !monitor.isCanceled() )
@@ -236,27 +242,6 @@ public class ObjectClassFormEditor extends FormEditor
     public void setModifiedObjectClass( ObjectClass modifiedObjectClass )
     {
         this.modifiedObjectClass = modifiedObjectClass;
-    }
-
-
-    /**
-     * Updates the values of an object class to another one
-     *
-     * @param oc1
-     *      the object class literal to clone from
-     * @param oc2
-     *      the object class literal to clone to
-     */
-    private void updateObjectClass( ObjectClass oc1, ObjectClass oc2 )
-    {
-        oc2.setClassType( oc1.getClassType() );
-        oc2.setDescription( oc1.getDescription() );
-        oc2.setMay( oc1.getMay() );
-        oc2.setMust( oc1.getMust() );
-        oc2.setNames( oc1.getNames() );
-        oc2.setObsolete( oc1.isObsolete() );
-        oc2.setOid( oc2.getOid() );
-        oc2.setSuperiors( oc1.getSuperiors() );
     }
 
 

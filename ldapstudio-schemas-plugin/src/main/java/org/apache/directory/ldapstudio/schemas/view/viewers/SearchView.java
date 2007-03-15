@@ -68,6 +68,9 @@ import org.eclipse.ui.part.ViewPart;
 
 /**
  * This class represents the Search View.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class SearchView extends ViewPart implements PoolListener
 {
@@ -366,7 +369,6 @@ public class SearchView extends ViewPart implements PoolListener
      */
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
-        searchContentProvider.refresh();
         resultsTableViewer.refresh();
     }
 

@@ -36,7 +36,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * AttributeTypeLiterals or ObjectClassLiterals.
  *
  */
-public class IntermediateNode implements DisplayableTreeElement
+public class IntermediateNode extends TreeNode
 {
     /** This enum represent the different types of IntermediateNodes */
     public enum IntermediateNodeType
@@ -46,9 +46,6 @@ public class IntermediateNode implements DisplayableTreeElement
 
     /** The name */
     private String name;
-
-    /** The parent element */
-    private DisplayableTreeElement parent;
 
     /** The type */
     private IntermediateNodeType type;
@@ -60,10 +57,10 @@ public class IntermediateNode implements DisplayableTreeElement
      * @param parent the parent DisplayableTreeElement in the schema relationship
      * hierarchy
      */
-    public IntermediateNode( String name, DisplayableTreeElement parent )
+    public IntermediateNode( String name, ITreeNode parent )
     {
+        super( parent );
         this.name = name;
-        this.parent = parent;
         this.type = IntermediateNodeType.NONE;
     }
 
@@ -78,10 +75,10 @@ public class IntermediateNode implements DisplayableTreeElement
      * @param type 
      *      the type of IntermediateNode
      */
-    public IntermediateNode( String name, DisplayableTreeElement parent, IntermediateNodeType type )
+    public IntermediateNode( String name, ITreeNode parent, IntermediateNodeType type )
     {
+        super( parent );
         this.name = name;
-        this.parent = parent;
         this.type = type;
     }
 
@@ -99,19 +96,10 @@ public class IntermediateNode implements DisplayableTreeElement
     }
 
 
-    /**
-     * @return the parent of the intermediate node
-     */
-    public DisplayableTreeElement getParent()
-    {
-        return parent;
-    }
-
-
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayImage()
+     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.TreeNode#getImage()
      */
-    public Image getDisplayImage()
+    public Image getImage()
     {
         switch ( type )
         {
@@ -130,10 +118,6 @@ public class IntermediateNode implements DisplayableTreeElement
         return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );
     }
 
-
-    /******************************************
-     *           Object Redefinition          *
-     ******************************************/
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()

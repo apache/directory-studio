@@ -73,17 +73,17 @@ public class RemoveSchemaAction extends Action
         // We have to check on which node we are to get the schema name
         if ( selection instanceof SchemaWrapper )
         {
-            schemaName = ( ( SchemaWrapper ) selection ).getName();
+            schemaName = ( ( SchemaWrapper ) selection ).getMySchema().getName();
         }
         else if ( selection instanceof AttributeTypeWrapper )
         {
             // We have to get the parent of the parent ( AttributeTypeWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( AttributeTypeWrapper ) selection ).getParent().getParent() ).getName();
+            schemaName = ( ( SchemaWrapper ) ( ( AttributeTypeWrapper ) selection ).getParent().getParent() ).getMySchema().getName();
         }
         else if ( selection instanceof ObjectClassWrapper )
         {
             // We have to get the parent of the parent ( ObjectClassWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( ObjectClassWrapper ) selection ).getParent().getParent() ).getName();
+            schemaName = ( ( SchemaWrapper ) ( ( ObjectClassWrapper ) selection ).getParent().getParent() ).getMySchema().getName();
         }
 
         if ( schemaName != null )

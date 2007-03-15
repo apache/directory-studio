@@ -297,8 +297,8 @@ public class Schema implements SchemaElementListener
     public ObjectClass[] getObjectClassesAsArray()
     {
         Set<ObjectClass> set = new HashSet<ObjectClass>();
-        set.addAll(objectClassTable.values());
-        return set.toArray(new ObjectClass[0]);
+        set.addAll( objectClassTable.values() );
+        return set.toArray( new ObjectClass[0] );
     }
 
 
@@ -309,8 +309,8 @@ public class Schema implements SchemaElementListener
     public AttributeType[] getAttributeTypesAsArray()
     {
         Set<AttributeType> set = new HashSet<AttributeType>();
-        set.addAll(attributeTypeTable.values());
-        return set.toArray(new AttributeType[0]);
+        set.addAll( attributeTypeTable.values() );
+        return set.toArray( new AttributeType[0] );
     }
 
 
@@ -431,7 +431,7 @@ public class Schema implements SchemaElementListener
             objectClassTable.put( alias, oc );
         oc.addListener( this );
         this.modified();
-        notifyChanged( LDAPModelEvent.Reason.OCAdded, oc );
+        notifyChanged( LDAPModelEvent.Reason.OCAdded, null, oc );
     }
 
 
@@ -445,7 +445,7 @@ public class Schema implements SchemaElementListener
             attributeTypeTable.put( alias, at );
         at.addListener( this );
         this.modified();
-        notifyChanged( LDAPModelEvent.Reason.ATAdded, at );
+        notifyChanged( LDAPModelEvent.Reason.ATAdded, null, at );
     }
 
 
@@ -459,7 +459,7 @@ public class Schema implements SchemaElementListener
             objectClassTable.remove( alias );
         oc.removeListener( this );
         this.modified();
-        notifyChanged( LDAPModelEvent.Reason.OCRemoved, oc );
+        notifyChanged( LDAPModelEvent.Reason.OCRemoved, oc, null );
     }
 
 
@@ -473,7 +473,7 @@ public class Schema implements SchemaElementListener
             attributeTypeTable.remove( alias );
         at.removeListener( this );
         this.modified();
-        notifyChanged( LDAPModelEvent.Reason.ATRemoved, at );
+        notifyChanged( LDAPModelEvent.Reason.ATRemoved, at, null );
     }
 
 
@@ -579,7 +579,8 @@ public class Schema implements SchemaElementListener
             FileDialog fd = new FileDialog( new Shell(), SWT.SAVE );
             fd.setText( Messages.getString( "Schema.Save_this_schema" ) + this.getName() ); //$NON-NLS-1$
             IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-            String defaultPath = prefs.get( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+            String defaultPath = prefs.get( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System
+                .getProperty( "user.home" ) ); //$NON-NLS-1$
             fd.setFilterPath( defaultPath );
             fd.setFileName( this.name + ".schema" ); //$NON-NLS-1$
             fd.setFilterExtensions( new String[]
@@ -599,7 +600,7 @@ public class Schema implements SchemaElementListener
             write( savePath );
             //when we have been written, we are synchronised with the filesystem
             this.saved();
-            notifyChanged( LDAPModelEvent.Reason.SchemaSaved, null );
+            notifyChanged( LDAPModelEvent.Reason.SchemaSaved, this, null );
         }
     }
 
@@ -625,7 +626,8 @@ public class Schema implements SchemaElementListener
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE );
         fd.setText( Messages.getString( "Schema.Save_this_schema" ) + this.getName() ); //$NON-NLS-1$
         IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-        String defaultPath = prefs.get( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        String defaultPath = prefs
+            .get( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
         fd.setFilterPath( defaultPath );
         fd.setFileName( this.name + ".schema" ); //$NON-NLS-1$
         fd.setFilterExtensions( new String[]
@@ -658,7 +660,7 @@ public class Schema implements SchemaElementListener
                 write( savePath );
                 //when we have been written, we are synchronised with the filesystem
                 this.saved();
-                notifyChanged( LDAPModelEvent.Reason.SchemaSaved, null );
+                notifyChanged( LDAPModelEvent.Reason.SchemaSaved, this, null );
             }
         }
     }
@@ -690,18 +692,26 @@ public class Schema implements SchemaElementListener
     }
 
 
-    private void notifyChanged( LDAPModelEvent.Reason reason, Object o )
+    private void notifyChanged( LDAPModelEvent.Reason reason, Object oldValue, Object newValue )
     {
         for ( SchemaListener listener : listeners )
         {
             try
             {
-                if ( o instanceof ObjectClass )
-                    listener.schemaChanged( this, new LDAPModelEvent( reason, ( ObjectClass ) o ) );
-                else if ( o instanceof AttributeType )
-                    listener.schemaChanged( this, new LDAPModelEvent( reason, ( AttributeType ) o ) );
+                if ( ( oldValue instanceof ObjectClass ) || ( newValue instanceof ObjectClass ) )
+                {
+                    listener.schemaChanged( this, new LDAPModelEvent( reason, ( ObjectClass ) oldValue,
+                        ( ObjectClass ) newValue ) );
+                }
+                else if ( ( oldValue instanceof AttributeType ) || ( newValue instanceof AttributeType ) )
+                {
+                    listener.schemaChanged( this, new LDAPModelEvent( reason, ( AttributeType ) oldValue,
+                        ( AttributeType ) newValue ) );
+                }
                 else
+                {
                     listener.schemaChanged( this, new LDAPModelEvent( reason ) );
+                }
             }
             catch ( Exception e )
             {

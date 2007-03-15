@@ -23,13 +23,13 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
-import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
-import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemasViewRoot;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -43,13 +43,18 @@ import org.eclipse.ui.part.ViewPart;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemasView extends ViewPart implements PoolListener, ISaveablePart2
+public class SchemasView extends ViewPart implements ISaveablePart2
 {
+    /** The ID of the View */
     public static final String ID = Activator.PLUGIN_ID + ".view.SchemasView"; //$NON-NLS-1$
 
+    /** The logger*/
     private static Logger logger = Logger.getLogger( SchemasView.class );
+
+    /** The viewer */
     private TreeViewer viewer;
-    private Composite parent;
+
+    /** The content provider of the viewer */
     private SchemasViewContentProvider contentProvider;
 
 
@@ -58,15 +63,10 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
      */
     public void createPartControl( Composite parent )
     {
-        this.parent = parent;
-        initViewer();
+        initViewer( parent );
 
         // Registering the Viewer, so other views can be notified when the viewer selection changes
         getSite().setSelectionProvider( viewer );
-
-        SchemaPool pool = SchemaPool.getInstance();
-        //we want to be notified if the pool has been modified
-        pool.addListener( this );
 
         // Adding the controller
         new SchemasViewController( this );
@@ -76,11 +76,14 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
     /**
      * Initializes the Viewer
      */
-    private void initViewer()
+    private void initViewer( Composite parent )
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new SchemasViewContentProvider();
-        contentProvider.bindToTreeViewer( viewer );
+        contentProvider = new SchemasViewContentProvider( viewer );
+        viewer.setContentProvider( contentProvider );
+        viewer.setLabelProvider( new DecoratingLabelProvider( new SchemasViewLabelProvider(), Activator.getDefault()
+            .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
+        viewer.setInput( new SchemasViewRoot() );
     }
 
 
@@ -94,14 +97,16 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
 
 
     /**
-     * Refresh the viewer
+     * Refreshes completely the view (reload model and re-display).
+     * 
+     * @see refresh() for refreshing only the display.
      */
-    public void refresh()
+    public void completeRefresh()
     {
         Object[] exp = viewer.getExpandedElements();
 
         // Refresh the tree viewer
-        viewer.refresh();
+        viewer.setInput( new SchemasViewRoot() );
 
         // Expand all the previsouly expanded elements
         for ( Object object : exp )
@@ -112,11 +117,13 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
 
 
     /**
-     * We refresh the view only if the pool has been modified
+     * Refreshes the view (re-display only).
+     * 
+     * @see completeRefresh() for a complete refresh.
      */
-    public void poolChanged( SchemaPool p, LDAPModelEvent e )
+    public void refresh()
     {
-        refresh();
+        viewer.refresh();
     }
 
 
@@ -215,9 +222,14 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
      * @return
      *      the element if it has been found, null if has not been found
      */
-    public DisplayableTreeElement findElementInTree( DisplayableTreeElement element )
+    public ITreeNode findElementInTree( ITreeNode element )
     {
-        DisplayableTreeElement input = ( DisplayableTreeElement ) getViewer().getInput();
+        if ( element == null )
+        {
+            return null;
+        }
+
+        ITreeNode input = ( ITreeNode ) getViewer().getInput();
 
         return findElementInTree( element, input );
     }
@@ -228,24 +240,24 @@ public class SchemasView extends ViewPart implements PoolListener, ISaveablePart
      *
      * @param element
      *      the element to find
-     * @param current
+     * @param node
      *      the current element
      * @return
      */
-    private DisplayableTreeElement findElementInTree( DisplayableTreeElement element, DisplayableTreeElement current )
+    public ITreeNode findElementInTree( ITreeNode element, ITreeNode node )
     {
-        if ( element.equals( current ) )
+        if ( element.equals( node ) )
         {
-            return current;
+            return node;
         }
         else
         {
-            Object[] children = contentProvider.getChildren( current );
+            Object[] children = contentProvider.getChildren( node );
 
             for ( int i = 0; i < children.length; i++ )
             {
-                DisplayableTreeElement item = ( DisplayableTreeElement ) children[i];
-                DisplayableTreeElement foundElement = findElementInTree( element, item );
+                ITreeNode item = ( ITreeNode ) children[i];
+                ITreeNode foundElement = findElementInTree( element, item );
                 if ( foundElement != null )
                 {
                     return foundElement;

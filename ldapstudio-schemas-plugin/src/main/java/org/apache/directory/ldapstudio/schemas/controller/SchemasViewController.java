@@ -144,6 +144,9 @@ public class SchemasViewController
     }
 
 
+    /**
+     * Initializes the values for the authorized preferences.
+     */
     private void initAuthorizedPrefs()
     {
         authorizedPrefs = new ArrayList<String>();
@@ -291,7 +294,7 @@ public class SchemasViewController
 
 
     /**
-     * Initializes the DragNDrop support
+     * Initializes the DragNDrop support.
      */
     private void initDragAndDrop()
     {
@@ -355,7 +358,7 @@ public class SchemasViewController
 
 
     /**
-     * Initializes the DoubleClickListener
+     * Initializes the DoubleClickListener.
      */
     private void initDoubleClickListener()
     {
@@ -417,7 +420,7 @@ public class SchemasViewController
 
     /**
      * Registers a Listener on the Schemas View and enable/disable the
-     * Actions according to the selection
+     * Actions according to the selection.
      */
     private void registerUpdateActions()
     {
@@ -540,7 +543,7 @@ public class SchemasViewController
 
 
     /**
-     * Initializes the listener on the preferences store
+     * Initializes the listener on the preferences store.
      */
     private void initPreferencesListener()
     {
@@ -553,7 +556,14 @@ public class SchemasViewController
             {
                 if ( authorizedPrefs.contains( event.getProperty() ) )
                 {
-                    view.refresh();
+                    if ( PluginConstants.PREFS_SCHEMAS_VIEW_GROUPING == event.getProperty() )
+                    {
+                        view.completeRefresh();
+                    }
+                    else
+                    {
+                        view.refresh();
+                    }
                 }
             }
         } );

@@ -118,8 +118,14 @@ public class AttributeTypeFormEditor extends FormEditor
         originalAttributeType = ( ( AttributeTypeFormEditorInput ) getEditorInput() ).getAttributeType();
         originalAttributeType.setEditor( this );
 
-        modifiedAttributeType = new AttributeType( originalAttributeType.getLiteral(), originalAttributeType
-            .getOriginatingSchema() );
+        try
+        {
+            modifiedAttributeType = ( AttributeType ) originalAttributeType.clone();
+        }
+        catch ( CloneNotSupportedException e )
+        {
+            // Will never occurr.
+        }
 
         addPageChangedListener( pageChangedListener );
     }
@@ -177,7 +183,7 @@ public class AttributeTypeFormEditor extends FormEditor
             return;
         }
 
-        updateAttributeType( modifiedAttributeType, originalAttributeType );
+        originalAttributeType.update( modifiedAttributeType );
 
         setPartName( getEditorInput().getName() );
         if ( !monitor.isCanceled() )
@@ -256,32 +262,6 @@ public class AttributeTypeFormEditor extends FormEditor
     public void setModifiedAttributeType( AttributeType modifiedAttributeType )
     {
         this.modifiedAttributeType = modifiedAttributeType;
-    }
-
-
-    /**
-     * Updates the values of an attribute type to another one
-     *
-     * @param at1
-     *      the attribute type literal to clone from
-     * @param at2
-     *      the attribute type literal to clone to
-     */
-    private void updateAttributeType( AttributeType at1, AttributeType at2 )
-    {
-        at2.setCollective( at1.isCollective() );
-        at2.setDescription( at1.getDescription() );
-        at2.setEquality( at1.getEquality() );
-        at2.setNames( at1.getNames() );
-        at2.setNoUserModification( at1.isNoUserModification() );
-        at2.setObsolete( at1.isObsolete() );
-        at2.setOid( at1.getOid() );
-        at2.setOrdering( at1.getOrdering() );
-        at2.setSingleValue( at1.isSingleValue() );
-        at2.setSubstr( at1.getSubstr() );
-        at2.setSuperior( at1.getSuperior() );
-        at2.setSyntax( at1.getSyntax() );
-        at2.setUsage( at1.getUsage() );
     }
 
 

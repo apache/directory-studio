@@ -36,7 +36,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ObjectClassWrapper implements DisplayableTreeElement
+public class ObjectClassWrapper extends TreeNode
 {
     /**
      * This enum represent the different states of an ObjectClassWrapper
@@ -52,9 +52,6 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     /** The state */
     private State state;
 
-    /** The parent element */
-    private DisplayableTreeElement parent;
-
     /** The associated object class */
     private ObjectClass myObjectClass;
 
@@ -67,9 +64,9 @@ public class ObjectClassWrapper implements DisplayableTreeElement
      * @param parent
      *      the parent element
      */
-    public ObjectClassWrapper( ObjectClass myObjectClass, DisplayableTreeElement parent )
+    public ObjectClassWrapper( ObjectClass myObjectClass, ITreeNode parent )
     {
-        this.parent = parent;
+        super( parent );
         this.myObjectClass = myObjectClass;
         this.state = State.resolved;
     }
@@ -84,15 +81,6 @@ public class ObjectClassWrapper implements DisplayableTreeElement
     public ObjectClass getMyObjectClass()
     {
         return myObjectClass;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getParent()
-     */
-    public DisplayableTreeElement getParent()
-    {
-        return parent;
     }
 
 
@@ -121,9 +109,9 @@ public class ObjectClassWrapper implements DisplayableTreeElement
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.DisplayableTreeElement#getDisplayImage()
+     * @see org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.TreeNode#getImage()
      */
-    public Image getDisplayImage()
+    public Image getImage()
     {
         String imageKey = ISharedImages.IMG_OBJS_WARN_TSK;
 

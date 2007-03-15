@@ -89,15 +89,11 @@ public class SaveAction extends Action implements IWorkbenchWindowActionDelegate
             }
             else if ( selection instanceof AttributeTypeWrapper )
             {
-                // We have to get the parent of the parent ( AttributeTypeWrapper => IntermediateNode => SchemaWrapper )
-                schema = ( ( SchemaWrapper ) ( ( AttributeTypeWrapper ) selection ).getParent().getParent() )
-                    .getMySchema();
+                schema =( ( AttributeTypeWrapper ) selection ).getMyAttributeType().getOriginatingSchema();
             }
             else if ( selection instanceof ObjectClassWrapper )
             {
-                // We have to get the parent of the parent ( ObjectClassWrapper => IntermediateNode => SchemaWrapper )
-                schema = ( ( SchemaWrapper ) ( ( ObjectClassWrapper ) selection ).getParent().getParent() )
-                    .getMySchema();
+                schema = ( ( ObjectClassWrapper ) selection ).getMyObjectClass().getOriginatingSchema();
             }
             else if ( selection instanceof IntermediateNode )
             {

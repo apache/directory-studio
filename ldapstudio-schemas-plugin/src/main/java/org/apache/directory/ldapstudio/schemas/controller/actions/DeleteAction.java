@@ -26,20 +26,13 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
-import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
-import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -49,8 +42,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class DeleteAction extends Action
 {
-    private static Logger logger = Logger.getLogger( DeleteAction.class );
-
     private enum ItemType
     {
         attributeType, objectClass
@@ -82,96 +73,65 @@ public class DeleteAction extends Action
             .findView( SchemasView.ID ); //$NON-NLS-1$
         Object selection = ( ( TreeSelection ) view.getViewer().getSelection() ).getFirstElement();
 
-        String schemaName = null;
+        Schema schema = null;
         ItemType item = null;
 
         if ( selection instanceof AttributeTypeWrapper )
         {
             // We have to get the parent of the parent ( AttributeTypeWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( AttributeTypeWrapper ) selection ).getParent().getParent() ).getName();
+            schema = ( ( AttributeTypeWrapper ) selection ).getMyAttributeType().getOriginatingSchema();
             item = DeleteAction.ItemType.attributeType;
         }
         else if ( selection instanceof ObjectClassWrapper )
         {
             // We have to get the parent of the parent ( ObjectClassWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( ObjectClassWrapper ) selection ).getParent().getParent() ).getName();
+            schema = ( ( ObjectClassWrapper ) selection ).getMyObjectClass().getOriginatingSchema();
             item = DeleteAction.ItemType.objectClass;
         }
-
-        if ( schemaName == null )
+        else
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
             messageBox.setMessage( Messages.getString( "DeleteAction.This_item_cant_be_deleted" ) ); //$NON-NLS-1$
             messageBox.open();
+            return;
+        }
+
+        // Check if the schema isn't a core schema (core schema can't be modified
+        if ( schema.type == Schema.SchemaType.coreSchema )
+        {
+            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                SWT.OK | SWT.ICON_ERROR );
+            messageBox
+                .setMessage( Messages.getString( "DeleteAction.The_schema" ) + schema.getName() + Messages.getString( "DeleteAction.Is_a_core_schema_It_cant_be_modified" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            messageBox.open();
         }
         else
         {
-            // Getting the SchemaPool
-            SchemaPool pool = SchemaPool.getInstance();
-            // Getting the right schema
-            Schema schema = pool.getSchema( schemaName );
-
-            // Check if the schema isn't a core schema (core schema can't be modified
-            if ( schema.type == Schema.SchemaType.coreSchema )
+            if ( item == DeleteAction.ItemType.attributeType )
             {
+                AttributeType attributeType = ( ( AttributeTypeWrapper ) selection ).getMyAttributeType();
                 MessageBox messageBox = new MessageBox(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.CANCEL
+                        | SWT.ICON_QUESTION );
                 messageBox
-                    .setMessage( Messages.getString( "DeleteAction.The_schema" ) + schemaName + Messages.getString( "DeleteAction.Is_a_core_schema_It_cant_be_modified" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                messageBox.open();
-            }
-            else
-            {
-                if ( item == DeleteAction.ItemType.attributeType )
+                    .setMessage( Messages.getString( "DeleteAction.Are_you_sure_you_want_to_delete_the_attribute_type" ) + attributeType.getNames()[0] + Messages.getString( "DeleteAction.Interrogation" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                if ( messageBox.open() == SWT.OK )
                 {
-                    AttributeType attributeType = ( ( AttributeTypeWrapper ) selection ).getMyAttributeType();
-                    MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getShell(), SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION );
-                    messageBox
-                        .setMessage( Messages
-                            .getString( "DeleteAction.Are_you_sure_you_want_to_delete_the_attribute_type" ) + attributeType.getNames()[0] + Messages.getString( "DeleteAction.Interrogation" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                    if ( messageBox.open() == SWT.OK )
-                    {
-                        schema.removeAttributeType( attributeType );
-                    }
+                    schema.removeAttributeType( attributeType );
                 }
-                else if ( item == DeleteAction.ItemType.objectClass )
+            }
+            else if ( item == DeleteAction.ItemType.objectClass )
+            {
+                ObjectClass objectClass = ( ( ObjectClassWrapper ) selection ).getMyObjectClass();
+                MessageBox messageBox = new MessageBox(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.CANCEL
+                        | SWT.ICON_QUESTION );
+                messageBox
+                    .setMessage( Messages.getString( "DeleteAction.Are_you_sure_you_want_to_delete_the_object_class" ) + objectClass.getNames()[0] + Messages.getString( "DeleteAction.Interrogation" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                if ( messageBox.open() == SWT.OK )
                 {
-                    ObjectClass objectClass = ( ( ObjectClassWrapper ) selection ).getMyObjectClass();
-                    MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                        .getShell(), SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION );
-                    messageBox
-                        .setMessage( Messages
-                            .getString( "DeleteAction.Are_you_sure_you_want_to_delete_the_object_class" ) + objectClass.getNames()[0] + Messages.getString( "DeleteAction.Interrogation" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                    if ( messageBox.open() == SWT.OK )
-                    {
-
-                        //try to close the associated editors before deleting the objectClass
-                        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                        IEditorReference[] editorReferences = page.getEditorReferences();
-                        for ( IEditorReference reference : editorReferences )
-                        {
-                            try
-                            {
-                                if ( reference.getEditorInput() instanceof ObjectClassFormEditorInput )
-                                {
-                                    ObjectClassFormEditorInput input = ( ObjectClassFormEditorInput ) reference
-                                        .getEditorInput();
-                                    if ( input.getObjectClass().equals( objectClass ) )
-                                    {
-                                        page.closeEditor( reference.getEditor( false ), false );
-                                    }
-                                }
-                            }
-                            catch ( PartInitException e )
-                            {
-                                logger.debug( "error when closing associated editors" ); //$NON-NLS-1$
-                            }
-                        }
-                        //delete the objectClass
-                        schema.removeObjectClass( objectClass );
-                    }
+                    schema.removeObjectClass( objectClass );
                 }
             }
         }

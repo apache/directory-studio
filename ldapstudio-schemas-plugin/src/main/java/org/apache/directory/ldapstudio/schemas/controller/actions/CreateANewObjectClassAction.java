@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
-import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -72,62 +71,53 @@ public class CreateANewObjectClassAction extends Action
             .findView( SchemasView.ID ); //$NON-NLS-1$
         Object selection = ( ( TreeSelection ) view.getViewer().getSelection() ).getFirstElement();
 
-        String schemaName = null;
+        Schema schema = null;
 
         // We have to check on which node we are to get the schema name
         if ( selection instanceof SchemaWrapper )
         {
-            schemaName = ( ( SchemaWrapper ) selection ).getName();
+            schema = ( ( SchemaWrapper ) selection ).getMySchema();
         }
         else if ( selection instanceof AttributeTypeWrapper )
         {
-            // We have to get the parent of the parent ( AttributeTypeWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( AttributeTypeWrapper ) selection ).getParent().getParent() ).getName();
+            schema = ( ( AttributeTypeWrapper ) selection ).getMyAttributeType().getOriginatingSchema();
         }
         else if ( selection instanceof ObjectClassWrapper )
         {
-            // We have to get the parent of the parent ( ObjectClassWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( ObjectClassWrapper ) selection ).getParent().getParent() ).getName();
+            schema = ( ( ObjectClassWrapper ) selection ).getMyObjectClass().getOriginatingSchema();
         }
         else if ( selection instanceof IntermediateNode )
         {
-            schemaName = ( ( SchemaWrapper ) ( ( IntermediateNode ) selection ).getParent() ).getName();
+            schema = ( ( SchemaWrapper ) ( ( IntermediateNode ) selection ).getParent() ).getMySchema();
         }
-
-        if ( schemaName == null )
+        else
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
             messageBox.setMessage( Messages.getString( "CreateANewObjectClassAction.A_schema_must_be_selected" ) ); //$NON-NLS-1$
             messageBox.open();
+            return;
+        }
+
+        // Check if the schema isn't a core schema (core schema can't be modified
+        if ( schema.type == Schema.SchemaType.coreSchema )
+        {
+            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                SWT.OK | SWT.ICON_ERROR );
+            messageBox
+                .setMessage( Messages.getString( "CreateANewObjectClassAction.The_schema" ) + schema.getName() + Messages.getString( "CreateANewObjectClassAction.Is_a_core_schema_It_cant_be_modified" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            messageBox.open();
         }
         else
         {
-            // Getting the SchemaPool
-            SchemaPool pool = SchemaPool.getInstance();
-            // Getting the right schema
-            Schema schema = pool.getSchema( schemaName );
-
-            // Check if the schema isn't a core schema (core schema can't be modified
-            if ( schema.type == Schema.SchemaType.coreSchema )
-            {
-                MessageBox messageBox = new MessageBox(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
-                messageBox
-                    .setMessage( Messages.getString( "CreateANewObjectClassAction.The_schema" ) + schemaName + Messages.getString( "CreateANewObjectClassAction.Is_a_core_schema_It_cant_be_modified" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                messageBox.open();
-            }
-            else
-            {
-                // Instantiates and initializes the wizard
-                CreateANewObjectClassWizard wizard = new CreateANewObjectClassWizard( schemaName );
-                wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
-                // Instantiates the wizard container with the wizard and opens it
-                WizardDialog dialog = new WizardDialog(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
-                dialog.create();
-                dialog.open();
-            }
+            // Instantiates and initializes the wizard
+            CreateANewObjectClassWizard wizard = new CreateANewObjectClassWizard( schema.getName() );
+            wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
+            // Instantiates the wizard container with the wizard and opens it
+            WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                wizard );
+            dialog.create();
+            dialog.open();
         }
     }
 }

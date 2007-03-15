@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.MatchingRule;
@@ -595,8 +596,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     private void initSupCombo()
     {
         SchemaPool pool = SchemaPool.getInstance();
-        ArrayList<AttributeType> atList = new ArrayList<AttributeType>( pool.getAttributeTypesAsHashTableByName()
-            .values() );
+        List<AttributeType> atList = pool.getAttributeTypes();
 
         // Remove duplicate entries
         HashSet<AttributeType> set = new HashSet<AttributeType>( atList );
