@@ -27,31 +27,59 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 
 
+/**
+ * This class provides some convinience methods to execute a job within
+ * an {@link IRunnableContext}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RunnableContextJobAdapter
 {
 
+    /**
+     * Executes the given job within a new {@link ProgressMonitorDialog}.
+     *
+     * @param job the job to execute
+     */
     public static void execute( final AbstractEclipseJob job )
     {
         execute( job, null );
     }
 
 
+    /**
+     * Executes the given job within the given runnable context and enabled error handling
+     * 
+     * @param runnableContext the runnable context
+     * @param job the job to execute
+     */
     public static void execute( final AbstractEclipseJob job, IRunnableContext runnableContext )
     {
         execute( job, runnableContext, true );
     }
 
 
+    /**
+     * Executes the given job within the given runnable context.
+     * 
+     * @param runnableContext the runnable context
+     * @param job the job to execute
+     * @param handleError true to handle errors
+     */
     public static void execute( final AbstractEclipseJob job, IRunnableContext runnableContext, boolean handleError )
     {
 
         if ( runnableContext == null )
-            runnableContext = new TimeTriggeredProgressMonitorDialog( Display.getDefault().getActiveShell(), 1000 );
+        {
+            runnableContext = new ProgressMonitorDialog( Display.getDefault().getActiveShell() );
+        }
 
         IRunnableWithProgress runnable = new IRunnableWithProgress()
         {

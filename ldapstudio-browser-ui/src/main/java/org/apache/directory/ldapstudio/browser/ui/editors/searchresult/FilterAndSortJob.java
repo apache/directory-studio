@@ -18,28 +18,44 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.browser.ui.jobs;
+package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
 import org.apache.directory.ldapstudio.browser.core.jobs.AbstractEclipseJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.ExtendedProgressMonitor;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorConfiguration;
-import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorWidget;
 
 
+/**
+ * This job to filter and sort the search result editor asynchrously to avoid 
+ * freezing the GUI.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FilterAndSortJob extends AbstractEclipseJob
 {
 
+    /** The configuration. */
     private SearchResultEditorConfiguration configuration;
 
+    /** The main widget. */
     private SearchResultEditorWidget mainWidget;
 
+    /** All elements, unfiltered and unsorted. */
     private Object[] elements;
 
+    /** The filtered and sorted elements. */
     private Object[] filteredAndSortedElements;
 
 
+    /**
+     * Creates a new instance of FilterAndSortJob.
+     * 
+     * @param configuration the configuration
+     * @param mainWidget the main widget
+     * @param elements the elements, unfiltered and unsorted
+     */
     public FilterAndSortJob( SearchResultEditorConfiguration configuration, SearchResultEditorWidget mainWidget,
         Object[] elements )
     {
@@ -49,12 +65,18 @@ public class FilterAndSortJob extends AbstractEclipseJob
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Object[] getLockedObjects()
     {
         return new Object[0];
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void executeAsyncJob( ExtendedProgressMonitor monitor ) throws Exception
     {
         monitor.beginTask( "Filter and Sort", 3 );
@@ -73,12 +95,20 @@ public class FilterAndSortJob extends AbstractEclipseJob
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected IConnection[] getConnections()
     {
         return new IConnection[0];
     }
 
 
+    /**
+     * Gets the filtered and sorted elements.
+     * 
+     * @return the filtered and sorted elements
+     */
     public Object[] getFilteredAndSortedElements()
     {
         return filteredAndSortedElements;

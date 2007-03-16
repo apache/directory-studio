@@ -24,10 +24,8 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.jobs.FilterAndSortJob;
 import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
-import org.apache.directory.ldapstudio.browser.ui.jobs.TimeTriggeredProgressMonitorDialog;
-
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ILazyContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -87,8 +85,10 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
                 && !this.mainWidget.getViewer().getTable().isDisposed() )
             {
                 FilterAndSortJob job = new FilterAndSortJob( this.configuration, this.mainWidget, this.elements );
-                RunnableContextJobAdapter.execute( job, new TimeTriggeredProgressMonitorDialog( Display.getCurrent()
-                    .getActiveShell(), 5000 ) );
+                //RunnableContextJobAdapter.execute( job, new TimeTriggeredProgressMonitorDialog( Display.getCurrent()
+                //    .getActiveShell(), 5000 ) );
+                RunnableContextJobAdapter.execute( job, new ProgressMonitorDialog( Display.getCurrent()
+                    .getActiveShell() ) );
                 this.filteredAndSortedElements = job.getFilteredAndSortedElements();
             }
             else if ( elements.length > 0 && this.mainWidget.getViewer() != null
