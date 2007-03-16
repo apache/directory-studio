@@ -152,10 +152,20 @@ public interface PluginConstants
     public static final int PREFS_SCHEMAS_VIEW_SORTING_ORDER_DESCENDING = 1;
 
     // Preferences - Search View
-
     /** The preference ID for Search History of the Search View */
     public static final String PREFS_SEARCH_VIEW_SEARCH_HISTORY = Activator.PLUGIN_ID
-        + ".preferences.SearchView.searchHistory";;
+        + ".preferences.SearchView.searchHistory";
+    
+    // Preferences - Hierarchy View
+    /** The preference ID for Mode of the Hierarchy View */
+    public static final String PREFS_HIERARCHY_VIEW_MODE = Activator.PLUGIN_ID
+        + ".preferences.HierarchyView.mode";
+    
+    /** The preference value for Schemas View Mode 'Supertype' */
+    public static final int PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE = 0;
+    
+    /** The preference value for Schemas View Mode 'Subtype' */
+    public static final int PREFS_HIERARCHY_VIEW_MODE_SUBTYPE = 1;
 
     // Images - Actions
     public static final String IMG_ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$
@@ -175,6 +185,8 @@ public interface PluginConstants
     public static final String IMG_SAVE_AS = "ressources/icons/save_as.png"; //$NON-NLS-1$
     public static final String IMG_SAVE_ALL = "ressources/icons/save_all.png"; //$NON-NLS-1$
     public static final String IMG_SHOW_PREFERENCES = "ressources/icons/preferences.png"; //$NON-NLS-1$
+    public static final String IMG_SHOW_SUBTYPE_HIERARCHY = "ressources/icons/hierarchy_subtype.png"; //$NON-NLS-1$
+    public static final String IMG_SHOW_SUPERTYPE_HIERARCHY = "ressources/icons/hierarchy_supertype.png"; //$NON-NLS-1$
     public static final String IMG_SORT = "ressources/icons/sort.gif"; //$NON-NLS-1$
 
     // Images - Views
@@ -219,4 +231,6 @@ public interface PluginConstants
     public static final String CMD_SAVE = Activator.PLUGIN_ID + ".cmd.Save"; //$NON-NLS-1$
     public static final String CMD_SAVE_AS = Activator.PLUGIN_ID + ".cmd.SaveAs"; //$NON-NLS-1$
     public static final String CMD_SAVE_ALL = Activator.PLUGIN_ID + ".cmd.SaveAll"; //$NON-NLS-1$
+    public static final String CMD_SHOW_SUBTYPE_HIERARCHY = Activator.PLUGIN_ID + ".cmd.ShowSubtypeHierarchy"; //$NON-NLS-1$
+    public static final String CMD_SHOW_SUPERTYPE_HIERARCHY = Activator.PLUGIN_ID + ".cmd.ShowSupertypeHierarchy"; //$NON-NLS-1$
 }
