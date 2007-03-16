@@ -28,7 +28,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class implements the Hide Object Classes Action for the Hierarch View.
+ * This class implements the Hide Object Classes Action for the Schema Elements View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
