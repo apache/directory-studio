@@ -28,17 +28,29 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * This action opens the prefence page of the entry editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenEntryEditorPreferencePageAction extends Action
 {
 
+    /**
+     * Creates a new instance of OpenEntryEditorPreferencePageAction.
+     */
     public OpenEntryEditorPreferencePageAction()
     {
-        super.setText( "Preferences..." );
-        super.setToolTipText( "Preferences..." );
-        super.setEnabled( true );
+        setText( "Preferences..." );
+        setToolTipText( "Preferences..." );
+        setEnabled( true );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         Shell shell = Display.getCurrent().getActiveShell();
@@ -46,11 +58,6 @@ public class OpenEntryEditorPreferencePageAction extends Action
         String attPageId = BrowserUIConstants.PREFERENCEPAGEID_ATTRIBUTES;
         PreferencesUtil.createPreferenceDialogOn( shell, eePageId, new String[]
             { eePageId, attPageId }, null ).open();
-    }
-
-
-    public void dispose()
-    {
     }
 
 }

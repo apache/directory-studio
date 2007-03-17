@@ -46,36 +46,58 @@ import org.eclipse.ui.part.ShowInContext;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 
+/**
+ * The EntryEditor is an {@link IEditorPart} is used to display and edit the attributes of an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditor extends EditorPart implements INavigationLocationProvider, IReusableEditor
 {
 
+    /** The editor configuration. */
     private EntryEditorConfiguration configuration;
 
+    /** The action group. */
     private EntryEditorActionGroup actionGroup;
 
+    /** The main widget. */
     private EntryEditorWidget mainWidget;
 
+    /** The universal listener. */
     private EntryEditorUniversalListener universalListener;
 
+    /** The outline page. */
     private LdifOutlinePage outlinePage;
 
 
+    /**
+     * Gets the ID of the EntryEditor.
+     * 
+     * @return the id of the EntryEditor
+     */
     public static String getId()
     {
         return EntryEditor.class.getName();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setInput( IEditorInput input )
     {
         super.setInput( input );
 
-        if ( input instanceof EntryEditorInput && this.universalListener != null )
+        if ( input instanceof EntryEditorInput && universalListener != null )
         {
             EntryEditorInput eei = ( EntryEditorInput ) input;
             IEntry entry = eei.getResolvedEntry();
-            this.universalListener.setInput( entry );
 
+            // inform listener
+            universalListener.setInput( entry );
+
+            // mark location for back/forward history navigation
             if ( entry != null )
             {
                 // enable one instance hack before fireing the input change event 
@@ -88,9 +110,10 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
                 getSite().getPage().getNavigationHistory().markLocation( this );
             }
 
-            if ( this.outlinePage != null )
+            // refresh outline
+            if ( outlinePage != null )
             {
-                this.outlinePage.refresh();
+                outlinePage.refresh();
             }
 
             // finally enable the one instance hack 
@@ -99,28 +122,32 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         super.setSite( site );
 
         // mark dummy location, necessary because the first marked
         // location doesn't appear in history
-        this.setInput( new EntryEditorInput( ( IEntry ) null ) );
+        setInput( new EntryEditorInput( ( IEntry ) null ) );
         getSite().getPage().getNavigationHistory().markLocation( this );
 
-        this.setInput( input );
+        setInput( input );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createPartControl( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
         layout.marginHeight = 0;
-        // layout.horizontalSpacing = 0;
         layout.verticalSpacing = 0;
         composite.setLayout( layout );
 
@@ -128,32 +155,38 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_entry_editor" );
 
         // create configuration
-        this.configuration = new EntryEditorConfiguration();
+        configuration = new EntryEditorConfiguration();
 
         // create main widget
-        this.mainWidget = new EntryEditorWidget( this.configuration );
-        this.mainWidget.createWidget( composite );
+        mainWidget = new EntryEditorWidget( this.configuration );
+        mainWidget.createWidget( composite );
 
         // create actions and context menu and register global actions
-        this.actionGroup = new EntryEditorActionGroup( this );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.enableGlobalActionHandlers( getEditorSite().getActionBars() );
-        this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
+        actionGroup = new EntryEditorActionGroup( this );
+        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+        actionGroup.fillMenu( mainWidget.getMenuManager() );
+        actionGroup.enableGlobalActionHandlers( getEditorSite().getActionBars() );
+        actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
 
         // create the listener
-        getSite().setSelectionProvider( this.mainWidget.getViewer() );
-        this.universalListener = new EntryEditorUniversalListener( this );
-        this.setInput( getEditorInput() );
+        getSite().setSelectionProvider( mainWidget.getViewer() );
+        universalListener = new EntryEditorUniversalListener( this );
+        setInput( getEditorInput() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setFocus()
     {
-        this.mainWidget.setFocus();
+        mainWidget.setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class required )
     {
         if ( IContentOutlinePage.class.equals( required ) )
@@ -193,18 +226,21 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.configuration != null )
+        if ( configuration != null )
         {
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.configuration.dispose();
-            this.configuration = null;
+            universalListener.dispose();
+            universalListener = null;
+            mainWidget.dispose();
+            mainWidget = null;
+            actionGroup.dispose();
+            actionGroup = null;
+            configuration.dispose();
+            configuration = null;
             getSite().setSelectionProvider( null );
         }
 
@@ -212,64 +248,107 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSave( IProgressMonitor monitor )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSaveAs()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isDirty()
     {
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSaveAsAllowed()
     {
         return false;
     }
 
 
+    /**
+     * Gets the action group.
+     * 
+     * @return the action group
+     */
     public EntryEditorActionGroup getActionGroup()
     {
         return actionGroup;
     }
 
 
+    /**
+     * Gets the configuration.
+     * 
+     * @return the configuration
+     */
     public EntryEditorConfiguration getConfiguration()
     {
         return configuration;
     }
 
 
+    /**
+     * Gets the main widget.
+     * 
+     * @return the main widget
+     */
     public EntryEditorWidget getMainWidget()
     {
         return mainWidget;
     }
 
 
+    /**
+     * Gets the outline page.
+     * 
+     * @return the outline page
+     */
     public LdifOutlinePage getOutlinePage()
     {
         return outlinePage;
     }
 
 
+    /**
+     * Gets the universal listener.
+     * 
+     * @return the universal listener
+     */
     public EntryEditorUniversalListener getUniversalListener()
     {
         return universalListener;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public INavigationLocation createEmptyNavigationLocation()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public INavigationLocation createNavigationLocation()
     {
         return new EntryEditorNavigationLocation( this );

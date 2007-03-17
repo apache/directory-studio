@@ -59,7 +59,7 @@ import org.eclipse.ui.commands.ICommandService;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryEditorWidgetActionGroup implements IMenuListener
+public class EntryEditorWidgetActionGroup
 {
 
     /** The open sort dialog action. */
@@ -244,25 +244,31 @@ public class EntryEditorWidgetActionGroup implements IMenuListener
 
 
     /**
-     * Fills the context menu.
+     * Fills the context menu. Adds a menu listener to the given menu manager
+     * to fill the context menu whenever it pops up.
      * 
      * @param menuManager the menu manager
      */
     public void fillContextMenu( IMenuManager menuManager )
     {
         menuManager.setRemoveAllWhenShown( true );
-        menuManager.addMenuListener( this );
+        menuManager.addMenuListener( new IMenuListener()
+        {
+            public void menuAboutToShow( IMenuManager manager )
+            {
+                contextMenuAboutToShow( manager );
+            }
+        } );
     }
 
 
     /**
-     * {@inheritDoc}.
+     * Fills the context menu.
      * 
      * @param menuManager the menu manager
      */
-    public void menuAboutToShow( IMenuManager menuManager )
+    protected void contextMenuAboutToShow( IMenuManager menuManager )
     {
-
         // new
         menuManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
         menuManager.add( new Separator() );

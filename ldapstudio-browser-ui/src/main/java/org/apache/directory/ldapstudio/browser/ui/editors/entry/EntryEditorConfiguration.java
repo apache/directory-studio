@@ -21,40 +21,38 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetConfiguration;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetContentProvider;
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetFilter;
 
 
+/**
+ * The BrowserConfiguration contains the content provider, 
+ * label provider, sorter, filter the context menu manager and the
+ * preferences for the entry editor. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
 {
 
+    /**
+     * Creates a new instance of EntryEditorConfiguration.
+     */
     public EntryEditorConfiguration()
     {
-        super();
     }
 
 
-    public void dispose()
-    {
-        super.dispose();
-    }
-
-
-    public EntryEditorWidgetContentProvider getContentProvider( EntryEditorWidget mainWidget )
-    {
-        if ( this.contentProvider == null )
-            this.contentProvider = new EntryEditorContentProvider( this.getPreferences(), mainWidget );
-
-        return contentProvider;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public EntryEditorWidgetFilter getFilter()
     {
-        if ( this.filter == null )
-            this.filter = new EntryEditorFilter( getPreferences() );
+        if ( filter == null )
+        {
+            filter = new EntryEditorFilter( getPreferences() );
+        }
 
         return filter;
     }

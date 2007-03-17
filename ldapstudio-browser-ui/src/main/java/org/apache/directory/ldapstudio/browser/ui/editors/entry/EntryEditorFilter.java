@@ -25,36 +25,61 @@ import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEdito
 import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetPreferences;
 
 
+/**
+ * The EntryEditorFilter implements the filter for
+ * the entry editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorFilter extends EntryEditorWidgetFilter
 {
 
+    /** The preferences. */
     private EntryEditorWidgetPreferences preferences;
 
 
+    /**
+     * Creates a new instance of EntryEditorFilter.
+     * 
+     * @param preferences the preferences
+     */
     public EntryEditorFilter( EntryEditorWidgetPreferences preferences )
     {
         this.preferences = preferences;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isShowMayAttributes()
     {
         return preferences.isShowMayAttributes();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isShowMustAttributes()
     {
         return preferences.isShowMustAttributes();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isShowObjectClassAttribute()
     {
         return preferences.isShowObjectClassAttribute();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isShowOperationalAttributes()
     {
         return preferences.isShowOperationalAttributes();

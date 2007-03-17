@@ -99,7 +99,7 @@ public class NewEntryAttributesWizardPageActionGroup extends EntryEditorWidgetAc
     /**
      * {@inheritDoc}
      */
-    public void menuAboutToShow( IMenuManager menuManager )
+    protected void contextMenuAboutToShow( IMenuManager menuManager )
     {
         // new
         menuManager.add( ( IAction ) entryEditorActionMap.get( newAttributeAction ) );

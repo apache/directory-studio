@@ -26,41 +26,35 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.eclipse.jface.action.Action;
 
 
+/**
+ * This action is used to toggle the "show operational attributes" preference.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ShowOperationalAttributesAction extends Action
 {
 
+    /**
+     * Creates a new instance of ShowOperationalAttributesAction.
+     */
     public ShowOperationalAttributesAction()
     {
         super( "Show Operational Attributes", AS_CHECK_BOX );
-        super.setToolTipText( getText() );
-        super.setEnabled( true );
-
-        super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
+        setToolTipText( getText() );
+        setEnabled( true );
+        setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
             BrowserUIConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES, super.isChecked() );
-    }
-
-
-    public void setChecked( boolean checked )
-    {
-        super.setChecked( checked );
-    }
-
-
-    public boolean isChecked()
-    {
-        return super.isChecked();
-    }
-
-
-    public void dispose()
-    {
     }
 
 }
