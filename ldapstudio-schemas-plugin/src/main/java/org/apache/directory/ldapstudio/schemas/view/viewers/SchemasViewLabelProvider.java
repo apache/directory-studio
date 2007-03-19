@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.schemas.view.viewers;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
+import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
@@ -74,7 +75,7 @@ public class SchemasViewLabelProvider extends LabelProvider
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
             {
-                label = concateNames( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
+                label = ViewUtils.concateAliases( ( ( AttributeTypeWrapper ) obj ).getMyAttributeType().getNames() );
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_OID )
             {
@@ -94,7 +95,7 @@ public class SchemasViewLabelProvider extends LabelProvider
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES )
             {
-                label = concateNames( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
+                label = ViewUtils.concateAliases( ( ( ObjectClassWrapper ) obj ).getMyObjectClass().getNames() );
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_OID )
             {
@@ -138,29 +139,5 @@ public class SchemasViewLabelProvider extends LabelProvider
 
         // Default
         return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJS_WARN_TSK );
-    }
-
-
-    /**
-     * Concatenates all aliases in a String format
-     *
-     * @param aliases
-     *      the aliases to concatenate
-     * @return
-     *      a String representing all aliases
-     */
-    private String concateNames( String[] aliases )
-    {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append( aliases[0] );
-
-        for ( int i = 1; i < aliases.length; i++ )
-        {
-            sb.append( ", " );
-            sb.append( aliases[i] );
-        }
-
-        return sb.toString();
     }
 }
