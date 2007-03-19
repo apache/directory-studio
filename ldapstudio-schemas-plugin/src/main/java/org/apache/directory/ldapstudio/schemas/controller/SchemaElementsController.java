@@ -30,7 +30,8 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.HideAttributeT
 import org.apache.directory.ldapstudio.schemas.controller.actions.HideObjectClassesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemaElementsView;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewSortDialogAction;
-import org.apache.directory.ldapstudio.schemas.controller.actions.OpencSchemaElementsViewPreferencesAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenTypeHierarchyAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewPreferencesAction;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
@@ -40,16 +41,21 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTy
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -65,19 +71,23 @@ public class SchemaElementsController
 {
     /** The logger */
     private static Logger logger = Logger.getLogger( SchemaElementsController.class );
-    
+
     /** The authorized Preferences keys*/
     List<String> authorizedPrefs;
 
     /** The associated view */
     private SchemaElementsView view;
 
+    /** The Context Menu */
+    private MenuManager contextMenu;
+
     // The Actions
-    private HideObjectClassesAction hideObjectClasses;
-    private HideAttributeTypesAction hideAttributeTypes;
-    private LinkWithEditorSchemaElementsView linkWithEditor;
-    private OpenSchemaElementsViewSortDialogAction openSortDialog;
-    private OpencSchemaElementsViewPreferencesAction openPreferencePage;
+    private Action hideObjectClasses;
+    private Action hideAttributeTypes;
+    private Action linkWithEditor;
+    private Action openSortDialog;
+    private Action openPreferencePage;
+    private Action openTypeHierarchy;
 
 
     /**
@@ -86,11 +96,12 @@ public class SchemaElementsController
     public SchemaElementsController( SchemaElementsView view )
     {
         this.view = view;
-        
+
         initAuthorizedPrefs();
         initActions();
         initToolbar();
         initMenu();
+        initContextMenu();
         initDoubleClickListener();
         initPreferencesListener();
     }
@@ -121,7 +132,8 @@ public class SchemaElementsController
         hideAttributeTypes = new HideAttributeTypesAction( view.getViewer() );
         linkWithEditor = new LinkWithEditorSchemaElementsView( view );
         openSortDialog = new OpenSchemaElementsViewSortDialogAction();
-        openPreferencePage = new OpencSchemaElementsViewPreferencesAction();
+        openPreferencePage = new OpenSchemaElementsViewPreferencesAction();
+        openTypeHierarchy = new OpenTypeHierarchyAction();
     }
 
 
@@ -222,7 +234,7 @@ public class SchemaElementsController
              * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
              */
             public void propertyChange( PropertyChangeEvent event )
-            { 
+            {
                 if ( authorizedPrefs.contains( event.getProperty() ) )
                 {
                     if ( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING == event.getProperty() )
@@ -236,5 +248,40 @@ public class SchemaElementsController
                 }
             }
         } );
+    }
+
+
+    /**
+     * Initializes the ContextMenu.
+     */
+    private void initContextMenu()
+    {
+        TreeViewer viewer = view.getViewer();
+        contextMenu = new MenuManager( "" ); //$NON-NLS-1$
+        contextMenu.setRemoveAllWhenShown( true );
+        contextMenu.addMenuListener( new IMenuListener()
+        {
+            public void menuAboutToShow( IMenuManager manager )
+            {
+                Object selection = ( ( TreeSelection ) view.getViewer().getSelection() ).getFirstElement();
+
+                if ( ( selection instanceof AttributeTypeWrapper ) )
+                {
+                    manager.add( openTypeHierarchy );
+                }
+                else if ( ( selection instanceof ObjectClassWrapper ) )
+                {
+                    manager.add( openTypeHierarchy );
+                }
+
+                manager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+            }
+        } );
+
+        // set the context menu to the table viewer
+        viewer.getControl().setMenu( contextMenu.createContextMenu( viewer.getControl() ) );
+        
+        // register the context menu to enable extension actions
+        view.getSite().registerContextMenu( contextMenu, viewer );
     }
 }

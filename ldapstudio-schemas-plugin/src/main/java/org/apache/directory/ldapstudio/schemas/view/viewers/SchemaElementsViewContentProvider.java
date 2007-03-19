@@ -52,7 +52,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaElementsContentProvider implements IStructuredContentProvider, ITreeContentProvider, PoolListener
+public class SchemaElementsViewContentProvider implements IStructuredContentProvider, ITreeContentProvider, PoolListener
 {
     /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
@@ -73,7 +73,7 @@ public class SchemaElementsContentProvider implements IStructuredContentProvider
      * @param schemaPool
      *      the associated Schema Pool
      */
-    public SchemaElementsContentProvider()
+    public SchemaElementsViewContentProvider()
     {
         schemaPool = SchemaPool.getInstance();
         schemaPool.addListener( this );

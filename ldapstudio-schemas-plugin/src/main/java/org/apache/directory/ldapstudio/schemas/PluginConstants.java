@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas;
 
 
+import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemaElementsViewPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
 
@@ -161,11 +162,46 @@ public interface PluginConstants
     public static final String PREFS_HIERARCHY_VIEW_MODE = Activator.PLUGIN_ID
         + ".preferences.HierarchyView.mode";
     
-    /** The preference value for Schemas View Mode 'Supertype' */
+    /** The preference value for Hierarchy View Mode 'Supertype' */
     public static final int PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE = 0;
     
-    /** The preference value for Schemas View Mode 'Subtype' */
+    /** The preference value for Hierarchy View Mode 'Subtype' */
     public static final int PREFS_HIERARCHY_VIEW_MODE_SUBTYPE = 1;
+    
+    /** The preference ID for Hierarchy View Label */
+    public static final String PREFS_HIERARCHY_VIEW_LABEL = HierarchyViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
+
+    /** The preference value for Hierarchy View First Name label */
+    public static final int PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME = 0;
+
+    /** The preference value for Hierarchy View All Aliases label */
+    public static final int PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES = 1;
+
+    /** The preference value for Hierarchy View OID label */
+    public static final int PREFS_HIERARCHY_VIEW_LABEL_OID = 2;
+
+    /** The preference ID for Hierarchy View Abbreviate */
+    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE = HierarchyViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
+
+    /** The preference ID for Hierarchy View Abbreviate Max Length*/
+    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
+        + ".label.abbreviate.maxLength"; //$NON-NLS-1$
+
+    /** The preference ID for Hierarchy View Display Secondary Label */
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.display"; //$NON-NLS-1$
+
+    /** The preference ID for Hierarchy View Secondary Label */
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.labelValue"; //$NON-NLS-1$
+
+    /** The preference ID for Hierarchy View Abbreviate Secondary Label */
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate"; //$NON-NLS-1$
+
+    /** The preference ID for Hierarchy View Abbreviate Secondary Label Max Length*/
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
 
     // Images - Actions
     public static final String IMG_ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$
@@ -233,4 +269,6 @@ public interface PluginConstants
     public static final String CMD_SAVE_ALL = Activator.PLUGIN_ID + ".cmd.SaveAll"; //$NON-NLS-1$
     public static final String CMD_SHOW_SUBTYPE_HIERARCHY = Activator.PLUGIN_ID + ".cmd.ShowSubtypeHierarchy"; //$NON-NLS-1$
     public static final String CMD_SHOW_SUPERTYPE_HIERARCHY = Activator.PLUGIN_ID + ".cmd.ShowSupertypeHierarchy"; //$NON-NLS-1$
+    public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.PLUGIN_ID + ".cmd.OpenTypeHierarchy"; //$NON-NLS-1$
+    public static final String CMD_HIERARCHY_VIEW_PREFERENCES = Activator.PLUGIN_ID + ".cmd.OpenHierarchyViewPreferences"; //$NON-NLS-1$
 }

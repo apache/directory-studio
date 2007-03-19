@@ -30,17 +30,17 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
- * This action opens the Sort Dialog of the Hierchy View.
+ * This action opens the Preference Page for the Schema Elements View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpencSchemaElementsViewPreferencesAction extends Action
+public class OpenSchemaElementsViewPreferencesAction extends Action
 {
     /**
-     * Creates a new instance of OpencSchemaElementsViewPreferencesAction.
+     * Creates a new instance of OpenSchemaElementsViewPreferencesAction.
      */
-    public OpencSchemaElementsViewPreferencesAction()
+    public OpenSchemaElementsViewPreferencesAction()
     {
         super( "Preferences..." );
         setToolTipText( getText() );

@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaElementsSortDialog extends Dialog
+public class SchemaElementsViewSortDialog extends Dialog
 {
     /** The title of the dialog */
     private static final String DIALOG_TITLE = "Schema Elements View Sorting";
@@ -70,7 +70,7 @@ public class SchemaElementsSortDialog extends Dialog
      * @param parentShell
      *      the parent shell
      */
-    public SchemaElementsSortDialog( Shell parentShell )
+    public SchemaElementsViewSortDialog( Shell parentShell )
     {
         super( parentShell );
     }

@@ -21,11 +21,13 @@
 package org.apache.directory.ldapstudio.schemas.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorHierarchyView;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenHierarchyViewPreferencesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.ShowSubtypeHierarchyAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.ShowSupertypeHierarchyAction;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
@@ -39,6 +41,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -66,6 +70,7 @@ public class HierarchyViewController
     private Action showSupertypeHierarchy;
     private Action showSubtypeHierarchy;
     private Action linkWithEditor;
+    private Action openPreferencePage;
 
 
     /**
@@ -92,13 +97,14 @@ public class HierarchyViewController
      */
     private void initAuthorizedPrefs()
     {
-        //        authorizedPrefs = new ArrayList<String>();
-        //        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL );
-        //        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE );
-        //        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH );
-        //        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_GROUPING );
-        //        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_SORTING_BY );
-        //        authorizedPrefs.add( PluginConstants.PREFS_SCHEMAS_VIEW_SORTING_ORDER );
+        authorizedPrefs = new ArrayList<String>();
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
     }
 
 
@@ -116,6 +122,7 @@ public class HierarchyViewController
         showSupertypeHierarchy = new ShowSupertypeHierarchyAction( view );
         showSubtypeHierarchy = new ShowSubtypeHierarchyAction( view );
         linkWithEditor = new LinkWithEditorHierarchyView( view );
+        openPreferencePage = new OpenHierarchyViewPreferencesAction();
     }
 
 
@@ -140,6 +147,8 @@ public class HierarchyViewController
         menu.add( showSubtypeHierarchy );
         menu.add( new Separator() );
         menu.add( linkWithEditor );
+        menu.add( new Separator() );
+        menu.add( openPreferencePage );
     }
 
 
@@ -150,9 +159,6 @@ public class HierarchyViewController
     {
         view.getViewer().addDoubleClickListener( new IDoubleClickListener()
         {
-            /**
-             * {@inheritDoc}
-             */
             public void doubleClick( DoubleClickEvent event )
             {
                 // What we get from the treeViewer is a StructuredSelection
@@ -200,25 +206,18 @@ public class HierarchyViewController
      */
     private void initPreferencesListener()
     {
-        //        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
-        //        {
-        //            /* (non-Javadoc)
-        //             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-        //             */
-        //            public void propertyChange( PropertyChangeEvent event )
-        //            {
-        //                if ( authorizedPrefs.contains( event.getProperty() ) )
-        //                {
-        //                    if ( PluginConstants.PREFS_SCHEMAS_VIEW_GROUPING == event.getProperty() )
-        //                    {
-        //                        view.completeRefresh();
-        //                    }
-        //                    else
-        //                    {
-        //                        view.refresh();
-        //                    }
-        //                }
-        //            }
-        //        } );
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        {
+            /* (non-Javadoc)
+             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+             */
+            public void propertyChange( PropertyChangeEvent event )
+            {
+                if ( authorizedPrefs.contains( event.getProperty() ) )
+                {
+                    view.refresh();
+                }
+            }
+        } );
     }
 }

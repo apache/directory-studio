@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
+import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -30,21 +30,21 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
- * This action opens the Preference Page for the Schemas View.
+ * This action opens the Preference Page for the Hierarchy View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenSchemasViewPreferencesAction extends Action
+public class OpenHierarchyViewPreferencesAction extends Action
 {
     /**
-     * Creates a new instance of OpenSchemasViewPreferencesAction.
+     * Creates a new instance of OpenHierarchyViewPreferencesAction.
      */
-    public OpenSchemasViewPreferencesAction()
+    public OpenHierarchyViewPreferencesAction()
     {
         super( "Preferences..." );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_SCHEMAS_VIEW_PREFERENCES );
+        setId( PluginConstants.CMD_HIERARCHY_VIEW_PREFERENCES );
         setEnabled( true );
     }
 
@@ -55,7 +55,7 @@ public class OpenSchemasViewPreferencesAction extends Action
     public void run()
     {
         Shell shell = Display.getCurrent().getActiveShell();
-        PreferencesUtil.createPreferenceDialogOn( shell, SchemasViewPreferencePage.ID, new String[]
-            { SchemasViewPreferencePage.ID }, null ).open();
+        PreferencesUtil.createPreferenceDialogOn( shell, HierarchyViewPreferencePage.ID, new String[]
+            { HierarchyViewPreferencePage.ID }, null ).open();
     }
 }

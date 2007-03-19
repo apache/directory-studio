@@ -52,6 +52,7 @@ public class OpenLocalFileAction extends Action
         super( Messages.getString( "OpenLocalFileAction.Open_a_schema_file" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_OPEN_LOCAL );
+        setActionDefinitionId( PluginConstants.CMD_OPEN_LOCAL );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OPEN ) );
         setEnabled( true );
     }
@@ -86,6 +87,5 @@ public class OpenLocalFileAction extends Action
                 logger.debug( "Error when opening a schema file" ); //$NON-NLS-1$
             }
         }
-
     }
 }

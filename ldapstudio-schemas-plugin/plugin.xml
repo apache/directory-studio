@@ -117,6 +117,11 @@
       <category
             id="org.apache.directory.ldapstudio.schemas.category"
             name="%ldapstudio-schemas-plugin.commands.category.name"/>
+      <command
+            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            description="Opens Type Hierarchy"
+            id="org.apache.directory.ldapstudio.schemas.cmd.OpenTypeHierarchy"
+            name="Open Type Hierarchy"/>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -125,6 +130,10 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+O">
       </key>
+      <key
+            commandId="org.apache.directory.ldapstudio.schemas.cmd.OpenTypeHierarchy"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F4"/>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -192,6 +201,11 @@
             class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage"
             id="org.apache.directory.ldapstudio.schemas.preferences.schemasView"
             name="Schemas View"/>
+      <page
+            category="org.apache.directory.ldapstudio.schemas.preferences.general"
+            class="org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage"
+            id="org.apache.directory.ldapstudio.schemas.preferences.hierarchyView"
+            name="Hierarchy View"/>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

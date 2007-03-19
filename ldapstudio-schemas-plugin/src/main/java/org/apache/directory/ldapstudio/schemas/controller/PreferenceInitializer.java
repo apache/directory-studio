@@ -85,5 +85,16 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
             PluginConstants.PREFS_SCHEMAS_VIEW_SORTING_BY_FIRSTNAME );
         store.setDefault( PluginConstants.PREFS_SCHEMAS_VIEW_SORTING_ORDER,
             PluginConstants.PREFS_SCHEMAS_VIEW_SORTING_ORDER_ASCENDING );
+        
+        // Hierarchy View Preference Page
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL,
+            PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE, true );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, true );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL,
+            PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" );
     }
 }

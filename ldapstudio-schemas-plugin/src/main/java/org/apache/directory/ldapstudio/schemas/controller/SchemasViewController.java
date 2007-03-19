@@ -36,6 +36,7 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.OpenLocalFileA
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaSourceCode;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemasViewPreferencesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemasViewSortDialogAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.OpenTypeHierarchyAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.RemoveSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.SaveAsAction;
@@ -77,6 +78,7 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -120,6 +122,7 @@ public class SchemasViewController
     private Action saveAs;
     private Action openSortDialog;
     private Action openPreferencePage;
+    private Action openTypeHierarchy;
 
 
     /**
@@ -177,6 +180,7 @@ public class SchemasViewController
         saveAs = new SaveAsAction();
         openSortDialog = new OpenSchemasViewSortDialogAction();
         openPreferencePage = new OpenSchemasViewPreferencesAction();
+        openTypeHierarchy = new OpenTypeHierarchyAction();
     }
 
 
@@ -265,12 +269,14 @@ public class SchemasViewController
                 }
                 else if ( ( selection instanceof AttributeTypeWrapper ) )
                 {
+                    manager.add( openTypeHierarchy );
                     manager.add( deleteAction );
                     manager.add( new Separator() );
                     manager.add( createANewAttributeType );
                 }
                 else if ( ( selection instanceof ObjectClassWrapper ) )
                 {
+                    manager.add( openTypeHierarchy );
                     manager.add( deleteAction );
                     manager.add( new Separator() );
                     manager.add( createANewObjectClass );
@@ -283,11 +289,14 @@ public class SchemasViewController
                         manager.add( createANewSchema );
                     }
                 }
+
+                manager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
             }
         } );
 
         // set the context menu to the table viewer
         viewer.getControl().setMenu( contextMenu.createContextMenu( viewer.getControl() ) );
+        
         // register the context menu to enable extension actions
         view.getSite().registerContextMenu( contextMenu, viewer );
     }
