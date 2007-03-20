@@ -24,10 +24,9 @@ import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
-import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
@@ -62,9 +61,6 @@ public class LinkWithEditorSchemaElementsView extends Action
 
     /** The associated view */
     private SchemaElementsView view;
-    
-    /** The Schema Pool */
-    private SchemaPool schemaPool;
 
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
@@ -74,12 +70,18 @@ public class LinkWithEditorSchemaElementsView extends Action
          */
         public void partVisible( IWorkbenchPartReference partRef )
         {
-            String id = partRef.getId();
+            IWorkbenchPart part = partRef.getPart( true );
 
-            if ( ( id.equals( ObjectClassFormEditor.ID ) || ( id.equals( AttributeTypeFormEditor.ID ) ) ) )
+            if ( part instanceof ObjectClassFormEditor )
             {
                 view.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( partRef.getPartName(), id );
+                linkViewWithEditor( ( ( ObjectClassFormEditor ) part ).getOriginalObjectClass() );
+                view.getSite().getPage().addPostSelectionListener( viewListener );
+            }
+            else if ( part instanceof AttributeTypeFormEditor )
+            {
+                view.getSite().getPage().removePostSelectionListener( viewListener );
+                linkViewWithEditor( ( ( AttributeTypeFormEditor ) part ).getOriginalAttributeType() );
                 view.getSite().getPage().addPostSelectionListener( viewListener );
             }
         }
@@ -177,7 +179,6 @@ public class LinkWithEditorSchemaElementsView extends Action
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         this.view = view;
-        schemaPool = SchemaPool.getInstance();
 
         // Setting up the default key value (if needed)
         if ( Activator.getDefault().getDialogSettings().get( LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY ) == null )
@@ -213,13 +214,11 @@ public class LinkWithEditorSchemaElementsView extends Action
                 .getActiveEditor();
             if ( activeEditor instanceof ObjectClassFormEditor )
             {
-                ObjectClassFormEditor editor = ( ObjectClassFormEditor ) activeEditor;
-                linkViewWithEditor( editor.getPartName(), ObjectClassFormEditor.ID );
+                linkViewWithEditor( ( ( ObjectClassFormEditor ) activeEditor ).getOriginalObjectClass() );
             }
             else if ( activeEditor instanceof AttributeTypeFormEditor )
             {
-                AttributeTypeFormEditor editor = ( AttributeTypeFormEditor ) activeEditor;
-                linkViewWithEditor( editor.getPartName(), AttributeTypeFormEditor.ID );
+                linkViewWithEditor( ( ( AttributeTypeFormEditor ) activeEditor ).getOriginalAttributeType() );
             }
 
             view.getSite().getPage().addPostSelectionListener( viewListener );
@@ -236,34 +235,28 @@ public class LinkWithEditorSchemaElementsView extends Action
     /**
      * Links the view with the right editor
      *
-     * @param editorName
-     *      the name of the editor
-     * @param editorID
-     *      the id of the editor
+     * @param schemaElement
+     *      the Schema Element
      */
-    private void linkViewWithEditor( String editorName, String editorID )
+    private void linkViewWithEditor( SchemaElement schemaElement )
     {
         StructuredSelection structuredSelection = null;
         ITreeNode wrapper = null;
 
-        // Only editors for attribute types and object class are accepted
-        if ( editorID.equals( AttributeTypeFormEditor.ID ) )
+        if ( schemaElement instanceof AttributeType )
         {
-            AttributeType at = schemaPool.getAttributeType( editorName );
-            wrapper = new AttributeTypeWrapper( at, null );
+            wrapper = new AttributeTypeWrapper( ( AttributeType ) schemaElement, null );
             structuredSelection = new StructuredSelection( wrapper );
 
             view.getViewer().setSelection( structuredSelection, true );
         }
-        else if ( editorID.equals( ObjectClassFormEditor.ID ) )
+        else if ( schemaElement instanceof ObjectClass )
         {
-            ObjectClass oc = schemaPool.getObjectClass( editorName );
-            wrapper = new ObjectClassWrapper( oc, null );
+            wrapper = new ObjectClassWrapper( ( ObjectClass ) schemaElement, null );
             structuredSelection = new StructuredSelection( wrapper );
         }
         else
         {
-            // If the editor isn't an attribute type editor or object class editor, we return
             return;
         }
 
@@ -331,23 +324,35 @@ public class LinkWithEditorSchemaElementsView extends Action
      */
     private void linkEditorWithView( ITreeNode wrapper )
     {
-        IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-            .getEditorReferences();
-
-        for ( int i = 0; i < editorReferences.length; i++ )
+        if ( wrapper != null )
         {
-            IEditorReference reference = editorReferences[i];
-            IWorkbenchPart workbenchPart = reference.getPart( true );
+            IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                .getEditorReferences();
 
-            if ( ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) && ( reference
-                .getPartName().equals( ( ( ObjectClassWrapper ) wrapper ).getMyObjectClass().getNames()[0] ) ) )
-                || ( ( workbenchPart instanceof AttributeTypeFormEditor ) && ( wrapper instanceof AttributeTypeWrapper ) && ( reference
-                    .getPartName().equals( ( ( AttributeTypeWrapper ) wrapper ).getMyAttributeType().getNames()[0] ) ) )
-                || ( ( workbenchPart instanceof SchemaFormEditor ) && ( wrapper instanceof SchemaWrapper ) && ( reference
-                    .getPartName().equals( ( ( SchemaWrapper ) wrapper ).getMySchema().getName() ) ) ) )
+            for ( int i = 0; i < editorReferences.length; i++ )
             {
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( workbenchPart );
-                return;
+                IEditorReference reference = editorReferences[i];
+                IWorkbenchPart workbenchPart = reference.getPart( true );
+
+                if ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) )
+                {
+                    if ( ( ( ObjectClassFormEditor ) workbenchPart ).getOriginalObjectClass().equals(
+                        ( ( ObjectClassWrapper ) wrapper ).getMyObjectClass() ) )
+                    {
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( workbenchPart );
+                        return;
+                    }
+                }
+                else if ( ( workbenchPart instanceof AttributeTypeFormEditor )
+                    && ( wrapper instanceof AttributeTypeWrapper ) )
+                {
+                    if ( ( ( AttributeTypeFormEditor ) workbenchPart ).getOriginalAttributeType().equals(
+                        ( ( AttributeTypeWrapper ) wrapper ).getMyAttributeType() ) )
+                    {
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( workbenchPart );
+                        return;
+                    }
+                }
             }
         }
     }

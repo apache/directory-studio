@@ -22,14 +22,16 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -50,9 +52,6 @@ public class LinkWithEditorHierarchyView extends Action
     /** The associated view */
     private HierarchyView view;
 
-    /** The Schema Pool */
-    private SchemaPool schemaPool;
-
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
     {
@@ -61,12 +60,15 @@ public class LinkWithEditorHierarchyView extends Action
          */
         public void partVisible( IWorkbenchPartReference partRef )
         {
-            String id = partRef.getId();
+            IWorkbenchPart part = partRef.getPart( true );
 
-            if ( id.equals( ObjectClassFormEditor.ID ) || id.equals( AttributeTypeFormEditor.ID )
-                || id.equals( SchemaFormEditor.ID ) )
+            if ( part instanceof ObjectClassFormEditor )
             {
-                linkViewWithEditor( partRef.getPartName(), id );
+                linkViewWithEditor( ( ( ObjectClassFormEditor ) part ).getOriginalObjectClass() );
+            }
+            else if ( part instanceof AttributeTypeFormEditor )
+            {
+                linkViewWithEditor( ( ( AttributeTypeFormEditor ) part ).getOriginalAttributeType() );
             }
         }
 
@@ -143,7 +145,6 @@ public class LinkWithEditorHierarchyView extends Action
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         this.view = view;
-        schemaPool = SchemaPool.getInstance();
 
         // Setting up the default key value (if needed)
         if ( Activator.getDefault().getDialogSettings().get( LINK_WITH_EDITOR_HIERARCHY_VIEW_DS_KEY ) == null )
@@ -178,13 +179,11 @@ public class LinkWithEditorHierarchyView extends Action
                 .getActiveEditor();
             if ( activeEditor instanceof ObjectClassFormEditor )
             {
-                ObjectClassFormEditor editor = ( ObjectClassFormEditor ) activeEditor;
-                linkViewWithEditor( editor.getPartName(), ObjectClassFormEditor.ID );
+                linkViewWithEditor( ( ( ObjectClassFormEditor ) activeEditor ).getOriginalObjectClass() );
             }
             else if ( activeEditor instanceof AttributeTypeFormEditor )
             {
-                AttributeTypeFormEditor editor = ( AttributeTypeFormEditor ) activeEditor;
-                linkViewWithEditor( editor.getPartName(), AttributeTypeFormEditor.ID );
+                linkViewWithEditor( ( ( AttributeTypeFormEditor ) activeEditor ).getOriginalAttributeType() );
             }
         }
         else
@@ -198,21 +197,18 @@ public class LinkWithEditorHierarchyView extends Action
     /**
      * Links the view with the right editor
      *
-     * @param editorName
-     *      the name of the editor
-     * @param editorID
-     *      the id of the editor
+     * @param schemaElement
+     *      the Schema Element
      */
-    private void linkViewWithEditor( String editorName, String editorID )
+    private void linkViewWithEditor( SchemaElement schemaElement )
     {
-        // Only editors for attribute types and object class are accepted
-        if ( editorID.equals( AttributeTypeFormEditor.ID ) )
+        if ( schemaElement instanceof AttributeType )
         {
-            view.setInput( schemaPool.getAttributeType( editorName ) );
+            view.setInput( schemaElement );
         }
-        else if ( editorID.equals( ObjectClassFormEditor.ID ) )
+        else if ( schemaElement instanceof ObjectClass )
         {
-            view.setInput( schemaPool.getObjectClass( editorName ) );
+            view.setInput( schemaElement );
         }
     }
 }

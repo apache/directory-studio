@@ -222,6 +222,18 @@ public class ObjectClassFormEditor extends FormEditor
 
 
     /**
+     * Gets the original object class.
+     *
+     * @return
+     *      the original object class
+     */
+    public ObjectClass getOriginalObjectClass()
+    {
+        return originalObjectClass;
+    }
+
+
+    /**
      * Gets the modified object class.
      *
      * @return

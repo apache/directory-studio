@@ -25,7 +25,6 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
-import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor;
@@ -63,9 +62,6 @@ public class LinkWithEditorSchemasView extends Action
 
     /** The associated view */
     private SchemasView schemasView;
-    
-    /** The Schema Pool */
-    private SchemaPool schemaPool;
 
     /** The listener listening on changes on editors */
     private IPartListener2 editorListener = new IPartListener2()
@@ -75,13 +71,24 @@ public class LinkWithEditorSchemasView extends Action
          */
         public void partVisible( IWorkbenchPartReference partRef )
         {
-            String id = partRef.getId();
+            IWorkbenchPart part = partRef.getPart( true );
 
-            if ( id.equals( ObjectClassFormEditor.ID ) || id.equals( AttributeTypeFormEditor.ID )
-                || id.equals( SchemaFormEditor.ID ) )
+            if ( part instanceof ObjectClassFormEditor )
             {
                 schemasView.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( partRef.getPartName(), id );
+                linkViewWithEditor( ( ( ObjectClassFormEditor ) part ).getOriginalObjectClass() );
+                schemasView.getSite().getPage().addPostSelectionListener( viewListener );
+            }
+            else if ( part instanceof AttributeTypeFormEditor )
+            {
+                schemasView.getSite().getPage().removePostSelectionListener( viewListener );
+                linkViewWithEditor( ( ( AttributeTypeFormEditor ) part ).getOriginalAttributeType() );
+                schemasView.getSite().getPage().addPostSelectionListener( viewListener );
+            }
+            else if ( part instanceof SchemaFormEditor )
+            {
+                schemasView.getSite().getPage().removePostSelectionListener( viewListener );
+                linkViewWithEditor( ( ( SchemaFormEditor ) part ).getSchema() );
                 schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
         }
@@ -179,7 +186,6 @@ public class LinkWithEditorSchemasView extends Action
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         schemasView = view;
-        schemaPool = SchemaPool.getInstance();
 
         // Setting up the default key value (if needed)
         if ( Activator.getDefault().getDialogSettings().get( LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY ) == null )
@@ -215,13 +221,21 @@ public class LinkWithEditorSchemasView extends Action
                 .getActiveEditor();
             if ( activeEditor instanceof ObjectClassFormEditor )
             {
-                ObjectClassFormEditor editor = ( ObjectClassFormEditor ) activeEditor;
-                linkViewWithEditor( editor.getPartName(), ObjectClassFormEditor.ID );
+                schemasView.getSite().getPage().removePostSelectionListener( viewListener );
+                linkViewWithEditor( ( ( ObjectClassFormEditor ) activeEditor ).getOriginalObjectClass() );
+                schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
             else if ( activeEditor instanceof AttributeTypeFormEditor )
             {
-                AttributeTypeFormEditor editor = ( AttributeTypeFormEditor ) activeEditor;
-                linkViewWithEditor( editor.getPartName(), AttributeTypeFormEditor.ID );
+                schemasView.getSite().getPage().removePostSelectionListener( viewListener );
+                linkViewWithEditor( ( ( AttributeTypeFormEditor ) activeEditor ).getOriginalAttributeType() );
+                schemasView.getSite().getPage().addPostSelectionListener( viewListener );
+            }
+            else if ( activeEditor instanceof SchemaFormEditor )
+            {
+                schemasView.getSite().getPage().removePostSelectionListener( viewListener );
+                linkViewWithEditor( ( ( SchemaFormEditor ) activeEditor ).getSchema() );
+                schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
 
             schemasView.getSite().getPage().addPostSelectionListener( viewListener );
@@ -238,35 +252,27 @@ public class LinkWithEditorSchemasView extends Action
     /**
      * Links the view with the right editor
      *
-     * @param editorName
-     *      the name of the editor
-     * @param editorID
-     *      the id of the editor
+     * @param o
+     *      the object
      */
-    private void linkViewWithEditor( String editorName, String editorID )
+    private void linkViewWithEditor( Object o )
     {
         StructuredSelection structuredSelection = null;
         ITreeNode wrapper = null;
 
-        // Only editors for attribute types and object class are accepted
-        if ( editorID.equals( AttributeTypeFormEditor.ID ) )
+        if ( o instanceof AttributeType )
         {
-            AttributeType at = schemaPool.getAttributeType( editorName );
-            wrapper = new AttributeTypeWrapper( at, null );
-            structuredSelection = new StructuredSelection( wrapper );
-
-            schemasView.getViewer().setSelection( structuredSelection, true );
-        }
-        else if ( editorID.equals( ObjectClassFormEditor.ID ) )
-        {
-            ObjectClass oc = schemaPool.getObjectClass( editorName );
-            wrapper = new ObjectClassWrapper( oc, null );
+            wrapper = new AttributeTypeWrapper( ( AttributeType ) o, null );
             structuredSelection = new StructuredSelection( wrapper );
         }
-        else if ( editorID.equals( SchemaFormEditor.ID ) )
+        else if ( o instanceof ObjectClass )
         {
-            Schema schema = schemaPool.getSchema( editorName );
-            wrapper = new SchemaWrapper( schema, null );
+            wrapper = new ObjectClassWrapper( ( ObjectClass ) o, null );
+            structuredSelection = new StructuredSelection( wrapper );
+        }
+        else if ( o instanceof Schema )
+        {
+            wrapper = new SchemaWrapper( ( Schema ) o, null );
             structuredSelection = new StructuredSelection( wrapper );
         }
         else

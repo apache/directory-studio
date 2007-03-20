@@ -242,6 +242,18 @@ public class AttributeTypeFormEditor extends FormEditor
 
 
     /**
+     * Gets the original attribute type.
+     *
+     * @return
+     *      the original attribute type
+     */
+    public AttributeType getOriginalAttributeType()
+    {
+        return originalAttributeType;
+    }
+
+
+    /**
      * Gets the modified attribute type.
      *
      * @return
