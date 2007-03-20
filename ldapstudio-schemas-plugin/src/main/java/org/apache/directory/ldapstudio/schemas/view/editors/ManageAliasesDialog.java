@@ -252,7 +252,7 @@ public class ManageAliasesDialog extends Dialog
                         String text = newAliasText.getText();
 
                         if ( ( !"".equals( text ) ) && ( !aliasesLowerCased.contains( text.toLowerCase() ) )
-                            && ( !SchemaPool.getInstance().getSchemaElements().containsKey( text ) ) )
+                            && ( !SchemaPool.getInstance().containsSchemaElement( text ) ) )
                         {
                             addANewAlias();
                         }
@@ -278,7 +278,7 @@ public class ManageAliasesDialog extends Dialog
                         errorLabel.setText( "This alias already exists in the list." );
                         newAliasAddButton.setEnabled( false );
                     }
-                    else if ( SchemaPool.getInstance().getSchemaElements().containsKey( text ) )
+                    else if ( SchemaPool.getInstance().containsSchemaElement( text ) )
                     {
                         errorComposite.setVisible( true );
                         errorLabel.setText( "An element with same alias already exists." );

@@ -341,7 +341,7 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsObjectClass( String name )
     {
-        return objectClassesMap.containsKey( name );
+        return objectClassesMap.containsKey( name.toLowerCase() );
     }
 
 
@@ -352,7 +352,18 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsAttributeType( String name )
     {
-        return attributeTypesMap.containsKey( name );
+        return attributeTypesMap.containsKey( name.toLowerCase() );
+    }
+
+
+    /**
+     * Tests if the following element is inside the pool
+     * @param name the name of the eleme,t to test
+     * @return true if inside, false if not
+     */
+    public boolean containsSchemaElement( String name )
+    {
+        return getSchemaElements().containsKey( name.toLowerCase() );
     }
 
 
@@ -364,7 +375,7 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsObjectClass( ObjectClass objectClass )
     {
-        return objectClassesMap.containsKey( objectClass.getOid() );
+        return objectClasses.contains( objectClass );
     }
 
 
@@ -376,7 +387,18 @@ public class SchemaPool implements SchemaListener
      */
     public boolean containsAttributeType( AttributeType attributeType )
     {
-        return attributeTypesMap.containsKey( attributeType.getOid() );
+        return attributeTypes.contains( attributeType );
+    }
+
+
+    /**
+     * Tests if the given element exists in the pool
+     * @param schemaElement the Schema Element to test
+     * @return if inside the pool, false if not
+     */
+    public boolean containsSchemaElement( SchemaElement schemaElement )
+    {
+        return getSchemaElements().containsKey( schemaElement );
     }
 
 
@@ -387,7 +409,8 @@ public class SchemaPool implements SchemaListener
      */
     public ObjectClass getObjectClass( String name )
     {
-        return objectClassesMap.get( name );
+
+        return objectClassesMap.get( name.toLowerCase() );
     }
 
 
@@ -398,16 +421,28 @@ public class SchemaPool implements SchemaListener
      */
     public AttributeType getAttributeType( String name )
     {
-        return attributeTypesMap.get( name );
+        return attributeTypesMap.get( name.toLowerCase() );
     }
 
 
+    /**
+     * Returns the Object Classes as a Map.
+     *
+     * @return
+     *      the Object Classes as a Map
+     */
     public Map<String, ObjectClass> getObjectClassesAsMap()
     {
         return objectClassesMap;
     }
 
 
+    /**
+     * Gets the Attribute Types as a Map.
+     * 
+     * @return
+     *      the Attribute Types as a Map
+     */
     public Map<String, AttributeType> getAttributeTypesAsMap()
     {
         return attributeTypesMap;
@@ -415,9 +450,10 @@ public class SchemaPool implements SchemaListener
 
 
     /**
-     * Accessor to all the schema elements (attribute types and object classes) defined by 
-     * the schemas stored in the pool
-     * @return as an (oid, SchemaElement) hashtable
+     * Get the Schema Elements as a Map
+     * 
+     * @return
+     *      the Schema Elements as a Map
      */
     public Map<String, SchemaElement> getSchemaElements()
     {
@@ -792,14 +828,14 @@ public class SchemaPool implements SchemaListener
         String[] names = oldAttributeType.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            attributeTypesMap.remove( names[j] );
+            attributeTypesMap.remove( names[j].toLowerCase() );
         }
         attributeTypesMap.remove( oldAttributeType.getOid() );
 
         names = newAttributeType.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            attributeTypesMap.put( names[j], newAttributeType );
+            attributeTypesMap.put( names[j].toLowerCase(), newAttributeType );
         }
         attributeTypesMap.put( newAttributeType.getOid(), newAttributeType );
     }
@@ -819,14 +855,14 @@ public class SchemaPool implements SchemaListener
         String[] names = oldObjectClass.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            objectClassesMap.remove( names[j] );
+            objectClassesMap.remove( names[j].toLowerCase() );
         }
         objectClassesMap.remove( oldObjectClass.getOid() );
 
         names = newObjectClass.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            objectClassesMap.put( names[j], newObjectClass );
+            objectClassesMap.put( names[j].toLowerCase(), newObjectClass );
         }
         objectClassesMap.put( newObjectClass.getOid(), newObjectClass );
     }
@@ -864,7 +900,7 @@ public class SchemaPool implements SchemaListener
         String[] names = at.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            attributeTypesMap.put( names[j], at );
+            attributeTypesMap.put( names[j].toLowerCase(), at );
         }
         attributeTypesMap.put( at.getOid(), at );
         attributeTypes.add( at );
@@ -882,7 +918,7 @@ public class SchemaPool implements SchemaListener
         String[] names = at.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            attributeTypesMap.remove( names[j] );
+            attributeTypesMap.remove( names[j].toLowerCase() );
         }
         attributeTypesMap.remove( at.getOid() );
         attributeTypes.remove( at );
@@ -900,7 +936,7 @@ public class SchemaPool implements SchemaListener
         String[] names = oc.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            objectClassesMap.put( names[j], oc );
+            objectClassesMap.put( names[j].toLowerCase(), oc );
         }
         objectClassesMap.put( oc.getOid(), oc );
         objectClasses.add( oc );
@@ -918,7 +954,7 @@ public class SchemaPool implements SchemaListener
         String[] names = oc.getNames();
         for ( int j = 0; j < names.length; j++ )
         {
-            objectClassesMap.remove( names[j] );
+            objectClassesMap.remove( names[j].toLowerCase() );
         }
         objectClassesMap.remove( oc.getOid() );
         objectClasses.remove( oc );
