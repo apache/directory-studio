@@ -34,6 +34,7 @@ import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Syntax;
 import org.apache.directory.ldapstudio.schemas.model.Syntaxes;
+import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.window.Window;
@@ -80,8 +81,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     private AttributeType modifiedAttributeType;
 
     // UI Fields
-    private Text nameText;
-    private String[] aliasesList;
+    private Label aliasesLabel;
     private Button aliasesButton;
     private Text oidText;
     private Hyperlink schemaLink;
@@ -101,44 +101,28 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     private Combo substringCombo;
 
     // Listeners
-
-    /** The listener for the Name Text Widget*/
-    private ModifyListener nameTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            ArrayList<String> names = new ArrayList<String>();
-            names.add( nameText.getText() );
-            for ( int i = 0; i < aliasesList.length; i++ )
-            {
-                names.add( aliasesList[i] );
-            }
-            modifiedAttributeType.setNames( names.toArray( new String[0] ) );
-            setEditorDirty();
-        }
-    };
-
-    /** The listener for the Aliases Button Widget */
+    /** The listener for the Manage Aliases Button Widget */
     private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, aliasesList, ( modifiedAttributeType
-                .getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
+            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, modifiedAttributeType.getNames(),
+                ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
             if ( manageDialog.open() != Window.OK )
             {
                 return;
             }
             if ( manageDialog.isDirty() )
             {
-                aliasesList = manageDialog.getAliasesList();
-                ArrayList<String> names = new ArrayList<String>();
-                names.add( modifiedAttributeType.getNames()[0] );
-                for ( int i = 0; i < aliasesList.length; i++ )
+                modifiedAttributeType.setNames( manageDialog.getAliases() );
+                if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().length != 0 ) )
                 {
-                    names.add( aliasesList[i] );
+                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
                 }
-                modifiedAttributeType.setNames( names.toArray( new String[0] ) );
+                else
+                {
+                    aliasesLabel.setText( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) );
+                }
                 setEditorDirty();
             }
         }
@@ -153,7 +137,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
             setEditorDirty();
         }
     };
-    
+
     /** The listener for the Schema Hyperlink Widget*/
     private HyperlinkAdapter schemaLinkListener = new HyperlinkAdapter()
     {
@@ -448,22 +432,19 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         client_general_information.setLayout( layout_general_information );
         toolkit.paintBordersFor( client_general_information );
         section_general_information.setClient( client_general_information );
-        section_general_information.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // Adding elements to the section
-        // NAME Field
-        toolkit.createLabel( client_general_information, Messages
-            .getString( "AttributeTypeFormEditorOverviewPage.Name" ) ); //$NON-NLS-1$
-        nameText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        nameText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
-
         // ALIASES Button
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
+        aliasesLabel = toolkit.createLabel( client_general_information, "" );
+        aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+        toolkit.createLabel( client_general_information, "" );
         aliasesButton = toolkit.createButton( client_general_information, Messages
-            .getString( "AttributeTypeFormEditorOverviewPage.Manage_aliases" ), SWT.PUSH ); //$NON-NLS-1$
-        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false, 2, 1 ) );
-
+            .getString( "AttributeTypeFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
+        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
+        
         // OID Field
         toolkit
             .createLabel( client_general_information, Messages.getString( "AttributeTypeFormEditorOverviewPage.OID" ) ); //$NON-NLS-1$
@@ -473,7 +454,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( e.text.length() < 20  && !e.text.matches( "([0-9]+\\.?)*" ) )
+                if ( e.text.length() < 20 && !e.text.matches( "([0-9]+\\.?)*" ) )
                 {
                     e.doit = false;
                 }
@@ -568,7 +549,7 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         client_matching_rules.setLayout( layout_matching_rules );
         toolkit.paintBordersFor( client_matching_rules );
         section_matching_rules.setClient( client_matching_rules );
-        section_matching_rules.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        section_matching_rules.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // EQUALITY Combo
         toolkit
@@ -683,21 +664,15 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
 
     private void fillInUiFields()
     {
-        // NAME Field
-        if ( modifiedAttributeType.getNames()[0] != null )
+        // ALIASES Label
+        if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().length != 0 ) )
         {
-            this.nameText.setText( modifiedAttributeType.getNames()[0] );
+            aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
         }
-
-        // ALIASES
-        String[] names = modifiedAttributeType.getNames();
-        ArrayList<String> aliases = new ArrayList<String>();
-        for ( int i = 1; i < names.length; i++ )
+        else
         {
-            String name = names[i];
-            aliases.add( name );
+            aliasesLabel.setText( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) );
         }
-        this.aliasesList = aliases.toArray( new String[0] );
 
         // OID Field
         if ( modifiedAttributeType.getOid() != null )
@@ -928,7 +903,6 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the attribute type is in a core-schema file, we disable editing
-            nameText.setEditable( false );
             oidText.setEditable( false );
             descriptionText.setEditable( false );
             supCombo.setEnabled( false );
@@ -953,7 +927,6 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     {
         if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
-            nameText.addModifyListener( nameTextListener );
             oidText.addModifyListener( oidTextListener );
             descriptionText.addModifyListener( descriptionTextListener );
             supLabel.addHyperlinkListener( supLabelListener );
@@ -983,7 +956,6 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
      */
     private void removeListeners()
     {
-        nameText.removeModifyListener( nameTextListener );
         oidText.removeModifyListener( oidTextListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
         schemaLink.removeHyperlinkListener( schemaLinkListener );

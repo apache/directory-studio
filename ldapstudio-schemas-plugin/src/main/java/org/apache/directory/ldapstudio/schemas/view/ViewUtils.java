@@ -39,13 +39,14 @@ public class ViewUtils
     public static String concateAliases( String[] aliases )
     {
         StringBuffer sb = new StringBuffer();
-
-        sb.append( aliases[0] );
-
-        for ( int i = 1; i < aliases.length; i++ )
+        if ( aliases.length > 0 )
         {
-            sb.append( ", " );
-            sb.append( aliases[i] );
+            sb.append( aliases[0] );
+            for ( int i = 1; i < aliases.length; i++ )
+            {
+                sb.append( ", " );
+                sb.append( aliases[i] );
+            }
         }
 
         return sb.toString();

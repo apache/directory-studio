@@ -33,6 +33,7 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -85,8 +86,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private ObjectClass modifiedObjectClass;
 
     // UI fields
-    private Text nameText;
-    private String[] aliasesList;
+    private Label aliasesLabel;
     private Button aliasesButton;
     private Text oidText;
     private Hyperlink schemaLink;
@@ -104,43 +104,28 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private Button removeButtonOptionalTable;
 
     // Listeners
-    /** The listener for Name Text Widget */
-    private ModifyListener nameTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            ArrayList<String> names = new ArrayList<String>();
-            names.add( nameText.getText() );
-            for ( int i = 0; i < aliasesList.length; i++ )
-            {
-                names.add( aliasesList[i] );
-            }
-            modifiedObjectClass.setNames( names.toArray( new String[0] ) );
-            setEditorDirty();
-        }
-    };
-
     /** The listener for Aliases Button Widget */
     private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, aliasesList, ( modifiedObjectClass
-                .getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
+            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, modifiedObjectClass.getNames(),
+                ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
             if ( manageDialog.open() != Window.OK )
             {
                 return;
             }
             if ( manageDialog.isDirty() )
             {
-                aliasesList = manageDialog.getAliasesList();
-                ArrayList<String> names = new ArrayList<String>();
-                names.add( modifiedObjectClass.getNames()[0] );
-                for ( int i = 0; i < aliasesList.length; i++ )
+                modifiedObjectClass.setNames( manageDialog.getAliases() );
+                if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().length != 0 ) )
                 {
-                    names.add( aliasesList[i] );
+                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
                 }
-                modifiedObjectClass.setNames( names.toArray( new String[0] ) );
+                else
+                {
+                    aliasesLabel.setText( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) );
+                }
                 setEditorDirty();
             }
         }
@@ -545,18 +530,15 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         section_general_information.setClient( client_general_information );
         section_general_information.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 ) );
 
-        // NAME Field
-        toolkit
-            .createLabel( client_general_information, Messages.getString( "ObjectClassFormEditorOverviewPage.Name" ) ); //$NON-NLS-1$
-        nameText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        nameText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
-
         // ALIASES Button
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
+        aliasesLabel = toolkit.createLabel( client_general_information, "" );
+        aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        toolkit.createLabel( client_general_information, "" );
         aliasesButton = toolkit.createButton( client_general_information, Messages
-            .getString( "ObjectClassFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
-        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false ) );
+            .getString( "AttributeTypeFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
+        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false ) );
 
         // OID Field
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassFormEditorOverviewPage.OID" ) ); //$NON-NLS-1$
@@ -566,7 +548,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( e.text.length() < 20  && !e.text.matches( "([0-9]+\\.?)*" ) )
+                if ( e.text.length() < 20 && !e.text.matches( "([0-9]+\\.?)*" ) )
                 {
                     e.doit = false;
                 }
@@ -726,21 +708,15 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      */
     private void fillInUiFields()
     {
-        // NAME Field
-        if ( modifiedObjectClass.getNames()[0] != null )
+        // ALIASES Label
+        if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().length != 0 ) )
         {
-            nameText.setText( modifiedObjectClass.getNames()[0] );
+            aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
         }
-
-        // ALIASES
-        String[] names = modifiedObjectClass.getNames();
-        ArrayList<String> aliases = new ArrayList<String>();
-        for ( int i = 1; i < names.length; i++ )
+        else
         {
-            String name = names[i];
-            aliases.add( name );
+            aliasesLabel.setText( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) );
         }
-        aliasesList = aliases.toArray( new String[0] );
 
         // OID Field
         if ( modifiedObjectClass.getOid() != null )
@@ -790,7 +766,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private void initSupCombo()
     {
         SchemaPool pool = SchemaPool.getInstance();
-        List<ObjectClass> ocList =  pool.getObjectClasses();
+        List<ObjectClass> ocList = pool.getObjectClasses();
 
         //remove duplicate entries
         HashSet<ObjectClass> set = new HashSet<ObjectClass>( ocList );
@@ -868,8 +844,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         for ( int i = 0; i < mustArray.length; i++ )
         {
             TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE, i );
-            item.setImage( AbstractUIPlugin
-                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
+            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
             item.setText( mustArray[i] );
             if ( ( selectionIndex != -1 ) && ( mustArray[i].equals( selectAttribute ) ) )
             {
@@ -897,8 +873,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         for ( int i = 0; i < mayArray.length; i++ )
         {
             TableItem item = new TableItem( optionalAttributesTable, SWT.NONE, i );
-            item.setImage( AbstractUIPlugin
-                .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
+            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
             item.setText( mayArray[i] );
             if ( ( selectionIndex != -1 ) && ( mayArray[i].equals( selectAttribute ) ) )
             {
@@ -916,7 +892,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
-            nameText.setEditable( false );
             oidText.setEditable( false );
             descriptionText.setEditable( false );
             supCombo.setEnabled( false );
@@ -942,7 +917,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     {
         if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
-            nameText.addModifyListener( nameTextListener );
             oidText.addModifyListener( oidTextListener );
             descriptionText.addModifyListener( descriptionTextListener );
             supCombo.addModifyListener( supComboListener );
@@ -973,7 +947,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      */
     private void removeListeners()
     {
-        nameText.removeModifyListener( nameTextListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
         oidText.removeModifyListener( oidTextListener );
         schemaLink.removeHyperlinkListener( schemaLinkListener );
