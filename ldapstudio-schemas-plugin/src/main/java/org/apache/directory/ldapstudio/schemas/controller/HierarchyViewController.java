@@ -30,6 +30,9 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditor
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenHierarchyViewPreferencesAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.ShowSubtypeHierarchyAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.ShowSupertypeHierarchyAction;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
+import org.apache.directory.ldapstudio.schemas.model.PoolListener;
+import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
@@ -58,7 +61,7 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class HierarchyViewController
+public class HierarchyViewController implements PoolListener
 {
     /** The associated view */
     private HierarchyView view;
@@ -82,6 +85,8 @@ public class HierarchyViewController
     public HierarchyViewController( HierarchyView view )
     {
         this.view = view;
+        
+        SchemaPool.getInstance().addListener( this );
 
         initAuthorizedPrefs();
         initActions();
@@ -219,5 +224,14 @@ public class HierarchyViewController
                 }
             }
         } );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.PoolListener#poolChanged(org.apache.directory.ldapstudio.schemas.model.SchemaPool, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+     */
+    public void poolChanged( SchemaPool p, LDAPModelEvent e )
+    {
+        view.refresh();
     }
 }
