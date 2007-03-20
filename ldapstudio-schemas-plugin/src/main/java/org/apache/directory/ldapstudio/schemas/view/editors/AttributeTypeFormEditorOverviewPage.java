@@ -472,56 +472,56 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         // SCHEMA Field
         schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        schemaLabel.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SUP Combo
         supLabel = toolkit.createHyperlink( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Superior_type" ), SWT.WRAP ); //$NON-NLS-1$
         supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        supCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         initSupCombo();
 
         // USAGE Combo
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Usage" ) ); //$NON-NLS-1$
         usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        usageCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         initUsageCombo();
 
         // SYNTAX Combo
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Synatx" ) ); //$NON-NLS-1$
         syntaxCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        syntaxCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         initSyntaxCombo();
 
         // SYNTAX LENGTH Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Syntax_length" ) ); //$NON-NLS-1$
         syntaxLengthText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        syntaxLengthText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        syntaxLengthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // OBSOLETE Checkbox
         toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
         obsoleteCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
-        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SINGLE-VALUE Checkbox
         singleValueCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Single-Value" ), SWT.CHECK ); //$NON-NLS-1$
-        singleValueCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        singleValueCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // COLLECTIVE Checkbox
         toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
         collectiveCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Collective" ), SWT.CHECK ); //$NON-NLS-1$
-        collectiveCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        collectiveCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // NO-USER-MODIFICATION Checkbox
         noUserModificationCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.No-User-Modification" ), SWT.CHECK ); //$NON-NLS-1$
-        noUserModificationCheckbox.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        noUserModificationCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -555,21 +555,21 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         toolkit
             .createLabel( client_matching_rules, Messages.getString( "AttributeTypeFormEditorOverviewPage.Equility" ) ); //$NON-NLS-1$
         equalityCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
-        equalityCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initEqualityCombo();
 
         // ORDERING Combo
         toolkit
             .createLabel( client_matching_rules, Messages.getString( "AttributeTypeFormEditorOverviewPage.Ordering" ) ); //$NON-NLS-1$
         orderingCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
-        orderingCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initOrderingCombo();
 
         // SUBSTRING Combo
         toolkit.createLabel( client_matching_rules, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Substring" ) ); //$NON-NLS-1$
         substringCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
-        substringCombo.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initSubstringCombo();
     }
 

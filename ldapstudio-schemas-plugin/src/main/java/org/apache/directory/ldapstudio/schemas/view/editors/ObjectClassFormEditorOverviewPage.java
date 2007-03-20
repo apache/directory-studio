@@ -558,7 +558,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         // SCHEMA Field
         schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        schemaLabel.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
+        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
