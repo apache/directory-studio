@@ -74,7 +74,7 @@ public class SchemaElementsView extends ViewPart
     private void initViewer( Composite parent )
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new SchemaElementsViewContentProvider();
+        contentProvider = new SchemaElementsViewContentProvider( viewer );
         viewer.setContentProvider( contentProvider );
         viewer.setLabelProvider( new DecoratingLabelProvider( new SchemaElementsViewLabelProvider(), Activator
             .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );

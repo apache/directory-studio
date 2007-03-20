@@ -135,9 +135,15 @@ public class LDAPModelEvent
     {
         this( reason );
 
-        if ( ( reason == Reason.SchemaAdded ) || ( reason == Reason.SchemaRemoved ) )
+        if ( reason == Reason.SchemaAdded )
         {
+            oldValue = null;
             newValue = schema;
+        }
+        else if ( reason == Reason.SchemaRemoved )
+        {
+            oldValue = schema;
+            newValue = null;
         }
         else
         {

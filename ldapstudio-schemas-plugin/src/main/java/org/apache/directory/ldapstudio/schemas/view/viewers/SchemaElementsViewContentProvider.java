@@ -33,6 +33,8 @@ import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
+import org.apache.directory.ldapstudio.schemas.model.Schema;
+import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.FirstNameSorter;
@@ -43,6 +45,7 @@ import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaEleme
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 
@@ -52,10 +55,14 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaElementsViewContentProvider implements IStructuredContentProvider, ITreeContentProvider, PoolListener
+public class SchemaElementsViewContentProvider implements IStructuredContentProvider, ITreeContentProvider,
+    PoolListener
 {
     /** The Schema Pool holding all schemas */
     private SchemaPool schemaPool;
+
+    /** The associated viewer */
+    private TreeViewer viewer;
 
     /** The preferences store */
     IPreferenceStore store;
@@ -73,8 +80,9 @@ public class SchemaElementsViewContentProvider implements IStructuredContentProv
      * @param schemaPool
      *      the associated Schema Pool
      */
-    public SchemaElementsViewContentProvider()
+    public SchemaElementsViewContentProvider( TreeViewer viewer )
     {
+        this.viewer = viewer;
         schemaPool = SchemaPool.getInstance();
         schemaPool.addListener( this );
         store = Activator.getDefault().getPreferenceStore();
@@ -254,8 +262,205 @@ public class SchemaElementsViewContentProvider implements IStructuredContentProv
      */
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
-        // TODO Auto-generated method stub
+        switch ( e.getReason() )
+        {
+            case SchemaAdded:
+                schemaAdded( p, e );
+                break;
 
+            case SchemaRemoved:
+                schemaRemoved( p, e );
+                break;
+
+            case ATAdded:
+            case OCAdded:
+                aTOrOCAdded( p, e );
+                break;
+
+            case ATModified:
+            case OCModified:
+                aTOrOCModified( p, e );
+                break;
+
+            case ATRemoved:
+            case OCRemoved:
+                aTOrOCRemoved( p, e );
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * Refreshes the viewer when a SchemaAdded event is fired.
+     *
+     * @param p
+     *      the schema pool
+     * @param e
+     *      the event
+     */
+    private void schemaAdded( SchemaPool p, LDAPModelEvent e )
+    {
+        SchemaElementsViewRoot root = ( SchemaElementsViewRoot ) viewer.getInput();
+        Schema schema = ( Schema ) e.getNewValue();
+
+        // ATTRIBUTE TYPES
+        AttributeType[] attributeTypes = schema.getAttributeTypesAsArray();
+        for ( AttributeType attributeType : attributeTypes )
+        {
+            root.addChild( new AttributeTypeWrapper( attributeType, root ) );
+        }
+
+        // OBJECT CLASSES
+        ObjectClass[] objectClasses = schema.getObjectClassesAsArray();
+        for ( ObjectClass objectClass : objectClasses )
+        {
+            root.addChild( new ObjectClassWrapper( objectClass, root ) );
+        }
+
+        viewer.refresh();
+    }
+
+
+    /**
+     * Refreshes the viewer when a SchemaRemoved event is fired.
+     *
+     * @param p
+     *      the schema pool
+     * @param e
+     *      the event
+     */
+    private void schemaRemoved( SchemaPool p, LDAPModelEvent e )
+    {
+        Schema schema = ( Schema ) e.getOldValue();
+
+        // ATTRIBUTE TYPES
+        AttributeType[] attributeTypes = schema.getAttributeTypesAsArray();
+        for ( AttributeType attributeType : attributeTypes )
+        {
+            ITreeNode wrapper = getWrapper( attributeType );
+            if ( wrapper != null )
+            {
+                wrapper.getParent().removeChild( wrapper );
+            }
+        }
+
+        // OBJECT CLASSES
+        ObjectClass[] objectClasses = schema.getObjectClassesAsArray();
+        for ( ObjectClass objectClass : objectClasses )
+        {
+            ITreeNode wrapper = getWrapper( objectClass );
+            if ( wrapper != null )
+            {
+                wrapper.getParent().removeChild( wrapper );
+            }
+        }
+
+        viewer.refresh();
+    }
+
+
+    /**
+     * Refreshes the viewer when a ATAdded or OCAdded event is fired.
+     *
+     * @param p
+     *      the schema pool
+     * @param e
+     *      the event
+     */
+    private void aTOrOCAdded( SchemaPool p, LDAPModelEvent e )
+    {
+        SchemaElementsViewRoot root = ( SchemaElementsViewRoot ) viewer.getInput();
+        Object element = e.getNewValue();
+
+        if ( element instanceof AttributeType )
+        {
+            root.addChild( new AttributeTypeWrapper( ( AttributeType ) element, root ) );
+        }
+        else if ( element instanceof ObjectClass )
+        {
+            root.addChild( new ObjectClassWrapper( ( ObjectClass ) element, root ) );
+        }
+
+        viewer.refresh();
+    }
+
+
+    /**
+     * Refreshes the viewer when a ATModified or OCModified event is fired.
+     *
+     * @param p
+     *      the schema pool
+     * @param e
+     *      the event
+     */
+    private void aTOrOCModified( SchemaPool p, LDAPModelEvent e )
+    {
+        ITreeNode wrapper = getWrapper( ( SchemaElement ) e.getNewValue() );
+        if ( wrapper != null )
+        {
+            viewer.update( wrapper, null );
+        }
+    }
+
+
+    /**
+     * Refreshes the viewer when a ATRemoved or OCRemoved event is fired.
+     *
+     * @param p
+     *      the schema pool
+     * @param e
+     *      the event
+     */
+    private void aTOrOCRemoved( SchemaPool p, LDAPModelEvent e )
+    {
+        ITreeNode wrapper = getWrapper( ( SchemaElement ) e.getOldValue() );
+        if ( wrapper != null )
+        {
+            wrapper.getParent().removeChild( wrapper );
+            viewer.refresh();
+        }
+    }
+
+
+    /**
+     * Gets the Wrapper associated with the given Schema Element.
+     *
+     * @param schemaElement
+     *      the Schema Element to search from
+     * @return
+     *      the associated wrapper, null if no wrapper is found
+     */
+    private ITreeNode getWrapper( SchemaElement schemaElement )
+    {
+        SchemaElementsViewRoot root = ( SchemaElementsViewRoot ) viewer.getInput();
+
+        if ( schemaElement instanceof AttributeType )
+        {
+            List<AttributeTypeWrapper> atws = root.getAttributeTypes();
+            for ( AttributeTypeWrapper atw : atws )
+            {
+                if ( atw.getMyAttributeType().equals( schemaElement ) )
+                {
+                    return atw;
+                }
+            }
+        }
+        else if ( schemaElement instanceof ObjectClass )
+        {
+            List<ObjectClassWrapper> ocws = root.getObjectClasses();
+            for ( ObjectClassWrapper ocw : ocws )
+            {
+                if ( ocw.getMyObjectClass().equals( schemaElement ) )
+                {
+                    return ocw;
+                }
+            }
+        }
+
+        return null;
     }
 
 

@@ -353,7 +353,7 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
         for ( Iterator iter = schemaWrapperList.iterator(); iter.hasNext(); )
         {
             SchemaWrapper schemaWrapper = ( SchemaWrapper ) iter.next();
-            if ( schemaWrapper.getMySchema().equals( ( Schema ) e.getNewValue() ) )
+            if ( schemaWrapper.getMySchema().equals( ( Schema ) e.getOldValue() ) )
             {
                 rootNode.removeChild( schemaWrapper );
                 viewer.refresh( rootNode );
@@ -383,7 +383,7 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
 
         // Forcing the load of the children
         getChildren( parentNode );
-        
+
         // Creating and adding the new element
         ITreeNode newElement = null;
         if ( element instanceof AttributeType )
