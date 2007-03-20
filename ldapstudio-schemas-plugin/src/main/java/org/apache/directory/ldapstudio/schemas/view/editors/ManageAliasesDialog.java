@@ -132,13 +132,13 @@ public class ManageAliasesDialog extends Dialog
         aliases_label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // ALIASES Table
-        aliasesTable = new Table( composite, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+        aliasesTable = new Table( composite, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
         GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 );
         gridData.heightHint = 100;
         gridData.minimumHeight = 100;
-        gridData.widthHint = 250;
-        gridData.minimumWidth = 250;
+        gridData.widthHint = 200;
+        gridData.minimumWidth = 200;
         aliasesTable.setLayoutData( gridData );
 
         // ADD Label
@@ -148,7 +148,7 @@ public class ManageAliasesDialog extends Dialog
 
         // NEW ALIAS Field
         newAliasText = new Text( composite, SWT.BORDER );
-        newAliasText.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        newAliasText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         // Add Button
         newAliasAddButton = new Button( composite, SWT.PUSH );
