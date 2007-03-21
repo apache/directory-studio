@@ -27,7 +27,6 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -38,20 +37,21 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Wizard for creation of a new object class
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class CreateANewObjectClassWizard extends Wizard implements INewWizard
 {
-
-    private ISelection selection;
-
+    /** The Default Page */
     private CreateANewObjectClassWizardPage page;
 
+    /** The schema name*/
     private String schemaName;
 
 
     /**
-     * Default constructor
-     * 
+     * Creates a new instance of CreateANewObjectClassWizard.
      * @param schemaName
      *            the schema name in which should be added the new object class
      */
@@ -62,12 +62,9 @@ public class CreateANewObjectClassWizard extends Wizard implements INewWizard
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
-    @Override
     public boolean performFinish()
     {
         // Getting the SchemaPool
@@ -78,8 +75,10 @@ public class CreateANewObjectClassWizard extends Wizard implements INewWizard
 
         // Creating the new object class and adding it to the schema
         ObjectClassLiteral objectClassLiteral = new ObjectClassLiteral( this.page.getOidField() );
-        objectClassLiteral.setNames( new String[] { this.page.getNameField() } );
-        objectClassLiteral.setSuperiors( new String[]{ "top" } ); //$NON-NLS-1$
+        objectClassLiteral.setNames( new String[]
+            { this.page.getNameField() } );
+        objectClassLiteral.setSuperiors( new String[]
+            { "top" } ); //$NON-NLS-1$
         ObjectClass objectClass = new ObjectClass( objectClassLiteral, schema );
         schema.addObjectClass( objectClass );
 
@@ -93,31 +92,25 @@ public class CreateANewObjectClassWizard extends Wizard implements INewWizard
         catch ( PartInitException e )
         {
         }
-        
+
         return true;
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     *      org.eclipse.jface.viewers.IStructuredSelection)
-     */
-    public void init( IWorkbench workbench, IStructuredSelection selection )
-    {
-        this.selection = selection;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#addPages()
      */
     public void addPages()
     {
-        this.page = new CreateANewObjectClassWizardPage( selection );
+        this.page = new CreateANewObjectClassWizardPage();
         addPage( page );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+     */
+    public void init( IWorkbench workbench, IStructuredSelection selection )
+    {
     }
 }

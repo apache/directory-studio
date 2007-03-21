@@ -35,6 +35,7 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Syntax;
 import org.apache.directory.ldapstudio.schemas.model.Syntaxes;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
+import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.window.Window;
@@ -76,6 +77,9 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
 
     /** The page title */
     public static String TITLE = Messages.getString( "AttributeTypeFormEditor.Overview" );
+
+    /** The original object class */
+    private AttributeType originalAttributeType;
 
     /** The modified object class */
     private AttributeType modifiedAttributeType;
@@ -128,13 +132,47 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         }
     };
 
-    /** The listener for the OID Text Widget */
-    private ModifyListener oidTextListener = new ModifyListener()
+    /** The Modify listener for the OID Text Widget */
+    private ModifyListener oidTextModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            modifiedAttributeType.setOid( oidText.getText() );
-            setEditorDirty();
+            oidText.setForeground( ViewUtils.COLOR_BLACK );
+            oidText.setToolTipText( "" );
+
+            String oid = oidText.getText();
+
+            if ( OID.isOID( oid ) )
+            {
+                if ( ( originalAttributeType.getOid().equals( oid ) )
+                    || !( SchemaPool.getInstance().containsSchemaElement( oid ) ) )
+                {
+                    modifiedAttributeType.setOid( oid );
+                    setEditorDirty();
+                }
+                else
+                {
+                    oidText.setForeground( ViewUtils.COLOR_RED );
+                    oidText.setToolTipText( "An element with same oid already exists." );
+                }
+            }
+            else
+            {
+                oidText.setForeground( ViewUtils.COLOR_RED );
+                oidText.setToolTipText( "Malformed OID." );
+            }
+        }
+    };
+
+    /** The Verify listener for the OID Text Widget */
+    private VerifyListener oidTextVerifyListener = new VerifyListener()
+    {
+        public void verifyText( VerifyEvent e )
+        {
+            if ( !e.text.matches( "([0-9]*\\.?)*" ) )
+            {
+                e.doit = false;
+            }
         }
     };
 
@@ -381,8 +419,9 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the modified attribute type and listening to its modifications
+        // Getting the original and modified attribute types
         modifiedAttributeType = ( ( AttributeTypeFormEditor ) getEditor() ).getModifiedAttributeType();
+        originalAttributeType = ( ( AttributeTypeFormEditor ) getEditor() ).getOriginalAttributeType();
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -444,22 +483,12 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
         aliasesButton = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
-        
+
         // OID Field
         toolkit
             .createLabel( client_general_information, Messages.getString( "AttributeTypeFormEditorOverviewPage.OID" ) ); //$NON-NLS-1$
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
-        oidText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( e.text.length() < 20 && !e.text.matches( "([0-9]+\\.?)*" ) )
-                {
-                    e.doit = false;
-                }
-            }
-        } );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
@@ -927,7 +956,8 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
     {
         if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
-            oidText.addModifyListener( oidTextListener );
+            oidText.addModifyListener( oidTextModifyListener );
+            oidText.addVerifyListener( oidTextVerifyListener );
             descriptionText.addModifyListener( descriptionTextListener );
             supLabel.addHyperlinkListener( supLabelListener );
             supCombo.addModifyListener( supComboListener );
@@ -956,7 +986,8 @@ public class AttributeTypeFormEditorOverviewPage extends FormPage
      */
     private void removeListeners()
     {
-        oidText.removeModifyListener( oidTextListener );
+        oidText.removeModifyListener( oidTextModifyListener );
+        oidText.removeVerifyListener( oidTextVerifyListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
         schemaLink.removeHyperlinkListener( schemaLinkListener );
         descriptionText.removeModifyListener( descriptionTextListener );

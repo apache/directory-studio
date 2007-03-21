@@ -20,6 +20,11 @@
 package org.apache.directory.ldapstudio.schemas.view;
 
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.ui.PlatformUI;
+
+
 /**
  * This Helper Class contains useful methods used to create the UI.
  *
@@ -28,6 +33,15 @@ package org.apache.directory.ldapstudio.schemas.view;
  */
 public class ViewUtils
 {
+    /** The Black Color */
+    public static final Color COLOR_BLACK = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()
+        .getDisplay().getSystemColor( SWT.COLOR_BLACK );
+
+    /** The Red Color */
+    public static final Color COLOR_RED = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay()
+        .getSystemColor( SWT.COLOR_RED );
+
+
     /**
      * Concatenates all aliases in a String format. Aliases are separated with a comma (',')
      *

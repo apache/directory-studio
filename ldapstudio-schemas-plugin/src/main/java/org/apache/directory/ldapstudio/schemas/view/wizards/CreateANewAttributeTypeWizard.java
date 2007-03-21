@@ -27,7 +27,6 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -41,16 +40,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class CreateANewAttributeTypeWizard extends Wizard implements INewWizard
 {
-
-    private ISelection selection;
-
+    /** The default page */
     private CreateANewAttributeTypeWizardPage page;
 
+    /** The schema name */
     private String schemaName;
 
 
     /**
-     * Default Constructor
+     * Creates a new instance of CreateANewAttributeTypeWizard.
      * 
      * @param schemaName
      *            the schema name in which should be added the new attribute
@@ -63,12 +61,9 @@ public class CreateANewAttributeTypeWizard extends Wizard implements INewWizard
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
-    @Override
     public boolean performFinish()
     {
         // Getting the SchemaPool
@@ -79,10 +74,11 @@ public class CreateANewAttributeTypeWizard extends Wizard implements INewWizard
 
         // Creating the new attribute type and adding it to the schema
         AttributeTypeLiteral attributeTypeLiteral = new AttributeTypeLiteral( this.page.getOidField() );
-        attributeTypeLiteral.setNames( new String[] { this.page.getNameField() } );
+        attributeTypeLiteral.setNames( new String[]
+            { this.page.getNameField() } );
         AttributeType attributeType = new AttributeType( attributeTypeLiteral, schema );
         schema.addAttributeType( attributeType );
-        
+
         // Opening the associated editor
         AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( attributeType );
         String editorId = AttributeTypeFormEditor.ID;
@@ -92,32 +88,27 @@ public class CreateANewAttributeTypeWizard extends Wizard implements INewWizard
         }
         catch ( PartInitException e )
         {
+            // TODO Log exception.
         }
 
         return true;
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     *      org.eclipse.jface.viewers.IStructuredSelection)
-     */
-    public void init( IWorkbench workbench, IStructuredSelection selection )
-    {
-        this.selection = selection;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#addPages()
      */
     public void addPages()
     {
-        this.page = new CreateANewAttributeTypeWizardPage( selection );
+        this.page = new CreateANewAttributeTypeWizardPage();
         addPage( page );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+     */
+    public void init( IWorkbench workbench, IStructuredSelection selection )
+    {
     }
 }

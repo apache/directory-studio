@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -31,30 +30,20 @@ import org.eclipse.ui.IWorkbench;
 
 
 /**
- * Wizard for creation of a new schema
+ * Wizard for creation of a new schema.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class CreateANewSchemaWizard extends Wizard implements INewWizard
 {
-    private ISelection selection;
-
+    /** The default page */
     private CreateANewSchemaWizardPage page;
 
 
-    /**
-     * Default constructor
-     */
-    public CreateANewSchemaWizard()
-    {
-        super();
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
-    @Override
     public boolean performFinish()
     {
         SchemaPool pool = SchemaPool.getInstance();
@@ -63,26 +52,20 @@ public class CreateANewSchemaWizard extends Wizard implements INewWizard
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     *      org.eclipse.jface.viewers.IStructuredSelection)
-     */
-    public void init( IWorkbench workbench, IStructuredSelection selection )
-    {
-        this.selection = selection;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#addPages()
      */
     public void addPages()
     {
-        this.page = new CreateANewSchemaWizardPage( selection );
+        this.page = new CreateANewSchemaWizardPage();
         addPage( page );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+     */
+    public void init( IWorkbench workbench, IStructuredSelection selection )
+    {
     }
 }

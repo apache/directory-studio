@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -42,25 +41,20 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class CreateANewSchemaWizardPage extends WizardPage
 {
-
-    @SuppressWarnings("unused")//$NON-NLS-1$
-    private ISelection selection;
-
+    // UI Fields
     private Text nameField;
 
 
     /**
-     * Default constructor
-     * 
-     * @param selection
+     * Creates a new instance of CreateANewSchemaWizardPage.
      */
-    public CreateANewSchemaWizardPage( ISelection selection )
+    public CreateANewSchemaWizardPage()
     {
         super( "CreateANewSchemaWizardPage" ); //$NON-NLS-1$
         setTitle( Messages.getString( "CreateANewSchemaWizardPage.Page_Title" ) ); //$NON-NLS-1$
         setDescription( Messages.getString( "CreateANewSchemaWizardPage.Page_Description" ) ); //$NON-NLS-1$
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA_NEW_WIZARD ) );
-        this.selection = selection;
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_SCHEMA_NEW_WIZARD ) );
     }
 
 
@@ -75,9 +69,7 @@ public class CreateANewSchemaWizardPage extends WizardPage
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl( Composite parent )
@@ -106,6 +98,9 @@ public class CreateANewSchemaWizardPage extends WizardPage
     }
 
 
+    /**
+     * This method is called when the user modifies something in the UI.
+     */
     private void dialogChanged()
     {
         if ( getNameField().length() == 0 )
@@ -125,6 +120,12 @@ public class CreateANewSchemaWizardPage extends WizardPage
     }
 
 
+    /**
+     * Updates the status of the page.
+     *
+     * @param message
+     *      the message to display
+     */
     private void updateStatus( String message )
     {
         setErrorMessage( message );

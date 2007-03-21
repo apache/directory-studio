@@ -21,17 +21,13 @@
 package org.apache.directory.ldapstudio.schemas.view.wizards;
 
 
-import java.util.Map;
-
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.model.OID;
-import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage;
+import org.apache.directory.shared.asn1.primitives.OID;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -51,33 +47,27 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Default Page for new attribute type wizard
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class CreateANewObjectClassWizardPage extends WizardPage
 {
-
-    @SuppressWarnings("unused")//$NON-NLS-1$
-    private ISelection selection;
-    private Map<String, SchemaElement> elements;
-
+    // UI Fields
     private Text oidField;
-
     private Text nameField;
 
 
     /**
-     * Default constructor
-     * 
-     * @param selection
+     * Creates a new instance of CreateANewObjectClassWizardPage.
      */
-    public CreateANewObjectClassWizardPage( ISelection selection )
+    public CreateANewObjectClassWizardPage()
     {
         super( "CreateANewObjecClassWizardPage" ); //$NON-NLS-1$
         setTitle( Messages.getString( "CreateANewObjectClassWizardPage.Page_Title" ) ); //$NON-NLS-1$
         setDescription( Messages.getString( "CreateANewObjectClassWizardPage.Page_Description" ) ); //$NON-NLS-1$
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
-        this.selection = selection;
-
-        elements = SchemaPool.getInstance().getSchemaElements();
+        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
     }
 
 
@@ -103,9 +93,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl( Composite parent )
@@ -168,7 +156,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( e.text.length() < 20  && !e.text.matches( "([0-9]+\\.?)*" ) )
+                if ( !e.text.matches( "([0-9]*\\.?)*" ) )
                 {
                     e.doit = false;
                 }
@@ -194,6 +182,9 @@ public class CreateANewObjectClassWizardPage extends WizardPage
     }
 
 
+    /**
+     * This method is called when the user modifies something in the UI.
+     */
     private void dialogChanged()
     {
         if ( getOidField().length() == 0 )
@@ -202,7 +193,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
             return;
         }
 
-        if ( !OID.validate( getOidField() ) )
+        if ( !OID.isOID( getOidField() ) )
         {
             updateStatus( Messages.getString( "CreateANewObjectClassWizardPage.Malforme_OID" ) ); //$NON-NLS-1$
             return;
@@ -214,17 +205,17 @@ public class CreateANewObjectClassWizardPage extends WizardPage
             return;
         }
 
-        if ( elements.containsKey( getOidField() ) )
+        if ( SchemaPool.getInstance().containsSchemaElement( getOidField() ) )
         {
             updateStatus( Messages
                 .getString( "CreateANewObjectClassWizardPage.An_element_of_the_same_OID_already_exists" ) ); //$NON-NLS-1$
             return;
         }
 
-        if ( elements.containsKey( getNameField() ) )
+        if ( SchemaPool.getInstance().containsSchemaElement( getNameField() ) )
         {
             updateStatus( Messages
-                .getString( "CreateANewObjectClassWizardPage.An_object_class_of_the_same_name_already_exists" ) ); //$NON-NLS-1$
+                .getString( "CreateANewObjectClassWizardPage.An_element_of_the_same_name_already_exists" ) ); //$NON-NLS-1$
             return;
         }
 
@@ -232,6 +223,12 @@ public class CreateANewObjectClassWizardPage extends WizardPage
     }
 
 
+    /**
+     * Updates the status of the page.
+     *
+     * @param message
+     *      the message to display
+     */
     private void updateStatus( String message )
     {
         setErrorMessage( message );

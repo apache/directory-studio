@@ -34,6 +34,7 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
+import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -81,6 +82,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
 
     /** The page title*/
     public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Overview" );
+
+    /** The original object class */
+    private ObjectClass originalObjectClass;
 
     /** The modified object class */
     private ObjectClass modifiedObjectClass;
@@ -131,13 +135,47 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         }
     };
 
-    /** The listener for OID Text Widget */
-    private ModifyListener oidTextListener = new ModifyListener()
+    /** The Modify listener for the OID Text Widget */
+    private ModifyListener oidTextModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
-            modifiedObjectClass.setOid( oidText.getText() );
-            setEditorDirty();
+            oidText.setForeground( ViewUtils.COLOR_BLACK );
+            oidText.setToolTipText( "" );
+
+            String oid = oidText.getText();
+
+            if ( OID.isOID( oid ) )
+            {
+                if ( ( originalObjectClass.getOid().equals( oid ) )
+                    || !( SchemaPool.getInstance().containsSchemaElement( oid ) ) )
+                {
+                    modifiedObjectClass.setOid( oid );
+                    setEditorDirty();
+                }
+                else
+                {
+                    oidText.setForeground( ViewUtils.COLOR_RED );
+                    oidText.setToolTipText( "An element with same oid already exists." );
+                }
+            }
+            else
+            {
+                oidText.setForeground( ViewUtils.COLOR_RED );
+                oidText.setToolTipText( "Malformed OID." );
+            }
+        }
+    };
+
+    /** The Verify listener for the OID Text Widget */
+    private VerifyListener oidTextVerifyListener = new VerifyListener()
+    {
+        public void verifyText( VerifyEvent e )
+        {
+            if ( !e.text.matches( "([0-9]*\\.?)*" ) )
+            {
+                e.doit = false;
+            }
         }
     };
 
@@ -475,8 +513,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the modified object class
+        // Getting the original and modified object classes
         modifiedObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getModifiedObjectClass();
+        originalObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getOriginalObjectClass();
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -917,7 +956,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     {
         if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
-            oidText.addModifyListener( oidTextListener );
+            oidText.addModifyListener( oidTextModifyListener );
+            oidText.addVerifyListener( oidTextVerifyListener );
             descriptionText.addModifyListener( descriptionTextListener );
             supCombo.addModifyListener( supComboListener );
             classTypeCombo.addModifyListener( classTypeListener );
@@ -948,7 +988,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private void removeListeners()
     {
         aliasesButton.removeSelectionListener( aliasesButtonListener );
-        oidText.removeModifyListener( oidTextListener );
+        oidText.removeModifyListener( oidTextModifyListener );
+        oidText.removeVerifyListener( oidTextVerifyListener );
         schemaLink.removeHyperlinkListener( schemaLinkListener );
         descriptionText.removeModifyListener( descriptionTextListener );
         supLabel.removeHyperlinkListener( supLabelListener );
