@@ -233,6 +233,7 @@ public class ManageAliasesDialog extends Dialog
             aliasesTable.setMenu( menu );
             MenuItem deleteMenuItem = new MenuItem( menu, SWT.PUSH );
             deleteMenuItem.setText( Messages.getString( "ManageAliasesDialog.Delete" ) ); //$NON-NLS-1$
+            deleteMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
             // Adding the listener
             deleteMenuItem.addListener( SWT.Selection, new Listener()
             {
