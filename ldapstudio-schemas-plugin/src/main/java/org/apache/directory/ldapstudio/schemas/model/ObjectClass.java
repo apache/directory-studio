@@ -259,9 +259,9 @@ public class ObjectClass implements SchemaElement, Cloneable
         if ( names.length > 1 )
         {
             sb.append( "( " ); //$NON-NLS-1$
-            for ( int i = 0; i < names.length; i++ )
+            for ( String name : names )
             {
-                sb.append( "'" + names[i] + "' " ); //$NON-NLS-1$ //$NON-NLS-2$
+                sb.append( "'" + name + "' " ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             sb.append( ") \n" ); //$NON-NLS-1$
         }

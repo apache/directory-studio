@@ -345,12 +345,11 @@ public class LinkWithEditorSchemasView extends Action
      */
     private void linkEditorWithView( ITreeNode wrapper )
     {
-        IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+        IEditorReference[] references = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
             .getEditorReferences();
 
-        for ( int i = 0; i < editorReferences.length; i++ )
+        for ( IEditorReference reference : references )
         {
-            IEditorReference reference = editorReferences[i];
             IWorkbenchPart workbenchPart = reference.getPart( true );
 
             if ( ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) && ( reference

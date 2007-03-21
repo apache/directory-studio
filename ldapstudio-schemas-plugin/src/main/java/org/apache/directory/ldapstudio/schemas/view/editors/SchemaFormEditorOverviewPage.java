@@ -233,21 +233,21 @@ public class SchemaFormEditorOverviewPage extends FormPage
     private void fillInUiFields()
     {
         AttributeType[] attributeTypes = schema.getAttributeTypesAsArray();
-        for ( int i = 0; i < attributeTypes.length; i++ )
+        for ( AttributeType at : attributeTypes )
         {
             TableItem item = new TableItem( attributeTypesTable, SWT.NONE );
             item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                 PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
-            item.setText( attributeTypes[i].getNames()[0] );
+            item.setText( at.getNames()[0] );
         }
 
         ObjectClass[] objectClasses = schema.getObjectClassesAsArray();
-        for ( int i = 0; i < objectClasses.length; i++ )
+        for ( ObjectClass oc : objectClasses )
         {
             TableItem item = new TableItem( objectClassesTable, SWT.NONE );
             item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                 PluginConstants.IMG_OBJECT_CLASS ).createImage() );
-            item.setText( objectClasses[i].getNames()[0] );
+            item.setText( oc.getNames()[0] );
         }
     }
 

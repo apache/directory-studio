@@ -179,9 +179,8 @@ public class SchemasView extends ViewPart implements ISaveablePart2
     public boolean isDirty()
     {
         Schema[] schemas = SchemaPool.getInstance().getSchemas();
-        for ( int i = 0; i < schemas.length; i++ )
+        for ( Schema schema : schemas )
         {
-            Schema schema = schemas[i];
             if ( schema.type == Schema.SchemaType.userSchema )
             {
                 if ( schema.hasBeenModified() || schema.hasPendingModification() )
@@ -253,11 +252,9 @@ public class SchemasView extends ViewPart implements ISaveablePart2
         else
         {
             Object[] children = contentProvider.getChildren( node );
-
-            for ( int i = 0; i < children.length; i++ )
+            for ( Object child : children )
             {
-                ITreeNode item = ( ITreeNode ) children[i];
-                ITreeNode foundElement = findElementInTree( element, item );
+                ITreeNode foundElement = findElementInTree( element, ( ITreeNode ) child );
                 if ( foundElement != null )
                 {
                     return foundElement;

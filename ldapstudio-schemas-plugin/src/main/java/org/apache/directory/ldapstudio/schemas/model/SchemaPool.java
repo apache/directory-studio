@@ -184,9 +184,9 @@ public class SchemaPool implements SchemaListener
         String[] safiles = dir.list();
         if ( safiles != null )
         {
-            for ( int i = 0; i < safiles.length; i++ )
+            for ( String safile : safiles )
             {
-                File curFile = new File( sCurPath + safiles[i] );
+                File curFile = new File( sCurPath + safile );
                 if ( !curFile.isDirectory() )
                 {
                     try
@@ -492,8 +492,10 @@ public class SchemaPool implements SchemaListener
      */
     public void addSchemas( Schema[] schemaArray )
     {
-        for ( int i = 0; i < schemaArray.length; i++ )
-            addSchema( schemaArray[i] );
+        for ( Schema schema : schemaArray )
+        {
+            addSchema( schema );
+        }
 
         //notify of the changement
         //notifyChanged(LDAPModelEvent.Reason.multipleSchemaAdded,null);
@@ -515,15 +517,15 @@ public class SchemaPool implements SchemaListener
                 s.addListener( this );
 
                 AttributeType[] ats = s.getAttributeTypesAsArray();
-                for ( int i = 0; i < ats.length; i++ )
+                for ( AttributeType at : ats )
                 {
-                    addAttributeType( ats[i] );
+                    addAttributeType( at );
                 }
 
                 ObjectClass[] ocs = s.getObjectClassesAsArray();
-                for ( int i = 0; i < ocs.length; i++ )
+                for ( ObjectClass oc : ocs )
                 {
-                    addObjectClass( ocs[i] );
+                    addObjectClass( oc );
                 }
 
                 notifyChanged( LDAPModelEvent.Reason.SchemaAdded, s );
@@ -598,14 +600,14 @@ public class SchemaPool implements SchemaListener
      */
     public void removeSchemas( Schema[] schemaArray )
     {
-        for ( int i = 0; i < schemaArray.length; i++ )
+        if ( ( schemaArray != null ) && ( schemaArray.length > 0 ) )
         {
-            removeSchema( schemaArray[i] );
-            schemaArray[i].removeListener( this );
-        }
+            for ( Schema schema : schemaArray )
+            {
+                removeSchema( schema );
+                schema.removeListener( this );
+            }
 
-        if ( schemaArray.length > 0 )
-        {
             //notify of the changement
             notifyChanged( LDAPModelEvent.Reason.multipleSchemaRemoved, null );
         }
@@ -625,15 +627,15 @@ public class SchemaPool implements SchemaListener
             s.closeAssociatedEditors();
 
             AttributeType[] ats = s.getAttributeTypesAsArray();
-            for ( int i = 0; i < ats.length; i++ )
+            for ( AttributeType at : ats )
             {
-                removeAttributeType( ats[i] );
+                removeAttributeType( at );
             }
 
             ObjectClass[] ocs = s.getObjectClassesAsArray();
-            for ( int i = 0; i < ocs.length; i++ )
+            for ( ObjectClass oc : ocs )
             {
-                removeObjectClass( ocs[i] );
+                removeObjectClass( oc );
             }
 
             notifyChanged( LDAPModelEvent.Reason.SchemaRemoved, s );

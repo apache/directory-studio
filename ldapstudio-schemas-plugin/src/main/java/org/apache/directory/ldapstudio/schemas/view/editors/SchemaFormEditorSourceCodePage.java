@@ -122,28 +122,20 @@ public class SchemaFormEditorSourceCodePage extends FormPage
      */
     private void fillInUiFields()
     {
-        AttributeType[] attributeTypes = schema.getAttributeTypesAsArray();
-        ObjectClass[] objectClasses = schema.getObjectClassesAsArray();
-
         StringBuffer sb = new StringBuffer();
 
-        if ( attributeTypes.length != 0 )
+        AttributeType[] attributeTypes = schema.getAttributeTypesAsArray();
+        for ( AttributeType at : attributeTypes )
         {
-            for ( int i = 0; i < attributeTypes.length; i++ )
-            {
-                AttributeType attributeType = attributeTypes[i];
-                sb.append( attributeType.write() );
-                sb.append( "\n" ); //$NON-NLS-1$
-            }
+            sb.append( at.write() );
+            sb.append( "\n" ); //$NON-NLS-1$
         }
-        if ( objectClasses.length != 0 )
+
+        ObjectClass[] objectClasses = schema.getObjectClassesAsArray();
+        for ( ObjectClass oc : objectClasses )
         {
-            for ( int i = 0; i < objectClasses.length; i++ )
-            {
-                ObjectClass objectClass = objectClasses[i];
-                sb.append( objectClass.write() );
-                sb.append( "\n" ); //$NON-NLS-1$
-            }
+            sb.append( oc.write() );
+            sb.append( "\n" ); //$NON-NLS-1$
         }
 
         schemaSourceViewer.getDocument().set( sb.toString() );

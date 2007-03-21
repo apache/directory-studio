@@ -152,11 +152,9 @@ public class HierarchyView extends ViewPart
         else
         {
             Object[] children = contentProvider.getChildren( node );
-
-            for ( int i = 0; i < children.length; i++ )
+            for ( Object child : children )
             {
-                ITreeNode item = ( ITreeNode ) children[i];
-                ITreeNode foundElement = findElementInTree( element, item );
+                ITreeNode foundElement = findElementInTree( element, ( ITreeNode ) child );
                 if ( foundElement != null )
                 {
                     return foundElement;

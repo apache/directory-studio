@@ -76,6 +76,7 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -296,7 +297,7 @@ public class SchemasViewController
 
         // set the context menu to the table viewer
         viewer.getControl().setMenu( contextMenu.createContextMenu( viewer.getControl() ) );
-        
+
         // register the context menu to enable extension actions
         view.getSite().registerContextMenu( contextMenu, viewer );
     }
@@ -329,11 +330,11 @@ public class SchemasViewController
                 }
 
                 //we only want files
-                for ( int i = 0; i < event.dataTypes.length; i++ )
+                for ( TransferData dataType : event.dataTypes )
                 {
-                    if ( fileTransfer.isSupportedType( event.dataTypes[i] ) )
+                    if ( fileTransfer.isSupportedType( dataType ) )
                     {
-                        event.currentDataType = event.dataTypes[i];
+                        event.currentDataType = dataType;
                         break;
                     }
                 }
@@ -349,15 +350,15 @@ public class SchemasViewController
                 {
                     SchemaPool pool = SchemaPool.getInstance();
                     String[] files = ( String[] ) event.data;
-                    for ( int i = 0; i < files.length; i++ )
+                    for ( String file : files )
                     {
                         try
                         {
-                            pool.addAlreadyExistingSchema( files[i], SchemaType.userSchema );
+                            pool.addAlreadyExistingSchema( file, SchemaType.userSchema );
                         }
                         catch ( SchemaCreationException e )
                         {
-                            logger.debug( "error when initializing new schema after drag&drop: " + files[i] ); //$NON-NLS-1$
+                            logger.debug( "error when initializing new schema after drag&drop: " + file ); //$NON-NLS-1$
                         }
                     }
                 }

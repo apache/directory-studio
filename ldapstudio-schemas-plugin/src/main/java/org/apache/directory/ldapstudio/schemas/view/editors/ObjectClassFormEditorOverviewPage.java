@@ -317,9 +317,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
                     // The selected attribute is not in any table, so it can be added
                     ArrayList<String> mustList = new ArrayList<String>();
                     String[] mustATs = modifiedObjectClass.getMust();
-                    for ( int i = 0; i < mustATs.length; i++ )
+                    for ( String mustAT : mustATs )
                     {
-                        mustList.add( mustATs[i] );
+                        mustList.add( mustAT );
                     }
                     mustList.add( selectionDialog.getSelectedAttributeType() );
                     modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
@@ -340,9 +340,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
 
             ArrayList<String> mustList = new ArrayList<String>();
             String[] mustATs = modifiedObjectClass.getMust();
-            for ( int i = 0; i < mustATs.length; i++ )
+            for ( String mustAT : mustATs )
             {
-                mustList.add( mustATs[i] );
+                mustList.add( mustAT );
             }
             mustList.remove( itemToRemove );
             modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
@@ -446,9 +446,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
 
             ArrayList<String> mayList = new ArrayList<String>();
             String[] mayATs = modifiedObjectClass.getMay();
-            for ( int i = 0; i < mayATs.length; i++ )
+            for ( String mayAT : mayATs )
             {
-                mayList.add( mayATs[i] );
+                mayList.add( mayAT );
             }
             mayList.remove( itemToRemove );
             modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );

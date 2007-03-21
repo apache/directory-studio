@@ -121,15 +121,14 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
 
             if ( root.getChildren().isEmpty() )
             {
-                Schema[] schemas = this.schemaPool.getSchemas();
-                for ( int i = 0; i < schemas.length; i++ )
+                Schema[] schemas = schemaPool.getSchemas();
+                for ( Schema schema : schemas )
                 {
-                    root.addChild( new SchemaWrapper( schemas[i], root ) );
+                    root.addChild( new SchemaWrapper( schema, root ) );
                 }
             }
 
             children = root.getChildren();
-
             Collections.sort( children, schemaSorter );
         }
         if ( parentElement instanceof IntermediateNode )
@@ -142,20 +141,20 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
                 {
                     Schema schema = ( ( SchemaWrapper ) intermediate.getParent() ).getMySchema();
 
-                    AttributeType[] attributeTypeList = schema.getAttributeTypesAsArray();
-                    for ( int i = 0; i < attributeTypeList.length; i++ )
+                    AttributeType[] ats = schema.getAttributeTypesAsArray();
+                    for ( AttributeType at : ats )
                     {
-                        intermediate.addChild( new AttributeTypeWrapper( attributeTypeList[i], intermediate ) );
+                        intermediate.addChild( new AttributeTypeWrapper( at, intermediate ) );
                     }
                 }
                 else if ( intermediate.getType().equals( IntermediateNodeType.OBJECT_CLASS_FOLDER ) )
                 {
                     Schema schema = ( ( SchemaWrapper ) intermediate.getParent() ).getMySchema();
 
-                    ObjectClass[] objectClassList = schema.getObjectClassesAsArray();
-                    for ( int i = 0; i < objectClassList.length; i++ )
+                    ObjectClass[] ocs = schema.getObjectClassesAsArray();
+                    for ( ObjectClass oc : ocs )
                     {
-                        intermediate.addChild( new ObjectClassWrapper( objectClassList[i], intermediate ) );
+                        intermediate.addChild( new ObjectClassWrapper( oc, intermediate ) );
                     }
                 }
             }
@@ -202,16 +201,16 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
                 {
                     Schema schema = schemaWrapper.getMySchema();
 
-                    AttributeType[] attributeTypeList = schema.getAttributeTypesAsArray();
-                    for ( int i = 0; i < attributeTypeList.length; i++ )
+                    AttributeType[] ats = schema.getAttributeTypesAsArray();
+                    for ( AttributeType at : ats )
                     {
-                        schemaWrapper.addChild( new AttributeTypeWrapper( attributeTypeList[i], schemaWrapper ) );
+                        schemaWrapper.addChild( new AttributeTypeWrapper( at, schemaWrapper ) );
                     }
 
-                    ObjectClass[] objectClassList = schema.getObjectClassesAsArray();
-                    for ( int i = 0; i < objectClassList.length; i++ )
+                    ObjectClass[] ocs = schema.getObjectClassesAsArray();
+                    for ( ObjectClass oc : ocs )
                     {
-                        schemaWrapper.addChild( new ObjectClassWrapper( objectClassList[i], schemaWrapper ) );
+                        schemaWrapper.addChild( new ObjectClassWrapper( oc, schemaWrapper ) );
                     }
                 }
 
@@ -432,11 +431,11 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
 
         ITreeNode realNode = null;
         Object[] children = getChildren( parentNode );
-        for ( int i = 0; i < children.length; i++ )
+        for ( Object child : children )
         {
-            if ( children[i].equals( fakeNode ) )
+            if ( child.equals( fakeNode ) )
             {
-                realNode = ( ITreeNode ) children[i];
+                realNode = ( ITreeNode ) child;
                 break;
             }
         }
@@ -480,11 +479,11 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
 
         ITreeNode realNode = null;
         Object[] children = getChildren( parentNode );
-        for ( int i = 0; i < children.length; i++ )
+        for ( Object child : children )
         {
-            if ( children[i].equals( fakeNode ) )
+            if ( child.equals( fakeNode ) )
             {
-                realNode = ( ITreeNode ) children[i];
+                realNode = ( ITreeNode ) child;
                 break;
             }
         }
@@ -508,12 +507,11 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
     private ITreeNode findSchemaWrapperInTree( SchemaWrapper schemaWrapper )
     {
         Object[] schemaWrappers = getChildren( ( ITreeNode ) viewer.getInput() );
-        for ( int i = 0; i < schemaWrappers.length; i++ )
+        for ( Object sw : schemaWrappers )
         {
-            SchemaWrapper sw = ( SchemaWrapper ) schemaWrappers[i];
             if ( sw.equals( schemaWrapper ) )
             {
-                return sw;
+                return ( ITreeNode ) sw;
             }
         }
 
@@ -546,9 +544,9 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
         if ( group == PluginConstants.PREFS_SCHEMAS_VIEW_GROUPING_FOLDERS )
         {
             Object[] children = getChildren( realSchemaWrapper );
-            for ( int i = 0; i < children.length; i++ )
+            for ( Object child : children )
             {
-                IntermediateNode intermediateNode = ( IntermediateNode ) children[i];
+                IntermediateNode intermediateNode = ( IntermediateNode ) child;
 
                 if ( element instanceof AttributeType )
                 {
