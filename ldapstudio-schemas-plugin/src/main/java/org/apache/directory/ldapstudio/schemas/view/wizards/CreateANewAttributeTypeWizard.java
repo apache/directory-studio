@@ -24,8 +24,8 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -80,8 +80,8 @@ public class CreateANewAttributeTypeWizard extends Wizard implements INewWizard
         schema.addAttributeType( attributeType );
 
         // Opening the associated editor
-        AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( attributeType );
-        String editorId = AttributeTypeFormEditor.ID;
+        AttributeTypeEditorInput input = new AttributeTypeEditorInput( attributeType );
+        String editorId = AttributeTypeEditor.ID;
         try
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( input, editorId );

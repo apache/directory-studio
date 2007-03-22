@@ -25,8 +25,8 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IEditorPart;
@@ -62,13 +62,13 @@ public class LinkWithEditorHierarchyView extends Action
         {
             IWorkbenchPart part = partRef.getPart( true );
 
-            if ( part instanceof ObjectClassFormEditor )
+            if ( part instanceof ObjectClassEditor )
             {
-                linkViewWithEditor( ( ( ObjectClassFormEditor ) part ).getOriginalObjectClass() );
+                linkViewWithEditor( ( ( ObjectClassEditor ) part ).getOriginalObjectClass() );
             }
-            else if ( part instanceof AttributeTypeFormEditor )
+            else if ( part instanceof AttributeTypeEditor )
             {
-                linkViewWithEditor( ( ( AttributeTypeFormEditor ) part ).getOriginalAttributeType() );
+                linkViewWithEditor( ( ( AttributeTypeEditor ) part ).getOriginalAttributeType() );
             }
         }
 
@@ -177,13 +177,13 @@ public class LinkWithEditorHierarchyView extends Action
 
             IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                 .getActiveEditor();
-            if ( activeEditor instanceof ObjectClassFormEditor )
+            if ( activeEditor instanceof ObjectClassEditor )
             {
-                linkViewWithEditor( ( ( ObjectClassFormEditor ) activeEditor ).getOriginalObjectClass() );
+                linkViewWithEditor( ( ( ObjectClassEditor ) activeEditor ).getOriginalObjectClass() );
             }
-            else if ( activeEditor instanceof AttributeTypeFormEditor )
+            else if ( activeEditor instanceof AttributeTypeEditor )
             {
-                linkViewWithEditor( ( ( AttributeTypeFormEditor ) activeEditor ).getOriginalAttributeType() );
+                linkViewWithEditor( ( ( AttributeTypeEditor ) activeEditor ).getOriginalAttributeType() );
             }
         }
         else

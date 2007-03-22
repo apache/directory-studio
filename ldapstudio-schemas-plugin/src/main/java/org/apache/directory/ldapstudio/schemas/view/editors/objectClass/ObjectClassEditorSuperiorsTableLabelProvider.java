@@ -37,7 +37,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ObjectClassFormEditorSuperiorsTableLabelProvider extends LabelProvider implements ITableLabelProvider
+public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider implements ITableLabelProvider
 {
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)

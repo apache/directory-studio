@@ -37,7 +37,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ObjectClassFormEditorSuperiorsTableContentProvider implements IStructuredContentProvider
+public class ObjectClassEditorSuperiorsTableContentProvider implements IStructuredContentProvider
 {
     /** The Schema Pool */
     private SchemaPool schemaPool;
@@ -46,7 +46,7 @@ public class ObjectClassFormEditorSuperiorsTableContentProvider implements IStru
     /**
      * Creates a new instance of ObjectClassFormEditorSuperiorsTableContentProvider.
      */
-    public ObjectClassFormEditorSuperiorsTableContentProvider()
+    public ObjectClassEditorSuperiorsTableContentProvider()
     {
         schemaPool = SchemaPool.getInstance();
     }

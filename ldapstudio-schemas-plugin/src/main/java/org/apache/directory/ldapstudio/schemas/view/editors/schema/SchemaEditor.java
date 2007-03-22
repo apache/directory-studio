@@ -37,19 +37,19 @@ import org.eclipse.ui.forms.editor.FormEditor;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaFormEditor extends FormEditor
+public class SchemaEditor extends FormEditor
 {
     /** The logger */
-    private static Logger logger = Logger.getLogger( SchemaFormEditor.class );
+    private static Logger logger = Logger.getLogger( SchemaEditor.class );
 
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.schemaformeditor"; //$NON-NLS-1$
 
     /** The Overview Page */
-    private SchemaFormEditorOverviewPage overview;
+    private SchemaEditorOverviewPage overview;
 
     /** The Source Code page */
-    private SchemaFormEditorSourceCodePage sourceCode;
+    private SchemaEditorSourceCodePage sourceCode;
 
     /** The associated schema */
     private Schema schema;
@@ -64,7 +64,7 @@ public class SchemaFormEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        schema = ( ( SchemaFormEditorInput ) getEditorInput() ).getSchema();
+        schema = ( ( SchemaEditorInput ) getEditorInput() ).getSchema();
     }
 
 
@@ -75,9 +75,9 @@ public class SchemaFormEditor extends FormEditor
     {
         try
         {
-            overview = new SchemaFormEditorOverviewPage( this );
+            overview = new SchemaEditorOverviewPage( this );
             addPage( overview );
-            sourceCode = new SchemaFormEditorSourceCodePage( this );
+            sourceCode = new SchemaEditorSourceCodePage( this );
             addPage( sourceCode );
         }
         catch ( PartInitException e )

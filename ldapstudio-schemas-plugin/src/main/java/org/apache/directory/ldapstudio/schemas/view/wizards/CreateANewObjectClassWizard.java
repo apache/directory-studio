@@ -24,8 +24,8 @@ package org.apache.directory.ldapstudio.schemas.view.wizards;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -83,8 +83,8 @@ public class CreateANewObjectClassWizard extends Wizard implements INewWizard
         schema.addObjectClass( objectClass );
 
         // Opening the associated editor
-        ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( objectClass );
-        String editorId = ObjectClassFormEditor.ID;
+        ObjectClassEditorInput input = new ObjectClassEditorInput( objectClass );
+        String editorId = ObjectClassEditor.ID;
         try
         {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( input, editorId );

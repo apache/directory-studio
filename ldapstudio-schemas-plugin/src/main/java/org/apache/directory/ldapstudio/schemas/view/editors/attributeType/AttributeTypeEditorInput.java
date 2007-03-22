@@ -31,7 +31,7 @@ import org.eclipse.ui.IPersistableElement;
 /**
  * This class is the Input class for the Attribute Type Editor
  */
-public class AttributeTypeFormEditorInput implements IEditorInput
+public class AttributeTypeEditorInput implements IEditorInput
 {
     private AttributeType attributeType = null;
 
@@ -42,7 +42,7 @@ public class AttributeTypeFormEditorInput implements IEditorInput
      * @param at
      *            the input attribute type
      */
-    public AttributeTypeFormEditorInput( AttributeType at )
+    public AttributeTypeEditorInput( AttributeType at )
     {
         super();
         this.attributeType = at;
@@ -129,9 +129,9 @@ public class AttributeTypeFormEditorInput implements IEditorInput
     {
         if ( this == obj )
             return true;
-        if ( !( obj instanceof AttributeTypeFormEditorInput ) )
+        if ( !( obj instanceof AttributeTypeEditorInput ) )
             return false;
-        AttributeTypeFormEditorInput other = ( AttributeTypeFormEditorInput ) obj;
+        AttributeTypeEditorInput other = ( AttributeTypeEditorInput ) obj;
         return other.getAttributeType().getOid().equals( this.attributeType.getOid() );
     }
 

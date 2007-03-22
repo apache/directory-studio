@@ -48,10 +48,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaFormEditorSourceCodePage extends FormPage
+public class SchemaEditorSourceCodePage extends FormPage
 {
     /** The page ID */
-    public static final String ID = SchemaFormEditor.ID + "sourceCode";
+    public static final String ID = SchemaEditor.ID + "sourceCode";
 
     /** The page title */
     public static final String TITLE = Messages.getString( "SchemaFormEditor.Source_code" );
@@ -78,7 +78,7 @@ public class SchemaFormEditorSourceCodePage extends FormPage
      * @param editor
      *      the associated editor
      */
-    public SchemaFormEditorSourceCodePage( FormEditor editor )
+    public SchemaEditorSourceCodePage( FormEditor editor )
     {
         super( editor, ID, TITLE );
     }
@@ -89,7 +89,7 @@ public class SchemaFormEditorSourceCodePage extends FormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        schema = ( ( SchemaFormEditor ) getEditor() ).getSchema();
+        schema = ( ( SchemaEditor ) getEditor() ).getSchema();
         schema.addListener( schemaListener );
 
         ScrolledForm form = managedForm.getForm();

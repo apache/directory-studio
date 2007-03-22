@@ -24,8 +24,8 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
@@ -82,11 +82,11 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
         {
             openTypeHierarchyFromTreeViewer( ( ( HierarchyView ) part ).getViewer() );
         }
-        else if ( part instanceof AttributeTypeFormEditor )
+        else if ( part instanceof AttributeTypeEditor )
         {
             openTypeHierarchy( SchemaPool.getInstance().getAttributeType( part.getTitle() ) );
         }
-        else if ( part instanceof ObjectClassFormEditor )
+        else if ( part instanceof ObjectClassEditor )
         {
             openTypeHierarchy( SchemaPool.getInstance().getObjectClass( part.getTitle() ) );
         }

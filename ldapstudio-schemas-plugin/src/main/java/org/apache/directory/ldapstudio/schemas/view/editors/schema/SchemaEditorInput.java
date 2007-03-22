@@ -18,10 +18,10 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
+package org.apache.directory.ldapstudio.schemas.view.editors.schema;
 
 
-import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
@@ -29,23 +29,21 @@ import org.eclipse.ui.IPersistableElement;
 
 
 /**
- * This class is the Input class for the Object Class Editor
+ * This class is the Input class for the Schema Editor
  */
-public class ObjectClassFormEditorInput implements IEditorInput
+public class SchemaEditorInput implements IEditorInput
 {
-    private ObjectClass objectClass = null;
+    private Schema schema;
 
 
     /**
-     * Default constructor.
-     * 
-     * @param obj
-     *      the object class
+     * Default constructor
+     * @param schema
      */
-    public ObjectClassFormEditorInput( ObjectClass obj )
+    public SchemaEditorInput( Schema schema )
     {
         super();
-        this.objectClass = obj;
+        this.schema = schema;
     }
 
 
@@ -54,7 +52,7 @@ public class ObjectClassFormEditorInput implements IEditorInput
      */
     public boolean exists()
     {
-        return ( this.objectClass == null );
+        return ( this.schema == null );
     }
 
 
@@ -63,7 +61,6 @@ public class ObjectClassFormEditorInput implements IEditorInput
      */
     public ImageDescriptor getImageDescriptor()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -73,7 +70,7 @@ public class ObjectClassFormEditorInput implements IEditorInput
      */
     public String getName()
     {
-        return this.objectClass.getNames()[0];
+        return this.schema.getName();
     }
 
 
@@ -91,8 +88,7 @@ public class ObjectClassFormEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return this.objectClass.getNames()[0]
-            + Messages.getString( "ObjectClassFormEditorInput.In_the" ) + this.objectClass.getOriginatingSchema().getName() + Messages.getString( "ObjectClassFormEditorInput.Schema" ); //$NON-NLS-1$ //$NON-NLS-2$
+        return Messages.getString( "SchemaFormEditorInput.Source_code_of" ) + this.schema.getName(); //$NON-NLS-1$
     }
 
 
@@ -112,21 +108,19 @@ public class ObjectClassFormEditorInput implements IEditorInput
     {
         if ( this == obj )
             return true;
-        if ( !( obj instanceof ObjectClassFormEditorInput ) )
+        if ( !( obj instanceof SchemaEditorInput ) )
             return false;
-        ObjectClassFormEditorInput other = ( ObjectClassFormEditorInput ) obj;
-        return other.getObjectClass().getOid().equals( this.objectClass.getOid() );
+        SchemaEditorInput other = ( SchemaEditorInput ) obj;
+        return other.getSchema().getName().equals( this.schema.getName() );
     }
 
 
     /**
-     * Returns the input object class
-     * 
-     * @return
-     *      the input object class
+     * Returns the input schema
+     * @return the input schema
      */
-    public ObjectClass getObjectClass()
+    public Schema getSchema()
     {
-        return this.objectClass;
+        return this.schema;
     }
 }

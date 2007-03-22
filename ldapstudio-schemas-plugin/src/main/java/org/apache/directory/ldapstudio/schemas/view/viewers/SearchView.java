@@ -34,10 +34,10 @@ import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.TableViewer;
@@ -316,13 +316,13 @@ public class SearchView extends ViewPart implements PoolListener
         Object item = table.getSelection()[0].getData();
         if ( item instanceof AttributeType )
         {
-            input = new AttributeTypeFormEditorInput( ( AttributeType ) item );
-            editorId = AttributeTypeFormEditor.ID;
+            input = new AttributeTypeEditorInput( ( AttributeType ) item );
+            editorId = AttributeTypeEditor.ID;
         }
         else if ( item instanceof ObjectClass )
         {
-            input = new ObjectClassFormEditorInput( ( ObjectClass ) item );
-            editorId = ObjectClassFormEditor.ID;
+            input = new ObjectClassEditorInput( ( ObjectClass ) item );
+            editorId = ObjectClassEditor.ID;
         }
 
         // Let's open the editor

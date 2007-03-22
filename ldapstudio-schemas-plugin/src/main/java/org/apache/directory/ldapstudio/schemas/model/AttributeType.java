@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.schemas.model;
 import java.util.ArrayList;
 
 import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.log4j.Logger;
@@ -45,7 +45,7 @@ public class AttributeType implements SchemaElement, Cloneable
     private AttributeTypeLiteral literal;
     private Schema originatingSchema;
     private ArrayList<SchemaElementListener> listeners;
-    private AttributeTypeFormEditor editor;
+    private AttributeTypeEditor editor;
 
 
     /**
@@ -83,7 +83,7 @@ public class AttributeType implements SchemaElement, Cloneable
      * Returns the editor associated to this attributeType
      * @return the editor
      */
-    public AttributeTypeFormEditor getEditor()
+    public AttributeTypeEditor getEditor()
     {
         return editor;
     }
@@ -93,7 +93,7 @@ public class AttributeType implements SchemaElement, Cloneable
      * Sets the editor associated to this attributeType
      * @param editor the associated editor
      */
-    public void setEditor( AttributeTypeFormEditor editor )
+    public void setEditor( AttributeTypeEditor editor )
     {
         this.editor = editor;
     }
@@ -103,7 +103,7 @@ public class AttributeType implements SchemaElement, Cloneable
      * Call this method to remove the attributeType<->Editor association
      * @param editor the associated editor
      */
-    public void removeEditor( AttributeTypeFormEditor editor )
+    public void removeEditor( AttributeTypeEditor editor )
     {
         if ( this.editor == editor )
             this.editor = null;

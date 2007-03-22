@@ -32,10 +32,10 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditor
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewSortDialogAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenTypeHierarchyAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewPreferencesAction;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
@@ -190,15 +190,15 @@ public class SchemaElementsController
                 // Selecting the right editor and input
                 if ( objectSelection instanceof AttributeTypeWrapper )
                 {
-                    input = new AttributeTypeFormEditorInput( ( ( AttributeTypeWrapper ) objectSelection )
+                    input = new AttributeTypeEditorInput( ( ( AttributeTypeWrapper ) objectSelection )
                         .getMyAttributeType() );
-                    editorId = AttributeTypeFormEditor.ID;
+                    editorId = AttributeTypeEditor.ID;
                 }
                 else if ( objectSelection instanceof ObjectClassWrapper )
                 {
-                    input = new ObjectClassFormEditorInput( ( ( ObjectClassWrapper ) objectSelection )
+                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection )
                         .getMyObjectClass() );
-                    editorId = ObjectClassFormEditor.ID;
+                    editorId = ObjectClassEditor.ID;
                 }
                 else if ( objectSelection instanceof IntermediateNode )
                 {

@@ -39,22 +39,22 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * This class is the Attribute Type Editor main class
  */
-public class AttributeTypeFormEditor extends FormEditor
+public class AttributeTypeEditor extends FormEditor
 {
     /** The logger */
-    private static Logger logger = Logger.getLogger( AttributeTypeFormEditor.class );
+    private static Logger logger = Logger.getLogger( AttributeTypeEditor.class );
 
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.attributeTypeEditor"; //$NON-NLS-1$
 
     /** The Overview page */
-    private AttributeTypeFormEditorOverviewPage overview;
+    private AttributeTypeEditorOverviewPage overview;
 
     /** The Source Code page */
-    private AttributeTypeFormEditorSourceCodePage sourceCode;
+    private AttributeTypeEditorSourceCodePage sourceCode;
 
     /** The Used By page */
-    private AttributeTypeFormEditorUsedByPage usedBy;
+    private AttributeTypeEditorUsedByPage usedBy;
 
     /** The dirty state flag */
     private boolean dirty = false;
@@ -72,7 +72,7 @@ public class AttributeTypeFormEditor extends FormEditor
         {
             Object selectedPage = event.getSelectedPage();
 
-            if ( selectedPage instanceof AttributeTypeFormEditorOverviewPage )
+            if ( selectedPage instanceof AttributeTypeEditorOverviewPage )
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
@@ -82,7 +82,7 @@ public class AttributeTypeFormEditor extends FormEditor
 
                 overview.refreshUI();
             }
-            else if ( selectedPage instanceof AttributeTypeFormEditorSourceCodePage )
+            else if ( selectedPage instanceof AttributeTypeEditorSourceCodePage )
             {
                 if ( sourceCode.canLeaveThePage() )
                 {
@@ -96,7 +96,7 @@ public class AttributeTypeFormEditor extends FormEditor
     /**
      * Default constructor
      */
-    public AttributeTypeFormEditor()
+    public AttributeTypeEditor()
     {
         super();
     }
@@ -115,7 +115,7 @@ public class AttributeTypeFormEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalAttributeType = ( ( AttributeTypeFormEditorInput ) getEditorInput() ).getAttributeType();
+        originalAttributeType = ( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
         originalAttributeType.setEditor( this );
 
         try
@@ -153,11 +153,11 @@ public class AttributeTypeFormEditor extends FormEditor
     {
         try
         {
-            overview = new AttributeTypeFormEditorOverviewPage( this );
+            overview = new AttributeTypeEditorOverviewPage( this );
             addPage( overview );
-            sourceCode = new AttributeTypeFormEditorSourceCodePage( this );
+            sourceCode = new AttributeTypeEditorSourceCodePage( this );
             addPage( sourceCode );
-            usedBy = new AttributeTypeFormEditorUsedByPage( this );
+            usedBy = new AttributeTypeEditorUsedByPage( this );
             addPage( usedBy );
         }
         catch ( PartInitException e )

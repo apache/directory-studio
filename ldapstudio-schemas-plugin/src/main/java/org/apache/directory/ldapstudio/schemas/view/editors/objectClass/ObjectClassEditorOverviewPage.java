@@ -35,10 +35,10 @@ import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeSelecti
 import org.apache.directory.ldapstudio.schemas.view.editors.ManageAliasesDialog;
 import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassSelectionDialog;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
@@ -84,10 +84,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class is the Overview Page of the Object Class Editor
  */
-public class ObjectClassFormEditorOverviewPage extends FormPage
+public class ObjectClassEditorOverviewPage extends FormPage
 {
     /** The page ID */
-    public static final String ID = ObjectClassFormEditor.ID + "overviewPage";
+    public static final String ID = ObjectClassEditor.ID + "overviewPage";
 
     /** The page title*/
     public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Overview" );
@@ -197,15 +197,15 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            SchemaFormEditorInput input = new SchemaFormEditorInput( modifiedObjectClass.getOriginatingSchema() );
-            String editorId = SchemaFormEditor.ID;
+            SchemaEditorInput input = new SchemaEditorInput( modifiedObjectClass.getOriginatingSchema() );
+            String editorId = SchemaEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( AttributeTypeFormEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( AttributeTypeEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
     };
@@ -261,16 +261,16 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool
+            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool
                 .getAttributeType( mandatoryAttributesTable.getSelection()[0].getText() ) );
-            String editorId = AttributeTypeFormEditor.ID;
+            String editorId = AttributeTypeEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
 
@@ -366,16 +366,16 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( pool
+            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool
                 .getAttributeType( optionalAttributesTable.getSelection()[0].getText() ) );
-            String editorId = AttributeTypeFormEditor.ID;
+            String editorId = AttributeTypeEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
 
@@ -478,16 +478,16 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( pool.getObjectClass( ocw
+            ObjectClassEditorInput input = new ObjectClassEditorInput( pool.getObjectClass( ocw
                 .getMyObjectClass().getNames()[0] ) );
-            String editorId = ObjectClassFormEditor.ID;
+            String editorId = ObjectClassEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
 
@@ -587,7 +587,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      * @param editor
      *      the associated editor
      */
-    public ObjectClassFormEditorOverviewPage( FormEditor editor )
+    public ObjectClassEditorOverviewPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
     }
@@ -599,8 +599,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         // Getting the original and modified object classes
-        modifiedObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getModifiedObjectClass();
-        originalObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getOriginalObjectClass();
+        modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
+        originalObjectClass = ( ( ObjectClassEditor ) getEditor() ).getOriginalObjectClass();
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -692,8 +692,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         gridData.minimumHeight = 45;
         superiorsTable.setLayoutData( gridData );
         superiorsTableViewer = new TableViewer( superiorsTable );
-        superiorsTableViewer.setContentProvider( new ObjectClassFormEditorSuperiorsTableContentProvider() );
-        superiorsTableViewer.setLabelProvider( new ObjectClassFormEditorSuperiorsTableLabelProvider() );
+        superiorsTableViewer.setContentProvider( new ObjectClassEditorSuperiorsTableContentProvider() );
+        superiorsTableViewer.setLabelProvider( new ObjectClassEditorSuperiorsTableLabelProvider() );
         Composite superiorsButtonComposite = toolkit.createComposite( client_general_information );
         superiorsButtonComposite.setLayout( new GridLayout() );
         addButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, Messages
@@ -1071,7 +1071,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
      */
     private void setEditorDirty()
     {
-        ( ( ObjectClassFormEditor ) getEditor() ).setDirty( true );
+        ( ( ObjectClassEditor ) getEditor() ).setDirty( true );
     }
 
 

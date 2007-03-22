@@ -23,9 +23,9 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditorSourceCodePage;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorSourceCodePage;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.SchemaWrapper;
 import org.apache.log4j.Logger;
@@ -76,9 +76,9 @@ public class OpenSchemaSourceCode extends Action
             try
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                FormEditor editor = ( FormEditor ) page.openEditor( new SchemaFormEditorInput( schemaWrapper
-                    .getMySchema() ), SchemaFormEditor.ID );
-                editor.setActivePage( SchemaFormEditorSourceCodePage.ID );
+                FormEditor editor = ( FormEditor ) page.openEditor( new SchemaEditorInput( schemaWrapper
+                    .getMySchema() ), SchemaEditor.ID );
+                editor.setActivePage( SchemaEditorSourceCodePage.ID );
             }
             catch ( PartInitException e )
             {

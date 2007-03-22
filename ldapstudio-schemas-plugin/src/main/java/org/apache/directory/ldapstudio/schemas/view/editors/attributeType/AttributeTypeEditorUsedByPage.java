@@ -30,8 +30,8 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -56,10 +56,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class is the Used By Page of the Attribute Type Editor
  */
-public class AttributeTypeFormEditorUsedByPage extends FormPage
+public class AttributeTypeEditorUsedByPage extends FormPage
 {
     /** The page ID */
-    public static final String ID = AttributeTypeFormEditor.ID + "usedByPage";
+    public static final String ID = AttributeTypeEditor.ID + "usedByPage";
 
     /** The page title */
     public static String TITLE = "Used By";
@@ -82,16 +82,16 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( schemaPool
+            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool
                 .getObjectClass( mandatoryAttributeTable.getSelection()[0].getText() ) );
-            String editorId = ObjectClassFormEditor.ID;
+            String editorId = ObjectClassEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( AttributeTypeFormEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
     };
@@ -103,16 +103,16 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( schemaPool
+            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool
                 .getObjectClass( optionalAttibuteTable.getSelection()[0].getText() ) );
-            String editorId = ObjectClassFormEditor.ID;
+            String editorId = ObjectClassEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( AttributeTypeFormEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
     };
@@ -124,7 +124,7 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
      * @param editor
      *      the associated editor
      */
-    public AttributeTypeFormEditorUsedByPage( FormEditor editor )
+    public AttributeTypeEditorUsedByPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
         schemaPool = SchemaPool.getInstance();
@@ -137,7 +137,7 @@ public class AttributeTypeFormEditorUsedByPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         // Getting the modified attribute type and listening to its modifications
-        modifiedAttributeType = ( ( AttributeTypeFormEditor ) getEditor() ).getModifiedAttributeType();
+        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();

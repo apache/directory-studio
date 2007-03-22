@@ -29,10 +29,10 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -60,10 +60,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaFormEditorOverviewPage extends FormPage
+public class SchemaEditorOverviewPage extends FormPage
 {
     /** The page ID */
-    public static final String ID = SchemaFormEditor.ID + "overviewPage";
+    public static final String ID = SchemaEditor.ID + "overviewPage";
 
     /** The page title */
     public static final String TITLE = "Overview";
@@ -94,16 +94,16 @@ public class SchemaFormEditorOverviewPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            AttributeTypeFormEditorInput input = new AttributeTypeFormEditorInput( schemaPool
+            AttributeTypeEditorInput input = new AttributeTypeEditorInput( schemaPool
                 .getAttributeType( attributeTypesTable.getSelection()[0].getText() ) );
-            String editorId = AttributeTypeFormEditor.ID;
+            String editorId = AttributeTypeEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( SchemaFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( SchemaEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
     };
@@ -114,16 +114,16 @@ public class SchemaFormEditorOverviewPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( schemaPool
+            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool
                 .getObjectClass( objectClassesTable.getSelection()[0].getText() ) );
-            String editorId = ObjectClassFormEditor.ID;
+            String editorId = ObjectClassEditor.ID;
             try
             {
                 page.openEditor( input, editorId );
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( SchemaFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                Logger.getLogger( SchemaEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
             }
         }
     };
@@ -135,7 +135,7 @@ public class SchemaFormEditorOverviewPage extends FormPage
      * @param editor
      *      the associated editor
      */
-    public SchemaFormEditorOverviewPage( FormEditor editor )
+    public SchemaEditorOverviewPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
         schemaPool = SchemaPool.getInstance();
@@ -148,7 +148,7 @@ public class SchemaFormEditorOverviewPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         // Getting the associated schema
-        schema = ( ( SchemaFormEditor ) getEditor() ).getSchema();
+        schema = ( ( SchemaEditor ) getEditor() ).getSchema();
         schema.addListener( schemaListener );
 
         // Creating the base UI

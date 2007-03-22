@@ -25,9 +25,9 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
-import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ITreeNode;
@@ -73,22 +73,22 @@ public class LinkWithEditorSchemasView extends Action
         {
             IWorkbenchPart part = partRef.getPart( true );
 
-            if ( part instanceof ObjectClassFormEditor )
+            if ( part instanceof ObjectClassEditor )
             {
                 schemasView.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( ( ( ObjectClassFormEditor ) part ).getOriginalObjectClass() );
+                linkViewWithEditor( ( ( ObjectClassEditor ) part ).getOriginalObjectClass() );
                 schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
-            else if ( part instanceof AttributeTypeFormEditor )
+            else if ( part instanceof AttributeTypeEditor )
             {
                 schemasView.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( ( ( AttributeTypeFormEditor ) part ).getOriginalAttributeType() );
+                linkViewWithEditor( ( ( AttributeTypeEditor ) part ).getOriginalAttributeType() );
                 schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
-            else if ( part instanceof SchemaFormEditor )
+            else if ( part instanceof SchemaEditor )
             {
                 schemasView.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( ( ( SchemaFormEditor ) part ).getSchema() );
+                linkViewWithEditor( ( ( SchemaEditor ) part ).getSchema() );
                 schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
         }
@@ -219,22 +219,22 @@ public class LinkWithEditorSchemasView extends Action
 
             IEditorPart activeEditor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                 .getActiveEditor();
-            if ( activeEditor instanceof ObjectClassFormEditor )
+            if ( activeEditor instanceof ObjectClassEditor )
             {
                 schemasView.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( ( ( ObjectClassFormEditor ) activeEditor ).getOriginalObjectClass() );
+                linkViewWithEditor( ( ( ObjectClassEditor ) activeEditor ).getOriginalObjectClass() );
                 schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
-            else if ( activeEditor instanceof AttributeTypeFormEditor )
+            else if ( activeEditor instanceof AttributeTypeEditor )
             {
                 schemasView.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( ( ( AttributeTypeFormEditor ) activeEditor ).getOriginalAttributeType() );
+                linkViewWithEditor( ( ( AttributeTypeEditor ) activeEditor ).getOriginalAttributeType() );
                 schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
-            else if ( activeEditor instanceof SchemaFormEditor )
+            else if ( activeEditor instanceof SchemaEditor )
             {
                 schemasView.getSite().getPage().removePostSelectionListener( viewListener );
-                linkViewWithEditor( ( ( SchemaFormEditor ) activeEditor ).getSchema() );
+                linkViewWithEditor( ( ( SchemaEditor ) activeEditor ).getSchema() );
                 schemasView.getSite().getPage().addPostSelectionListener( viewListener );
             }
 
@@ -352,11 +352,11 @@ public class LinkWithEditorSchemasView extends Action
         {
             IWorkbenchPart workbenchPart = reference.getPart( true );
 
-            if ( ( ( workbenchPart instanceof ObjectClassFormEditor ) && ( wrapper instanceof ObjectClassWrapper ) && ( reference
+            if ( ( ( workbenchPart instanceof ObjectClassEditor ) && ( wrapper instanceof ObjectClassWrapper ) && ( reference
                 .getPartName().equals( ( ( ObjectClassWrapper ) wrapper ).getMyObjectClass().getNames()[0] ) ) )
-                || ( ( workbenchPart instanceof AttributeTypeFormEditor ) && ( wrapper instanceof AttributeTypeWrapper ) && ( reference
+                || ( ( workbenchPart instanceof AttributeTypeEditor ) && ( wrapper instanceof AttributeTypeWrapper ) && ( reference
                     .getPartName().equals( ( ( AttributeTypeWrapper ) wrapper ).getMyAttributeType().getNames()[0] ) ) )
-                || ( ( workbenchPart instanceof SchemaFormEditor ) && ( wrapper instanceof SchemaWrapper ) && ( reference
+                || ( ( workbenchPart instanceof SchemaEditor ) && ( wrapper instanceof SchemaWrapper ) && ( reference
                     .getPartName().equals( ( ( SchemaWrapper ) wrapper ).getMySchema().getName() ) ) ) )
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( workbenchPart );

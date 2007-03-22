@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.schemas.model;
 
 import java.util.ArrayList;
 
-import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
@@ -41,7 +41,7 @@ public class ObjectClass implements SchemaElement, Cloneable
     private ObjectClassLiteral literal;
     private Schema originatingSchema;
     private ArrayList<SchemaElementListener> listeners;
-    private ObjectClassFormEditor editor;
+    private ObjectClassEditor editor;
 
 
     /**
@@ -79,7 +79,7 @@ public class ObjectClass implements SchemaElement, Cloneable
      * Returns the editor associated to this objectClass
      * @return the editor
      */
-    public ObjectClassFormEditor getEditor()
+    public ObjectClassEditor getEditor()
     {
         return editor;
     }
@@ -89,7 +89,7 @@ public class ObjectClass implements SchemaElement, Cloneable
      * Sets the editor associated to this objectClass
      * @param editor the associated editor
      */
-    public void setEditor( ObjectClassFormEditor editor )
+    public void setEditor( ObjectClassEditor editor )
     {
         this.editor = editor;
     }
@@ -99,7 +99,7 @@ public class ObjectClass implements SchemaElement, Cloneable
      * Call this method to remove the objectClass<->Editor association
      * @param editor the associated editor
      */
-    public void removeEditor( ObjectClassFormEditor editor )
+    public void removeEditor( ObjectClassEditor editor )
     {
         if ( this.editor == editor )
             this.editor = null;

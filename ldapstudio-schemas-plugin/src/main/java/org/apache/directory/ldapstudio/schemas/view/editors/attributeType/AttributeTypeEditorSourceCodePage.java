@@ -18,18 +18,18 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
+package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
 import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
-import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
+import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -48,18 +48,18 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
- * This class is the Source Code Page of the Object Class Editor
+ * This class is the Source Code Page of the Attribute Type Editor
  */
-public class ObjectClassFormEditorSourceCodePage extends FormPage
+public class AttributeTypeEditorSourceCodePage extends FormPage
 {
-    /** The page ID */
-    public static final String ID = ObjectClassFormEditor.ID + "sourceCodePage";
+    /** The page ID*/
+    public static final String ID = AttributeTypeEditor.ID + "sourceCodePage";
 
-    /** The page title*/
-    public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Source_Code" );
+    /** The page title */
+    public static String TITLE = Messages.getString( "AttributeTypeFormEditor.Source_Code" );
 
-    /** The modified object class */
-    private ObjectClass modifiedObjectClass;
+    /** The modified attribute type */
+    private AttributeType modifiedAttributeType;
 
     /** The Schema Source Viewer */
     private SchemaSourceViewer schemaSourceViewer;
@@ -67,7 +67,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
     /** The flag to indicate if the user can leave the Source Code page */
     private boolean canLeaveThePage = true;
 
-    /** The listener of the Schema Source Viewer Widget */
+    /** The listener of the Schema Source Editor Widget */
     private ModifyListener schemaSourceViewerListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -75,18 +75,17 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
             canLeaveThePage = true;
             try
             {
-                ( ( ObjectClassFormEditor ) getEditor() ).setDirty( true );
+                ( ( AttributeTypeEditor ) getEditor() ).setDirty( true );
                 OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                 parser.parse( schemaSourceViewer.getTextWidget().getText() );
-
-                List objectclasses = parser.getObjectClassTypes();
-                if ( objectclasses.size() != 1 )
+                List attributeTypes = parser.getAttributeTypes();
+                if ( attributeTypes.size() != 1 )
                 {
-                    // TODO Throw an exception and return
+                    // Throw an exception and return
                 }
                 else
                 {
-                    updateObjectClass( ( ObjectClassLiteral ) objectclasses.get( 0 ) );
+                    updateAttributeType( ( AttributeTypeLiteral ) attributeTypes.get( 0 ) );
                 }
             }
             catch ( IOException e1 )
@@ -95,8 +94,8 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
             }
             catch ( ParseException exception )
             {
-                exception.printStackTrace();
                 canLeaveThePage = false;
+                System.err.println( exception.getMessage() );
             }
         }
     };
@@ -104,10 +103,11 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
 
     /**
      * Default constructor
+     * 
      * @param editor
      *      the associated editor
      */
-    public ObjectClassFormEditorSourceCodePage( FormEditor editor )
+    public AttributeTypeEditorSourceCodePage( FormEditor editor )
     {
         super( editor, ID, TITLE );
     }
@@ -126,7 +126,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
         form.getBody().setLayout( layout );
         toolkit.paintBordersFor( form.getBody() );
 
-        modifiedObjectClass = ( ( ObjectClassFormEditor ) getEditor() ).getModifiedObjectClass();
+        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
 
         // SOURCE CODE Field
         schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
@@ -134,7 +134,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
         gd.heightHint = 10;
         schemaSourceViewer.getTextWidget().setLayoutData( gd );
-        if ( modifiedObjectClass.getOriginatingSchema().type == SchemaType.coreSchema )
+        if ( modifiedAttributeType.getOriginatingSchema().type == SchemaType.coreSchema )
         {
             schemaSourceViewer.setEditable( false );
         }
@@ -146,7 +146,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
         IDocument document = new Document();
         schemaSourceViewer.setDocument( document );
 
-        // Initialization from the "input" object class
+        // Initialization from the "input" attribute type
         fillInUiFields();
 
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
@@ -159,7 +159,7 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
     private void fillInUiFields()
     {
         // SOURCE CODE Field
-        schemaSourceViewer.getDocument().set( modifiedObjectClass.write() );
+        schemaSourceViewer.getDocument().set( modifiedAttributeType.write() );
     }
 
 
@@ -173,21 +173,26 @@ public class ObjectClassFormEditorSourceCodePage extends FormPage
 
 
     /**
-     * Updates the Modified Object Class from the given Object Class Literal.
+     * Updates the Modified Attribute Type from the given Attribute Type Literal.
      *
-     * @param ocl
-     *      the Object Class Literal
+     * @param atl
+     *      the Attribute Type Literal
      */
-    private void updateObjectClass( ObjectClassLiteral ocl )
+    private void updateAttributeType( AttributeTypeLiteral atl )
     {
-        modifiedObjectClass.setClassType( ocl.getClassType() );
-        modifiedObjectClass.setDescription( ocl.getDescription() );
-        modifiedObjectClass.setMay( ocl.getMay() );
-        modifiedObjectClass.setMust( ocl.getMust() );
-        modifiedObjectClass.setNames( ocl.getNames() );
-        modifiedObjectClass.setObsolete( ocl.isObsolete() );
-        modifiedObjectClass.setOid( ocl.getOid() );
-        modifiedObjectClass.setSuperiors( ocl.getSuperiors() );
+        modifiedAttributeType.setCollective( atl.isCollective() );
+        modifiedAttributeType.setDescription( atl.getDescription() );
+        modifiedAttributeType.setEquality( atl.getEquality() );
+        modifiedAttributeType.setNames( atl.getNames() );
+        modifiedAttributeType.setNoUserModification( atl.isNoUserModification() );
+        modifiedAttributeType.setObsolete( atl.isObsolete() );
+        modifiedAttributeType.setOid( atl.getOid() );
+        modifiedAttributeType.setOrdering( atl.getOrdering() );
+        modifiedAttributeType.setSingleValue( atl.isSingleValue() );
+        modifiedAttributeType.setSubstr( atl.getSubstr() );
+        modifiedAttributeType.setSuperior( atl.getSuperior() );
+        modifiedAttributeType.setSyntax( atl.getSyntax() );
+        modifiedAttributeType.setUsage( atl.getUsage() );
     }
 
 

@@ -39,19 +39,19 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * This class is the ObjectClass Editor main class
  */
-public class ObjectClassFormEditor extends FormEditor
+public class ObjectClassEditor extends FormEditor
 {
     /** The logger */
-    private static Logger logger = Logger.getLogger( ObjectClassFormEditor.class );
+    private static Logger logger = Logger.getLogger( ObjectClassEditor.class );
 
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.objectClassEditor"; //$NON-NLS-1$
 
     /** The Overview page */
-    private ObjectClassFormEditorOverviewPage overview;
+    private ObjectClassEditorOverviewPage overview;
 
     /** The Source Code page */
-    private ObjectClassFormEditorSourceCodePage sourceCode;
+    private ObjectClassEditorSourceCodePage sourceCode;
 
     /** The dirty state flag */
     private boolean dirty = false;
@@ -69,7 +69,7 @@ public class ObjectClassFormEditor extends FormEditor
         {
             Object selectedPage = event.getSelectedPage();
 
-            if ( selectedPage instanceof ObjectClassFormEditorOverviewPage )
+            if ( selectedPage instanceof ObjectClassEditorOverviewPage )
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
@@ -79,7 +79,7 @@ public class ObjectClassFormEditor extends FormEditor
 
                 overview.refreshUI();
             }
-            else if ( selectedPage instanceof ObjectClassFormEditorSourceCodePage )
+            else if ( selectedPage instanceof ObjectClassEditorSourceCodePage )
             {
                 if ( sourceCode.canLeaveThePage() )
                 {
@@ -93,7 +93,7 @@ public class ObjectClassFormEditor extends FormEditor
     /**
      * Default constructor
      */
-    public ObjectClassFormEditor()
+    public ObjectClassEditor()
     {
         super();
     }
@@ -109,7 +109,7 @@ public class ObjectClassFormEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalObjectClass = ( ( ObjectClassFormEditorInput ) getEditorInput() ).getObjectClass();
+        originalObjectClass = ( ( ObjectClassEditorInput ) getEditorInput() ).getObjectClass();
         originalObjectClass.setEditor( this );
 
         try
@@ -143,9 +143,9 @@ public class ObjectClassFormEditor extends FormEditor
     {
         try
         {
-            overview = new ObjectClassFormEditorOverviewPage( this ); //$NON-NLS-1$ //$NON-NLS-2$
+            overview = new ObjectClassEditorOverviewPage( this ); //$NON-NLS-1$ //$NON-NLS-2$
             addPage( overview );
-            sourceCode = new ObjectClassFormEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
+            sourceCode = new ObjectClassEditorSourceCodePage( this ); //$NON-NLS-1$ //$NON-NLS-2$
             addPage( sourceCode );
         }
         catch ( PartInitException e )
