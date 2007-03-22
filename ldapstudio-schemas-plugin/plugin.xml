@@ -35,28 +35,28 @@
       <view
             allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView"
+            class="org.apache.directory.ldapstudio.schemas.view.views.SchemaElementsView"
             icon="ressources/icons/schema_elements_view.png"
             id="org.apache.directory.ldapstudio.schemas.view.SchemaElementsView"
             name="%ldapstudio-schemas-plugin.views.schemaElements.name"/>
       <view
             allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView"
+            class="org.apache.directory.ldapstudio.schemas.view.views.SchemasView"
             icon="ressources/icons/schemas_view.png"
             id="org.apache.directory.ldapstudio.schemas.view.SchemasView"
             name="%ldapstudio-schemas-plugin.views.schemas.name"/>
       <view
             allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.SearchView"
+            class="org.apache.directory.ldapstudio.schemas.view.views.SearchView"
             icon="ressources/icons/search.gif"
             id="org.apache.directory.ldapstudio.schemas.view.SearchView"
             name="%ldapstudio-schemas-plugin.views.search.name"/>
       <view
             allowMultiple="false"
             category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView"
+            class="org.apache.directory.ldapstudio.schemas.view.views.HierarchyView"
             icon="ressources/icons/hierarchy_view.png"
             id="org.apache.directory.ldapstudio.schemas.view.HierarchyView"
             name="Hierarchy"/>
@@ -223,8 +223,8 @@
             state="true">
             <enablement>
           		<or>
-            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper"/>
-            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper"/>
+            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper"/>
+            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper"/>
             		<objectClass name="org.apache.directory.ldapstudio.schemas.model.AttributeType"/>
             		<objectClass name="org.apache.directory.ldapstudio.schemas.model.ObjectClass"/>
           		

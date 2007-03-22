@@ -27,7 +27,7 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaListener;
 import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
+import org.apache.directory.ldapstudio.schemas.view.views.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;

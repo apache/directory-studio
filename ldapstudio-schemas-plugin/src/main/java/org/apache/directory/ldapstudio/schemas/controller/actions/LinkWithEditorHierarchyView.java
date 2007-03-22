@@ -27,7 +27,7 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
+import org.apache.directory.ldapstudio.schemas.view.views.HierarchyView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;

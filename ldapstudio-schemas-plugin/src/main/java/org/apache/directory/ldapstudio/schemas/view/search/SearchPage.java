@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.search;
 
 
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SearchView;
+import org.apache.directory.ldapstudio.schemas.view.views.SearchView;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.search.ui.ISearchPage;
 import org.eclipse.search.ui.ISearchPageContainer;

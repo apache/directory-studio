@@ -36,10 +36,10 @@ import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.Attrib
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.views.SchemaElementsView;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.IntermediateNode;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;

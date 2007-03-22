@@ -39,7 +39,7 @@ import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.Attrib
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;

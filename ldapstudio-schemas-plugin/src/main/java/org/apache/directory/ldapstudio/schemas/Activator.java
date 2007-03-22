@@ -23,8 +23,8 @@ package org.apache.directory.ldapstudio.schemas;
 
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaCodeScanner;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaTextAttributeProvider;
+import org.apache.directory.ldapstudio.schemas.view.views.SchemaCodeScanner;
+import org.apache.directory.ldapstudio.schemas.view.views.SchemaTextAttributeProvider;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.text.rules.ITokenScanner;

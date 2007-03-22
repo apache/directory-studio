@@ -22,10 +22,10 @@ package org.apache.directory.ldapstudio.schemas.view.perspectives;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SchemasView;
-import org.apache.directory.ldapstudio.schemas.view.viewers.SearchView;
+import org.apache.directory.ldapstudio.schemas.view.views.HierarchyView;
+import org.apache.directory.ldapstudio.schemas.view.views.SchemaElementsView;
+import org.apache.directory.ldapstudio.schemas.view.views.SchemasView;
+import org.apache.directory.ldapstudio.schemas.view.views.SearchView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;

@@ -37,9 +37,9 @@ import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.Attrib
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
+import org.apache.directory.ldapstudio.schemas.view.views.HierarchyView;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
