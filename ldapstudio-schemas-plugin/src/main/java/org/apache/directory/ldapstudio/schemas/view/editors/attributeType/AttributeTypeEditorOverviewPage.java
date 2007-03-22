@@ -35,7 +35,7 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Syntax;
 import org.apache.directory.ldapstudio.schemas.model.Syntaxes;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
-import org.apache.directory.ldapstudio.schemas.view.editors.ManageAliasesDialog;
+import org.apache.directory.ldapstudio.schemas.view.dialogs.ManageAliasesDialog;
 import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;

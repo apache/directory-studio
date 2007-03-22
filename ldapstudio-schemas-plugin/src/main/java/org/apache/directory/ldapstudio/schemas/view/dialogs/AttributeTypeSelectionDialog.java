@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.dialogs;
 
 
 import org.eclipse.jface.dialogs.Dialog;

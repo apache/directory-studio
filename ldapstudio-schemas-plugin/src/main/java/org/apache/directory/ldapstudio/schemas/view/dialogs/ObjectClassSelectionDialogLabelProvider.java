@@ -18,52 +18,56 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.dialogs;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
+import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
-public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider implements ITableLabelProvider
+/**
+ * This class is the Label Provider for the Object Class Selection Dialog.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class ObjectClassSelectionDialogLabelProvider extends LabelProvider implements ITableLabelProvider
 {
-
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
+     */
     public Image getColumnImage( Object element, int columnIndex )
     {
-        if ( columnIndex == 0 )
+        if ( element instanceof ObjectClassWrapper )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
                 .createImage();
         }
+        // Default
         return null;
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
+     */
     public String getColumnText( Object element, int columnIndex )
     {
-        String result = ""; //$NON-NLS-1$
-        if ( element instanceof SchemaElement )
+        if ( element instanceof ObjectClassWrapper )
         {
-            SchemaElement schemaElement = ( SchemaElement ) element;
-            switch ( columnIndex )
-            {
-                case 0: // COMPLETED_COLUMN
-                    break;
-                case 1:
-                    result = schemaElement.getNames()[0];
-                    break;
-                case 2:
-                    result = schemaElement.getOriginatingSchema().getName();
-                    break;
-                default:
-                    break;
-            }
+            ObjectClass oc = ( ( ObjectClassWrapper ) element ).getMyObjectClass();
+
+            return ViewUtils.concateAliases( oc.getNames() ) + "   [" + oc.getOid() + "]";
         }
-        return result;
+
+        // Default
+        return null;
     }
 }
