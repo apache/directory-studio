@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.schemas.model;
 import java.util.ArrayList;
 
 import org.apache.directory.ldapstudio.schemas.controller.SchemasViewController;
-import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.log4j.Logger;

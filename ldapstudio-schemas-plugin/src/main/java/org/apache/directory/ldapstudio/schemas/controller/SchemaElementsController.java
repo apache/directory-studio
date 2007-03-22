@@ -32,10 +32,10 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditor
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewSortDialogAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenTypeHierarchyAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaElementsViewPreferencesAction;
-import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaElementsView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.IntermediateNode;

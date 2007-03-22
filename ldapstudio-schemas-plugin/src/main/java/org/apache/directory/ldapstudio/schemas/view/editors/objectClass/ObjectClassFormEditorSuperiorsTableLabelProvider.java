@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;

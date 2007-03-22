@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import java.io.IOException;
@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
+import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.apache.directory.ldapstudio.schemas.view.viewers.SchemaSourceViewer;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;

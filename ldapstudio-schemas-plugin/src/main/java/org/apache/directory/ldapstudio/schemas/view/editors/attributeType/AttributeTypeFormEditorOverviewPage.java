@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
 import java.util.ArrayList;
@@ -35,6 +35,10 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Syntax;
 import org.apache.directory.ldapstudio.schemas.model.Syntaxes;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
+import org.apache.directory.ldapstudio.schemas.view.editors.ManageAliasesDialog;
+import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditorInput;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.log4j.Logger;

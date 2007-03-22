@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import java.util.ArrayList;

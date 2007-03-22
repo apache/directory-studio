@@ -138,19 +138,19 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor"
+            class="org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor"
             default="false"
             icon="ressources/icons/object_class.gif"
             id="org.apache.directory.ldapstudio.schemas.view.objectClassEditor"
             name="%ldapstudio-schemas-plugin.editors.objectclassformeditor.name"/>
       <editor
-            class="org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor"
+            class="org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor"
             default="false"
             icon="ressources/icons/attribute_type.gif"
             id="org.apache.directory.ldapstudio.schemas.view.attributeTypeEditor"
             name="%ldapstudio-schemas-plugin.editors.attributetypeformeditor.name"/>
       <editor
-            class="org.apache.directory.ldapstudio.schemas.view.editors.SchemaFormEditor"
+            class="org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditor"
             default="false"
             icon="ressources/icons/schema.gif"
             id="org.apache.directory.ldapstudio.schemas.view.schemaformeditor"

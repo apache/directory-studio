@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import java.util.ArrayList;
@@ -31,6 +31,14 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
+import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeSelectionDialog;
+import org.apache.directory.ldapstudio.schemas.view.editors.ManageAliasesDialog;
+import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
+import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassSelectionDialog;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;

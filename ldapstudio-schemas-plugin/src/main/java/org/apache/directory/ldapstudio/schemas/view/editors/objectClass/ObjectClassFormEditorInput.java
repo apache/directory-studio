@@ -18,50 +18,47 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
-import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
 
 /**
- * This class is the Input class for the Attribute Type Editor
+ * This class is the Input class for the Object Class Editor
  */
-public class AttributeTypeFormEditorInput implements IEditorInput
+public class ObjectClassFormEditorInput implements IEditorInput
 {
-    private AttributeType attributeType = null;
+    private ObjectClass objectClass = null;
 
 
     /**
-     * Default constructor
+     * Default constructor.
      * 
-     * @param at
-     *            the input attribute type
+     * @param obj
+     *      the object class
      */
-    public AttributeTypeFormEditorInput( AttributeType at )
+    public ObjectClassFormEditorInput( ObjectClass obj )
     {
         super();
-        this.attributeType = at;
+        this.objectClass = obj;
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#exists()
      */
     public boolean exists()
     {
-        return ( this.attributeType == null );
+        return ( this.objectClass == null );
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#getImageDescriptor()
      */
     public ImageDescriptor getImageDescriptor()
@@ -71,46 +68,35 @@ public class AttributeTypeFormEditorInput implements IEditorInput
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#getName()
      */
     public String getName()
     {
-        return this.attributeType.getNames()[0];
+        return this.objectClass.getNames()[0];
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#getPersistable()
      */
     public IPersistableElement getPersistable()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#getToolTipText()
      */
     public String getToolTipText()
     {
-        return this.attributeType.getNames()[0]
-            + Messages.getString( "AttributeTypeFormEditorInput.In_the" ) //$NON-NLS-1$
-            + this.attributeType.getOriginatingSchema().getName()
-            + Messages.getString( "AttributeTypeFormEditorInput.Schema" ); //$NON-NLS-1$
+        return this.objectClass.getNames()[0]
+            + Messages.getString( "ObjectClassFormEditorInput.In_the" ) + this.objectClass.getOriginatingSchema().getName() + Messages.getString( "ObjectClassFormEditorInput.Schema" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
     public Object getAdapter( Class adapter )
@@ -119,29 +105,28 @@ public class AttributeTypeFormEditorInput implements IEditorInput
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
+    /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals( Object obj )
     {
         if ( this == obj )
             return true;
-        if ( !( obj instanceof AttributeTypeFormEditorInput ) )
+        if ( !( obj instanceof ObjectClassFormEditorInput ) )
             return false;
-        AttributeTypeFormEditorInput other = ( AttributeTypeFormEditorInput ) obj;
-        return other.getAttributeType().getOid().equals( this.attributeType.getOid() );
+        ObjectClassFormEditorInput other = ( ObjectClassFormEditorInput ) obj;
+        return other.getObjectClass().getOid().equals( this.objectClass.getOid() );
     }
 
 
     /**
-     * Returns the input Attribute Type
+     * Returns the input object class
      * 
-     * @return the input Attribute Type
+     * @return
+     *      the input object class
      */
-    public AttributeType getAttributeType()
+    public ObjectClass getObjectClass()
     {
-        return this.attributeType;
+        return this.objectClass;
     }
 }

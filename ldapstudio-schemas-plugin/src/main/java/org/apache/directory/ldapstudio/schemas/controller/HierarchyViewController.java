@@ -33,10 +33,10 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.ShowSupertypeH
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.AttributeTypeFormEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditor;
-import org.apache.directory.ldapstudio.schemas.view.editors.ObjectClassFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeFormEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.viewers.HierarchyView;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;

@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.editors;
+package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditor;
+import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassFormEditorInput;
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
