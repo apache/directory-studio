@@ -60,7 +60,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ObjectClassSelectionDialog extends Dialog
 {
-    /** The selected Object Class*/
+    /** The selected Object Class */
     private ObjectClass selectedObjectClass;
 
     /** The Schema Pool */
@@ -70,9 +70,9 @@ public class ObjectClassSelectionDialog extends Dialog
     private List<ObjectClass> hiddenObjectClasses;
 
     // UI Fields
+    private Text searchText;
     private Table objectClassesTable;
     private TableViewer tableViewer;
-    private Text searchText;
 
 
     /**
@@ -130,7 +130,7 @@ public class ObjectClassSelectionDialog extends Dialog
         } );
 
         Label matchingLabel = new Label( composite, SWT.NONE );
-        matchingLabel.setText( Messages.getString( "ObjectClassSelectionDialog.Matching_object_classes" ) ); //$NON-NLS-1$
+        matchingLabel.setText( Messages.getString( "ObjectClassSelectionDialog.Matching_object_class(es)" ) ); //$NON-NLS-1$
         matchingLabel.setLayoutData( new GridData( GridData.FILL, SWT.None, true, false ) );
 
         objectClassesTable = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
@@ -205,10 +205,10 @@ public class ObjectClassSelectionDialog extends Dialog
 
 
     /**
-     * Returns the selected object class.
+     * Returns the selected Object Class.
      * 
      * @return 
-     *      the selected object class
+     *      the selected Object Class
      */
     public ObjectClass getSelectedObjectClass()
     {

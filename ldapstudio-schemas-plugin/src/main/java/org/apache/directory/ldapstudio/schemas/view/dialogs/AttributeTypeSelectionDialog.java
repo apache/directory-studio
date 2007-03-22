@@ -21,17 +21,26 @@
 package org.apache.directory.ldapstudio.schemas.view.dialogs;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.views.TableDecoratingLabelProvider;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -39,7 +48,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
@@ -52,9 +60,18 @@ import org.eclipse.ui.PlatformUI;
  */
 public class AttributeTypeSelectionDialog extends Dialog
 {
-    private Table attributeTypes_table;
-    private String selectedAttributeType = null;
-    private Text search_text;
+    /** The selected Attribute Type */
+    private AttributeType selectedAttributeType;
+
+    /** The Schema Pool */
+    private SchemaPool schemaPool;
+
+    /** The hidden Attribute Types */
+    private List<AttributeType> hiddenAttributeTypes;
+
+    // UI Fields
+    private Text searchText;
+    private Table attributeTypesTable;
     private TableViewer tableViewer;
 
 
@@ -64,6 +81,7 @@ public class AttributeTypeSelectionDialog extends Dialog
     public AttributeTypeSelectionDialog()
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
+        schemaPool = SchemaPool.getInstance();
     }
 
 
@@ -86,92 +104,66 @@ public class AttributeTypeSelectionDialog extends Dialog
         GridLayout layout = new GridLayout( 1, false );
         composite.setLayout( layout );
 
-        Label choose_label = new Label( composite, SWT.NONE );
-        choose_label.setText( Messages.getString( "AttributeTypeSelectionDialog.Choose_an_attribute_type" ) ); //$NON-NLS-1$
-        choose_label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        Label chooseLabel = new Label( composite, SWT.NONE );
+        chooseLabel.setText( Messages.getString( "AttributeTypeSelectionDialog.Choose_an_attribute_type" ) ); //$NON-NLS-1$
+        chooseLabel.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
-        search_text = new Text( composite, SWT.BORDER );
-        search_text.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
-        search_text.addModifyListener( new ModifyListener()
+        searchText = new Text( composite, SWT.BORDER );
+        searchText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        searchText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
-                tableViewer.setInput( search_text.getText() );
-                attributeTypes_table.select( 0 );
+                tableViewer.setInput( searchText.getText() );
+                attributeTypesTable.select( 0 );
             }
         } );
-        search_text.addKeyListener( new KeyListener()
+        searchText.addKeyListener( new KeyAdapter()
         {
             public void keyPressed( KeyEvent e )
             {
                 if ( e.keyCode == SWT.ARROW_DOWN )
                 {
-                    attributeTypes_table.setFocus();
+                    attributeTypesTable.setFocus();
                 }
-            }
-
-
-            public void keyReleased( KeyEvent e )
-            {
             }
         } );
 
-        Label matching_label = new Label( composite, SWT.NONE );
-        matching_label.setText( Messages.getString( "AttributeTypeSelectionDialog.Matching_attribute_types" ) ); //$NON-NLS-1$
-        matching_label.setLayoutData( new GridData( GridData.FILL, SWT.None, true, false ) );
+        Label matchingLabel = new Label( composite, SWT.NONE );
+        matchingLabel.setText( Messages.getString( "AttributeTypeSelectionDialog.Matching_attribute_type(s)" ) ); //$NON-NLS-1$
+        matchingLabel.setLayoutData( new GridData( GridData.FILL, SWT.None, true, false ) );
 
-        attributeTypes_table = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
+        attributeTypesTable = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
             | SWT.FULL_SELECTION | SWT.HIDE_SELECTION );
         GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
-        gridData.heightHint = 150;
-        gridData.minimumHeight = 150;
+        gridData.heightHint = 148;
+        gridData.minimumHeight = 148;
         gridData.widthHint = 350;
         gridData.minimumWidth = 350;
-        attributeTypes_table.setLayoutData( gridData );
-        attributeTypes_table.setHeaderVisible( true );
-        attributeTypes_table.addMouseListener( new MouseListener()
+        attributeTypesTable.setLayoutData( gridData );
+        attributeTypesTable.addMouseListener( new MouseAdapter()
         {
             public void mouseDoubleClick( MouseEvent e )
             {
-                if ( attributeTypes_table.getSelectionIndex() != -1 )
+                if ( attributeTypesTable.getSelectionIndex() != -1 )
                 {
                     okPressed();
                 }
             }
-
-
-            public void mouseDown( MouseEvent e )
-            {
-            }
-
-
-            public void mouseUp( MouseEvent e )
-            {
-            }
         } );
 
-        TableColumn column = new TableColumn( attributeTypes_table, SWT.LEFT, 0 );
-        column.setText( "" ); //$NON-NLS-1$
-        column.setWidth( 20 );
-
-        column = new TableColumn( attributeTypes_table, SWT.LEFT, 1 );
-        column.setText( Messages.getString( "AttributeTypeSelectionDialog.Name" ) ); //$NON-NLS-1$
-        column.setWidth( 230 );
-
-        column = new TableColumn( attributeTypes_table, SWT.LEFT, 2 );
-        column.setText( Messages.getString( "AttributeTypeSelectionDialog.Schema" ) ); //$NON-NLS-1$
-        column.setWidth( 100 );
-
-        tableViewer = new TableViewer( attributeTypes_table );
+        tableViewer = new TableViewer( attributeTypesTable );
         tableViewer.setUseHashlookup( true );
 
-        tableViewer.setContentProvider( new AttributeTypeSelectionDialogContentProvider() );
-        tableViewer.setLabelProvider( new AttributeTypeSelectionDialogLabelProvider() );
+        tableViewer.setContentProvider( new AttributeTypeSelectionDialogContentProvider( hiddenAttributeTypes ) );
+        tableViewer.setLabelProvider( new TableDecoratingLabelProvider(
+            new AttributeTypeSelectionDialogLabelProvider(), Activator.getDefault().getWorkbench()
+                .getDecoratorManager().getLabelDecorator() ) );
 
         // We need to force the input to load the complete list of attribute types
         tableViewer.setInput( "" ); //$NON-NLS-1$
         // We also need to force the selection of the first row
-        attributeTypes_table.select( 0 );
+        attributeTypesTable.select( 0 );
 
         return composite;
     }
@@ -193,7 +185,9 @@ public class AttributeTypeSelectionDialog extends Dialog
      */
     protected void okPressed()
     {
-        if ( attributeTypes_table.getSelectionIndex() == -1 )
+        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+
+        if ( selection.isEmpty() )
         {
             MessageDialog
                 .openError(
@@ -201,19 +195,75 @@ public class AttributeTypeSelectionDialog extends Dialog
                     Messages.getString( "AttributeTypeSelectionDialog.Invalid_Selection" ), Messages.getString( "AttributeTypeSelectionDialog.You_have_to_choose_an_attribute_type" ) ); //$NON-NLS-1$ //$NON-NLS-2$
             return;
         }
-        selectedAttributeType = attributeTypes_table.getItem( attributeTypes_table.getSelectionIndex() ).getText( 1 );
+
+        AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
+        if ( atw != null )
+        {
+            selectedAttributeType = atw.getMyAttributeType();
+        }
+
         super.okPressed();
     }
 
 
     /**
-     * Returns the selected attribute type.
+     * Returns the selected Attribute Type.
      * 
      * @return
-     *      the selected attribute type
+     *      the selected Attribute Type
      */
-    public String getSelectedAttributeType()
+    public AttributeType getSelectedAttributeType()
     {
         return selectedAttributeType;
+    }
+
+
+    /**
+     * Set the hidden Attribute Types.
+     *
+     * @param list
+     *      a list of Attribute Types to hide
+     */
+    public void setHiddenAttributeTypes( List<AttributeType> list )
+    {
+        hiddenAttributeTypes = list;
+    }
+
+
+    /**
+     * Sets the hidden Attribute Types.
+     *
+     * @param attributeTypes
+     *      an array of Attribute Types to hide
+     */
+    public void setHiddenAttributeTypes( AttributeType[] attributeTypes )
+    {
+        hiddenAttributeTypes = new ArrayList<AttributeType>();
+
+        for ( AttributeType objectClass : attributeTypes )
+        {
+            hiddenAttributeTypes.add( objectClass );
+        }
+    }
+
+
+    /**
+     * Sets the hidden Attribute Types.
+     *
+     * @param names
+     *      an array of names of Attribute Types to hide
+     */
+    public void setHiddenAttributeTypes( String[] names )
+    {
+        hiddenAttributeTypes = new ArrayList<AttributeType>();
+
+        for ( String name : names )
+        {
+            AttributeType at = schemaPool.getAttributeType( name );
+            if ( at != null )
+            {
+                hiddenAttributeTypes.add( at );
+            }
+        }
     }
 }

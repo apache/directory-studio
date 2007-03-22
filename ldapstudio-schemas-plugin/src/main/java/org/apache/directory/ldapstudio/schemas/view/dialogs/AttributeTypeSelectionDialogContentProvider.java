@@ -30,19 +30,47 @@ import java.util.regex.Pattern;
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 
+/**
+ * This class is the Content Provider for the Attribute Type Selection Dialog.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeTypeSelectionDialogContentProvider implements IStructuredContentProvider
 {
+    /** The Schema Pool */
+    private SchemaPool schemaPool;
 
-    @SuppressWarnings("unchecked")//$NON-NLS-1$
+    /** The hidden Object Classes */
+    private List<AttributeType> hiddenAttributeTypes;
+
+
+    /**
+     * Creates a new instance of AttributeTypeSelectionDialogContentProvider.
+     */
+    public AttributeTypeSelectionDialogContentProvider( List<AttributeType> hiddenAttributeTypes )
+    {
+        schemaPool = SchemaPool.getInstance();
+        this.hiddenAttributeTypes = hiddenAttributeTypes;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+     */
     public Object[] getElements( Object inputElement )
     {
         if ( inputElement instanceof String )
         {
+            ArrayList<AttributeTypeWrapper> results = new ArrayList<AttributeTypeWrapper>();
+
             String searchText = ( String ) inputElement;
+
             String searchRegexp;
             if ( searchText.length() == 0 )
             {
@@ -52,55 +80,90 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
             {
                 searchRegexp = searchText + ".*"; //$NON-NLS-1$
             }
-
             Pattern pattern = Pattern.compile( searchRegexp, Pattern.CASE_INSENSITIVE );
-            ArrayList resultsList = new ArrayList();
-
-            SchemaPool schemaPool = SchemaPool.getInstance();
 
             List<AttributeType> atList = schemaPool.getAttributeTypes();
 
             // Sorting the list
             Collections.sort( atList, new Comparator<AttributeType>()
             {
-                public int compare( AttributeType arg0, AttributeType arg1 )
+                public int compare( AttributeType at1, AttributeType at2 )
                 {
-                    String oneName = arg0.getNames()[0];
-                    String twoName = arg1.getNames()[0];
-                    return oneName.compareTo( twoName );
+                    if ( ( at1.getNames() == null || at1.getNames().length == 0 )
+                        && ( at2.getNames() == null || at2.getNames().length == 0 ) )
+                    {
+                        return 0;
+                    }
+                    else if ( ( at1.getNames() == null || at1.getNames().length == 0 )
+                        && ( at2.getNames() != null && at2.getNames().length > 0 ) )
+                    {
+                        return "".compareToIgnoreCase( at2.getNames()[0] ); //$NON-NLS-1$
+                    }
+                    else if ( ( at1.getNames() != null && at1.getNames().length > 0 )
+                        && ( at2.getNames() == null || at2.getNames().length == 0 ) )
+                    {
+                        return at1.getNames()[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                    }
+                    else
+                    {
+                        return at1.getNames()[0].compareToIgnoreCase( at2.getNames()[0] );
+                    }
                 }
             } );
 
-            //search for all matching elements
-            for ( AttributeType element : atList )
+            // Searching for all matching elements
+            for ( AttributeType at : atList )
             {
-
-                String[] names = element.getNames();
-                for ( String name : names )
+                for ( String name : at.getNames() )
                 {
                     Matcher m = pattern.matcher( name );
                     if ( m.matches() )
                     {
-                        if ( !resultsList.contains( element ) )
+                        if ( !hiddenAttributeTypes.contains( at ) )
                         {
-                            resultsList.add( element );
+                            AttributeTypeWrapper atw = new AttributeTypeWrapper( at, null );
+                            if ( !results.contains( atw ) )
+                            {
+                                results.add( new AttributeTypeWrapper( at, null ) );
+                            }
                         }
                         break;
                     }
                 }
+                Matcher m = pattern.matcher( at.getOid() );
+                if ( m.matches() )
+                {
+                    if ( !hiddenAttributeTypes.contains( at ) )
+                    {
+                        AttributeTypeWrapper atw = new AttributeTypeWrapper( at, null );
+                        if ( !results.contains( atw ) )
+                        {
+                            results.add( new AttributeTypeWrapper( at, null ) );
+                        }
+                    }
+                }
             }
-            //returns the result list
-            return resultsList.toArray();
+
+            // Returns the results
+            return results.toArray();
         }
+
+        // Default
         return new Object[0];
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+     */
     public void dispose()
     {
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+     */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
     }

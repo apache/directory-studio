@@ -22,11 +22,9 @@ package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.PluginConstants;
+import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -39,11 +37,11 @@ import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.Attrib
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
+import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
 import org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
@@ -64,7 +62,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -78,7 +75,6 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -112,9 +108,11 @@ public class ObjectClassEditorOverviewPage extends FormPage
     private Combo classTypeCombo;
     private Button obsoleteCheckbox;
     private Table mandatoryAttributesTable;
+    private TableViewer mandatoryAttributesTableViewer;
     private Button addButtonMandatoryTable;
     private Button removeButtonMandatoryTable;
     private Table optionalAttributesTable;
+    private TableViewer optionalAttributesTableViewer;
     private Button addButtonOptionalTable;
     private Button removeButtonOptionalTable;
 
@@ -258,15 +256,26 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void mouseDoubleClick( MouseEvent e )
         {
+            StructuredSelection selection = ( StructuredSelection ) mandatoryAttributesTableViewer.getSelection();
+            if ( selection.isEmpty() )
+            {
+                return;
+            }
+
+            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
+            if ( atw == null )
+            {
+                return;
+            }
+
             SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool
-                .getAttributeType( mandatoryAttributesTable.getSelection()[0].getText() ) );
-            String editorId = AttributeTypeEditor.ID;
+            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool.getAttributeType( atw
+                .getMyAttributeType().getNames()[0] ) );
             try
             {
-                page.openEditor( input, editorId );
+                page.openEditor( input, AttributeTypeEditor.ID );
             }
             catch ( PartInitException exception )
             {
@@ -294,45 +303,49 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog();
-            if ( selectionDialog.open() != Window.OK )
+            AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
+            SchemaPool pool = SchemaPool.getInstance();
+            List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
+            for ( String must : modifiedObjectClass.getMust() )
+            {
+                AttributeType at = pool.getAttributeType( must );
+                if ( at != null )
+                {
+                    hiddenATs.add( at );
+                }
+            }
+            for ( String may : modifiedObjectClass.getMay() )
+            {
+                AttributeType at = pool.getAttributeType( may );
+                if ( at != null )
+                {
+                    hiddenATs.add( at );
+                }
+            }
+            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
+
+            if ( dialog.open() != Window.OK )
             {
                 return;
             }
-            if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(), optionalAttributesTable ) )
+
+            AttributeType at = dialog.getSelectedAttributeType();
+            if ( at == null )
             {
-                // The selected attribute type is already in the Optionnal Attributes Table
-                MessageDialog
-                    .openError(
-                        null,
-                        Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_Optionnal_Attributes_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                return;
             }
-            else
+
+            List<String> newMusts = new ArrayList<String>();
+            String[] musts = modifiedObjectClass.getMust();
+            for ( String must : musts )
             {
-                if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
-                    mandatoryAttributesTable ) )
-                {
-                    // The selected attribute type is already in the Mandatory Attributes Table
-                    MessageDialog
-                        .openError(
-                            null,
-                            Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_this_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-                else
-                {
-                    // The selected attribute is not in any table, so it can be added
-                    ArrayList<String> mustList = new ArrayList<String>();
-                    String[] mustATs = modifiedObjectClass.getMust();
-                    for ( String mustAT : mustATs )
-                    {
-                        mustList.add( mustAT );
-                    }
-                    mustList.add( selectionDialog.getSelectedAttributeType() );
-                    modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
-                    fillInMandatoryAttributesTable();
-                    setEditorDirty();
-                }
+                newMusts.add( must );
             }
+            newMusts.add( at.getNames()[0] );
+            modifiedObjectClass.setMust( newMusts.toArray( new String[0] ) );
+
+            fillInMandatoryAttributesTable();
+            setEditorDirty();
         }
     };
 
@@ -341,19 +354,32 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            String itemToRemove = mandatoryAttributesTable.getItem( mandatoryAttributesTable.getSelectionIndex() )
-                .getText();
-
-            ArrayList<String> mustList = new ArrayList<String>();
-            String[] mustATs = modifiedObjectClass.getMust();
-            for ( String mustAT : mustATs )
+            StructuredSelection selection = ( StructuredSelection ) mandatoryAttributesTableViewer.getSelection();
+            if ( selection.isEmpty() )
             {
-                mustList.add( mustAT );
+                return;
             }
-            mustList.remove( itemToRemove );
-            modifiedObjectClass.setMust( mustList.toArray( new String[0] ) );
-            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
+
+            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
+            if ( atw == null )
+            {
+                return;
+            }
+
+            List<String> newMusts = new ArrayList<String>();
+            String[] musts = modifiedObjectClass.getMust();
+            for ( String must : musts )
+            {
+                newMusts.add( must );
+            }
+            for ( String name : atw.getMyAttributeType().getNames() )
+            {
+                newMusts.remove( name );
+            }
+            modifiedObjectClass.setMust( newMusts.toArray( new String[0] ) );
+
             fillInMandatoryAttributesTable();
+            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
             setEditorDirty();
         }
     };
@@ -363,15 +389,26 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void mouseDoubleClick( MouseEvent e )
         {
+            StructuredSelection selection = ( StructuredSelection ) optionalAttributesTableViewer.getSelection();
+            if ( selection.isEmpty() )
+            {
+                return;
+            }
+
+            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
+            if ( atw == null )
+            {
+                return;
+            }
+
             SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool
-                .getAttributeType( optionalAttributesTable.getSelection()[0].getText() ) );
-            String editorId = AttributeTypeEditor.ID;
+            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool.getAttributeType( atw
+                .getMyAttributeType().getNames()[0] ) );
             try
             {
-                page.openEditor( input, editorId );
+                page.openEditor( input, AttributeTypeEditor.ID );
             }
             catch ( PartInitException exception )
             {
@@ -394,45 +431,49 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog();
-            if ( selectionDialog.open() != Window.OK )
+            AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
+            SchemaPool pool = SchemaPool.getInstance();
+            List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
+            for ( String must : modifiedObjectClass.getMust() )
+            {
+                AttributeType at = pool.getAttributeType( must );
+                if ( at != null )
+                {
+                    hiddenATs.add( at );
+                }
+            }
+            for ( String may : modifiedObjectClass.getMay() )
+            {
+                AttributeType at = pool.getAttributeType( may );
+                if ( at != null )
+                {
+                    hiddenATs.add( at );
+                }
+            }
+            dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeType[0] ) );
+
+            if ( dialog.open() != Window.OK )
             {
                 return;
             }
-            if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(), mandatoryAttributesTable ) )
+
+            AttributeType at = dialog.getSelectedAttributeType();
+            if ( at == null )
             {
-                // The selected attribute type is already in the Mandatory Attributes Table
-                MessageDialog
-                    .openError(
-                        null,
-                        Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_Mandatory_Attributes_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                return;
             }
-            else
+
+            List<String> newMays = new ArrayList<String>();
+            String[] mays = modifiedObjectClass.getMay();
+            for ( String may : mays )
             {
-                if ( isAttributeTypeAlreadySpecified( selectionDialog.getSelectedAttributeType(),
-                    optionalAttributesTable ) )
-                {
-                    // The selected attribute type is already in the Optionnal Attributes Table
-                    MessageDialog
-                        .openError(
-                            null,
-                            Messages.getString( "ObjectClassFormEditorOverviewPage.Invalid_Selection" ), Messages.getString( "ObjectClassFormEditorOverviewPage.The_selected_attribute_type_is_already_in_the_this_section" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-                else
-                {
-                    // The selected attribute is not in any table, so it can be added
-                    ArrayList<String> mayList = new ArrayList<String>();
-                    String[] mayATs = modifiedObjectClass.getMay();
-                    for ( int i = 0; i < mayATs.length; i++ )
-                    {
-                        mayList.add( mayATs[i] );
-                    }
-                    mayList.add( selectionDialog.getSelectedAttributeType() );
-                    modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );
-                    fillInOptionalAttributesTable();
-                    setEditorDirty();
-                }
+                newMays.add( may );
             }
+            newMays.add( at.getNames()[0] );
+            modifiedObjectClass.setMay( newMays.toArray( new String[0] ) );
+
+            fillInOptionalAttributesTable();
+            setEditorDirty();
         }
     };
 
@@ -441,19 +482,32 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            String itemToRemove = optionalAttributesTable.getItem( optionalAttributesTable.getSelectionIndex() )
-                .getText();
-
-            ArrayList<String> mayList = new ArrayList<String>();
-            String[] mayATs = modifiedObjectClass.getMay();
-            for ( String mayAT : mayATs )
+            StructuredSelection selection = ( StructuredSelection ) optionalAttributesTableViewer.getSelection();
+            if ( selection.isEmpty() )
             {
-                mayList.add( mayAT );
+                return;
             }
-            mayList.remove( itemToRemove );
-            modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );
-            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
+
+            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
+            if ( atw == null )
+            {
+                return;
+            }
+
+            List<String> newMays = new ArrayList<String>();
+            String[] mays = modifiedObjectClass.getMay();
+            for ( String may : mays )
+            {
+                newMays.add( may );
+            }
+            for ( String name : atw.getMyAttributeType().getNames() )
+            {
+                newMays.remove( name );
+            }
+            modifiedObjectClass.setMay( newMays.toArray( new String[0] ) );
+
             fillInOptionalAttributesTable();
+            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
             setEditorDirty();
         }
     };
@@ -478,12 +532,11 @@ public class ObjectClassEditorOverviewPage extends FormPage
             SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassEditorInput input = new ObjectClassEditorInput( pool.getObjectClass( ocw
-                .getMyObjectClass().getNames()[0] ) );
-            String editorId = ObjectClassEditor.ID;
+            ObjectClassEditorInput input = new ObjectClassEditorInput( pool.getObjectClass( ocw.getMyObjectClass()
+                .getNames()[0] ) );
             try
             {
-                page.openEditor( input, editorId );
+                page.openEditor( input, ObjectClassEditor.ID );
             }
             catch ( PartInitException exception )
             {
@@ -526,7 +579,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
 
             ObjectClass oc = dialog.getSelectedObjectClass();
-
             if ( oc == null )
             {
                 return;
@@ -749,6 +801,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
         gd.verticalSpan = 2;
         gd.heightHint = 108;
         mandatoryAttributesTable.setLayoutData( gd );
+        mandatoryAttributesTableViewer = new TableViewer( mandatoryAttributesTable );
+        mandatoryAttributesTableViewer.setContentProvider( new ObjectClassEditorAttributesTableContentProvider() );
+        mandatoryAttributesTableViewer.setLabelProvider( new ObjectClassEditorAttributesTableLabelProvider() );
 
         addButtonMandatoryTable = toolkit.createButton( client, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Add..." ), SWT.PUSH ); //$NON-NLS-1$
@@ -794,6 +849,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
         gd.verticalSpan = 2;
         gd.heightHint = 108;
         optionalAttributesTable.setLayoutData( gd );
+        optionalAttributesTableViewer = new TableViewer( optionalAttributesTable );
+        optionalAttributesTableViewer.setContentProvider( new ObjectClassEditorAttributesTableContentProvider() );
+        optionalAttributesTableViewer.setLabelProvider( new ObjectClassEditorAttributesTableLabelProvider() );
 
         addButtonOptionalTable = toolkit.createButton( client, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Add..." ), SWT.PUSH ); //$NON-NLS-1$
@@ -805,29 +863,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
         // By default, no element is selected
         removeButtonOptionalTable.setEnabled( false );
-    }
-
-
-    /**
-     * Verifies if an attribute type is already present in a the given table
-     *
-     * @param name
-     *      the name of the attribute type to search
-     * @param table
-     *      the table to search in
-     * @return
-     *      true if the attribute type is already present in the given table
-     */
-    private boolean isAttributeTypeAlreadySpecified( String name, Table table )
-    {
-        for ( int i = 0; i < table.getItemCount(); i++ )
-        {
-            if ( table.getItem( i ).getText().equals( name ) )
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
 
@@ -926,27 +961,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInMandatoryAttributesTable()
     {
-        int selectionIndex = mandatoryAttributesTable.getSelectionIndex();
-        String selectAttribute = null;
-        if ( selectionIndex != -1 )
-        {
-            selectAttribute = mandatoryAttributesTable.getItem( selectionIndex ).getText();
-        }
-        mandatoryAttributesTable.clearAll();
-        mandatoryAttributesTable.setItemCount( 0 );
-        String[] mustArray = modifiedObjectClass.getMust();
-        Arrays.sort( mustArray );
-        for ( int i = 0; i < mustArray.length; i++ )
-        {
-            TableItem item = new TableItem( mandatoryAttributesTable, SWT.NONE, i );
-            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
-            item.setText( mustArray[i] );
-            if ( ( selectionIndex != -1 ) && ( mustArray[i].equals( selectAttribute ) ) )
-            {
-                mandatoryAttributesTable.select( i );
-            }
-        }
+        mandatoryAttributesTableViewer.setInput( modifiedObjectClass.getMust() );
     }
 
 
@@ -955,27 +970,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void fillInOptionalAttributesTable()
     {
-        int selectionIndex = optionalAttributesTable.getSelectionIndex();
-        String selectAttribute = null;
-        if ( selectionIndex != -1 )
-        {
-            selectAttribute = optionalAttributesTable.getItem( selectionIndex ).getText();
-        }
-        optionalAttributesTable.clearAll();
-        optionalAttributesTable.setItemCount( 0 );
-        String[] mayArray = modifiedObjectClass.getMay();
-        Arrays.sort( mayArray );
-        for ( int i = 0; i < mayArray.length; i++ )
-        {
-            TableItem item = new TableItem( optionalAttributesTable, SWT.NONE, i );
-            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
-            item.setText( mayArray[i] );
-            if ( ( selectionIndex != -1 ) && ( mayArray[i].equals( selectAttribute ) ) )
-            {
-                optionalAttributesTable.select( i );
-            }
-        }
+        optionalAttributesTableViewer.setInput( modifiedObjectClass.getMay() );
     }
 
 

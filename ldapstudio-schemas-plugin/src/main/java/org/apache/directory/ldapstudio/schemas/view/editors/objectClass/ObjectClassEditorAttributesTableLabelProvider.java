@@ -18,12 +18,11 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.schemas.view.dialogs;
+package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
-import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -33,12 +32,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class is the Label Provider for the Attribute Type Selection Dialog.
+ * This class is the Label Provider for the Attributes Table of the Object Class Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider implements ITableLabelProvider
+public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider implements ITableLabelProvider
 {
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
@@ -63,8 +62,7 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider imp
     {
         if ( element instanceof AttributeTypeWrapper )
         {
-            AttributeType at = ( ( AttributeTypeWrapper ) element ).getMyAttributeType();
-            return ViewUtils.concateAliases( at.getNames() ) + "   [" + at.getOid() + "]";
+            return ViewUtils.concateAliases( ( ( AttributeTypeWrapper ) element ).getMyAttributeType().getNames() );
         }
 
         // Default

@@ -97,12 +97,12 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
                     else if ( ( oc1.getNames() == null || oc1.getNames().length == 0 )
                         && ( oc2.getNames() != null && oc2.getNames().length > 0 ) )
                     {
-                        return "".compareToIgnoreCase( oc2.getNames()[0] );
+                        return "".compareToIgnoreCase( oc2.getNames()[0] ); //$NON-NLS-1$
                     }
                     else if ( ( oc1.getNames() != null && oc1.getNames().length > 0 )
                         && ( oc2.getNames() == null || oc2.getNames().length == 0 ) )
                     {
-                        return oc1.getNames()[0].compareToIgnoreCase( "" );
+                        return oc1.getNames()[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
                     }
                     else
                     {

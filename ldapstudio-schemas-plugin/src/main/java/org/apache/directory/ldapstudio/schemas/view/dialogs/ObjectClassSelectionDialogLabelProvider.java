@@ -50,6 +50,7 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider imple
             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
                 .createImage();
         }
+        
         // Default
         return null;
     }
@@ -63,7 +64,6 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider imple
         if ( element instanceof ObjectClassWrapper )
         {
             ObjectClass oc = ( ( ObjectClassWrapper ) element ).getMyObjectClass();
-
             return ViewUtils.concateAliases( oc.getNames() ) + "   [" + oc.getOid() + "]";
         }
 
