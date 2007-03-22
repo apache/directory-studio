@@ -41,10 +41,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class is Attribute Type Selection Dialog, that allows user to select an attribute type
+ * This class is Attribute Type Selection Dialog, that allows user to select an attribute type.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class AttributeTypeSelectionDialog extends Dialog
 {
@@ -55,12 +59,11 @@ public class AttributeTypeSelectionDialog extends Dialog
 
 
     /**
-     * Default constructor
-     * @param parentShell
+     * Creates a new instance of AttributeTypeSelectionDialog.
      */
-    public AttributeTypeSelectionDialog( Shell parentShell )
+    public AttributeTypeSelectionDialog()
     {
-        super( parentShell );
+        super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
     }
 
 
@@ -70,7 +73,7 @@ public class AttributeTypeSelectionDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "AttributeTypeSelectionDialog.Attribute_type_Selection" ) ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "AttributeTypeSelectionDialog.Attribute_Type_Selection" ) ); //$NON-NLS-1$
     }
 
 
@@ -130,7 +133,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         {
             public void mouseDoubleClick( MouseEvent e )
             {
-                if ( attributeTypes_table.getSelectionIndex() != 1 )
+                if ( attributeTypes_table.getSelectionIndex() != -1 )
                 {
                     okPressed();
                 }
@@ -174,6 +177,9 @@ public class AttributeTypeSelectionDialog extends Dialog
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, Messages.getString( "AttributeTypeSelectionDialog.Add" ), true ); //$NON-NLS-1$
@@ -201,8 +207,10 @@ public class AttributeTypeSelectionDialog extends Dialog
 
 
     /**
-     * Returns the selected attribute type
-     * @return the selected attribute type
+     * Returns the selected attribute type.
+     * 
+     * @return
+     *      the selected attribute type
      */
     public String getSelectedAttributeType()
     {

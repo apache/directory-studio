@@ -23,9 +23,6 @@ package org.apache.directory.ldapstudio.schemas.view.editors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
@@ -34,14 +31,18 @@ import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
+import org.apache.directory.ldapstudio.schemas.view.viewers.wrappers.ObjectClassWrapper;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -96,8 +97,10 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private Hyperlink schemaLink;
     private Label schemaLabel;
     private Text descriptionText;
-    private Hyperlink supLabel;
-    private Combo supCombo;
+    private Table superiorsTable;
+    private TableViewer superiorsTableViewer;
+    private Button addButtonSuperiorsTable;
+    private Button removeButtonSuperiorsTable;
     private Combo classTypeCombo;
     private Button obsoleteCheckbox;
     private Table mandatoryAttributesTable;
@@ -211,49 +214,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         }
     };
 
-    /** The listener for Sup Label Widget */
-    private HyperlinkAdapter supLabelListener = new HyperlinkAdapter()
-    {
-        public void linkActivated( HyperlinkEvent e )
-        {
-            if ( !supCombo.getItem( supCombo.getSelectionIndex() ).equals(
-                Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                SchemaPool pool = SchemaPool.getInstance();
-                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-                ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( pool.getObjectClass( supCombo
-                    .getItem( supCombo.getSelectionIndex() ) ) );
-                String editorId = ObjectClassFormEditor.ID;
-                try
-                {
-                    page.openEditor( input, editorId );
-                }
-                catch ( PartInitException exception )
-                {
-                    Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
-                }
-            }
-        }
-    };
-
-    /** The listener for Sup Combo Widget */
-    private ModifyListener supComboListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            if ( supCombo.getItem( supCombo.getSelectionIndex() ).equals(
-                Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                modifiedObjectClass.setSuperiors( new String[0] );
-            }
-            else
-            {
-                modifiedObjectClass.setSuperiors( new String[]
-                    { supCombo.getItem( supCombo.getSelectionIndex() ) } );
-            }
-            setEditorDirty();
-        }
-    };
-
     /** The listener for Class Type Widget */
     private ModifyListener classTypeListener = new ModifyListener()
     {
@@ -326,7 +286,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog( null );
+            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog();
             if ( selectionDialog.open() != Window.OK )
             {
                 return;
@@ -391,7 +351,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     };
 
     /** The listener for Optional Attributes Table Widget */
-    private MouseListener optionalAttributesTableListener = new MouseListener()
+    private MouseListener optionalAttributesTableListener = new MouseAdapter()
     {
         public void mouseDoubleClick( MouseEvent e )
         {
@@ -412,11 +372,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         }
 
 
-        public void mouseDown( MouseEvent e )
-        {
-        }
-
-
         public void mouseUp( MouseEvent e )
         {
             if ( modifiedObjectClass.getOriginatingSchema().type != Schema.SchemaType.coreSchema )
@@ -431,7 +386,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog( null );
+            AttributeTypeSelectionDialog selectionDialog = new AttributeTypeSelectionDialog();
             if ( selectionDialog.open() != Window.OK )
             {
                 return;
@@ -469,7 +424,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
                     fillInOptionalAttributesTable();
                     setEditorDirty();
                 }
-
             }
         }
     };
@@ -492,6 +446,129 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             modifiedObjectClass.setMay( mayList.toArray( new String[0] ) );
             removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
             fillInOptionalAttributesTable();
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Superiors Table Widget */
+    private MouseListener superiorsTableListener = new MouseAdapter()
+    {
+        public void mouseDoubleClick( MouseEvent e )
+        {
+            StructuredSelection selection = ( StructuredSelection ) superiorsTableViewer.getSelection();
+            if ( selection.isEmpty() )
+            {
+                return;
+            }
+
+            ObjectClassWrapper ocw = ( ObjectClassWrapper ) selection.getFirstElement();
+            if ( ocw == null )
+            {
+                return;
+            }
+
+            SchemaPool pool = SchemaPool.getInstance();
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+            ObjectClassFormEditorInput input = new ObjectClassFormEditorInput( pool.getObjectClass( ocw
+                .getMyObjectClass().getNames()[0] ) );
+            String editorId = ObjectClassFormEditor.ID;
+            try
+            {
+                page.openEditor( input, editorId );
+            }
+            catch ( PartInitException exception )
+            {
+                Logger.getLogger( ObjectClassFormEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+            }
+        }
+
+
+        public void mouseUp( MouseEvent e )
+        {
+            if ( modifiedObjectClass.getOriginatingSchema().type != Schema.SchemaType.coreSchema )
+            {
+                removeButtonSuperiorsTable.setEnabled( superiorsTable.getSelection().length != 0 );
+            }
+        }
+    };
+
+    /** The listener for Add Button Widget of the Superiors Table */
+    private SelectionAdapter addButtonSuperiorsTableListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
+            SchemaPool pool = SchemaPool.getInstance();
+            List<ObjectClass> hiddenOCs = new ArrayList<ObjectClass>();
+            for ( String sup : modifiedObjectClass.getSuperiors() )
+            {
+                ObjectClass oc = pool.getObjectClass( sup );
+                if ( oc != null )
+                {
+                    hiddenOCs.add( oc );
+                }
+            }
+            hiddenOCs.add( originalObjectClass );
+            dialog.setHiddenObjectClasses( hiddenOCs.toArray( new ObjectClass[0] ) );
+
+            if ( dialog.open() != Window.OK )
+            {
+                return;
+            }
+
+            ObjectClass oc = dialog.getSelectedObjectClass();
+
+            if ( oc == null )
+            {
+                return;
+            }
+
+            List<String> superiors = new ArrayList<String>();
+            String[] sups = modifiedObjectClass.getSuperiors();
+            for ( String sup : sups )
+            {
+                superiors.add( sup );
+            }
+            superiors.add( oc.getNames()[0] );
+            modifiedObjectClass.setSuperiors( superiors.toArray( new String[0] ) );
+
+            fillInSuperiorsTable();
+            setEditorDirty();
+        }
+    };
+
+    /** The listener for Remove Button Widget of the Superiors Table */
+    private SelectionAdapter removeButtonSuperiorsTableListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            StructuredSelection selection = ( StructuredSelection ) superiorsTableViewer.getSelection();
+            if ( selection.isEmpty() )
+            {
+                return;
+            }
+
+            ObjectClassWrapper ocw = ( ObjectClassWrapper ) selection.getFirstElement();
+            if ( ocw == null )
+            {
+                return;
+            }
+
+            List<String> superiors = new ArrayList<String>();
+            String[] sups = modifiedObjectClass.getSuperiors();
+            for ( String sup : sups )
+            {
+                superiors.add( sup );
+            }
+            for ( String name : ocw.getMyObjectClass().getNames() )
+            {
+                superiors.remove( name );
+            }
+            modifiedObjectClass.setSuperiors( superiors.toArray( new String[0] ) );
+
+            fillInSuperiorsTable();
+            removeButtonSuperiorsTable.setEnabled( superiorsTable.getSelection().length != 0 );
             setEditorDirty();
         }
     };
@@ -520,17 +597,20 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
-        GridLayout layout = new GridLayout( 2, true );
-        form.getBody().setLayout( layout );
+        form.getBody().setLayout( new GridLayout() );
 
         // General Information Section
         createGeneralInformationSection( form.getBody(), toolkit );
 
+        Composite bottomComposite = toolkit.createComposite( form.getBody() );
+        bottomComposite.setLayout( new GridLayout( 2, true ) );
+        bottomComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
         // Mandatory Attributes Section
-        createMandatoryAttributesSection( form.getBody(), toolkit );
+        createMandatoryAttributesSection( bottomComposite, toolkit );
 
         // Optionnal Attributes Section
-        createOptionalAttributesSection( form.getBody(), toolkit );
+        createOptionalAttributesSection( bottomComposite, toolkit );
 
         // Enabling or disabling the fields
         setFieldsEditableState();
@@ -559,73 +639,74 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             .getString( "ObjectClassFormEditorOverviewPage.General_Information_Section_Description" ) ); //$NON-NLS-1$
         section_general_information.setText( Messages
             .getString( "ObjectClassFormEditorOverviewPage.General_Information_Section_Text" ) ); //$NON-NLS-1$
+        section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true ) );
 
         // Creating the layout of the section
         Composite client_general_information = toolkit.createComposite( section_general_information );
-        GridLayout layout_general_information = new GridLayout();
-        layout_general_information.numColumns = 2;
-        client_general_information.setLayout( layout_general_information );
+        client_general_information.setLayout( new GridLayout( 3, false ) );
         toolkit.paintBordersFor( client_general_information );
         section_general_information.setClient( client_general_information );
-        section_general_information.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 ) );
 
         // ALIASES Button
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
         aliasesLabel = toolkit.createLabel( client_general_information, "" );
-        aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" );
         aliasesButton = toolkit.createButton( client_general_information, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
-        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false ) );
+        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassFormEditorOverviewPage.OID" ) ); //$NON-NLS-1$
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        oidText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( e.text.length() < 20 && !e.text.matches( "([0-9]+\\.?)*" ) )
-                {
-                    e.doit = false;
-                }
-            }
-        } );
+        oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SCHEMA Field
         schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Description" ) ); //$NON-NLS-1$
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
-        GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         descriptionGridData.heightHint = 42;
         descriptionText.setLayoutData( descriptionGridData );
 
-        // SUP Combo
-        supLabel = toolkit.createHyperlink( client_general_information, Messages
-            .getString( "ObjectClassFormEditorOverviewPage.Superior_class" ), SWT.WRAP ); //$NON-NLS-1$
-        supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        initSupCombo();
+        // SUPERIORS Table
+        toolkit.createLabel( client_general_information, Messages
+            .getString( "ObjectClassFormEditorOverviewPage.Superior_classes" ) ); //$NON-NLS-1$
+        superiorsTable = toolkit.createTable( client_general_information, SWT.SINGLE | SWT.V_SCROLL );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        gridData.heightHint = 45;
+        gridData.minimumHeight = 45;
+        superiorsTable.setLayoutData( gridData );
+        superiorsTableViewer = new TableViewer( superiorsTable );
+        superiorsTableViewer.setContentProvider( new ObjectClassFormEditorSuperiorsTableContentProvider() );
+        superiorsTableViewer.setLabelProvider( new ObjectClassFormEditorSuperiorsTableLabelProvider() );
+        Composite superiorsButtonComposite = toolkit.createComposite( client_general_information );
+        superiorsButtonComposite.setLayout( new GridLayout() );
+        addButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, Messages
+            .getString( "ObjectClassFormEditorOverviewPage.Add..." ), SWT.PUSH );
+        addButtonSuperiorsTable.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
+        removeButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, Messages
+            .getString( "ObjectClassFormEditorOverviewPage.Remove" ), SWT.PUSH );
+        removeButtonSuperiorsTable.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
 
         // CLASS TYPE Combo
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Class_type" ) ); //$NON-NLS-1$
         classTypeCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        classTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        classTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         initClassTypeCombo();
 
         // OBSOLETE Checkbox
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         obsoleteCheckbox = toolkit.createButton( client_general_information, Messages
             .getString( "ObjectClassFormEditorOverviewPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
-        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
 
@@ -647,7 +728,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         section.setExpanded( true );
         Composite client = toolkit.createComposite( section );
         section.setClient( client );
-        GridData gd = new GridData( GridData.FILL, GridData.FILL, true, true );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         section.setLayoutData( gd );
         toolkit.paintBordersFor( client );
 
@@ -656,9 +737,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         client.setLayout( layout );
 
         mandatoryAttributesTable = toolkit.createTable( client, SWT.NULL );
-        gd = new GridData( SWT.FILL, SWT.FILL, true, true );
+        gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.verticalSpan = 2;
-        gd.heightHint = 100;
+        gd.heightHint = 108;
         mandatoryAttributesTable.setLayoutData( gd );
 
         addButtonMandatoryTable = toolkit.createButton( client, Messages
@@ -692,7 +773,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         section.setExpanded( true );
         Composite client = toolkit.createComposite( section );
         section.setClient( client );
-        GridData gd = new GridData( GridData.FILL, GridData.FILL, true, true );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         section.setLayoutData( gd );
         toolkit.paintBordersFor( client );
 
@@ -701,9 +782,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         client.setLayout( layout );
 
         optionalAttributesTable = toolkit.createTable( client, SWT.SINGLE | SWT.V_SCROLL );
-        gd = new GridData( SWT.FILL, SWT.FILL, true, true );
+        gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.verticalSpan = 2;
-        gd.heightHint = 100;
+        gd.heightHint = 108;
         optionalAttributesTable.setLayoutData( gd );
 
         addButtonOptionalTable = toolkit.createButton( client, Messages
@@ -775,15 +856,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             descriptionText.setText( modifiedObjectClass.getDescription() );
         }
 
-        // SUP Combo
-        if ( modifiedObjectClass.getSuperiors().length == 0 )
-        {
-            fillSupCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
-        }
-        else
-        {
-            fillSupCombo( modifiedObjectClass.getSuperiors()[0] );
-        }
+        // SUPERIORS Table
+        fillInSuperiorsTable();
 
         // CLASS TYPE Combo
         fillInClassType();
@@ -800,37 +874,11 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
 
 
     /**
-     * Initializes the Superior Combo box.
+     * Fills in the Superiors Table.
      */
-    private void initSupCombo()
+    private void fillInSuperiorsTable()
     {
-        SchemaPool pool = SchemaPool.getInstance();
-        List<ObjectClass> ocList = pool.getObjectClasses();
-
-        //remove duplicate entries
-        HashSet<ObjectClass> set = new HashSet<ObjectClass>( ocList );
-        ocList = new ArrayList<ObjectClass>( set );
-
-        // Sorting the list
-        Collections.sort( ocList, new Comparator<ObjectClass>()
-        {
-            public int compare( ObjectClass arg0, ObjectClass arg1 )
-            {
-                String oneName = arg0.getNames()[0];
-                String twoName = arg1.getNames()[0];
-                return oneName.compareTo( twoName );
-            }
-        } );
-
-        // Creating the UI
-        supCombo.add( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        supCombo.select( 0 );
-        int counter = 1;
-        for ( ObjectClass oc : ocList )
-        {
-            supCombo.add( oc.getNames()[0], counter );
-            counter++;
-        }
+        superiorsTableViewer.setInput( modifiedObjectClass.getSuperiors() );
     }
 
 
@@ -933,7 +981,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             // If the object class is in a core-schema file, we disable editing
             oidText.setEditable( false );
             descriptionText.setEditable( false );
-            supCombo.setEnabled( false );
+            addButtonSuperiorsTable.setEnabled( false );
             classTypeCombo.setEnabled( false );
             obsoleteCheckbox.setEnabled( false );
             addButtonMandatoryTable.setEnabled( false );
@@ -943,6 +991,7 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         }
         else
         {
+            removeButtonSuperiorsTable.setEnabled( superiorsTable.getSelectionIndex() != -1 );
             removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelectionIndex() != -1 );
             removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelectionIndex() != -1 );
         }
@@ -959,7 +1008,8 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
             oidText.addModifyListener( oidTextModifyListener );
             oidText.addVerifyListener( oidTextVerifyListener );
             descriptionText.addModifyListener( descriptionTextListener );
-            supCombo.addModifyListener( supComboListener );
+            addButtonSuperiorsTable.addSelectionListener( addButtonSuperiorsTableListener );
+            removeButtonSuperiorsTable.addSelectionListener( removeButtonSuperiorsTableListener );
             classTypeCombo.addModifyListener( classTypeListener );
             obsoleteCheckbox.addSelectionListener( obsoleteListener );
             addButtonMandatoryTable.addSelectionListener( addButtonMandatoryTableListener );
@@ -972,7 +1022,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         aliasesButton.addSelectionListener( aliasesButtonListener );
 
         schemaLink.addHyperlinkListener( schemaLinkListener );
-        supLabel.addHyperlinkListener( supLabelListener );
+
+        // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
+        superiorsTable.addMouseListener( superiorsTableListener );
 
         // This listener needs to be outside of the 'if' so that attribute type editor can be opened from any object class (in a core or a user schema)
         mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
@@ -992,8 +1044,9 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
         oidText.removeVerifyListener( oidTextVerifyListener );
         schemaLink.removeHyperlinkListener( schemaLinkListener );
         descriptionText.removeModifyListener( descriptionTextListener );
-        supLabel.removeHyperlinkListener( supLabelListener );
-        supCombo.removeModifyListener( supComboListener );
+        superiorsTable.removeMouseListener( superiorsTableListener );
+        addButtonSuperiorsTable.removeSelectionListener( addButtonSuperiorsTableListener );
+        removeButtonSuperiorsTable.removeSelectionListener( removeButtonSuperiorsTableListener );
         classTypeCombo.removeModifyListener( classTypeListener );
         obsoleteCheckbox.removeSelectionListener( obsoleteListener );
         mandatoryAttributesTable.removeMouseListener( mandatoryAttributesTableListener );
@@ -1011,25 +1064,6 @@ public class ObjectClassFormEditorOverviewPage extends FormPage
     private void setEditorDirty()
     {
         ( ( ObjectClassFormEditor ) getEditor() ).setDirty( true );
-    }
-
-
-    /**
-     * Fills the the Sup Combo with the correct value
-     *
-     * @param name
-     *      the name to select
-     */
-    private void fillSupCombo( String name )
-    {
-        for ( int i = 0; i < supCombo.getItemCount(); i++ )
-        {
-            if ( name.equals( supCombo.getItem( i ) ) )
-            {
-                supCombo.select( i );
-                return;
-            }
-        }
     }
 
 
