@@ -21,8 +21,6 @@
 package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
-import java.util.ArrayList;
-
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
@@ -103,6 +101,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private ComboViewer supComboViewer;
     private Combo usageCombo;
     private Combo syntaxCombo;
+    private ComboViewer syntaxComboViewer;
     private Text syntaxLengthText;
     private Button obsoleteCheckbox;
     private Button singleValueCheckbox;
@@ -300,14 +299,24 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     {
         public void modifyText( ModifyEvent e )
         {
-            if ( syntaxCombo.getItem( syntaxCombo.getSelectionIndex() ).equals(
-                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                modifiedAttributeType.setSyntax( "" ); //$NON-NLS-1$
-            }
-            else
+            Object selectedItem = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
+
+            if ( selectedItem instanceof Syntax )
             {
-                modifiedAttributeType.setSyntax( Syntaxes.getSyntax(
-                    syntaxCombo.getItem( syntaxCombo.getSelectionIndex() ) ).getOid() );
+                modifiedAttributeType.setSyntax( ( ( Syntax ) selectedItem ).getOid() );
+            }
+            else if ( selectedItem instanceof NonExistingSyntax )
+            {
+                NonExistingSyntax nes = ( NonExistingSyntax ) selectedItem;
+
+                if ( NonExistingMatchingRule.NONE.equals( nes.getName() ) )
+                {
+                    modifiedAttributeType.setSyntax( null );
+                }
+                else
+                {
+                    modifiedAttributeType.setSyntax( ( ( NonExistingSyntax ) selectedItem ).getName() );
+                }
             }
             setEditorDirty();
         }
@@ -592,7 +601,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
             .getString( "AttributeTypeFormEditorOverviewPage.Synatx" ) ); //$NON-NLS-1$
         syntaxCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        initSyntaxCombo();
+        syntaxComboViewer = new ComboViewer( syntaxCombo );
+        syntaxComboViewer.setContentProvider( new ATESyntaxComboContentProvider() );
+        syntaxComboViewer.setLabelProvider( new ATESyntaxComboLabelProvider() );
+        syntaxComboViewer.setInput( new ATESyntaxComboInput() );
 
         // SYNTAX LENGTH Field
         toolkit.createLabel( client_general_information, Messages
@@ -682,24 +694,15 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     }
 
 
+    /**
+     * Initializes the Usage Combo.
+     */
     private void initUsageCombo()
     {
         usageCombo.add( "directoryOperation", 0 ); //$NON-NLS-1$
         usageCombo.add( "distributedOperation", 1 ); //$NON-NLS-1$
         usageCombo.add( "DSAOperation", 2 ); //$NON-NLS-1$
         usageCombo.add( "userApplications", 3 ); //$NON-NLS-1$
-    }
-
-
-    private void initSyntaxCombo()
-    {
-        syntaxCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ), 0 ); //$NON-NLS-1$
-        syntaxCombo.select( 0 );
-        ArrayList<Syntax> syntaxes = Syntaxes.getSyntaxes();
-        for ( Syntax syntax : syntaxes )
-        {
-            syntaxCombo.add( syntax.getName() );
-        }
     }
 
 
@@ -743,14 +746,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         fillInUsageCombo();
 
         // SYNTAX Combo
-        if ( modifiedAttributeType.getSyntax() == null )
-        {
-            fillInSyntaxCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
-        }
-        else
-        {
-            fillInSyntaxCombo( modifiedAttributeType.getSyntax() );
-        }
+        fillSyntaxCombo();
 
         // SYNTAX LENGTH Field
         if ( modifiedAttributeType.getLength() != -1 )
@@ -840,26 +836,34 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
 
 
     /**
-     * Fills the Syntax Combo from the attribute type value
-     *
-     * @param name
-     *      the name to select
+     * Fills the the Syntax Combo with the correct value.
      */
-    private void fillInSyntaxCombo( String name )
+    private void fillSyntaxCombo()
     {
-        if ( name.equals( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) )
+        if ( modifiedAttributeType.getSyntax() == null )
         {
-            syntaxCombo.select( 0 );
+            syntaxComboViewer.setSelection( new StructuredSelection( new NonExistingSyntax( NonExistingSyntax.NONE ) ),
+                true );
         }
         else
         {
-            syntaxCombo.select( 0 );
-            for ( int i = 1; i < syntaxCombo.getItemCount(); i++ )
+            String syntaxOID = modifiedAttributeType.getSyntax();
+
+            Syntax syntax = Syntaxes.getSyntaxFromOid( syntaxOID );
+            if ( syntax != null )
             {
-                if ( Syntaxes.getSyntax( syntaxCombo.getItem( i ) ).getOid().equals( name ) )
+                syntaxComboViewer.setSelection( new StructuredSelection( syntax ), true );
+            }
+            else
+            {
+                ATESyntaxComboInput input = ( ATESyntaxComboInput ) syntaxComboViewer.getInput();
+                NonExistingSyntax nes = new NonExistingSyntax( syntaxOID );
+                if ( !input.getChildren().contains( nes ) )
                 {
-                    syntaxCombo.select( i );
+                    input.addChild( nes );
                 }
+                syntaxComboViewer.refresh();
+                syntaxComboViewer.setSelection( new StructuredSelection( nes ), true );
             }
         }
     }

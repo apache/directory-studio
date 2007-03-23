@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.schemas.model;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.directory.ldapstudio.schemas.Activator;
@@ -35,11 +34,15 @@ import org.eclipse.core.runtime.Platform;
  * This class allows to get the list of all syntaxes
  * (which is initialized once parsing a XML file)
  * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class Syntaxes
 {
+    /** The Syntaxes */
     private static final ArrayList<Syntax> syntaxes;
 
+    // Syntaxes Initialization
     static
     {
         try
@@ -82,8 +85,10 @@ public class Syntaxes
 
 
     /**
-     * Return the unique initialized ArrayList containing all syntaxes
-     * @return the syntaxes ArrayList
+     * Returns the unique initialized ArrayList containing all syntaxes.
+     * 
+     * @return
+     *      the syntaxes ArrayList
      */
     public static ArrayList<Syntax> getSyntaxes()
     {
@@ -92,17 +97,41 @@ public class Syntaxes
 
 
     /**
-     * Return the syntax object corresponding to the name given in parameter
-     * If no syntax is corresponding, it returns null
-     * @param name the name of the syntax
-     * @return the coreesponding Syntax object
+     * Return the syntax object corresponding to the name given in parameter.
+     * If no syntax is corresponding, it returns null.
+     * 
+     * @param name
+     *      the name of the syntax
+     * @return
+     *      the coreesponding Syntax object
      */
-    public static Syntax getSyntax( String name )
+    public static Syntax getSyntaxFromName( String name )
     {
-        for ( Iterator iter = syntaxes.iterator(); iter.hasNext(); )
+        for ( Syntax syntax : syntaxes )
         {
-            Syntax syntax = ( Syntax ) iter.next();
             if ( syntax.getName().equals( name ) )
+            {
+                return syntax;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Returns the syntax object corresponding to the oid given in parameter.
+     * If no syntax is corresponding, it returns null.
+     * 
+     * @param oid
+     *      the oid of the syntax
+     * @return
+     *      the coreesponding Syntax object
+     */
+    public static Syntax getSyntaxFromOid( String oid )
+    {
+        for ( Syntax syntax : syntaxes )
+        {
+            if ( syntax.getOid().equals( oid ) )
             {
                 return syntax;
             }
