@@ -109,8 +109,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private Button collectiveCheckbox;
     private Button noUserModificationCheckbox;
     private Combo equalityCombo;
+    private ComboViewer equalityComboViewer;
     private Combo orderingCombo;
+    private ComboViewer orderingComboViewer;
     private Combo substringCombo;
+    private ComboViewer substringComboViewer;
 
     // Listeners
     /** The listener for the Manage Aliases Button Widget */
@@ -152,8 +155,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
 
             if ( OID.isOID( oid ) )
             {
-                if ( ( originalAttributeType.getOid().equals( oid ) )
-                    || !( schemaPool.containsSchemaElement( oid ) ) )
+                if ( ( originalAttributeType.getOid().equals( oid ) ) || !( schemaPool.containsSchemaElement( oid ) ) )
                 {
                     modifiedAttributeType.setOid( oid );
                     setEditorDirty();
@@ -385,13 +387,24 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     {
         public void modifyText( ModifyEvent e )
         {
-            if ( equalityCombo.getItem( equalityCombo.getSelectionIndex() ).equals(
-                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                modifiedAttributeType.setEquality( "" ); //$NON-NLS-1$
-            }
-            else
+            Object selectedItem = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
+
+            if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setEquality( equalityCombo.getItem( equalityCombo.getSelectionIndex() ) );
+                modifiedAttributeType.setEquality( ( ( MatchingRule ) selectedItem ).getName() );
+            }
+            else if ( selectedItem instanceof NonExistingMatchingRule )
+            {
+                NonExistingMatchingRule nemr = ( NonExistingMatchingRule ) selectedItem;
+
+                if ( NonExistingMatchingRule.NONE.equals( nemr.getName() ) )
+                {
+                    modifiedAttributeType.setEquality( null );
+                }
+                else
+                {
+                    modifiedAttributeType.setEquality( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
+                }
             }
             setEditorDirty();
         }
@@ -402,13 +415,24 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     {
         public void modifyText( ModifyEvent e )
         {
-            if ( orderingCombo.getItem( orderingCombo.getSelectionIndex() ).equals(
-                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                modifiedAttributeType.setOrdering( "" ); //$NON-NLS-1$
-            }
-            else
+            Object selectedItem = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
+
+            if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setOrdering( orderingCombo.getItem( orderingCombo.getSelectionIndex() ) );
+                modifiedAttributeType.setOrdering( ( ( MatchingRule ) selectedItem ).getName() );
+            }
+            else if ( selectedItem instanceof NonExistingMatchingRule )
+            {
+                NonExistingMatchingRule nemr = ( NonExistingMatchingRule ) selectedItem;
+
+                if ( NonExistingMatchingRule.NONE.equals( nemr.getName() ) )
+                {
+                    modifiedAttributeType.setOrdering( null );
+                }
+                else
+                {
+                    modifiedAttributeType.setOrdering( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
+                }
             }
             setEditorDirty();
         }
@@ -419,13 +443,24 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     {
         public void modifyText( ModifyEvent e )
         {
-            if ( substringCombo.getItem( substringCombo.getSelectionIndex() ).equals(
-                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                modifiedAttributeType.setSubstr( "" ); //$NON-NLS-1$
-            }
-            else
+            Object selectedItem = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
+
+            if ( selectedItem instanceof MatchingRule )
             {
-                modifiedAttributeType.setSubstr( substringCombo.getItem( substringCombo.getSelectionIndex() ) );
+                modifiedAttributeType.setSubstr( ( ( MatchingRule ) selectedItem ).getName() );
+            }
+            else if ( selectedItem instanceof NonExistingMatchingRule )
+            {
+                NonExistingMatchingRule nemr = ( NonExistingMatchingRule ) selectedItem;
+
+                if ( NonExistingMatchingRule.NONE.equals( nemr.getName() ) )
+                {
+                    modifiedAttributeType.setSubstr( null );
+                }
+                else
+                {
+                    modifiedAttributeType.setSubstr( ( ( NonExistingMatchingRule ) selectedItem ).getName() );
+                }
             }
             setEditorDirty();
         }
@@ -620,21 +655,30 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
             .createLabel( client_matching_rules, Messages.getString( "AttributeTypeFormEditorOverviewPage.Equility" ) ); //$NON-NLS-1$
         equalityCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        initEqualityCombo();
+        equalityComboViewer = new ComboViewer( equalityCombo );
+        equalityComboViewer.setContentProvider( new ATEEqualityComboContentProvider() );
+        equalityComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
+        equalityComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
         // ORDERING Combo
         toolkit
             .createLabel( client_matching_rules, Messages.getString( "AttributeTypeFormEditorOverviewPage.Ordering" ) ); //$NON-NLS-1$
         orderingCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        initOrderingCombo();
+        orderingComboViewer = new ComboViewer( orderingCombo );
+        orderingComboViewer.setContentProvider( new ATEOrderingComboContentProvider() );
+        orderingComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
+        orderingComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
         // SUBSTRING Combo
         toolkit.createLabel( client_matching_rules, Messages
             .getString( "AttributeTypeFormEditorOverviewPage.Substring" ) ); //$NON-NLS-1$
         substringCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        initSubstringCombo();
+        substringComboViewer = new ComboViewer( substringCombo );
+        substringComboViewer.setContentProvider( new ATESubstringComboContentProvider() );
+        substringComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
+        substringComboViewer.setInput( new ATEMatchingRulesComboInput() );
     }
 
 
@@ -659,42 +703,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     }
 
 
-    private void initEqualityCombo()
-    {
-        equalityCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        equalityCombo.select( 0 );
-        ArrayList<MatchingRule> equalityMatchingRules = MatchingRules.getEqualityMatchingRules();
-        for ( MatchingRule matchingRule : equalityMatchingRules )
-        {
-            equalityCombo.add( matchingRule.getName() );
-        }
-    }
-
-
-    private void initOrderingCombo()
-    {
-        orderingCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        orderingCombo.select( 0 );
-        ArrayList<MatchingRule> orderingMatchingRules = MatchingRules.getOrderingMatchingRules();
-        for ( MatchingRule matchingRule : orderingMatchingRules )
-        {
-            orderingCombo.add( matchingRule.getName() );
-        }
-    }
-
-
-    private void initSubstringCombo()
-    {
-        substringCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        substringCombo.select( 0 );
-        ArrayList<MatchingRule> substringMatchingRules = MatchingRules.getSubstringMatchingRules();
-        for ( MatchingRule matchingRule : substringMatchingRules )
-        {
-            substringCombo.add( matchingRule.getName() );
-        }
-    }
-
-
+    /**
+     * Fills in the User Interface fields.
+     */
     private void fillInUiFields()
     {
         // ALIASES Label
@@ -760,42 +771,18 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         this.noUserModificationCheckbox.setSelection( modifiedAttributeType.isNoUserModification() );
 
         // EQUALITY Combo
-        if ( modifiedAttributeType.getEquality() == null )
-        {
-            fillInEqualityCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
-        }
-        else
-        {
-            fillInEqualityCombo( modifiedAttributeType.getEquality() );
-        }
+        fillEqualityCombo();
 
         // ORDERING Combo
-        if ( modifiedAttributeType.getOrdering() == null )
-        {
-            fillInOrderingCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
-        }
-        else
-        {
-            fillInOrderingCombo( modifiedAttributeType.getOrdering() );
-        }
+        fillOrderingCombo();
 
         // SUBSTRING Combo
-        if ( modifiedAttributeType.getSubstr() == null )
-        {
-            fillInSubstringCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
-        }
-        else
-        {
-            fillInSubstringCombo( modifiedAttributeType.getSubstr() );
-        }
+        fillSubstringCombo();
     }
 
 
     /**
-     * Fills the the Sup Combo with the correct value
-     *
-     * @param name
-     *      the name to select
+     * Fills the the Sup Combo with the correct value.
      */
     private void fillSupCombo()
     {
@@ -815,8 +802,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
             }
             else
             {
-                ATESuperiorComboInput input = ( ATESuperiorComboInput ) supComboViewer
-                    .getInput();
+                ATESuperiorComboInput input = ( ATESuperiorComboInput ) supComboViewer.getInput();
                 NonExistingAttributeType neat = new NonExistingAttributeType( supAtName );
                 if ( !input.getChildren().contains( neat ) )
                 {
@@ -880,60 +866,102 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
 
 
     /**
-     * Fills the Equality Combo from the attribute type value
-     *
-     * @param name
-     *      the name to select
+     * Fills the the Equality Combo with the correct value.
      */
-    private void fillInEqualityCombo( String name )
+    private void fillEqualityCombo()
     {
-        equalityCombo.select( 0 );
-        for ( int i = 0; i < equalityCombo.getItemCount(); i++ )
+        if ( modifiedAttributeType.getEquality() == null )
         {
-            if ( name.equals( equalityCombo.getItem( i ) ) )
+            equalityComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
+                NonExistingMatchingRule.NONE ) ), true );
+        }
+        else
+        {
+            String equalityName = modifiedAttributeType.getEquality();
+
+            MatchingRule matchingRule = MatchingRules.getMatchingRule( equalityName );
+            if ( matchingRule != null )
             {
-                equalityCombo.select( i );
-                return;
+                equalityComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
+            }
+            else
+            {
+                ATEMatchingRulesComboInput input = ( ATEMatchingRulesComboInput ) equalityComboViewer.getInput();
+                NonExistingMatchingRule nemr = new NonExistingMatchingRule( equalityName );
+                if ( !input.getChildren().contains( nemr ) )
+                {
+                    input.addChild( nemr );
+                }
+                equalityComboViewer.refresh();
+                equalityComboViewer.setSelection( new StructuredSelection( nemr ), true );
             }
         }
     }
 
 
     /**
-     * Fills the Ordering Combo from the attribute type value
-     *
-     * @param name
-     *      the name to select
+     * Fills the the Ordering Combo with the correct value.
      */
-    private void fillInOrderingCombo( String name )
+    private void fillOrderingCombo()
     {
-        orderingCombo.select( 0 );
-        for ( int i = 0; i < orderingCombo.getItemCount(); i++ )
+        if ( modifiedAttributeType.getOrdering() == null )
         {
-            if ( name.equals( orderingCombo.getItem( i ) ) )
+            orderingComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
+                NonExistingMatchingRule.NONE ) ), true );
+        }
+        else
+        {
+            String orderingName = modifiedAttributeType.getOrdering();
+
+            MatchingRule matchingRule = MatchingRules.getMatchingRule( orderingName );
+            if ( matchingRule != null )
             {
-                orderingCombo.select( i );
-                return;
+                orderingComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
+            }
+            else
+            {
+                ATEMatchingRulesComboInput input = ( ATEMatchingRulesComboInput ) orderingComboViewer.getInput();
+                NonExistingMatchingRule nemr = new NonExistingMatchingRule( orderingName );
+                if ( !input.getChildren().contains( nemr ) )
+                {
+                    input.addChild( nemr );
+                }
+                orderingComboViewer.refresh();
+                orderingComboViewer.setSelection( new StructuredSelection( nemr ), true );
             }
         }
     }
 
 
     /**
-     * Fills the Substring Combo from the attribute type value
-     *
-     * @param name
-     *      the name to select
+     * Fills the the Substring Combo with the correct value.
      */
-    private void fillInSubstringCombo( String name )
+    private void fillSubstringCombo()
     {
-        substringCombo.select( 0 );
-        for ( int i = 0; i < substringCombo.getItemCount(); i++ )
+        if ( modifiedAttributeType.getSubstr() == null )
         {
-            if ( name.equals( substringCombo.getItem( i ) ) )
+            substringComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
+                NonExistingMatchingRule.NONE ) ), true );
+        }
+        else
+        {
+            String substringName = modifiedAttributeType.getSubstr();
+
+            MatchingRule matchingRule = MatchingRules.getMatchingRule( substringName );
+            if ( matchingRule != null )
             {
-                substringCombo.select( i );
-                return;
+                substringComboViewer.setSelection( new StructuredSelection( matchingRule ), true );
+            }
+            else
+            {
+                ATEMatchingRulesComboInput input = ( ATEMatchingRulesComboInput ) substringComboViewer.getInput();
+                NonExistingMatchingRule nemr = new NonExistingMatchingRule( substringName );
+                if ( !input.getChildren().contains( nemr ) )
+                {
+                    input.addChild( nemr );
+                }
+                substringComboViewer.refresh();
+                substringComboViewer.setSelection( new StructuredSelection( nemr ), true );
             }
         }
     }

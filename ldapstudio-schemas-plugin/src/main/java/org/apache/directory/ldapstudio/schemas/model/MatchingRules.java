@@ -34,13 +34,21 @@ import org.eclipse.core.runtime.Platform;
  * This class allows to get the list of all matching rules
  * (which is initialized once parsing a XML file)
  * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
 public class MatchingRules
 {
+    /** The Equality Matching Rules */
     private static final ArrayList<MatchingRule> equalityMatchingRules;
+
+    /** The Ordering Matching Rules */
     private static final ArrayList<MatchingRule> orderingMatchingRules;
+
+    /** The Substring Matching Rules */
     private static final ArrayList<MatchingRule> substringMatchingRules;
 
+    // Equality Matching Rules Initialization
     static
     {
         try
@@ -72,6 +80,7 @@ public class MatchingRules
         }
     }
 
+    // Ordering Matching Rules Initialization
     static
     {
         try
@@ -104,6 +113,7 @@ public class MatchingRules
         }
     }
 
+    // Substring Matching Rules Initialization
     static
     {
         try
@@ -137,8 +147,9 @@ public class MatchingRules
 
 
     /**
-     * Return the unique initialized ArrayList containing all Equality Matching Rules
-     * @return the Equality Matching Rules ArrayList
+     * Returns the unique initialized ArrayList containing all Equality Matching Rules.
+     * @return
+     *      the Equality Matching Rules ArrayList
      */
     public static ArrayList<MatchingRule> getEqualityMatchingRules()
     {
@@ -147,8 +158,10 @@ public class MatchingRules
 
 
     /**
-     * Return the unique initialized ArrayList containing all Ordering Matching Rules
-     * @return the Ordering Matching Rules ArrayList
+     * Returns the unique initialized ArrayList containing all Ordering Matching Rules.
+     * 
+     * @return
+     *      the Ordering Matching Rules ArrayList
      */
     public static ArrayList<MatchingRule> getOrderingMatchingRules()
     {
@@ -157,11 +170,56 @@ public class MatchingRules
 
 
     /**
-     * Return the unique initialized ArrayList containing all Substring Matching Rules
-     * @return the Substring Matching Rules ArrayList
+     * Returns the unique initialized ArrayList containing all Substring Matching Rules.
+     * 
+     * @return
+     *      the Substring Matching Rules ArrayList
      */
     public static ArrayList<MatchingRule> getSubstringMatchingRules()
     {
         return substringMatchingRules;
+    }
+
+
+    /**
+     * Gets a Matching Rule from a given name.
+     *
+     * @param name
+     *      the name of the Matching Rule
+     * @return
+     *      the corresponding Matching Rule
+     */
+    public static MatchingRule getMatchingRule( String name )
+    {
+        if ( name == null )
+        {
+            return null;
+        }
+
+        for ( MatchingRule matchingRule : equalityMatchingRules )
+        {
+            if ( name.equalsIgnoreCase( matchingRule.getName() ) )
+            {
+                return matchingRule;
+            }
+        }
+
+        for ( MatchingRule matchingRule : orderingMatchingRules )
+        {
+            if ( name.equalsIgnoreCase( matchingRule.getName() ) )
+            {
+                return matchingRule;
+            }
+        }
+
+        for ( MatchingRule matchingRule : substringMatchingRules )
+        {
+            if ( name.equalsIgnoreCase( matchingRule.getName() ) )
+            {
+                return matchingRule;
+            }
+        }
+
+        return null;
     }
 }

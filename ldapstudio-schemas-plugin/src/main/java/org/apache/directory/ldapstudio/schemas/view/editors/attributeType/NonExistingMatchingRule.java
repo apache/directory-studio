@@ -29,31 +29,31 @@ import org.apache.directory.ldapstudio.schemas.Messages;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NonExistingAttributeType
+public class NonExistingMatchingRule
 {
-    public static final String NONE = Messages.getString( "NonExistingAttributeType.(None)" );
+    public static final String NONE = Messages.getString( "NonExistingMatchingRule.(None)" );
 
     /** The name */
     private String name;
 
 
     /**
-     * Creates a new instance of NonExistingAttributeType.
+     * Creates a new instance of NonExistingMatchingRule.
      *
      * @param name
-     *      the name the NonExistingAttributeType
+     *      the name the NonExistingMatchingRule
      */
-    public NonExistingAttributeType( String name )
+    public NonExistingMatchingRule( String name )
     {
         this.name = name;
     }
 
 
     /**
-     * Gets the name of the NonExistingAttributeType.
+     * Gets the name of the NonExistingMatchingRule.
      *
      * @return
-     *      the name of the NonExistingAttributeType
+     *      the name of the NonExistingMatchingRule
      */
     public String getName()
     {
@@ -62,10 +62,10 @@ public class NonExistingAttributeType
 
 
     /**
-     * Gets the displayable name of the NonExistingAttributeType.
+     * Gets the displayable name of the NonExistingMatchingRule.
      *
      * @return
-     *      the displayable name of the NonExistingAttributeType
+     *      the displayable name of the NonExistingMatchingRule
      */
     public String getDisplayName()
     {
@@ -75,7 +75,7 @@ public class NonExistingAttributeType
         }
         else
         {
-            return name + "   " + Messages.getString( "NonExistingAttributeType.(This_attribute_type_doesnt_exist)" );
+            return name + "   " + Messages.getString( "NonExistingMatchingRule.(This_matching_rule_doesnt_exist)" );
         }
     }
 
@@ -85,9 +85,9 @@ public class NonExistingAttributeType
      */
     public boolean equals( Object obj )
     {
-        if ( obj instanceof NonExistingAttributeType )
+        if ( obj instanceof NonExistingMatchingRule )
         {
-            return name.equalsIgnoreCase( ( ( NonExistingAttributeType ) obj ).getName() );
+            return name.equalsIgnoreCase( (( NonExistingMatchingRule ) obj).getName() );
         }
 
         return false;
