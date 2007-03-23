@@ -24,7 +24,7 @@ import org.apache.directory.ldapstudio.schemas.Messages;
 
 
 /**
- * This class implements the Non Existing Attribute Type.
+ * This class implements the Non Existing Matching Rule.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
