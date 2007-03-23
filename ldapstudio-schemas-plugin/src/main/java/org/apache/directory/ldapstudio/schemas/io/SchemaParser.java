@@ -127,7 +127,7 @@ public class SchemaParser
         in = fileURL.openStream();
 
         if ( in == null )
-            throw new FileNotFoundException( Messages.getString( "SchemaParser.0" ) ); //$NON-NLS-1$
+            throw new FileNotFoundException( Messages.getString( "SchemaParser.No_path_or_url_specified" ) ); //$NON-NLS-1$
 
         OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
         try
