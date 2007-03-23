@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.schemas.Messages;
  */
 public class NonExistingAttributeType
 {
-    public static final String NONE = Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" );
+    public static final String NONE = Messages.getString( "NonExistingAttributeType.(None)" );
 
     /** The name */
     private String name;
