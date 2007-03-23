@@ -22,15 +22,13 @@ package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.MatchingRule;
 import org.apache.directory.ldapstudio.schemas.model.MatchingRules;
+import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Syntax;
@@ -42,6 +40,8 @@ import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorI
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -74,7 +74,7 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * This class is the Overview Page of the Attribute Type Editor
  */
-public class AttributeTypeEditorOverviewPage extends FormPage
+public class AttributeTypeEditorOverviewPage extends FormPage implements PoolListener
 {
     /** The page ID*/
     public static final String ID = AttributeTypeEditor.ID + "overviewPage";
@@ -217,17 +217,16 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void linkActivated( HyperlinkEvent e )
         {
-            if ( !supCombo.getItem( supCombo.getSelectionIndex() ).equals(
-                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                SchemaPool pool = SchemaPool.getInstance();
+            Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
+
+            if ( selectedItem instanceof AttributeType )
+            {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-                AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool.getAttributeType( supCombo
-                    .getItem( supCombo.getSelectionIndex() ) ) );
-                String editorId = AttributeTypeEditor.ID;
+                AttributeTypeEditorInput input = new AttributeTypeEditorInput( ( AttributeType ) selectedItem );
                 try
                 {
-                    page.openEditor( input, editorId );
+                    page.openEditor( input, AttributeTypeEditor.ID );
                 }
                 catch ( PartInitException exception )
                 {
@@ -242,13 +241,24 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void modifyText( ModifyEvent e )
         {
-            if ( supCombo.getItem( supCombo.getSelectionIndex() ).equals(
-                Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) ) { //$NON-NLS-1$
-                modifiedAttributeType.setSuperior( "" ); //$NON-NLS-1$
-            }
-            else
+            Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
+
+            if ( selectedItem instanceof AttributeType )
             {
-                modifiedAttributeType.setSuperior( supCombo.getItem( supCombo.getSelectionIndex() ) );
+                modifiedAttributeType.setSuperior( ( ( AttributeType ) selectedItem ).getNames()[0] );
+            }
+            else if ( selectedItem instanceof NonExistingAttributeType )
+            {
+                NonExistingAttributeType neat = ( NonExistingAttributeType ) selectedItem;
+
+                if ( NonExistingAttributeType.NONE.equals( neat.getName() ) )
+                {
+                    modifiedAttributeType.setSuperior( null );
+                }
+                else
+                {
+                    modifiedAttributeType.setSuperior( ( ( NonExistingAttributeType ) selectedItem ).getName() );
+                }
             }
             setEditorDirty();
         }
@@ -405,6 +415,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
     };
 
+    private ComboViewer supComboViewer;
+
 
     /**
      * Default constructor.
@@ -415,6 +427,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     public AttributeTypeEditorOverviewPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
+        SchemaPool.getInstance().addListener( this );
     }
 
 
@@ -512,7 +525,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             .getString( "AttributeTypeFormEditorOverviewPage.Superior_type" ), SWT.WRAP ); //$NON-NLS-1$
         supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        initSupCombo();
+        supComboViewer = new ComboViewer( supCombo );
+        supComboViewer.setContentProvider( new AttributeTypeEditorSuperiorComboContentProvider() );
+        supComboViewer.setLabelProvider( new AttributeTypeEditorSuperiorComboLabelProvider() );
+        supComboViewer.setInput( new AttributeTypeEditorSuperiorComboInput( originalAttributeType ) );
 
         // USAGE Combo
         toolkit.createLabel( client_general_information, Messages
@@ -607,37 +623,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     }
 
 
-    private void initSupCombo()
-    {
-        SchemaPool pool = SchemaPool.getInstance();
-        List<AttributeType> atList = pool.getAttributeTypes();
-
-        // Remove duplicate entries
-        HashSet<AttributeType> set = new HashSet<AttributeType>( atList );
-        atList = new ArrayList<AttributeType>( set );
-
-        // Sorting the list
-        Collections.sort( atList, new Comparator<AttributeType>()
-        {
-            public int compare( AttributeType arg0, AttributeType arg1 )
-            {
-                String oneName = arg0.getNames()[0];
-                String twoName = arg1.getNames()[0];
-                return oneName.compareTo( twoName );
-            }
-        } );
-
-        // Creating the UI
-        supCombo.add( Messages.getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ); //$NON-NLS-1$
-        supCombo.select( 0 );
-        for ( AttributeType at : atList )
-        {
-            // TODO Add a verification, so we can't add as superior the attribute type itself
-            supCombo.add( at.getNames()[0] );
-        }
-    }
-
-
     private void initUsageCombo()
     {
         usageCombo.add( "directoryOperation", 0 ); //$NON-NLS-1$
@@ -726,14 +711,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
 
         // SUP Combo
-        if ( modifiedAttributeType.getSuperior() == null )
-        {
-            fillSupCombo( Messages.getString( "ObjectClassFormEditorOverviewPage.(None)" ) );
-        }
-        else
-        {
-            fillSupCombo( modifiedAttributeType.getSuperior() );
-        }
+        fillSupCombo();
 
         // USAGE Combo
         fillInUsageCombo();
@@ -804,15 +782,35 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      * @param name
      *      the name to select
      */
-    private void fillSupCombo( String name )
+    private void fillSupCombo()
     {
-        supCombo.select( 0 );
-        for ( int i = 0; i < supCombo.getItemCount(); i++ )
+        if ( modifiedAttributeType.getSuperior() == null )
         {
-            if ( name.equals( supCombo.getItem( i ) ) )
+            supComboViewer.setSelection( new StructuredSelection( new NonExistingAttributeType(
+                NonExistingAttributeType.NONE ) ), true );
+        }
+        else
+        {
+            String supAtName = modifiedAttributeType.getSuperior();
+
+            SchemaPool schemaPool = SchemaPool.getInstance();
+
+            AttributeType supAT = schemaPool.getAttributeType( supAtName );
+            if ( supAT != null )
             {
-                supCombo.select( i );
-                return;
+                supComboViewer.setSelection( new StructuredSelection( supAT ), true );
+            }
+            else
+            {
+                AttributeTypeEditorSuperiorComboInput input = ( AttributeTypeEditorSuperiorComboInput ) supComboViewer
+                    .getInput();
+                NonExistingAttributeType neat = new NonExistingAttributeType( supAtName );
+                if ( !input.getChildren().contains( neat ) )
+                {
+                    input.addChild( neat );
+                }
+                supComboViewer.refresh();
+                supComboViewer.setSelection( new StructuredSelection( neat ), true );
             }
         }
     }
@@ -1026,6 +1024,18 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         removeListeners();
         fillInUiFields();
+        addListeners();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.PoolListener#poolChanged(org.apache.directory.ldapstudio.schemas.model.SchemaPool, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+     */
+    public void poolChanged( SchemaPool p, LDAPModelEvent e )
+    {
+        removeListeners();
+        supComboViewer.setInput( new AttributeTypeEditorSuperiorComboInput( originalAttributeType ) );
+        fillSupCombo();
         addListeners();
     }
 }

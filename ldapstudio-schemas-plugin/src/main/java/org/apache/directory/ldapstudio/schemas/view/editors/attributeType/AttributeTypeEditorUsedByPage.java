@@ -103,8 +103,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool
-                .getObjectClass( optionalAttibuteTable.getSelection()[0].getText() ) );
+            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool.getObjectClass( optionalAttibuteTable
+                .getSelection()[0].getText() ) );
             String editorId = ObjectClassEditor.ID;
             try
             {
