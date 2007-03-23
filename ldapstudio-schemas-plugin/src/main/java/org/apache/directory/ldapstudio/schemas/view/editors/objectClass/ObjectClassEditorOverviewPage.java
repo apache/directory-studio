@@ -24,6 +24,7 @@ package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
@@ -32,7 +33,6 @@ import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.AttributeTypeSelectionDialog;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.ManageAliasesDialog;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.ObjectClassSelectionDialog;
-import org.apache.directory.ldapstudio.schemas.view.editors.Messages;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;

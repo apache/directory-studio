@@ -24,6 +24,7 @@ package org.apache.directory.ldapstudio.schemas.view.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;

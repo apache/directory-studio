@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;

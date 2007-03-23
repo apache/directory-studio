@@ -33,6 +33,7 @@ import java.util.Hashtable;
 import java.util.Set;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.io.SchemaParser;
 import org.apache.directory.ldapstudio.schemas.io.SchemaWriter;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
