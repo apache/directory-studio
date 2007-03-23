@@ -541,9 +541,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         supComboViewer = new ComboViewer( supCombo );
-        supComboViewer.setContentProvider( new AttributeTypeEditorSuperiorComboContentProvider() );
-        supComboViewer.setLabelProvider( new AttributeTypeEditorSuperiorComboLabelProvider() );
-        supComboViewer.setInput( new AttributeTypeEditorSuperiorComboInput( originalAttributeType ) );
+        supComboViewer.setContentProvider( new ATESuperiorComboContentProvider() );
+        supComboViewer.setLabelProvider( new ATESuperiorComboLabelProvider() );
+        supComboViewer.setInput( new ATESuperiorComboInput( originalAttributeType ) );
 
         // USAGE Combo
         toolkit.createLabel( client_general_information, Messages
@@ -815,7 +815,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
             }
             else
             {
-                AttributeTypeEditorSuperiorComboInput input = ( AttributeTypeEditorSuperiorComboInput ) supComboViewer
+                ATESuperiorComboInput input = ( ATESuperiorComboInput ) supComboViewer
                     .getInput();
                 NonExistingAttributeType neat = new NonExistingAttributeType( supAtName );
                 if ( !input.getChildren().contains( neat ) )
@@ -1049,7 +1049,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
         removeListeners();
-        supComboViewer.setInput( new AttributeTypeEditorSuperiorComboInput( originalAttributeType ) );
+        supComboViewer.setInput( new ATESuperiorComboInput( originalAttributeType ) );
         fillSupCombo();
         addListeners();
     }

@@ -32,21 +32,22 @@ import org.apache.directory.ldapstudio.schemas.model.AttributeType;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeTypeEditorSuperiorComboInput
+public class ATESuperiorComboInput
 {
     /** The Attribute Type */
     private AttributeType at;
 
+    /** The children */
     private List<Object> children;
 
 
     /**
-     * Creates a new instance of AttributeTypeEditorSuperiorComboInput.
+     * Creates a new instance of ATESuperiorComboInput.
      *
      * @param at
      *      the Attribute Type
      */
-    public AttributeTypeEditorSuperiorComboInput( AttributeType at )
+    public ATESuperiorComboInput( AttributeType at )
     {
         this.at = at;
     }

@@ -37,16 +37,16 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeTypeEditorSuperiorComboContentProvider implements IStructuredContentProvider
+public class ATESuperiorComboContentProvider implements IStructuredContentProvider
 {
     /** The Schema Pool */
     private SchemaPool schemaPool;
 
 
     /**
-     * Creates a new instance of AttributeTypeEditorSuperiorComboContentProvider.
+     * Creates a new instance of ATESuperiorComboContentProvider.
      */
-    public AttributeTypeEditorSuperiorComboContentProvider()
+    public ATESuperiorComboContentProvider()
     {
         schemaPool = SchemaPool.getInstance();
     }
@@ -57,9 +57,9 @@ public class AttributeTypeEditorSuperiorComboContentProvider implements IStructu
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement instanceof AttributeTypeEditorSuperiorComboInput )
+        if ( inputElement instanceof ATESuperiorComboInput )
         {
-            AttributeTypeEditorSuperiorComboInput input = ( AttributeTypeEditorSuperiorComboInput ) inputElement;
+            ATESuperiorComboInput input = ( ATESuperiorComboInput ) inputElement;
 
             if ( input.getChildren().isEmpty() )
             {

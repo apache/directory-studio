@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.LabelProvider;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeTypeEditorSuperiorComboLabelProvider extends LabelProvider
+public class ATESuperiorComboLabelProvider extends LabelProvider
 {
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
