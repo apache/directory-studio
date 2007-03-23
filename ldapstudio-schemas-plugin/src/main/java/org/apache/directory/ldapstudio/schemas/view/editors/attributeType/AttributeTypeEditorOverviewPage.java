@@ -307,8 +307,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         }
     };
 
-    /** The listener for the Syntax Length Text Widget */
-    private ModifyListener syntaxLengthTextListener = new ModifyListener()
+    /** The Modify listener for the Syntax Length Text Widget */
+    private ModifyListener syntaxLengthTextModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
@@ -321,6 +321,18 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
                 modifiedAttributeType.setLength( Integer.parseInt( syntaxLengthText.getText() ) );
             }
             setEditorDirty();
+        }
+    };
+
+    /** The Verify listener for the Syntax Length Text Widget */
+    private VerifyListener syntaxLengthTextVerifyListener = new VerifyListener()
+    {
+        public void verifyText( VerifyEvent e )
+        {
+            if ( !e.text.matches( "[0-9]*" ) )
+            {
+                e.doit = false;
+            }
         }
     };
 
@@ -965,7 +977,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
             supCombo.addModifyListener( supComboListener );
             usageCombo.addModifyListener( usageComboListener );
             syntaxCombo.addModifyListener( syntaxComboListener );
-            syntaxLengthText.addModifyListener( syntaxLengthTextListener );
+            syntaxLengthText.addModifyListener( syntaxLengthTextModifyListener );
+            syntaxLengthText.addVerifyListener( syntaxLengthTextVerifyListener );
             obsoleteCheckbox.addSelectionListener( obsoleteCheckboxListener );
             singleValueCheckbox.addSelectionListener( singleValueCheckboxListener );
             collectiveCheckbox.addSelectionListener( collectiveCheckboxListener );
@@ -997,7 +1010,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         supCombo.removeModifyListener( supComboListener );
         usageCombo.removeModifyListener( usageComboListener );
         syntaxCombo.removeModifyListener( syntaxComboListener );
-        syntaxLengthText.removeModifyListener( syntaxLengthTextListener );
+        syntaxLengthText.removeModifyListener( syntaxLengthTextModifyListener );
+        syntaxLengthText.removeVerifyListener( syntaxLengthTextVerifyListener );
         obsoleteCheckbox.removeSelectionListener( obsoleteCheckboxListener );
         singleValueCheckbox.removeSelectionListener( singleValueCheckboxListener );
         collectiveCheckbox.removeSelectionListener( collectiveCheckboxListener );
