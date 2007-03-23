@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -66,8 +65,7 @@ public class ATESuperiorComboContentProvider implements IStructuredContentProvid
                 AttributeType editorAT = input.getAttributeType();
 
                 // Creating the '(None)' item
-                input.addChild( new NonExistingAttributeType( Messages
-                    .getString( "AttributeTypeFormEditorOverviewPage.(None)" ) ) );
+                input.addChild( new NonExistingAttributeType( NonExistingAttributeType.NONE ) );
 
                 // Creating Children
                 List<AttributeType> ats = schemaPool.getAttributeTypes();
