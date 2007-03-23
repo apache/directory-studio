@@ -88,6 +88,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     /** The modified object class */
     private AttributeType modifiedAttributeType;
 
+    /** The Schema Pool */
+    private SchemaPool schemaPool;
+
     // UI Fields
     private Label aliasesLabel;
     private Button aliasesButton;
@@ -97,6 +100,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private Text descriptionText;
     private Hyperlink supLabel;
     private Combo supCombo;
+    private ComboViewer supComboViewer;
     private Combo usageCombo;
     private Combo syntaxCombo;
     private Text syntaxLengthText;
@@ -149,7 +153,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
             if ( OID.isOID( oid ) )
             {
                 if ( ( originalAttributeType.getOid().equals( oid ) )
-                    || !( SchemaPool.getInstance().containsSchemaElement( oid ) ) )
+                    || !( schemaPool.containsSchemaElement( oid ) ) )
                 {
                     modifiedAttributeType.setOid( oid );
                     setEditorDirty();
@@ -427,8 +431,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         }
     };
 
-    private ComboViewer supComboViewer;
-
 
     /**
      * Default constructor.
@@ -439,7 +441,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     public AttributeTypeEditorOverviewPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
-        SchemaPool.getInstance().addListener( this );
+        schemaPool = SchemaPool.getInstance();
+        schemaPool.addListener( this );
     }
 
 
@@ -804,8 +807,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         else
         {
             String supAtName = modifiedAttributeType.getSuperior();
-
-            SchemaPool schemaPool = SchemaPool.getInstance();
 
             AttributeType supAT = schemaPool.getAttributeType( supAtName );
             if ( supAT != null )

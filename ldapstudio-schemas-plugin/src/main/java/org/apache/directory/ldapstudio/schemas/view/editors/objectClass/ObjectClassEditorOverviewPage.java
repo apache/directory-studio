@@ -94,6 +94,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
     /** The modified object class */
     private ObjectClass modifiedObjectClass;
 
+    /** The Schema Pool */
+    private SchemaPool schemaPool;
+
     // UI fields
     private Label aliasesLabel;
     private Button aliasesButton;
@@ -156,8 +159,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
             if ( OID.isOID( oid ) )
             {
-                if ( ( originalObjectClass.getOid().equals( oid ) )
-                    || !( SchemaPool.getInstance().containsSchemaElement( oid ) ) )
+                if ( ( originalObjectClass.getOid().equals( oid ) ) || !( schemaPool.containsSchemaElement( oid ) ) )
                 {
                     modifiedObjectClass.setOid( oid );
                     setEditorDirty();
@@ -268,10 +270,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool.getAttributeType( atw
+            AttributeTypeEditorInput input = new AttributeTypeEditorInput( schemaPool.getAttributeType( atw
                 .getMyAttributeType().getNames()[0] ) );
             try
             {
@@ -304,11 +305,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-            SchemaPool pool = SchemaPool.getInstance();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             for ( String must : modifiedObjectClass.getMust() )
             {
-                AttributeType at = pool.getAttributeType( must );
+                AttributeType at = schemaPool.getAttributeType( must );
                 if ( at != null )
                 {
                     hiddenATs.add( at );
@@ -316,7 +316,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
             for ( String may : modifiedObjectClass.getMay() )
             {
-                AttributeType at = pool.getAttributeType( may );
+                AttributeType at = schemaPool.getAttributeType( may );
                 if ( at != null )
                 {
                     hiddenATs.add( at );
@@ -401,10 +401,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            AttributeTypeEditorInput input = new AttributeTypeEditorInput( pool.getAttributeType( atw
+            AttributeTypeEditorInput input = new AttributeTypeEditorInput( schemaPool.getAttributeType( atw
                 .getMyAttributeType().getNames()[0] ) );
             try
             {
@@ -432,11 +431,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
-            SchemaPool pool = SchemaPool.getInstance();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             for ( String must : modifiedObjectClass.getMust() )
             {
-                AttributeType at = pool.getAttributeType( must );
+                AttributeType at = schemaPool.getAttributeType( must );
                 if ( at != null )
                 {
                     hiddenATs.add( at );
@@ -444,7 +442,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
             for ( String may : modifiedObjectClass.getMay() )
             {
-                AttributeType at = pool.getAttributeType( may );
+                AttributeType at = schemaPool.getAttributeType( may );
                 if ( at != null )
                 {
                     hiddenATs.add( at );
@@ -529,11 +527,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            SchemaPool pool = SchemaPool.getInstance();
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassEditorInput input = new ObjectClassEditorInput( pool.getObjectClass( ocw.getMyObjectClass()
-                .getNames()[0] ) );
+            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool.getObjectClass( ocw
+                .getMyObjectClass().getNames()[0] ) );
             try
             {
                 page.openEditor( input, ObjectClassEditor.ID );
@@ -560,11 +557,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
         public void widgetSelected( SelectionEvent e )
         {
             ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
-            SchemaPool pool = SchemaPool.getInstance();
             List<ObjectClass> hiddenOCs = new ArrayList<ObjectClass>();
             for ( String sup : modifiedObjectClass.getSuperiors() )
             {
-                ObjectClass oc = pool.getObjectClass( sup );
+                ObjectClass oc = schemaPool.getObjectClass( sup );
                 if ( oc != null )
                 {
                     hiddenOCs.add( oc );
@@ -642,6 +638,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     public ObjectClassEditorOverviewPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
+        schemaPool = SchemaPool.getInstance();
     }
 
 
