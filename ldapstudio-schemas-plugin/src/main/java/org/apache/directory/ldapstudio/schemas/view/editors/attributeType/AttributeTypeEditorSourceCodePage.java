@@ -183,6 +183,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         modifiedAttributeType.setCollective( atl.isCollective() );
         modifiedAttributeType.setDescription( atl.getDescription() );
         modifiedAttributeType.setEquality( atl.getEquality() );
+        modifiedAttributeType.setLength( atl.getLength() );
         modifiedAttributeType.setNames( atl.getNames() );
         modifiedAttributeType.setNoUserModification( atl.isNoUserModification() );
         modifiedAttributeType.setObsolete( atl.isObsolete() );
