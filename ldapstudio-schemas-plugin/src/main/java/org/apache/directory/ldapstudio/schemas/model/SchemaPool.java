@@ -22,6 +22,10 @@ package org.apache.directory.ldapstudio.schemas.model;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,8 +39,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.XMLMemento;
 
 
 /**
@@ -55,8 +60,6 @@ import org.osgi.service.prefs.Preferences;
 public class SchemaPool implements SchemaListener
 {
     private static Logger logger = Logger.getLogger( SchemaPool.class );
-    private static final String SCHEMA_URL = "schema_url"; //$NON-NLS-1$
-    private static final String SAVED_WORKSPACE = "prefs_saved_workspace"; //$NON-NLS-1$
 
     private static SchemaPool instance_;
     private static Object syncObject_ = new Object();
@@ -70,6 +73,10 @@ public class SchemaPool implements SchemaListener
     private Map<String, AttributeType> attributeTypesMap = new HashMap<String, AttributeType>();
     private Map<String, ObjectClass> objectClassesMap = new HashMap<String, ObjectClass>();
 
+    private static final String SCHEMAS_TAG = "Schemas";
+    private static final String SCHEMA_TAG = "Schema";
+    private static final String PATH_TAG = "path";
+
 
     /**
      * Write the pool configuration to the LDAPStudio preferences backing store.
@@ -77,28 +84,28 @@ public class SchemaPool implements SchemaListener
      */
     public void savePool()
     {
+        //we only store the references to schemas that have ALREADY
+        //been saved. -> url != null
+        XMLMemento memento = XMLMemento.createWriteRoot( SCHEMAS_TAG );
+
+        for ( Schema schema : schemaList )
+        {
+            if ( ( schema.type == Schema.SchemaType.userSchema ) && ( schema.getURL() != null ) )
+            {
+                IMemento child = memento.createChild( SCHEMA_TAG );
+                child.putString( PATH_TAG, schema.getURL().getPath() );
+            }
+        }
+
         try
         {
-            Preferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-            Preferences saved_workspace = prefs.node( SAVED_WORKSPACE );
-
-            //we only store the references to schemas that have ALREADY
-            //been saved. -> url != null
-            for ( Schema schema : schemaList )
-            {
-                if ( ( schema.type == Schema.SchemaType.userSchema ) && ( schema.getURL() != null ) )
-                {
-                    Preferences schemaPref = saved_workspace.node( schema.getName() );
-                    String url = schema.getURL().getPath();
-                    schemaPref.put( SCHEMA_URL, url );
-                }
-            }
-
-            saved_workspace.flush();
+            FileWriter writer = new FileWriter( getSchemaPoolFile() );
+            memento.save( writer );
+            writer.close();
         }
-        catch ( BackingStoreException e )
+        catch ( IOException e )
         {
-            logger.debug( "error when accessing the preferences backing store" ); //$NON-NLS-1$
+            logger.debug( "Error when saving opened schemas.", e ); //$NON-NLS-1$
         }
     }
 
@@ -111,33 +118,32 @@ public class SchemaPool implements SchemaListener
     {
         try
         {
-            Preferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-            Preferences saved_workspace = prefs.node( SAVED_WORKSPACE );
-            String[] schemaNames = saved_workspace.childrenNames();
-            for ( String name : schemaNames )
+
+            FileReader reader = new FileReader( getSchemaPoolFile() );
+            XMLMemento memento = XMLMemento.createReadRoot( reader );
+            IMemento[] children = memento.getChildren( SCHEMA_TAG );
+            for ( IMemento child : children )
             {
-                Preferences node = saved_workspace.node( name );
                 try
                 {
-                    addAlreadyExistingSchema( Schema.localPathToURL( node.get( SCHEMA_URL, "" ) ), //$NON-NLS-1$
+                    addAlreadyExistingSchema( Schema.localPathToURL( child.getString( PATH_TAG ) ), //$NON-NLS-1$
                         Schema.SchemaType.userSchema );
                 }
                 catch ( SchemaCreationException e )
                 {
-                    logger.debug( "error loading schema " + node.get( SCHEMA_URL, "" ) + " in the pool" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    logger.debug( "Error loading schema " + child.getString( PATH_TAG ) + " in the pool." ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
-                finally
-                {
-                    node.removeNode();
-                }
-            }
-            saved_workspace.flush();
-        }
-        catch ( BackingStoreException e )
-        {
-            logger.debug( "error when accessing the preferences backing store" ); //$NON-NLS-1$
-        }
 
+            }
+        }
+        catch ( FileNotFoundException e )
+        {
+            logger.debug( "Error when loading previously opened schemas.", e ); //$NON-NLS-1$
+        }
+        catch ( WorkbenchException e )
+        {
+            logger.debug( "Error when loading previously opened schemas.", e ); //$NON-NLS-1$
+        }
     }
 
 
@@ -960,5 +966,11 @@ public class SchemaPool implements SchemaListener
         }
         objectClassesMap.remove( oc.getOid() );
         objectClasses.remove( oc );
+    }
+
+
+    private File getSchemaPoolFile()
+    {
+        return Activator.getDefault().getStateLocation().append( "schemaPool.xml" ).toFile();
     }
 }
