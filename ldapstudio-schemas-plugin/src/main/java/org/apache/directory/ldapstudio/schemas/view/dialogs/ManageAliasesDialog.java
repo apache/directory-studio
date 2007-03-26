@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -268,6 +269,12 @@ public class ManageAliasesDialog extends Dialog
                 {
                     errorComposite.setVisible( true );
                     errorLabel.setText( "An element with same alias already exists." );
+                    newAliasAddButton.setEnabled( false );
+                }
+                else if ( !ViewUtils.verifyName( text ) )
+                {
+                    errorComposite.setVisible( true );
+                    errorLabel.setText( "Invalid Alias." );
                     newAliasAddButton.setEnabled( false );
                 }
             }

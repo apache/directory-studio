@@ -25,6 +25,7 @@ import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
+import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -208,6 +209,12 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
         {
             updateStatus( Messages
                 .getString( "CreateANewAttributeTypeWizardPage.An_element_of_the_same_OID_already_exists" ) ); //$NON-NLS-1$
+            return;
+        }
+
+        if ( !ViewUtils.verifyName( getNameField() ) )
+        {
+            updateStatus( "Name is not valid." );
             return;
         }
 

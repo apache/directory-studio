@@ -65,4 +65,19 @@ public class ViewUtils
 
         return sb.toString();
     }
+    
+    
+    /**
+     * Verifies that the given name is syntaxely correct according to the RFC 2252 
+     * (Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions).
+     *
+     * @param name
+     *      the name to test
+     * @return
+     *      true if the name is correct, false if the name is not correct.
+     */
+    public static boolean verifyName( String name )
+    {
+        return name.matches( "[a-zA-Z]+[a-zA-Z0-9;-]*" );
+    }
 }
