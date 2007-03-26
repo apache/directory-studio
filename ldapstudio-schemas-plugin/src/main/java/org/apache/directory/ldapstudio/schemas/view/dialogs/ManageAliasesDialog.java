@@ -69,9 +69,6 @@ public class ManageAliasesDialog extends Dialog
     private List<String> aliases;
     private List<String> aliasesLowerCased;
 
-    /** The flag for disabling editing */
-    private boolean disableEditing;
-
     /** The dirty flag */
     private boolean dirty = false;
 
@@ -87,16 +84,12 @@ public class ManageAliasesDialog extends Dialog
     /**
      * Creates a new instance of ManageAliasesDialog.
      *
-     * @param parent
-     *      the parent shell
      * @param aliases
      *      the array containing the aliases
-     * @param disableEditing
-     *      the boolean to disable editing
      */
-    public ManageAliasesDialog( Shell parent, String[] aliases, boolean disableEditing )
+    public ManageAliasesDialog( String[] aliases )
     {
-        super( parent );
+        super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         this.aliases = new ArrayList<String>();
         aliasesLowerCased = new ArrayList<String>();
         for ( String alias : aliases )
@@ -104,7 +97,6 @@ public class ManageAliasesDialog extends Dialog
             this.aliases.add( alias );
             aliasesLowerCased.add( alias.toLowerCase() );
         }
-        this.disableEditing = disableEditing;
     }
 
 
@@ -203,101 +195,93 @@ public class ManageAliasesDialog extends Dialog
      */
     private void initListeners()
     {
-        if ( this.disableEditing )
+        aliasesTable.addKeyListener( new KeyListener()
         {
-            aliasesTable.setEnabled( false );
-            newAliasText.setEnabled( false );
-            newAliasAddButton.setEnabled( false );
-        }
-        else
-        {
-            aliasesTable.addKeyListener( new KeyListener()
+            public void keyPressed( KeyEvent e )
             {
-                public void keyPressed( KeyEvent e )
-                {
-                    if ( ( e.keyCode == SWT.DEL ) || ( e.keyCode == Action.findKeyCode( "BACKSPACE" ) ) ) { //$NON-NLS-1$
-                        // NOTE: I couldn't find the corresponding Identificator in the SWT.SWT Class,
-                        // so I Used JFace Action fineKeyCode method to get the Backspace keycode.
+                if ( ( e.keyCode == SWT.DEL ) || ( e.keyCode == Action.findKeyCode( "BACKSPACE" ) ) ) { //$NON-NLS-1$
+                    // NOTE: I couldn't find the corresponding Identificator in the SWT.SWT Class,
+                    // so I Used JFace Action fineKeyCode method to get the Backspace keycode.
 
-                        removeAliases();
-                    }
-                }
-
-
-                public void keyReleased( KeyEvent e )
-                {
-                }
-            } );
-
-            // Aliases Table's Popup Menu
-            Menu menu = new Menu( getShell(), SWT.POP_UP );
-            aliasesTable.setMenu( menu );
-            MenuItem deleteMenuItem = new MenuItem( menu, SWT.PUSH );
-            deleteMenuItem.setText( Messages.getString( "ManageAliasesDialog.Delete" ) ); //$NON-NLS-1$
-            deleteMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
-            // Adding the listener
-            deleteMenuItem.addListener( SWT.Selection, new Listener()
-            {
-                public void handleEvent( Event event )
-                {
                     removeAliases();
                 }
-            } );
+            }
 
-            // NEW ALIAS Field
-            newAliasText.addTraverseListener( new TraverseListener()
+
+            public void keyReleased( KeyEvent e )
             {
-                public void keyTraversed( TraverseEvent e )
-                {
-                    if ( e.detail == SWT.TRAVERSE_RETURN )
-                    {
-                        String text = newAliasText.getText();
+            }
+        } );
 
-                        if ( ( !"".equals( text ) ) && ( !aliasesLowerCased.contains( text.toLowerCase() ) )
-                            && ( !SchemaPool.getInstance().containsSchemaElement( text ) ) )
-                        {
-                            addANewAlias();
-                        }
-                    }
-                }
-            } );
-
-            newAliasText.addModifyListener( new ModifyListener()
+        // Aliases Table's Popup Menu
+        Menu menu = new Menu( getShell(), SWT.POP_UP );
+        aliasesTable.setMenu( menu );
+        MenuItem deleteMenuItem = new MenuItem( menu, SWT.PUSH );
+        deleteMenuItem.setText( Messages.getString( "ManageAliasesDialog.Delete" ) ); //$NON-NLS-1$
+        deleteMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
+        // Adding the listener
+        deleteMenuItem.addListener( SWT.Selection, new Listener()
+        {
+            public void handleEvent( Event event )
             {
-                public void modifyText( ModifyEvent e )
+                removeAliases();
+            }
+        } );
+
+        // NEW ALIAS Field
+        newAliasText.addTraverseListener( new TraverseListener()
+        {
+            public void keyTraversed( TraverseEvent e )
+            {
+                if ( e.detail == SWT.TRAVERSE_RETURN )
                 {
-                    errorComposite.setVisible( false );
-                    newAliasAddButton.setEnabled( true );
                     String text = newAliasText.getText();
 
-                    if ( "".equals( text ) )
+                    if ( ( !"".equals( text ) ) && ( !aliasesLowerCased.contains( text.toLowerCase() ) )
+                        && ( !SchemaPool.getInstance().containsSchemaElement( text ) ) )
                     {
-                        newAliasAddButton.setEnabled( false );
-                    }
-                    else if ( aliasesLowerCased.contains( text.toLowerCase() ) )
-                    {
-                        errorComposite.setVisible( true );
-                        errorLabel.setText( "This alias already exists in the list." );
-                        newAliasAddButton.setEnabled( false );
-                    }
-                    else if ( SchemaPool.getInstance().containsSchemaElement( text ) )
-                    {
-                        errorComposite.setVisible( true );
-                        errorLabel.setText( "An element with same alias already exists." );
-                        newAliasAddButton.setEnabled( false );
+                        addANewAlias();
                     }
                 }
-            } );
+            }
+        } );
 
-            // ADD Button
-            newAliasAddButton.addSelectionListener( new SelectionAdapter()
+        newAliasText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
             {
-                public void widgetSelected( SelectionEvent e )
+                errorComposite.setVisible( false );
+                newAliasAddButton.setEnabled( true );
+                String text = newAliasText.getText();
+
+                if ( "".equals( text ) )
                 {
-                    addANewAlias();
+                    newAliasAddButton.setEnabled( false );
                 }
-            } );
-        }
+                else if ( aliasesLowerCased.contains( text.toLowerCase() ) )
+                {
+                    errorComposite.setVisible( true );
+                    errorLabel.setText( "This alias already exists in the list." );
+                    newAliasAddButton.setEnabled( false );
+                }
+                else if ( SchemaPool.getInstance().containsSchemaElement( text ) )
+                {
+                    errorComposite.setVisible( true );
+                    errorLabel.setText( "An element with same alias already exists." );
+                    newAliasAddButton.setEnabled( false );
+                }
+            }
+        } );
+
+        // ADD Button
+        newAliasAddButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                addANewAlias();
+            }
+        } );
+
     }
 
 
@@ -340,10 +324,7 @@ public class ManageAliasesDialog extends Dialog
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
-        if ( !disableEditing )
-        {
-            createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
-        }
+        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
 
 

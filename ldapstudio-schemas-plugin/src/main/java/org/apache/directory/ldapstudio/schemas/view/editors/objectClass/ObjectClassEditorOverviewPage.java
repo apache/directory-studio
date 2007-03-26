@@ -125,8 +125,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, modifiedObjectClass.getNames(),
-                ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
+            ManageAliasesDialog manageDialog = new ManageAliasesDialog( modifiedObjectClass.getNames() );
             if ( manageDialog.open() != Window.OK )
             {
                 return;
@@ -979,6 +978,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the object class is in a core-schema file, we disable editing
+            aliasesButton.setEnabled( false );
             oidText.setEditable( false );
             descriptionText.setEditable( false );
             addButtonSuperiorsTable.setEnabled( false );

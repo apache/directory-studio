@@ -120,8 +120,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     {
         public void widgetSelected( SelectionEvent e )
         {
-            ManageAliasesDialog manageDialog = new ManageAliasesDialog( null, modifiedAttributeType.getNames(),
-                ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema ) );
+            ManageAliasesDialog manageDialog = new ManageAliasesDialog( modifiedAttributeType.getNames() );
             if ( manageDialog.open() != Window.OK )
             {
                 return;
@@ -778,7 +777,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private void fillSupCombo()
     {
         supComboViewer.setInput( new ATESuperiorComboInput( originalAttributeType ) );
-        
+
         if ( modifiedAttributeType.getSuperior() == null )
         {
             supComboViewer.setSelection( new StructuredSelection( new NonExistingAttributeType(
@@ -838,7 +837,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private void fillSyntaxCombo()
     {
         syntaxComboViewer.setInput( new ATESyntaxComboInput() );
-        
+
         if ( modifiedAttributeType.getSyntax() == null )
         {
             syntaxComboViewer.setSelection( new StructuredSelection( new NonExistingSyntax( NonExistingSyntax.NONE ) ),
@@ -874,7 +873,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private void fillEqualityCombo()
     {
         equalityComboViewer.setInput( new ATEMatchingRulesComboInput() );
-        
+
         if ( modifiedAttributeType.getEquality() == null )
         {
             equalityComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -910,7 +909,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private void fillOrderingCombo()
     {
         orderingComboViewer.setInput( new ATEMatchingRulesComboInput() );
-        
+
         if ( modifiedAttributeType.getOrdering() == null )
         {
             orderingComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -947,7 +946,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private void fillSubstringCombo()
     {
         substringComboViewer.setInput( new ATEMatchingRulesComboInput() );
-        
+
         if ( modifiedAttributeType.getSubstr() == null )
         {
             substringComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -985,6 +984,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
         {
             // If the attribute type is in a core-schema file, we disable editing
+            aliasesButton.setEnabled( false );
             oidText.setEditable( false );
             descriptionText.setEditable( false );
             supCombo.setEnabled( false );
