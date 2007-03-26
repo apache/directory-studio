@@ -95,7 +95,6 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
             catch ( ParseException exception )
             {
                 canLeaveThePage = false;
-                System.err.println( exception.getMessage() );
             }
         }
     };

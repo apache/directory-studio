@@ -95,7 +95,6 @@ public class ObjectClassEditorSourceCodePage extends FormPage
             }
             catch ( ParseException exception )
             {
-                exception.printStackTrace();
                 canLeaveThePage = false;
             }
         }
