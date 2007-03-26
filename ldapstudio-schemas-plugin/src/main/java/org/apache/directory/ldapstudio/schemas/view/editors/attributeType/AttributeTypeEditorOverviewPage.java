@@ -587,7 +587,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         supComboViewer = new ComboViewer( supCombo );
         supComboViewer.setContentProvider( new ATESuperiorComboContentProvider() );
         supComboViewer.setLabelProvider( new ATESuperiorComboLabelProvider() );
-        supComboViewer.setInput( new ATESuperiorComboInput( originalAttributeType ) );
 
         // USAGE Combo
         toolkit.createLabel( client_general_information, Messages
@@ -604,7 +603,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         syntaxComboViewer = new ComboViewer( syntaxCombo );
         syntaxComboViewer.setContentProvider( new ATESyntaxComboContentProvider() );
         syntaxComboViewer.setLabelProvider( new ATESyntaxComboLabelProvider() );
-        syntaxComboViewer.setInput( new ATESyntaxComboInput() );
 
         // SYNTAX LENGTH Field
         toolkit.createLabel( client_general_information, Messages
@@ -670,7 +668,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         equalityComboViewer = new ComboViewer( equalityCombo );
         equalityComboViewer.setContentProvider( new ATEEqualityComboContentProvider() );
         equalityComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
-        equalityComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
         // ORDERING Combo
         toolkit
@@ -680,7 +677,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         orderingComboViewer = new ComboViewer( orderingCombo );
         orderingComboViewer.setContentProvider( new ATEOrderingComboContentProvider() );
         orderingComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
-        orderingComboViewer.setInput( new ATEMatchingRulesComboInput() );
 
         // SUBSTRING Combo
         toolkit.createLabel( client_matching_rules, Messages
@@ -690,7 +686,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         substringComboViewer = new ComboViewer( substringCombo );
         substringComboViewer.setContentProvider( new ATESubstringComboContentProvider() );
         substringComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
-        substringComboViewer.setInput( new ATEMatchingRulesComboInput() );
     }
 
 
@@ -782,6 +777,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
      */
     private void fillSupCombo()
     {
+        supComboViewer.setInput( new ATESuperiorComboInput( originalAttributeType ) );
+        
         if ( modifiedAttributeType.getSuperior() == null )
         {
             supComboViewer.setSelection( new StructuredSelection( new NonExistingAttributeType(
@@ -840,6 +837,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
      */
     private void fillSyntaxCombo()
     {
+        syntaxComboViewer.setInput( new ATESyntaxComboInput() );
+        
         if ( modifiedAttributeType.getSyntax() == null )
         {
             syntaxComboViewer.setSelection( new StructuredSelection( new NonExistingSyntax( NonExistingSyntax.NONE ) ),
@@ -874,6 +873,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
      */
     private void fillEqualityCombo()
     {
+        equalityComboViewer.setInput( new ATEMatchingRulesComboInput() );
+        
         if ( modifiedAttributeType.getEquality() == null )
         {
             equalityComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -908,6 +909,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
      */
     private void fillOrderingCombo()
     {
+        orderingComboViewer.setInput( new ATEMatchingRulesComboInput() );
+        
         if ( modifiedAttributeType.getOrdering() == null )
         {
             orderingComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
@@ -934,6 +937,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
                 orderingComboViewer.setSelection( new StructuredSelection( nemr ), true );
             }
         }
+
     }
 
 
@@ -942,6 +946,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
      */
     private void fillSubstringCombo()
     {
+        substringComboViewer.setInput( new ATEMatchingRulesComboInput() );
+        
         if ( modifiedAttributeType.getSubstr() == null )
         {
             substringComboViewer.setSelection( new StructuredSelection( new NonExistingMatchingRule(
