@@ -35,6 +35,8 @@ import java.util.Map;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent.Reason;
+import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -44,47 +46,150 @@ import org.eclipse.ui.XMLMemento;
 
 
 /**
+ * This class represents the Schema Pool.
+ * 
  * A pool of schema is a common repository for all the currently loaded
- * schemas in LDAP Studio.
- * -> You can add or remove schema from the pool.
- * -> You can obtain a complete list of all the objectClasses and attribute
- * Type currently loaded (even if they are squattered in various schema files).
- * -> the pool of schema can be seen as ONE big schema containing all the 
- * definitions of the currently loaded schemas.
- *
- * NOW USING A SINGLETON DESIGN PATTERN
- * -> use the getPool() static method to get the schema pool
- *
+ * schemas in LDAP Studio Schemas Editor Plugin.
  */
 public class SchemaPool implements SchemaListener
 {
+    /** The logger */
     private static Logger logger = Logger.getLogger( SchemaPool.class );
 
-    private static SchemaPool instance_;
-    private static Object syncObject_ = new Object();
+    /** The SchemaPool instance */
+    private static SchemaPool schemaPool;
 
-    private List<Schema> schemaList;
+    /** The Listeners List */
     private List<PoolListener> listeners;
 
-    private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
-    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
+    /** The Schema List */
+    private List<Schema> schemaList;
 
-    private Map<String, AttributeType> attributeTypesMap = new HashMap<String, AttributeType>();
-    private Map<String, ObjectClass> objectClassesMap = new HashMap<String, ObjectClass>();
+    /** The Attribute Type List */
+    private List<AttributeType> attributeTypes;
 
+    /** The Object Class List */
+    private List<ObjectClass> objectClasses;
+
+    /** The Attribute Type Map*/
+    private Map<String, AttributeType> attributeTypesMap;
+
+    /** The Object Class Map*/
+    private Map<String, ObjectClass> objectClassesMap;
+
+    /** The Schemas Tag */
     private static final String SCHEMAS_TAG = "Schemas";
+
+    /** The Schema Tag */
     private static final String SCHEMA_TAG = "Schema";
+
+    /** the Path Tag */
     private static final String PATH_TAG = "path";
 
 
     /**
-     * Write the pool configuration to the LDAPStudio preferences backing store.
-     * It consists of all the non-core schemas that have been added by the user.
+     * Creates a new instance of SchemaPool.
      */
-    public void savePool()
+    private SchemaPool()
     {
-        //we only store the references to schemas that have ALREADY
-        //been saved. -> url != null
+        listeners = new ArrayList<PoolListener>();
+        schemaList = new ArrayList<Schema>();
+        attributeTypes = new ArrayList<AttributeType>();
+        objectClasses = new ArrayList<ObjectClass>();
+        attributeTypesMap = new HashMap<String, AttributeType>();
+        objectClassesMap = new HashMap<String, ObjectClass>();
+    }
+
+
+    /**
+     * Returns the unique initialized pool.
+     * 
+     * @return 
+     *      the pool
+     */
+    public static SchemaPool getInstance()
+    {
+        if ( schemaPool == null )
+        {
+            schemaPool = new SchemaPool();
+            synchronized ( schemaPool )
+            {
+                schemaPool.loadSchemas();
+            }
+        }
+
+        return schemaPool;
+    }
+
+
+    /**
+     * Loads the Schemas (Core and User Schemas)
+     */
+    private void loadSchemas()
+    {
+        schemaPool.loadCoreSchemas();
+        schemaPool.loadUserSchemas();
+    }
+
+
+    /**
+     * Loads the Core Schemas Files.
+     */
+    private void loadCoreSchemas()
+    {
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        boolean useSpecificCore = store.getBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE );
+        if ( useSpecificCore )
+        {
+            schemaPool.loadCoreSchemasFromSpecifiedLocation();
+        }
+        else
+        {
+            schemaPool.loadCoreSchemasFromBundle();
+        }
+    }
+
+
+    /**
+     * Loads the User Schemas Files.
+     */
+    public void loadUserSchemas()
+    {
+        try
+        {
+            FileReader reader = new FileReader( getSchemaPoolFile() );
+            XMLMemento memento = XMLMemento.createReadRoot( reader );
+            IMemento[] children = memento.getChildren( SCHEMA_TAG );
+            for ( IMemento child : children )
+            {
+                try
+                {
+                    addSchema( Schema.localPathToURL( child.getString( PATH_TAG ) ), //$NON-NLS-1$
+                        Schema.SchemaType.userSchema, false );
+                }
+                catch ( SchemaCreationException e )
+                {
+                    logger.debug( "Error loading schema " + child.getString( PATH_TAG ) + " in the pool." ); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+
+            }
+        }
+        catch ( FileNotFoundException e )
+        {
+            logger.debug( "Error when loading previously opened schemas.", e ); //$NON-NLS-1$
+        }
+        catch ( WorkbenchException e )
+        {
+            logger.debug( "Error when loading previously opened schemas.", e ); //$NON-NLS-1$
+        }
+    }
+
+
+    /**
+     * Saves the User Schemas Paths to a XML File.
+     */
+    public void saveUserSchemasPaths()
+    {
         XMLMemento memento = XMLMemento.createWriteRoot( SCHEMAS_TAG );
 
         for ( Schema schema : schemaList )
@@ -110,43 +215,9 @@ public class SchemaPool implements SchemaListener
 
 
     /**
-     * Read the pool configuration from the LDAPStudio preferences backing store.
-     * It consists of all the non-core schemas that have been added by the user.
+     * Loads the Core Schemas From the plugin's Bundle.
      */
-    public void loadPool()
-    {
-        try
-        {
-
-            FileReader reader = new FileReader( getSchemaPoolFile() );
-            XMLMemento memento = XMLMemento.createReadRoot( reader );
-            IMemento[] children = memento.getChildren( SCHEMA_TAG );
-            for ( IMemento child : children )
-            {
-                try
-                {
-                    addAlreadyExistingSchema( Schema.localPathToURL( child.getString( PATH_TAG ) ), //$NON-NLS-1$
-                        Schema.SchemaType.userSchema );
-                }
-                catch ( SchemaCreationException e )
-                {
-                    logger.debug( "Error loading schema " + child.getString( PATH_TAG ) + " in the pool." ); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-
-            }
-        }
-        catch ( FileNotFoundException e )
-        {
-            logger.debug( "Error when loading previously opened schemas.", e ); //$NON-NLS-1$
-        }
-        catch ( WorkbenchException e )
-        {
-            logger.debug( "Error when loading previously opened schemas.", e ); //$NON-NLS-1$
-        }
-    }
-
-
-    private static void initializeWithBundled( SchemaPool pool )
+    private void loadCoreSchemasFromBundle()
     {
         URL urlcore = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/core.schema" ); //$NON-NLS-1$
         URL urljava = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/java.schema" ); //$NON-NLS-1$
@@ -158,28 +229,22 @@ public class SchemaPool implements SchemaListener
         URL urlinetorgperson = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
             "ressources/schemas/inetorgperson.schema" ); //$NON-NLS-1$
 
-        try
-        {
-            pool.addAlreadyExistingSchema( urlcore, Schema.SchemaType.coreSchema );
-            pool.addAlreadyExistingSchema( urljava, Schema.SchemaType.coreSchema );
-            pool.addAlreadyExistingSchema( urlnis, Schema.SchemaType.coreSchema );
-            pool.addAlreadyExistingSchema( urlsystem, Schema.SchemaType.coreSchema );
-            pool.addAlreadyExistingSchema( urlautofs, Schema.SchemaType.coreSchema );
-            pool.addAlreadyExistingSchema( urlcorba, Schema.SchemaType.coreSchema );
-            pool.addAlreadyExistingSchema( urlcosine, Schema.SchemaType.coreSchema );
-            pool.addAlreadyExistingSchema( urlinetorgperson, Schema.SchemaType.coreSchema );
-        }
-        catch ( SchemaCreationException e )
-        {
-            logger
-                .debug( "error when inializing the schema pool with bundled schemas. One of the core schemas is not accessible:" + e ); //$NON-NLS-1$
-        }
+        schemaPool.addSchema( urlcore, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urljava, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlnis, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlsystem, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlautofs, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlcorba, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlcosine, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlinetorgperson, SchemaType.coreSchema, false );
     }
 
 
-    private static void initializeWithSpecified( SchemaPool pool )
+    /**
+     * Loads the Core Schemas Files from the Location specified in the preferences.
+     */
+    private void loadCoreSchemasFromSpecifiedLocation()
     {
-
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
         String specificPath = store.getString( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY );
 
@@ -199,19 +264,13 @@ public class SchemaPool implements SchemaListener
                         URL fileURL = curFile.toURL();
                         if ( Schema.URLtoFileName( fileURL ) != null )
                         {
-                            pool.addAlreadyExistingSchema( fileURL, Schema.SchemaType.coreSchema );
+                            schemaPool.addSchema( fileURL, Schema.SchemaType.coreSchema, false );
                         }
                     }
                     catch ( MalformedURLException e )
                     {
                         logger.debug( "error whith the content of the specified core schema directory" ); //$NON-NLS-1$
                     }
-                    catch ( SchemaCreationException e )
-                    {
-                        logger
-                            .debug( "error when inializing the schema pool with specified schemas. One of the core schemas is not accessible:" //$NON-NLS-1$
-                                + e );
-                    }
                 }
             }
         }
@@ -219,76 +278,10 @@ public class SchemaPool implements SchemaListener
 
 
     /**
-     * Returns the unique initialized pool with all the core schemas pre-loaded
-     * @return the pool
-     */
-    public static SchemaPool getInstance()
-    {
-        //thread-safe version but not as good as with the static bloc method. Here it would have
-        //made a too big static block.
-        if ( instance_ == null )
-        {
-            synchronized ( syncObject_ )
-            {
-                if ( instance_ == null )
-                {
-                    //1) create the pool instance
-                    SchemaPool pool = new SchemaPool();
-
-                    //2) initialize the pool
-                    IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-                    boolean initialize_with_specified = store
-                        .getBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE );
-                    if ( initialize_with_specified )
-                    {
-                        //2a) with user-specified core schemas
-                        initializeWithSpecified( pool );
-                    }
-                    else
-                    {
-                        //2b) or with bundled core schemas
-                        initializeWithBundled( pool );
-                    }
-
-                    //3) the unique instance is this initialized pool
-                    instance_ = pool;
-
-                    //4) load the pool with all the schemas that the user did select the last time
-                    //LDAPStudio was launched
-                    instance_.loadPool();
-                }
-            }
-        }
-
-        //1) or 5) returns the unique pool instance
-        return instance_;
-    }
-
-
-    /**
-     * Default constructor, no pre-loaded schemas. Despite the fact that we are using a
-     * singleton design pattern, it's a public constructor. It allows you to create
-     * temporary unitialized pools (for testing purposes for example). 
-     */
-    public SchemaPool()
-    {
-        schemaList = new ArrayList<Schema>();
-        listeners = new ArrayList<PoolListener>();
-    }
-
-
-    /**
-     * @return the number of schemas in the pool
-     */
-    public int count()
-    {
-        return schemaList.size();
-    }
-
-
-    /**
-     * Returns all the schemas contained in the pool
-     * @return the schemas stored in a Schema array 
+     * Returns all the schemas contained in the pool.
+     * 
+     * @return 
+     *      the schemas stored in a Schema array 
      */
     public Schema[] getSchemas()
     {
@@ -297,133 +290,26 @@ public class SchemaPool implements SchemaListener
 
 
     /**
-     * Returns the schema specified by the following name.
-     * @param name the name of the schema to find
+     * Returns the List of Object Classes.
+     * 
      * @return
+     *      the List of Object Classes
      */
-    public Schema getSchema( String name )
+    public List<ObjectClass> getObjectClasses()
     {
-        for ( Schema schema : schemaList )
-        {
-            if ( schema.getName().equals( name ) )
-                return schema;
-        }
-        return null;
+        return objectClasses;
     }
 
 
     /**
-     * Tests if a schema OF THE FOLLOWING NAME is inside the pool, it does NOT test
-     * against the schema instances.
-     * @param name the name of the schema 
-     * @return true if inside
-     * @see containsSchema(Schema schema) if you want to test instances
+     * Return the List of Attribute Types.
+     * 
+     * @return
+     *      the List of Attribute Types
      */
-    public boolean containsSchema( String name )
+    public List<AttributeType> getAttributeTypes()
     {
-        return ( getSchema( name ) != null );
-    }
-
-
-    /**
-     * Tests if the following schema is inside the pool
-     * @param schema the name of the schema to test
-     * @return true if inside, false if not
-     */
-    public boolean containsSchema( Schema schema )
-    {
-        return schemaList.contains( schema );
-    }
-
-
-    /**
-     * Tests if the following objectClass is inside the pool
-     * 	@param name the name of the object class to test
-     * @return true if inside, false if not
-     */
-    public boolean containsObjectClass( String name )
-    {
-        return objectClassesMap.containsKey( name.toLowerCase() );
-    }
-
-
-    /**
-     * Tests if the following attribute type is inside the pool
-     * @param name the name of the attribute type to test
-     * @return true if inside, false if not
-     */
-    public boolean containsAttributeType( String name )
-    {
-        return attributeTypesMap.containsKey( name.toLowerCase() );
-    }
-
-
-    /**
-     * Tests if the following element is inside the pool
-     * @param name the name of the eleme,t to test
-     * @return true if inside, false if not
-     */
-    public boolean containsSchemaElement( String name )
-    {
-        return getSchemaElements().containsKey( name.toLowerCase() );
-    }
-
-
-    /**
-     * Tests if an objectClass of the following name(s) exists inside the pool
-     * -> test each alias of the following objectClass against the content of the pool
-     * @param objectClass the objectClass to test
-     * @return if inside the pool, false if not
-     */
-    public boolean containsObjectClass( ObjectClass objectClass )
-    {
-        return objectClasses.contains( objectClass );
-    }
-
-
-    /**
-     * Tests if an attributeType of the following name(s) exists inside the pool
-     * -> test each alias of the following attributeType against the content of the pool
-     * @param attributeType the attributeType to test
-     * @return if inside the pool, false if not
-     */
-    public boolean containsAttributeType( AttributeType attributeType )
-    {
-        return attributeTypes.contains( attributeType );
-    }
-
-
-    /**
-     * Tests if the given element exists in the pool
-     * @param schemaElement the Schema Element to test
-     * @return if inside the pool, false if not
-     */
-    public boolean containsSchemaElement( SchemaElement schemaElement )
-    {
-        return getSchemaElements().containsKey( schemaElement );
-    }
-
-
-    /**
-     * Returns a specific object class
-     * @param name the name of the object class to return
-     * @return null if the name is not mapped
-     */
-    public ObjectClass getObjectClass( String name )
-    {
-
-        return objectClassesMap.get( name.toLowerCase() );
-    }
-
-
-    /**
-     * Returns a specific attribute type
-     * @param name the name of the attriute type to return
-     * @return null if the name is not mapped
-     */
-    public AttributeType getAttributeType( String name )
-    {
-        return attributeTypesMap.get( name.toLowerCase() );
+        return attributeTypes;
     }
 
 
@@ -469,47 +355,178 @@ public class SchemaPool implements SchemaListener
 
 
     /**
-     * Accessor to all the objectClasses defined by the schemas stored in the pool
-     * @return as an array
+     * Returns the schema specified by the given name.
+     * 
+     * @param name 
+     *      the name of the schema to find
+     * @return
+     *      the schema specified by the given name.
      */
-    public List<ObjectClass> getObjectClasses()
+    public Schema getSchema( String name )
     {
-        return objectClasses;
-    }
-
-
-    /**
-     * Accessor to all the attributeType defined by the schemas stored in the pool
-     * @return as an array
-     */
-    public List<AttributeType> getAttributeTypes()
-    {
-        return attributeTypes;
-    }
-
-
-    /**
-     * Adds a bunch of already initialized schemas into the pool
-     * @param schemaArray the schema array
-     */
-    public void addSchemas( Schema[] schemaArray )
-    {
-        for ( Schema schema : schemaArray )
+        for ( Schema schema : schemaList )
         {
-            addSchema( schema );
+            if ( schema.getName().equals( name ) )
+            {
+                return schema;
+            }
         }
 
-        //notify of the changement
-        //notifyChanged(LDAPModelEvent.Reason.multipleSchemaAdded,null);
+        return null;
     }
 
 
     /**
-     * Adds an already initialized schema into the pool
-     * @param s the schema to be added
-     * @return true if the schema has been added
+     * Tests if a schema with the given name is inside the pool.
+     * 
+     * @param name 
+     *      the name of the schema 
+     * @return 
+     *      true if inside
      */
-    public boolean addSchema( Schema s )
+    public boolean containsSchema( String name )
+    {
+        return ( getSchema( name ) != null );
+    }
+
+
+    /**
+     * Tests if the given schema is inside the pool.
+     * 
+     * @param schema
+     *      the name of the schema to test
+     * @return
+     *      true if inside, false if not
+     */
+    public boolean containsSchema( Schema schema )
+    {
+        return schemaList.contains( schema );
+    }
+
+
+    /**
+     * Tests if an objectClass with the given name is inside the pool.
+     * 
+     * 	@param name
+     *      the name of the object class to test
+     * @return
+     *      true if inside, false if not
+     */
+    public boolean containsObjectClass( String name )
+    {
+        return objectClassesMap.containsKey( name.toLowerCase() );
+    }
+
+
+    /**
+     * Tests if an attribute type with the given name is inside the pool.
+     * 
+     * @param name
+     *      the name of the attribute type to test
+     * @return
+     *      true if inside, false if not
+     */
+    public boolean containsAttributeType( String name )
+    {
+        return attributeTypesMap.containsKey( name.toLowerCase() );
+    }
+
+
+    /**
+     * Tests if an element with the given name is inside the pool.
+     * 
+     * @param name
+     *      the name of the eleme,t to test
+     * @return
+     *      true if inside, false if not
+     */
+    public boolean containsSchemaElement( String name )
+    {
+        return getSchemaElements().containsKey( name.toLowerCase() );
+    }
+
+
+    /**
+     * Tests if the given object class is inside the pool.
+     * 
+     * @param objectClass
+     *      the objectClass to test
+     * @return
+     *      if inside the pool, false if not
+     */
+    public boolean containsObjectClass( ObjectClass objectClass )
+    {
+        return objectClasses.contains( objectClass );
+    }
+
+
+    /**
+     * Tests if the given attributeType is inside the pool.
+     * 
+     * @param attributeType
+     *      the attributeType to test
+     * @return
+     *      if inside the pool, false if not
+     */
+    public boolean containsAttributeType( AttributeType attributeType )
+    {
+        return attributeTypes.contains( attributeType );
+    }
+
+
+    /**
+     * Tests if the given element exists in the pool.
+     * 
+     * @param schemaElement
+     *      the Schema Element to test
+     * @return
+     *      if inside the pool, false if not
+     */
+    public boolean containsSchemaElement( SchemaElement schemaElement )
+    {
+        return getSchemaElements().containsKey( schemaElement );
+    }
+
+
+    /**
+     * Returns the object class corresponding to the given name.
+     * 
+     * @param name
+     *      the name of the object class to return
+     * @return
+     *      null if the name is not mapped
+     */
+    public ObjectClass getObjectClass( String name )
+    {
+
+        return objectClassesMap.get( name.toLowerCase() );
+    }
+
+
+    /**
+     * Returns the attribute type corresponding to the given name.
+     * 
+     * @param name
+     *      the name of the attriute type to return
+     * @return
+     *      null if the name is not mapped
+     */
+    public AttributeType getAttributeType( String name )
+    {
+        return attributeTypesMap.get( name.toLowerCase() );
+    }
+
+
+    /**
+     * Adds a schema to the pool.
+     * 
+     * @param s
+     *      the schema to add
+     * 
+     * @param notifyListeners
+     *      a boolean to indicate if the listeners need to be notified
+     */
+    private void addSchema( Schema s, boolean notifyListeners )
     {
         if ( s != null )
         {
@@ -530,49 +547,36 @@ public class SchemaPool implements SchemaListener
                     addObjectClass( oc );
                 }
 
-                notifyChanged( LDAPModelEvent.Reason.SchemaAdded, s );
-                return true;
+                if ( notifyListeners )
+                {
+                    notifyChanged( LDAPModelEvent.Reason.SchemaAdded, s );
+                }
             }
         }
-        return false;
     }
 
 
     /**
-     * Adds a new schema into the pool (not loaded from file)
-     * @param name the name of the new schema
-     * @param type the schema type
-     * @return the schema that has been added to the pool, null if not added or already in the pool
+     * Adds a new schema to the Schema Pool.
+     * 
+     * @param name
+     *      the name of the new schema
      */
-    public Schema addSchema( String name, Schema.SchemaType type )
+    public void addNewSchema( String name )
     {
-        Schema temp = new Schema( type, name );
-
-        if ( addSchema( temp ) )
-            return temp;
-
-        return null;
+        addSchema( new Schema( SchemaType.userSchema, name ), true );
     }
 
 
     /**
-     * Adds an already existing schema into the pool (load the schema from a file)
-     * @param path the path to the .schema file
-     * @param type the schema type
-     * @return the schema that has been added to the pool, null if not added or already in the pool
-     * @throws SchemaCreationException if no schema was found at the specified
-     * path or if any error occurs during its initialization.
+     * Adds a schema to the Schema Pool.
+     *
+     * @param url
+     *      the url of the schema
      */
-    public Schema addAlreadyExistingSchema( String path, Schema.SchemaType type ) throws SchemaCreationException
+    public void addSchema( URL url )
     {
-        try
-        {
-            return addAlreadyExistingSchema( new URL( "file", "localhost", -1, path ), type ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        catch ( MalformedURLException e )
-        {
-            throw new SchemaCreationException( "error opening " + path, e ); //$NON-NLS-1$
-        }
+        addSchema( url, SchemaType.userSchema, true );
     }
 
 
@@ -584,43 +588,51 @@ public class SchemaPool implements SchemaListener
      * @throws SchemaCreationException if no schema was found at the specified
      * URL or if any error occurs during its initialization.
      */
-    public Schema addAlreadyExistingSchema( URL url, Schema.SchemaType type ) throws SchemaCreationException
-    {
-        Schema temp;
-        temp = new Schema( url, type );
-
-        if ( addSchema( temp ) )
-            return temp;
-
-        return null;
-    }
-
-
     /**
-     * Removes a bunch of schemas from the pool
-     * @param schemaArray the schemas to remove
+     * Adds a schema to the Schema Pool.
+     *
+     * @param url
+     *      the url of the schema
+     * @param type
+     *      the type of the schema
+     * @param notifyListeners
+     *      true if the listeners should be notified
      */
-    public void removeSchemas( Schema[] schemaArray )
+    private void addSchema( URL url, SchemaType type, boolean notifyListeners )
     {
-        if ( ( schemaArray != null ) && ( schemaArray.length > 0 ) )
+        try
         {
-            for ( Schema schema : schemaArray )
-            {
-                removeSchema( schema );
-                schema.removeListener( this );
-            }
-
-            //notify of the changement
-            notifyChanged( LDAPModelEvent.Reason.multipleSchemaRemoved, null );
+            addSchema( new Schema( url, type ), notifyListeners );
+        }
+        catch ( SchemaCreationException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
 
     /**
-     * Removes a schema from the pool
-     * @param s the schema to be removed
+     * Removes a schema from the pool.
+     * 
+     * @param s
+     *      the schema to be removed
      */
     public void removeSchema( Schema s )
+    {
+        removeSchema( s, true );
+    }
+
+
+    /**
+     * Removes a schema from the pool.
+     * 
+     * @param s
+     *      the schema to be removed
+     * @param notifyListeners
+     *      a boolean to indicate if the listeners need to be notified
+     */
+    private void removeSchema( Schema s, boolean notifyListeners )
     {
         if ( s != null )
         {
@@ -640,23 +652,9 @@ public class SchemaPool implements SchemaListener
                 removeObjectClass( oc );
             }
 
-            notifyChanged( LDAPModelEvent.Reason.SchemaRemoved, s );
-        }
-    }
-
-
-    /**
-     * Removes a schema from the pool
-     * @param name the name of the schema to be removed
-     */
-    public void removeSchema( String name )
-    {
-        for ( Schema schema : schemaList )
-        {
-            if ( schema.getName().equals( name ) )
+            if ( notifyListeners )
             {
-                removeSchema( schema );
-                return;
+                notifyChanged( LDAPModelEvent.Reason.SchemaRemoved, s );
             }
         }
     }
@@ -687,43 +685,37 @@ public class SchemaPool implements SchemaListener
 
 
     /**
-     * Clears the pool from all the stored schemas
-     * @param saveBefore if true, all the schemas are saved before the pool
-     * is cleared
+     * Reloads the Schema Pool.
      */
-    public void clearPool( boolean saveBefore )
+    public void reload()
     {
-        //save the pool
-        if ( saveBefore )
+        // Removing Core Schemas
+        Schema[] schemas = schemaList.toArray( new Schema[0] );
+        for ( int i = 0; i < schemas.length; i++ )
         {
-            try
+            if ( schemas[i].type == SchemaType.coreSchema )
             {
-                saveAll();
-            }
-            catch ( Exception e )
-            {
-                logger.debug( "error when clearing the pool" ); //$NON-NLS-1$
+                removeSchema( schemas[i], false );
             }
         }
 
-        //remove all the associations (listeners,...)
-        for ( Schema schema : schemaList )
+        // Loading Schemas
+        schemaPool.loadCoreSchemas();
+
+        // Notifying Listeners
+        for ( PoolListener listener : listeners )
         {
-            removeSchema( schema );
+            listener.poolChanged( this, new LDAPModelEvent( Reason.PoolReloaded ) );
         }
-
-        //make sure we have an empty list
-        schemaList = new ArrayList<Schema>();
-
-        //notify of the changement
-        notifyChanged( LDAPModelEvent.Reason.poolCleared, null );
     }
 
 
-    /******************************************
-     *            Events emmiting             *
-     ******************************************/
-
+    /**
+     * Adds a listener to the Schema Pool.
+     *
+     * @param listener
+     *      the listener to add
+     */
     public void addListener( PoolListener listener )
     {
         if ( !listeners.contains( listener ) )
@@ -731,12 +723,26 @@ public class SchemaPool implements SchemaListener
     }
 
 
+    /**
+     * Removed a Lister from the Schema Pool.
+     *
+     * @param listener
+     *      the listener to remove
+     */
     public void removeListener( PoolListener listener )
     {
         listeners.remove( listener );
     }
 
 
+    /**
+     * Notifies listeners of Schema Pool notification
+     *
+     * @param reason
+     *      the reson
+     * @param sc
+     *      the schema
+     */
     private void notifyChanged( LDAPModelEvent.Reason reason, Schema sc )
     {
         for ( PoolListener listener : listeners )
@@ -791,7 +797,6 @@ public class SchemaPool implements SchemaListener
             catch ( Exception e1 )
             {
                 logger.debug( "error when notifying " + listener + " of pool modification" ); //$NON-NLS-1$ //$NON-NLS-2$
-                e1.printStackTrace(); // TODO remove this
             }
         }
     }
@@ -965,6 +970,12 @@ public class SchemaPool implements SchemaListener
     }
 
 
+    /**
+     * Gets the Schema Pool File (where is store information about the loaded User Schemas).
+     *
+     * @return
+     *      the Schema Pool File
+     */
     private File getSchemaPoolFile()
     {
         return Activator.getDefault().getStateLocation().append( "schemaPool.xml" ).toFile();

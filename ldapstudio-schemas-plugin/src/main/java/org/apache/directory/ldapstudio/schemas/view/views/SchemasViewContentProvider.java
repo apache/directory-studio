@@ -309,6 +309,10 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
                 aTOrOCRemoved( p, e );
                 break;
 
+            case PoolReloaded:
+                viewer.setInput( new SchemasViewRoot() );
+                break;
+
             default:
                 break;
         }

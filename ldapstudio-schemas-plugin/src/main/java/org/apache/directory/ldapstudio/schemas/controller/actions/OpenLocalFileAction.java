@@ -24,8 +24,8 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
+import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
@@ -74,7 +74,7 @@ public class OpenLocalFileAction extends Action
             SchemaPool pool = SchemaPool.getInstance();
             try
             {
-                pool.addAlreadyExistingSchema( selected, SchemaType.userSchema );
+                pool.addSchema( Schema.localPathToURL( selected ) );
             }
             catch ( Exception e )
             {

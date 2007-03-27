@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.schemas.view.wizards;
 
 
-import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -47,7 +46,7 @@ public class CreateANewSchemaWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         SchemaPool pool = SchemaPool.getInstance();
-        pool.addSchema( this.page.getNameField(), Schema.SchemaType.userSchema );
+        pool.addNewSchema( this.page.getNameField() );
         return true;
     }
 

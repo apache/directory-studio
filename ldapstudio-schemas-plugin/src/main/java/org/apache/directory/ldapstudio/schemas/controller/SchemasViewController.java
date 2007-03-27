@@ -354,7 +354,7 @@ public class SchemasViewController
                     {
                         try
                         {
-                            pool.addAlreadyExistingSchema( file, SchemaType.userSchema );
+                            pool.addSchema( Schema.localPathToURL( file ) );
                         }
                         catch ( SchemaCreationException e )
                         {
@@ -400,8 +400,7 @@ public class SchemasViewController
                 }
                 else if ( objectSelection instanceof ObjectClassWrapper )
                 {
-                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection )
-                        .getMyObjectClass() );
+                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getMyObjectClass() );
                     editorId = ObjectClassEditor.ID;
                 }
                 else if ( ( objectSelection instanceof IntermediateNode )

@@ -25,6 +25,8 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.views.SchemaCodeScanner;
 import org.apache.directory.ldapstudio.schemas.view.views.SchemaTextAttributeProvider;
 import org.eclipse.jface.text.rules.ITokenScanner;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -35,15 +37,20 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin
 {
 
-    // The plug-in ID
+    /** The plug-in ID */
     public static final String PLUGIN_ID = "org.apache.directory.ldapstudio.schemas"; //$NON-NLS-1$
 
-    // The shared instance
+    /** The shared instance */
     private static Activator plugin;
 
+    /** the Schema Code Scanner */
     private static ITokenScanner schemaCodeScanner;
 
+    /** The Schema Text Attribute Provider */
     private static SchemaTextAttributeProvider schemaTextAttributeProvider;
+
+    /** The Schema Pool */
+    private SchemaPool schemaPool;
 
 
     /**
@@ -62,6 +69,13 @@ public class Activator extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+
+        // Loading the Schema Pool
+        schemaPool = SchemaPool.getInstance();
+
+        // Initialiazing the Preferences Listener
+        initPreferencesListener();
+
     }
 
 
@@ -72,7 +86,7 @@ public class Activator extends AbstractUIPlugin
     public void stop( BundleContext context ) throws Exception
     {
         // Saving workspace configuration
-        SchemaPool.getInstance().savePool();
+        schemaPool.saveUserSchemasPaths();
 
         plugin = null;
         super.stop( context );
@@ -121,5 +135,24 @@ public class Activator extends AbstractUIPlugin
         }
 
         return schemaTextAttributeProvider;
+    }
+
+
+    /**
+     * Initializes the listener on the preferences store.
+     */
+    private void initPreferencesListener()
+    {
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        {
+            public void propertyChange( PropertyChangeEvent event )
+            {
+                if ( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE == event.getProperty() )
+                {
+                    // Reloading the SchemaPool
+                    schemaPool.reload();
+                }
+            }
+        } );
     }
 }

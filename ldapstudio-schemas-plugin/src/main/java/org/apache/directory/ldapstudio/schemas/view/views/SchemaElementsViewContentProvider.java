@@ -287,6 +287,10 @@ public class SchemaElementsViewContentProvider implements IStructuredContentProv
                 aTOrOCRemoved( p, e );
                 break;
 
+            case PoolReloaded:
+                viewer.setInput( new SchemaElementsViewRoot() );
+                break;
+
             default:
                 break;
         }
