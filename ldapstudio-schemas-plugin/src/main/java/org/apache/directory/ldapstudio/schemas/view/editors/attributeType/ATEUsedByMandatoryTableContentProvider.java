@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 
 /**
- * This class is the Content Provider for the Superiors Table of the Object Class Editor.
+ * This class is the Content Provider for the Mandatory Table of the Attribute Type Editor (Used By Page).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
