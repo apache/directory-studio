@@ -1091,4 +1091,15 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         fillSupCombo();
         addListeners();
     }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+     */
+    public void dispose()
+    {
+        schemaPool.removeListener( this );
+        removeListeners();
+        super.dispose();
+    }
 }
