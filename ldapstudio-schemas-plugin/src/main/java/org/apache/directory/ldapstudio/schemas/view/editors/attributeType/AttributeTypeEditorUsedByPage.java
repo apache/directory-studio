@@ -349,4 +349,15 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
         optionalAttibuteTable.setItemCount( 0 );
         fillInUiFields();
     }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+     */
+    public void dispose()
+    {
+        schemaPool.removeListener( this );
+
+        super.dispose();
+    }
 }
