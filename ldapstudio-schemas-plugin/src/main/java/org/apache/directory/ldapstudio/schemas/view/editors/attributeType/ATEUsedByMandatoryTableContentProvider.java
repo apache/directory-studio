@@ -21,6 +21,8 @@ package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
@@ -45,7 +47,7 @@ public class ATEUsedByMandatoryTableContentProvider implements IStructuredConten
     {
         if ( inputElement instanceof AttributeType )
         {
-            List<Object> results = new ArrayList<Object>();
+            List<ObjectClass> results = new ArrayList<ObjectClass>();
             AttributeType inputAT = ( AttributeType ) inputElement;
             SchemaPool schemaPool = SchemaPool.getInstance();
 
@@ -67,6 +69,20 @@ public class ATEUsedByMandatoryTableContentProvider implements IStructuredConten
                     }
                 }
             }
+            
+            // Sorting Results
+            Collections.sort( results, new Comparator<ObjectClass>()
+            {
+                public int compare( ObjectClass oc1, ObjectClass oc2 )
+                {
+                    if ( oc1 instanceof ObjectClass && oc1 instanceof ObjectClass )
+                    {
+                        return ( ( ObjectClass ) oc1 ).getNames()[0].compareToIgnoreCase( ( ( ObjectClass ) oc2 ).getNames()[0] );
+                    }
+
+                    return 0;
+                }
+            } );
 
             return results.toArray();
         }
