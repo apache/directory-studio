@@ -28,7 +28,9 @@ import java.util.List;
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
@@ -56,7 +58,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class is the Used By Page of the Attribute Type Editor
  */
-public class AttributeTypeEditorUsedByPage extends FormPage
+public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListener
 {
     /** The page ID */
     public static final String ID = AttributeTypeEditor.ID + "usedByPage";
@@ -128,6 +130,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     {
         super( editor, ID, TITLE );
         schemaPool = SchemaPool.getInstance();
+        schemaPool.addListener( this );
     }
 
 
@@ -331,6 +334,19 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     public void refreshUI()
     {
+        fillInUiFields();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.PoolListener#poolChanged(org.apache.directory.ldapstudio.schemas.model.SchemaPool, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+     */
+    public void poolChanged( SchemaPool p, LDAPModelEvent e )
+    {
+        mandatoryAttributeTable.removeAll();
+        mandatoryAttributeTable.setItemCount( 0 );
+        optionalAttibuteTable.removeAll();
+        optionalAttibuteTable.setItemCount( 0 );
         fillInUiFields();
     }
 }
