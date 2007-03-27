@@ -26,10 +26,8 @@ import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
-import org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage;
 import org.apache.directory.shared.asn1.primitives.OID;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -118,12 +116,12 @@ public class CreateANewObjectClassWizardPage extends WizardPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
+                IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-                prefs.putBoolean( OidPreferencePage.AUTO_OID, autoOID.getSelection() );
+                store.setValue( PluginConstants.PREFS_SCHEMAS_EDITOR_AUTO_OID, autoOID.getSelection() );
                 if ( autoOID.getSelection() )
                 {
-                    String temp = prefs.get( OidPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
+                    String temp = store.getString( PluginConstants.PREFS_SCHEMAS_EDITOR_COMPANY_OID );
                     oidField.setText( temp + "." ); //$NON-NLS-1$
                 }
                 else
@@ -133,9 +131,8 @@ public class CreateANewObjectClassWizardPage extends WizardPage
             }
         } );
 
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-
-        boolean auto_oid = prefs.getBoolean( OidPreferencePage.AUTO_OID, true );
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        boolean auto_oid = store.getBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_AUTO_OID );
         autoOID.setSelection( auto_oid );
 
         Label label = new Label( container, SWT.NULL );
@@ -143,7 +140,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
         oidField = new Text( container, SWT.BORDER | SWT.SINGLE );
         if ( auto_oid )
         {
-            String temp = prefs.get( OidPreferencePage.COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
+            String temp = store.getString( PluginConstants.PREFS_SCHEMAS_EDITOR_COMPANY_OID );
             oidField.setText( temp + "." ); //$NON-NLS-1$
         }
         oidField.setLayoutData( gd );

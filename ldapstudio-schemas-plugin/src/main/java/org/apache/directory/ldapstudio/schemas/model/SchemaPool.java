@@ -34,11 +34,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
@@ -180,9 +179,9 @@ public class SchemaPool implements SchemaListener
 
     private static void initializeWithSpecified( SchemaPool pool )
     {
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-        String specificPath = prefs.get( SchemasEditorPreferencePage.SPECIFIC_CORE_DIRECTORY, System
-            .getProperty( "user.home" ) ); //$NON-NLS-1$
+
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        String specificPath = store.getString( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY );
 
         File dir = new File( specificPath );
         String sCurPath = dir.getAbsolutePath() + File.separator;
@@ -236,11 +235,10 @@ public class SchemaPool implements SchemaListener
                     //1) create the pool instance
                     SchemaPool pool = new SchemaPool();
 
-                    IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-
                     //2) initialize the pool
-                    boolean initialize_with_specified = prefs.getBoolean( SchemasEditorPreferencePage.SPECIFIC_CORE,
-                        false );
+                    IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+                    boolean initialize_with_specified = store
+                        .getBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE );
                     if ( initialize_with_specified )
                     {
                         //2a) with user-specified core schemas
@@ -257,9 +255,7 @@ public class SchemaPool implements SchemaListener
 
                     //4) load the pool with all the schemas that the user did select the last time
                     //LDAPStudio was launched
-                    boolean save_workspace = prefs.getBoolean( SchemasEditorPreferencePage.SAVE_WORKSPACE, true );
-                    if ( save_workspace )
-                        instance_.loadPool();
+                    instance_.loadPool();
                 }
             }
         }

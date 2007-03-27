@@ -32,16 +32,12 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
-import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.io.SchemaParser;
 import org.apache.directory.ldapstudio.schemas.io.SchemaWriter;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
@@ -579,10 +575,7 @@ public class Schema implements SchemaElementListener
         {
             FileDialog fd = new FileDialog( new Shell(), SWT.SAVE );
             fd.setText( Messages.getString( "Schema.Save_this_schema" ) + this.getName() ); //$NON-NLS-1$
-            IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-            String defaultPath = prefs.get( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System
-                .getProperty( "user.home" ) ); //$NON-NLS-1$
-            fd.setFilterPath( defaultPath );
+            fd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
             fd.setFileName( this.name + ".schema" ); //$NON-NLS-1$
             fd.setFilterExtensions( new String[]
                 { "*.schema", "*.*" } ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -626,10 +619,7 @@ public class Schema implements SchemaElementListener
 
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE );
         fd.setText( Messages.getString( "Schema.Save_this_schema" ) + this.getName() ); //$NON-NLS-1$
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-        String defaultPath = prefs
-            .get( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
-        fd.setFilterPath( defaultPath );
+        fd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
         fd.setFileName( this.name + ".schema" ); //$NON-NLS-1$
         fd.setFilterExtensions( new String[]
             { "*.schema", "*.*" } ); //$NON-NLS-1$ //$NON-NLS-2$

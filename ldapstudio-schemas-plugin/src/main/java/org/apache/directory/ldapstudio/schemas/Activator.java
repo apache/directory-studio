@@ -22,11 +22,8 @@ package org.apache.directory.ldapstudio.schemas;
 
 
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
 import org.apache.directory.ldapstudio.schemas.view.views.SchemaCodeScanner;
 import org.apache.directory.ldapstudio.schemas.view.views.SchemaTextAttributeProvider;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -74,11 +71,9 @@ public class Activator extends AbstractUIPlugin
      */
     public void stop( BundleContext context ) throws Exception
     {
-        // save workspace configuration
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-        boolean save_workspace = prefs.getBoolean( SchemasEditorPreferencePage.SAVE_WORKSPACE, true );
-        if ( save_workspace )
-            SchemaPool.getInstance().savePool();
+        // Saving workspace configuration
+        SchemaPool.getInstance().savePool();
+
         plugin = null;
         super.stop( context );
     }
@@ -107,7 +102,7 @@ public class Activator extends AbstractUIPlugin
         {
             schemaCodeScanner = new SchemaCodeScanner( getSchemaTextAttributeProvider() );
         }
-        
+
         return schemaCodeScanner;
     }
 
@@ -124,7 +119,7 @@ public class Activator extends AbstractUIPlugin
         {
             schemaTextAttributeProvider = new SchemaTextAttributeProvider();
         }
-        
+
         return schemaTextAttributeProvider;
     }
 }

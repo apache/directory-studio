@@ -21,17 +21,28 @@
 package org.apache.directory.ldapstudio.schemas.view.preferences;
 
 
-import java.io.IOException;
-
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.Messages;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -39,72 +50,207 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * From there you can access schema related preferences.
  *
  */
-public class SchemasEditorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage
+public class SchemasEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
+    // UI fields
+    private Button specificCoreSchemasCheckbox;
+    private Label specificCoreSchemasLabel;
+    private Text specificCoreSchemasText;
+    private Button specificCoreSchemasButton;
+    private Button defaultOidCheckbox;
+    private Label defaultOidLabel;
+    private Text defaultOidText;
 
-    public static final String DEFAULT_DIRECTORY = "prefs_default_directory"; //$NON-NLS-1$
-    public static final String SAVE_WORKSPACE = "prefs_save_workspace"; //$NON-NLS-1$
-    public static final String SPECIFIC_CORE = "prefs_specific_core"; //$NON-NLS-1$
-    public static final String SPECIFIC_CORE_DIRECTORY = "prefs_specific_core_directory"; //$NON-NLS-1$
 
-    private ScopedPreferenceStore preferences;
-
-
+    /**
+     * Creates a new instance of SchemasEditorPreferencePage.
+     */
     public SchemasEditorPreferencePage()
     {
-        super( GRID );
-        super.setDescription( "General settings for the Schemas Editor" );
-        preferences = new ScopedPreferenceStore( new ConfigurationScope(), Activator.PLUGIN_ID );
-        setPreferenceStore( preferences );
+        super();
+        setPreferenceStore( Activator.getDefault().getPreferenceStore() );
+        setDescription( "General settings for the Schemas Editor Plugin" );
     }
 
 
-    public void init( IWorkbench workbench )
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-
-    @Override
-    protected void createFieldEditors()
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+     */
+    protected Control createContents( Composite parent )
     {
 
-        DirectoryFieldEditor directoryEditor = new DirectoryFieldEditor( DEFAULT_DIRECTORY, Messages
-            .getString( "SchemaPreferencePage.Default_save-load_dialogs_directory" ), //$NON-NLS-1$
-            getFieldEditorParent() );
+        // SPECIFIC CORE SCHEMAS Group
+        Group specificCoreSchemasGroup = new Group( parent, SWT.NONE );
+        specificCoreSchemasGroup.setText( "Core Schemas" );
+        specificCoreSchemasGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        specificCoreSchemasGroup.setLayout( new GridLayout( 3, false ) );
 
-        addField( directoryEditor );
+        // SPECIFIC CORE SCHEMAS Checkbox
+        specificCoreSchemasCheckbox = new Button( specificCoreSchemasGroup, SWT.CHECK );
+        specificCoreSchemasCheckbox.setText( Messages.getString( "SchemaPreferencePage.Use_specific_core_schemas" ) ); //$NON-NLS-1$
+        specificCoreSchemasCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false, 3, 1 ) );
 
-        BooleanFieldEditor saveWorkspaceEditor = new BooleanFieldEditor( SAVE_WORKSPACE, Messages
-            .getString( "SchemaPreferencePage.Save_schemas_configuration_when_exiting_LDAP_Studio" ), //$NON-NLS-1$
-            getFieldEditorParent() );
+        // SPECIFIC CORE SCHEMAS Label 
+        specificCoreSchemasLabel = new Label( specificCoreSchemasGroup, SWT.NONE );
+        specificCoreSchemasLabel.setText( Messages.getString( "SchemaPreferencePage.Core_schemas_directory" ) ); //$NON-NLS-1$
 
-        addField( saveWorkspaceEditor );
+        // SPECIFIC CORE SCHEMAS Text
+        specificCoreSchemasText = new Text( specificCoreSchemasGroup, SWT.BORDER );
+        specificCoreSchemasText.setEditable( false );
+        specificCoreSchemasText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        BooleanFieldEditor specificCore = new BooleanFieldEditor( SPECIFIC_CORE, Messages
-            .getString( "SchemaPreferencePage.Use_specific_core_files" ), //$NON-NLS-1$
-            getFieldEditorParent() );
+        // SPECIFIC CORE SCHEMAS Button
+        specificCoreSchemasButton = new Button( specificCoreSchemasGroup, SWT.PUSH );
+        specificCoreSchemasButton.setText( "Browse..." );
 
-        addField( specificCore );
+        // DEFAULT OID Group
+        Group defaultOidGroup = new Group( parent, SWT.NONE );
+        defaultOidGroup.setText( "Default OID" );
+        defaultOidGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        defaultOidGroup.setLayout( new GridLayout( 2, false ) );
 
-        DirectoryFieldEditor coreDirectoryEditor = new DirectoryFieldEditor( SPECIFIC_CORE_DIRECTORY, Messages
-            .getString( "SchemaPreferencePage.Core_schemas_directory" ), //$NON-NLS-1$
-            getFieldEditorParent() );
+        // DEFAULT OID Checkbox
+        defaultOidCheckbox = new Button( defaultOidGroup, SWT.CHECK );
+        defaultOidCheckbox.setText( Messages
+            .getString( "GeneralPreferencePage.Automatically_prefix_new_elements_with_this_OID" ) );
+        defaultOidCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false, 2, 1 ) );
 
-        addField( coreDirectoryEditor );
+        // DEFAULT OID  Label
+        defaultOidLabel = new Label( defaultOidGroup, SWT.NONE );
+        defaultOidLabel.setText( Messages.getString( "GeneralPreferencePage.Your_organizations_default_OID" ) );
+
+        // DEFAULT OID Text
+        defaultOidText = new Text( defaultOidGroup, SWT.BORDER );
+        defaultOidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        initFieldsFromPreferences();
+
+        initListeners();
+
+        applyDialogFont( parent );
+
+        return parent;
     }
 
 
+    /**
+     * Initializes the UI Fields from the preferences.
+     */
+    private void initFieldsFromPreferences()
+    {
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        specificCoreSchemasCheckbox
+            .setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE ) );
+        specificCoreSchemasLabel.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+        specificCoreSchemasText.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+        specificCoreSchemasText
+            .setText( store.getString( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY ) );
+        specificCoreSchemasButton.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+
+        defaultOidCheckbox.setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_AUTO_OID ) );
+        defaultOidLabel.setEnabled( defaultOidCheckbox.getSelection() );
+        defaultOidText.setEnabled( defaultOidCheckbox.getSelection() );
+        defaultOidText.setText( store.getString( PluginConstants.PREFS_SCHEMAS_EDITOR_COMPANY_OID ) );
+    }
+
+
+    /**
+     * Initializes the listeners.
+     */
+    private void initListeners()
+    {
+        specificCoreSchemasCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                specificCoreSchemasLabel.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+                specificCoreSchemasText.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+                specificCoreSchemasButton.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+            }
+        } );
+
+        specificCoreSchemasButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                DirectoryDialog dd = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                    .getShell() );
+                dd.setFilterPath( System.getProperty( "user.home" ) );
+                String selectedFolder = dd.open();
+                if ( selectedFolder != null )
+                {
+                    specificCoreSchemasText.setText( selectedFolder );
+                }
+            }
+        } );
+
+        defaultOidCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                defaultOidLabel.setEnabled( defaultOidCheckbox.getSelection() );
+                defaultOidText.setEnabled( defaultOidCheckbox.getSelection() );
+            }
+        } );
+
+        defaultOidText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "([0-9]*\\.?)*" ) )
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.preference.PreferencePage#performOk()
+     */
     public boolean performOk()
     {
-        try
-        {
-            preferences.save();
-        }
-        catch ( IOException e )
-        {
-        }
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        store.setValue( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE, specificCoreSchemasCheckbox.getSelection() );
+        store
+            .setValue( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY, specificCoreSchemasText.getText() );
+
+        store.setValue( PluginConstants.PREFS_SCHEMAS_EDITOR_AUTO_OID, defaultOidCheckbox.getSelection() );
+        store.setValue( PluginConstants.PREFS_SCHEMAS_EDITOR_COMPANY_OID, defaultOidText.getText() );
+
         return super.performOk();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
+     */
+    protected void performDefaults()
+    {
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+        specificCoreSchemasCheckbox.setSelection( store
+            .getDefaultBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE ) );
+        specificCoreSchemasLabel.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+        specificCoreSchemasText.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+        specificCoreSchemasText.setText( store
+            .getDefaultString( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY ) );
+        specificCoreSchemasButton.setEnabled( specificCoreSchemasCheckbox.getSelection() );
+
+        defaultOidCheckbox.setSelection( store.getDefaultBoolean( PluginConstants.PREFS_SCHEMAS_EDITOR_AUTO_OID ) );
+        defaultOidLabel.setEnabled( defaultOidCheckbox.getSelection() );
+        defaultOidText.setEnabled( defaultOidCheckbox.getSelection() );
+        defaultOidText.setText( store.getDefaultString( PluginConstants.PREFS_SCHEMAS_EDITOR_COMPANY_OID ) );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+     */
+    public void init( IWorkbench workbench )
+    {
     }
 }

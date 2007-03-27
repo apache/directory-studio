@@ -26,10 +26,7 @@ import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Schema.SchemaType;
-import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -66,11 +63,7 @@ public class OpenLocalFileAction extends Action
     {
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN );
         fd.setText( Messages.getString( "OpenLocalFileAction.Open_a_schema_file" ) ); //$NON-NLS-1$
-
-        IEclipsePreferences prefs = new ConfigurationScope().getNode( Activator.PLUGIN_ID );
-        String defaultPath = prefs
-            .get( SchemasEditorPreferencePage.DEFAULT_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
-        fd.setFilterPath( defaultPath );
+        fd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
         String[] filterExt =
             { "*.schema", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions( filterExt );

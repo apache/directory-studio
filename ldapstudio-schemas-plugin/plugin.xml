@@ -183,11 +183,6 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.apache.directory.ldapstudio.schemas.preferences.general"
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.OidPreferencePage"
-            id="org.apache.directory.ldapstudio.schemas.preferences.oid"
-            name="%ldapstudio-schemas-plugin.preferencepages.oid.name"/>
-      <page
             class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage"
             id="org.apache.directory.ldapstudio.schemas.preferences.general"
             name="%ldapstudio-schemas-plugin.preferencepages.general.name"/>
