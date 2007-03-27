@@ -21,12 +21,6 @@
 package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.directory.ldapstudio.schemas.Activator;
-import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
@@ -35,6 +29,8 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditorInput;
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -42,7 +38,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -52,7 +47,6 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -66,15 +60,20 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
     /** The page title */
     public static String TITLE = "Used By";
 
-    /** The modified object class */
+    /** The modified attribute type */
     private AttributeType modifiedAttributeType;
+
+    /** The original attribute type */
+    private AttributeType originalAttributeType;
 
     /** The Schema Pool */
     private SchemaPool schemaPool;
 
     // UI Widgets
     private Table mandatoryAttributeTable;
+    private TableViewer mandatoryAttributeTableViewer;
     private Table optionalAttibuteTable;
+    private TableViewer optionalAttibuteTableViewer;
 
     // Listeners
     /** The listener of the Mandatory Attribute Type Table*/
@@ -82,18 +81,20 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
     {
         public void mouseDoubleClick( MouseEvent e )
         {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            Object selectedItem = ( ( StructuredSelection ) mandatoryAttributeTableViewer.getSelection() )
+                .getFirstElement();
 
-            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool
-                .getObjectClass( mandatoryAttributeTable.getSelection()[0].getText() ) );
-            String editorId = ObjectClassEditor.ID;
-            try
+            if ( selectedItem instanceof ObjectClass )
             {
-                page.openEditor( input, editorId );
-            }
-            catch ( PartInitException exception )
-            {
-                Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try
+                {
+                    page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedItem ), ObjectClassEditor.ID );
+                }
+                catch ( PartInitException exception )
+                {
+                    Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                }
             }
         }
     };
@@ -103,18 +104,20 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
     {
         public void mouseDoubleClick( MouseEvent e )
         {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            Object selectedItem = ( ( StructuredSelection ) optionalAttibuteTableViewer.getSelection() )
+                .getFirstElement();
 
-            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool.getObjectClass( optionalAttibuteTable
-                .getSelection()[0].getText() ) );
-            String editorId = ObjectClassEditor.ID;
-            try
+            if ( selectedItem instanceof ObjectClass )
             {
-                page.openEditor( input, editorId );
-            }
-            catch ( PartInitException exception )
-            {
-                Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try
+                {
+                    page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedItem ), ObjectClassEditor.ID );
+                }
+                catch ( PartInitException exception )
+                {
+                    Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                }
             }
         }
     };
@@ -139,8 +142,9 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
      */
     protected void createFormContent( IManagedForm managedForm )
     {
-        // Getting the modified attribute type and listening to its modifications
+        // Getting the modified and original attribute types
         modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
+        originalAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getOriginalAttributeType();
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -190,6 +194,9 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
         GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
         gridData.heightHint = 1;
         mandatoryAttributeTable.setLayoutData( gridData );
+        mandatoryAttributeTableViewer = new TableViewer( mandatoryAttributeTable );
+        mandatoryAttributeTableViewer.setContentProvider( new ATEUsedByMandatoryTableContentProvider() );
+        mandatoryAttributeTableViewer.setLabelProvider( new ATEUsedByTablesLabelProvider() );
     }
 
 
@@ -221,6 +228,9 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
         GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
         gridData.heightHint = 1;
         optionalAttibuteTable.setLayoutData( gridData );
+        optionalAttibuteTableViewer = new TableViewer( optionalAttibuteTable );
+        optionalAttibuteTableViewer.setContentProvider( new ATEUsedByOptionalTableContentProvider() );
+        optionalAttibuteTableViewer.setLabelProvider( new ATEUsedByTablesLabelProvider() );
     }
 
 
@@ -229,93 +239,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
      */
     private void fillInUiFields()
     {
-        fillInMandatoryAttributeTable();
-        fillInOptionalAttributeTable();
-    }
-
-
-    /**
-     * Fills in the Mandatory Attribute Table
-     */
-    private void fillInMandatoryAttributeTable()
-    {
-        List<String> objectClasses = getOcUsingATAsMandatoryAttribute();
-        for ( Iterator iter = objectClasses.iterator(); iter.hasNext(); )
-        {
-            TableItem item = new TableItem( mandatoryAttributeTable, SWT.NONE );
-            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_OBJECT_CLASS ).createImage() );
-            item.setText( ( String ) iter.next() );
-        }
-    }
-
-
-    /**
-     * Returns a List of object classes using this attribute type a mandatory attribute.
-     *
-     * @return
-     *       a List of object classes using this attribute type a mandatory attribute
-     */
-    private List<String> getOcUsingATAsMandatoryAttribute()
-    {
-        List<String> ocList = new ArrayList<String>();
-
-        List<ObjectClass> objectClasses = schemaPool.getObjectClasses();
-        for ( ObjectClass oc : objectClasses )
-        {
-            String[] musts = oc.getMust();
-            for ( int j = 0; j < musts.length; j++ )
-            {
-                // TODO Match all aliases
-                if ( modifiedAttributeType.getNames()[0].equals( musts[j] ) )
-                {
-                    ocList.add( oc.getNames()[0] );
-                }
-            }
-        }
-        return ocList;
-    }
-
-
-    /**
-     * fills in the Optional Attribute Table.
-     */
-    private void fillInOptionalAttributeTable()
-    {
-        List<String> objectClasses = getOcUsingATAsOptionalAttribute();
-        for ( Iterator iter = objectClasses.iterator(); iter.hasNext(); )
-        {
-            TableItem item = new TableItem( optionalAttibuteTable, SWT.NONE );
-            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_OBJECT_CLASS ).createImage() );
-            item.setText( ( String ) iter.next() );
-        }
-    }
-
-
-    /**
-     * Returns a List of object classes using this attribute type a optional attribute.
-     *
-     * @return
-     *       a List of object classes using this attribute type a optional attribute
-     */
-    private List<String> getOcUsingATAsOptionalAttribute()
-    {
-        List<String> ocList = new ArrayList<String>();
-
-        List<ObjectClass> objectClasses = schemaPool.getObjectClasses();
-        for ( ObjectClass oc : objectClasses )
-        {
-            String[] mays = oc.getMay();
-            for ( int j = 0; j < mays.length; j++ )
-            {
-                if ( modifiedAttributeType.getNames()[0].equals( mays[j] ) )
-                {
-                    ocList.add( oc.getNames()[0] );
-                }
-            }
-        }
-        return ocList;
+        mandatoryAttributeTableViewer.setInput( originalAttributeType );
+        optionalAttibuteTableViewer.setInput( originalAttributeType );
     }
 
 
@@ -329,25 +254,13 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
     }
 
 
-    /**
-     * Refreshes the UI.
-     */
-    public void refreshUI()
-    {
-        fillInUiFields();
-    }
-
-
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.schemas.model.PoolListener#poolChanged(org.apache.directory.ldapstudio.schemas.model.SchemaPool, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
      */
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {
-        mandatoryAttributeTable.removeAll();
-        mandatoryAttributeTable.setItemCount( 0 );
-        optionalAttibuteTable.removeAll();
-        optionalAttibuteTable.setItemCount( 0 );
-        fillInUiFields();
+        mandatoryAttributeTableViewer.refresh();
+        optionalAttibuteTableViewer.refresh();
     }
 
 
