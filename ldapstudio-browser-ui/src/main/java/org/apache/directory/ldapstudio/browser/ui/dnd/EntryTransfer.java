@@ -30,39 +30,69 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
+import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 import org.eclipse.swt.dnd.ByteArrayTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
 
+/**
+ * A {@link Transfer} that could be used to transfer {@link IEntry} objects.
+ * Note that only the connection name and entry's DN is converted to a platform specific 
+ * representation, not the complete object.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryTransfer extends ByteArrayTransfer
 {
 
+    /** The Constant TYPENAME. */
     private static final String TYPENAME = "org.apache.directory.ldapstudio.browser.entry";
 
+    /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );
 
+    /** The instance. */
     private static EntryTransfer instance = new EntryTransfer();
 
 
+    /**
+     * Gets the instance.
+     * 
+     * @return the instance
+     */
     public static EntryTransfer getInstance()
     {
         return instance;
     }
 
 
+    /**
+     * Creates a new instance of EntryTransfer.
+     */
     private EntryTransfer()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation only accepts {@link IEntry} objects. 
+     * It just converts the name of the connection and the entry's DN
+     * to the platform specific representation.
+     */
     public void javaToNative( Object object, TransferData transferData )
     {
         if ( object == null || !( object instanceof IEntry[] ) )
+        {
             return;
+        }
 
         if ( isSupportedType( transferData ) )
         {
@@ -95,20 +125,28 @@ public class EntryTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation just converts the platform specific representation
+     * to the connection name and entry DN and invokes 
+     * {@link ConnectionManager#getConnection(String)} to get the
+     * {@link IConnection} object and {@link IConnection#getEntryFromCache(DN)}
+     * to get the {@link IEntry} object.
+     */
     public Object nativeToJava( TransferData transferData )
     {
-
         try
         {
-
             if ( isSupportedType( transferData ) )
             {
-
                 byte[] buffer = ( byte[] ) super.nativeToJava( transferData );
                 if ( buffer == null )
+                {
                     return null;
+                }
 
-                List entryList = new ArrayList();
+                List<IEntry> entryList = new ArrayList<IEntry>();
                 try
                 {
                     IConnection connection = null;
@@ -133,7 +171,6 @@ public class EntryTransfer extends ByteArrayTransfer
                             byte[] dn = new byte[size];
                             readIn.read( dn );
                             entry = connection.getEntryFromCache( new DN( new String( dn ) ) );
-
                         }
                         else
                         {
@@ -168,6 +205,9 @@ public class EntryTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String[] getTypeNames()
     {
         return new String[]
@@ -175,6 +215,9 @@ public class EntryTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected int[] getTypeIds()
     {
         return new int[]

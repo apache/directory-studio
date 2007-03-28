@@ -30,38 +30,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
+import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-
 import org.eclipse.swt.dnd.ByteArrayTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
 
+/**
+ * A {@link Transfer} that could be used to transfer {@link ISearch} objects.
+ * Note that only the connection name and search name is converted to a platform specific 
+ * representation, not the complete object.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchTransfer extends ByteArrayTransfer
 {
 
+    /** The Constant TYPENAME. */
     private static final String TYPENAME = "org.apache.directory.ldapstudio.browser.search";
 
+    /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );
 
+    /** The instance. */
     private static SearchTransfer instance = new SearchTransfer();
 
 
+    /**
+     * Creates a new instance of SearchTransfer.
+     */
     private SearchTransfer()
     {
     }
 
 
+    /**
+     * Gets the instance.
+     * 
+     * @return the instance
+     */
     public static SearchTransfer getInstance()
     {
         return instance;
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation only accepts {@link ISearch} objects. 
+     * It just converts the name of the connection and the name of the search
+     * to the platform specific representation.
+     */
     public void javaToNative( Object object, TransferData transferData )
     {
         if ( object == null || !( object instanceof ISearch[] ) )
+        {
             return;
+        }
 
         if ( isSupportedType( transferData ) )
         {
@@ -94,20 +123,28 @@ public class SearchTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation just converts the platform specific representation
+     * to the connection name and search name and invokes 
+     * {@link ConnectionManager#getConnection(String)} to get the
+     * {@link IConnection} object and {@link IConnection#getSearchManager()}
+     * to get the {@link ISearch} object.
+     */
     public Object nativeToJava( TransferData transferData )
     {
-
         try
         {
-
             if ( isSupportedType( transferData ) )
             {
-
                 byte[] buffer = ( byte[] ) super.nativeToJava( transferData );
                 if ( buffer == null )
+                {
                     return null;
+                }
 
-                List searchList = new ArrayList();
+                List<ISearch> searchList = new ArrayList<ISearch>();
                 try
                 {
                     IConnection connection = null;
@@ -166,6 +203,9 @@ public class SearchTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String[] getTypeNames()
     {
         return new String[]
@@ -173,6 +213,9 @@ public class SearchTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected int[] getTypeIds()
     {
         return new int[]

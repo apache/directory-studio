@@ -35,36 +35,63 @@ import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
-
 import org.eclipse.swt.dnd.ByteArrayTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
 
+/**
+ * A {@link Transfer} that could be used to transfer {@link IValue} objects.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ValuesTransfer extends ByteArrayTransfer
 {
 
+    /** The Constant TYPENAME. */
     private static final String TYPENAME = "org.apache.directory.ldapstudio.browser.value";
 
+    /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );
 
+    /** The instance. */
     private static ValuesTransfer instance = new ValuesTransfer();
 
 
+    /**
+     * Gets the instance.
+     * 
+     * @return the instance
+     */
     public static ValuesTransfer getInstance()
     {
         return instance;
     }
 
 
+    /**
+     * Creates a new instance of ValuesTransfer.
+     */
     private ValuesTransfer()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation only accepts {@link IValue} objects. 
+     * It converts the name of the connection, the entry's DN, the 
+     * attribute description and the value to the platform specific 
+     * representation.
+     */
     public void javaToNative( Object object, TransferData transferData )
     {
         if ( object == null || !( object instanceof IValue[] ) )
+        {
             return;
+        }
 
         if ( isSupportedType( transferData ) )
         {
@@ -114,23 +141,28 @@ public class ValuesTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation converts the platform specific representation
+     * to the connection name, entry DN, attribute description and value and
+     * restores the {@link IValue} object. 
+     */
     public Object nativeToJava( TransferData transferData )
     {
-
         try
         {
-
             if ( isSupportedType( transferData ) )
             {
-
                 byte[] buffer = ( byte[] ) super.nativeToJava( transferData );
                 if ( buffer == null )
+                {
                     return null;
+                }
 
-                List valueList = new ArrayList();
+                List<IValue> valueList = new ArrayList<IValue>();
                 try
                 {
-
                     ByteArrayInputStream in = new ByteArrayInputStream( buffer );
                     DataInputStream readIn = new DataInputStream( in );
 
@@ -230,6 +262,9 @@ public class ValuesTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected String[] getTypeNames()
     {
         return new String[]
@@ -237,6 +272,9 @@ public class ValuesTransfer extends ByteArrayTransfer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected int[] getTypeIds()
     {
         return new int[]
