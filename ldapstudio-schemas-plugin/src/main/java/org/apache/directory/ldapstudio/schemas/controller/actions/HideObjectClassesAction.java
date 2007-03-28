@@ -52,7 +52,7 @@ public class HideObjectClassesAction extends Action
      */
     public HideObjectClassesAction( TreeViewer viewer )
     {
-        super( Messages.getString("HideObjectClassesAction.Hide_Object_Classes"), AS_CHECK_BOX ); //$NON-NLS-1$
+        super( Messages.getString( "HideObjectClassesAction.Hide_Object_Classes" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_HIDE_OBJECT_CLASSES );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

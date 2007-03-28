@@ -48,8 +48,8 @@ public class ShowSubtypeHierarchyAction extends Action
      */
     public ShowSubtypeHierarchyAction( HierarchyView view )
     {
-        super( Messages.getString("ShowSubtypeHierarchyAction.Subtype_Hierarchy"), AS_RADIO_BUTTON ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("ShowSubtypeHierarchyAction.Show_the_Subtype_Hierarchy") ); //$NON-NLS-1$
+        super( Messages.getString( "ShowSubtypeHierarchyAction.Subtype_Hierarchy" ), AS_RADIO_BUTTON ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "ShowSubtypeHierarchyAction.Show_the_Subtype_Hierarchy" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_SHOW_SUBTYPE_HIERARCHY );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SHOW_SUBTYPE_HIERARCHY ) );
@@ -68,7 +68,7 @@ public class ShowSubtypeHierarchyAction extends Action
     {
         Activator.getDefault().getDialogSettings().put( PluginConstants.PREFS_HIERARCHY_VIEW_MODE,
             PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUBTYPE );
-        
+
         view.refresh();
     }
 }

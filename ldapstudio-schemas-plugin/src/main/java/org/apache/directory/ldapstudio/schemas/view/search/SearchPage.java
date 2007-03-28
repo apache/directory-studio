@@ -66,7 +66,7 @@ public class SearchPage extends DialogPage implements ISearchPage
         parent.setLayout( new GridLayout() );
 
         Label label = new Label( parent, SWT.NONE );
-        label.setText( Messages.getString("SearchPage.Search_string") ); //$NON-NLS-1$
+        label.setText( Messages.getString( "SearchPage.Search_string" ) ); //$NON-NLS-1$
         label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         searchCombo = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
@@ -81,21 +81,21 @@ public class SearchPage extends DialogPage implements ISearchPage
 
         Group scopeGroup = new Group( parent, SWT.NONE );
         scopeGroup.setLayout( new GridLayout( 4, false ) );
-        scopeGroup.setText( Messages.getString("SearchPage.Scope") ); //$NON-NLS-1$
+        scopeGroup.setText( Messages.getString( "SearchPage.Scope" ) ); //$NON-NLS-1$
         scopeGroup.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         allMetadataButton = new Button( scopeGroup, SWT.RADIO );
-        allMetadataButton.setText( Messages.getString("SearchPage.All_metada") ); //$NON-NLS-1$
+        allMetadataButton.setText( Messages.getString( "SearchPage.All_metada" ) ); //$NON-NLS-1$
         allMetadataButton.setSelection( true );
 
         nameButton = new Button( scopeGroup, SWT.RADIO );
-        nameButton.setText( Messages.getString("SearchPage.Name") ); //$NON-NLS-1$
+        nameButton.setText( Messages.getString( "SearchPage.Name" ) ); //$NON-NLS-1$
 
         oidButton = new Button( scopeGroup, SWT.RADIO );
-        oidButton.setText( Messages.getString("SearchPage.OID") ); //$NON-NLS-1$
+        oidButton.setText( Messages.getString( "SearchPage.OID" ) ); //$NON-NLS-1$
 
         descriptionButon = new Button( scopeGroup, SWT.RADIO );
-        descriptionButon.setText( Messages.getString("SearchPage.Description") ); //$NON-NLS-1$
+        descriptionButon.setText( Messages.getString( "SearchPage.Description" ) ); //$NON-NLS-1$
 
         initSearchHistory();
 

@@ -50,7 +50,7 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider imple
             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
                 .createImage();
         }
-        
+
         // Default
         return null;
     }

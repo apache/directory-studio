@@ -50,14 +50,14 @@ public class Perspective implements IPerspectiveFactory
     public void createInitialLayout( IPageLayout layout )
     {
         String placeHolderId = "org.apache.directory.ldapstudio.schemas.placeholder"; //$NON-NLS-1$
-        
+
         layout.setEditorAreaVisible( true );
         String editorAreaId = layout.getEditorArea();
 
         // Creating top left folder 
         IFolderLayout topLeftFolder = layout.createFolder( placeHolderId, IPageLayout.LEFT, 0.3f, editorAreaId );
         layout.addPlaceholder( placeHolderId, IPageLayout.LEFT, 0.3f, editorAreaId );
-        
+
         // Adding views
         topLeftFolder.addView( SchemaElementsView.ID );
         topLeftFolder.addView( HierarchyView.ID );

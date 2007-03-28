@@ -52,7 +52,7 @@ public class HideAttributeTypesAction extends Action
      */
     public HideAttributeTypesAction( TreeViewer viewer )
     {
-        super( Messages.getString("HideAttributeTypesAction.Hide_Attribute_Types"), AS_CHECK_BOX ); //$NON-NLS-1$
+        super( Messages.getString( "HideAttributeTypesAction.Hide_Attribute_Types" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_HIDE_ATTRIBUTE_TYPES );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

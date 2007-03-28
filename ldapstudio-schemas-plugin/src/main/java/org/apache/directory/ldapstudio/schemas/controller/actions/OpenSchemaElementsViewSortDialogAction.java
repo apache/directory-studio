@@ -47,7 +47,7 @@ public class OpenSchemaElementsViewSortDialogAction extends Action
      */
     public OpenSchemaElementsViewSortDialogAction()
     {
-        super( Messages.getString("OpenSchemaElementsViewSortDialogAction.Sorting...") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenSchemaElementsViewSortDialogAction.Sorting..." ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_SCHEMA_ELEMENTS_VIEW_SORT_DIALOG );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SORT ) );

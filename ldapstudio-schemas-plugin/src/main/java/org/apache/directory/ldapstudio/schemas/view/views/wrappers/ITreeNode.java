@@ -70,7 +70,6 @@ public interface ITreeNode
     public ITreeNode getParent();
 
 
-
     /**
      * Sets the parent of the element.
      *

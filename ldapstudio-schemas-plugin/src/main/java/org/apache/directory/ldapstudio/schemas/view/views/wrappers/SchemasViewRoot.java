@@ -37,7 +37,7 @@ public class SchemasViewRoot extends TreeNode
         super( null );
     }
 
-    
+
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */

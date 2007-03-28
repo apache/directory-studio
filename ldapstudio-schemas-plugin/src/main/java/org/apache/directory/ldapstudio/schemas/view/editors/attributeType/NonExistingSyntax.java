@@ -87,7 +87,7 @@ public class NonExistingSyntax
     {
         if ( obj instanceof NonExistingSyntax )
         {
-            return name.equalsIgnoreCase( (( NonExistingSyntax ) obj).getName() );
+            return name.equalsIgnoreCase( ( ( NonExistingSyntax ) obj ).getName() );
         }
 
         return false;

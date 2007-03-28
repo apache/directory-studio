@@ -173,7 +173,7 @@ public class LinkWithEditorSchemaElementsView extends Action
      */
     public LinkWithEditorSchemaElementsView( SchemaElementsView view )
     {
-        super( Messages.getString("LinkWithEditorSchemaElementsView.Link_with_Editor"), AS_CHECK_BOX ); //$NON-NLS-1$
+        super( Messages.getString( "LinkWithEditorSchemaElementsView.Link_with_Editor" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_LINK_WITH_EDITOR_SCHEMA_ELEMENTS_VIEW );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

@@ -56,7 +56,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
      */
     public OpenTypeHierarchyAction()
     {
-        super( Messages.getString("OpenTypeHierarchyAction.Open_Type_Hierarchy") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenTypeHierarchyAction.Open_Type_Hierarchy" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setActionDefinitionId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );

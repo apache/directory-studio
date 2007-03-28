@@ -43,7 +43,7 @@ public class OpenSchemasViewPreferencesAction extends Action
      */
     public OpenSchemasViewPreferencesAction()
     {
-        super( Messages.getString("OpenSchemasViewPreferencesAction.Preferences...") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenSchemasViewPreferencesAction.Preferences..." ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_SCHEMAS_VIEW_PREFERENCES );
         setEnabled( true );

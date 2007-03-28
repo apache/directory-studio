@@ -74,7 +74,8 @@ public class ObjectClassEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( Messages.getString("ObjectClassEditor.Source_Code_Error_cannot_return_to_Overview_page") ); //$NON-NLS-1$
+                    notifyError( Messages
+                        .getString( "ObjectClassEditor.Source_Code_Error_cannot_return_to_Overview_page" ) ); //$NON-NLS-1$
                     return;
                 }
 
@@ -165,7 +166,7 @@ public class ObjectClassEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( Messages.getString("ObjectClassEditor.Source_Code_Error_cannot_save_object_class") ); //$NON-NLS-1$
+            notifyError( Messages.getString( "ObjectClassEditor.Source_Code_Error_cannot_save_object_class" ) ); //$NON-NLS-1$
             monitor.setCanceled( true );
             return;
         }

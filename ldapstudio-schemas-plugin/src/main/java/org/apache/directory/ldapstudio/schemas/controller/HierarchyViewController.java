@@ -85,7 +85,7 @@ public class HierarchyViewController implements PoolListener
     public HierarchyViewController( HierarchyView view )
     {
         this.view = view;
-        
+
         SchemaPool.getInstance().addListener( this );
 
         initAuthorizedPrefs();
@@ -183,8 +183,7 @@ public class HierarchyViewController implements PoolListener
                 }
                 else if ( objectSelection instanceof ObjectClassWrapper )
                 {
-                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection )
-                        .getMyObjectClass() );
+                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getMyObjectClass() );
                     editorId = ObjectClassEditor.ID;
                 }
 

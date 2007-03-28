@@ -76,7 +76,6 @@ public class SchemaWrapper extends TreeNode
     }
 
 
-
     /**
      * Gets the name of the schema.
      *

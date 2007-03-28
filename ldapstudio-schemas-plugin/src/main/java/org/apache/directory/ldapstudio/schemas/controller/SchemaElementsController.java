@@ -196,8 +196,7 @@ public class SchemaElementsController
                 }
                 else if ( objectSelection instanceof ObjectClassWrapper )
                 {
-                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection )
-                        .getMyObjectClass() );
+                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getMyObjectClass() );
                     editorId = ObjectClassEditor.ID;
                 }
                 else if ( objectSelection instanceof IntermediateNode )
@@ -280,7 +279,7 @@ public class SchemaElementsController
 
         // set the context menu to the table viewer
         viewer.getControl().setMenu( contextMenu.createContextMenu( viewer.getControl() ) );
-        
+
         // register the context menu to enable extension actions
         view.getSite().registerContextMenu( contextMenu, viewer );
     }

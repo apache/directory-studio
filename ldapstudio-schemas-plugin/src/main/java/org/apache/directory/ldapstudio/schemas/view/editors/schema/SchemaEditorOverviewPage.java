@@ -67,7 +67,7 @@ public class SchemaEditorOverviewPage extends FormPage
     public static final String ID = SchemaEditor.ID + "overviewPage"; //$NON-NLS-1$
 
     /** The page title */
-    public static final String TITLE = Messages.getString("SchemaEditorOverviewPage.Overview"); //$NON-NLS-1$
+    public static final String TITLE = Messages.getString( "SchemaEditorOverviewPage.Overview" ); //$NON-NLS-1$
 
     /** The Schema Pool */
     private SchemaPool schemaPool;
@@ -115,8 +115,8 @@ public class SchemaEditorOverviewPage extends FormPage
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool
-                .getObjectClass( objectClassesTable.getSelection()[0].getText() ) );
+            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool.getObjectClass( objectClassesTable
+                .getSelection()[0].getText() ) );
             String editorId = ObjectClassEditor.ID;
             try
             {
@@ -183,9 +183,10 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        attributeTypesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.The_schema") + schema.getName() //$NON-NLS-1$
-            + Messages.getString("SchemaEditorOverviewPage.contains_the_following_attribute_types.") ); //$NON-NLS-1$
-        attributeTypesSection.setText( Messages.getString("SchemaEditorOverviewPage.Attribute_types") ); //$NON-NLS-1$
+        attributeTypesSection
+            .setDescription( Messages.getString( "SchemaEditorOverviewPage.The_schema" ) + schema.getName() //$NON-NLS-1$
+                + Messages.getString( "SchemaEditorOverviewPage.contains_the_following_attribute_types." ) ); //$NON-NLS-1$
+        attributeTypesSection.setText( Messages.getString( "SchemaEditorOverviewPage.Attribute_types" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite attributeTypesSectionClient = toolkit.createComposite( attributeTypesSection );
@@ -214,9 +215,10 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        objectClassesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.The_schema") + schema.getName() //$NON-NLS-1$
-            + Messages.getString("SchemaEditorOverviewPage.contains_the_following_object_classes.") ); //$NON-NLS-1$
-        objectClassesSection.setText( Messages.getString("SchemaEditorOverviewPage.Object_classes") ); //$NON-NLS-1$
+        objectClassesSection
+            .setDescription( Messages.getString( "SchemaEditorOverviewPage.The_schema" ) + schema.getName() //$NON-NLS-1$
+                + Messages.getString( "SchemaEditorOverviewPage.contains_the_following_object_classes." ) ); //$NON-NLS-1$
+        objectClassesSection.setText( Messages.getString( "SchemaEditorOverviewPage.Object_classes" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite objectClassesSectionClient = toolkit.createComposite( objectClassesSection );

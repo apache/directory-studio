@@ -65,8 +65,8 @@ public class ViewUtils
 
         return sb.toString();
     }
-    
-    
+
+
     /**
      * Verifies that the given name is syntaxely correct according to the RFC 2252 
      * (Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions).

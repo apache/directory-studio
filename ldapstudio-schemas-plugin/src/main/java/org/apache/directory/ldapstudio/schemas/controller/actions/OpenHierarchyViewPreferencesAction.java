@@ -43,7 +43,7 @@ public class OpenHierarchyViewPreferencesAction extends Action
      */
     public OpenHierarchyViewPreferencesAction()
     {
-        super( Messages.getString("OpenHierarchyViewPreferencesAction.Preferences...") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenHierarchyViewPreferencesAction.Preferences..." ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_HIERARCHY_VIEW_PREFERENCES );
         setEnabled( true );

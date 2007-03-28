@@ -161,7 +161,7 @@ public class EditAliasesDialog extends Dialog
         label.setSize( 16, 16 );
 
         errorLabel = new Label( errorComposite, SWT.NONE );
-        errorLabel.setText( Messages.getString("EditAliasesDialog.An_element_with_same_alias_already_exists.") ); //$NON-NLS-1$
+        errorLabel.setText( Messages.getString( "EditAliasesDialog.An_element_with_same_alias_already_exists." ) ); //$NON-NLS-1$
         errorLabel.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         // Table initialization
@@ -262,19 +262,21 @@ public class EditAliasesDialog extends Dialog
                 else if ( aliasesLowerCased.contains( text.toLowerCase() ) )
                 {
                     errorComposite.setVisible( true );
-                    errorLabel.setText( Messages.getString("EditAliasesDialog.This_alias_already_exists_in_the_list.") ); //$NON-NLS-1$
+                    errorLabel
+                        .setText( Messages.getString( "EditAliasesDialog.This_alias_already_exists_in_the_list." ) ); //$NON-NLS-1$
                     newAliasAddButton.setEnabled( false );
                 }
                 else if ( SchemaPool.getInstance().containsSchemaElement( text ) )
                 {
                     errorComposite.setVisible( true );
-                    errorLabel.setText( Messages.getString("EditAliasesDialog.An_element_with_same_alias_already_exists.") ); //$NON-NLS-1$
+                    errorLabel.setText( Messages
+                        .getString( "EditAliasesDialog.An_element_with_same_alias_already_exists." ) ); //$NON-NLS-1$
                     newAliasAddButton.setEnabled( false );
                 }
                 else if ( !ViewUtils.verifyName( text ) )
                 {
                     errorComposite.setVisible( true );
-                    errorLabel.setText( Messages.getString("EditAliasesDialog.Invalid_Alias.") ); //$NON-NLS-1$
+                    errorLabel.setText( Messages.getString( "EditAliasesDialog.Invalid_Alias." ) ); //$NON-NLS-1$
                     newAliasAddButton.setEnabled( false );
                 }
             }

@@ -134,7 +134,7 @@ public class SearchView extends ViewPart implements PoolListener
         top.setLayout( layout );
 
         Label searchLabel = new Label( top, SWT.NONE );
-        searchLabel.setText( Messages.getString("SearchView.Search") ); //$NON-NLS-1$
+        searchLabel.setText( Messages.getString( "SearchView.Search" ) ); //$NON-NLS-1$
 
         //search field
         searchField = new Combo( top, SWT.DROP_DOWN | SWT.BORDER );
@@ -143,7 +143,7 @@ public class SearchView extends ViewPart implements PoolListener
         searchField.setLayoutData( gridData );
 
         Label inLabel = new Label( top, SWT.NONE );
-        inLabel.setText( Messages.getString("SearchView.in") ); //$NON-NLS-1$
+        inLabel.setText( Messages.getString( "SearchView.in" ) ); //$NON-NLS-1$
 
         //search scope combo
         scopeCombo = new Combo( top, SWT.READ_ONLY | SWT.SINGLE );

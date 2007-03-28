@@ -75,7 +75,7 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
                     results.add( new NonExistingAttributeType( attribute ) );
                 }
             }
-            
+
             // Sorting Elements
             Collections.sort( results, new Comparator<Object>()
             {

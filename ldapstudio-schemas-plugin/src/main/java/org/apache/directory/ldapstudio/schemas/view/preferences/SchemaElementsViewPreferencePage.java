@@ -56,13 +56,13 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
     public static final String ID = Activator.PLUGIN_ID + ".preferences.schemaElementsView"; //$NON-NLS-1$
 
     /** The First Name category */
-    private static final String FIRST_NAME = Messages.getString("SchemaElementsViewPreferencePage.First_Name"); //$NON-NLS-1$
+    private static final String FIRST_NAME = Messages.getString( "SchemaElementsViewPreferencePage.First_Name" ); //$NON-NLS-1$
 
     /** The All Aliases category */
-    private static final String ALL_ALIASES = Messages.getString("SchemaElementsViewPreferencePage.All_Aliases"); //$NON-NLS-1$
+    private static final String ALL_ALIASES = Messages.getString( "SchemaElementsViewPreferencePage.All_Aliases" ); //$NON-NLS-1$
 
     /** The OID category */
-    private static final String OID = Messages.getString("SchemaElementsViewPreferencePage.OID"); //$NON-NLS-1$
+    private static final String OID = Messages.getString( "SchemaElementsViewPreferencePage.OID" ); //$NON-NLS-1$
 
     // UI fields
     private Combo labelCombo;
@@ -81,7 +81,9 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
     {
         super();
         super.setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        super.setDescription( Messages.getString("SchemaElementsViewPreferencePage.General_settings_for_the_Schema_Elements_View_of_the_Schemas_Editor_Plugin") ); //$NON-NLS-1$
+        super
+            .setDescription( Messages
+                .getString( "SchemaElementsViewPreferencePage.General_settings_for_the_Schema_Elements_View_of_the_Schemas_Editor_Plugin" ) ); //$NON-NLS-1$
     }
 
 
@@ -101,7 +103,7 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
         // Label Group
         Group labelGroup = new Group( composite, SWT.NONE );
         labelGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        labelGroup.setText( Messages.getString("SchemaElementsViewPreferencePage.Label") ); //$NON-NLS-1$
+        labelGroup.setText( Messages.getString( "SchemaElementsViewPreferencePage.Label" ) ); //$NON-NLS-1$
         labelGroup.setLayout( new GridLayout() );
         Composite labelGroupComposite = new Composite( labelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
@@ -120,7 +122,7 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // Use Label
         Label useLabel = new Label( labelComposite, SWT.NONE );
-        useLabel.setText( Messages.getString("SchemaElementsViewPreferencePage.Use") ); //$NON-NLS-1$
+        useLabel.setText( Messages.getString( "SchemaElementsViewPreferencePage.Use" ) ); //$NON-NLS-1$
 
         // Label Combo
         labelCombo = new Combo( labelComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -131,7 +133,7 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // As label Label
         Label asLabel = new Label( labelComposite, SWT.NONE );
-        asLabel.setText( Messages.getString("SchemaElementsViewPreferencePage.as_label.") ); //$NON-NLS-1$
+        asLabel.setText( Messages.getString( "SchemaElementsViewPreferencePage.as_label." ) ); //$NON-NLS-1$
 
         // Abbreviate row composite
         Composite abbreviateComposite = new Composite( labelGroupComposite, SWT.NONE );
@@ -144,7 +146,7 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // Limit label lenght to Label
         limitButton = new Button( abbreviateComposite, SWT.CHECK );
-        limitButton.setText( Messages.getString("SchemaElementsViewPreferencePage.Limit_label_length_to") ); //$NON-NLS-1$
+        limitButton.setText( Messages.getString( "SchemaElementsViewPreferencePage.Limit_label_length_to" ) ); //$NON-NLS-1$
         gd = new GridData();
         gd.horizontalSpan = 1;
         limitButton.setLayoutData( gd );
@@ -173,12 +175,12 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // Characters Label
         Label charactersLabel = new Label( abbreviateComposite, SWT.NONE );
-        charactersLabel.setText( Messages.getString("SchemaElementsViewPreferencePage.characters.") ); //$NON-NLS-1$
+        charactersLabel.setText( Messages.getString( "SchemaElementsViewPreferencePage.characters." ) ); //$NON-NLS-1$
 
         // Secondary Label Group
         Group secondaryLabelGroup = new Group( composite, SWT.NONE );
         secondaryLabelGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        secondaryLabelGroup.setText( Messages.getString("SchemaElementsViewPreferencePage.Secondary_label") ); //$NON-NLS-1$
+        secondaryLabelGroup.setText( Messages.getString( "SchemaElementsViewPreferencePage.Secondary_label" ) ); //$NON-NLS-1$
         secondaryLabelGroup.setLayout( new GridLayout() );
         Composite secondaryLabelGroupComposite = new Composite( secondaryLabelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
@@ -187,7 +189,8 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
         secondaryLabelGroupComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
         secondaryLabelButtonDisplay = new Button( secondaryLabelGroupComposite, SWT.CHECK );
-        secondaryLabelButtonDisplay.setText( Messages.getString("SchemaElementsViewPreferencePage.Display_secondary_label.") ); //$NON-NLS-1$
+        secondaryLabelButtonDisplay.setText( Messages
+            .getString( "SchemaElementsViewPreferencePage.Display_secondary_label." ) ); //$NON-NLS-1$
 
         // Label row composite
         Composite secondaryLabelComposite = new Composite( secondaryLabelGroupComposite, SWT.NONE );
@@ -200,7 +203,7 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // Use Label
         Label useLabel2 = new Label( secondaryLabelComposite, SWT.NONE );
-        useLabel2.setText( Messages.getString("SchemaElementsViewPreferencePage.Use") ); //$NON-NLS-1$
+        useLabel2.setText( Messages.getString( "SchemaElementsViewPreferencePage.Use" ) ); //$NON-NLS-1$
 
         // Label Combo
         secondaryLabelCombo = new Combo( secondaryLabelComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -211,7 +214,7 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // As label Label
         Label asLabel2 = new Label( secondaryLabelComposite, SWT.NONE );
-        asLabel2.setText( Messages.getString("SchemaElementsViewPreferencePage.as_secondary_label.") ); //$NON-NLS-1$
+        asLabel2.setText( Messages.getString( "SchemaElementsViewPreferencePage.as_secondary_label." ) ); //$NON-NLS-1$
 
         // Abbreviate row composite
         Composite abbreviateComposite2 = new Composite( secondaryLabelGroup, SWT.NONE );
@@ -224,7 +227,8 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // Limit label lenght to Label
         secondaryLabelLimitButton = new Button( abbreviateComposite2, SWT.CHECK );
-        secondaryLabelLimitButton.setText( Messages.getString("SchemaElementsViewPreferencePage.Limit_secondary_label_length_to") ); //$NON-NLS-1$
+        secondaryLabelLimitButton.setText( Messages
+            .getString( "SchemaElementsViewPreferencePage.Limit_secondary_label_length_to" ) ); //$NON-NLS-1$
         gd = new GridData();
         gd.horizontalSpan = 1;
         secondaryLabelLimitButton.setLayoutData( gd );
@@ -253,7 +257,7 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         // Characters Label
         Label secondaryLabelcharactersLabel = new Label( abbreviateComposite2, SWT.NONE );
-        secondaryLabelcharactersLabel.setText( Messages.getString("SchemaElementsViewPreferencePage.characters.") ); //$NON-NLS-1$
+        secondaryLabelcharactersLabel.setText( Messages.getString( "SchemaElementsViewPreferencePage.characters." ) ); //$NON-NLS-1$
 
         initFieldsFromPreferences();
 
@@ -277,11 +281,13 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
         lengthText.setEnabled( limitButton.getSelection() );
         lengthText.setText( store.getString( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH ) );
 
-        secondaryLabelButtonDisplay.setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY ) );
+        secondaryLabelButtonDisplay.setSelection( store
+            .getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY ) );
         secondaryLabelCombo.select( store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL ) );
-        secondaryLabelLimitButton.setSelection( store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
-        secondaryLabelLengthText
-            .setText( store.getString( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
+        secondaryLabelLimitButton.setSelection( store
+            .getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE ) );
+        secondaryLabelLengthText.setText( store
+            .getString( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH ) );
         if ( store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY ) )
         {
             secondaryLabelCombo.setEnabled( true );
@@ -385,34 +391,43 @@ public class SchemaElementsViewPreferencePage extends PreferencePage implements 
 
         if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL,
+                PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL,
+                PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( OID ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL,
+                PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
         }
         store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE, limitButton.getSelection() );
         store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH, lengthText.getText() );
 
-        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY, secondaryLabelButtonDisplay.getSelection() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY, secondaryLabelButtonDisplay
+            .getSelection() );
         if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL,
+                PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME );
         }
         else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL,
+                PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( OID ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
+            store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL,
+                PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
         }
-        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE, secondaryLabelLimitButton.getSelection() );
-        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, secondaryLabelLengthText.getText() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE,
+            secondaryLabelLimitButton.getSelection() );
+        store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH,
+            secondaryLabelLengthText.getText() );
 
         return true;
     }

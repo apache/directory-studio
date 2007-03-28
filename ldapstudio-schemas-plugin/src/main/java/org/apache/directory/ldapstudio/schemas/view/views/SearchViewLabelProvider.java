@@ -48,14 +48,14 @@ public class SearchViewLabelProvider extends LabelProvider implements ITableLabe
         {
             if ( element instanceof ObjectClass )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
-                    .createImage();
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_OBJECT_CLASS ).createImage();
             }
 
             if ( element instanceof AttributeType )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
-                    .createImage();
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage();
             }
         }
 

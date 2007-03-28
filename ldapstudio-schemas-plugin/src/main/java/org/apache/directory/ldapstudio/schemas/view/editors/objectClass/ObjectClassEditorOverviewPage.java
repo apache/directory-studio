@@ -166,13 +166,14 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 else
                 {
                     oidText.setForeground( ViewUtils.COLOR_RED );
-                    oidText.setToolTipText( Messages.getString("ObjectClassEditorOverviewPage.An_element_with_same_oid_already_exists.") ); //$NON-NLS-1$
+                    oidText.setToolTipText( Messages
+                        .getString( "ObjectClassEditorOverviewPage.An_element_with_same_oid_already_exists." ) ); //$NON-NLS-1$
                 }
             }
             else
             {
                 oidText.setForeground( ViewUtils.COLOR_RED );
-                oidText.setToolTipText( Messages.getString("ObjectClassEditorOverviewPage.Malformed_OID.") ); //$NON-NLS-1$
+                oidText.setToolTipText( Messages.getString( "ObjectClassEditorOverviewPage.Malformed_OID." ) ); //$NON-NLS-1$
             }
         }
     };
@@ -725,8 +726,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         section_general_information.setClient( client_general_information );
 
         // ALIASES Button
-        toolkit.createLabel( client_general_information, Messages
-            .getString( "ObjectClassEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
+        toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
         aliasesLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
@@ -740,7 +740,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SCHEMA Field
-        schemaLink = toolkit.createHyperlink( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.Schema"), SWT.WRAP ); //$NON-NLS-1$
+        schemaLink = toolkit.createHyperlink( client_general_information, Messages
+            .getString( "ObjectClassEditorOverviewPage.Schema" ), SWT.WRAP ); //$NON-NLS-1$
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 

@@ -267,13 +267,13 @@ public class AttributeType implements SchemaElement, Cloneable
         literal.setUsage( usage );
     }
 
-    
+
     public void setOid( String oid )
     {
         literal.setOid( oid );
     }
-    
-    
+
+
     public void setObsolete( boolean bool )
     {
         literal.setObsolete( bool );

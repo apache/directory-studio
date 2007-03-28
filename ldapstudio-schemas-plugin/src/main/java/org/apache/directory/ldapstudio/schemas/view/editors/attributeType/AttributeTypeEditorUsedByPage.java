@@ -180,9 +180,11 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
         // As Mandatory Attribute Section
         Section mandatoryAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        mandatoryAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.The_attribute_type") + " '" + modifiedAttributeType.getNames()[0] //$NON-NLS-1$ //$NON-NLS-2$
-            + "' " + Messages.getString("AttributeTypeEditorUsedByPage.is_used_as_a_mandatory_attribute_in_the_following_object_classes.") ); //$NON-NLS-1$ //$NON-NLS-2$
-        mandatoryAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.As_Mandatory_Attribute") ); //$NON-NLS-1$
+        mandatoryAttributeSection
+            .setDescription( Messages.getString( "AttributeTypeEditorUsedByPage.The_attribute_type" ) + " '" + modifiedAttributeType.getNames()[0] //$NON-NLS-1$ //$NON-NLS-2$
+                + "' " + Messages.getString( "AttributeTypeEditorUsedByPage.is_used_as_a_mandatory_attribute_in_the_following_object_classes." ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        mandatoryAttributeSection
+            .setText( Messages.getString( "AttributeTypeEditorUsedByPage.As_Mandatory_Attribute" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite mandatoryAttributeSectionClient = toolkit.createComposite( mandatoryAttributeSection );
@@ -214,9 +216,10 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
         // Matching Rules Section
         Section optionalAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        optionalAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.The_attribute_type") + " '" + modifiedAttributeType.getNames()[0] //$NON-NLS-1$ //$NON-NLS-2$
-            + "' " + Messages.getString("AttributeTypeEditorUsedByPage.is_used_as_an_optional_attribute_in_the_following_object_classes.") ); //$NON-NLS-1$ //$NON-NLS-2$
-        optionalAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.As_Optional_Attribute") ); //$NON-NLS-1$
+        optionalAttributeSection
+            .setDescription( Messages.getString( "AttributeTypeEditorUsedByPage.The_attribute_type" ) + " '" + modifiedAttributeType.getNames()[0] //$NON-NLS-1$ //$NON-NLS-2$
+                + "' " + Messages.getString( "AttributeTypeEditorUsedByPage.is_used_as_an_optional_attribute_in_the_following_object_classes." ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        optionalAttributeSection.setText( Messages.getString( "AttributeTypeEditorUsedByPage.As_Optional_Attribute" ) ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite optionalAttributeSectionClient = toolkit.createComposite( optionalAttributeSection );

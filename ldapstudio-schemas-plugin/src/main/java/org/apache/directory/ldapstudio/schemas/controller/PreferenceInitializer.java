@@ -43,7 +43,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
 
         // Schemas Editor Preference Page
         store.setDefault( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE, false );
-        store.setDefault( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY, System
+            .getProperty( "user.home" ) ); //$NON-NLS-1$
         store.setDefault( PluginConstants.PREFS_SCHEMAS_EDITOR_AUTO_OID, true );
         store.setDefault( PluginConstants.PREFS_SCHEMAS_EDITOR_COMPANY_OID, "1.2.3.4.5.6" ); //$NON-NLS-1$
 

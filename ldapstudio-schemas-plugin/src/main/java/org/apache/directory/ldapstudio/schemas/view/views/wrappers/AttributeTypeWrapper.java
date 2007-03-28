@@ -40,11 +40,11 @@ public class AttributeTypeWrapper extends TreeNode
     private AttributeType myAttributeType;
     private State state;
 
-    
     public enum State
     {
         resolved, unResolved
     }
+
 
     /**
      * Creates a new instance of AttributeTypeWrapper.
@@ -107,7 +107,8 @@ public class AttributeTypeWrapper extends TreeNode
     {
         return myAttributeType + " wrapper"; //$NON-NLS-1$
     }
-    
+
+
     /**
      * Gets the state of the object class wrapper.
      * 

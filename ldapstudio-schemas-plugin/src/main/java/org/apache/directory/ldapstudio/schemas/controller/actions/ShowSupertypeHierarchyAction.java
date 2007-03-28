@@ -48,8 +48,8 @@ public class ShowSupertypeHierarchyAction extends Action
      */
     public ShowSupertypeHierarchyAction( HierarchyView view )
     {
-        super( Messages.getString("ShowSupertypeHierarchyAction.Supertype_Hierarchy"), AS_RADIO_BUTTON ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("ShowSupertypeHierarchyAction.Show_the_Supertype_Hierarchy") ); //$NON-NLS-1$
+        super( Messages.getString( "ShowSupertypeHierarchyAction.Supertype_Hierarchy" ), AS_RADIO_BUTTON ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "ShowSupertypeHierarchyAction.Show_the_Supertype_Hierarchy" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_SHOW_SUPERTYPE_HIERARCHY );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SHOW_SUPERTYPE_HIERARCHY ) );
@@ -68,7 +68,7 @@ public class ShowSupertypeHierarchyAction extends Action
     {
         Activator.getDefault().getDialogSettings().put( PluginConstants.PREFS_HIERARCHY_VIEW_MODE,
             PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE );
-        
+
         view.refresh();
     }
 }

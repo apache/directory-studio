@@ -43,7 +43,7 @@ public class OpenSchemaElementsViewPreferencesAction extends Action
      */
     public OpenSchemaElementsViewPreferencesAction()
     {
-        super( Messages.getString("OpenSchemaElementsViewPreferencesAction.Preferences...") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenSchemaElementsViewPreferencesAction.Preferences..." ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_SCHEMA_ELEMENTS_VIEW_PREFERENCES );
         setEnabled( true );

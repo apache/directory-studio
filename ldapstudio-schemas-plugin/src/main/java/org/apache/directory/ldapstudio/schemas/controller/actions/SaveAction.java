@@ -90,7 +90,7 @@ public class SaveAction extends Action implements IWorkbenchWindowActionDelegate
             }
             else if ( selection instanceof AttributeTypeWrapper )
             {
-                schema =( ( AttributeTypeWrapper ) selection ).getMyAttributeType().getOriginatingSchema();
+                schema = ( ( AttributeTypeWrapper ) selection ).getMyAttributeType().getOriginatingSchema();
             }
             else if ( selection instanceof ObjectClassWrapper )
             {

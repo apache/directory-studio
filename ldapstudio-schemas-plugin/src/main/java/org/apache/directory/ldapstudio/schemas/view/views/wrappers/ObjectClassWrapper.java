@@ -119,8 +119,8 @@ public class ObjectClassWrapper extends TreeNode
             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
                 .createImage();
         else if ( state == State.unResolved )
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS_WARNING )
-                .createImage();
+            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                PluginConstants.IMG_OBJECT_CLASS_WARNING ).createImage();
 
         return PlatformUI.getWorkbench().getSharedImages().getImage( imageKey );
     }

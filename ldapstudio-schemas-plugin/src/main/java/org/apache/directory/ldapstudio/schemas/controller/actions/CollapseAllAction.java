@@ -47,7 +47,7 @@ public class CollapseAllAction extends Action
      */
     public CollapseAllAction( TreeViewer viewer )
     {
-        super( Messages.getString("CollapseAllAction.Collapse_All") ); //$NON-NLS-1$
+        super( Messages.getString( "CollapseAllAction.Collapse_All" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_COLLAPSE_ALL );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

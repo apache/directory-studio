@@ -35,6 +35,7 @@ public class ATEMatchingRulesComboInput
     /** The children */
     private List<Object> children;
 
+
     /**
      * Adds a child.
      *

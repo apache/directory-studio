@@ -60,13 +60,13 @@ public class SchemaTextAttributeProvider
             null, SWT.BOLD ) );
 
         attributes.put( STRING_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 0, 255 ) ) ) );
-        
-        attributes.put( ATTRIBUTETYPE_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 89, 71, 158 ) ),
-            null, SWT.BOLD ) );
-        
-        attributes.put( OBJECTCLASS_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 45, 124, 68 ) ),
-            null, SWT.BOLD ) );
-        
+
+        attributes.put( ATTRIBUTETYPE_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 89, 71,
+            158 ) ), null, SWT.BOLD ) );
+
+        attributes.put( OBJECTCLASS_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(),
+            new RGB( 45, 124, 68 ) ), null, SWT.BOLD ) );
+
         attributes.put( OID_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 255, 0, 0 ) ) ) );
     }
 

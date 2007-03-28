@@ -69,7 +69,7 @@ public class ATEUsedByMandatoryTableContentProvider implements IStructuredConten
                     }
                 }
             }
-            
+
             // Sorting Results
             Collections.sort( results, new Comparator<ObjectClass>()
             {
@@ -77,7 +77,8 @@ public class ATEUsedByMandatoryTableContentProvider implements IStructuredConten
                 {
                     if ( oc1 instanceof ObjectClass && oc1 instanceof ObjectClass )
                     {
-                        return ( ( ObjectClass ) oc1 ).getNames()[0].compareToIgnoreCase( ( ( ObjectClass ) oc2 ).getNames()[0] );
+                        return ( ( ObjectClass ) oc1 ).getNames()[0].compareToIgnoreCase( ( ( ObjectClass ) oc2 )
+                            .getNames()[0] );
                     }
 
                     return 0;

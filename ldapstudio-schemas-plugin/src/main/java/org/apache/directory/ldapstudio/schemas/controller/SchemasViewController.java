@@ -475,7 +475,7 @@ public class SchemasViewController
                 else if ( selectedObject instanceof AttributeTypeWrapper )
                 {
                     AttributeTypeWrapper attributeTypeWrapper = ( AttributeTypeWrapper ) selectedObject;
-                    deleteAction.setText( Messages.getString("SchemasViewController.Delete_Attribute_Type") + " '" //$NON-NLS-1$ //$NON-NLS-2$
+                    deleteAction.setText( Messages.getString( "SchemasViewController.Delete_Attribute_Type" ) + " '" //$NON-NLS-1$ //$NON-NLS-2$
                         + attributeTypeWrapper.getMyAttributeType().getNames()[0] + "'" ); //$NON-NLS-1$
 
                     if ( attributeTypeWrapper.getMyAttributeType().getOriginatingSchema().type == SchemaType.coreSchema )
@@ -494,7 +494,7 @@ public class SchemasViewController
                 else if ( selectedObject instanceof ObjectClassWrapper )
                 {
                     ObjectClassWrapper objectClassWrapper = ( ObjectClassWrapper ) selectedObject;
-                    deleteAction.setText( Messages.getString("SchemasViewController.Delete_Object_Class") + " '" //$NON-NLS-1$ //$NON-NLS-2$
+                    deleteAction.setText( Messages.getString( "SchemasViewController.Delete_Object_Class" ) + " '" //$NON-NLS-1$ //$NON-NLS-2$
                         + objectClassWrapper.getMyObjectClass().getNames()[0] + "'" ); //$NON-NLS-1$
 
                     if ( objectClassWrapper.getMyObjectClass().getOriginatingSchema().type == SchemaType.coreSchema )

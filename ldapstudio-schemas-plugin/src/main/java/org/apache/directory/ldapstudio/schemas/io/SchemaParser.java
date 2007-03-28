@@ -141,7 +141,7 @@ public class SchemaParser
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
             messageBox
-                .setMessage( Messages.getString( "SchemaParser.An_error_has_occurred_when_parsing_the_file" ) + fileURL.toString() + Messages.getString( "SchemaParser.The_schema_cannot_be_opened" ) + " " + Messages.getString("SchemaParser.See_log_file_for_debug_information_about_the_schema.") ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                .setMessage( Messages.getString( "SchemaParser.An_error_has_occurred_when_parsing_the_file" ) + fileURL.toString() + Messages.getString( "SchemaParser.The_schema_cannot_be_opened" ) + " " + Messages.getString( "SchemaParser.See_log_file_for_debug_information_about_the_schema." ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             messageBox.open();
             throw e;
         }

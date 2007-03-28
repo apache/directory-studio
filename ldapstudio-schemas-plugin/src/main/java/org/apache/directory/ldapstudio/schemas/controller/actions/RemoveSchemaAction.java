@@ -79,12 +79,14 @@ public class RemoveSchemaAction extends Action
         else if ( selection instanceof AttributeTypeWrapper )
         {
             // We have to get the parent of the parent ( AttributeTypeWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( AttributeTypeWrapper ) selection ).getParent().getParent() ).getMySchema().getName();
+            schemaName = ( ( SchemaWrapper ) ( ( AttributeTypeWrapper ) selection ).getParent().getParent() )
+                .getMySchema().getName();
         }
         else if ( selection instanceof ObjectClassWrapper )
         {
             // We have to get the parent of the parent ( ObjectClassWrapper => IntermediateNode => SchemaWrapper )
-            schemaName = ( ( SchemaWrapper ) ( ( ObjectClassWrapper ) selection ).getParent().getParent() ).getMySchema().getName();
+            schemaName = ( ( SchemaWrapper ) ( ( ObjectClassWrapper ) selection ).getParent().getParent() )
+                .getMySchema().getName();
         }
 
         if ( schemaName != null )

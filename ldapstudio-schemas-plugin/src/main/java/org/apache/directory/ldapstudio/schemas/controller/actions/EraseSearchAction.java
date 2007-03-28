@@ -47,7 +47,7 @@ public class EraseSearchAction extends Action
      */
     public EraseSearchAction( SearchView view )
     {
-        super( Messages.getString("EraseSearchAction.Erase_Search") ); //$NON-NLS-1$
+        super( Messages.getString( "EraseSearchAction.Erase_Search" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_ERASE_SEARCH );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

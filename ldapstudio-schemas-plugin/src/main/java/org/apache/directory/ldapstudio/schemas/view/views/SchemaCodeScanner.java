@@ -95,7 +95,7 @@ public class SchemaCodeScanner extends RuleBasedScanner
         wr.addWord( objectclass, OCToken );
 
         // Adding Keywords
-        for (String kw : keywords )
+        for ( String kw : keywords )
         {
             wr.addWord( kw, keyword );
         }

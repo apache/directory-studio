@@ -162,13 +162,14 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
                 else
                 {
                     oidText.setForeground( ViewUtils.COLOR_RED );
-                    oidText.setToolTipText( Messages.getString("AttributeTypeEditorOverviewPage.An_element_with_same_oid_already_exists.") ); //$NON-NLS-1$
+                    oidText.setToolTipText( Messages
+                        .getString( "AttributeTypeEditorOverviewPage.An_element_with_same_oid_already_exists." ) ); //$NON-NLS-1$
                 }
             }
             else
             {
                 oidText.setForeground( ViewUtils.COLOR_RED );
-                oidText.setToolTipText( Messages.getString("AttributeTypeEditorOverviewPage.Malformed_OID.") ); //$NON-NLS-1$
+                oidText.setToolTipText( Messages.getString( "AttributeTypeEditorOverviewPage.Malformed_OID." ) ); //$NON-NLS-1$
             }
         }
     };
@@ -551,8 +552,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
 
         // Adding elements to the section
         // ALIASES Button
-        toolkit.createLabel( client_general_information, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
+        toolkit
+            .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Aliases" ) ); //$NON-NLS-1$
         aliasesLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
@@ -561,8 +562,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
-        toolkit
-            .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.OID" ) ); //$NON-NLS-1$
+        toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.OID" ) ); //$NON-NLS-1$
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
 
@@ -575,7 +575,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         descriptionText.setLayoutData( descriptionGridData );
 
         // SCHEMA Field
-        schemaLink = toolkit.createHyperlink( client_general_information, Messages.getString("AttributeTypeEditorOverviewPage.Schema"), SWT.WRAP ); //$NON-NLS-1$
+        schemaLink = toolkit.createHyperlink( client_general_information, Messages
+            .getString( "AttributeTypeEditorOverviewPage.Schema" ), SWT.WRAP ); //$NON-NLS-1$
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
@@ -589,15 +590,14 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         supComboViewer.setLabelProvider( new ATESuperiorComboLabelProvider() );
 
         // USAGE Combo
-        toolkit.createLabel( client_general_information, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Usage" ) ); //$NON-NLS-1$
+        toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Usage" ) ); //$NON-NLS-1$
         usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         initUsageCombo();
 
         // SYNTAX Combo
-        toolkit.createLabel( client_general_information, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Synatx" ) ); //$NON-NLS-1$
+        toolkit
+            .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Synatx" ) ); //$NON-NLS-1$
         syntaxCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         syntaxComboViewer = new ComboViewer( syntaxCombo );
@@ -661,8 +661,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         section_matching_rules.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // EQUALITY Combo
-        toolkit
-            .createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Equility" ) ); //$NON-NLS-1$
+        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Equility" ) ); //$NON-NLS-1$
         equalityCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         equalityComboViewer = new ComboViewer( equalityCombo );
@@ -670,8 +669,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         equalityComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
 
         // ORDERING Combo
-        toolkit
-            .createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Ordering" ) ); //$NON-NLS-1$
+        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Ordering" ) ); //$NON-NLS-1$
         orderingCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         orderingComboViewer = new ComboViewer( orderingCombo );
@@ -679,8 +677,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         orderingComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
 
         // SUBSTRING Combo
-        toolkit.createLabel( client_matching_rules, Messages
-            .getString( "AttributeTypeEditorOverviewPage.Substring" ) ); //$NON-NLS-1$
+        toolkit.createLabel( client_matching_rules, Messages.getString( "AttributeTypeEditorOverviewPage.Substring" ) ); //$NON-NLS-1$
         substringCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         substringComboViewer = new ComboViewer( substringCombo );

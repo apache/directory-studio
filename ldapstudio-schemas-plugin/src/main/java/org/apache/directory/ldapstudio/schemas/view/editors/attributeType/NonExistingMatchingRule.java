@@ -87,7 +87,7 @@ public class NonExistingMatchingRule
     {
         if ( obj instanceof NonExistingMatchingRule )
         {
-            return name.equalsIgnoreCase( (( NonExistingMatchingRule ) obj).getName() );
+            return name.equalsIgnoreCase( ( ( NonExistingMatchingRule ) obj ).getName() );
         }
 
         return false;

@@ -56,13 +56,13 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
     public static final String ID = Activator.PLUGIN_ID + ".preferences.schemasView"; //$NON-NLS-1$
 
     /** The First Name category */
-    private static final String FIRST_NAME = Messages.getString("SchemasViewPreferencePage.First_Name"); //$NON-NLS-1$
+    private static final String FIRST_NAME = Messages.getString( "SchemasViewPreferencePage.First_Name" ); //$NON-NLS-1$
 
     /** The All Aliases category */
-    private static final String ALL_ALIASES = Messages.getString("SchemasViewPreferencePage.All_Aliases"); //$NON-NLS-1$
+    private static final String ALL_ALIASES = Messages.getString( "SchemasViewPreferencePage.All_Aliases" ); //$NON-NLS-1$
 
     /** The OID category */
-    private static final String OID = Messages.getString("SchemasViewPreferencePage.OID"); //$NON-NLS-1$
+    private static final String OID = Messages.getString( "SchemasViewPreferencePage.OID" ); //$NON-NLS-1$
 
     // UI fields
     private Combo labelCombo;
@@ -77,7 +77,9 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
     {
         super();
         super.setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        super.setDescription( Messages.getString("SchemasViewPreferencePage.General_settings_for_the_Schemas_View_of_the_Schemas_Editor_Plugin") ); //$NON-NLS-1$
+        super
+            .setDescription( Messages
+                .getString( "SchemasViewPreferencePage.General_settings_for_the_Schemas_View_of_the_Schemas_Editor_Plugin" ) ); //$NON-NLS-1$
     }
 
 
@@ -97,7 +99,7 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
         // Label Group
         Group labelGroup = new Group( composite, SWT.NONE );
         labelGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        labelGroup.setText( Messages.getString("SchemasViewPreferencePage.Label") ); //$NON-NLS-1$
+        labelGroup.setText( Messages.getString( "SchemasViewPreferencePage.Label" ) ); //$NON-NLS-1$
         labelGroup.setLayout( new GridLayout() );
         Composite labelGroupComposite = new Composite( labelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
@@ -116,7 +118,7 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
         // Use Label
         Label useLabel = new Label( labelComposite, SWT.NONE );
-        useLabel.setText( Messages.getString("SchemasViewPreferencePage.Use") ); //$NON-NLS-1$
+        useLabel.setText( Messages.getString( "SchemasViewPreferencePage.Use" ) ); //$NON-NLS-1$
 
         // Label Combo
         labelCombo = new Combo( labelComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -127,7 +129,7 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
         // As label Label
         Label asLabel = new Label( labelComposite, SWT.NONE );
-        asLabel.setText( Messages.getString("SchemasViewPreferencePage.as_label.") ); //$NON-NLS-1$
+        asLabel.setText( Messages.getString( "SchemasViewPreferencePage.as_label." ) ); //$NON-NLS-1$
 
         // Abbreviate row composite
         Composite abbreviateComposite = new Composite( labelGroupComposite, SWT.NONE );
@@ -140,7 +142,7 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
         // Limit label lenght to Label
         limitButton = new Button( abbreviateComposite, SWT.CHECK );
-        limitButton.setText( Messages.getString("SchemasViewPreferencePage.Limit_label_length_to") ); //$NON-NLS-1$
+        limitButton.setText( Messages.getString( "SchemasViewPreferencePage.Limit_label_length_to" ) ); //$NON-NLS-1$
         gd = new GridData();
         gd.horizontalSpan = 1;
         limitButton.setLayoutData( gd );
@@ -169,7 +171,7 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
         // Characters Label
         Label charactersLabel = new Label( abbreviateComposite, SWT.NONE );
-        charactersLabel.setText( Messages.getString("SchemasViewPreferencePage.characters.") ); //$NON-NLS-1$
+        charactersLabel.setText( Messages.getString( "SchemasViewPreferencePage.characters." ) ); //$NON-NLS-1$
 
         initFieldsFromPreferences();
 
@@ -235,11 +237,13 @@ public class SchemasViewPreferencePage extends PreferencePage implements IWorkbe
 
         if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( FIRST_NAME ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL, PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME );
+            store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL,
+                PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( ALL_ALIASES ) )
         {
-            store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL, PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES );
+            store.setValue( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL,
+                PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES );
         }
         else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( OID ) )
         {

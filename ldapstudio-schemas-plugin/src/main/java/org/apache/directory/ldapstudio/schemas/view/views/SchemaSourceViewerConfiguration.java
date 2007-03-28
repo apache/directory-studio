@@ -19,6 +19,7 @@
  */
 package org.apache.directory.ldapstudio.schemas.view.views;
 
+
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -26,6 +27,7 @@ import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+
 
 /**
  * This class is used to handle the display (syntax highlighting, etc.) of Schema files in the SchemaSourceViewer.
@@ -42,7 +44,7 @@ public class SchemaSourceViewerConfiguration extends SourceViewerConfiguration
     {
         PresentationReconciler reconciler = new PresentationReconciler();
         reconciler.setDocumentPartitioning( getConfiguredDocumentPartitioning( sourceViewer ) );
-        
+
         // Creating the damager/repairer for code
         DefaultDamagerRepairer dr = new DefaultDamagerRepairer( Activator.getSchemaCodeScanner() );
         reconciler.setDamager( dr, IDocument.DEFAULT_CONTENT_TYPE );

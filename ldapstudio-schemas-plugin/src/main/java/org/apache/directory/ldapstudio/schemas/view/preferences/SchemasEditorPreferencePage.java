@@ -69,7 +69,8 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
     {
         super();
         setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        setDescription( Messages.getString("SchemasEditorPreferencePage.General_settings_for_the_Schemas_Editor_Plugin") ); //$NON-NLS-1$
+        setDescription( Messages
+            .getString( "SchemasEditorPreferencePage.General_settings_for_the_Schemas_Editor_Plugin" ) ); //$NON-NLS-1$
     }
 
 
@@ -81,13 +82,14 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
 
         // SPECIFIC CORE SCHEMAS Group
         Group specificCoreSchemasGroup = new Group( parent, SWT.NONE );
-        specificCoreSchemasGroup.setText( Messages.getString("SchemasEditorPreferencePage.Core_Schemas") ); //$NON-NLS-1$
+        specificCoreSchemasGroup.setText( Messages.getString( "SchemasEditorPreferencePage.Core_Schemas" ) ); //$NON-NLS-1$
         specificCoreSchemasGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         specificCoreSchemasGroup.setLayout( new GridLayout( 3, false ) );
 
         // SPECIFIC CORE SCHEMAS Checkbox
         specificCoreSchemasCheckbox = new Button( specificCoreSchemasGroup, SWT.CHECK );
-        specificCoreSchemasCheckbox.setText( Messages.getString( "SchemasEditorPreferencePage.Use_specific_core_schemas" ) ); //$NON-NLS-1$
+        specificCoreSchemasCheckbox.setText( Messages
+            .getString( "SchemasEditorPreferencePage.Use_specific_core_schemas" ) ); //$NON-NLS-1$
         specificCoreSchemasCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false, 3, 1 ) );
 
         // SPECIFIC CORE SCHEMAS Label 
@@ -101,11 +103,11 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
 
         // SPECIFIC CORE SCHEMAS Button
         specificCoreSchemasButton = new Button( specificCoreSchemasGroup, SWT.PUSH );
-        specificCoreSchemasButton.setText( Messages.getString("SchemasEditorPreferencePage.Browse...") ); //$NON-NLS-1$
+        specificCoreSchemasButton.setText( Messages.getString( "SchemasEditorPreferencePage.Browse..." ) ); //$NON-NLS-1$
 
         // DEFAULT OID Group
         Group defaultOidGroup = new Group( parent, SWT.NONE );
-        defaultOidGroup.setText( Messages.getString("SchemasEditorPreferencePage.Default_OID") ); //$NON-NLS-1$
+        defaultOidGroup.setText( Messages.getString( "SchemasEditorPreferencePage.Default_OID" ) ); //$NON-NLS-1$
         defaultOidGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         defaultOidGroup.setLayout( new GridLayout( 2, false ) );
 

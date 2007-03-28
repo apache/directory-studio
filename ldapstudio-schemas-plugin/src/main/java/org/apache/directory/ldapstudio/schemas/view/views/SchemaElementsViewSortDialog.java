@@ -48,13 +48,14 @@ import org.eclipse.swt.widgets.Shell;
 public class SchemaElementsViewSortDialog extends Dialog
 {
     /** The title of the dialog */
-    private static final String DIALOG_TITLE = Messages.getString("SchemaElementsViewSortDialog.Schema_Elements_View_Sorting"); //$NON-NLS-1$
+    private static final String DIALOG_TITLE = Messages
+        .getString( "SchemaElementsViewSortDialog.Schema_Elements_View_Sorting" ); //$NON-NLS-1$
 
     /** The Sorting First Name category */
-    private static final String SORTING_FISTNAME = Messages.getString("SchemaElementsViewSortDialog.First_Name"); //$NON-NLS-1$
+    private static final String SORTING_FISTNAME = Messages.getString( "SchemaElementsViewSortDialog.First_Name" ); //$NON-NLS-1$
 
     /** The Sorting OID category */
-    private static final String SORTING_OID = Messages.getString("SchemaElementsViewSortDialog.OID"); //$NON-NLS-1$
+    private static final String SORTING_OID = Messages.getString( "SchemaElementsViewSortDialog.OID" ); //$NON-NLS-1$
 
     // UI Fields
     private Button atFirstButton;
@@ -100,28 +101,28 @@ public class SchemaElementsViewSortDialog extends Dialog
         // Grouping Group
         Group groupingGroup = new Group( composite, SWT.NONE );
         groupingGroup.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        groupingGroup.setText( Messages.getString("SchemaElementsViewSortDialog.Grouping") ); //$NON-NLS-1$
+        groupingGroup.setText( Messages.getString( "SchemaElementsViewSortDialog.Grouping" ) ); //$NON-NLS-1$
         groupingGroup.setLayout( new GridLayout() );
 
         // Attribute Types first Button
         atFirstButton = new Button( groupingGroup, SWT.RADIO );
-        atFirstButton.setText( Messages.getString("SchemaElementsViewSortDialog.Attribute_Types_first") ); //$NON-NLS-1$
+        atFirstButton.setText( Messages.getString( "SchemaElementsViewSortDialog.Attribute_Types_first" ) ); //$NON-NLS-1$
         atFirstButton.setEnabled( true );
 
         // Object Classes first Button
         ocFirstButton = new Button( groupingGroup, SWT.RADIO );
-        ocFirstButton.setText( Messages.getString("SchemaElementsViewSortDialog.Object_Classes_first") ); //$NON-NLS-1$
+        ocFirstButton.setText( Messages.getString( "SchemaElementsViewSortDialog.Object_Classes_first" ) ); //$NON-NLS-1$
         ocFirstButton.setEnabled( true );
 
         // Mixed Button
         mixedButton = new Button( groupingGroup, SWT.RADIO );
-        mixedButton.setText( Messages.getString("SchemaElementsViewSortDialog.Mixed") ); //$NON-NLS-1$
+        mixedButton.setText( Messages.getString( "SchemaElementsViewSortDialog.Mixed" ) ); //$NON-NLS-1$
         mixedButton.setEnabled( true );
 
         // Sorting Group
         Group sortingGroup = new Group( composite, SWT.NONE );
         sortingGroup.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        sortingGroup.setText( Messages.getString("SchemaElementsViewSortDialog.Sorting") ); //$NON-NLS-1$
+        sortingGroup.setText( Messages.getString( "SchemaElementsViewSortDialog.Sorting" ) ); //$NON-NLS-1$
         sortingGroup.setLayout( new GridLayout() );
         Composite sortingGroupComposite = new Composite( sortingGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 4, false );
@@ -131,7 +132,7 @@ public class SchemaElementsViewSortDialog extends Dialog
 
         // Sort by Label
         Label sortByLabel = new Label( sortingGroupComposite, SWT.NONE );
-        sortByLabel.setText( Messages.getString("SchemaElementsViewSortDialog.Sort_by") ); //$NON-NLS-1$
+        sortByLabel.setText( Messages.getString( "SchemaElementsViewSortDialog.Sort_by" ) ); //$NON-NLS-1$
 
         // Sorting Combo
         sortingCombo = new Combo( sortingGroupComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -142,12 +143,12 @@ public class SchemaElementsViewSortDialog extends Dialog
 
         // Ascending Button
         ascendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        ascendingButton.setText( Messages.getString("SchemaElementsViewSortDialog.Ascending") ); //$NON-NLS-1$
+        ascendingButton.setText( Messages.getString( "SchemaElementsViewSortDialog.Ascending" ) ); //$NON-NLS-1$
         ascendingButton.setEnabled( true );
 
         // Descending Button
         descendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        descendingButton.setText( Messages.getString("SchemaElementsViewSortDialog.Descending") ); //$NON-NLS-1$
+        descendingButton.setText( Messages.getString( "SchemaElementsViewSortDialog.Descending" ) ); //$NON-NLS-1$
         descendingButton.setEnabled( true );
 
         initFieldsFromPreferences();
@@ -211,35 +212,42 @@ public class SchemaElementsViewSortDialog extends Dialog
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             if ( ( atFirstButton.getSelection() ) & ( !ocFirstButton.getSelection() ) & ( !mixedButton.getSelection() ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST );
+                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING,
+                    PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST );
             }
             else if ( ( !atFirstButton.getSelection() ) & ( ocFirstButton.getSelection() )
                 & ( !mixedButton.getSelection() ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_OCFIRST );
+                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING,
+                    PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_OCFIRST );
             }
             else if ( ( !atFirstButton.getSelection() ) & ( !ocFirstButton.getSelection() )
                 & ( mixedButton.getSelection() ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_MIXED );
+                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING,
+                    PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_MIXED );
             }
 
             if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( SORTING_FISTNAME ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME );
+                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY,
+                    PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME );
             }
             else if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( SORTING_OID ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID );
+                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY,
+                    PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_OID );
             }
 
             if ( ascendingButton.getSelection() && !descendingButton.getSelection() )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_ASCENDING );
+                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER,
+                    PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_ASCENDING );
             }
             else if ( !ascendingButton.getSelection() && descendingButton.getSelection() )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER, PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING );
+                store.setValue( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER,
+                    PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_DESCENDING );
             }
         }
 

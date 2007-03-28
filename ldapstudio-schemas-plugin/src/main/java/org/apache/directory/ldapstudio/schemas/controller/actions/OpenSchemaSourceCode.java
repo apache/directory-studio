@@ -52,7 +52,7 @@ public class OpenSchemaSourceCode extends Action
      */
     public OpenSchemaSourceCode()
     {
-        super( Messages.getString("OpenSchemaSourceCode.View_source_code") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenSchemaSourceCode.View_source_code" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_OPEN_SCHEMA_SOURCE_CODE );
         setImageDescriptor( AbstractUIPlugin
@@ -77,8 +77,8 @@ public class OpenSchemaSourceCode extends Action
             try
             {
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                FormEditor editor = ( FormEditor ) page.openEditor( new SchemaEditorInput( schemaWrapper
-                    .getMySchema() ), SchemaEditor.ID );
+                FormEditor editor = ( FormEditor ) page.openEditor(
+                    new SchemaEditorInput( schemaWrapper.getMySchema() ), SchemaEditor.ID );
                 editor.setActivePage( SchemaEditorSourceCodePage.ID );
             }
             catch ( PartInitException e )
