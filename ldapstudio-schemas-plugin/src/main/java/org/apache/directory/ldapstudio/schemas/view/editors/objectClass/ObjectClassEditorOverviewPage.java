@@ -26,7 +26,9 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
+import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
+import org.apache.directory.ldapstudio.schemas.model.PoolListener;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
@@ -80,7 +82,7 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * This class is the Overview Page of the Object Class Editor
  */
-public class ObjectClassEditorOverviewPage extends FormPage
+public class ObjectClassEditorOverviewPage extends FormPage implements PoolListener
 {
     /** The page ID */
     public static final String ID = ObjectClassEditor.ID + "overviewPage"; //$NON-NLS-1$
@@ -660,6 +662,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         super( editor, ID, TITLE );
         schemaPool = SchemaPool.getInstance();
+        schemaPool.addListener( this );
     }
 
 
@@ -1096,5 +1099,31 @@ public class ObjectClassEditorOverviewPage extends FormPage
         fillInUiFields();
         addListeners();
         setFieldsEditableState();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.schemas.model.PoolListener#poolChanged(org.apache.directory.ldapstudio.schemas.model.SchemaPool, org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent)
+     */
+    public void poolChanged( SchemaPool p, LDAPModelEvent e )
+    {
+        removeListeners();
+        fillInSuperiorsTable();
+        fillInMandatoryAttributesTable();
+        fillInOptionalAttributesTable();
+        addListeners();
+        setFieldsEditableState();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+     */
+    public void dispose()
+    {
+        schemaPool.removeListener( this );
+        removeListeners();
+
+        super.dispose();
     }
 }
