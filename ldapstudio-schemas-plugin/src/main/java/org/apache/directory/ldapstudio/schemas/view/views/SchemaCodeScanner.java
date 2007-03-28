@@ -42,14 +42,14 @@ import org.eclipse.jface.text.rules.WordRule;
  */
 public class SchemaCodeScanner extends RuleBasedScanner
 {
-    String attributype = "attributetype";
+    String attributype = "attributetype"; //$NON-NLS-1$
 
-    String objectclass = "objectclass";
+    String objectclass = "objectclass"; //$NON-NLS-1$
 
     String[] keywords = new String[]
-        { "NAME", "DESC", "OBSOLETE", "SUP", "EQUALITY", "ORDERING", "MUST", "MAY", "STRUCTURAL", "SUBSTR", "SYNTAX",
-            "SINGLE-VALUE", "COLLECTIVE", "NO-USER-MODIFICATION", "USAGE", "userApplications", "directoryOperation",
-            "distributedOperation", "dSAOperation", "ABSTRACT", "STRUCTURAL", "AUXILIARY", "MUST", "MAY" };
+        { "NAME", "DESC", "OBSOLETE", "SUP", "EQUALITY", "ORDERING", "MUST", "MAY", "STRUCTURAL", "SUBSTR", "SYNTAX", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
+            "SINGLE-VALUE", "COLLECTIVE", "NO-USER-MODIFICATION", "USAGE", "userApplications", "directoryOperation", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "distributedOperation", "dSAOperation", "ABSTRACT", "STRUCTURAL", "AUXILIARY", "MUST", "MAY" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
 
     public SchemaCodeScanner( SchemaTextAttributeProvider provider )
@@ -64,8 +64,8 @@ public class SchemaCodeScanner extends RuleBasedScanner
         IToken oid = new Token( provider.getAttribute( SchemaTextAttributeProvider.OID_ATTRIBUTE ) );
 
         // Rules for Strings
-        rules.add( new SingleLineRule( "\"", "\"", string, '\0', true ) );
-        rules.add( new SingleLineRule( "'", "'", string, '\0', true ) );
+        rules.add( new SingleLineRule( "\"", "\"", string, '\0', true ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        rules.add( new SingleLineRule( "'", "'", string, '\0', true ) ); //$NON-NLS-1$ //$NON-NLS-2$
         // Generic rule for whitespaces
         rules.add( new WhitespaceRule( new IWhitespaceDetector()
         {

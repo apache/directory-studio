@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.schemas.Messages;
  */
 public class NonExistingAttributeType
 {
-    public static final String NONE = Messages.getString( "NonExistingAttributeType.(None)" );
+    public static final String NONE = Messages.getString( "NonExistingAttributeType.(None)" ); //$NON-NLS-1$
 
     /** The name */
     private String name;
@@ -75,7 +75,7 @@ public class NonExistingAttributeType
         }
         else
         {
-            return name + "   " + Messages.getString( "NonExistingAttributeType.(This_attribute_type_doesnt_exist)" );
+            return name + "   " + Messages.getString( "NonExistingAttributeType.(This_attribute_type_doesnt_exist)" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

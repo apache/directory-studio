@@ -47,7 +47,7 @@ public class LinkWithEditorHierarchyView extends Action
 {
     /** The String for storing the checked state of the action */
     private static final String LINK_WITH_EDITOR_HIERARCHY_VIEW_DS_KEY = LinkWithEditorHierarchyView.class.getName()
-        + ".dialogsettingkey";
+        + ".dialogsettingkey"; //$NON-NLS-1$
 
     /** The associated view */
     private HierarchyView view;

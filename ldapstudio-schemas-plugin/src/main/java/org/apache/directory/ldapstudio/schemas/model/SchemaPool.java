@@ -78,13 +78,13 @@ public class SchemaPool implements SchemaListener
     private Map<String, ObjectClass> objectClassesMap;
 
     /** The Schemas Tag */
-    private static final String SCHEMAS_TAG = "Schemas";
+    private static final String SCHEMAS_TAG = "Schemas"; //$NON-NLS-1$
 
     /** The Schema Tag */
-    private static final String SCHEMA_TAG = "Schema";
+    private static final String SCHEMA_TAG = "Schema"; //$NON-NLS-1$
 
     /** the Path Tag */
-    private static final String PATH_TAG = "path";
+    private static final String PATH_TAG = "path"; //$NON-NLS-1$
 
 
     /**
@@ -978,6 +978,6 @@ public class SchemaPool implements SchemaListener
      */
     private File getSchemaPoolFile()
     {
-        return Activator.getDefault().getStateLocation().append( "schemaPool.xml" ).toFile();
+        return Activator.getDefault().getStateLocation().append( "schemaPool.xml" ).toFile(); //$NON-NLS-1$
     }
 }

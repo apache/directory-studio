@@ -288,12 +288,12 @@ public class ObjectClass implements SchemaElement, Cloneable
         {
             if ( superiors.length > 1 )
             {
-                sb.append( "\tSUP (" + superiors[0] );
+                sb.append( "\tSUP (" + superiors[0] ); //$NON-NLS-1$
                 for ( int i = 1; i < superiors.length; i++ )
                 {
-                    sb.append( " $ " + superiors[i] );
+                    sb.append( " $ " + superiors[i] ); //$NON-NLS-1$
                 }
-                sb.append( ") \n" );
+                sb.append( ") \n" ); //$NON-NLS-1$
             }
             else
             {

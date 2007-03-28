@@ -114,7 +114,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                 String[] superiors = oc.getSuperiors();
                 for ( String superior : superiors )
                 {
-                    if ( superior != null || "".equals( superior ) )
+                    if ( superior != null || "".equals( superior ) ) //$NON-NLS-1$
                     {
                         ObjectClass supOC = schemaPool.getObjectClass( superior );
                         if ( supOC != null )
@@ -132,7 +132,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                     String[] superiors = objectClass.getSuperiors();
                     for ( String superior : superiors )
                     {
-                        if ( superior != null || "".equals( superior ) )
+                        if ( superior != null || "".equals( superior ) ) //$NON-NLS-1$
                         {
                             ObjectClass supOC = schemaPool.getObjectClass( superior );
                             if ( supOC != null && oc.equals( supOC ) )
@@ -155,7 +155,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE )
             {
                 String superior = at.getSuperior();
-                if ( superior != null || "".equals( superior ) )
+                if ( superior != null || "".equals( superior ) ) //$NON-NLS-1$
                 {
                     AttributeType supAT = schemaPool.getAttributeType( superior );
                     if ( supAT != null )
@@ -170,7 +170,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                 for ( AttributeType attributeType : attributeTypes )
                 {
                     String superior = attributeType.getSuperior();
-                    if ( superior != null && !"".equals( superior ) )
+                    if ( superior != null && !"".equals( superior ) ) //$NON-NLS-1$
                     {
                         AttributeType supAT = schemaPool.getAttributeType( superior );
                         if ( supAT != null && at.equals( supAT ) )

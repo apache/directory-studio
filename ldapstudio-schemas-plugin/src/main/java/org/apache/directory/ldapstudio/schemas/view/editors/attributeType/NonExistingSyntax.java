@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.schemas.Messages;
  */
 public class NonExistingSyntax
 {
-    public static final String NONE = Messages.getString( "NonExistingSyntax.(None)" );
+    public static final String NONE = Messages.getString( "NonExistingSyntax.(None)" ); //$NON-NLS-1$
 
     /** The name */
     private String name;
@@ -75,7 +75,7 @@ public class NonExistingSyntax
         }
         else
         {
-            return name + "   " + Messages.getString( "NonExistingSyntax.(This_syntax_doesnt_exist)" );
+            return name + "   " + Messages.getString( "NonExistingSyntax.(This_syntax_doesnt_exist)" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

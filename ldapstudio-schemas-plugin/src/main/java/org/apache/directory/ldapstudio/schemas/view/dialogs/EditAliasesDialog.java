@@ -238,7 +238,7 @@ public class EditAliasesDialog extends Dialog
                 {
                     String text = newAliasText.getText();
 
-                    if ( ( !"".equals( text ) ) && ( !aliasesLowerCased.contains( text.toLowerCase() ) )
+                    if ( ( !"".equals( text ) ) && ( !aliasesLowerCased.contains( text.toLowerCase() ) ) //$NON-NLS-1$
                         && ( !SchemaPool.getInstance().containsSchemaElement( text ) ) )
                     {
                         addANewAlias();
@@ -255,7 +255,7 @@ public class EditAliasesDialog extends Dialog
                 newAliasAddButton.setEnabled( true );
                 String text = newAliasText.getText();
 
-                if ( "".equals( text ) )
+                if ( "".equals( text ) ) //$NON-NLS-1$
                 {
                     newAliasAddButton.setEnabled( false );
                 }
@@ -318,7 +318,7 @@ public class EditAliasesDialog extends Dialog
             aliases.add( newAliasText.getText() );
             aliasesLowerCased.add( newAliasText.getText().toLowerCase() );
             fillAliasesTable();
-            newAliasText.setText( "" );
+            newAliasText.setText( "" ); //$NON-NLS-1$
             newAliasText.setFocus();
             this.dirty = true;
         }

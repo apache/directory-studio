@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.schemas.Messages;
  */
 public class NonExistingMatchingRule
 {
-    public static final String NONE = Messages.getString( "NonExistingMatchingRule.(None)" );
+    public static final String NONE = Messages.getString( "NonExistingMatchingRule.(None)" ); //$NON-NLS-1$
 
     /** The name */
     private String name;
@@ -75,7 +75,7 @@ public class NonExistingMatchingRule
         }
         else
         {
-            return name + "   " + Messages.getString( "NonExistingMatchingRule.(This_matching_rule_doesnt_exist)" );
+            return name + "   " + Messages.getString( "NonExistingMatchingRule.(This_matching_rule_doesnt_exist)" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

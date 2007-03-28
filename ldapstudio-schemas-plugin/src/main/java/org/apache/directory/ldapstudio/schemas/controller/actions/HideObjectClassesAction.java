@@ -37,7 +37,7 @@ public class HideObjectClassesAction extends Action
 {
     /** The String for storing the checked state of the action */
     public static final String HIDE_OBJECT_CLASSES_DS_KEY = HideObjectClassesAction.class.getName()
-        + ".dialogsettingkey";
+        + ".dialogsettingkey"; //$NON-NLS-1$
 
     /** The associated viewer */
     private TreeViewer viewer;

@@ -60,7 +60,7 @@ public class SchemaElementsViewLabelProvider extends LabelProvider
      */
     public String getText( Object obj )
     {
-        String label = "";
+        String label = ""; //$NON-NLS-1$
 
         int labelValue = store.getInt( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL );
         boolean abbreviate = store.getBoolean( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE );
@@ -121,12 +121,12 @@ public class SchemaElementsViewLabelProvider extends LabelProvider
 
         if ( abbreviate && ( abbreviateMaxLength < label.length() ) )
         {
-            label = label.substring( 0, abbreviateMaxLength ) + "...";
+            label = label.substring( 0, abbreviateMaxLength ) + "..."; //$NON-NLS-1$
         }
 
         if ( secondaryLabelDisplay )
         {
-            String secondaryLabel = "";
+            String secondaryLabel = ""; //$NON-NLS-1$
             if ( obj instanceof AttributeTypeWrapper )
             {
                 if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_FIRST_NAME )
@@ -162,10 +162,10 @@ public class SchemaElementsViewLabelProvider extends LabelProvider
 
             if ( secondaryLabelAbbreviate && ( secondaryLabelAbbreviateMaxLength < secondaryLabel.length() ) )
             {
-                secondaryLabel = secondaryLabel.substring( 0, secondaryLabelAbbreviateMaxLength ) + "...";
+                secondaryLabel = secondaryLabel.substring( 0, secondaryLabelAbbreviateMaxLength ) + "..."; //$NON-NLS-1$
             }
 
-            label += "   [" + secondaryLabel + "]";
+            label += "   [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return label;

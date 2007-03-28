@@ -38,12 +38,12 @@ import org.eclipse.swt.widgets.Display;
  */
 public class SchemaTextAttributeProvider
 {
-    public static final String DEFAULT_ATTRIBUTE = "__pos_schema_default_attribute";
-    public static final String STRING_ATTRIBUTE = "__pos_schema_string_attribute";
-    public static final String KEYWORD_ATTRIBUTE = "__pos_schema_keyword_attribute";
-    public static final String ATTRIBUTETYPE_ATTRIBUTE = "__pos_schema_attributetype_attribute";
-    public static final String OBJECTCLASS_ATTRIBUTE = "__pos_schema_objectclass_attribute";
-    public static final String OID_ATTRIBUTE = "__pos_schema_oid_attribute";
+    public static final String DEFAULT_ATTRIBUTE = "__pos_schema_default_attribute"; //$NON-NLS-1$
+    public static final String STRING_ATTRIBUTE = "__pos_schema_string_attribute"; //$NON-NLS-1$
+    public static final String KEYWORD_ATTRIBUTE = "__pos_schema_keyword_attribute"; //$NON-NLS-1$
+    public static final String ATTRIBUTETYPE_ATTRIBUTE = "__pos_schema_attributetype_attribute"; //$NON-NLS-1$
+    public static final String OBJECTCLASS_ATTRIBUTE = "__pos_schema_objectclass_attribute"; //$NON-NLS-1$
+    public static final String OID_ATTRIBUTE = "__pos_schema_oid_attribute"; //$NON-NLS-1$
 
     private Map<String, TextAttribute> attributes = new HashMap<String, TextAttribute>();
 

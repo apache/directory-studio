@@ -132,30 +132,34 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+     */
     public void dispose()
     {
-        // TODO Auto-generated method stub
-
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+     */
     public void run( IAction action )
     {
-        System.err.println( "run" );
-
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+     */
     public void selectionChanged( IAction action, ISelection selection )
     {
-        // TODO Auto-generated method stub
-
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+     */
     public void init( IWorkbenchWindow window )
     {
-        // TODO Auto-generated method stub
-
     }
 }

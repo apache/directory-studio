@@ -43,6 +43,6 @@ public class SchemasViewRoot extends TreeNode
      */
     public String toString()
     {
-        return "SchemasViewRoot";
+        return "SchemasViewRoot"; //$NON-NLS-1$
     }
 }

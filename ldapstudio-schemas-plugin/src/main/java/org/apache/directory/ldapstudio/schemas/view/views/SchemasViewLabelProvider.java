@@ -61,7 +61,7 @@ public class SchemasViewLabelProvider extends LabelProvider
      */
     public String getText( Object obj )
     {
-        String label = "";
+        String label = ""; //$NON-NLS-1$
 
         int labelValue = store.getInt( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL );
         boolean abbreviate = store.getBoolean( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE );
@@ -120,7 +120,7 @@ public class SchemasViewLabelProvider extends LabelProvider
         if ( abbreviate && ( abbreviateMaxLength < label.length() )
             && ( ( obj instanceof ObjectClassWrapper ) || ( obj instanceof AttributeTypeWrapper ) ) )
         {
-            label = label.substring( 0, abbreviateMaxLength ) + "...";
+            label = label.substring( 0, abbreviateMaxLength ) + "..."; //$NON-NLS-1$
         }
 
         return label;

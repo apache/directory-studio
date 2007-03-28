@@ -62,7 +62,7 @@ public class EraseSearchAction extends Action
      */
     public void run()
     {
-        view.setSearch( "", SearchView.SEARCH_ALL );
+        view.setSearch( "", SearchView.SEARCH_ALL ); //$NON-NLS-1$
     }
 
 

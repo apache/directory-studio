@@ -37,7 +37,7 @@ public class HideAttributeTypesAction extends Action
 {
     /** The String for storing the checked state of the action */
     public static final String HIDE_ATTRIBUTE_TYPES_DS_KEY = HideAttributeTypesAction.class.getName()
-        + ".dialogsettingkey";
+        + ".dialogsettingkey"; //$NON-NLS-1$
 
     /** The associated view */
     private TreeViewer viewer;

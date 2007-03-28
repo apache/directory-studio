@@ -53,10 +53,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class AttributeTypeEditorSourceCodePage extends FormPage
 {
     /** The page ID*/
-    public static final String ID = AttributeTypeEditor.ID + "sourceCodePage";
+    public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
     /** The page title */
-    public static String TITLE = Messages.getString( "AttributeTypeFormEditor.Source_Code" );
+    public static String TITLE = Messages.getString( "AttributeTypeFormEditor.Source_Code" ); //$NON-NLS-1$
 
     /** The modified attribute type */
     private AttributeType modifiedAttributeType;

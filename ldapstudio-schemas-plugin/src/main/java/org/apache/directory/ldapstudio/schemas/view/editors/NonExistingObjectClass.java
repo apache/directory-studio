@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.schemas.Messages;
  */
 public class NonExistingObjectClass
 {
-    public static final String NONE = Messages.getString( "NonExistingObjectClass.(None)" );
+    public static final String NONE = Messages.getString( "NonExistingObjectClass.(None)" ); //$NON-NLS-1$
 
     /** The name */
     private String name;
@@ -75,7 +75,7 @@ public class NonExistingObjectClass
         }
         else
         {
-            return name + "   " + Messages.getString( "NonExistingObjectClass.(This_object_class_doesnt_exist)" );
+            return name + "   " + Messages.getString( "NonExistingObjectClass.(This_object_class_doesnt_exist)" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

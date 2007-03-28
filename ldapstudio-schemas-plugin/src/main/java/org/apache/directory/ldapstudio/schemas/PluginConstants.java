@@ -74,7 +74,7 @@ public interface PluginConstants
 
     /** The preference ID for Schema Elements View Grouping */
     public static final String PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING = Activator.PLUGIN_ID
-        + ".preferences.SchemaElementsView.grouping";
+        + ".preferences.SchemaElementsView.grouping"; //$NON-NLS-1$
 
     /** The preference value for Schema Elements View Grouping 'attribute types first' */
     public static final int PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING_ATFIRST = 0;
@@ -87,7 +87,7 @@ public interface PluginConstants
 
     /** The preference ID for Schema Elements View Sorting By */
     public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY = Activator.PLUGIN_ID
-        + ".preferences.SchemaElementsView.sortingBy";
+        + ".preferences.SchemaElementsView.sortingBy"; //$NON-NLS-1$
 
     /** The preference value for Schema Elements View Sorting 'First Name' */
     public static final int PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_BY_FIRSTNAME = 0;
@@ -97,7 +97,7 @@ public interface PluginConstants
 
     /** The preference ID for Schema Elements View Sorting Order */
     public static final String PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
-        + ".preferences.SchemaElementsView.sortingOrder";
+        + ".preferences.SchemaElementsView.sortingOrder"; //$NON-NLS-1$
 
     /** The preference value for Schema Elements View Sorting 'ascending' */
     public static final int PREFS_SCHEMA_ELEMENTS_VIEW_SORTING_ORDER_ASCENDING = 0;
@@ -107,7 +107,7 @@ public interface PluginConstants
 
     // Preferences - Schemas View
     /** The preference ID for Schemas View Label */
-    public static final String PREFS_SCHEMAS_VIEW_LABEL = SchemasViewPreferencePage.ID + ".label.labelValue";
+    public static final String PREFS_SCHEMAS_VIEW_LABEL = SchemasViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
 
     /** The preference value for Schemas View First Name label */
     public static final int PREFS_SCHEMAS_VIEW_LABEL_FIRST_NAME = 0;
@@ -157,11 +157,11 @@ public interface PluginConstants
     // Preferences - Search View
     /** The preference ID for Search History of the Search View */
     public static final String PREFS_SEARCH_VIEW_SEARCH_HISTORY = Activator.PLUGIN_ID
-        + ".preferences.SearchView.searchHistory";
+        + ".preferences.SearchView.searchHistory"; //$NON-NLS-1$
 
     // Preferences - Hierarchy View
     /** The preference ID for Mode of the Hierarchy View */
-    public static final String PREFS_HIERARCHY_VIEW_MODE = Activator.PLUGIN_ID + ".preferences.HierarchyView.mode";
+    public static final String PREFS_HIERARCHY_VIEW_MODE = Activator.PLUGIN_ID + ".preferences.HierarchyView.mode"; //$NON-NLS-1$
 
     /** The preference value for Hierarchy View Mode 'Supertype' */
     public static final int PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE = 0;
@@ -207,19 +207,19 @@ public interface PluginConstants
     // Preferences - Schemas Editor
     /** The preference ID for Specific Core of the Schemas Editor */
     public static final String PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE = Activator.PLUGIN_ID
-        + ".preferences.SchemasEditor.specificCore";
+        + ".preferences.SchemasEditor.specificCore"; //$NON-NLS-1$
 
     /** The preference ID for Specific Core Directory of the Schemas Editor */
     public static final String PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY = Activator.PLUGIN_ID
-        + ".preferences.SchemasEditor.specificCoreDirectory";
+        + ".preferences.SchemasEditor.specificCoreDirectory"; //$NON-NLS-1$
 
     /** The preference ID for Auto OID of the Schemas Editor */
     public static final String PREFS_SCHEMAS_EDITOR_AUTO_OID = Activator.PLUGIN_ID
-        + ".preferences.SchemasEditor.autoOID";
+        + ".preferences.SchemasEditor.autoOID"; //$NON-NLS-1$
 
     /** The preference ID for Company OID of the Schemas Editor */
     public static final String PREFS_SCHEMAS_EDITOR_COMPANY_OID = Activator.PLUGIN_ID
-        + ".preferences.SchemasEditor.companyOID";
+        + ".preferences.SchemasEditor.companyOID"; //$NON-NLS-1$
 
     // Images - Actions
     public static final String IMG_ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$

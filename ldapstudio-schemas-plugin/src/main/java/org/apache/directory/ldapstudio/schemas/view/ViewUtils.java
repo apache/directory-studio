@@ -58,7 +58,7 @@ public class ViewUtils
             sb.append( aliases[0] );
             for ( int i = 1; i < aliases.length; i++ )
             {
-                sb.append( ", " );
+                sb.append( ", " ); //$NON-NLS-1$
                 sb.append( aliases[i] );
             }
         }
@@ -78,6 +78,6 @@ public class ViewUtils
      */
     public static boolean verifyName( String name )
     {
-        return name.matches( "[a-zA-Z]+[a-zA-Z0-9;-]*" );
+        return name.matches( "[a-zA-Z]+[a-zA-Z0-9;-]*" ); //$NON-NLS-1$
     }
 }

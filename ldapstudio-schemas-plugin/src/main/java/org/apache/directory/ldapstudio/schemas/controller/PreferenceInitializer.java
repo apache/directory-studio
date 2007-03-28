@@ -51,12 +51,12 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL,
             PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_ALL_ALIASES );
         store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE, true );
-        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
         store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_DISPLAY, true );
         store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL,
             PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_LABEL_OID );
         store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
-        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
 
         // Schema Elements View Sorting
         store.setDefault( PluginConstants.PREFS_SCHEMA_ELEMENTS_VIEW_GROUPING,
@@ -70,7 +70,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         store.setDefault( PluginConstants.PREFS_SCHEMAS_VIEW_LABEL,
             PluginConstants.PREFS_SCHEMAS_VIEW_LABEL_ALL_ALIASES );
         store.setDefault( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE, true );
-        store.setDefault( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( PluginConstants.PREFS_SCHEMAS_VIEW_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
 
         // Schemas View Sorting
         store.setDefault( PluginConstants.PREFS_SCHEMAS_VIEW_GROUPING,
@@ -84,11 +84,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL,
             PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE, true );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, true );
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL,
             PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
-        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" );
+        store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
     }
 }

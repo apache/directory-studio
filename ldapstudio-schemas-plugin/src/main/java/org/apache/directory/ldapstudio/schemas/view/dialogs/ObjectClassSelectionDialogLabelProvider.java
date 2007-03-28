@@ -64,7 +64,7 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider imple
         if ( element instanceof ObjectClassWrapper )
         {
             ObjectClass oc = ( ( ObjectClassWrapper ) element ).getMyObjectClass();
-            return ViewUtils.concateAliases( oc.getNames() ) + "   [" + oc.getOid() + "]";
+            return ViewUtils.concateAliases( oc.getNames() ) + "   [" + oc.getOid() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Default

@@ -153,7 +153,7 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "([0-9]*\\.?)*" ) )
+                if ( !e.text.matches( "([0-9]*\\.?)*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
@@ -211,7 +211,7 @@ public class CreateANewAttributeTypeWizardPage extends WizardPage
 
         if ( !ViewUtils.verifyName( getNameField() ) )
         {
-            updateStatus( "Name is not valid." );
+            updateStatus( "Name is not valid." ); //$NON-NLS-1$
             return;
         }
 

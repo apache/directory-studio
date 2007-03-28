@@ -64,7 +64,7 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider imp
         if ( element instanceof AttributeTypeWrapper )
         {
             AttributeType at = ( ( AttributeTypeWrapper ) element ).getMyAttributeType();
-            return ViewUtils.concateAliases( at.getNames() ) + "   [" + at.getOid() + "]";
+            return ViewUtils.concateAliases( at.getNames() ) + "   [" + at.getOid() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Default

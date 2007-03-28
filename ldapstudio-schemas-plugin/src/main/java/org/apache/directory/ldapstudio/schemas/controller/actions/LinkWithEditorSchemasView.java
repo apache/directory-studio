@@ -58,7 +58,7 @@ public class LinkWithEditorSchemasView extends Action
 {
     /** The String for storing the checked state of the action */
     private static final String LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY = LinkWithEditorSchemasView.class.getName()
-        + ".dialogsettingkey";
+        + ".dialogsettingkey"; //$NON-NLS-1$
 
     /** The associated view */
     private SchemasView schemasView;

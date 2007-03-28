@@ -55,7 +55,7 @@ public class SchemaElementsViewRoot extends TreeNode
      */
     public String toString()
     {
-        return "SchemaElementsViewRoot";
+        return "SchemaElementsViewRoot"; //$NON-NLS-1$
     }
 
 
