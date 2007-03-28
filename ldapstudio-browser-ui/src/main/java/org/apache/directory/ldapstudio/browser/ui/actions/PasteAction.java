@@ -32,7 +32,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifCon
 import org.apache.directory.ldapstudio.browser.ui.dialogs.ScopeDialog;
 import org.apache.directory.ldapstudio.browser.ui.dnd.ConnectionTransfer;
 import org.apache.directory.ldapstudio.browser.ui.dnd.EntryTransfer;
-import org.apache.directory.ldapstudio.browser.ui.dnd.LdifContentRecordTransfer;
 import org.apache.directory.ldapstudio.browser.ui.dnd.ValuesTransfer;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -78,11 +77,6 @@ public class PasteAction extends BrowserAction
         if ( entries != null )
         {
             return entries.length > 1 ? "Paste Entries" : "Paste Entry";
-        }
-        LdifContentRecord[] records = getLdifContentRecordToPaste();
-        if ( records != null )
-        {
-            return records.length > 1 ? "Paste Entries" : "Paste Entry";
         }
 
         // value
@@ -131,10 +125,6 @@ public class PasteAction extends BrowserAction
         {
             return true;
         }
-        else if ( getLdifContentRecordToPaste() != null )
-        {
-            return true;
-        }
 
         // value
         else if ( getValuesToPaste() != null )
@@ -168,12 +158,6 @@ public class PasteAction extends BrowserAction
         if ( entries != null )
         {
             this.pasteEntries( getSelectedEntries()[0], entries );
-            return;
-        }
-        LdifContentRecord[] records = getLdifContentRecordToPaste();
-        if ( records != null )
-        {
-            this.pasteLdifContentRecord( getSelectedEntries()[0], records );
             return;
         }
 
@@ -218,12 +202,6 @@ public class PasteAction extends BrowserAction
         }
 
         new CopyEntriesJob( parent, entriesToPaste, scope ).execute();
-    }
-
-
-    private void pasteLdifContentRecord( final IEntry parent, final LdifContentRecord[] recordsToPaste )
-    {
-
     }
 
 
@@ -313,31 +291,6 @@ public class PasteAction extends BrowserAction
             {
                 IEntry[] entries = ( IEntry[] ) content;
                 return entries;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Conditions: - an entry is selected - there are LdifContentRecords in
-     * clipboard
-     * 
-     * @return
-     */
-    private LdifContentRecord[] getLdifContentRecordToPaste()
-    {
-        if ( getSelectedBookmarks().length + getSelectedSearchResults().length + getSelectedSearches().length
-            + getSelectedConnections().length + getSelectedAttributes().length + getSelectedValues().length == 0
-            && getSelectedEntries().length == 1 )
-        {
-
-            Object content = this.getFromClipboard( LdifContentRecordTransfer.getInstance() );
-            if ( content != null && content instanceof LdifContentRecord[] )
-            {
-                LdifContentRecord[] records = ( LdifContentRecord[] ) content;
-                return records;
             }
         }
 
