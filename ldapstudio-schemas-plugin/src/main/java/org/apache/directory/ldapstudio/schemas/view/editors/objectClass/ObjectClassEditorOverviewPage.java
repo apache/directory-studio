@@ -33,12 +33,12 @@ import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.AttributeTypeSelectionDialog;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.EditAliasesDialog;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.ObjectClassSelectionDialog;
+import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingAttributeType;
 import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingObjectClass;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
-import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
@@ -263,23 +263,22 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
-            if ( atw == null )
+            Object selectedElement = selection.getFirstElement();
+            if ( selectedElement != null )
             {
-                return;
-            }
-
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-            AttributeTypeEditorInput input = new AttributeTypeEditorInput( schemaPool.getAttributeType( atw
-                .getMyAttributeType().getNames()[0] ) );
-            try
-            {
-                page.openEditor( input, AttributeTypeEditor.ID );
-            }
-            catch ( PartInitException exception )
-            {
-                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                if ( selectedElement instanceof AttributeType )
+                {
+                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                    try
+                    {
+                        page.openEditor( new AttributeTypeEditorInput( ( AttributeType ) selectedElement ),
+                            AttributeTypeEditor.ID );
+                    }
+                    catch ( PartInitException exception )
+                    {
+                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                    }
+                }
             }
         }
 
@@ -359,27 +358,35 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
-            if ( atw == null )
+            Object selectedElement = selection.getFirstElement();
+            if ( selectedElement != null )
             {
-                return;
-            }
+                List<String> newMusts = new ArrayList<String>();
+                String[] musts = modifiedObjectClass.getMust();
+                for ( String must : musts )
+                {
+                    newMusts.add( must );
+                }
 
-            List<String> newMusts = new ArrayList<String>();
-            String[] musts = modifiedObjectClass.getMust();
-            for ( String must : musts )
-            {
-                newMusts.add( must );
-            }
-            for ( String name : atw.getMyAttributeType().getNames() )
-            {
-                newMusts.remove( name );
-            }
-            modifiedObjectClass.setMust( newMusts.toArray( new String[0] ) );
+                if ( selectedElement instanceof AttributeType )
+                {
+                    for ( String name : ( ( AttributeType ) selectedElement ).getNames() )
+                    {
+                        newMusts.remove( name );
+                    }
+                }
+                else if ( selectedElement instanceof NonExistingAttributeType )
+                {
+                    newMusts.remove( ( ( NonExistingAttributeType ) selectedElement ).getName() );
+                }
 
-            fillInMandatoryAttributesTable();
-            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
-            setEditorDirty();
+                modifiedObjectClass.setMust( newMusts.toArray( new String[0] ) );
+
+                fillInMandatoryAttributesTable();
+                addButtonMandatoryTable.setFocus();
+                removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelection().length != 0 );
+                setEditorDirty();
+            }
         }
     };
 
@@ -394,23 +401,22 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
-            if ( atw == null )
+            Object selectedElement = selection.getFirstElement();
+            if ( selectedElement != null )
             {
-                return;
-            }
-
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-            AttributeTypeEditorInput input = new AttributeTypeEditorInput( schemaPool.getAttributeType( atw
-                .getMyAttributeType().getNames()[0] ) );
-            try
-            {
-                page.openEditor( input, AttributeTypeEditor.ID );
-            }
-            catch ( PartInitException exception )
-            {
-                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                if ( selectedElement instanceof AttributeType )
+                {
+                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                    try
+                    {
+                        page.openEditor( new AttributeTypeEditorInput( ( AttributeType ) selectedElement ),
+                            AttributeTypeEditor.ID );
+                    }
+                    catch ( PartInitException exception )
+                    {
+                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                    }
+                }
             }
         }
 
@@ -485,27 +491,35 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) selection.getFirstElement();
-            if ( atw == null )
+            Object selectedElement = selection.getFirstElement();
+            if ( selectedElement != null )
             {
-                return;
-            }
+                List<String> newMays = new ArrayList<String>();
+                String[] mays = modifiedObjectClass.getMay();
+                for ( String may : mays )
+                {
+                    newMays.add( may );
+                }
 
-            List<String> newMays = new ArrayList<String>();
-            String[] mays = modifiedObjectClass.getMay();
-            for ( String may : mays )
-            {
-                newMays.add( may );
-            }
-            for ( String name : atw.getMyAttributeType().getNames() )
-            {
-                newMays.remove( name );
-            }
-            modifiedObjectClass.setMay( newMays.toArray( new String[0] ) );
+                if ( selectedElement instanceof AttributeType )
+                {
+                    for ( String name : ( ( AttributeType ) selectedElement ).getNames() )
+                    {
+                        newMays.remove( name );
+                    }
+                }
+                else if ( selectedElement instanceof NonExistingAttributeType )
+                {
+                    newMays.remove( ( ( NonExistingAttributeType ) selectedElement ).getName() );
+                }
 
-            fillInOptionalAttributesTable();
-            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
-            setEditorDirty();
+                modifiedObjectClass.setMay( newMays.toArray( new String[0] ) );
+
+                fillInOptionalAttributesTable();
+                addButtonOptionalTable.setFocus();
+                removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelection().length != 0 );
+                setEditorDirty();
+            }
         }
     };
 
@@ -628,6 +642,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 modifiedObjectClass.setSuperiors( superiors.toArray( new String[0] ) );
 
                 fillInSuperiorsTable();
+                addButtonSuperiorsTable.setFocus();
                 removeButtonSuperiorsTable.setEnabled( superiorsTable.getSelection().length != 0 );
                 setEditorDirty();
             }

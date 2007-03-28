@@ -23,8 +23,9 @@ package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
+import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
-import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
+import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -44,7 +45,7 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
-        if ( element instanceof AttributeTypeWrapper )
+        if ( ( element instanceof AttributeType ) || ( element instanceof NonExistingAttributeType ) )
         {
             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
                 .createImage();
@@ -60,9 +61,13 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
      */
     public String getColumnText( Object element, int columnIndex )
     {
-        if ( element instanceof AttributeTypeWrapper )
+        if ( element instanceof AttributeType )
         {
-            return ViewUtils.concateAliases( ( ( AttributeTypeWrapper ) element ).getMyAttributeType().getNames() );
+            return ViewUtils.concateAliases( ( ( AttributeType ) element ).getNames() );
+        }
+        else if ( element instanceof NonExistingAttributeType )
+        {
+            return ( ( NonExistingAttributeType ) element ).getDisplayName();
         }
 
         // Default

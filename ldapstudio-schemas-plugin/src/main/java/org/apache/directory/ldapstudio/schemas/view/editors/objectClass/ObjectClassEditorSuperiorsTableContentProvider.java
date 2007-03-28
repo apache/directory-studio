@@ -76,7 +76,7 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                 }
             }
 
-            // Sorting Children
+            // Sorting Elements
             Collections.sort( results, new Comparator<Object>()
             {
                 public int compare( Object o1, Object o2 )

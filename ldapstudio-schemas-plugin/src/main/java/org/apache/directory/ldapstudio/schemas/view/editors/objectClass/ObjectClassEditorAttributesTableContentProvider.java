@@ -21,12 +21,13 @@ package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
-import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
+import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -59,7 +60,7 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
     {
         if ( inputElement instanceof String[] )
         {
-            List<AttributeTypeWrapper> results = new ArrayList<AttributeTypeWrapper>();
+            List<Object> results = new ArrayList<Object>();
 
             String[] attributes = ( String[] ) inputElement;
             for ( String attribute : attributes )
@@ -67,17 +68,43 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
                 AttributeType at = schemaPool.getAttributeType( attribute );
                 if ( at != null )
                 {
-                    results.add( new AttributeTypeWrapper( at, null ) );
+                    results.add( at );
                 }
                 else
                 {
-                    AttributeTypeLiteral atl = new AttributeTypeLiteral( "" );
-                    atl.setNames( new String[]
-                        { attribute } );
-                    AttributeType newAT = new AttributeType( atl, null );
-                    results.add( new AttributeTypeWrapper( newAT, null ) );
+                    results.add( new NonExistingAttributeType( attribute ) );
                 }
             }
+            
+            // Sorting Elements
+            Collections.sort( results, new Comparator<Object>()
+            {
+                public int compare( Object o1, Object o2 )
+                {
+                    if ( o1 instanceof AttributeType && o2 instanceof AttributeType )
+                    {
+                        return ( ( AttributeType ) o1 ).getNames()[0].compareToIgnoreCase( ( ( AttributeType ) o2 )
+                            .getNames()[0] );
+                    }
+                    else if ( o1 instanceof AttributeType && o2 instanceof NonExistingAttributeType )
+                    {
+                        return ( ( AttributeType ) o1 ).getNames()[0]
+                            .compareToIgnoreCase( ( ( NonExistingAttributeType ) o2 ).getName() );
+                    }
+                    else if ( o1 instanceof NonExistingAttributeType && o2 instanceof AttributeType )
+                    {
+                        return ( ( NonExistingAttributeType ) o1 ).getName().compareToIgnoreCase(
+                            ( ( AttributeType ) o2 ).getNames()[0] );
+                    }
+                    else if ( o1 instanceof NonExistingAttributeType && o2 instanceof NonExistingAttributeType )
+                    {
+                        return ( ( NonExistingAttributeType ) o1 ).getName().compareToIgnoreCase(
+                            ( ( NonExistingAttributeType ) o2 ).getName() );
+                    }
+
+                    return 0;
+                }
+            } );
 
             return results.toArray();
         }

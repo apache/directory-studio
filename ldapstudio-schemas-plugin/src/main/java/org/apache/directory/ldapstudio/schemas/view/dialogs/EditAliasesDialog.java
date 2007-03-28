@@ -107,7 +107,7 @@ public class EditAliasesDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "EditAliasesDialog.Manage_aliases" ) ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "EditAliasesDialog.Edit_aliases" ) ); //$NON-NLS-1$
     }
 
 
