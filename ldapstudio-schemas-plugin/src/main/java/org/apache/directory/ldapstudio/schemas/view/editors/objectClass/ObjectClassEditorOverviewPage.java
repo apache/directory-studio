@@ -33,12 +33,12 @@ import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.AttributeTypeSelectionDialog;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.ManageAliasesDialog;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.ObjectClassSelectionDialog;
+import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingObjectClass;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
 import org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper;
-import org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.log4j.Logger;
@@ -520,23 +520,22 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            ObjectClassWrapper ocw = ( ObjectClassWrapper ) selection.getFirstElement();
-            if ( ocw == null )
+            Object selectedElement = selection.getFirstElement();
+            if ( selectedElement != null )
             {
-                return;
-            }
-
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaPool.getObjectClass( ocw
-                .getMyObjectClass().getNames()[0] ) );
-            try
-            {
-                page.openEditor( input, ObjectClassEditor.ID );
-            }
-            catch ( PartInitException exception )
-            {
-                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                if ( selectedElement instanceof ObjectClass )
+                {
+                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                    try
+                    {
+                        page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedElement ),
+                            ObjectClassEditor.ID );
+                    }
+                    catch ( PartInitException exception )
+                    {
+                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                    }
+                }
             }
         }
 
@@ -604,27 +603,34 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 return;
             }
 
-            ObjectClassWrapper ocw = ( ObjectClassWrapper ) selection.getFirstElement();
-            if ( ocw == null )
+            Object selectedElement = selection.getFirstElement();
+            if ( selectedElement != null )
             {
-                return;
-            }
+                List<String> superiors = new ArrayList<String>();
+                String[] sups = modifiedObjectClass.getSuperiors();
+                for ( String sup : sups )
+                {
+                    superiors.add( sup );
+                }
 
-            List<String> superiors = new ArrayList<String>();
-            String[] sups = modifiedObjectClass.getSuperiors();
-            for ( String sup : sups )
-            {
-                superiors.add( sup );
-            }
-            for ( String name : ocw.getMyObjectClass().getNames() )
-            {
-                superiors.remove( name );
-            }
-            modifiedObjectClass.setSuperiors( superiors.toArray( new String[0] ) );
+                if ( selectedElement instanceof ObjectClass )
+                {
+                    for ( String name : ( ( ObjectClass ) selectedElement ).getNames() )
+                    {
+                        superiors.remove( name );
+                    }
+                }
+                else if ( selectedElement instanceof NonExistingObjectClass )
+                {
+                    superiors.remove( ( ( NonExistingObjectClass ) selectedElement ).getName() );
+                }
 
-            fillInSuperiorsTable();
-            removeButtonSuperiorsTable.setEnabled( superiorsTable.getSelection().length != 0 );
-            setEditorDirty();
+                modifiedObjectClass.setSuperiors( superiors.toArray( new String[0] ) );
+
+                fillInSuperiorsTable();
+                removeButtonSuperiorsTable.setEnabled( superiorsTable.getSelection().length != 0 );
+                setEditorDirty();
+            }
         }
     };
 

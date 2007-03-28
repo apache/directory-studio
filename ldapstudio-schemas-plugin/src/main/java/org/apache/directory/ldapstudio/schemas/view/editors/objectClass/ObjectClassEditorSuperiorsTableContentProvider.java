@@ -21,12 +21,13 @@ package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
-import org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper;
-import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
+import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingObjectClass;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -59,7 +60,7 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
     {
         if ( inputElement instanceof String[] )
         {
-            List<ObjectClassWrapper> results = new ArrayList<ObjectClassWrapper>();
+            List<Object> results = new ArrayList<Object>();
 
             String[] superiors = ( String[] ) inputElement;
             for ( String superior : superiors )
@@ -67,17 +68,43 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                 ObjectClass oc = schemaPool.getObjectClass( superior );
                 if ( oc != null )
                 {
-                    results.add( new ObjectClassWrapper( oc, null ) );
+                    results.add( oc );
                 }
                 else
                 {
-                    ObjectClassLiteral ocl = new ObjectClassLiteral( "" );
-                    ocl.setNames( new String[]
-                        { superior } );
-                    ObjectClass newOC = new ObjectClass( ocl, null );
-                    results.add( new ObjectClassWrapper( newOC, null ) );
+                    results.add( new NonExistingObjectClass( superior ) );
                 }
             }
+
+            // Sorting Children
+            Collections.sort( results, new Comparator<Object>()
+            {
+                public int compare( Object o1, Object o2 )
+                {
+                    if ( o1 instanceof ObjectClass && o2 instanceof ObjectClass )
+                    {
+                        return ( ( ObjectClass ) o1 ).getNames()[0].compareToIgnoreCase( ( ( ObjectClass ) o2 )
+                            .getNames()[0] );
+                    }
+                    else if ( o1 instanceof ObjectClass && o2 instanceof NonExistingObjectClass )
+                    {
+                        return ( ( ObjectClass ) o1 ).getNames()[0]
+                            .compareToIgnoreCase( ( ( NonExistingObjectClass ) o2 ).getName() );
+                    }
+                    else if ( o1 instanceof NonExistingObjectClass && o2 instanceof ObjectClass )
+                    {
+                        return ( ( NonExistingObjectClass ) o1 ).getName().compareToIgnoreCase(
+                            ( ( ObjectClass ) o2 ).getNames()[0] );
+                    }
+                    else if ( o1 instanceof NonExistingObjectClass && o2 instanceof NonExistingObjectClass )
+                    {
+                        return ( ( NonExistingObjectClass ) o1 ).getName().compareToIgnoreCase(
+                            ( ( NonExistingObjectClass ) o2 ).getName() );
+                    }
+
+                    return 0;
+                }
+            } );
 
             return results.toArray();
         }

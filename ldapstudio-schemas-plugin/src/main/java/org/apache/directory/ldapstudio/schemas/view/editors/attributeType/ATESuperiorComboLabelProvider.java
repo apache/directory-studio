@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
+import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.LabelProvider;
 
 

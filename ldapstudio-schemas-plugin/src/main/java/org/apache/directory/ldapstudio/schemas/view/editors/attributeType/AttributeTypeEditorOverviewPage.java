@@ -33,6 +33,7 @@ import org.apache.directory.ldapstudio.schemas.model.Syntax;
 import org.apache.directory.ldapstudio.schemas.model.Syntaxes;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.ManageAliasesDialog;
+import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingAttributeType;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
 import org.apache.directory.shared.asn1.primitives.OID;
