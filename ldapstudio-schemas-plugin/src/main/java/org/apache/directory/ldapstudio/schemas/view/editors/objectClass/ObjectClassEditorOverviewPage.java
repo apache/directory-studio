@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.schemas.model.Schema;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.AttributeTypeSelectionDialog;
-import org.apache.directory.ldapstudio.schemas.view.dialogs.ManageAliasesDialog;
+import org.apache.directory.ldapstudio.schemas.view.dialogs.EditAliasesDialog;
 import org.apache.directory.ldapstudio.schemas.view.dialogs.ObjectClassSelectionDialog;
 import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingObjectClass;
 import org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor;
@@ -125,14 +125,14 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            ManageAliasesDialog manageDialog = new ManageAliasesDialog( modifiedObjectClass.getNames() );
-            if ( manageDialog.open() != Window.OK )
+            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNames() );
+            if ( editDialog.open() != Window.OK )
             {
                 return;
             }
-            if ( manageDialog.isDirty() )
+            if ( editDialog.isDirty() )
             {
-                modifiedObjectClass.setNames( manageDialog.getAliases() );
+                modifiedObjectClass.setNames( editDialog.getAliases() );
                 if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().length != 0 ) )
                 {
                     aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
@@ -716,7 +716,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" );
         aliasesButton = toolkit.createButton( client_general_information, Messages
-            .getString( "AttributeTypeFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
+            .getString( "ObjectClassFormEditorOverviewPage.Edit_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
@@ -1011,6 +1011,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
+            aliasesButton.addSelectionListener( aliasesButtonListener );
             oidText.addModifyListener( oidTextModifyListener );
             oidText.addVerifyListener( oidTextVerifyListener );
             descriptionText.addModifyListener( descriptionTextListener );
@@ -1023,9 +1024,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
             addButtonOptionalTable.addSelectionListener( addButtonOptionalTableListener );
             removeButtonOptionalTable.addSelectionListener( removeButtonOptionalTableListener );
         }
-
-        // The user can always access to the Manage Aliases Window, but if the object class is in a core-schema file editing will be disabled
-        aliasesButton.addSelectionListener( aliasesButtonListener );
 
         schemaLink.addHyperlinkListener( schemaLinkListener );
 

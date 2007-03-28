@@ -64,7 +64,7 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ManageAliasesDialog extends Dialog
+public class EditAliasesDialog extends Dialog
 {
     /** The aliases List */
     private List<String> aliases;
@@ -83,12 +83,12 @@ public class ManageAliasesDialog extends Dialog
 
 
     /**
-     * Creates a new instance of ManageAliasesDialog.
+     * Creates a new instance of EditAliasesDialog.
      *
      * @param aliases
      *      the array containing the aliases
      */
-    public ManageAliasesDialog( String[] aliases )
+    public EditAliasesDialog( String[] aliases )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         this.aliases = new ArrayList<String>();
@@ -107,7 +107,7 @@ public class ManageAliasesDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString( "ManageAliasesDialog.Manage_aliases" ) ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "EditAliasesDialog.Manage_aliases" ) ); //$NON-NLS-1$
     }
 
 
@@ -122,7 +122,7 @@ public class ManageAliasesDialog extends Dialog
 
         // ALIASES Label
         Label aliases_label = new Label( composite, SWT.NONE );
-        aliases_label.setText( Messages.getString( "ManageAliasesDialog.Aliases" ) ); //$NON-NLS-1$
+        aliases_label.setText( Messages.getString( "EditAliasesDialog.Aliases" ) ); //$NON-NLS-1$
         aliases_label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // ALIASES Table
@@ -137,7 +137,7 @@ public class ManageAliasesDialog extends Dialog
 
         // ADD Label
         Label add_label = new Label( composite, SWT.NONE );
-        add_label.setText( Messages.getString( "ManageAliasesDialog.Add_an_alias" ) ); //$NON-NLS-1$
+        add_label.setText( Messages.getString( "EditAliasesDialog.Add_an_alias" ) ); //$NON-NLS-1$
         add_label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // NEW ALIAS Field
@@ -146,7 +146,7 @@ public class ManageAliasesDialog extends Dialog
 
         // Add Button
         newAliasAddButton = new Button( composite, SWT.PUSH );
-        newAliasAddButton.setText( Messages.getString( "ManageAliasesDialog.Add" ) ); //$NON-NLS-1$
+        newAliasAddButton.setText( Messages.getString( "EditAliasesDialog.Add" ) ); //$NON-NLS-1$
         newAliasAddButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false ) );
         newAliasAddButton.setEnabled( false );
 
@@ -218,7 +218,7 @@ public class ManageAliasesDialog extends Dialog
         Menu menu = new Menu( getShell(), SWT.POP_UP );
         aliasesTable.setMenu( menu );
         MenuItem deleteMenuItem = new MenuItem( menu, SWT.PUSH );
-        deleteMenuItem.setText( Messages.getString( "ManageAliasesDialog.Delete" ) ); //$NON-NLS-1$
+        deleteMenuItem.setText( Messages.getString( "EditAliasesDialog.Delete" ) ); //$NON-NLS-1$
         deleteMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
         // Adding the listener
         deleteMenuItem.addListener( SWT.Selection, new Listener()

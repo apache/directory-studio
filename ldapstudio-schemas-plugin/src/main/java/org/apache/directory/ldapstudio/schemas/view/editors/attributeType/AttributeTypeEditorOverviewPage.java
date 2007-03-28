@@ -32,7 +32,7 @@ import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.model.Syntax;
 import org.apache.directory.ldapstudio.schemas.model.Syntaxes;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
-import org.apache.directory.ldapstudio.schemas.view.dialogs.ManageAliasesDialog;
+import org.apache.directory.ldapstudio.schemas.view.dialogs.EditAliasesDialog;
 import org.apache.directory.ldapstudio.schemas.view.editors.NonExistingAttributeType;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
@@ -116,19 +116,19 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     private ComboViewer substringComboViewer;
 
     // Listeners
-    /** The listener for the Manage Aliases Button Widget */
+    /** The listener for the Edit Aliases Button Widget */
     private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            ManageAliasesDialog manageDialog = new ManageAliasesDialog( modifiedAttributeType.getNames() );
-            if ( manageDialog.open() != Window.OK )
+            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedAttributeType.getNames() );
+            if ( editDialog.open() != Window.OK )
             {
                 return;
             }
-            if ( manageDialog.isDirty() )
+            if ( editDialog.isDirty() )
             {
-                modifiedAttributeType.setNames( manageDialog.getAliases() );
+                modifiedAttributeType.setNames( editDialog.getAliases() );
                 if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().length != 0 ) )
                 {
                     aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
@@ -557,7 +557,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" );
         aliasesButton = toolkit.createButton( client_general_information, Messages
-            .getString( "AttributeTypeFormEditorOverviewPage.Manage_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
+            .getString( "AttributeTypeFormEditorOverviewPage.Edit_Aliases" ), SWT.PUSH ); //$NON-NLS-1$
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
@@ -1010,6 +1010,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
     {
         if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.userSchema )
         {
+            aliasesButton.addSelectionListener( aliasesButtonListener );
             oidText.addModifyListener( oidTextModifyListener );
             oidText.addVerifyListener( oidTextVerifyListener );
             descriptionText.addModifyListener( descriptionTextListener );
@@ -1028,9 +1029,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage implements PoolLis
             substringCombo.addModifyListener( substringComboListener );
         }
 
-        // ALIASES Button
-        // The user can always access to the Manage Aliases Window, but if the object class is in a core-schema file editing will be disabled
-        aliasesButton.addSelectionListener( aliasesButtonListener );
         schemaLink.addHyperlinkListener( schemaLinkListener );
         supLabel.addHyperlinkListener( supLabelListener );
     }
