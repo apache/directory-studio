@@ -56,7 +56,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
     /** The page title */
-    public static String TITLE = Messages.getString( "AttributeTypeFormEditor.Source_Code" ); //$NON-NLS-1$
+    public static String TITLE = Messages.getString( "AttributeTypeEditorSourceCodePage.Source_Code" ); //$NON-NLS-1$
 
     /** The modified attribute type */
     private AttributeType modifiedAttributeType;

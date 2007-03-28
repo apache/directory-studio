@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.editors.schema;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
@@ -63,10 +64,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class SchemaEditorOverviewPage extends FormPage
 {
     /** The page ID */
-    public static final String ID = SchemaEditor.ID + "overviewPage";
+    public static final String ID = SchemaEditor.ID + "overviewPage"; //$NON-NLS-1$
 
     /** The page title */
-    public static final String TITLE = "Overview";
+    public static final String TITLE = Messages.getString("SchemaEditorOverviewPage.Overview"); //$NON-NLS-1$
 
     /** The Schema Pool */
     private SchemaPool schemaPool;
@@ -182,9 +183,9 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        attributeTypesSection.setDescription( "The schema '" + schema.getName()
-            + "' contains the following attribute types." );
-        attributeTypesSection.setText( "Attribute types" );
+        attributeTypesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.The_schema") + schema.getName() //$NON-NLS-1$
+            + Messages.getString("SchemaEditorOverviewPage.contains_the_following_attribute_types.") ); //$NON-NLS-1$
+        attributeTypesSection.setText( Messages.getString("SchemaEditorOverviewPage.Attribute_types") ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite attributeTypesSectionClient = toolkit.createComposite( attributeTypesSection );
@@ -213,9 +214,9 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        objectClassesSection.setDescription( "The schema '" + schema.getName()
-            + "' contains the following object classes." );
-        objectClassesSection.setText( "Object classes" );
+        objectClassesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.The_schema") + schema.getName() //$NON-NLS-1$
+            + Messages.getString("SchemaEditorOverviewPage.contains_the_following_object_classes.") ); //$NON-NLS-1$
+        objectClassesSection.setText( Messages.getString("SchemaEditorOverviewPage.Object_classes") ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite objectClassesSectionClient = toolkit.createComposite( objectClassesSection );

@@ -103,9 +103,9 @@ public class AttributeTypeEditorInput implements IEditorInput
     public String getToolTipText()
     {
         return this.attributeType.getNames()[0]
-            + Messages.getString( "AttributeTypeFormEditorInput.In_the" ) //$NON-NLS-1$
+            + Messages.getString( "AttributeTypeEditorInput.In_the" ) //$NON-NLS-1$
             + this.attributeType.getOriginatingSchema().getName()
-            + Messages.getString( "AttributeTypeFormEditorInput.Schema" ); //$NON-NLS-1$
+            + Messages.getString( "AttributeTypeEditorInput.Schema" ); //$NON-NLS-1$
     }
 
 

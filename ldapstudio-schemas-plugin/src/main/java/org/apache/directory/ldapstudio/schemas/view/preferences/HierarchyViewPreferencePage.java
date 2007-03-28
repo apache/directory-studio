@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.preferences;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
@@ -52,16 +53,16 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class HierarchyViewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
     /** The preference page ID */
-    public static final String ID = Activator.PLUGIN_ID + ".preferences.hierarchyView";
+    public static final String ID = Activator.PLUGIN_ID + ".preferences.hierarchyView"; //$NON-NLS-1$
 
     /** The First Name category */
-    private static final String FIRST_NAME = "First Name";
+    private static final String FIRST_NAME = Messages.getString("HierarchyViewPreferencePage.First_Name"); //$NON-NLS-1$
 
     /** The All Aliases category */
-    private static final String ALL_ALIASES = "All Aliases";
+    private static final String ALL_ALIASES = Messages.getString("HierarchyViewPreferencePage.All_Aliases"); //$NON-NLS-1$
 
     /** The OID category */
-    private static final String OID = "OID";
+    private static final String OID = Messages.getString("HierarchyViewPreferencePage.OID"); //$NON-NLS-1$
 
     // UI fields
     private Combo labelCombo;
@@ -80,7 +81,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
     {
         super();
         super.setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the Hierarchy View of the Schemas Editor Plugin" );
+        super.setDescription( Messages.getString("HierarchyViewPreferencePage.General_settings_for_the_Hierarchy_View_of_the_Schemas_Editor_Plugin") ); //$NON-NLS-1$
     }
 
 
@@ -100,7 +101,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         // Label Group
         Group labelGroup = new Group( composite, SWT.NONE );
         labelGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        labelGroup.setText( "Label" );
+        labelGroup.setText( Messages.getString("HierarchyViewPreferencePage.Label") ); //$NON-NLS-1$
         labelGroup.setLayout( new GridLayout() );
         Composite labelGroupComposite = new Composite( labelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
@@ -119,7 +120,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Use Label
         Label useLabel = new Label( labelComposite, SWT.NONE );
-        useLabel.setText( "Use" );
+        useLabel.setText( Messages.getString("HierarchyViewPreferencePage.Use") ); //$NON-NLS-1$
 
         // Label Combo
         labelCombo = new Combo( labelComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -130,7 +131,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // As label Label
         Label asLabel = new Label( labelComposite, SWT.NONE );
-        asLabel.setText( "as label." );
+        asLabel.setText( Messages.getString("HierarchyViewPreferencePage.as_label.") ); //$NON-NLS-1$
 
         // Abbreviate row composite
         Composite abbreviateComposite = new Composite( labelGroupComposite, SWT.NONE );
@@ -143,7 +144,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Limit label lenght to Label
         limitButton = new Button( abbreviateComposite, SWT.CHECK );
-        limitButton.setText( "Limit label length to" );
+        limitButton.setText( Messages.getString("HierarchyViewPreferencePage.Limit_label_length_to") ); //$NON-NLS-1$
         gd = new GridData();
         gd.horizontalSpan = 1;
         limitButton.setLayoutData( gd );
@@ -159,11 +160,11 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( lengthText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( lengthText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
@@ -172,12 +173,12 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Characters Label
         Label charactersLabel = new Label( abbreviateComposite, SWT.NONE );
-        charactersLabel.setText( "characters." );
+        charactersLabel.setText( Messages.getString("HierarchyViewPreferencePage.characters.") ); //$NON-NLS-1$
 
         // Secondary Label Group
         Group secondaryLabelGroup = new Group( composite, SWT.NONE );
         secondaryLabelGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        secondaryLabelGroup.setText( "Secondary label" );
+        secondaryLabelGroup.setText( Messages.getString("HierarchyViewPreferencePage.Secondary_label") ); //$NON-NLS-1$
         secondaryLabelGroup.setLayout( new GridLayout() );
         Composite secondaryLabelGroupComposite = new Composite( secondaryLabelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
@@ -186,7 +187,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         secondaryLabelGroupComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
         secondaryLabelButtonDisplay = new Button( secondaryLabelGroupComposite, SWT.CHECK );
-        secondaryLabelButtonDisplay.setText( "Display secondary label." );
+        secondaryLabelButtonDisplay.setText( Messages.getString("HierarchyViewPreferencePage.Display_secondary_label.") ); //$NON-NLS-1$
 
         // Label row composite
         Composite secondaryLabelComposite = new Composite( secondaryLabelGroupComposite, SWT.NONE );
@@ -199,7 +200,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Use Label
         Label useLabel2 = new Label( secondaryLabelComposite, SWT.NONE );
-        useLabel2.setText( "Use" );
+        useLabel2.setText( Messages.getString("HierarchyViewPreferencePage.Use") ); //$NON-NLS-1$
 
         // Label Combo
         secondaryLabelCombo = new Combo( secondaryLabelComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -210,7 +211,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // As label Label
         Label asLabel2 = new Label( secondaryLabelComposite, SWT.NONE );
-        asLabel2.setText( "as secondary label." );
+        asLabel2.setText( Messages.getString("HierarchyViewPreferencePage.as_secondary_label.") ); //$NON-NLS-1$
 
         // Abbreviate row composite
         Composite abbreviateComposite2 = new Composite( secondaryLabelGroup, SWT.NONE );
@@ -223,7 +224,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Limit label lenght to Label
         secondaryLabelLimitButton = new Button( abbreviateComposite2, SWT.CHECK );
-        secondaryLabelLimitButton.setText( "Limit secondary label length to" );
+        secondaryLabelLimitButton.setText( Messages.getString("HierarchyViewPreferencePage.Limit_secondary_label_length_to") ); //$NON-NLS-1$
         gd = new GridData();
         gd.horizontalSpan = 1;
         secondaryLabelLimitButton.setLayoutData( gd );
@@ -239,11 +240,11 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( secondaryLabelLengthText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( secondaryLabelLengthText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
@@ -252,7 +253,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Characters Label
         Label secondaryLabelcharactersLabel = new Label( abbreviateComposite2, SWT.NONE );
-        secondaryLabelcharactersLabel.setText( "characters." );
+        secondaryLabelcharactersLabel.setText( Messages.getString("HierarchyViewPreferencePage.characters.") ); //$NON-NLS-1$
 
         initFieldsFromPreferences();
 

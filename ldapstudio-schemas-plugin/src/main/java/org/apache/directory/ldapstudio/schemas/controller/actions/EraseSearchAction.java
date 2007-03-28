@@ -21,6 +21,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.views.SearchView;
 import org.eclipse.jface.action.Action;
@@ -46,7 +47,7 @@ public class EraseSearchAction extends Action
      */
     public EraseSearchAction( SearchView view )
     {
-        super( "Erase Search" );
+        super( Messages.getString("EraseSearchAction.Erase_Search") ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_ERASE_SEARCH );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

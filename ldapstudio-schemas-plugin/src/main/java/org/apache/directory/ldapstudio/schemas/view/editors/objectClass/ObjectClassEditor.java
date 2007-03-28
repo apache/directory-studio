@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.editors.objectClass;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -73,7 +74,7 @@ public class ObjectClassEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
+                    notifyError( Messages.getString("ObjectClassEditor.Source_Code_Error_cannot_return_to_Overview_page") ); //$NON-NLS-1$
                     return;
                 }
 
@@ -164,7 +165,7 @@ public class ObjectClassEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( "The editor of the Source Code contains errors, you cannot save the object class until these errors are fixed." );
+            notifyError( Messages.getString("ObjectClassEditor.Source_Code_Error_cannot_save_object_class") ); //$NON-NLS-1$
             monitor.setCanceled( true );
             return;
         }

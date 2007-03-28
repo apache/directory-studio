@@ -21,6 +21,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
@@ -138,7 +139,7 @@ public class LinkWithEditorHierarchyView extends Action
      */
     public LinkWithEditorHierarchyView( HierarchyView view )
     {
-        super( "Link with Editor", AS_CHECK_BOX );
+        super( Messages.getString("LinkWithEditorHierarchyView.Link_with_Editor"), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_LINK_WITH_EDITOR_SCHEMA_VIEW );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

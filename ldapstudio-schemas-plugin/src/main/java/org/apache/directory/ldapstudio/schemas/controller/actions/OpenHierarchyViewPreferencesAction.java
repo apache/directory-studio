@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage;
 import org.eclipse.jface.action.Action;
@@ -42,7 +43,7 @@ public class OpenHierarchyViewPreferencesAction extends Action
      */
     public OpenHierarchyViewPreferencesAction()
     {
-        super( "Preferences..." );
+        super( Messages.getString("OpenHierarchyViewPreferencesAction.Preferences...") ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_HIERARCHY_VIEW_PREFERENCES );
         setEnabled( true );

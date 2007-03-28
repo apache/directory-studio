@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.view.editors.attributeType;
 
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.LDAPModelEvent;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
@@ -55,10 +56,10 @@ import org.eclipse.ui.forms.widgets.Section;
 public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListener
 {
     /** The page ID */
-    public static final String ID = AttributeTypeEditor.ID + "usedByPage";
+    public static final String ID = AttributeTypeEditor.ID + "usedByPage"; //$NON-NLS-1$
 
     /** The page title */
-    public static String TITLE = "Used By";
+    public static String TITLE = Messages.getString( "AttributeTypeEditorUsedByPage.Used_By" ); //$NON-NLS-1$
 
     /** The modified attribute type */
     private AttributeType modifiedAttributeType;
@@ -179,9 +180,9 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
         // As Mandatory Attribute Section
         Section mandatoryAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        mandatoryAttributeSection.setDescription( "The attribute type '" + modifiedAttributeType.getNames()[0]
-            + "' is used as a mandatory attribute in the following object classes." );
-        mandatoryAttributeSection.setText( "As Mandatory Attribute" );
+        mandatoryAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.The_attribute_type") + " '" + modifiedAttributeType.getNames()[0] //$NON-NLS-1$ //$NON-NLS-2$
+            + "' " + Messages.getString("AttributeTypeEditorUsedByPage.is_used_as_a_mandatory_attribute_in_the_following_object_classes.") ); //$NON-NLS-1$ //$NON-NLS-2$
+        mandatoryAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.As_Mandatory_Attribute") ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite mandatoryAttributeSectionClient = toolkit.createComposite( mandatoryAttributeSection );
@@ -213,9 +214,9 @@ public class AttributeTypeEditorUsedByPage extends FormPage implements PoolListe
         // Matching Rules Section
         Section optionalAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        optionalAttributeSection.setDescription( "The attribute type '" + modifiedAttributeType.getNames()[0]
-            + "' is used as an optional attribute in the following object classes." ); //$NON-NLS-1$
-        optionalAttributeSection.setText( "As Optional Attribute" ); //$NON-NLS-1$
+        optionalAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.The_attribute_type") + " '" + modifiedAttributeType.getNames()[0] //$NON-NLS-1$ //$NON-NLS-2$
+            + "' " + Messages.getString("AttributeTypeEditorUsedByPage.is_used_as_an_optional_attribute_in_the_following_object_classes.") ); //$NON-NLS-1$ //$NON-NLS-2$
+        optionalAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.As_Optional_Attribute") ); //$NON-NLS-1$
 
         // Creating the layout of the section
         Composite optionalAttributeSectionClient = toolkit.createComposite( optionalAttributeSection );

@@ -21,6 +21,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
@@ -172,7 +173,7 @@ public class LinkWithEditorSchemaElementsView extends Action
      */
     public LinkWithEditorSchemaElementsView( SchemaElementsView view )
     {
-        super( "Link with Editor", AS_CHECK_BOX );
+        super( Messages.getString("LinkWithEditorSchemaElementsView.Link_with_Editor"), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_LINK_WITH_EDITOR_SCHEMA_ELEMENTS_VIEW );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

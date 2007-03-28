@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor;
 import org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditorInput;
@@ -51,7 +52,7 @@ public class OpenSchemaSourceCode extends Action
      */
     public OpenSchemaSourceCode()
     {
-        super( "View source code" );
+        super( Messages.getString("OpenSchemaSourceCode.View_source_code") ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_OPEN_SCHEMA_SOURCE_CODE );
         setImageDescriptor( AbstractUIPlugin

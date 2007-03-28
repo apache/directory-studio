@@ -35,7 +35,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * This class implements the Action for creating a new schema
  */
-
 public class CreateANewSchemaAction extends Action
 {
     /**

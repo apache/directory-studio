@@ -21,6 +21,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -51,7 +52,7 @@ public class HideAttributeTypesAction extends Action
      */
     public HideAttributeTypesAction( TreeViewer viewer )
     {
-        super( "Hide Attribute Types", AS_CHECK_BOX );
+        super( Messages.getString("HideAttributeTypesAction.Hide_Attribute_Types"), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_HIDE_ATTRIBUTE_TYPES );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

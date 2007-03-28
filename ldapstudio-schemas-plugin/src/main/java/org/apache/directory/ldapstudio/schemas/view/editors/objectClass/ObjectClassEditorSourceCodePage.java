@@ -53,10 +53,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class ObjectClassEditorSourceCodePage extends FormPage
 {
     /** The page ID */
-    public static final String ID = ObjectClassEditor.ID + "sourceCodePage";
+    public static final String ID = ObjectClassEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
     /** The page title*/
-    public static final String TITLE = Messages.getString( "ObjectClassFormEditor.Source_Code" );
+    public static final String TITLE = Messages.getString( "ObjectClassEditorSourceCodePage.Source_Code" ); //$NON-NLS-1$
 
     /** The modified object class */
     private ObjectClass modifiedObjectClass;

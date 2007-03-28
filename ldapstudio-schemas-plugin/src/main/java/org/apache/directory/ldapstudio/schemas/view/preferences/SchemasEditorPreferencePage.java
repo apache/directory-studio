@@ -69,7 +69,7 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
     {
         super();
         setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        setDescription( "General settings for the Schemas Editor Plugin" );
+        setDescription( Messages.getString("SchemasEditorPreferencePage.General_settings_for_the_Schemas_Editor_Plugin") ); //$NON-NLS-1$
     }
 
 
@@ -81,18 +81,18 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
 
         // SPECIFIC CORE SCHEMAS Group
         Group specificCoreSchemasGroup = new Group( parent, SWT.NONE );
-        specificCoreSchemasGroup.setText( "Core Schemas" );
+        specificCoreSchemasGroup.setText( Messages.getString("SchemasEditorPreferencePage.Core_Schemas") ); //$NON-NLS-1$
         specificCoreSchemasGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         specificCoreSchemasGroup.setLayout( new GridLayout( 3, false ) );
 
         // SPECIFIC CORE SCHEMAS Checkbox
         specificCoreSchemasCheckbox = new Button( specificCoreSchemasGroup, SWT.CHECK );
-        specificCoreSchemasCheckbox.setText( Messages.getString( "SchemaPreferencePage.Use_specific_core_schemas" ) ); //$NON-NLS-1$
+        specificCoreSchemasCheckbox.setText( Messages.getString( "SchemasEditorPreferencePage.Use_specific_core_schemas" ) ); //$NON-NLS-1$
         specificCoreSchemasCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false, 3, 1 ) );
 
         // SPECIFIC CORE SCHEMAS Label 
         specificCoreSchemasLabel = new Label( specificCoreSchemasGroup, SWT.NONE );
-        specificCoreSchemasLabel.setText( Messages.getString( "SchemaPreferencePage.Core_schemas_directory" ) ); //$NON-NLS-1$
+        specificCoreSchemasLabel.setText( Messages.getString( "SchemasEditorPreferencePage.Core_schemas_directory" ) ); //$NON-NLS-1$
 
         // SPECIFIC CORE SCHEMAS Text
         specificCoreSchemasText = new Text( specificCoreSchemasGroup, SWT.BORDER );
@@ -101,23 +101,23 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
 
         // SPECIFIC CORE SCHEMAS Button
         specificCoreSchemasButton = new Button( specificCoreSchemasGroup, SWT.PUSH );
-        specificCoreSchemasButton.setText( "Browse..." );
+        specificCoreSchemasButton.setText( Messages.getString("SchemasEditorPreferencePage.Browse...") ); //$NON-NLS-1$
 
         // DEFAULT OID Group
         Group defaultOidGroup = new Group( parent, SWT.NONE );
-        defaultOidGroup.setText( "Default OID" );
+        defaultOidGroup.setText( Messages.getString("SchemasEditorPreferencePage.Default_OID") ); //$NON-NLS-1$
         defaultOidGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         defaultOidGroup.setLayout( new GridLayout( 2, false ) );
 
         // DEFAULT OID Checkbox
         defaultOidCheckbox = new Button( defaultOidGroup, SWT.CHECK );
         defaultOidCheckbox.setText( Messages
-            .getString( "GeneralPreferencePage.Automatically_prefix_new_elements_with_this_OID" ) );
+            .getString( "SchemasEditorPreferencePage.Automatically_prefix_new_elements_with_this_OID" ) ); //$NON-NLS-1$
         defaultOidCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false, 2, 1 ) );
 
         // DEFAULT OID  Label
         defaultOidLabel = new Label( defaultOidGroup, SWT.NONE );
-        defaultOidLabel.setText( Messages.getString( "GeneralPreferencePage.Your_organizations_default_OID" ) );
+        defaultOidLabel.setText( Messages.getString( "SchemasEditorPreferencePage.Your_organizations_default_OID" ) ); //$NON-NLS-1$
 
         // DEFAULT OID Text
         defaultOidText = new Text( defaultOidGroup, SWT.BORDER );
@@ -176,7 +176,7 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
             {
                 DirectoryDialog dd = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                     .getShell() );
-                dd.setFilterPath( System.getProperty( "user.home" ) );
+                dd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
                 String selectedFolder = dd.open();
                 if ( selectedFolder != null )
                 {
@@ -198,7 +198,7 @@ public class SchemasEditorPreferencePage extends PreferencePage implements IWork
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "([0-9]*\\.?)*" ) )
+                if ( !e.text.matches( "([0-9]*\\.?)*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }

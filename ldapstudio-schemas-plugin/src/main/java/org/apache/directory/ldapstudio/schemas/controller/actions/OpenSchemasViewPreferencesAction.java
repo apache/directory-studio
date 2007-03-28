@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage;
 import org.eclipse.jface.action.Action;
@@ -42,7 +43,7 @@ public class OpenSchemasViewPreferencesAction extends Action
      */
     public OpenSchemasViewPreferencesAction()
     {
-        super( "Preferences..." );
+        super( Messages.getString("OpenSchemasViewPreferencesAction.Preferences...") ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_SCHEMAS_VIEW_PREFERENCES );
         setEnabled( true );

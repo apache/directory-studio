@@ -51,10 +51,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class SchemaEditorSourceCodePage extends FormPage
 {
     /** The page ID */
-    public static final String ID = SchemaEditor.ID + "sourceCode";
+    public static final String ID = SchemaEditor.ID + "sourceCode"; //$NON-NLS-1$
 
     /** The page title */
-    public static final String TITLE = Messages.getString( "SchemaFormEditor.Source_code" );
+    public static final String TITLE = Messages.getString( "SchemaEditorSourceCodePage.Source_code" ); //$NON-NLS-1$
 
     /** The associated schema */
     private Schema schema;

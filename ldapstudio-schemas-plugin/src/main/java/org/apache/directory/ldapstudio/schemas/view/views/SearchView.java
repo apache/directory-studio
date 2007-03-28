@@ -134,7 +134,7 @@ public class SearchView extends ViewPart implements PoolListener
         top.setLayout( layout );
 
         Label searchLabel = new Label( top, SWT.NONE );
-        searchLabel.setText( "Search " );
+        searchLabel.setText( Messages.getString("SearchView.Search") ); //$NON-NLS-1$
 
         //search field
         searchField = new Combo( top, SWT.DROP_DOWN | SWT.BORDER );
@@ -143,7 +143,7 @@ public class SearchView extends ViewPart implements PoolListener
         searchField.setLayoutData( gridData );
 
         Label inLabel = new Label( top, SWT.NONE );
-        inLabel.setText( " in " );
+        inLabel.setText( Messages.getString("SearchView.in") ); //$NON-NLS-1$
 
         //search scope combo
         scopeCombo = new Combo( top, SWT.READ_ONLY | SWT.SINGLE );
@@ -245,7 +245,7 @@ public class SearchView extends ViewPart implements PoolListener
         {
             public void focusLost( FocusEvent e )
             {
-                if ( !"".equals( searchField.getText() ) )
+                if ( !"".equals( searchField.getText() ) ) //$NON-NLS-1$
                 {
                     String searchString = searchField.getText();
                     saveHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY, searchString );

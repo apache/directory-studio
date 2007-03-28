@@ -213,7 +213,7 @@ public class CreateANewObjectClassWizardPage extends WizardPage
 
         if ( !ViewUtils.verifyName( getNameField() ) )
         {
-            updateStatus( "Name is not valid." );
+            updateStatus( Messages.getString("CreateANewObjectClassWizardPage.Name_is_not_valid.") ); //$NON-NLS-1$
             return;
         }
 

@@ -21,6 +21,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.views.HierarchyView;
 import org.eclipse.jface.action.Action;
@@ -47,8 +48,8 @@ public class ShowSupertypeHierarchyAction extends Action
      */
     public ShowSupertypeHierarchyAction( HierarchyView view )
     {
-        super( "Supertype Hierarchy", AS_RADIO_BUTTON );
-        setToolTipText( "Show the Supertype Hierarchy" );
+        super( Messages.getString("ShowSupertypeHierarchyAction.Supertype_Hierarchy"), AS_RADIO_BUTTON ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("ShowSupertypeHierarchyAction.Show_the_Supertype_Hierarchy") ); //$NON-NLS-1$
         setId( PluginConstants.CMD_SHOW_SUPERTYPE_HIERARCHY );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SHOW_SUPERTYPE_HIERARCHY ) );

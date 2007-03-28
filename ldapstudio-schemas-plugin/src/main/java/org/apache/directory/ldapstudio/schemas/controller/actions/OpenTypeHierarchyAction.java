@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.SchemaElement;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
@@ -55,7 +56,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
      */
     public OpenTypeHierarchyAction()
     {
-        super( "Open Type Hierarchy" );
+        super( Messages.getString("OpenTypeHierarchyAction.Open_Type_Hierarchy") ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setActionDefinitionId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );

@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas.view.search;
 
 
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.view.views.SearchView;
 import org.eclipse.jface.dialogs.DialogPage;
@@ -65,7 +66,7 @@ public class SearchPage extends DialogPage implements ISearchPage
         parent.setLayout( new GridLayout() );
 
         Label label = new Label( parent, SWT.NONE );
-        label.setText( "Search string (* = any string, ? = any character):" );
+        label.setText( Messages.getString("SearchPage.Search_string") ); //$NON-NLS-1$
         label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         searchCombo = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
@@ -80,21 +81,21 @@ public class SearchPage extends DialogPage implements ISearchPage
 
         Group scopeGroup = new Group( parent, SWT.NONE );
         scopeGroup.setLayout( new GridLayout( 4, false ) );
-        scopeGroup.setText( "Scope" );
+        scopeGroup.setText( Messages.getString("SearchPage.Scope") ); //$NON-NLS-1$
         scopeGroup.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
 
         allMetadataButton = new Button( scopeGroup, SWT.RADIO );
-        allMetadataButton.setText( "All metadata" );
+        allMetadataButton.setText( Messages.getString("SearchPage.All_metada") ); //$NON-NLS-1$
         allMetadataButton.setSelection( true );
 
         nameButton = new Button( scopeGroup, SWT.RADIO );
-        nameButton.setText( "Name" );
+        nameButton.setText( Messages.getString("SearchPage.Name") ); //$NON-NLS-1$
 
         oidButton = new Button( scopeGroup, SWT.RADIO );
-        oidButton.setText( "OID" );
+        oidButton.setText( Messages.getString("SearchPage.OID") ); //$NON-NLS-1$
 
         descriptionButon = new Button( scopeGroup, SWT.RADIO );
-        descriptionButon.setText( "Description" );
+        descriptionButon.setText( Messages.getString("SearchPage.Description") ); //$NON-NLS-1$
 
         initSearchHistory();
 
@@ -171,7 +172,7 @@ public class SearchPage extends DialogPage implements ISearchPage
      */
     private boolean isValid()
     {
-        return ( ( searchCombo.getText() != null ) && ( !"".equals( searchCombo.getText() ) ) );
+        return ( ( searchCombo.getText() != null ) && ( !"".equals( searchCombo.getText() ) ) ); //$NON-NLS-1$
     }
 
 

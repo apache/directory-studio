@@ -88,7 +88,7 @@ public class SchemaEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return Messages.getString( "SchemaFormEditorInput.Source_code_of" ) + this.schema.getName(); //$NON-NLS-1$
+        return Messages.getString( "SchemaEditorInput.Source_code_of" ) + this.schema.getName(); //$NON-NLS-1$
     }
 
 

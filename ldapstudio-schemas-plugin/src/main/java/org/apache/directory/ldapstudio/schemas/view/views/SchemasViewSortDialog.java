@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view.views;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -47,13 +48,13 @@ import org.eclipse.swt.widgets.Shell;
 public class SchemasViewSortDialog extends Dialog
 {
     /** The title of the dialog */
-    private static final String DIALOG_TITLE = "Schemas View Sorting";
+    private static final String DIALOG_TITLE = Messages.getString("SchemasViewSortDialog.Schemas_View_Sorting"); //$NON-NLS-1$
 
     /** The Sorting First Name category */
-    private static final String SORTING_FISTNAME = "First Name";
+    private static final String SORTING_FISTNAME = Messages.getString("SchemasViewSortDialog.First_Name"); //$NON-NLS-1$
 
     /** The Sorting OID category */
-    private static final String SORTING_OID = "OID";
+    private static final String SORTING_OID = Messages.getString("SchemasViewSortDialog.OID"); //$NON-NLS-1$
 
     // UI Fields
     private Button inFoldersButton;
@@ -98,23 +99,23 @@ public class SchemasViewSortDialog extends Dialog
         // Grouping Group
         Group groupingGroup = new Group( composite, SWT.NONE );
         groupingGroup.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        groupingGroup.setText( "Grouping" );
+        groupingGroup.setText( Messages.getString("SchemasViewSortDialog.Grouping") ); //$NON-NLS-1$
         groupingGroup.setLayout( new GridLayout() );
 
         // Attribute Types first Button
         inFoldersButton = new Button( groupingGroup, SWT.RADIO );
-        inFoldersButton.setText( "Group attribute types and object classes in folders" );
+        inFoldersButton.setText( Messages.getString("SchemasViewSortDialog.Group_attribute_types_and_object_classes_in_folders") ); //$NON-NLS-1$
         inFoldersButton.setEnabled( true );
 
         // Mixed Button
         mixedButton = new Button( groupingGroup, SWT.RADIO );
-        mixedButton.setText( "Mixed" );
+        mixedButton.setText( Messages.getString("SchemasViewSortDialog.Mixed") ); //$NON-NLS-1$
         mixedButton.setEnabled( true );
 
         // Sorting Group
         Group sortingGroup = new Group( composite, SWT.NONE );
         sortingGroup.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        sortingGroup.setText( "Sorting" );
+        sortingGroup.setText( Messages.getString("SchemasViewSortDialog.Sorting") ); //$NON-NLS-1$
         sortingGroup.setLayout( new GridLayout() );
         Composite sortingGroupComposite = new Composite( sortingGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 4, false );
@@ -124,7 +125,7 @@ public class SchemasViewSortDialog extends Dialog
 
         // Sort by Label
         Label sortByLabel = new Label( sortingGroupComposite, SWT.NONE );
-        sortByLabel.setText( "Sort by" );
+        sortByLabel.setText( Messages.getString("SchemasViewSortDialog.Sort_by") ); //$NON-NLS-1$
 
         // Sorting Combo
         sortingCombo = new Combo( sortingGroupComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
@@ -135,12 +136,12 @@ public class SchemasViewSortDialog extends Dialog
 
         // Ascending Button
         ascendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        ascendingButton.setText( "Ascending" );
+        ascendingButton.setText( Messages.getString("SchemasViewSortDialog.Ascending") ); //$NON-NLS-1$
         ascendingButton.setEnabled( true );
 
         // Descending Button
         descendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        descendingButton.setText( "Descending" );
+        descendingButton.setText( Messages.getString("SchemasViewSortDialog.Descending") ); //$NON-NLS-1$
         descendingButton.setEnabled( true );
 
         initFieldsFromPreferences();

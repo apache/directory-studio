@@ -21,6 +21,7 @@ package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
 import org.apache.directory.ldapstudio.schemas.Activator;
+import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -46,7 +47,7 @@ public class CollapseAllAction extends Action
      */
     public CollapseAllAction( TreeViewer viewer )
     {
-        super( "Collapse All" );
+        super( Messages.getString("CollapseAllAction.Collapse_All") ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_COLLAPSE_ALL );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
