@@ -222,7 +222,6 @@ public interface PluginConstants
         + ".preferences.SchemasEditor.companyOID"; //$NON-NLS-1$
 
     // Images - Actions
-    public static final String IMG_ABOUT = "ressources/icons/flag_blue.png"; //$NON-NLS-1$
     public static final String IMG_CREATE_A_NEW_ATTRIBUTETYPE = "ressources/icons/attribute_type_new.gif"; //$NON-NLS-1$
     public static final String IMG_CREATE_A_NEW_OBJECTCLASS = "ressources/icons/object_class_new.gif"; //$NON-NLS-1$
     public static final String IMG_CREATE_A_NEW_SCHEMA = "ressources/icons/schema_new.png"; //$NON-NLS-1$
