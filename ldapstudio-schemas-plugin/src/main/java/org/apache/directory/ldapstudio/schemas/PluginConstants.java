@@ -228,7 +228,6 @@ public interface PluginConstants
     public static final String IMG_CREATE_A_NEW_SCHEMA = "ressources/icons/schema_new.png"; //$NON-NLS-1$
     public static final String IMG_DELETE = "ressources/icons/delete.gif"; //$NON-NLS-1$
     public static final String IMG_ERASE_SEARCH = "ressources/icons/erase_search.gif"; //$NON-NLS-1$
-    public static final String IMG_EXIT = "ressources/icons/stop.png"; //$NON-NLS-1$
     public static final String IMG_HIDE_OBJECT_CLASSES = "ressources/icons/hide_object_classes.png"; //$NON-NLS-1$
     public static final String IMG_HIDE_ATTRIBUTE_TYPES = "ressources/icons/hide_attribute_types.png"; //$NON-NLS-1$
     public static final String IMG_LINK_WITH_EDITOR = "ressources/icons/link_with_editor.gif"; //$NON-NLS-1$
