@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.schemas.view;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -80,4 +81,97 @@ public class ViewUtils
     {
         return name.matches( "[a-zA-Z]+[a-zA-Z0-9;-]*" ); //$NON-NLS-1$
     }
+
+
+    /**
+     * Displays an Error Message Box with the given title and message.
+     *
+     * @param title
+     *      the title of the window
+     * @param message
+     *      the message to display
+     * @return
+     *      the ID of the button that was selected to dismiss 
+     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     */
+    public static int displayErrorMessageBox( String title, String message )
+    {
+        return displayMessageBox( SWT.OK | SWT.ICON_ERROR, title, message );
+    }
+
+
+    /**
+     * Displays a Information Message Box with the given title and message.
+     *
+     * @param title
+     *      the title of the window
+     * @param message
+     *      the message to display
+     * @return
+     *      the ID of the button that was selected to dismiss 
+     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     */
+    public static int displayWarningMessageBox( String title, String message )
+    {
+        return displayMessageBox( SWT.OK | SWT.ICON_WARNING, title, message );
+    }
+
+
+    /**
+     * Displays a Information Message Box with the given title and message.
+     *
+     * @param title
+     *      the title of the window
+     * @param message
+     *      the message to display
+     * @return
+     *      the ID of the button that was selected to dismiss 
+     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     */
+    public static int displayInformationMessageBox( String title, String message )
+    {
+        return displayMessageBox( SWT.OK | SWT.ICON_INFORMATION, title, message );
+    }
+
+
+    /**
+     * Displays a Information Question Box with the given title and message.
+     *
+     * @param buttonStyle
+     *      the style of the buttons of the dialog (e.g. SWT.OK, SWT.CANCEL, etc...)
+     * @param title
+     *      the title of the window
+     * @param message
+     *      the message to display
+     * @return
+     *      the ID of the button that was selected to dismiss 
+     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     */
+    public static int displayQuestionMessageBox( int buttonStyle, String title, String message )
+    {
+        return displayMessageBox( SWT.ICON_QUESTION | buttonStyle, title, message );
+    }
+
+
+    /**
+     * Displays a Message Box with the given style, title and message.
+     *
+     * @param style
+     *      the style of dialog
+     * @param title
+     *      the title of the window
+     * @param message
+     *      the message to display
+     * @return
+     *      the ID of the button that was selected to dismiss 
+     *      the message box (e.g. SWT.OK, SWT.CANCEL, etc...)
+     */
+    private static int displayMessageBox( int style, String title, String message )
+    {
+        MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), style );
+        messageBox.setText( title );
+        messageBox.setMessage( message );
+        return messageBox.open();
+    }
+
 }

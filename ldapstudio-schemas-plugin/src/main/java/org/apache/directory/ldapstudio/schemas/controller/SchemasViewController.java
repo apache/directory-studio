@@ -32,6 +32,7 @@ import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewAttr
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewObjectClassAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.CreateANewSchemaAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.DeleteAction;
+import org.apache.directory.ldapstudio.schemas.controller.actions.ExportSchemaForADSAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.LinkWithEditorSchemasView;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenLocalFileAction;
 import org.apache.directory.ldapstudio.schemas.controller.actions.OpenSchemaSourceCode;
@@ -125,6 +126,7 @@ public class SchemasViewController
     private Action openSortDialog;
     private Action openPreferencePage;
     private Action openTypeHierarchy;
+    private Action exportSchemaForADS;
 
 
     /**
@@ -183,6 +185,7 @@ public class SchemasViewController
         openSortDialog = new OpenSchemasViewSortDialogAction();
         openPreferencePage = new OpenSchemasViewPreferencesAction();
         openTypeHierarchy = new OpenTypeHierarchyAction();
+        exportSchemaForADS = new ExportSchemaForADSAction( view );
     }
 
 
@@ -244,6 +247,8 @@ public class SchemasViewController
                     {
                         manager.add( saveAs );
                         manager.add( new Separator() );
+                        manager.add( exportSchemaForADS);
+                        manager.add( new Separator() );
                         manager.add( openSchemaSourceCode );
                     }
                     else if ( schema.type == SchemaType.userSchema )
@@ -254,6 +259,8 @@ public class SchemasViewController
                         manager.add( save );
                         manager.add( saveAs );
                         manager.add( removeSchema );
+                        manager.add( new Separator() );
+                        manager.add( exportSchemaForADS);
                         manager.add( new Separator() );
                         manager.add( openSchemaSourceCode );
                     }

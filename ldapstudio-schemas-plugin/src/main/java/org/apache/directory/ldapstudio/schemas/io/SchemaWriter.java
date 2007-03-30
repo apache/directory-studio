@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.Date;
 
 import org.apache.directory.ldapstudio.schemas.Activator;
@@ -58,7 +59,6 @@ public class SchemaWriter
      * @param src the file-path where it will be generated
      * @throws Exception if an exception during the generation of the schema
      */
-    @SuppressWarnings("deprecation")//$NON-NLS-1$
     public void write( Schema schema, String src ) throws Exception
     {
         // VelocityEngine initialization
@@ -67,8 +67,9 @@ public class SchemaWriter
         // VelocityContext initialization and variables setup
         VelocityContext context = new VelocityContext();
         context.put( "schemaName", schema.getName() ); //$NON-NLS-1$
+        DateFormat format = DateFormat.getDateTimeInstance( DateFormat.LONG, DateFormat.MEDIUM );
         Date date = new Date();
-        context.put( "date", date.toLocaleString() ); //$NON-NLS-1$
+        context.put( "date", format.format( date ) ); //$NON-NLS-1$
         context.put( "attributeTypes", schema.getAttributeTypesAsArray() ); //$NON-NLS-1$
         context.put( "objectClasses", schema.getObjectClassesAsArray() ); //$NON-NLS-1$
 

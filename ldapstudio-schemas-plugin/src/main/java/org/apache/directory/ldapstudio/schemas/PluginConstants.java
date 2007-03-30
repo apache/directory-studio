@@ -227,6 +227,7 @@ public interface PluginConstants
     public static final String IMG_CREATE_A_NEW_SCHEMA = "ressources/icons/schema_new.png"; //$NON-NLS-1$
     public static final String IMG_DELETE = "ressources/icons/delete.gif"; //$NON-NLS-1$
     public static final String IMG_ERASE_SEARCH = "ressources/icons/erase_search.gif"; //$NON-NLS-1$
+    public static final String IMG_EXPORT_SCHEMA_FOR_ADS = "ressources/icons/export_schema_for_ads.png"; //$NON-NLS-1$
     public static final String IMG_HIDE_OBJECT_CLASSES = "ressources/icons/hide_object_classes.png"; //$NON-NLS-1$
     public static final String IMG_HIDE_ATTRIBUTE_TYPES = "ressources/icons/hide_attribute_types.png"; //$NON-NLS-1$
     public static final String IMG_LINK_WITH_EDITOR = "ressources/icons/link_with_editor.gif"; //$NON-NLS-1$
@@ -268,6 +269,7 @@ public interface PluginConstants
     public static final String CMD_CREATE_A_NEW_SCHEMA = Activator.PLUGIN_ID + ".cmd.CreateANewSchema"; //$NON-NLS-1$
     public static final String CMD_DELETE = Activator.PLUGIN_ID + ".cmd.Delete"; //$NON-NLS-1$
     public static final String CMD_ERASE_SEARCH = Activator.PLUGIN_ID + ".cmd.EraseSearch"; //$NON-NLS-1$
+    public static final String CMD_EXPORT_FOR_ADS = Activator.PLUGIN_ID + ".cmd.ExportForADS"; //$NON-NLS-1$
     public static final String CMD_HIDE_ATTRIBUTE_TYPES = Activator.PLUGIN_ID + ".cmd.HideAttributesTypes"; //$NON-NLS-1$
     public static final String CMD_HIDE_OBJECT_CLASSES = Activator.PLUGIN_ID + ".cmd.HideObjectClasses"; //$NON-NLS-1$
     public static final String CMD_LINK_WITH_EDITOR_SCHEMA_ELEMENTS_VIEW = Activator.PLUGIN_ID
