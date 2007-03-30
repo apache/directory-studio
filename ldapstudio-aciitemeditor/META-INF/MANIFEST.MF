@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ACI Item Editor Plug-in
+Bundle-Name: LDAP Studio ACI Item Editor Plug-in
 Bundle-SymbolicName: org.apache.directory.ldapstudio.aciitemeditor;singleton:=true
-Bundle-Version: 0.0.1
+Bundle-Version: 0.7.0
 Bundle-Activator: org.apache.directory.ldapstudio.aciitemeditor.Activator
+Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -15,7 +16,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor
 Eclipse-LazyStart: true
-Bundle-Vendor: apache.org
 Bundle-ClassPath: .,
  lib/shared-ldap-0.9.6-SNAPSHOT.jar,
  lib/commons-collections-3.1.jar,
