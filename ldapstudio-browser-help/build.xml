@@ -112,6 +112,11 @@
 			<outputproperty name="indent" value="es" />
 		</xslt>
 		
+		<replaceregexp file="${project.build}/toc.xml"
+		                         match="&lt;toc [^>]*>"
+		                         replace="&lt;toc topic=&#34;html/index.html&#34; label=&#34;LDAP Studio Browser User's Guide\&#34;>"
+		                         byline="true"/>
+		
 		<copy todir="${project.build}" overwrite="true">
 			<fileset dir="${basedir}">
 				<include name="contexts.xml" />
@@ -241,7 +246,7 @@
 			<param name="use.id.as.filename" expression="1" />
 			<param name="chapter.autolabel" expression="I" />
 			<param name="section.autolabel" expression="1" />
-
+			
 			<outputproperty name="method" value="xml" />
 			<outputproperty name="standalone" value="yes" />
 			<outputproperty name="encoding" value="iso8859_1" />
