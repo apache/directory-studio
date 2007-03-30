@@ -18,7 +18,7 @@
 -->
 <project default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
 	<property name="project.name" value="org.apache.directory.ldapstudio.rcp.feature" />
-	<property name="project.version" value="0.6.0" />
+	<property name="project.version" value="0.7.0" />
 
 	<property name="project.output" value="${basedir}/target" />
 		

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDAP Studio RCP Application
 Bundle-SymbolicName: org.apache.directory.ldapstudio;singleton:=true
-Bundle-Version: 0.6.0
+Bundle-Version: 0.7.0
 Bundle-Activator: org.apache.directory.ldapstudio.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

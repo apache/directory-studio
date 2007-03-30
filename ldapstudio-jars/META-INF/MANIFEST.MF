@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDAP Studio Jars Plugin
 Bundle-SymbolicName: org.apache.directory.ldapstudio.jars
-Bundle-Version: 0.6.0
+Bundle-Version: 0.7.0
 Bundle-Localization: plugin
 Bundle-Vendor: Apache Software Foundation
 Export-Package: antlr,

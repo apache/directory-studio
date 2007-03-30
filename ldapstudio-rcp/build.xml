@@ -18,7 +18,7 @@
 -->
 <project default="product" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
     <property name="project.name" value="org.apache.directory.ldapstudio" />
-    <property name="project.version" value="0.6.0" />
+    <property name="project.version" value="0.7.0" />
 
     <property name="ldapstudio-rcp.output" value="${basedir}/target" />
     <property name="ldapstudio-rcp.build" value="${ldapstudio-rcp.output}/build" />

@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.ldapstudio.browser.feature"
       label="LDAP Studio Browser"
-      version="0.6.1"
+      version="0.7.0"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
@@ -225,28 +225,28 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.ldapstudio.browser.core"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="0.7.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.ldapstudio.browser.ui"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="0.7.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.ldapstudio.browser.help"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="0.7.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.ldapstudio.jars"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="0.7.0"
          unpack="false"/>
 
 </feature>
