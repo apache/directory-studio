@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="checkstyle"
+		module="checkstyle"
+		revision="2.2"
+		status="release"
+		publication="20070329102238"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="checkstyle" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>
