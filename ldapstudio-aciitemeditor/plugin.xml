@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="ACI Item Editor"
+            icon="icons/aciitemeditor.gif"
+            contributorClass="org.apache.directory.ldapstudio.aciitemeditor.editors.MultiPageEditorContributor"
+            class="org.apache.directory.ldapstudio.aciitemeditor.editors.MultiPageEditor"
+            id="org.apache.directory.ldapstudio.aciitemeditor.editors.MultiPageEditor">
+      </editor>
+   </extension>
+   <extension
+         point="org.apache.directory.ldapstudio.browser.ui.valueEditors">
+      <valueEditor
+            class="org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueEditor"
+            icon="icons/aciitemeditor.gif"
+            name="ACI Item Editor">
+         <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.1"/>
+      </valueEditor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <include file="templates/templates.xml"/>
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            id="org.apache.directory.ldapstudio.aciitemeditor.templates"
+            name="ACI Item"/>
+   </extension>
+
+</plugin>
