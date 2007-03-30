@@ -78,7 +78,7 @@ public class SearchParameter implements Serializable
      * Creates a new instance of SearchParameter with default search parameters:
      * <ul>
      * <li>null search name
-     * <li>empty search base
+     * <li>null search base
      * <li>default filter (objectClass=*)
      * <li>no returning attributes
      * <li>search scope one level
@@ -94,7 +94,7 @@ public class SearchParameter implements Serializable
     public SearchParameter()
     {
         name = null;
-        searchBase = ISearch.EMPTY_SEARCH_BASE;
+        searchBase = null;
         filter = ISearch.FILTER_TRUE;
         returningAttributes = ISearch.NO_ATTRIBUTES;
         scope = ISearch.SCOPE_ONELEVEL;
@@ -293,17 +293,13 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Sets the search base, a null search base will be
-     * transformed to an empty DN.
+     * Sets the search base, a null search base is not allowed.
      * 
      * @param searchBase the search base
      */
     public void setSearchBase( DN searchBase )
     {
-        if ( searchBase == null )
-        {
-            searchBase = ISearch.EMPTY_SEARCH_BASE;
-        }
+        assert searchBase != null;
         this.searchBase = searchBase;
     }
 
