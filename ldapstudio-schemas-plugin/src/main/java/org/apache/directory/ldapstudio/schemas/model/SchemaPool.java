@@ -219,24 +219,41 @@ public class SchemaPool implements SchemaListener
      */
     private void loadCoreSchemasFromBundle()
     {
-        URL urlcore = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/core.schema" ); //$NON-NLS-1$
-        URL urljava = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/java.schema" ); //$NON-NLS-1$
-        URL urlnis = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/nis.schema" ); //$NON-NLS-1$
-        URL urlsystem = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/system.schema" ); //$NON-NLS-1$
-        URL urlautofs = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/autofs.schema" ); //$NON-NLS-1$
-        URL urlcorba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/corba.schema" ); //$NON-NLS-1$
-        URL urlcosine = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/cosine.schema" ); //$NON-NLS-1$
-        URL urlinetorgperson = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
+        URL urlApache = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/apache.schema" ); //$NON-NLS-1$
+        URL urlApachedns = Platform.getBundle( Activator.PLUGIN_ID )
+            .getResource( "ressources/schemas/apachedns.schema" ); //$NON-NLS-1$
+        URL urlApachemeta = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
+            "ressources/schemas/apachemeta.schema" ); //$NON-NLS-1$
+        URL urlAutofs = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/autofs.schema" ); //$NON-NLS-1$
+        URL urlCollective = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
+            "ressources/schemas/collective.schema" ); //$NON-NLS-1$
+        URL urlCorba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/corba.schema" ); //$NON-NLS-1$
+        URL urlCore = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/core.schema" ); //$NON-NLS-1$
+        URL urlCosine = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/cosine.schema" ); //$NON-NLS-1$
+        URL urlDhcp = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/dhcp.schema" ); //$NON-NLS-1$
+        URL urlInetorgperson = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
             "ressources/schemas/inetorgperson.schema" ); //$NON-NLS-1$
+        URL urlJava = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/java.schema" ); //$NON-NLS-1$
+        URL urlKrb5kdc = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/krb5kdc.schema" ); //$NON-NLS-1$
+        URL urlNis = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/nis.schema" ); //$NON-NLS-1$
+        URL urlSamba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/samba.schema" ); //$NON-NLS-1$
+        URL urlSystem = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/system.schema" ); //$NON-NLS-1$
 
-        schemaPool.addSchema( urlcore, SchemaType.coreSchema, false );
-        schemaPool.addSchema( urljava, SchemaType.coreSchema, false );
-        schemaPool.addSchema( urlnis, SchemaType.coreSchema, false );
-        schemaPool.addSchema( urlsystem, SchemaType.coreSchema, false );
-        schemaPool.addSchema( urlautofs, SchemaType.coreSchema, false );
-        schemaPool.addSchema( urlcorba, SchemaType.coreSchema, false );
-        schemaPool.addSchema( urlcosine, SchemaType.coreSchema, false );
-        schemaPool.addSchema( urlinetorgperson, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlApache, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlApachedns, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlApachemeta, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlAutofs, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlCollective, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlCorba, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlCore, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlCosine, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlDhcp, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlInetorgperson, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlJava, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlKrb5kdc, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlNis, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlSamba, SchemaType.coreSchema, false );
+        schemaPool.addSchema( urlSystem, SchemaType.coreSchema, false );
     }
 
 
