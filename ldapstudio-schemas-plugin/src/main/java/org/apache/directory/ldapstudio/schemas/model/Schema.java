@@ -32,7 +32,9 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
+import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.Messages;
+import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.io.SchemaParser;
 import org.apache.directory.ldapstudio.schemas.io.SchemaWriter;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
@@ -575,7 +577,8 @@ public class Schema implements SchemaElementListener
         {
             FileDialog fd = new FileDialog( new Shell(), SWT.SAVE );
             fd.setText( Messages.getString( "Schema.Save_this_schema" ) + this.getName() ); //$NON-NLS-1$
-            fd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
+            fd.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                PluginConstants.PREFS_SAVE_FILE_DIALOG ) );
             fd.setFileName( this.name + ".schema" ); //$NON-NLS-1$
             fd.setFilterExtensions( new String[]
                 { "*.schema", "*.*" } ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -595,6 +598,8 @@ public class Schema implements SchemaElementListener
             //when we have been written, we are synchronised with the filesystem
             this.saved();
             notifyChanged( LDAPModelEvent.Reason.SchemaSaved, this, null );
+            Activator.getDefault().getPreferenceStore().putValue( PluginConstants.PREFS_SAVE_FILE_DIALOG,
+                new File( savePath ).getParent() );
         }
     }
 
@@ -619,7 +624,8 @@ public class Schema implements SchemaElementListener
 
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE );
         fd.setText( Messages.getString( "Schema.Save_this_schema" ) + this.getName() ); //$NON-NLS-1$
-        fd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        fd.setFilterPath( Activator.getDefault().getPreferenceStore()
+            .getString( PluginConstants.PREFS_SAVE_FILE_DIALOG ) );
         fd.setFileName( this.name + ".schema" ); //$NON-NLS-1$
         fd.setFilterExtensions( new String[]
             { "*.schema", "*.*" } ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -634,7 +640,6 @@ public class Schema implements SchemaElementListener
             //if it's a bad url (no .schema, bad path) newName will be null
             if ( newName != null )
             {
-
                 if ( SchemaPool.getInstance().getSchema( newName ) != null )
                 {
                     MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
@@ -652,6 +657,8 @@ public class Schema implements SchemaElementListener
                 //when we have been written, we are synchronised with the filesystem
                 this.saved();
                 notifyChanged( LDAPModelEvent.Reason.SchemaSaved, this, null );
+                Activator.getDefault().getPreferenceStore().putValue( PluginConstants.PREFS_SAVE_FILE_DIALOG,
+                    new File( newName ).getParent() );
             }
         }
     }

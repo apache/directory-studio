@@ -97,7 +97,8 @@ public class ExportSchemaForADSAction extends Action
                 FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                     SWT.SAVE );
                 fd.setText( "Select a file" );
-                fd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
+                fd.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                    PluginConstants.PREFS_SAVE_FILE_DIALOG ) );
                 fd.setFileName( schema.getName() + ".ldif" ); //$NON-NLS-1$
                 fd.setFilterExtensions( new String[]
                     { "*.ldif", "*.*" } ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -300,6 +301,9 @@ public class ExportSchemaForADSAction extends Action
                     // Export Successful
                     ViewUtils.displayInformationMessageBox( "Export Successful",
                         "The schema has been sucessfully exported." );
+
+                    Activator.getDefault().getPreferenceStore().putValue( PluginConstants.PREFS_SAVE_FILE_DIALOG,
+                        selectedFile.getParent() );
                 }
             }
         }

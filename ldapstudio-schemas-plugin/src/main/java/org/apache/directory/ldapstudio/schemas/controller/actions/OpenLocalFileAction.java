@@ -21,6 +21,8 @@
 package org.apache.directory.ldapstudio.schemas.controller.actions;
 
 
+import java.io.File;
+
 import org.apache.directory.ldapstudio.schemas.Activator;
 import org.apache.directory.ldapstudio.schemas.Messages;
 import org.apache.directory.ldapstudio.schemas.PluginConstants;
@@ -63,7 +65,8 @@ public class OpenLocalFileAction extends Action
     {
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN );
         fd.setText( Messages.getString( "OpenLocalFileAction.Open_a_schema_file" ) ); //$NON-NLS-1$
-        fd.setFilterPath( System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        fd.setFilterPath( Activator.getDefault().getPreferenceStore()
+            .getString( PluginConstants.PREFS_OPEN_FILE_DIALOG ) );
         String[] filterExt =
             { "*.schema", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions( filterExt );
@@ -80,6 +83,9 @@ public class OpenLocalFileAction extends Action
             {
                 logger.debug( "Error when opening a schema file" ); //$NON-NLS-1$
             }
+
+            Activator.getDefault().getPreferenceStore().putValue( PluginConstants.PREFS_OPEN_FILE_DIALOG,
+                new File( selected ).getParent() );
         }
     }
 }

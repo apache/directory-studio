@@ -41,6 +41,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
+        // Open and Save File Dialogs
+        store.setDefault( PluginConstants.PREFS_OPEN_FILE_DIALOG, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.PREFS_SAVE_FILE_DIALOG, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+
         // Schemas Editor Preference Page
         store.setDefault( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE, false );
         store.setDefault( PluginConstants.PREFS_SCHEMAS_EDITOR_SPECIFIC_CORE_DIRECTORY, System

@@ -221,6 +221,13 @@ public interface PluginConstants
     public static final String PREFS_SCHEMAS_EDITOR_COMPANY_OID = Activator.PLUGIN_ID
         + ".preferences.SchemasEditor.companyOID"; //$NON-NLS-1$
 
+    /** The preference ID for Open File Dialog path */
+    public static final String PREFS_OPEN_FILE_DIALOG = Activator.PLUGIN_ID + ".preferences.OpenFileDialog"; //$NON-NLS-1$
+
+    /** The preference ID for Save File Dialog path */
+    public static final String PREFS_SAVE_FILE_DIALOG = Activator.PLUGIN_ID + ".preferences.SaveFileDialog"; //$NON-NLS-1$
+    
+
     // Images - Actions
     public static final String IMG_CREATE_A_NEW_ATTRIBUTETYPE = "ressources/icons/attribute_type_new.gif"; //$NON-NLS-1$
     public static final String IMG_CREATE_A_NEW_OBJECTCLASS = "ressources/icons/object_class_new.gif"; //$NON-NLS-1$
