@@ -284,4 +284,14 @@ public class ACIItemTabFolderComposite extends Composite
         visualComposite.setContext( context );
     }
 
+
+    /**
+     * Formats the content.
+     */
+    public void format()
+    {
+        sourceComposite.format();
+        //visualComposite.format();
+    }
+
 }

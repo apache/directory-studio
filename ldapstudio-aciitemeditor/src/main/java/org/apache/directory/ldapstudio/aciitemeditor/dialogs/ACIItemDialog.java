@@ -31,6 +31,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -93,6 +95,34 @@ public class ACIItemDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation additionally adds the Format button.
+     */
+    protected Control createButtonBar( Composite parent )
+    {
+        Composite composite = ( Composite ) super.createButtonBar( parent );
+        super.createButton( composite, 987654321, "Format", false );
+        return composite;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation checks if the Format button was pressed.
+     */
+    protected void buttonPressed( int buttonId )
+    {
+        if ( buttonId == 987654321 )
+        {
+            tabFolderComposite.format();
+        }
+
+        // call super implementation
+        super.buttonPressed( buttonId );
+    }
+    
     /**
      * Reimplementation: Checks for valid syntax first and sets the return value.
      */

@@ -22,10 +22,14 @@ package org.apache.directory.ldapstudio.aciitemeditor.widgets;
 
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.aciitemeditor.dialogs.DialogContentAssistant;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.formatter.ContentFormatter;
+import org.eclipse.jface.text.formatter.IContentFormatter;
+import org.eclipse.jface.text.formatter.IFormattingStrategy;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
@@ -75,5 +79,22 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
         assistant.setContextInformationPopupOrientation( IContentAssistant.CONTEXT_INFO_ABOVE );
 
         return assistant;
+    }
+    
+    @Override
+    public IContentFormatter getContentFormatter( ISourceViewer sourceViewer )
+    {
+        ContentFormatter formatter = new ContentFormatter();
+        IFormattingStrategy formattingStrategy = new ACIFormattingStrategy( sourceViewer );
+        formatter.enablePartitionAwareFormatting( false );
+        formatter.setFormattingStrategy( formattingStrategy, IDocument.DEFAULT_CONTENT_TYPE );
+        return formatter;
+    }
+    
+    @Override
+    public IAutoEditStrategy[] getAutoEditStrategies( ISourceViewer sourceViewer, String contentType )
+    {
+        // TODO Auto-generated method stub
+        return super.getAutoEditStrategies( sourceViewer, contentType );
     }
 }

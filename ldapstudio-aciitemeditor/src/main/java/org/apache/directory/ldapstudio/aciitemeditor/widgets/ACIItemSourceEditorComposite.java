@@ -24,15 +24,24 @@ import java.text.ParseException;
 
 import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
+import org.apache.directory.shared.ldap.aci.ACIItem;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -47,6 +56,9 @@ public class ACIItemSourceEditorComposite extends Composite
 
     /** The source editor */
     private SourceViewer sourceEditor;
+    
+    /** The source editor configuration. */
+    private SourceViewerConfiguration configuration;
 
 
     /**
@@ -72,9 +84,9 @@ public class ACIItemSourceEditorComposite extends Composite
     {
         // create source editor
         sourceEditor = new SourceViewer( this, null, null, false, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
-
+        
         // setup basic configuration
-        SourceViewerConfiguration configuration = new ACISourceViewerConfiguration();
+        configuration = new ACISourceViewerConfiguration();
         sourceEditor.configure( configuration );
 
         // set text font
@@ -84,7 +96,6 @@ public class ACIItemSourceEditorComposite extends Composite
         // setup document
         IDocument document = new Document();
         sourceEditor.setDocument( document );
-
     }
 
 
@@ -113,6 +124,11 @@ public class ACIItemSourceEditorComposite extends Composite
     public void forceSetInput( String input )
     {
         sourceEditor.getDocument().set( input );
+        
+        // format
+        IRegion region = new Region( 0, sourceEditor.getDocument().getLength() );
+        configuration.getContentFormatter( sourceEditor ).format( sourceEditor.getDocument(), region );
+
     }
 
 
@@ -129,9 +145,14 @@ public class ACIItemSourceEditorComposite extends Composite
         String input = forceGetInput();
 
         ACIItemParser parser = Activator.getDefault().getACIItemParser();
-        parser.parse( input );
+        ACIItem aciItem = parser.parse( input );
 
-        return input;
+        StringBuffer buffer = new StringBuffer();
+        if(aciItem != null)
+        {
+            aciItem.printToBuffer( buffer );
+        }
+        return buffer.toString();
     }
 
 
@@ -155,6 +176,16 @@ public class ACIItemSourceEditorComposite extends Composite
     public void setContext( ACIItemValueWithContext context )
     {
         
+    }
+
+
+    /**
+     * Formats the content.
+     */
+    public void format()
+    {
+      IRegion region = new Region( 0, sourceEditor.getDocument().getLength() );
+      configuration.getContentFormatter( sourceEditor ).format( sourceEditor.getDocument(), region );
     }
     
 }

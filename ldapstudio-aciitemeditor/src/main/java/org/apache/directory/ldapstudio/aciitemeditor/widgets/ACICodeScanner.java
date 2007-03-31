@@ -61,7 +61,7 @@ public class ACICodeScanner extends RuleBasedScanner
 
     /** Keywords for AciItems values */
     public static final String[] aciKeywords = new String[]
-        { "protectedItems", "itemPermissions", "entry", "allowUserAttributeTypes", "attributeType",
+        { "protectedItems", "itemPermissions", "entry", "allUserAttributeTypes", "attributeType",
             "allAttributeValues", "allUserAttributeTypesAndValues", "attributeValue", "selfValue", "rangeOfValues",
             "maxValueCount", "maxImmSub", "restrictedBy", "classes", "grantsAndDenials", "allUsers", "thisEntry",
             "name", "userGroup", "subtree", "type", "valuesIn", "none", "simple", "strong" };
@@ -73,7 +73,7 @@ public class ACICodeScanner extends RuleBasedScanner
 
     /** Keywords for deny values */
     public static final String[] aciDenyValues = new String[]
-        { "denyAdd", "denyDiscloseOnError", "denyRead", "denyRemove", "denyBrowse", "denyExport", " denyImport",
+        { "denyAdd", "denyDiscloseOnError", "denyRead", "denyRemove", "denyBrowse", "denyExport", "denyImport",
             "denyModify", "denyRename", "denyReturnDN", "denyCompare", "denyFilterMatch", "denyInvoke" };
 
 
