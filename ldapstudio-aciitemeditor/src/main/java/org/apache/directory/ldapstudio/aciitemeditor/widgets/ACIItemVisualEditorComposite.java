@@ -29,14 +29,10 @@ import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.AuthenticationLevel;
 import org.apache.directory.shared.ldap.aci.ItemFirstACIItem;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -108,26 +104,6 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
         composite = new Composite( this, SWT.NONE );
         composite.setLayout( gridLayout );
         composite.setLayoutData( gridData );
-
-        // test button
-        // TODO: remove
-        Button testButton = new Button( composite, SWT.NONE );
-        testButton.setText( " C H E C K " ); //$NON-NLS-1$
-        testButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                try
-                {
-                    String input = getInput();
-                    MessageDialog.openInformation( getShell(), "Check", input ); //$NON-NLS-1$
-                }
-                catch ( ParseException e1 )
-                {
-                    MessageDialog.openError( getShell(), "Check Error", e1.getMessage() ); //$NON-NLS-1$
-                }
-            }
-        } );
 
         generalComposite = new ACIItemGeneralComposite( composite, SWT.NONE );
         generalComposite.addWidgetModifyListener( this );

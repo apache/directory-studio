@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.swt.SWT;
@@ -104,6 +105,7 @@ public class ACIItemDialog extends Dialog
     {
         Composite composite = ( Composite ) super.createButtonBar( parent );
         super.createButton( composite, 987654321, "Format", false );
+        super.createButton( composite, 876543210, "Check Syntax", false );
         return composite;
     }
     
@@ -117,6 +119,22 @@ public class ACIItemDialog extends Dialog
         if ( buttonId == 987654321 )
         {
             tabFolderComposite.format();
+        }
+        if ( buttonId == 876543210 )
+        {
+            try
+            {
+                tabFolderComposite.getInput();
+                //MessageDialog.openInformation( getShell(), "Check", input ); //$NON-NLS-1$
+                MessageDialog.openInformation( getShell(), "Syntax ok", "Syntax ok" ); //$NON-NLS-1$
+            }
+            catch ( ParseException pe )
+            {
+                //MessageDialog.openError( getShell(), "Syntax Error", e1.getMessage() ); //$NON-NLS-1$
+                IStatus status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, 1, Messages
+                    .getString( "ACIItemDialog.error.invalidSyntax" ), pe ); //$NON-NLS-1$
+                ErrorDialog.openError( getShell(), Messages.getString( "ACIItemDialog.error.title" ), null, status ); //$NON-NLS-1$
+            }
         }
 
         // call super implementation
