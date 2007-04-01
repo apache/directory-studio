@@ -46,16 +46,16 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * This class provides a dialog to enter or select an object class.
+ * This class provides a dialog to enter or select an attribute type.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ObjectClassDialog extends Dialog
+public class AttributeTypeDialog extends Dialog
 {
 
     /** The dialog title */
-    public static final String DIALOG_TITLE = "Object Class Editor";
+    public static final String DIALOG_TITLE = "Attribute Type Editor";
 
     /** The schema. */
     private Schema schema;
@@ -63,27 +63,27 @@ public class ObjectClassDialog extends Dialog
     /** The initial value. */
     private String initialValue;
 
-    /** The object class combo field. */
-    private DecoratedField objectClassComboField;
+    /** The attribute type combo field. */
+    private DecoratedField attributeTypeComboField;
 
-    /** The object class combo. */
-    private Combo objectClassCombo;
+    /** The attribute type combo. */
+    private Combo attributeTypeCombo;
 
-    /** The object class content proposal adapter */
-    private ContentProposalAdapter objectClassCPA;
+    /** The attribute type content proposal adapter */
+    private ContentProposalAdapter attributeTypeCPA;
 
     /** The return value. */
     private String returnValue;
 
 
     /**
-     * Creates a new instance of ObjectClassDialog.
+     * Creates a new instance of AttributeTypeDialog.
      * 
      * @param parentShell the parent shell
      * @param schema the schema
      * @param initialValue the initial value
      */
-    public ObjectClassDialog( Shell parentShell, Schema schema, String initialValue )
+    public AttributeTypeDialog( Shell parentShell, Schema schema, String initialValue )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -118,7 +118,7 @@ public class ObjectClassDialog extends Dialog
      */
     protected void okPressed()
     {
-        returnValue = objectClassCombo.getText();
+        returnValue = attributeTypeCombo.getText();
         super.okPressed();
     }
 
@@ -135,12 +135,12 @@ public class ObjectClassDialog extends Dialog
         composite.setLayoutData( gd );
 
         // combo widget
-        String[] allOcNames = schema.getObjectClassDescriptionNames();
-        Arrays.sort( allOcNames );
-
+        String[] allAtNames = schema.getAttributeTypeDescriptionNames();
+        Arrays.sort( allAtNames );
+        
         final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
             FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        objectClassComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
+        attributeTypeComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
         {
             public Control createControl( Composite parent, int style )
             {
@@ -149,30 +149,30 @@ public class ObjectClassDialog extends Dialog
                 return combo;
             }
         } );
-        objectClassComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        objectClassComboField.getLayoutControl().setLayoutData(
+        attributeTypeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
+        attributeTypeComboField.getLayoutControl().setLayoutData(
             new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        objectClassCombo = ( Combo ) objectClassComboField.getControl();
-        objectClassCombo.setItems( allOcNames );
-        objectClassCombo.setText( initialValue );
+        attributeTypeCombo = ( Combo ) attributeTypeComboField.getControl();
+        attributeTypeCombo.setItems( allAtNames );
+        attributeTypeCombo.setText( initialValue );
 
         // content proposal adapter
-        objectClassCPA = new ContentProposalAdapter (objectClassCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( objectClassCombo.getItems() ), null, null );
-        objectClassCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        objectClassCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE ); 
-        
+        attributeTypeCPA = new ContentProposalAdapter (attributeTypeCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( attributeTypeCombo.getItems() ), null, null );
+        attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );  
+
         applyDialogFont( composite );
         return composite;
     }
 
 
     /**
-     * Gets the object class.
+     * Gets the attribute type.
      * 
-     * @return the object class, null if canceled
+     * @return the attribute type, null if canceled
      */
-    public String getObjectClass()
+    public String getAttributeType()
     {
         return returnValue;
     }
