@@ -18,8 +18,6 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/shared-ldap-0.9.6-SNAPSHOT.jar,
+ lib/shared-asn1-0.9.6-SNAPSHOT.jar,
  lib/commons-collections-3.1.jar,
- lib/commons-configuration-1.2.jar,
- lib/commons-lang-2.1.jar,
- lib/commons-logging-1.1.jar,
  lib/nlog4j-1.2.24.jar

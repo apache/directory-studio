@@ -148,7 +148,6 @@
 				<exclude name="src/**" />
 				<exclude name="icons/**" />
 				<exclude name="templates/**" />
-				<exclude name="lib/**" />
 			</fileset>
 		</delete>
 	</target>
