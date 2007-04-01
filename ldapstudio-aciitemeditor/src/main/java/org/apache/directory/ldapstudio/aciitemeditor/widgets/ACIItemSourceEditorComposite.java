@@ -26,7 +26,6 @@ import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.shared.ldap.aci.ACIItem;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -35,13 +34,8 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -143,6 +137,10 @@ public class ACIItemSourceEditorComposite extends Composite
     public String getInput() throws ParseException
     {
         String input = forceGetInput();
+        
+        // strip new lines
+        input = input.replaceAll( "\\n", " " );
+        input = input.replaceAll( "\\r", " " );
 
         ACIItemParser parser = Activator.getDefault().getACIItemParser();
         ACIItem aciItem = parser.parse( input );

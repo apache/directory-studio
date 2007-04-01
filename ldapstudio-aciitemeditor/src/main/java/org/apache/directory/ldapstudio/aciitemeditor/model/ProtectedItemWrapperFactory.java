@@ -1,6 +1,12 @@
 
 package org.apache.directory.ldapstudio.aciitemeditor.model;
 
+import org.apache.directory.ldapstudio.aciitemeditor.MaxValueCountValueEditor;
+import org.apache.directory.ldapstudio.aciitemeditor.RestrictedByValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.AttributeTypeAndValueValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.AttributeTypeValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.FilterValueEditor;
+import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.IntegerValueEditor;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.TextValueEditor;
 import org.apache.directory.shared.ldap.aci.ProtectedItem;
 
@@ -38,7 +44,7 @@ public class ProtectedItemWrapperFactory
                     true,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: AttributeTypeValueEditor
+                    new AttributeTypeValueEditor()
                 ),
                 
                 // allAttributeValues { 1.2.3, cn }
@@ -48,7 +54,7 @@ public class ProtectedItemWrapperFactory
                     true,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: AttributeTypeValueEditor
+                    new AttributeTypeValueEditor()
                 ),
                 
                 // attributeType
@@ -68,7 +74,7 @@ public class ProtectedItemWrapperFactory
                     true,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: AttributeTypeAndValueValueEditor
+                    new AttributeTypeAndValueValueEditor()
                 ),
                 
                 // selfValue { 1.2.3, cn }
@@ -78,7 +84,7 @@ public class ProtectedItemWrapperFactory
                     true,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: AttributeTypeValueEditor
+                    new AttributeTypeValueEditor()
                 ),
                 
                 // rangeOfValues (cn=E*)
@@ -88,7 +94,7 @@ public class ProtectedItemWrapperFactory
                     false,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() 
+                    new FilterValueEditor() 
                 ),
                 
                 // maxValueCount { { type 10.11.12, maxCount 10 }, { maxCount 20, type 11.12.13  } }
@@ -98,7 +104,7 @@ public class ProtectedItemWrapperFactory
                     true,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: MaxValueCountValueEditor
+                    new MaxValueCountValueEditor()
                 ),
                 
                 // maxImmSub 3
@@ -108,7 +114,7 @@ public class ProtectedItemWrapperFactory
                     false,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: IntegerValueEditor
+                    new IntegerValueEditor()
                 ),
                 
                 // restrictedBy { { type 10.11.12, valuesIn ou }, { valuesIn cn, type 11.12.13  } }
@@ -118,7 +124,7 @@ public class ProtectedItemWrapperFactory
                     true,
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: RestrictedByValueEditor
+                    new RestrictedByValueEditor()
                 ),
                 
                 // classes and : { item: xyz , or:{item:X,item:Y}   }

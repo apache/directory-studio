@@ -119,7 +119,7 @@ public class MultiValuedDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "Edit " + displayName + " Values" );
+        shell.setText( "Edit " + displayName );
     }
 
     
