@@ -35,17 +35,16 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * This dialog is used to enter a LDAP filter to filter the child nodes
- * of an entry.
+ * This dialog is used to enter a LDAP filter.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class FilterChildrenDialog extends Dialog
+public class FilterWidgetDialog extends Dialog
 {
 
     /** The title */
-    public static final String DIALOG_TITLE = "Filter Children";
+    private String title;
 
     /** The connection, used for attribute completion. */
     private IConnection connection;
@@ -58,15 +57,17 @@ public class FilterChildrenDialog extends Dialog
 
 
     /**
-     * Creates a new instance of FilterChildrenDialog.
-     *
+     * Creates a new instance of FilterWidgetDialog.
+     * 
      * @param parentShell the parent shell
+     * @param title the dialog's title
      * @param filter the inital filter
      * @param connection the connection, used for attribute completion
      */
-    public FilterChildrenDialog( Shell parentShell, String filter, IConnection connection )
+    public FilterWidgetDialog( Shell parentShell, String title, String filter, IConnection connection )
     {
         super( parentShell );
+        this.title = title;
         this.filter = filter;
         this.connection = connection;
         setShellStyle( SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE );
@@ -80,7 +81,7 @@ public class FilterChildrenDialog extends Dialog
      */
     public String getFilter()
     {
-        return this.filter;
+        return filter;
     }
 
 
@@ -90,7 +91,7 @@ public class FilterChildrenDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( DIALOG_TITLE );
+        newShell.setText( title );
     }
 
 
@@ -101,7 +102,7 @@ public class FilterChildrenDialog extends Dialog
     {
         if ( buttonId == IDialogConstants.OK_ID )
         {
-            this.filter = filterWidget.getFilter();
+            filter = filterWidget.getFilter();
             filterWidget.saveDialogSettings();
         }
 

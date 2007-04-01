@@ -25,7 +25,7 @@ import org.apache.directory.ldapstudio.browser.core.jobs.InitializeChildrenJob;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.FilterChildrenDialog;
+import org.apache.directory.ldapstudio.browser.ui.dialogs.FilterWidgetDialog;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -58,7 +58,7 @@ public class FilterChildrenAction extends BrowserAction
     {
         if ( getSelectedEntries().length == 1 )
         {
-            FilterChildrenDialog dialog = new FilterChildrenDialog( getShell(), getSelectedEntries()[0]
+            FilterWidgetDialog dialog = new FilterWidgetDialog( getShell(), "Filter Children", getSelectedEntries()[0]
                 .getChildrenFilter(), getSelectedEntries()[0].getConnection() );
             if ( dialog.open() == Dialog.OK )
             {
