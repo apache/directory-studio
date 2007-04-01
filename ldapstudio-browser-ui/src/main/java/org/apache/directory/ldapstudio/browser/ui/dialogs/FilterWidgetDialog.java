@@ -22,6 +22,8 @@ package org.apache.directory.ldapstudio.browser.ui.dialogs;
 
 
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.FilterWidget;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -92,6 +94,7 @@ public class FilterWidgetDialog extends Dialog
     {
         super.configureShell( newShell );
         newShell.setText( title );
+        newShell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_FILTER_EQUALS ) );
     }
 
 

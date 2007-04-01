@@ -28,7 +28,6 @@ import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.ListContentProposalProvider;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -39,26 +38,31 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 
 /**
- * This class provides a dialog to enter or select an attribute type.
+ * This class provides a dialog to enter an attribute type and value.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeTypeDialog extends Dialog
+public class AttributeTypeAndValueDialog extends Dialog
 {
 
     /** The dialog title */
-    public static final String DIALOG_TITLE = "Attribute Type Editor";
+    public static final String DIALOG_TITLE = "Attribute Type and Value Editor";
 
     /** The schema. */
     private Schema schema;
+
+    /** The initial attribute type. */
+    private String initialAttributeType;
 
     /** The initial value. */
     private String initialValue;
@@ -72,6 +76,12 @@ public class AttributeTypeDialog extends Dialog
     /** The attribute type content proposal adapter */
     private ContentProposalAdapter attributeTypeCPA;
 
+    /** The value text. */
+    private Text valueText;
+
+    /** The return attribute type. */
+    private String returnAttributeType;
+
     /** The return value. */
     private String returnValue;
 
@@ -81,12 +91,15 @@ public class AttributeTypeDialog extends Dialog
      * 
      * @param parentShell the parent shell
      * @param schema the schema
+     * @param initialAttributeType the initial attribute type
      * @param initialValue the initial value
      */
-    public AttributeTypeDialog( Shell parentShell, Schema schema, String initialValue )
+    public AttributeTypeAndValueDialog( Shell parentShell, Schema schema, String initialAttributeType,
+        String initialValue )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
+        this.initialAttributeType = initialAttributeType;
         this.initialValue = initialValue;
         this.schema = schema;
         this.returnValue = null;
@@ -100,7 +113,7 @@ public class AttributeTypeDialog extends Dialog
     {
         super.configureShell( shell );
         shell.setText( DIALOG_TITLE );
-        shell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ATD ) );
+        shell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_TEXTEDITOR ) );
     }
 
 
@@ -118,7 +131,8 @@ public class AttributeTypeDialog extends Dialog
      */
     protected void okPressed()
     {
-        returnValue = attributeTypeCombo.getText();
+        returnAttributeType = attributeTypeCombo.getText();
+        returnValue = valueText.getText();
         super.okPressed();
     }
 
@@ -133,11 +147,12 @@ public class AttributeTypeDialog extends Dialog
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         composite.setLayoutData( gd );
+        composite.setLayout( new GridLayout( 3, false ) );
 
         // combo widget
         String[] allAtNames = schema.getAttributeTypeDescriptionNames();
         Arrays.sort( allAtNames );
-        
+
         final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
             FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
         attributeTypeComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
@@ -150,17 +165,20 @@ public class AttributeTypeDialog extends Dialog
             }
         } );
         attributeTypeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        attributeTypeComboField.getLayoutControl().setLayoutData(
-            new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+        attributeTypeComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         attributeTypeCombo = ( Combo ) attributeTypeComboField.getControl();
         attributeTypeCombo.setItems( allAtNames );
-        attributeTypeCombo.setText( initialValue );
+        attributeTypeCombo.setText( initialAttributeType );
 
         // content proposal adapter
-        attributeTypeCPA = new ContentProposalAdapter (attributeTypeCombo, new ComboContentAdapter(),
+        attributeTypeCPA = new ContentProposalAdapter( attributeTypeCombo, new ComboContentAdapter(),
             new ListContentProposalProvider( attributeTypeCombo.getItems() ), null, null );
         attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );  
+        attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+
+        BaseWidgetUtils.createLabel( composite, " = ", 1 );
+
+        valueText = BaseWidgetUtils.createText( composite, initialValue, 1 );
 
         applyDialogFont( composite );
         return composite;
@@ -174,6 +192,18 @@ public class AttributeTypeDialog extends Dialog
      */
     public String getAttributeType()
     {
+        return returnAttributeType;
+    }
+
+
+    /**
+     * Gets the value.
+     * 
+     * @return the value, null if canceled
+     */
+    public String getValue()
+    {
         return returnValue;
     }
+
 }

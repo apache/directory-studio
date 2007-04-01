@@ -100,7 +100,7 @@ public class ObjectClassDialog extends Dialog
     {
         super.configureShell( shell );
         shell.setText( DIALOG_TITLE );
-        shell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_TEXTEDITOR ) );
+        shell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD ) );
     }
 
 

@@ -23,6 +23,8 @@ package org.apache.directory.ldapstudio.browser.ui.dialogs;
 
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
+import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.editors.filter.FilterSourceViewerConfiguration;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -79,6 +81,7 @@ public class FilterDialog extends Dialog
     {
         super.configureShell( newShell );
         newShell.setText( this.title != null ? this.title : DIALOG_TITLE );
+        newShell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_FILTER_EQUALS ) );
     }
 
 

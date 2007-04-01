@@ -737,7 +737,7 @@
     </valueEditor>
     <valueEditor
           class="org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ObjectClassValueEditor"
-          icon="icons/inplace_oceditor.gif"
+          icon="icons/ocd.png"
           name="Object Class Editor">
        <attribute attributeType="objectClass"/>
     </valueEditor>
