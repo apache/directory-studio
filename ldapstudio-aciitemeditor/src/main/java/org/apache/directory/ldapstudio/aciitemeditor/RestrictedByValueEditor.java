@@ -154,7 +154,8 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
         try
         {
             // for example: { type sn, valuesIn cn }
-            Pattern pattern = Pattern.compile( "\\s*\\{\\s*type\\s*([^,\\s]*)\\s*,\\s*valuesIn\\s*([^,\\s]*)\\s*\\}\\s*" );
+            Pattern pattern = Pattern
+                .compile( "\\s*\\{\\s*type\\s*([^,\\s]*)\\s*,\\s*valuesIn\\s*([^,\\s]*)\\s*\\}\\s*" );
             Matcher matcher = pattern.matcher( stringValue );
             type = matcher.matches() ? matcher.group( 1 ) : "";
             valuesIn = matcher.matches() ? matcher.group( 2 ) : "";

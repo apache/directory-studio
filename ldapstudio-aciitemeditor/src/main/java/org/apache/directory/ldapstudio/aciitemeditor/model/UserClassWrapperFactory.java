@@ -1,6 +1,7 @@
 
 package org.apache.directory.ldapstudio.aciitemeditor.model;
 
+import org.apache.directory.ldapstudio.aciitemeditor.widgets.SubtreeSpecificationValueEditor;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.DnValueEditor;
 import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.TextValueEditor;
 import org.apache.directory.shared.ldap.aci.UserClass;
@@ -55,7 +56,7 @@ public class UserClassWrapperFactory
                     UserClass.Subtree.class, 
                     "",  //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new TextValueEditor() // TODO: SubtreeSpecificationValueEditor
+                    new SubtreeSpecificationValueEditor() // TODO: SubtreeSpecificationValueEditor
                 )
             };
         
