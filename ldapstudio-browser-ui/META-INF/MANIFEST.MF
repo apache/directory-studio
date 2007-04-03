@@ -21,4 +21,5 @@ Bundle-ClassPath: .
 Export-Package: org.apache.directory.ldapstudio.browser.ui.dialogs,
  org.apache.directory.ldapstudio.browser.ui.valueeditors,
  org.apache.directory.ldapstudio.browser.ui.valueeditors.internal;x-friends:="org.apache.directory.ldapstudio.aciitemeditor",
- org.apache.directory.ldapstudio.browser.ui.widgets;x-friends:="org.apache.directory.ldapstudio.aciitemeditor"
+ org.apache.directory.ldapstudio.browser.ui.widgets;x-friends:="org.apache.directory.ldapstudio.aciitemeditor",
+ org.apache.directory.ldapstudio.browser.ui.widgets.search;x-friends:="org.apache.directory.ldapstudio.aciitemeditor"
