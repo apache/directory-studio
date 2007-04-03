@@ -192,7 +192,7 @@ public class DN implements Serializable
      */
     public DN getParentDn()
     {
-        if ( this.rdns.length < 2 )
+        if ( this.rdns.length < 1 )
         {
             return null;
         }

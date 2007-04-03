@@ -212,18 +212,26 @@ public abstract class SelectionUtils
             {
                 IConnection connection = ( IConnection ) obj;
                 exampleSearch.setConnection( connection );
-                if ( connection.getBaseDNEntries().length > 0 )
+                if ( connection.getRootDSE().getChildrenCount() > 0 )
                 {
-                    exampleSearch.setSearchBase( connection.getBaseDNEntries()[0].getDn() );
+                    exampleSearch.setSearchBase( connection.getRootDSE().getChildren()[0].getDn() );
+                }
+                else
+                {
+                    exampleSearch.setSearchBase( connection.getRootDSE().getDn() );
                 }
             }
             else if ( obj instanceof BrowserCategory )
             {
                 BrowserCategory cat = ( BrowserCategory ) obj;
                 exampleSearch.setConnection( cat.getParent() );
-                if ( cat.getParent().getBaseDNEntries().length > 0 )
+                if ( cat.getParent().getRootDSE().getChildrenCount() > 0 )
                 {
-                    exampleSearch.setSearchBase( cat.getParent().getBaseDNEntries()[0].getDn() );
+                    exampleSearch.setSearchBase( cat.getParent().getRootDSE().getChildren()[0].getDn() );
+                }
+                else
+                {
+                    exampleSearch.setSearchBase( cat.getParent().getRootDSE().getDn() );
                 }
             }
 

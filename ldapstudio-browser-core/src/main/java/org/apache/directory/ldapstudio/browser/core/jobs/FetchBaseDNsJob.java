@@ -65,9 +65,10 @@ public class FetchBaseDNsJob extends AbstractAsyncBulkJob
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
+        connection.bind( monitor );
         connection.fetchRootDSE( monitor );
 
-        IEntry[] baseDNEntries = connection.getBaseDNEntries();
+        IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
         baseDNs = new String[baseDNEntries.length];
         for ( int i = 0; i < baseDNs.length; i++ )
         {

@@ -144,7 +144,8 @@ public class SelectEntryDialog extends Dialog
         // create main widget
         this.mainWidget = new BrowserWidget( this.configuration, null );
         this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( this.connection.getBaseDNEntries() );
+        this.mainWidget.setInput( new IEntry[]
+            { this.connection.getRootDSE() } );
 
         // create actions and context menu (and register global actions)
         this.actionGroup = new BrowserActionGroup( this.mainWidget, this.configuration );
@@ -171,6 +172,7 @@ public class SelectEntryDialog extends Dialog
             }
         } );
 
+        this.mainWidget.getViewer().expandToLevel( 2 );
         if ( this.initialEntry != null )
         {
             IEntry entry = this.initialEntry;

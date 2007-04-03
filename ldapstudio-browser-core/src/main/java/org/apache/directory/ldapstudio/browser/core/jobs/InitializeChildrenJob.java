@@ -121,13 +121,6 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             new String[]
                 { parent.getDn().toString() } ) );
 
-        // root DSE has no children
-        if ( parent instanceof IRootDSE )
-        {
-            parent.setChildrenInitialized( true );
-            return;
-        }
-
         // clear old children
         IEntry[] oldChildren = parent.getChildren();
         for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
@@ -139,111 +132,123 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
         }
         parent.setChildrenInitialized( false );
 
-        // determine alias and referral handling
-        int scope = ISearch.SCOPE_ONELEVEL;
-        int derefAliasMethod = parent.getConnection().getAliasesDereferencingMethod();
-        int handleReferralsMethod = parent.getConnection().getReferralsHandlingMethod();
-        if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) )
+        if ( parent instanceof IRootDSE )
         {
-            scope = ( parent.isAlias() || parent.isReferral() ) ? ISearch.SCOPE_OBJECT : ISearch.SCOPE_ONELEVEL;
-            derefAliasMethod = parent.isAlias() ? IConnection.DEREFERENCE_ALIASES_FINDING
-                : IConnection.DEREFERENCE_ALIASES_NEVER;
-            handleReferralsMethod = parent.isReferral() ? IConnection.HANDLE_REFERRALS_FOLLOW
-                : IConnection.HANDLE_REFERRALS_IGNORE;
-        }
-
-        // get children,
-        ISearch search = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter(),
-            ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
-            parent.getConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
-                .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
-            BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ), null );
-        parent.getConnection().search( search, monitor );
-        ISearchResult[] srs = search.getSearchResults();
-        monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
-            new String[]
-                { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().toString() } ) );
-
-        // fill children in search result
-        if ( srs != null && srs.length > 0 )
-        {
-
-            /*
-             * clearing old children before filling new subenties is
-             * necessary to handle aliases and referrals.
-             */
-            IEntry[] connChildren = parent.getChildren();
-            for ( int i = 0; connChildren != null && i < connChildren.length; i++ )
-            {
-                if ( connChildren[i] != null )
-                {
-                    parent.deleteChild( connChildren[i] );
-                }
-            }
-            parent.setChildrenInitialized( false );
-
-            for ( int i = 0; srs != null && i < srs.length; i++ )
-            {
-                if ( parent.isReferral() )
-                {
-                    ReferralBaseEntry referralBaseEntry = new ReferralBaseEntry( srs[i].getEntry().getConnection(),
-                        srs[i].getEntry().getDn() );
-                    parent.addChild( referralBaseEntry );
-                    // System.out.println("Ref: " +
-                    // referralBaseEntry.getUrl());
-                }
-                else if ( parent.isAlias() )
-                {
-                    AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getConnection(), srs[i]
-                        .getEntry().getDn() );
-                    parent.addChild( aliasBaseEntry );
-                    // System.out.println("Ali: " +
-                    // aliasBaseEntry.getUrl());
-                }
-                else
-                {
-                    parent.addChild( srs[i].getEntry() );
-                }
-            }
+            // special handling for Root DSE 
+            //parent.setChildrenInitialized( true );
+            //return;
+            parent.getConnection().fetchRootDSE( monitor );
+            parent.setChildrenInitialized( true );
+            return;
         }
         else
         {
-            parent.setHasChildrenHint( false );
-        }
-
-        // get subentries
-        ISearch subSearch = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter(),
-            ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
-            parent.getConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
-                .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
-            BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ), new Control[]
-                { Control.SUBENTRIES_CONTROL } );
-        if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) )
-        {
-            parent.getConnection().search( subSearch, monitor );
-            ISearchResult[] subSrs = subSearch.getSearchResults();
+            // determine alias and referral handling
+            int scope = ISearch.SCOPE_ONELEVEL;
+            int derefAliasMethod = parent.getConnection().getAliasesDereferencingMethod();
+            int handleReferralsMethod = parent.getConnection().getReferralsHandlingMethod();
+            if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) )
+            {
+                scope = ( parent.isAlias() || parent.isReferral() ) ? ISearch.SCOPE_OBJECT : ISearch.SCOPE_ONELEVEL;
+                derefAliasMethod = parent.isAlias() ? IConnection.DEREFERENCE_ALIASES_FINDING
+                    : IConnection.DEREFERENCE_ALIASES_NEVER;
+                handleReferralsMethod = parent.isReferral() ? IConnection.HANDLE_REFERRALS_FOLLOW
+                    : IConnection.HANDLE_REFERRALS_IGNORE;
+            }
+    
+            // get children,
+            ISearch search = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter(),
+                ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
+                parent.getConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
+                    .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
+                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                    BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ), null );
+            parent.getConnection().search( search, monitor );
+            ISearchResult[] srs = search.getSearchResults();
             monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
                 new String[]
-                    { subSrs == null ? Integer.toString( 0 ) : Integer.toString( subSrs.length ),
-                        parent.getDn().toString() } ) );
-            // fill children in search result
-            if ( subSrs != null && subSrs.length > 0 )
-            {
+                    { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().toString() } ) );
 
-                for ( int i = 0; subSrs != null && i < subSrs.length; i++ )
+            // fill children in search result
+            if ( srs != null && srs.length > 0 )
+            {
+    
+                /*
+                 * clearing old children before filling new subenties is
+                 * necessary to handle aliases and referrals.
+                 */
+                IEntry[] connChildren = parent.getChildren();
+                for ( int i = 0; connChildren != null && i < connChildren.length; i++ )
                 {
-                    parent.addChild( subSrs[i].getEntry() );
+                    if ( connChildren[i] != null )
+                    {
+                        parent.deleteChild( connChildren[i] );
+                    }
+                }
+                parent.setChildrenInitialized( false );
+    
+                for ( int i = 0; srs != null && i < srs.length; i++ )
+                {
+                    if ( parent.isReferral() )
+                    {
+                        ReferralBaseEntry referralBaseEntry = new ReferralBaseEntry( srs[i].getEntry().getConnection(),
+                            srs[i].getEntry().getDn() );
+                        parent.addChild( referralBaseEntry );
+                        // System.out.println("Ref: " +
+                        // referralBaseEntry.getUrl());
+                    }
+                    else if ( parent.isAlias() )
+                    {
+                        AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getConnection(), srs[i]
+                            .getEntry().getDn() );
+                        parent.addChild( aliasBaseEntry );
+                        // System.out.println("Ali: " +
+                        // aliasBaseEntry.getUrl());
+                    }
+                    else
+                    {
+                        parent.addChild( srs[i].getEntry() );
+                    }
                 }
             }
+            else
+            {
+                parent.setHasChildrenHint( false );
+            }
+    
+            // get subentries
+            ISearch subSearch = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter(),
+                ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
+                parent.getConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
+                    .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
+                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                    BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ), new Control[]
+                    { Control.SUBENTRIES_CONTROL } );
+            if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) )
+            {
+                parent.getConnection().search( subSearch, monitor );
+                ISearchResult[] subSrs = subSearch.getSearchResults();
+                monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
+                    new String[]
+                        { subSrs == null ? Integer.toString( 0 ) : Integer.toString( subSrs.length ),
+                            parent.getDn().toString() } ) );
+                // fill children in search result
+                if ( subSrs != null && subSrs.length > 0 )
+                {
+    
+                    for ( int i = 0; subSrs != null && i < subSrs.length; i++ )
+                    {
+                        parent.addChild( subSrs[i].getEntry() );
+                    }
+                }
+            }
+            
+            // check exceeded limits / canceled
+            parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
+                || monitor.isCanceled() );
         }
-
-        // check exceeded limits / canceled
-        parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
-            || monitor.isCanceled() );
 
         // set initialized state
         parent.setChildrenInitialized( true );

@@ -31,13 +31,13 @@ import java.util.Map;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DirectoryMetadataEntry;
-import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.jobs.InitializeChildrenJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.SearchJob;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -268,9 +268,37 @@ public class BrowserContentProvider implements ITreeContentProvider
                 return objects;
             }
         }
-        else if ( parent instanceof IEntry )
+        else if ( parent instanceof IRootDSE )
         {
-            final IEntry parentEntry = ( IEntry ) parent;
+            final IRootDSE rootDSE = ( IRootDSE ) parent;
+
+            if ( !rootDSE.isChildrenInitialized() && rootDSE.isDirectoryEntry() )
+            {
+                new InitializeChildrenJob( new IEntry[]
+                    { rootDSE } ).execute();
+                return new String[]
+                    { "Fetching Entries..." };
+            }
+
+            // get base entries
+            List<IEntry> entryList = new ArrayList<IEntry>();
+            entryList.addAll( Arrays.asList( rootDSE.getChildren() ) );
+
+            // remove non-visible entries
+            for ( Iterator<IEntry> it = entryList.iterator(); it.hasNext(); )
+            {
+                Object o = it.next();
+                if ( !preferences.isShowDirectoryMetaEntries() && ( o instanceof DirectoryMetadataEntry ) )
+                {
+                    it.remove();
+                }
+            }
+
+            return entryList.toArray();
+        }
+        else if ( parent instanceof IEntry )
+            {
+                final IEntry parentEntry = ( IEntry ) parent;
 
             if ( !parentEntry.isChildrenInitialized() && parentEntry.isDirectoryEntry() )
             {
@@ -392,30 +420,11 @@ public class BrowserContentProvider implements ITreeContentProvider
                     {
                         new OpenConnectionsJob( connection ).execute();
                         return new String[]
-                            { "Fetching Entries..." };
+                            { "Opening Connection..." };
                     }
 
-                    // get base entries
-                    List<IEntry> entryList = new ArrayList<IEntry>();
-                    if ( connection.isOpened() )
-                    {
-                        entryList.addAll( Arrays.asList( connection.getBaseDNEntries() ) );
-                        entryList.add( connection.getRootDSE() );
-                        entryList.addAll( Arrays.asList( connection.getMetadataEntries() ) );
-                    }
-
-                    // remove non-visible entries
-                    for ( Iterator<IEntry> it = entryList.iterator(); it.hasNext(); )
-                    {
-                        Object o = it.next();
-                        if ( !preferences.isShowDirectoryMetaEntries()
-                            && ( o instanceof DirectoryMetadataEntry || o instanceof RootDSE ) )
-                        {
-                            it.remove();
-                        }
-                    }
-
-                    return entryList.toArray();
+                    return new Object[]
+                        { connection.getRootDSE() };
                 }
 
                 case BrowserCategory.TYPE_SEARCHES:

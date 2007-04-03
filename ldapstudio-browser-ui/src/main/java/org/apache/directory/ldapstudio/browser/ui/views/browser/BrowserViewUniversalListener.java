@@ -40,6 +40,7 @@ import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
@@ -48,7 +49,6 @@ import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditorInput
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorInput;
 import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
 import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserUniversalListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -399,24 +399,18 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     {
         if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_OPENED )
         {
+            // expand viewer
             viewer.refresh( connectionUpdateEvent.getConnection() );
             viewer.expandToLevel( 2 );
+            
+            // expand root DSE to show base entries
+            IRootDSE rootDSE = connectionUpdateEvent.getConnection().getRootDSE();
+            viewer.expandToLevel( rootDSE, 1 );
 
+            // expand base entries, if requested
             if ( view.getConfiguration().getPreferences().isExpandBaseEntries() )
             {
-                Object[] expandedElements = viewer.getExpandedElements();
-                for ( int i = 0; i < expandedElements.length; i++ )
-                {
-                    Object object = expandedElements[i];
-                    if ( object instanceof BrowserCategory )
-                    {
-                        BrowserCategory bc = ( BrowserCategory ) object;
-                        if ( bc.getType() == BrowserCategory.TYPE_DIT )
-                        {
-                            viewer.expandToLevel( bc, 3 );
-                        }
-                    }
-                }
+                viewer.expandToLevel( rootDSE, 2 );
             }
         }
         else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_CLOSED )

@@ -812,20 +812,13 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
 
         if ( baseDNCombo != null && baseDNCombo.isVisible() )
         {
-            if ( !autoFetchBaseDnsButton.getSelection() && "".equals( baseDNCombo.getText() ) )
+            try
             {
-                message = "Please enter a base DN. You can use the 'Fetch base DN' button to fetch valid base DNs from directory.";
+                new DN( baseDNCombo.getText() );
             }
-            else
+            catch ( NameException e )
             {
-                try
-                {
-                    new DN( baseDNCombo.getText() );
-                }
-                catch ( NameException e )
-                {
-                    message = "Please enter a valid base DN.";
-                }
+                message = "Please enter a valid base DN.";
             }
         }
         if ( simpleAuthBindPasswordText != null && simpleAuthSelected && simpleAuthBindPasswordText.isVisible() )

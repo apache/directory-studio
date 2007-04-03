@@ -152,12 +152,6 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
     public void setAuthMethod( int authMethod );
 
 
-    public abstract IEntry[] getBaseDNEntries();
-
-
-    public abstract IEntry[] getMetadataEntries();
-
-
     public abstract IRootDSE getRootDSE();
 
 

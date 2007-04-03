@@ -122,18 +122,11 @@ public class EntryWidget extends BrowserWidget
         {
             public void modifyText( ModifyEvent e )
             {
-                if ( dnCombo.getText().length() > 0 )
+                try
                 {
-                    try
-                    {
-                        dn = new DN( dnCombo.getText() );
-                    }
-                    catch ( NameException e1 )
-                    {
-                        dn = null;
-                    }
+                    dn = new DN( dnCombo.getText() );
                 }
-                else
+                catch ( NameException e1 )
                 {
                     dn = null;
                 }
@@ -181,10 +174,9 @@ public class EntryWidget extends BrowserWidget
                             entry = job.getReadEntry();
                         }
                     }
-                    if ( entry == null && connection.getBaseDNEntries() != null
-                        && connection.getBaseDNEntries().length > 0 )
+                    else
                     {
-                        entry = connection.getBaseDNEntries()[0];
+                        entry = connection.getRootDSE();
                     }
 
                     if ( entry != null )

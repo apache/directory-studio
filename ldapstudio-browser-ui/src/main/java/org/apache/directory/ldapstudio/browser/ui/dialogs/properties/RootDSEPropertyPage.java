@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
@@ -250,7 +251,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         controlsViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            controlsViewer.setInput( connection.getRootDSE().getSupportedControls() );
+            controlsViewer.setInput( ((RootDSE)connection.getRootDSE()).getSupportedControls() );
         }
         this.controlsTab = new TabItem( this.tabFolder, SWT.NONE );
         this.controlsTab.setText( "Controls" );
@@ -266,7 +267,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         extensionViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            extensionViewer.setInput( connection.getRootDSE().getSupportedExtensions() );
+            extensionViewer.setInput( ((RootDSE)connection.getRootDSE()).getSupportedExtensions() );
         }
         this.extensionsTab = new TabItem( this.tabFolder, SWT.NONE );
         this.extensionsTab.setText( "Extensions" );
@@ -282,7 +283,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         featureViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            featureViewer.setInput( connection.getRootDSE().getSupportedFeatures() );
+            featureViewer.setInput( ((RootDSE)connection.getRootDSE()).getSupportedFeatures() );
         }
         this.featuresTab = new TabItem( this.tabFolder, SWT.NONE );
         this.featuresTab.setText( "Features" );

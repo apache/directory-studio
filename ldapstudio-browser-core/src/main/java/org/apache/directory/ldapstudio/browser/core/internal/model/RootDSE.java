@@ -27,6 +27,7 @@ import java.util.Properties;
 
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 
@@ -63,31 +64,21 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
     public RootDSE( IConnection connection ) throws ModelModificationException
     {
-        super();
-        this.setDirectoryEntry( true );
-        // this.connectionName = connection.getName();
-        this.connection = connection;
-        this.baseDn = new DN();
+        super( new DN(), connection );
     }
 
-
-    public boolean hasChildren()
+    
+    public IEntry getParententry()
     {
-        return false;
+        return null;
     }
-
-
-    public boolean isAttributesInitialized()
-    {
-        return true;
-    }
-
+    
 
     public String[] getSupportedExtensions()
     {
-        if ( getAttribute( ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION ) != null )
+        if ( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION ) != null )
         {
-            return get( getAttribute( ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION ).getStringValues() );
+            return get( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION ).getStringValues() );
         }
         else
         {
@@ -98,9 +89,9 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
     public String[] getSupportedControls()
     {
-        if ( getAttribute( ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ) != null )
+        if ( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ) != null )
         {
-            return get( getAttribute( ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ).getStringValues() );
+            return get( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ).getStringValues() );
         }
         else
         {
@@ -111,9 +102,9 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
     public String[] getSupportedFeatures()
     {
-        if ( getAttribute( ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES ) != null )
+        if ( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES ) != null )
         {
-            return get( getAttribute( ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES ).getStringValues() );
+            return get( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES ).getStringValues() );
         }
         else
         {

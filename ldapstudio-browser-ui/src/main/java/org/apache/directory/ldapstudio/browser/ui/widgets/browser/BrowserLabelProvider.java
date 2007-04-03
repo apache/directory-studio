@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.browser.ui.widgets.browser;
 
 
 import org.apache.directory.ldapstudio.browser.core.internal.model.AliasBaseEntry;
+import org.apache.directory.ldapstudio.browser.core.internal.model.BaseDNEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ReferralBaseEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
@@ -108,6 +109,10 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             {
                 return entry.getDn().toString() + " " + append.toString();
             }
+            else if ( entry instanceof BaseDNEntry )
+            {
+                return entry.getDn().toString() + " " + append.toString();
+            }
             else if ( entry.hasParententry() )
             {
 
@@ -179,10 +184,14 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             {
                 return sr.getEntry().getUrl().toString();
             }
-            else if ( sr.getEntry().hasParententry() )
+            else if ( sr.getEntry().hasParententry() || sr.getEntry() instanceof IRootDSE )
             {
                 String label = "";
-                if ( preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_DN )
+                if ( sr.getEntry() instanceof IRootDSE )
+                {
+                    label = "Root DSE";
+                }
+                else if ( preferences.getSearchResultLabel() == BrowserUIConstants.SHOW_DN )
                 {
                     label = sr.getEntry().getDn().toString();
                 }

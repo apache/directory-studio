@@ -53,9 +53,6 @@ public class BaseDNEntry extends AbstractEntry
         {
             throw new ModelModificationException( BrowserCoreMessages.model__empty_dn );
         }
-        if ( "".equals( baseDn.toString() ) ) { //$NON-NLS-1$
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_dn );
-        }
         if ( connection == null )
         {
             throw new ModelModificationException( BrowserCoreMessages.model__empty_connection );
@@ -76,7 +73,7 @@ public class BaseDNEntry extends AbstractEntry
 
     public IEntry getParententry()
     {
-        return null;
+        return getConnection().getRootDSE();
     }
 
 

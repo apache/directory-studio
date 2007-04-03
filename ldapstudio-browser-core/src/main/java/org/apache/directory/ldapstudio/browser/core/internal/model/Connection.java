@@ -26,8 +26,10 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.core.BookmarkManager;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
@@ -66,10 +68,6 @@ public class Connection implements IConnection, Serializable
     private static final long serialVersionUID = 2987596234755856270L;
 
     private ConnectionParameter connectionParameter;
-
-    private IEntry[] baseDNEntries;
-
-    private IEntry[] metadataEntries;
 
     private IRootDSE rootDSE;
 
@@ -124,8 +122,6 @@ public class Connection implements IConnection, Serializable
         this.connectionParameter.setBindPrincipal( bindPrincipal );
         this.connectionParameter.setBindPassword( bindPassword );
 
-        this.baseDNEntries = new IEntry[0];
-        this.metadataEntries = new IEntry[0];
         this.rootDSE = null;
 
         this.schema = Schema.DEFAULT_SCHEMA;
@@ -248,8 +244,6 @@ public class Connection implements IConnection, Serializable
 
     public void fetchRootDSE( ExtendedProgressMonitor monitor )
     {
-        this.bind( monitor );
-
         if ( this.connectionProvider != null )
         {
             try
@@ -269,34 +263,12 @@ public class Connection implements IConnection, Serializable
 
     public void open( ExtendedProgressMonitor monitor )
     {
+        this.bind( monitor );
+        
         this.fetchRootDSE( monitor );
 
         if ( this.connectionProvider != null && this.rootDSE != null )
         {
-            try
-            {
-                monitor.reportProgress( BrowserCoreMessages.model__setting_base_dn );
-                if ( !this.connectionParameter.isFetchBaseDNs() )
-                {
-                    this.baseDNEntries = new BaseDNEntry[1];
-                    this.baseDNEntries[0] = new BaseDNEntry( new DN( this.connectionParameter.getBaseDN() ), this );
-                    this.cacheEntry( this.baseDNEntries[0] );
-                }
-            }
-            catch ( ModelModificationException mme )
-            {
-                monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, mme );
-            }
-
-            try
-            {
-                this.loadDirectoryMetadataEntries();
-            }
-            catch ( ModelModificationException mme )
-            {
-                monitor.reportError( BrowserCoreMessages.model__error_setting_metadata, mme );
-            }
-
             try
             {
                 monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
@@ -415,15 +387,6 @@ public class Connection implements IConnection, Serializable
                 this.connectionProvider = null;
             }
 
-            if ( this.baseDNEntries != null )
-            {
-                this.baseDNEntries = new BaseDNEntry[0];
-            }
-            if ( this.metadataEntries != null )
-            {
-                this.metadataEntries = new IEntry[0];
-            }
-
             for ( int i = 0; i < this.getSearchManager().getSearchCount(); i++ )
             {
                 this.getSearchManager().getSearches()[i].setSearchResults( null );
@@ -446,87 +409,96 @@ public class Connection implements IConnection, Serializable
 
     private void loadRootDSE( ExtendedProgressMonitor monitor ) throws Exception
     {
-        this.rootDSE = new RootDSE( this );
-        this.cacheEntry( this.rootDSE );
-
-        // First get ALL attributes
-        ISearch search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, null, ISearch.SCOPE_OBJECT, 0, 0,
-            IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
-        this.search( search, monitor );
-
-        // Second get well-known root DSE attributes
-        search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES, ISearch.SCOPE_OBJECT, 0,
-            0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
-        this.search( search, monitor );
-
-        // Set base DNs from root DSE
-        if ( this.rootDSE != null )
+        if(rootDSE == null)
         {
-            try
+            rootDSE = new RootDSE( this );
+            cacheEntry( rootDSE );
+        }
+
+        // get well-known root DSE attributes, includes + and *
+        ISearch search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES, ISearch.SCOPE_OBJECT, 0,
+            0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
+        search( search, monitor );
+
+        // get base DNs
+        if( !isFetchBaseDNs() && getBaseDN() != null && !"".equals( getBaseDN().toString() ))
+        {
+            // only add the specified base DN
+            IEntry entry = new BaseDNEntry( new DN( getBaseDN() ), this );
+            rootDSE.addChild( entry );
+            cacheEntry( entry );
+        }
+        else
+        {
+            // get naming contexts 
+            Set<String> namingContextSet = new HashSet<String>();
+            IAttribute attribute = rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
+            if ( attribute != null )
             {
-                List baseDnEntryList = new ArrayList();
-                String[] baseDnAttributeNames = new String[]
-                    { IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS };
-                for ( int x = 0; x < baseDnAttributeNames.length; x++ )
+                String[] values = attribute.getStringValues();
+                for ( int i = 0; i < values.length; i++ )
                 {
-                    IAttribute attribute = this.rootDSE.getAttribute( baseDnAttributeNames[x] );
-                    if ( attribute != null )
+                    namingContextSet.add( values[i] );
+                }
+            }
+            for ( String namingContext : namingContextSet )
+            {
+                if ( !"".equals( namingContext ) ) { //$NON-NLS-1$
+                    try
                     {
-                        String[] values = attribute.getStringValues();
-                        for ( int i = 0; i < values.length; i++ )
-                        {
-                            if ( !"".equals( values[i] ) ) { //$NON-NLS-1$
-                                baseDnEntryList.add( values[i] );
-                            }
-                        }
+                        IEntry entry = new BaseDNEntry( new DN( namingContext ), this );
+                        rootDSE.addChild( entry );
+                        cacheEntry( entry );
+                    }
+                    catch ( Exception e )
+                    {
+                        monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
                     }
                 }
-                this.baseDNEntries = new BaseDNEntry[baseDnEntryList.size()];
-                for ( int i = 0; i < this.baseDNEntries.length; i++ )
+                else
                 {
-                    this.baseDNEntries[i] = new BaseDNEntry( new DN( ( String ) baseDnEntryList.get( i ) ), this );
-                    this.cacheEntry( this.baseDNEntries[i] );
+                    // special handling of empty namingContext: perform a one-level search and add all result DNs to the set
+                    search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0,
+                        0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
+                    search( search, monitor );
+                    ISearchResult[] results = search.getSearchResults();
+                    for ( int k = 0; results != null && k < results.length; k++ )
+                    {
+                        ISearchResult result = results[k];
+                        IEntry entry = result.getEntry();
+                        rootDSE.addChild( entry );
+                    }
                 }
-
-                // this.loadDirectoryMetadataEntries();
-            }
-            catch ( Exception e )
-            {
-                monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
             }
         }
-    }
 
-
-    private void loadDirectoryMetadataEntries() throws ModelModificationException
-    {
-
-        List metadataEntryList = new ArrayList();
-
-        // special case for schema entry
+        // get schema entry
         DirectoryMetadataEntry[] schemaEntries = getDirectoryMetadataEntries( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY );
         for ( int i = 0; i < schemaEntries.length; i++ )
         {
             schemaEntries[i].setSchemaEntry( true );
+            rootDSE.addChild( ( IEntry ) schemaEntries[i] );
         }
-        metadataEntryList.addAll( Arrays.asList( schemaEntries ) );
-
-        // other metadata entries
+        
+        // get other metadata entries
         String[] metadataAttributeNames = new String[]
             { IRootDSE.ROOTDSE_ATTRIBUTE_MONITORCONTEXT, IRootDSE.ROOTDSE_ATTRIBUTE_CONFIGCONTEXT,
                 IRootDSE.ROOTDSE_ATTRIBUTE_DSANAME };
         for ( int x = 0; x < metadataAttributeNames.length; x++ )
         {
             DirectoryMetadataEntry[] metadataEntries = getDirectoryMetadataEntries( metadataAttributeNames[x] );
-            metadataEntryList.addAll( Arrays.asList( metadataEntries ) );
+            for ( int i = 0; i < metadataEntries.length; i++ )
+            {
+                rootDSE.addChild( ( IEntry ) metadataEntries[i] );
+            }
         }
-
-        this.metadataEntries = new IEntry[metadataEntryList.size()];
-        for ( int i = 0; i < metadataEntryList.size(); i++ )
-        {
-            this.metadataEntries[i] = ( IEntry ) metadataEntryList.get( i );
-            this.cacheEntry( this.metadataEntries[i] );
-        }
+        
+        // set flags
+        rootDSE.setHasMoreChildren( false );
+        rootDSE.setAttributesInitialized( true );
+        rootDSE.setChildrenInitialized( true );
+        rootDSE.setHasChildrenHint( true );
+        rootDSE.setDirectoryEntry( true );
 
     }
 
@@ -556,6 +528,7 @@ public class Connection implements IConnection, Serializable
         {
             metadataEntries[i] = new DirectoryMetadataEntry( ( DN ) metadataEntryList.get( i ), this );
             metadataEntries[i].setDirectoryEntry( true );
+            cacheEntry( metadataEntries[i] );
         }
         return metadataEntries;
     }
@@ -568,10 +541,6 @@ public class Connection implements IConnection, Serializable
 
         try
         {
-
-            // System.out.println(this.rootDSE);
-            // System.out.println(Arrays.asList(this.rootDSE.getAttributes()));
-            // System.out.println(this.rootDSE.getAttribute(IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY));
 
             if ( this.rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
             {
@@ -640,28 +609,6 @@ public class Connection implements IConnection, Serializable
         if ( this.rootDSE != null && this.rootDSE.getDn() != null && this.rootDSE.getDn().equals( dn ) )
         {
             return this.rootDSE;
-        }
-        if ( this.baseDNEntries != null )
-        {
-            for ( int i = 0; i < this.baseDNEntries.length; i++ )
-            {
-                if ( this.baseDNEntries[i] != null && this.baseDNEntries[i].getDn() != null
-                    && this.baseDNEntries[i].getDn().equals( dn ) )
-                {
-                    return this.baseDNEntries[i];
-                }
-            }
-        }
-        if ( this.metadataEntries != null )
-        {
-            for ( int i = 0; i < this.metadataEntries.length; i++ )
-            {
-                if ( this.metadataEntries[i] != null && this.metadataEntries[i].getDn() != null
-                    && this.metadataEntries[i].getDn().equals( dn ) )
-                {
-                    return this.metadataEntries[i];
-                }
-            }
         }
         return null;
     }
@@ -904,18 +851,6 @@ public class Connection implements IConnection, Serializable
         this.connectionParameter.setConnectionProviderClassName( connectionProviderClassName );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
             ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
-    }
-
-
-    public final IEntry[] getBaseDNEntries()
-    {
-        return this.baseDNEntries;
-    }
-
-
-    public final IEntry[] getMetadataEntries()
-    {
-        return this.metadataEntries;
     }
 
 
