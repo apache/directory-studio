@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.aciitemeditor.widgets;
+package org.apache.directory.ldapstudio.aciitemeditor;
 
 
 import java.text.ParseException;
@@ -26,8 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.ldapstudio.aciitemeditor.Activator;
-import org.apache.directory.ldapstudio.aciitemeditor.ExclusionValueEditor;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.NameException;
@@ -68,7 +66,7 @@ import org.eclipse.swt.widgets.Table;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SubtreeSpecificationValueEditor extends AbstractDialogStringValueEditor
+public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 {
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogValueEditor#openDialog(org.eclipse.swt.widgets.Shell)
