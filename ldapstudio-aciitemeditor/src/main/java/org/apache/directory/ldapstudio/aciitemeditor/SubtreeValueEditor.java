@@ -34,6 +34,7 @@ import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStr
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.widgets.search.EntryWidget;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.subtree.BaseSubtreeSpecification;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecificationParser;
 import org.eclipse.jface.dialogs.Dialog;
@@ -79,7 +80,9 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             SubtreeSpecificationValueWrapper wrapper = ( SubtreeSpecificationValueWrapper ) value;
             SubtreeSpecificationDialog dialog = new SubtreeSpecificationDialog( shell, wrapper.connection,
                 wrapper.subtreeSpecification );
-            if ( dialog.open() == TextDialog.OK )
+            if ( dialog.open() == TextDialog.OK
+                && ( ( dialog.getBase() != null && !"".equals( dialog.getBase() ) ) || dialog.getMinimum() != 0
+                    || dialog.getMaximum() != 0 || !dialog.getExclusions().isEmpty() ) )
             {
                 String base = dialog.getBase();
                 int minimum = dialog.getMinimum();
@@ -90,7 +93,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
                 sb.append( "{" );
 
                 // Adding base
-                if ( base != null )
+                if ( base != null && !"".equals( base ) )
                 {
                     sb.append( " base \"" + base + "\"," );
                 }
@@ -157,6 +160,10 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
                 if ( subtreeSpecification != null )
                 {
                     return new SubtreeSpecificationValueWrapper( connection, subtreeSpecification );
+                }
+                else
+                {
+                    return new SubtreeSpecificationValueWrapper( connection, new BaseSubtreeSpecification() );
                 }
             }
             catch ( ParseException e1 )
