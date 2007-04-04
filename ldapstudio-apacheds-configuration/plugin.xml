@@ -19,4 +19,30 @@
   under the License.
 -->
 <plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.apache.directory.ldapstudio.apacheds.configuration.actionset"
+            label="Apache DS"
+            visible="true">
+         <menu
+               id="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu"
+               label="Apache DS"/>
+         <action
+               class="org.apache.directory.ldapstudio.apacheds.configuration.actions.OpenEditorAction"
+               id="org.apache.directory.ldapstudio.apacheds.configuration.openEditor"
+               label="Open Editor"
+               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
+               style="push"/>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.apache.directory.ldapstudio.apacheds.configuration.editor.ServerConfigurationEditor"
+            default="true"
+            icon="icons/editor.gif"
+            id="org.apache.directory.ldapstudio.apacheds.configuration.editor"
+            name="Server Configuration Editor"/>
+   </extension>
 </plugin>

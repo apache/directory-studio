@@ -9,4 +9,5 @@ Bundle-Localization: plugin
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.ui.forms
