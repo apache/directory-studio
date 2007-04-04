@@ -1,0 +1,136 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<project default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	<property name="project.name" value="org.apache.directory.ldapstudio.apacheds.configuration" />
+	<property name="project.version" value="0.7.0" />
+
+	<property name="output" value="${basedir}/target" />
+	<property name="build" value="${output}/build" />
+	<property name="src" value="${basedir}/src/main/java" />
+
+	<property name="lib.dir" value="lib" />
+
+	<property name="repository.dir" location="../dependencies/externals/"/>
+
+	<!-- Configuring Ivy (Needs to be AFTER the $repository.dir declaration) -->
+	<ivy:configure file="../tools/ivyconf.xml"/>
+
+	<!-- ================================== -->
+	<!--               RESOLVE              -->
+	<!-- ================================== -->
+	<target name="resolve" description="retrieve dependencies with ivy">
+		<ivy:retrieve/>
+	</target>
+
+	<!-- ================================== -->
+	<!--             CLASSPATH              -->
+	<!-- ================================== -->
+	<target name="build-classpath" description="Computes a classpath" >
+		<path id="classpath">
+			<fileset dir="../dependencies/eclipse/3.2">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="${lib.dir}" />
+		</path>
+	</target>
+
+	<!-- ================================== -->
+	<!--             COMPILE                -->
+	<!-- ================================== -->
+	<target name="compile" depends="resolve,checkclasses,build-classpath" unless="classes-up2date" description="Compiles the plugin">
+		<mkdir dir="${build}" />
+		<copy todir="${build}">
+			<fileset dir="${basedir}">
+				<include name="plugin.xml" />
+				<include name="plugin.properties" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build}/${lib.dir}" />
+		<copy todir="${build}/${lib.dir}">
+			<fileset dir="${basedir}/${lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<mkdir dir="${build}/META-INF" />
+		<copy todir="${build}/META-INF">
+			<fileset dir="${basedir}/META-INF">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<javac
+			source="1.5"
+			debug="yes"
+			srcdir="${src}"
+			excludes=""
+			destdir="${build}"
+			classpathref="classpath"
+			listfiles="yes" />
+
+		<tstamp>
+			<format pattern="yyyy-MMM-dd, HH:mm 'GMT'Z" property="timestamp" locale="en" />
+		</tstamp>
+		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${build}/compile.timestamp" />
+	</target>
+
+	<target name="checkclasses">
+		<uptodate property="classes-up2date" targetfile="${build}/compile.timestamp">
+			<srcfiles dir="${src}" />
+		</uptodate>
+	</target>
+
+
+	<!-- ================================== -->
+	<!--              JAR                   -->
+	<!-- ================================== -->
+	<target name="jar" description="Creates a jar file" depends="compile">
+		<jar destfile="${output}/${project.name}_${project.version}.jar" manifest="${build}/META-INF/MANIFEST.MF">
+			<fileset dir="${build}" excludes="compile.timestamp" />
+		</jar>
+	</target>
+
+	<!-- ================================== -->
+	<!--              JAVADOC               -->
+	<!-- ================================== -->
+	<target name="javadoc" description="Generate Javadoc files">
+		<mkdir dir="${basedir}/doc" />
+		<javadoc destdir="${basedir}/doc">
+			<fileset dir="src/main/java" defaultexcludes="yes">
+				<include name="org/apache/directory/ldapstudio/**"/>
+			</fileset>
+		</javadoc>
+	</target>
+	
+	<!-- ================================== -->
+	<!--               CLEAN                -->
+	<!-- ================================== -->
+	<target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
+		<delete includeemptydirs="true">
+			<fileset dir="${basedir}">
+				<exclude name=".project" />
+				<exclude name=".classpath" />
+				<exclude name="build.properties" />
+				<exclude name="build.xml" />
+				<exclude name="ivy.xml" />
+				<exclude name="META-INF/**" />
+				<exclude name="plugin.xml" />
+				<exclude name="src/**" />
+			</fileset>
+		</delete>
+	</target>
+</project>
