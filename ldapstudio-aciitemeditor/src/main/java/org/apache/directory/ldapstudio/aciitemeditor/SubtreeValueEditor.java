@@ -208,10 +208,6 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         private Button exclusionsTableAddButton;
         private Button exclusionsTableEditButton;
         private Button exclusionsTableDeleteButton;
-        private TableViewer refinementsTableViewer;
-        private Button refinementsTableAddButton;
-        private Button refinementsTableEditButton;
-        private Button refinementsTableDeleteButton;
 
 
         /**
@@ -315,8 +311,6 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             maximumSpinner.setLayoutData( spinnersGridData );
 
             createExclusionsTable( composite );
-
-            createRefinementsTable( composite );
 
             applyDialogFont( composite );
 
@@ -551,159 +545,6 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
                 exclusions.remove( value );
                 exclusionsTableViewer.refresh();
             }
-        }
-
-
-        private void createRefinementsTable( Composite composite )
-        {
-            GridData tableGridData = new GridData();
-            tableGridData.grabExcessHorizontalSpace = true;
-            tableGridData.verticalAlignment = GridData.FILL;
-            tableGridData.horizontalAlignment = GridData.FILL;
-            tableGridData.heightHint = 100;
-
-            BaseWidgetUtils.createLabel( composite, "Refinements:", 1 );
-            Table refinementsTable = new Table( composite, SWT.BORDER );
-            refinementsTable.setHeaderVisible( false );
-            refinementsTable.setLayoutData( tableGridData );
-            refinementsTable.setLinesVisible( false );
-            refinementsTableViewer = new TableViewer( refinementsTable );
-            refinementsTableViewer.setContentProvider( new ArrayContentProvider() );
-            refinementsTableViewer.setLabelProvider( new LabelProvider() );
-            refinementsTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
-            {
-                public void selectionChanged( SelectionChangedEvent event )
-                {
-                    valueSelectedRefinementsTable();
-                }
-            } );
-
-            refinementsTableViewer.addDoubleClickListener( new IDoubleClickListener()
-            {
-                public void doubleClick( DoubleClickEvent event )
-                {
-                    editValueRefinementsTable();
-                }
-            } );
-
-            GridLayout gridLayout = new GridLayout();
-            gridLayout.marginWidth = 0;
-            gridLayout.marginHeight = 0;
-            GridData gridData = new GridData();
-            gridData.horizontalAlignment = GridData.CENTER;
-            gridData.grabExcessHorizontalSpace = false;
-            gridData.grabExcessVerticalSpace = false;
-            gridData.verticalAlignment = GridData.FILL;
-
-            Composite buttonComposite = new Composite( composite, SWT.NONE );
-            buttonComposite.setLayoutData( gridData );
-            buttonComposite.setLayout( gridLayout );
-
-            GridData buttonGridData = new GridData();
-            buttonGridData.horizontalAlignment = GridData.FILL;
-            buttonGridData.grabExcessHorizontalSpace = false;
-            buttonGridData.verticalAlignment = GridData.BEGINNING;
-            buttonGridData.widthHint = Activator.getButtonWidth( composite );
-
-            refinementsTableAddButton = new Button( buttonComposite, SWT.PUSH );
-            refinementsTableAddButton.setText( "Add..." );
-            refinementsTableAddButton.setLayoutData( buttonGridData );
-            refinementsTableAddButton.addSelectionListener( new SelectionAdapter()
-            {
-                public void widgetSelected( SelectionEvent e )
-                {
-                    addValueRefinementsTable();
-                }
-            } );
-
-            refinementsTableEditButton = new Button( buttonComposite, SWT.PUSH );
-            refinementsTableEditButton.setText( "Edit..." );
-            refinementsTableEditButton.setLayoutData( buttonGridData );
-            refinementsTableEditButton.addSelectionListener( new SelectionAdapter()
-            {
-                public void widgetSelected( SelectionEvent e )
-                {
-                    editValueRefinementsTable();
-                }
-            } );
-            refinementsTableEditButton.setEnabled( false );
-
-            refinementsTableDeleteButton = new Button( buttonComposite, SWT.PUSH );
-            refinementsTableDeleteButton.setText( "Delete" );
-            refinementsTableDeleteButton.setLayoutData( buttonGridData );
-            refinementsTableDeleteButton.addSelectionListener( new SelectionAdapter()
-            {
-                public void widgetSelected( SelectionEvent e )
-                {
-                    deleteValueRefinementsTable();
-                }
-            } );
-            refinementsTableDeleteButton.setEnabled( false );
-        }
-
-
-        /**
-         * TODO valueSelectedExclusionsTable.
-         *
-         */
-        private void valueSelectedRefinementsTable()
-        {
-            String value = getSelectedValueRefinementsTable();
-
-            if ( value == null )
-            {
-                refinementsTableEditButton.setEnabled( false );
-                refinementsTableDeleteButton.setEnabled( false );
-            }
-            else
-            {
-                refinementsTableEditButton.setEnabled( true );
-                refinementsTableDeleteButton.setEnabled( true );
-            }
-        }
-
-
-        /**
-         * TODO getSelectedValue.
-         *
-         * @return
-         */
-        private String getSelectedValueRefinementsTable()
-        {
-            String value = null;
-
-            IStructuredSelection selection = ( IStructuredSelection ) refinementsTableViewer.getSelection();
-            if ( !selection.isEmpty() )
-            {
-                Object element = selection.getFirstElement();
-                if ( element instanceof String )
-                {
-                    value = ( String ) element;
-                }
-            }
-
-            return value;
-        }
-
-
-        private void addValueRefinementsTable()
-        {
-            // TODO Auto-generated method stub
-
-        }
-
-
-        private void editValueRefinementsTable()
-        {
-            // TODO Auto-generated method stub
-
-        }
-
-
-        private void deleteValueRefinementsTable()
-        {
-
-            // TODO Auto-generated method stub
         }
 
 
