@@ -62,9 +62,9 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof ExclusionWrapper )
         {
             ExclusionDialog dialog = new ExclusionDialog( shell, ( ExclusionWrapper ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getType() ) && !"".equals( dialog.getRDN() ) )
+            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getType() ) && !"".equals( dialog.getDN() ) )
             {
-                setValue( dialog.getType() + ": \"" + dialog.getRDN() + "\"" );
+                setValue( dialog.getType() + ": \"" + dialog.getDN() + "\"" );
                 return true;
             }
         }
@@ -85,20 +85,20 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
 
         String stringValue = ( String ) value;
         String type = "";
-        String rdn = "";
+        String dn = "";
         try
         {
             // for example: chopAfter: "ou=A"
             Pattern pattern = Pattern.compile( "\\s*(chopBefore|chopAfter):\\s*\"(.*)\"\\s*" );
             Matcher matcher = pattern.matcher( stringValue );
             type = matcher.matches() ? matcher.group( 1 ) : "";
-            rdn = matcher.matches() ? matcher.group( 2 ) : "";
+            dn = matcher.matches() ? matcher.group( 2 ) : "";
         }
         catch ( Exception e )
         {
         }
 
-        ExclusionWrapper wrapper = new ExclusionWrapper( connection, type, rdn );
+        ExclusionWrapper wrapper = new ExclusionWrapper( connection, type, dn );
         return wrapper;
     }
 
@@ -116,8 +116,8 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         /** The type, used as initial type. */
         private String type;
 
-        /** The RDN, used as initial RDN. */
-        private String rdn;
+        /** The DN, used as initial DN. */
+        private String dn;
 
 
         /**
@@ -125,14 +125,14 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
          * 
          * @param type
          *      the type
-         * @param rdn
-         *      the rdn
+         * @param dn
+         *      the dn
          */
-        private ExclusionWrapper( IConnection connection, String type, String rdn )
+        private ExclusionWrapper( IConnection connection, String type, String dn )
         {
             this.connection = connection;
             this.type = type;
-            this.rdn = rdn;
+            this.dn = dn;
         }
     }
 
@@ -150,20 +150,19 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         /** The return type */
         private String returnType;
 
-        /** The return RDN */
-        private String returnRDN;
+        /** The return DN */
+        private String returnDN;
 
-        private Combo typeCombo;
-
+        /** The wrapper */
         private ExclusionWrapper wrapper;
 
-        private ComboViewer typeComboViewer;
-
-        private EntryWidget entryWidget;
-
         private static final String CHOP_BEFORE = "chopBefore";
-
         private static final String CHOP_AFTER = "chopAfter";
+
+        // UI Fields
+        private Combo typeCombo;
+        private ComboViewer typeComboViewer;
+        private EntryWidget entryWidget;
 
 
         /**
@@ -194,7 +193,7 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         protected void okPressed()
         {
             returnType = typeCombo.getText();
-            returnRDN = entryWidget.getDn().toString();
+            returnDN = entryWidget.getDn().toString();
             super.okPressed();
         }
 
@@ -219,6 +218,7 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
             typeComboViewer.setContentProvider( new ArrayContentProvider() );
             typeComboViewer.setLabelProvider( new LabelProvider() );
             typeComboViewer.setInput( types );
+            typeComboViewer.setSelection( new StructuredSelection( CHOP_BEFORE ), true );
             GridData gridData = new GridData();
             gridData.horizontalSpan = 2;
             gridData.grabExcessHorizontalSpace = true;
@@ -241,11 +241,11 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
          */
         private void initFromInput()
         {
-            typeComboViewer.setSelection( new StructuredSelection( wrapper.type ) );
+            typeComboViewer.setSelection( new StructuredSelection( wrapper.type ), true );
 
             try
             {
-                DN dn = new DN( wrapper.rdn );
+                DN dn = new DN( wrapper.dn );
                 entryWidget.setInput( wrapper.connection, dn );
             }
             catch ( NameException e )
@@ -269,14 +269,14 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
 
 
         /**
-         * Gets the RDN.
+         * Gets the DN.
          *
          * @return
-         *      the RDN, null if canceled
+         *      the DN, null if canceled
          */
-        public String getRDN()
+        public String getDN()
         {
-            return returnRDN;
+            return returnDN;
         }
     }
 }

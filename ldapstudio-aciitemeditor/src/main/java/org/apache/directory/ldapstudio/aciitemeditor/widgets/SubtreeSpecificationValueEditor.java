@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.aciitemeditor.widgets;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -82,6 +83,60 @@ public class SubtreeSpecificationValueEditor extends AbstractDialogStringValueEd
                 wrapper.subtreeSpecification );
             if ( dialog.open() == TextDialog.OK )
             {
+                String base = dialog.getBase();
+                int minimum = dialog.getMinimum();
+                int maximum = dialog.getMaximum();
+                List<String> exclusions = dialog.getExclusions();
+
+                StringBuffer sb = new StringBuffer();
+                sb.append( "{" );
+
+                // Adding base
+                if ( base != null )
+                {
+                    sb.append( " base \"" + base + "\"," );
+                }
+
+                // Adding Minimum
+                if ( minimum != 0 )
+                {
+                    sb.append( " minimum " + minimum + "," );
+                }
+
+                // Adding Maximum
+                if ( maximum != 0 )
+                {
+                    sb.append( " maximum " + maximum + "," );
+                }
+
+                // Adding Exclusions
+                if ( !exclusions.isEmpty() )
+                {
+                    sb.append( " specificExclusions {" );
+
+                    for ( Iterator<String> it = exclusions.iterator(); it.hasNext(); )
+                    {
+                        sb.append( " " + it.next() );
+
+                        if ( it.hasNext() )
+                        {
+                            sb.append( "," );
+                        }
+                    }
+
+                    sb.append( " }," );
+                }
+
+                // Removing the last ','
+                if ( sb.charAt( sb.length() - 1 ) == ',' )
+                {
+                    sb.deleteCharAt( sb.length() - 1 );
+                }
+
+                sb.append( " }" );
+
+                setValue( sb.toString() );
+
                 return true;
             }
         }
@@ -132,15 +187,25 @@ public class SubtreeSpecificationValueEditor extends AbstractDialogStringValueEd
         /** The SubtreeSpecification */
         private SubtreeSpecification subtreeSpecification;
 
+        private int initialMaximum = 0;
+        private int initialMinimum = 0;
+
+        /** The return Base */
+        private String returnBase;
+
+        /** The return Minimum */
+        private int returnMinimum;
+
+        /** The return Maximum */
+        private int returnMaximum;
+
         /** The Exclusions List */
         private List<String> exclusions;
 
         // UI Fields
         private EntryWidget entryWidget;
         private Spinner minimumSpinner;
-        private int initialMinimum = 0;
         private Spinner maximumSpinner;
-        private int initialMaximum = 0;
         private TableViewer exclusionsTableViewer;
         private Button exclusionsTableAddButton;
         private Button exclusionsTableEditButton;
@@ -194,6 +259,18 @@ public class SubtreeSpecificationValueEditor extends AbstractDialogStringValueEd
         {
             super.configureShell( newShell );
             newShell.setText( DIALOG_TITLE );
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+         */
+        protected void okPressed()
+        {
+            returnBase = entryWidget.getDn().toString();
+            returnMinimum = minimumSpinner.getSelection();
+            returnMaximum = maximumSpinner.getSelection();
+            super.okPressed();
         }
 
 
@@ -267,10 +344,8 @@ public class SubtreeSpecificationValueEditor extends AbstractDialogStringValueEd
                 e.printStackTrace();
             }
             entryWidget.setInput( connection, dn );
-
             minimumSpinner.setSelection( subtreeSpecification.getMinBaseDistance() );
             maximumSpinner.setSelection( subtreeSpecification.getMaxBaseDistance() );
-
             exclusionsTableViewer.setInput( exclusions );
         }
 
@@ -633,6 +708,53 @@ public class SubtreeSpecificationValueEditor extends AbstractDialogStringValueEd
             // TODO Auto-generated method stub
         }
 
+
+        /**
+         * Gets the Base value.
+         *
+         * @return
+         *      the base
+         */
+        public String getBase()
+        {
+            return returnBase;
+        }
+
+
+        /**
+         * Gets the Minimum Value.
+         *
+         * @return
+         *      the miminum
+         */
+        public int getMinimum()
+        {
+            return returnMinimum;
+        }
+
+
+        /**
+         * Gets the Maximum value.
+         *
+         * @return
+         *      the maximum
+         */
+        public int getMaximum()
+        {
+            return returnMaximum;
+        }
+
+
+        /**
+         * Gets the List of Eclusions.
+         *
+         * @return
+         *      the list of exclusions
+         */
+        public List<String> getExclusions()
+        {
+            return exclusions;
+        }
     }
 
     /**
