@@ -43,7 +43,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         //final ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "All Partitions" ); //$NON-NLS-1$
+        section.setText( "All Partitions" );
 //        section.setDescription( "The list contains all the partitions whose details are editable on the right" ); //$NON-NLS-1$
         section.marginWidth = 10;
         section.marginHeight = 5;

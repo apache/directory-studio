@@ -20,8 +20,10 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
@@ -48,5 +50,15 @@ public class ExtendedOperationsPage extends FormPage
     public ExtendedOperationsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void createFormContent( IManagedForm managedForm )
+    {
+        final ScrolledForm form = managedForm.getForm();
+        form.setText( "Extended Operations" );
     }
 }

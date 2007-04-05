@@ -60,10 +60,8 @@ public class PartitionsPage extends FormPage
     @Override
     protected void createFormContent( IManagedForm managedForm )
     {
-        super.createFormContent( managedForm );
-
         final ScrolledForm form = managedForm.getForm();
-        form.setText( "Partitions" ); //$NON-NLS-1$
+        form.setText( "Partitions" );
         masterDetailBlock.createContent( managedForm );
     }
 }
