@@ -40,6 +40,9 @@ public class InterceptorsPage extends FormPage
     /** The Page Title */
     private static final String TITLE = "Interceptors";
 
+    /** The Master/Details Block */
+    private InterceptorsMasterDetailsBlock masterDetailsBlock;
+
 
     /**
      * Creates a new instance of InterceptorsPage.
@@ -50,6 +53,7 @@ public class InterceptorsPage extends FormPage
     public InterceptorsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
+        masterDetailsBlock = new InterceptorsMasterDetailsBlock( this );
     }
 
 
@@ -60,5 +64,6 @@ public class InterceptorsPage extends FormPage
     {
         final ScrolledForm form = managedForm.getForm();
         form.setText( "Interceptors" );
+        masterDetailsBlock.createContent( managedForm );
     }
 }

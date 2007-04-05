@@ -40,8 +40,8 @@ public class PartitionsPage extends FormPage
     /** The Page Title */
     private static final String TITLE = "Partitions";
 
-    /** The MasterDetails block */
-    private PartitionsMasterDetailsBlock masterDetailBlock;
+    /** The Master/Details block */
+    private PartitionsMasterDetailsBlock masterDetailsBlock;
 
 
     /**
@@ -53,15 +53,17 @@ public class PartitionsPage extends FormPage
     public PartitionsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
-        masterDetailBlock = new PartitionsMasterDetailsBlock( this );
+        masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+     */
     protected void createFormContent( IManagedForm managedForm )
     {
-        final ScrolledForm form = managedForm.getForm();
+        ScrolledForm form = managedForm.getForm();
         form.setText( "Partitions" );
-        masterDetailBlock.createContent( managedForm );
+        masterDetailsBlock.createContent( managedForm );
     }
 }

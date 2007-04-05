@@ -189,7 +189,7 @@ public class PartitionDetailsPage implements IDetailsPage
         Section indexedAttributesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         indexedAttributesSection.marginWidth = 10;
         indexedAttributesSection.setText( "Indexed Attributes" ); //$NON-NLS-1$
-        indexedAttributesSection.setDescription( "Set the indexed attributes for the partition." ); //$NON-NLS-1$
+        indexedAttributesSection.setDescription( "Set the indexed attributes of the partition." ); //$NON-NLS-1$
         indexedAttributesSection.setLayoutData( new TableWrapData( TableWrapData.FILL ) );
         Composite indexedAttributesClient = toolkit.createComposite( indexedAttributesSection );
         toolkit.paintBordersFor( indexedAttributesClient );
