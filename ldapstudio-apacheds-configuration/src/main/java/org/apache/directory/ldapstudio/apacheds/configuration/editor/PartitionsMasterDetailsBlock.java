@@ -1,3 +1,22 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *  
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License. 
+ *  
+ */
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
@@ -26,25 +45,40 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 
+/**
+ * This class represents the Partitions Master/Details Block used in the Partitions Page.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 {
+    /** The associated page */
     private FormPage page;
 
 
+    /**
+     * Creates a new instance of PartitionsMasterDetailsBlock.
+     *
+     * @param page
+     *      the associated page
+     */
     public PartitionsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.MasterDetailsBlock#createMasterPart(org.eclipse.ui.forms.IManagedForm, org.eclipse.swt.widgets.Composite)
+     */
     protected void createMasterPart( final IManagedForm managedForm, Composite parent )
     {
-        //final ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
+
+        // Creating the Section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.setText( "All Partitions" );
-//        section.setDescription( "The list contains all the partitions whose details are editable on the right" ); //$NON-NLS-1$
         section.marginWidth = 10;
         section.marginHeight = 5;
         Composite client = toolkit.createComposite( section, SWT.WRAP );
@@ -53,19 +87,18 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         layout.marginWidth = 2;
         layout.marginHeight = 2;
         client.setLayout( layout );
-        Table t = toolkit.createTable( client, SWT.NULL );
+        toolkit.paintBordersFor( client );
+        section.setClient( client );
+
+        // Creatig the Table and Table Viewer
+        Table table = toolkit.createTable( client, SWT.NULL );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.heightHint = 20;
         gd.widthHint = 100;
-        t.setLayoutData( gd );
-        toolkit.paintBordersFor( client );
-        Button b = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
-        gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
-        b.setLayoutData( gd );
-        section.setClient( client );
+        table.setLayoutData( gd );
         final SectionPart spart = new SectionPart( section );
         managedForm.addPart( spart );
-        TableViewer viewer = new TableViewer( t );
+        TableViewer viewer = new TableViewer( table );
         viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -75,45 +108,59 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         } );
         viewer.setContentProvider( new ArrayContentProvider() );
         viewer.setLabelProvider( new LabelProvider() );
-        viewer.setInput( new Object[] { new Partition( "System Partition" ), new Partition( "Example Partition" ) } );
+        viewer.setInput( new Object[]
+            { new Partition( "System Partition" ), new Partition( "Example Partition" ) } );
+
+        // Creating the button(s)
+        Button b = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
+        gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
+        b.setLayoutData( gd );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.MasterDetailsBlock#createToolBarActions(org.eclipse.ui.forms.IManagedForm)
+     */
     protected void createToolBarActions( IManagedForm managedForm )
     {
         final ScrolledForm form = managedForm.getForm();
-        Action haction = new Action( "Horizontal Orientation", Action.AS_RADIO_BUTTON ) { //$NON-NLS-1$
+
+        // Horizontal layout Action
+        Action horizontalAction = new Action( "Horizontal layout", Action.AS_RADIO_BUTTON ) { //$NON-NLS-1$
             public void run()
             {
                 sashForm.setOrientation( SWT.HORIZONTAL );
                 form.reflow( true );
             }
         };
-        haction.setChecked( true );
-        haction.setToolTipText( "Horizontal Orientation" ); //$NON-NLS-1$
-        haction.setImageDescriptor( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        horizontalAction.setChecked( true );
+        horizontalAction.setToolTipText( "Horizontal Orientation" ); //$NON-NLS-1$
+        horizontalAction.setImageDescriptor( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_HORIZONTAL_ORIENTATION ) );
-        Action vaction = new Action( "Vertical Orientation", Action.AS_RADIO_BUTTON ) { //$NON-NLS-1$
+
+        // Vertical layout Action
+        Action verticalAction = new Action( "Vertical Orientation", Action.AS_RADIO_BUTTON ) { //$NON-NLS-1$
             public void run()
             {
                 sashForm.setOrientation( SWT.VERTICAL );
                 form.reflow( true );
             }
         };
-        vaction.setChecked( false );
-        vaction.setToolTipText( "Vertical Orientation" ); //$NON-NLS-1$
-        vaction.setImageDescriptor( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        verticalAction.setChecked( false );
+        verticalAction.setToolTipText( "Vertical Orientation" ); //$NON-NLS-1$
+        verticalAction.setImageDescriptor( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_VERTICAL_ORIENTATION ) );
-        form.getToolBarManager().add( haction );
-        form.getToolBarManager().add( vaction );
+
+        form.getToolBarManager().add( horizontalAction );
+        form.getToolBarManager().add( verticalAction );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.MasterDetailsBlock#registerPages(org.eclipse.ui.forms.DetailsPart)
+     */
     protected void registerPages( DetailsPart detailsPart )
     {
         detailsPart.registerPage( Partition.class, new PartitionDetailsPage() );
     }
-
 }
