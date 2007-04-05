@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
 import org.apache.directory.ldapstudio.apacheds.configuration.PluginConstants;
-import org.apache.directory.ldapstudio.apacheds.configuration.model.Interceptor;
+import org.apache.directory.ldapstudio.apacheds.configuration.model.ExtendedOperation;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -46,23 +46,23 @@ import org.eclipse.ui.forms.widgets.Section;
 
 
 /**
- * This class represents the Interceptors Master/Details Block used in the Interceptors Page.
+ * This class represents the Extended Operations Master/Details Block used in the Extended Operations Page.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
+public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
 {
     /** The associated page */
     private FormPage page;
 
 
     /**
-     * Creates a new instance of InterceptorsMasterDetailsBlock.
+     * Creates a new instance of ExtendedOperationsMasterDetailsBlock.
      *
      * @param page
      */
-    public InterceptorsMasterDetailsBlock( FormPage page )
+    public ExtendedOperationsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
     }
@@ -76,10 +76,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         FormToolkit toolkit = managedForm.getToolkit();
 
         // Creating the Section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.DESCRIPTION );
-        section.setText( "All Interceptors" );
-        section
-            .setDescription( " Set the Interceptors used in the server. Use the \"Up\" and \"Down\" buttons to change the order." );
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "All Extended Operations" );
         section.marginWidth = 10;
         section.marginHeight = 5;
         Composite client = toolkit.createComposite( section, SWT.WRAP );
@@ -109,9 +107,12 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         } );
         viewer.setContentProvider( new ArrayContentProvider() );
         viewer.setLabelProvider( new LabelProvider() );
-        viewer.setInput( new Object[]
-            { new Interceptor( "NormalizationService" ), new Interceptor( "AuthenticationService" ),
-                new Interceptor( "ReferalService" ), new Interceptor( "AuthorizationService" ) } );
+        viewer
+            .setInput( new Object[]
+                {
+                    new ExtendedOperation( "org.apache.directory.server.ldap.support.extended.GracefulShutdownHandler" ),
+                    new ExtendedOperation(
+                        "org.apache.directory.server.ldap.support.extended.LaunchDiagnosticUiHandler" ) } );
 
         // Creating the button(s)
         Button b = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
@@ -163,7 +164,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void registerPages( DetailsPart detailsPart )
     {
-        detailsPart.registerPage( Interceptor.class, new InterceptorDetailsPage() );
+        detailsPart.registerPage( ExtendedOperation.class, new ExtendedOperationDetailsPage() );
     }
 
 }

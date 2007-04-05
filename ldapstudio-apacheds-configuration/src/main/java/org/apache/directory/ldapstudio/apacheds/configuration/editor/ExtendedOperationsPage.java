@@ -40,6 +40,9 @@ public class ExtendedOperationsPage extends FormPage
     /** The Page Title */
     private static final String TITLE = "Extended Operations";
 
+    /** The Master/Details Block */
+    private ExtendedOperationsMasterDetailsBlock masterDetailsBlock;
+
 
     /**
      * Creates a new instance of ExtendedOperationsPage.
@@ -50,6 +53,7 @@ public class ExtendedOperationsPage extends FormPage
     public ExtendedOperationsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
+        masterDetailsBlock = new ExtendedOperationsMasterDetailsBlock( this );
     }
 
 
@@ -60,5 +64,6 @@ public class ExtendedOperationsPage extends FormPage
     {
         final ScrolledForm form = managedForm.getForm();
         form.setText( "Extended Operations" );
+        masterDetailsBlock.createContent( managedForm );
     }
 }
