@@ -1,3 +1,22 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *  
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License. 
+ *  
+ */
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
@@ -21,16 +40,26 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
+/**
+ * This class represents the Details Page of the Server Configuration Editor for the Partition type
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class PartitionDetailsPage implements IDetailsPage
 {
     /** The Managed Form */
     private IManagedForm mform;
+
+    /** The input Partition */
     private Partition input;
-    private Text name;
-    private Text cacheSize;
-    private Text suffix;
-    private Button enableOptimizer;
-    private Button synchOnWrite;
+
+    // UI fields
+    private Text nameText;
+    private Text cacheSizeText;
+    private Text suffixText;
+    private Button enableOptimizerCheckbox;
+    private Button synchOnWriteCheckbox;
     private Table indexedAttributesTable;
     private Button indexedAttributeAddButton;
     private Button indexedAttributeEditButton;
@@ -47,7 +76,6 @@ public class PartitionDetailsPage implements IDetailsPage
     public void createContents( Composite parent )
     {
         FormToolkit toolkit = mform.getToolkit();
-
         TableWrapLayout layout = new TableWrapLayout();
         layout.topMargin = 5;
         layout.leftMargin = 5;
@@ -55,71 +83,109 @@ public class PartitionDetailsPage implements IDetailsPage
         layout.bottomMargin = 2;
         parent.setLayout( layout );
 
-        Section detailsSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        detailsSection.marginWidth = 10;
-        detailsSection.setText( "Partition Details" ); //$NON-NLS-1$
-        detailsSection.setDescription( "Set the properties of the partition." ); //$NON-NLS-1$
+        createDetailsSection( parent, toolkit );
+        createContextEntrySection( parent, toolkit );
+        createIndexedAttributesSection( parent, toolkit );
+    }
+
+
+    /**
+     * Creates the Details Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createDetailsSection( Composite parent, FormToolkit toolkit )
+    {
+        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        section.marginWidth = 10;
+        section.setText( "Partition Details" ); //$NON-NLS-1$
+        section.setDescription( "Set the properties of the partition." ); //$NON-NLS-1$
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;
-        detailsSection.setLayoutData( td );
-        Composite detailsClient = toolkit.createComposite( detailsSection );
-        toolkit.paintBordersFor( detailsClient );
+        section.setLayoutData( td );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
         GridLayout glayout = new GridLayout( 3, false );
-        detailsClient.setLayout( glayout );
-        detailsSection.setClient( detailsClient );
+        client.setLayout( glayout );
+        section.setClient( client );
 
         // Name
-        toolkit.createLabel( detailsClient, "Name:" );
-        name = toolkit.createText( detailsClient, "" );
-        name.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        toolkit.createLabel( client, "Name:" );
+        nameText = toolkit.createText( client, "" );
+        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Cache Size
-        toolkit.createLabel( detailsClient, "Cache Size:" );
-        cacheSize = toolkit.createText( detailsClient, "" );
-        cacheSize.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        toolkit.createLabel( client, "Cache Size:" );
+        cacheSizeText = toolkit.createText( client, "" );
+        cacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Suffix
-        toolkit.createLabel( detailsClient, "Suffix:" );
-        suffix = toolkit.createText( detailsClient, "" );
-        suffix.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        toolkit.createLabel( client, "Suffix:" );
+        suffixText = toolkit.createText( client, "" );
+        suffixText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Enable Optimizer
-        enableOptimizer = toolkit.createButton( detailsClient, "Enable optimizer", SWT.CHECK );
-        enableOptimizer.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        enableOptimizerCheckbox = toolkit.createButton( client, "Enable optimizer", SWT.CHECK );
+        enableOptimizerCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Synchronisation On Write
-        synchOnWrite = toolkit.createButton( detailsClient, " Synchronization on write", SWT.CHECK );
-        synchOnWrite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+        synchOnWriteCheckbox = toolkit.createButton( client, " Synchronization on write", SWT.CHECK );
+        synchOnWriteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+    }
 
-        GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
-        buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
 
-        // Context Entry
-        Section contextEntrySection = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        contextEntrySection.marginWidth = 10;
-        contextEntrySection.setText( "Context Entry" ); //$NON-NLS-1$
-        contextEntrySection.setDescription( "Set the attribute/value pairs for the Context Entry of the partition." ); //$NON-NLS-1$
-        contextEntrySection.setLayoutData( new TableWrapData( TableWrapData.FILL ) );
-        Composite contextEntryClient = toolkit.createComposite( contextEntrySection );
-        toolkit.paintBordersFor( contextEntryClient );
-        contextEntryClient.setLayout( new GridLayout( 2, false ) );
-        contextEntrySection.setClient( contextEntryClient );
+    /**
+     * Creates the Context Entry Section.
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createContextEntrySection( Composite parent, FormToolkit toolkit )
+    {
+        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        section.marginWidth = 10;
+        section.setText( "Context Entry" ); //$NON-NLS-1$
+        section.setDescription( "Set the attribute/value pairs for the Context Entry of the partition." ); //$NON-NLS-1$
+        section.setLayoutData( new TableWrapData( TableWrapData.FILL ) );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        client.setLayout( new GridLayout( 2, false ) );
+        section.setClient( client );
 
-        contextEntryTable = toolkit.createTable( contextEntryClient, SWT.NONE );
+        contextEntryTable = toolkit.createTable( client, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gd.heightHint = 80;
         contextEntryTable.setLayoutData( gd );
 
-        contextEntryAddButton = toolkit.createButton( contextEntryClient, "Add...", SWT.PUSH );
+        GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
+        buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
+
+        contextEntryAddButton = toolkit.createButton( client, "Add...", SWT.PUSH );
         contextEntryAddButton.setLayoutData( buttonsGD );
 
-        contextEntryEditButton = toolkit.createButton( contextEntryClient, "Edit...", SWT.PUSH );
+        contextEntryEditButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
         contextEntryEditButton.setLayoutData( buttonsGD );
 
-        contextEntryDeleteButton = toolkit.createButton( contextEntryClient, "Delete", SWT.PUSH );
+        contextEntryDeleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
         contextEntryDeleteButton.setLayoutData( buttonsGD );
+    }
 
-        // Indexed Attributes
+
+    /**
+     * Creates the Indexed Attributes Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createIndexedAttributesSection( Composite parent, FormToolkit toolkit )
+    {
         Section indexedAttributesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         indexedAttributesSection.marginWidth = 10;
         indexedAttributesSection.setText( "Indexed Attributes" ); //$NON-NLS-1$
@@ -131,9 +197,12 @@ public class PartitionDetailsPage implements IDetailsPage
         indexedAttributesSection.setClient( indexedAttributesClient );
 
         indexedAttributesTable = toolkit.createTable( indexedAttributesClient, SWT.NONE );
-        gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gd.heightHint = 80;
         indexedAttributesTable.setLayoutData( gd );
+
+        GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
+        buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
 
         indexedAttributeAddButton = toolkit.createButton( indexedAttributesClient, "Add...", SWT.PUSH );
         indexedAttributeAddButton.setLayoutData( buttonsGD );
@@ -169,7 +238,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
-        input.setName( name.getText() );
+        input.setName( nameText.getText() );
     }
 
 
@@ -217,7 +286,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void refresh()
     {
-        name.setText( input.getName() );
+        nameText.setText( input.getName() );
     }
 
 
@@ -226,7 +295,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void setFocus()
     {
-        name.setFocus();
+        nameText.setFocus();
     }
 
 

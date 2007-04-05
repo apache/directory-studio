@@ -13,19 +13,17 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * This class implements the Open Editor Action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenEditorAction extends Action implements IWorkbenchWindowActionDelegate
 {
-
-    public void dispose()
-    {
-    }
-
-
-    public void init( IWorkbenchWindow window )
-    {
-    }
-
-
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+     */
     public void run( IAction action )
     {
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -41,7 +39,26 @@ public class OpenEditorAction extends Action implements IWorkbenchWindowActionDe
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+     */
     public void selectionChanged( IAction action, ISelection selection )
+    {
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
+     */
+    public void dispose()
+    {
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
+     */
+    public void init( IWorkbenchWindow window )
     {
     }
 }

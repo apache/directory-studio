@@ -51,7 +51,7 @@ public class GeneralPage extends FormPage
     public static final String ID = ServerConfigurationEditor.ID + ".BasicPage";
 
     /** The Page Title */
-    private static final String TITLE = "Basic";
+    private static final String TITLE = "General";
 
     // UI Fields
     private Text portText;
@@ -60,19 +60,12 @@ public class GeneralPage extends FormPage
     private Text passwordText;
     private Button showPasswordCheckbox;
     private Button allowAnonymousAccessCheckbox;
-
     private Text maxTimeLimitText;
-
     private Text maxSizeLimitText;
-
     private Text synchPeriodText;
-
     private Button enableAccesControlCheckbox;
-
     private Button enableNTPCheckbox;
-
     private Button enableKerberosCheckbox;
-
     private Button enableChangePasswordCheckbox;
 
 
