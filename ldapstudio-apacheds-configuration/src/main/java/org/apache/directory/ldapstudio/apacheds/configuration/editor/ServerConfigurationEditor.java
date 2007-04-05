@@ -40,9 +40,7 @@ public class ServerConfigurationEditor extends FormEditor
     public static final String ID = "org.apache.directory.ldapstudio.apacheds.configuration.editor";
 
     // The Pages
-    private FormPage basicPage;
-    private FormPage limitsPage;
-    private FormPage optionsPage;
+    private FormPage generalPage;
     private FormPage partitionsPage;
     private FormPage interceptorsPage;
     private FormPage extendedOperationsPage;
@@ -61,18 +59,14 @@ public class ServerConfigurationEditor extends FormEditor
      */
     protected void addPages()
     {
-        basicPage = new BasicPage( this );
-        limitsPage = new LimitsPage( this );
-        optionsPage = new OptionsPage( this );
+        generalPage = new GeneralPage( this );
         partitionsPage = new PartitionsPage( this );
         interceptorsPage = new InterceptorsPage( this );
         extendedOperationsPage = new ExtendedOperationsPage( this );
 
         try
         {
-            addPage( basicPage );
-            addPage( limitsPage );
-            addPage( optionsPage );
+            addPage( generalPage );
             addPage( partitionsPage );
             addPage( interceptorsPage );
             addPage( extendedOperationsPage );

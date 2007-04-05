@@ -20,6 +20,12 @@
 package org.apache.directory.ldapstudio.apacheds.configuration;
 
 
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -77,5 +83,22 @@ public class Activator extends AbstractUIPlugin
     public static Activator getDefault()
     {
         return plugin;
+    }
+    
+    /**
+     * Returns the button with respect to the font metrics.
+     *
+     * @param control a control
+     * @return the button width
+     */
+    public static int getButtonWidth( Control control )
+    {
+        GC gc = new GC( control );
+        gc.setFont( JFaceResources.getDialogFont() );
+        FontMetrics fontMetrics = gc.getFontMetrics();
+        gc.dispose();
+
+        int width = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
+        return width;
     }
 }

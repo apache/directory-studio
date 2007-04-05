@@ -17,36 +17,16 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.apacheds.configuration.editor;
-
-
-import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
-
+package org.apache.directory.ldapstudio.apacheds.configuration;
 
 /**
- * This class represents the Options Page of the Server Configuration Editor.
+ * This interface contains all the Constants used in the Plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OptionsPage extends FormPage
+public interface PluginConstants
 {
-    /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".OptionsPage";
-
-    /** The Page Title */
-    private static final String TITLE = "Options";
-
-
-    /**
-     * Creates a new instance of OptionsPage.
-     *
-     * @param editor
-     *      the associated editor
-     */
-    public OptionsPage( FormEditor editor )
-    {
-        super( editor, ID, TITLE );
-    }
+    public static final String IMG_VERTICAL_ORIENTATION = "icons/vertical_orientation.gif";
+    public static final String IMG_HORIZONTAL_ORIENTATION = "icons/horizontal_orientation.gif"; 
 }

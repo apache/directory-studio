@@ -20,8 +20,10 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
@@ -38,6 +40,9 @@ public class PartitionsPage extends FormPage
     /** The Page Title */
     private static final String TITLE = "Partitions";
 
+    /** The MasterDetails block */
+    private PartitionsMasterDetailsBlock masterDetailBlock;
+
 
     /**
      * Creates a new instance of PartitionsPage.
@@ -48,5 +53,17 @@ public class PartitionsPage extends FormPage
     public PartitionsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
+        masterDetailBlock = new PartitionsMasterDetailsBlock( this );
+    }
+
+
+    @Override
+    protected void createFormContent( IManagedForm managedForm )
+    {
+        super.createFormContent( managedForm );
+
+        final ScrolledForm form = managedForm.getForm();
+        form.setText( "Partitions" ); //$NON-NLS-1$
+        masterDetailBlock.createContent( managedForm );
     }
 }

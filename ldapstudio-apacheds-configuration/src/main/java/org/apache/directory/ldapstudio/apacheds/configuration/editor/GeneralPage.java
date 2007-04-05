@@ -30,7 +30,7 @@ import org.eclipse.ui.forms.editor.FormPage;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BasicPage extends FormPage
+public class GeneralPage extends FormPage
 {
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.ID + ".BasicPage";
@@ -40,12 +40,12 @@ public class BasicPage extends FormPage
 
 
     /**
-     * Creates a new instance of BasicPage.
+     * Creates a new instance of GeneralPage.
      *
      * @param editor
      *      the associated editor
      */
-    public BasicPage( FormEditor editor )
+    public GeneralPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
     }
