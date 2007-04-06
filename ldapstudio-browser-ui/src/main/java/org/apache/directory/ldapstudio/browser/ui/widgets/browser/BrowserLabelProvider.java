@@ -87,7 +87,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             {
                 append.append( "Root DSE" );
             }
-            if ( entry.isChildrenInitialized() && entry.getChildrenCount() > 0 )
+            if ( entry.isChildrenInitialized() && ( entry.getChildrenCount() > 0 ) || entry.getChildrenFilter() != null )
             {
                 append.append( " (" ).append( entry.getChildrenCount() );
                 if ( entry.hasMoreChildren() )
