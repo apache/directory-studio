@@ -23,8 +23,6 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 import java.util.LinkedHashSet;
 
-import org.apache.directory.ldapstudio.browser.core.internal.model.BaseDNEntry;
-import org.apache.directory.ldapstudio.browser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.jobs.MoveEntriesJob;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
@@ -173,8 +171,7 @@ public class MoveAction extends BrowserAction
             IEntry[] entries = ( IEntry[] ) entriesSet.toArray( new IEntry[entriesSet.size()] );
             for ( int i = 0; i < entries.length; i++ )
             {
-                if ( entries[i] == null || entries[i] instanceof RootDSE
-                    || entries[i] instanceof DirectoryMetadataEntry || entries[i] instanceof BaseDNEntry )
+                if ( entries[i] == null || entries[i] instanceof RootDSE )
                 {
                     return new IEntry[0];
                 }

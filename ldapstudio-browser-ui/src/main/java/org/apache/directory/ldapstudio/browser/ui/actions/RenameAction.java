@@ -22,8 +22,6 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.internal.model.BaseDNEntry;
-import org.apache.directory.ldapstudio.browser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.jobs.RenameEntryJob;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
@@ -236,8 +234,7 @@ public class RenameAction extends BrowserAction
             entry = getSelectedValues()[0].getAttribute().getEntry();
         }
 
-        if ( entry != null && !( entry instanceof RootDSE ) && !( entry instanceof DirectoryMetadataEntry )
-            && !( entry instanceof BaseDNEntry ) )
+        if ( entry != null && !( entry instanceof RootDSE ) )
         {
             return new IEntry[]
                 { entry };
