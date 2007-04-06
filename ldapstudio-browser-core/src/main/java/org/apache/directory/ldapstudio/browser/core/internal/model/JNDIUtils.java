@@ -22,8 +22,10 @@ package org.apache.directory.ldapstudio.browser.core.internal.model;
 
 
 import javax.naming.Name;
+import javax.naming.NameParser;
 import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
+import javax.naming.ldap.InitialLdapContext;
 
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.NameException;
@@ -36,21 +38,9 @@ public class JNDIUtils
     public static DN getDn( SearchResult sr, String base, JNDIConnectionContext context ) throws NamingException,
         NameException, NoSuchFieldException
     {
-        DN dn = null;
-        if ( sr.isRelative() )
-        {
-            Name name = ( Name ) context.getNameParser().parse( base ).clone();
-            Name rdnName = context.getNameParser().parse( unescapeJndiName( sr.getName() ) );
-            name.addAll( rdnName );
-            dn = new DN( name.toString() );
-        }
-        else
-        {
-            URL url = new URL( sr.getName() );
-            dn = url.getDn();
-            // dn = new DN(sr.getName());
-        }
-        return dn;
+        String dn = sr.getNameInNamespace();
+        dn = unescapeJndiName( dn );
+        return new DN( dn );
     }
 
 

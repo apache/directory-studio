@@ -174,7 +174,8 @@ public class EntryWidget extends BrowserWidget
                             entry = job.getReadEntry();
                         }
                     }
-                    else
+                    
+                    if( entry == null )
                     {
                         entry = connection.getRootDSE();
                     }

@@ -174,21 +174,8 @@ public class JNDIConnectionContext
         this.isConnected = false;
         System.gc();
     }
-
-
-    public NameParser getNameParser() throws NamingException
-    {
-        if ( this.context != null )
-        {
-            return this.context.getNameParser( "" ); //$NON-NLS-1$
-        }
-        else
-        {
-            throw new NamingException( BrowserCoreMessages.model__no_connection );
-        }
-    }
-
-
+    
+    
     public NamingEnumeration search( final String searchBase, final String filter, final SearchControls controls,
         final String derefAliasMethod, final String handleReferralsMethod, final Control[] ldapControls,
         final ExtendedProgressMonitor monitor ) throws NamingException
@@ -234,8 +221,7 @@ public class JNDIConnectionContext
 
                     try
                     {
-                        Name searchBaseName = getNameParser().parse( searchBase );
-                        this.namingEnumeration = searchCtx.search( searchBaseName, filter, controls );
+                        this.namingEnumeration = searchCtx.search( searchBase, filter, controls );
                     }
                     catch ( NameNotFoundException nffe )
                     {
@@ -307,8 +293,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    Name name = getNameParser().parse( dn );
-                    modCtx.modifyAttributes( name, modificationItems );
+                    modCtx.modifyAttributes( dn, modificationItems );
                 }
                 catch ( NamingException ne )
                 {
@@ -359,9 +344,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    Name oldName = getNameParser().parse( oldDn );
-                    Name newName = getNameParser().parse( newDn );
-                    modCtx.rename( oldName, newName );
+                    modCtx.rename( oldDn, newDn );
 
                 }
                 catch ( NamingException ne )
@@ -413,8 +396,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    Name name = getNameParser().parse( dn );
-                    modCtx.createSubcontext( name, attributes );
+                    modCtx.createSubcontext( dn, attributes );
                 }
                 catch ( NamingException ne )
                 {
@@ -465,8 +447,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    Name name = getNameParser().parse( dn );
-                    modCtx.destroySubcontext( name );
+                    modCtx.destroySubcontext( dn );
                 }
                 catch ( NamingException ne )
                 {
