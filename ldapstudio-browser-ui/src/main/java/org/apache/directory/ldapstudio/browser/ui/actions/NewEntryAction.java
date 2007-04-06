@@ -130,8 +130,6 @@ public class NewEntryAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        return this.getSelectedEntries().length + this.getSelectedSearchResults().length
-            + this.getSelectedBookmarks().length == 1;
-        // return getSelectedEntries().length == 1;
+        return true;
     }
 }

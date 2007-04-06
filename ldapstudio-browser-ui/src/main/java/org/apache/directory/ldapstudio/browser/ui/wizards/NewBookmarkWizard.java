@@ -25,9 +25,14 @@ import org.apache.directory.ldapstudio.browser.core.internal.model.Bookmark;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
+import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
+import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
+import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserEntryPage;
+import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserSearchResultPage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -93,9 +98,9 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         {
             selectedEntry = ( ( ISearchResult ) o ).getEntry();
         }
-        else if ( o instanceof Bookmark )
+        else if ( o instanceof IBookmark )
         {
-            selectedEntry = ( ( Bookmark ) o ).getEntry();
+            selectedEntry = ( ( IBookmark ) o ).getEntry();
         }
         else if ( o instanceof IAttribute )
         {
@@ -105,6 +110,27 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         {
             selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
         }
+        else if ( o instanceof IConnection )
+        {
+            selectedEntry = ( ( IConnection ) o ).getRootDSE();
+        }
+        else if ( o instanceof ISearch )
+        {
+            selectedEntry = ( ( ISearch ) o ).getConnection().getRootDSE();
+        }
+        else if ( o instanceof BrowserCategory )
+        {
+            selectedEntry = ( ( BrowserCategory ) o ).getParent().getRootDSE();
+        }
+        else if ( o instanceof BrowserSearchResultPage )
+        {
+            selectedEntry = ( ( BrowserSearchResultPage ) o ).getSearch().getConnection().getRootDSE();
+        }
+        else if ( o instanceof BrowserEntryPage )
+        {
+            selectedEntry = ( ( BrowserEntryPage ) o ).getEntry();
+        }
+        
         else
         {
             selectedEntry = null;
@@ -145,7 +171,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         {
             super( "" );
             setTitle( "No entry selected" );
-            setDescription( "In order to use the bookmark creation wizard please select an entry." );
+            setDescription( "In order to use the bookmark creation wizard please select an entry or connection." );
             // setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
             setPageComplete( true );
         }

@@ -31,12 +31,14 @@ import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DummyEntry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Value;
+import org.apache.directory.ldapstudio.browser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
 import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.fieldassist.DecoratedField;
 import org.eclipse.jface.fieldassist.FieldDecoration;
@@ -156,6 +158,12 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         if ( wizard.getSelectedConnection() != null )
         {
+            if( !wizard.getSelectedConnection().isOpened() )
+            {
+                OpenConnectionsJob job = new OpenConnectionsJob(wizard.getSelectedConnection());
+                RunnableContextJobAdapter.execute( job, getContainer() );
+            }
+            
             availableObjectClasses.addAll( Arrays.asList( wizard.getSelectedConnection().getSchema()
                 .getObjectClassDescriptions() ) );
 

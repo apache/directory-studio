@@ -22,11 +22,11 @@ package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.internal.model.Bookmark;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DummyEntry;
 import org.apache.directory.ldapstudio.browser.core.jobs.CreateEntryJob;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
+import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
@@ -35,6 +35,9 @@ import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
+import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
+import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserEntryPage;
+import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserSearchResultPage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -118,9 +121,9 @@ public class NewEntryWizard extends Wizard implements INewWizard
             selectedEntry = ( ( ISearchResult ) o ).getEntry();
             selectedConnection = selectedEntry.getConnection();
         }
-        else if ( o instanceof Bookmark )
+        else if ( o instanceof IBookmark )
         {
-            selectedEntry = ( ( Bookmark ) o ).getEntry();
+            selectedEntry = ( ( IBookmark ) o ).getEntry();
             selectedConnection = selectedEntry.getConnection();
         }
         else if ( o instanceof IAttribute )
@@ -143,6 +146,21 @@ public class NewEntryWizard extends Wizard implements INewWizard
             selectedEntry = null;
             selectedConnection = ( IConnection ) o;
         }
+        else if ( o instanceof BrowserCategory )
+        {
+            selectedEntry = null;
+            selectedConnection = ( ( BrowserCategory ) o ).getParent();
+        }
+        else if ( o instanceof BrowserSearchResultPage )
+        {
+            selectedEntry = null;
+            selectedConnection = ( ( BrowserSearchResultPage ) o ).getSearch().getConnection();
+        }
+        else if ( o instanceof BrowserEntryPage )
+        {
+            selectedEntry = null;
+            selectedConnection = ( ( BrowserEntryPage ) o ).getEntry().getConnection();
+        }
         else
         {
             selectedEntry = null;
@@ -162,7 +180,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
      */
     public void addPages()
     {
-        if ( selectedConnection != null && selectedConnection.isOpened() )
+        if ( selectedConnection != null )
         {
             typePage = new NewEntryTypeWizardPage( NewEntryTypeWizardPage.class.getName(), this );
             addPage( typePage );
@@ -192,14 +210,17 @@ public class NewEntryWizard extends Wizard implements INewWizard
         super.createPageControls( pageContainer );
 
         // set help context ID
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( ocPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( dnPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( attributePage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+        if ( selectedConnection != null )
+        {
+            PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
+                BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+            PlatformUI.getWorkbench().getHelpSystem().setHelp( ocPage.getControl(),
+                BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+            PlatformUI.getWorkbench().getHelpSystem().setHelp( dnPage.getControl(),
+                BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+            PlatformUI.getWorkbench().getHelpSystem().setHelp( attributePage.getControl(),
+                BrowserUIPlugin.PLUGIN_ID + "." + "tools_newentry_wizard" );
+        }
     }
 
     /**
@@ -218,7 +239,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
         {
             super( "" );
             setTitle( "No connection selected or connection is closed" );
-            setDescription( "In order to use the entry creation wizard please select an opened connection." );
+            setDescription( "In order to use the entry creation wizard please select an entry or connection." );
             setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
                 BrowserUIConstants.IMG_ENTRY_WIZARD ) );
             setPageComplete( true );

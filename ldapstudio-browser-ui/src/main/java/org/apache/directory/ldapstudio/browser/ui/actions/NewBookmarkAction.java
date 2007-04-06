@@ -21,11 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.wizards.NewBookmarkWizard;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -65,37 +63,6 @@ public class NewBookmarkAction extends BrowserAction
 
 
     /**
-     * Gets the entry associated with the Bookmark
-     *
-     * @return
-     *      the entry associated with the Bookmark
-     */
-    private IEntry getEntry()
-    {
-        if ( this.getSelectedEntries().length + this.getSelectedSearchResults().length
-            + this.getSelectedBookmarks().length != 1 )
-        {
-            return null;
-        }
-
-        if ( getSelectedEntries().length == 1 )
-        {
-            return getSelectedEntries()[0];
-        }
-        else if ( getSelectedSearchResults().length == 1 )
-        {
-            return getSelectedSearchResults()[0].getEntry();
-        }
-        else if ( getSelectedBookmarks().length == 1 )
-        {
-            return getSelectedBookmarks()[0].getEntry();
-        }
-
-        return null;
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public String getText()
@@ -127,6 +94,6 @@ public class NewBookmarkAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        return getEntry() != null && getEntry().getConnection() != null && getEntry().getConnection().isOpened();
+        return true;
     }
 }

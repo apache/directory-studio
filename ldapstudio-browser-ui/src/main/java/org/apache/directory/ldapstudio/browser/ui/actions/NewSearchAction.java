@@ -87,8 +87,6 @@ public class NewSearchAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        return getSelectedEntries().length + getSelectedSearchResults().length + getSelectedSearches().length
-            + getSelectedBookmarks().length + getSelectedConnections().length + getSelectedAttributes().length
-            + getSelectedAttributeHierarchies().length + getSelectedValues().length > 0;
+        return true;
     }
 }
