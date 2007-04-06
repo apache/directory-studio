@@ -30,6 +30,7 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateListener;
+import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 
@@ -123,6 +124,10 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener, En
         if ( viewer != null )
         {
             viewer.refresh();
+
+            // select the right connection
+            ISearch search = searchUpdateEvent.getSearch();
+            viewer.setSelection( new StructuredSelection( search.getConnection() ), true );
         }
     }
 
