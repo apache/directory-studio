@@ -59,6 +59,7 @@ public class RenameEntryJob extends AbstractAsyncBulkJob
     {
         this.connection = entry.getConnection();
         this.oldEntry = entry;
+        this.newEntry = entry;
         this.newRdn = newRdn;
         this.deleteOldRdn = deleteOldRdn;
 

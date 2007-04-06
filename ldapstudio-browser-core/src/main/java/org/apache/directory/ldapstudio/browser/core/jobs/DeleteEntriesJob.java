@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.events.ChildrenInitializedEvent;
+import org.apache.directory.ldapstudio.browser.core.events.EntryDeletedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Search;
@@ -46,6 +47,8 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
 
     private IEntry[] entriesToDelete;
 
+    private Set deletedEntriesSet = new HashSet();
+    
     private Set entriesToUpdateSet = new HashSet();
 
     private Set searchesToUpdateSet = new HashSet();
@@ -90,7 +93,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
         monitor.worked( 1 );
 
         int num = 0;
-        for ( int i = 0; !monitor.isCanceled() && i < entriesToDelete.length; i++ )
+        for ( int i = 0; !monitor.isCanceled() && !monitor.errorsReported() && i < entriesToDelete.length; i++ )
         {
 
             IEntry entryToDelete = entriesToDelete[i];
@@ -98,32 +101,38 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
 
             // delete from directory
             // TODO: use TreeDelete Control, if available
+            int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
             num = deleteEntryRecursive( entryToDelete, false, num, monitor );
+            int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
+            deletedEntriesSet.add( entryToDelete );
 
-            // delete from parent
-            entryToDelete.getParententry().deleteChild( entryToDelete );
-            entriesToUpdateSet.add( entryToDelete.getParententry() );
-
-            // delete from searches
-            ISearch[] searches = connection.getSearchManager().getSearches();
-            for ( int j = 0; j < searches.length; j++ )
+            if ( errorStatusSize1 == errorStatusSize2 )
             {
-                ISearch search = searches[j];
-                if ( search.getSearchResults() != null )
+                // delete from parent
+                entryToDelete.getParententry().deleteChild( entryToDelete );
+                entriesToUpdateSet.add( entryToDelete.getParententry() );
+
+                // delete from searches
+                ISearch[] searches = connection.getSearchManager().getSearches();
+                for ( int j = 0; j < searches.length; j++ )
                 {
-                    ISearchResult[] searchResults = search.getSearchResults();
-                    for ( int k = 0; k < searchResults.length; k++ )
+                    ISearch search = searches[j];
+                    if ( search.getSearchResults() != null )
                     {
-                        ISearchResult result = searchResults[k];
-                        if ( entryToDelete.equals( result.getEntry() ) )
+                        ISearchResult[] searchResults = search.getSearchResults();
+                        for ( int k = 0; k < searchResults.length; k++ )
                         {
-                            ISearchResult[] newsrs = new ISearchResult[searchResults.length - 1];
-                            System.arraycopy( searchResults, 0, newsrs, 0, k );
-                            System.arraycopy( searchResults, k + 1, newsrs, k, searchResults.length - k - 1 );
-                            search.setSearchResults( newsrs );
-                            searchResults = newsrs;
-                            k--;
-                            searchesToUpdateSet.add( search );
+                            ISearchResult result = searchResults[k];
+                            if ( entryToDelete.equals( result.getEntry() ) )
+                            {
+                                ISearchResult[] newsrs = new ISearchResult[searchResults.length - 1];
+                                System.arraycopy( searchResults, 0, newsrs, 0, k );
+                                System.arraycopy( searchResults, k + 1, newsrs, k, searchResults.length - k - 1 );
+                                search.setSearchResults( newsrs );
+                                searchResults = newsrs;
+                                k--;
+                                searchesToUpdateSet.add( search );
+                            }
                         }
                     }
                 }
@@ -212,6 +221,11 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
 
     protected void runNotification()
     {
+        for ( Iterator it = deletedEntriesSet.iterator(); it.hasNext(); )
+        {
+            IEntry entry = ( IEntry ) it.next();
+            EventRegistry.fireEntryUpdated( new EntryDeletedEvent( entry.getConnection(), entry ), this );
+        }
         for ( Iterator it = entriesToUpdateSet.iterator(); it.hasNext(); )
         {
             IEntry parent = ( IEntry ) it.next();

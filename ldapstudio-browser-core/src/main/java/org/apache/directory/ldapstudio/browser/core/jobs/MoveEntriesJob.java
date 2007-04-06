@@ -91,6 +91,10 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
         monitor.worked( 1 );
 
         this.newEntries = new IEntry[oldEntries.length];
+        for ( int i = 0; i < oldEntries.length; i++ )
+        {
+            this.newEntries[i] = oldEntries[i];
+        }
 
         for ( int i = 0; i < oldEntries.length; i++ )
         {
