@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDAP Studio Value Editors Plug-in
+Bundle-SymbolicName: org.apache.directory.ldapstudio.valueeditors;singleton:=true
+Bundle-Version: 0.0.0.SNAPSHOT
+Bundle-Activator: org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.apache.directory.ldapstudio.browser.core,
+ org.apache.directory.ldapstudio.browser.common
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.ldapstudio.valueeditors,
+ org.apache.directory.ldapstudio.valueeditors.address,
+ org.apache.directory.ldapstudio.valueeditors.dn,
+ org.apache.directory.ldapstudio.valueeditors.image,
+ org.apache.directory.ldapstudio.valueeditors.integer,
+ org.apache.directory.ldapstudio.valueeditors.objectclass,
+ org.apache.directory.ldapstudio.valueeditors.password,
+ org.apache.directory.ldapstudio.valueeditors.time
