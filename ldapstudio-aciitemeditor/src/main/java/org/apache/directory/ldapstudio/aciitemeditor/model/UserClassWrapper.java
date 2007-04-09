@@ -13,7 +13,7 @@ import java.util.Set;
 
 import javax.naming.Name;
 
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStringValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.UserClass;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;

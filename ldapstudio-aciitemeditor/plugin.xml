@@ -13,7 +13,7 @@
       </editor>
    </extension>
    <extension
-         point="org.apache.directory.ldapstudio.browser.ui.valueEditors">
+         point="org.apache.directory.ldapstudio.valueeditors">
       <valueEditor
             class="org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueEditor"
             icon="icons/aciitemeditor.gif"

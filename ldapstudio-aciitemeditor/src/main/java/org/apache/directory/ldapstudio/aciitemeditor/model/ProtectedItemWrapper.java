@@ -12,7 +12,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStringValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.ItemFirstACIItem;
 import org.apache.directory.shared.ldap.aci.ProtectedItem;

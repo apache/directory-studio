@@ -26,13 +26,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.search.EntryWidget;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.NameException;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.TextDialog;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStringValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.search.EntryWidget;
+import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.subtree.BaseSubtreeSpecification;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
@@ -70,7 +70,7 @@ import org.eclipse.swt.widgets.Table;
 public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 {
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogValueEditor#openDialog(org.eclipse.swt.widgets.Shell)
+     * @see org.apache.directory.ldapstudio.valueeditors.AbstractDialogValueEditor#openDialog(org.eclipse.swt.widgets.Shell)
      */
     protected boolean openDialog( Shell shell )
     {
@@ -146,7 +146,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStringValueEditor#getRawValue(org.apache.directory.ldapstudio.browser.core.model.IConnection, java.lang.Object)
+     * @see org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor#getRawValue(org.apache.directory.ldapstudio.browser.core.model.IConnection, java.lang.Object)
      */
     public Object getRawValue( IConnection connection, Object value )
     {

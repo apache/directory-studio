@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.aciitemeditor.widgets.Messages;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStringValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;

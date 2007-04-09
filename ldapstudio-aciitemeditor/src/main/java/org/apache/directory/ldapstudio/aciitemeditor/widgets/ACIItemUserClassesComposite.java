@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.aciitemeditor.dialogs.MultiValuedDialog;
 import org.apache.directory.ldapstudio.aciitemeditor.model.UserClassWrapper;
 import org.apache.directory.ldapstudio.aciitemeditor.model.UserClassWrapperFactory;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.AbstractDialogStringValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.apache.directory.shared.ldap.aci.ProtectedItem;
 import org.apache.directory.shared.ldap.aci.UserClass;
 import org.eclipse.jface.viewers.ArrayContentProvider;

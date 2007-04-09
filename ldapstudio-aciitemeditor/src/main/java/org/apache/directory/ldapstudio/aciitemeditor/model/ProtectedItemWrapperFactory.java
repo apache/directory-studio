@@ -1,13 +1,13 @@
 
 package org.apache.directory.ldapstudio.aciitemeditor.model;
 
+import org.apache.directory.ldapstudio.aciitemeditor.AttributeTypeAndValueValueEditor;
+import org.apache.directory.ldapstudio.aciitemeditor.AttributeTypeValueEditor;
+import org.apache.directory.ldapstudio.aciitemeditor.FilterValueEditor;
 import org.apache.directory.ldapstudio.aciitemeditor.MaxValueCountValueEditor;
 import org.apache.directory.ldapstudio.aciitemeditor.RestrictedByValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.AttributeTypeAndValueValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.AttributeTypeValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.FilterValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.IntegerValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.TextValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.TextValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.integer.IntegerValueEditor;
 import org.apache.directory.shared.ldap.aci.ProtectedItem;
 
 public class ProtectedItemWrapperFactory

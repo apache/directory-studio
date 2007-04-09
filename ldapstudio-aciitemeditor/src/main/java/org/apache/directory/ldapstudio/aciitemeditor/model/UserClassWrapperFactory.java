@@ -2,8 +2,8 @@
 package org.apache.directory.ldapstudio.aciitemeditor.model;
 
 import org.apache.directory.ldapstudio.aciitemeditor.SubtreeValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.DnValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.TextValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.TextValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.dn.DnValueEditor;
 import org.apache.directory.shared.ldap.aci.UserClass;
 
 public class UserClassWrapperFactory

@@ -48,10 +48,12 @@
 				<include name="**/*.jar"/>
 			</fileset>
 			<fileset dir="${lib.dir}" />
-			<pathelement location="${basedir}/../ldapstudio-browser-ui/target/classes"/>
-			<pathelement location="${basedir}/../ldapstudio-browser-ui/target/build"/>
 			<pathelement location="${basedir}/../ldapstudio-browser-core/target/classes"/>
 			<pathelement location="${basedir}/../ldapstudio-browser-core/target/build"/>
+			<pathelement location="${basedir}/../ldapstudio-browser-common/target/classes"/>
+			<pathelement location="${basedir}/../ldapstudio-browser-common/target/build"/>
+			<pathelement location="${basedir}/../ldapstudio-valueeditors/target/classes"/>
+			<pathelement location="${basedir}/../ldapstudio-valueeditors/target/build"/>
 			<pathelement location="target/classes"/>
 		</path>
 	</target>
