@@ -249,4 +249,32 @@ of your accepting any such warranty or additional liability.
          version="0.7.0"
          unpack="false"/>
 
+   <plugin
+         id="org.apache.directory.ldapstudio.aciitemeditor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.ldapstudio.browser.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.ldapstudio.valueeditors"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.ldapstudio.ldifeditor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
