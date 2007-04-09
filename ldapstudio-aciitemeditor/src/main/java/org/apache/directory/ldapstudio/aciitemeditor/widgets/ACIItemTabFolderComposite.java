@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.aciitemeditor.widgets;
 
 
@@ -271,8 +270,8 @@ public class ACIItemTabFolderComposite extends Composite
             return input;
         }
     }
-    
-    
+
+
     /**
      * Sets the context.
      * 

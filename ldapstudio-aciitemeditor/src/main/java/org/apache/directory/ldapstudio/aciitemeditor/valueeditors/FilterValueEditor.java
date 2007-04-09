@@ -18,13 +18,12 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
 import org.apache.directory.ldapstudio.browser.common.dialogs.FilterWidgetDialog;
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -38,10 +37,13 @@ import org.eclipse.swt.widgets.Shell;
 public class FilterValueEditor extends AbstractDialogStringValueEditor
 {
 
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
+
     /**
      * {@inheritDoc}
      * 
-     * This implementation opens the TextDialog.
+     * This implementation opens the FilterWidgetDialog.
      */
     public boolean openDialog( Shell shell )
     {
@@ -49,53 +51,16 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof FilterValueEditorRawValueWrapper )
         {
             FilterValueEditorRawValueWrapper wrapper = ( FilterValueEditorRawValueWrapper ) value;
-            FilterWidgetDialog dialog = new FilterWidgetDialog( shell, "Filter Editor", wrapper.filter,
+            FilterWidgetDialog dialog = new FilterWidgetDialog( shell, Messages
+                .getString( "FilterValueEditor.dialog.title" ), wrapper.filter, //$NON-NLS-1$
                 wrapper.connection );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getFilter() ) )
+            if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getFilter() ) )
             {
                 setValue( dialog.getFilter() );
                 return true;
             }
         }
         return false;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns always the string value.
-     * 
-     * Reimplementation, because getRawValue() returns an 
-     * AttributeTypeValueEditorRawValueWrapper.
-     */
-    public String getDisplayValue( IValue value )
-    {
-        if ( value == null )
-        {
-            return "NULL";
-        }
-
-        String displayValue = value.getStringValue();
-        return displayValue;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns a FilterValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IValue value )
-    {
-        if ( value == null || !value.isString() )
-        {
-            return null;
-        }
-        else
-        {
-            return getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() );
-        }
     }
 
 

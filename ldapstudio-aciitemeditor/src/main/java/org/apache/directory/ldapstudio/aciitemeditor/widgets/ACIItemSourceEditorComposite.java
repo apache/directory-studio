@@ -24,6 +24,7 @@ import java.text.ParseException;
 
 import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
+import org.apache.directory.ldapstudio.aciitemeditor.sourceeditor.ACISourceViewerConfiguration;
 import org.apache.directory.shared.ldap.aci.ACIItem;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.eclipse.jface.resource.JFaceResources;
@@ -50,7 +51,7 @@ public class ACIItemSourceEditorComposite extends Composite
 
     /** The source editor */
     private SourceViewer sourceEditor;
-    
+
     /** The source editor configuration. */
     private SourceViewerConfiguration configuration;
 
@@ -78,7 +79,7 @@ public class ACIItemSourceEditorComposite extends Composite
     {
         // create source editor
         sourceEditor = new SourceViewer( this, null, null, false, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
-        
+
         // setup basic configuration
         configuration = new ACISourceViewerConfiguration();
         sourceEditor.configure( configuration );
@@ -118,7 +119,7 @@ public class ACIItemSourceEditorComposite extends Composite
     public void forceSetInput( String input )
     {
         sourceEditor.getDocument().set( input );
-        
+
         // format
         IRegion region = new Region( 0, sourceEditor.getDocument().getLength() );
         configuration.getContentFormatter( sourceEditor ).format( sourceEditor.getDocument(), region );
@@ -137,16 +138,16 @@ public class ACIItemSourceEditorComposite extends Composite
     public String getInput() throws ParseException
     {
         String input = forceGetInput();
-        
+
         // strip new lines
-        input = input.replaceAll( "\\n", " " );
-        input = input.replaceAll( "\\r", " " );
+        input = input.replaceAll( "\\n", " " ); //$NON-NLS-1$ //$NON-NLS-2$
+        input = input.replaceAll( "\\r", " " ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ACIItemParser parser = Activator.getDefault().getACIItemParser();
         ACIItem aciItem = parser.parse( input );
 
         StringBuffer buffer = new StringBuffer();
-        if(aciItem != null)
+        if ( aciItem != null )
         {
             aciItem.printToBuffer( buffer );
         }
@@ -173,7 +174,7 @@ public class ACIItemSourceEditorComposite extends Composite
      */
     public void setContext( ACIItemValueWithContext context )
     {
-        
+
     }
 
 
@@ -182,8 +183,8 @@ public class ACIItemSourceEditorComposite extends Composite
      */
     public void format()
     {
-      IRegion region = new Region( 0, sourceEditor.getDocument().getLength() );
-      configuration.getContentFormatter( sourceEditor ).format( sourceEditor.getDocument(), region );
+        IRegion region = new Region( 0, sourceEditor.getDocument().getLength() );
+        configuration.getContentFormatter( sourceEditor ).format( sourceEditor.getDocument(), region );
     }
-    
+
 }

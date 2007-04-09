@@ -1,5 +1,24 @@
-
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *  
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License. 
+ *  
+ */
 package org.apache.directory.ldapstudio.aciitemeditor.model;
+
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -53,8 +72,7 @@ public class ProtectedItemWrapper
     static
     {
         Map<Class, String> map = new HashMap<Class, String>();
-        map.put( ProtectedItem.Entry.class, Messages
-            .getString( "ProtectedItemWrapper.protectedItem.entry.label" ) ); //$NON-NLS-1$
+        map.put( ProtectedItem.Entry.class, Messages.getString( "ProtectedItemWrapper.protectedItem.entry.label" ) ); //$NON-NLS-1$
         map.put( ProtectedItem.AllUserAttributeTypes.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.allUserAttributeTypes.label" ) ); //$NON-NLS-1$
         map.put( ProtectedItem.AttributeType.class, Messages
@@ -75,11 +93,10 @@ public class ProtectedItemWrapper
             .getString( "ProtectedItemWrapper.protectedItem.maxImmSub.label" ) ); //$NON-NLS-1$
         map.put( ProtectedItem.RestrictedBy.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.restrictedBy.label" ) ); //$NON-NLS-1$
-        map.put( ProtectedItem.Classes.class, Messages
-            .getString( "ProtectedItemWrapper.protectedItem.classes.label" ) ); //$NON-NLS-1$
+        map.put( ProtectedItem.Classes.class, Messages.getString( "ProtectedItemWrapper.protectedItem.classes.label" ) ); //$NON-NLS-1$
         classToDisplayMap = Collections.unmodifiableMap( map );
     }
-    
+
     /** A dummy ACI to check syntax of the protectedItemValue */
     private static final String DUMMY = "{ identificationTag \"id1\", precedence 1, authenticationLevel simple, " //$NON-NLS-1$
         + "itemOrUserFirst itemFirst: { protectedItems  { #identifier# #values# }, " //$NON-NLS-1$
@@ -93,26 +110,28 @@ public class ProtectedItemWrapper
 
     /** The value prefix, prepended to the value. */
     private String valuePrefix;
-    
+
     /** The value suffix, appended to the value. */
     private String valueSuffix;
-    
+
     /** The value editor, null means no value. */
     private AbstractDialogStringValueEditor valueEditor;
-    
+
     /** The multivalued. */
     private boolean isMultivalued;
-    
+
 
     /**
      * Creates a new instance of ProtectedItemWrapper.
      * 
      * @param clazz the java class of the UserClass
+     * @param isMultivalued the is multivalued
      * @param valuePrefix the identifier
      * @param valueSuffix the dislpay name
      * @param valueEditor the value editor
      */
-    public ProtectedItemWrapper( Class clazz, boolean isMultivalued, String valuePrefix, String valueSuffix, AbstractDialogStringValueEditor valueEditor )
+    public ProtectedItemWrapper( Class clazz, boolean isMultivalued, String valuePrefix, String valueSuffix,
+        AbstractDialogStringValueEditor valueEditor )
     {
         this.clazz = clazz;
         this.isMultivalued = isMultivalued;
@@ -122,8 +141,8 @@ public class ProtectedItemWrapper
 
         this.values = new ArrayList<String>();
     }
-    
-    
+
+
     /**
      * Creates a new protected item object. Therefore it uses the 
      * dummy ACI, injects the protected item and its value, parses
@@ -156,8 +175,8 @@ public class ProtectedItemWrapper
         ProtectedItem item = ( ProtectedItem ) aci.getProtectedItems().iterator().next();
         return item;
     }
-    
-    
+
+
     /**
      * Sets the protected item.
      * 
@@ -196,7 +215,7 @@ public class ProtectedItemWrapper
                 Attribute attribute = ( Attribute ) it.next();
                 try
                 {
-                    values.add( attribute.getID() + "=" + attribute.get() );
+                    values.add( attribute.getID() + "=" + attribute.get() ); //$NON-NLS-1$
                 }
                 catch ( NamingException e )
                 {
@@ -254,8 +273,8 @@ public class ProtectedItemWrapper
         }
 
     }
-    
-    
+
+
     /**
      * Returns a user-friedly string, displayed in the table.
      * 
@@ -280,8 +299,8 @@ public class ProtectedItemWrapper
 
         return getDisplayName() + " " + flatValue; //$NON-NLS-1$
     }
-    
-    
+
+
     /**
      * Returns the flat value.
      * 
@@ -295,7 +314,7 @@ public class ProtectedItemWrapper
         }
 
         StringBuffer sb = new StringBuffer();
-        if(isMultivalued())
+        if ( isMultivalued() )
         {
             sb.append( "{ " ); //$NON-NLS-1$
         }
@@ -310,14 +329,14 @@ public class ProtectedItemWrapper
                 sb.append( ", " ); //$NON-NLS-1$
             }
         }
-        if(isMultivalued())
+        if ( isMultivalued() )
         {
             sb.append( " }" ); //$NON-NLS-1$
         }
         return sb.toString();
     }
-    
-    
+
+
     /**
      * Returns the list of values, may be modified.
      * 
@@ -327,8 +346,8 @@ public class ProtectedItemWrapper
     {
         return values;
     }
-    
-    
+
+
     /**
      * Gets the display name.
      * 
@@ -338,7 +357,6 @@ public class ProtectedItemWrapper
     {
         return classToDisplayMap.get( clazz );
     }
-
 
 
     /**
@@ -352,7 +370,6 @@ public class ProtectedItemWrapper
     }
 
 
-
     /**
      * Returns the class of the user class.
      * 
@@ -363,7 +380,7 @@ public class ProtectedItemWrapper
         return clazz;
     }
 
-    
+
     /**
      * Checks if is editable.
      * 
@@ -373,7 +390,6 @@ public class ProtectedItemWrapper
     {
         return valueEditor != null;
     }
-
 
 
     /**

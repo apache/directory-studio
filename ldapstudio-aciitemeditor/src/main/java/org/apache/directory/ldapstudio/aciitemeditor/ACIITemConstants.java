@@ -28,5 +28,5 @@ package org.apache.directory.ldapstudio.aciitemeditor;
 public interface ACIITemConstants
 {
         /** The ID for ACI Item Template*/
-        public static final String ACI_ITEM_TEMPLATE_ID = "org.apache.directory.ldapstudio.aciitemeditor.templates";
+        public static final String ACI_ITEM_TEMPLATE_ID = "org.apache.directory.ldapstudio.aciitemeditor.templates"; //$NON-NLS-1$
 }

@@ -17,12 +17,13 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.search.EntryWidget;
@@ -53,6 +54,10 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ExclusionValueEditor extends AbstractDialogStringValueEditor
 {
+
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
+
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.valueeditors.AbstractDialogValueEditor#openDialog(org.eclipse.swt.widgets.Shell)
      */
@@ -62,9 +67,9 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof ExclusionWrapper )
         {
             ExclusionDialog dialog = new ExclusionDialog( shell, ( ExclusionWrapper ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getType() ) && !"".equals( dialog.getDN() ) )
+            if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getType() ) && !EMPTY.equals( dialog.getDN() ) )
             {
-                setValue( dialog.getType() + ": \"" + dialog.getDN() + "\"" );
+                setValue( dialog.getType() + ": \"" + dialog.getDN() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
                 return true;
             }
         }
@@ -84,15 +89,15 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         }
 
         String stringValue = ( String ) value;
-        String type = "";
-        String dn = "";
+        String type = EMPTY;
+        String dn = EMPTY;
         try
         {
             // for example: chopAfter: "ou=A"
-            Pattern pattern = Pattern.compile( "\\s*(chopBefore|chopAfter):\\s*\"(.*)\"\\s*" );
+            Pattern pattern = Pattern.compile( "\\s*(chopBefore|chopAfter):\\s*\"(.*)\"\\s*" ); //$NON-NLS-1$
             Matcher matcher = pattern.matcher( stringValue );
-            type = matcher.matches() ? matcher.group( 1 ) : "";
-            dn = matcher.matches() ? matcher.group( 2 ) : "";
+            type = matcher.matches() ? matcher.group( 1 ) : EMPTY;
+            dn = matcher.matches() ? matcher.group( 2 ) : EMPTY;
         }
         catch ( Exception e )
         {
@@ -144,8 +149,6 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
      */
     private class ExclusionDialog extends Dialog
     {
-        /** The dialog title */
-        public static final String DIALOG_TITLE = "Exclusion Editor";
 
         /** The return type */
         private String returnType;
@@ -156,8 +159,8 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         /** The wrapper */
         private ExclusionWrapper wrapper;
 
-        private static final String CHOP_BEFORE = "chopBefore";
-        private static final String CHOP_AFTER = "chopAfter";
+        private static final String CHOP_BEFORE = "chopBefore"; //$NON-NLS-1$
+        private static final String CHOP_AFTER = "chopAfter"; //$NON-NLS-1$
 
         // UI Fields
         private Combo typeCombo;
@@ -183,7 +186,8 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
         protected void configureShell( Shell shell )
         {
             super.configureShell( shell );
-            shell.setText( DIALOG_TITLE );
+            shell.setText( Messages.getString( "ExclusionValueEditor.title" ) ); //$NON-NLS-1$
+            shell.setImage( Activator.getDefault().getImage( Messages.getString( "ExclusionValueEditor.icon" ) ) ); //$NON-NLS-1$
         }
 
 
@@ -209,7 +213,7 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
             composite.setLayoutData( gd );
             composite.setLayout( new GridLayout( 3, false ) );
 
-            BaseWidgetUtils.createLabel( composite, "Type:", 1 );
+            BaseWidgetUtils.createLabel( composite, Messages.getString( "ExclusionValueEditor.label.type" ), 1 ); //$NON-NLS-1$
             typeCombo = new Combo( composite, SWT.READ_ONLY );
             String[] types = new String[2];
             types[0] = CHOP_BEFORE;
@@ -226,7 +230,7 @@ public class ExclusionValueEditor extends AbstractDialogStringValueEditor
             gridData.horizontalAlignment = GridData.BEGINNING;
             typeCombo.setLayoutData( gridData );
 
-            BaseWidgetUtils.createLabel( composite, "RDN:", 1 );
+            BaseWidgetUtils.createLabel( composite, Messages.getString( "ExclusionValueEditor.label.rdn" ), 1 ); //$NON-NLS-1$
             entryWidget = new EntryWidget( wrapper.connection, null );
             entryWidget.createWidget( composite );
 

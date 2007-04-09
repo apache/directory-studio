@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.aciitemeditor.widgets;
 
 

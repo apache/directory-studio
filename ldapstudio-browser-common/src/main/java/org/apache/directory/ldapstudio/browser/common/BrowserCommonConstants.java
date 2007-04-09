@@ -211,6 +211,8 @@ public interface BrowserCommonConstants
     
     public static final String IMG_FILTER_DIT = "resources/icons/filter_dit.gif";
     
+    public static final String IMG_FILTER_EDITOR = "resources/icons/filtereditor.gif";
+    
     public static final String IMG_PARENT = "resources/icons/parent.gif";
     
     public static final String IMG_UNFILTER_DIT = "resources/icons/unfilter_dit.gif";

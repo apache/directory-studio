@@ -77,13 +77,8 @@
 				<include name="**" />
 			</fileset>
 		</copy>
-		<copy todir="${project.build}/icons">
-			<fileset dir="${basedir}/icons">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<copy todir="${project.build}/templates">
-			<fileset dir="${basedir}/templates">
+		<copy todir="${project.build}/resources">
+			<fileset dir="${basedir}/resources">
 				<include name="**" />
 			</fileset>
 		</copy>

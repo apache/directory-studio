@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.aciitemeditor.widgets;
+package org.apache.directory.ldapstudio.aciitemeditor.sourceeditor;
 
 
 import java.util.ArrayList;
@@ -43,38 +43,81 @@ import org.eclipse.jface.text.rules.WordRule;
 public class ACICodeScanner extends RuleBasedScanner
 {
     /** 'identificationTag' keyword */
-    public static final String identificationTagPartition = "identificationTag";
+    public static final String identificationTagPartition = "identificationTag"; //$NON-NLS-1$
 
     /** 'precedence' keyword */
-    public static final String precedencePartition = "precedence";
+    public static final String precedencePartition = "precedence"; //$NON-NLS-1$
 
     /** 'authenticationLevel' keyword */
-    public static final String authenticationLevelPartition = "authenticationLevel";
+    public static final String authenticationLevelPartition = "authenticationLevel"; //$NON-NLS-1$
 
     /** Keywords for the itemOrUserFirst Section */
     public static final String[] itemOrUserFirstSectionPartition = new String[]
-        { "itemOrUserFirst", "itemFirst", "userFirst" };
+        { "itemOrUserFirst", "itemFirst", "userFirst" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     /** Keywords for 'userFirst' section */
     public static final String[] userSection = new String[]
-        { "userClasses", "userPermissions" };
+        { "userClasses", "userPermissions" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     /** Keywords for AciItems values */
     public static final String[] aciKeywords = new String[]
-        { "protectedItems", "itemPermissions", "entry", "allUserAttributeTypes", "attributeType",
-            "allAttributeValues", "allUserAttributeTypesAndValues", "attributeValue", "selfValue", "rangeOfValues",
-            "maxValueCount", "maxImmSub", "restrictedBy", "classes", "grantsAndDenials", "allUsers", "thisEntry",
-            "name", "userGroup", "subtree", "type", "valuesIn", "none", "simple", "strong" };
+        { "protectedItems", //$NON-NLS-1$
+            "itemPermissions", //$NON-NLS-1$
+            "entry", //$NON-NLS-1$
+            "allUserAttributeTypes", //$NON-NLS-1$
+            "attributeType", //$NON-NLS-1$ 
+            "allAttributeValues", //$NON-NLS-1$
+            "allUserAttributeTypesAndValues", //$NON-NLS-1$
+            "attributeValue", //$NON-NLS-1$
+            "selfValue", //$NON-NLS-1$
+            "rangeOfValues", //$NON-NLS-1$ 
+            "maxValueCount", //$NON-NLS-1$
+            "maxImmSub", //$NON-NLS-1$
+            "restrictedBy", //$NON-NLS-1$
+            "classes", //$NON-NLS-1$
+            "grantsAndDenials", //$NON-NLS-1$
+            "allUsers", //$NON-NLS-1$
+            "thisEntry", //$NON-NLS-1$
+            "name", //$NON-NLS-1$
+            "userGroup", //$NON-NLS-1$
+            "subtree", //$NON-NLS-1$
+            "type", //$NON-NLS-1$
+            "valuesIn", //$NON-NLS-1$
+            "none", //$NON-NLS-1$
+            "simple", //$NON-NLS-1$
+            "strong" }; //$NON-NLS-1$ 
 
     /** Keywords for grant values */
     public static final String[] aciGrantValues = new String[]
-        { "grantAdd", "grantDiscloseOnError", "grantRead", "grantRemove", "grantBrowse", "grantExport", "grantImport",
-            "grantModify", "grantRename", "grantReturnDN", "grantCompare", "grantFilterMatch", "grantInvoke", };
+        { "grantAdd", //$NON-NLS-1$
+            "grantDiscloseOnError", //$NON-NLS-1$
+            "grantRead", //$NON-NLS-1$
+            "grantRemove", //$NON-NLS-1$
+            "grantBrowse", //$NON-NLS-1$
+            "grantExport", //$NON-NLS-1$
+            "grantImport", //$NON-NLS-1$ 
+            "grantModify", //$NON-NLS-1$
+            "grantRename", //$NON-NLS-1$
+            "grantReturnDN", //$NON-NLS-1$
+            "grantCompare", //$NON-NLS-1$
+            "grantFilterMatch", //$NON-NLS-1$ 
+            "grantInvoke", }; //$NON-NLS-1$
 
     /** Keywords for deny values */
     public static final String[] aciDenyValues = new String[]
-        { "denyAdd", "denyDiscloseOnError", "denyRead", "denyRemove", "denyBrowse", "denyExport", "denyImport",
-            "denyModify", "denyRename", "denyReturnDN", "denyCompare", "denyFilterMatch", "denyInvoke" };
+        { "denyAdd", //$NON-NLS-1$
+            "denyDiscloseOnError", //$NON-NLS-1$
+            "denyRead", //$NON-NLS-1$
+            "denyRemove", //$NON-NLS-1$
+            "denyBrowse", //$NON-NLS-1$
+            "denyExport", //$NON-NLS-1$
+            "denyImport", //$NON-NLS-1$ 
+            "denyModify", //$NON-NLS-1$
+            "denyRename", //$NON-NLS-1$
+            "denyReturnDN", //$NON-NLS-1$
+            "denyCompare", //$NON-NLS-1$
+            "denyFilterMatch", //$NON-NLS-1$
+            "denyInvoke" }; //$NON-NLS-1$
 
 
     /**
@@ -100,8 +143,8 @@ public class ACICodeScanner extends RuleBasedScanner
         IToken user = new Token( provider.getAttribute( ACITextAttributeProvider.USER_ATTRIBUTE ) );
 
         // Rules for Strings
-        rules.add( new SingleLineRule( "\"", "\"", string, '\0', true ) );
-        rules.add( new SingleLineRule( "'", "'", string, '\0', true ) );
+        rules.add( new SingleLineRule( "\"", "\"", string, '\0', true ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        rules.add( new SingleLineRule( "'", "'", string, '\0', true ) ); //$NON-NLS-1$ //$NON-NLS-2$
         // Generic rule for whitespaces
         rules.add( new WhitespaceRule( new IWhitespaceDetector()
         {
@@ -172,8 +215,8 @@ public class ACICodeScanner extends RuleBasedScanner
      */
     static class AciWordDetector implements IWordDetector
     {
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.text.rules.IWordDetector#isWordPart(char)
+        /**
+         * {@inheritDoc}
          */
         public boolean isWordPart( char c )
         {
@@ -182,8 +225,8 @@ public class ACICodeScanner extends RuleBasedScanner
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.text.rules.IWordDetector#isWordStart(char)
+        /**
+         * {@inheritDoc}
          */
         public boolean isWordStart( char c )
         {

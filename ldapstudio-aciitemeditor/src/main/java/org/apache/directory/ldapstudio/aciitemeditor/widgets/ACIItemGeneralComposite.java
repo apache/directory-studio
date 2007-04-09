@@ -165,7 +165,7 @@ public class ACIItemGeneralComposite extends Composite
         composite.setLayoutData( gridData );
 
         identificationTagLabel = new Label( composite, SWT.NONE );
-        identificationTagLabel.setText( Messages.getString("ACIItemGeneralComposite.idTag.label") ); //$NON-NLS-1$
+        identificationTagLabel.setText( Messages.getString( "ACIItemGeneralComposite.idTag.label" ) ); //$NON-NLS-1$
         identificationTagText = new Text( composite, SWT.BORDER );
         identificationTagText.setLayoutData( identificationTagGridData );
         identificationTagText.addModifyListener( new ModifyListener()
@@ -177,7 +177,7 @@ public class ACIItemGeneralComposite extends Composite
         } );
 
         precedenceLabel = new Label( composite, SWT.NONE );
-        precedenceLabel.setText( Messages.getString("ACIItemGeneralComposite.precedence.label") ); //$NON-NLS-1$
+        precedenceLabel.setText( Messages.getString( "ACIItemGeneralComposite.precedence.label" ) ); //$NON-NLS-1$
         precedenceSpinner = new Spinner( composite, SWT.BORDER );
         precedenceSpinner.setMinimum( 0 );
         precedenceSpinner.setMaximum( 255 );
@@ -195,7 +195,7 @@ public class ACIItemGeneralComposite extends Composite
         } );
 
         authenticationLevelLabel = new Label( composite, SWT.NONE );
-        authenticationLevelLabel.setText( Messages.getString("ACIItemGeneralComposite.authLevel.label") ); //$NON-NLS-1$
+        authenticationLevelLabel.setText( Messages.getString( "ACIItemGeneralComposite.authLevel.label" ) ); //$NON-NLS-1$
         authenticationLevelCombo = new Combo( composite, SWT.READ_ONLY );
         authenticationLevelCombo.setLayoutData( authenticationLevelGridData );
         AuthenticationLevel[] authenticationLevels = new AuthenticationLevel[3];
@@ -216,9 +216,9 @@ public class ACIItemGeneralComposite extends Composite
         } );
 
         userOrItemFirstLabel = new Label( composite, SWT.NONE );
-        userOrItemFirstLabel.setText( Messages.getString("ACIItemGeneralComposite.userOrItemFirst.label") ); //$NON-NLS-1$
+        userOrItemFirstLabel.setText( Messages.getString( "ACIItemGeneralComposite.userOrItemFirst.label" ) ); //$NON-NLS-1$
         userFirstRadioButton = new Button( composite, SWT.RADIO );
-        userFirstRadioButton.setText( Messages.getString("ACIItemGeneralComposite.userFirst.label") ); //$NON-NLS-1$
+        userFirstRadioButton.setText( Messages.getString( "ACIItemGeneralComposite.userFirst.label" ) ); //$NON-NLS-1$
         userFirstRadioButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
@@ -227,7 +227,7 @@ public class ACIItemGeneralComposite extends Composite
             }
         } );
         itemFirstRadioButton = new Button( composite, SWT.RADIO );
-        itemFirstRadioButton.setText( Messages.getString("ACIItemGeneralComposite.itemFirst.label") ); //$NON-NLS-1$
+        itemFirstRadioButton.setText( Messages.getString( "ACIItemGeneralComposite.itemFirst.label" ) ); //$NON-NLS-1$
         itemFirstRadioButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )

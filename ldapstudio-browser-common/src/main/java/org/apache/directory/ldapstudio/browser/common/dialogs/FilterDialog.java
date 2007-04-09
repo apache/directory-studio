@@ -26,7 +26,6 @@ import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.apache.directory.ldapstudio.browser.common.filtereditor.FilterSourceViewerConfiguration;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.text.Document;
@@ -81,7 +80,7 @@ public class FilterDialog extends Dialog
     {
         super.configureShell( newShell );
         newShell.setText( this.title != null ? this.title : DIALOG_TITLE );
-        //newShell.setImage( Activator.getDefault().getImage( BrowserWidgetsConstants.IMG_FILTER_EQUALS ) );
+        newShell.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_FILTER_EDITOR ) );
     }
 
 

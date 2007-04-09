@@ -18,13 +18,12 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
+import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
@@ -39,6 +38,9 @@ import org.eclipse.swt.widgets.Shell;
 public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueEditor
 {
 
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
+
     /**
      * {@inheritDoc}
      * 
@@ -50,64 +52,16 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
         if ( value != null && value instanceof AttributeTypeAndValueValueEditorRawValueWrapper )
         {
             AttributeTypeAndValueValueEditorRawValueWrapper wrapper = ( AttributeTypeAndValueValueEditorRawValueWrapper ) value;
-            AttributeTypeAndValueDialog dialog = new AttributeTypeAndValueDialog( shell, wrapper.schema, wrapper.attributeType, wrapper.value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAttributeType() ) && !"".equals( dialog.getValue() ) )
+            AttributeTypeAndValueDialog dialog = new AttributeTypeAndValueDialog( shell, wrapper.schema,
+                wrapper.attributeType, wrapper.value );
+            if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getAttributeType() )
+                && !EMPTY.equals( dialog.getValue() ) )
             {
                 setValue( dialog.getAttributeType() + '=' + dialog.getValue() );
                 return true;
             }
         }
         return false;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns always the string value.
-     * 
-     * Reimplementation, because getRawValue() returns an 
-     * AttributeTypeValueEditorRawValueWrapper.
-     */
-    public String getDisplayValue( IValue value )
-    {
-        if ( value == null )
-        {
-            return "NULL";
-        }
-
-        String displayValue = value.getStringValue();
-        return displayValue;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns null.
-     * Modification in search result editor not supported.
-     */
-    public Object getRawValue( AttributeHierarchy attributeHierarchy )
-    {
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns an AttributeTypeAndValueValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IValue value )
-    {
-        if ( value == null || !value.isString() )
-        {
-            return null;
-        }
-        else
-        {
-            return getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() );
-        }
     }
 
 
@@ -129,10 +83,11 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
         }
 
         String atavValue = ( String ) value;
-        String[] atav = atavValue.split( "=", 2 );
-        String at = atav.length > 0 ? atav[0] : "";
-        String v = atav.length > 1 ? atav[1] : "";
-        AttributeTypeAndValueValueEditorRawValueWrapper wrapper = new AttributeTypeAndValueValueEditorRawValueWrapper( schema, at, v );
+        String[] atav = atavValue.split( "=", 2 ); //$NON-NLS-1$
+        String at = atav.length > 0 ? atav[0] : EMPTY;
+        String v = atav.length > 1 ? atav[1] : EMPTY;
+        AttributeTypeAndValueValueEditorRawValueWrapper wrapper = new AttributeTypeAndValueValueEditorRawValueWrapper(
+            schema, at, v );
         return wrapper;
     }
 
@@ -153,7 +108,7 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
 
         /** The attribute type, used as initial attribute type. */
         private String attributeType;
-        
+
         /** The value, used as initial value. */
         private String value;
 

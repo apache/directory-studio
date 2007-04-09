@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.aciitemeditor.dialogs;
 
 
@@ -32,8 +31,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -52,7 +49,7 @@ public class ACIItemDialog extends Dialog
 
     /** The context containing the initial value, passed by the constructor */
     private ACIItemValueWithContext context;
-    
+
     /** The resulting value returned by getACIItemValue() */
     private String returnValue;
 
@@ -62,23 +59,21 @@ public class ACIItemDialog extends Dialog
 
     /**
      * Creates a new instance of ACIItemDialog.
-     *
+     * 
      * @param parentShell the shell
-     * @param initialValue the initial ACI item to edit, or null to 
-     *        create a new ACI item
+     * @param context the context
      */
     public ACIItemDialog( Shell parentShell, ACIItemValueWithContext context )
     {
-        
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
 
         assert context != null;
         assert context.getACIItemValue() != null;
         assert context.getConnection() != null;
-        
+
         this.context = context;
-        
+
         this.returnValue = null;
     }
 
@@ -104,11 +99,12 @@ public class ACIItemDialog extends Dialog
     protected Control createButtonBar( Composite parent )
     {
         Composite composite = ( Composite ) super.createButtonBar( parent );
-        super.createButton( composite, 987654321, "Format", false );
-        super.createButton( composite, 876543210, "Check Syntax", false );
+        super.createButton( composite, 987654321, Messages.getString( "ACIItemDialog.button.format" ), false ); //$NON-NLS-1$
+        super.createButton( composite, 876543210, Messages.getString( "ACIItemDialog.button.checkSyntax" ), false ); //$NON-NLS-1$
         return composite;
     }
-    
+
+
     /**
      * {@inheritDoc}
      * 
@@ -125,12 +121,13 @@ public class ACIItemDialog extends Dialog
             try
             {
                 tabFolderComposite.getInput();
-                //MessageDialog.openInformation( getShell(), "Check", input ); //$NON-NLS-1$
-                MessageDialog.openInformation( getShell(), "Syntax ok", "Syntax ok" ); //$NON-NLS-1$
+                MessageDialog
+                    .openInformation(
+                        getShell(),
+                        Messages.getString( "ACIItemDialog.syntaxOk.title" ), Messages.getString( "ACIItemDialog.syntaxOk.text" ) ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             catch ( ParseException pe )
             {
-                //MessageDialog.openError( getShell(), "Syntax Error", e1.getMessage() ); //$NON-NLS-1$
                 IStatus status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, 1, Messages
                     .getString( "ACIItemDialog.error.invalidSyntax" ), pe ); //$NON-NLS-1$
                 ErrorDialog.openError( getShell(), Messages.getString( "ACIItemDialog.error.title" ), null, status ); //$NON-NLS-1$
@@ -140,7 +137,8 @@ public class ACIItemDialog extends Dialog
         // call super implementation
         super.buttonPressed( buttonId );
     }
-    
+
+
     /**
      * Reimplementation: Checks for valid syntax first and sets the return value.
      */
@@ -162,6 +160,10 @@ public class ACIItemDialog extends Dialog
 
     /**
      * Creates the tabFolderComposite.
+     * 
+     * @param parent the parent
+     * 
+     * @return the control
      */
     protected Control createDialogArea( Composite parent )
     {

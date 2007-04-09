@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.aciitemeditor.dialogs;
 
 
@@ -78,10 +77,10 @@ public class UserPermissionDialog extends Dialog
 
     /**
      * Creates a new instance of UserPermissionDialog.
-     *
+     * 
      * @param parentShell the shell
-     * @param initialValue the initial user permission to edit, 
-     *        or null to create a new user permission
+     * @param initialUserPermission the initial user permission
+     * @param context the context
      */
     public UserPermissionDialog( Shell parentShell, UserPermission initialUserPermission, ACIItemValueWithContext context )
     {
@@ -127,7 +126,7 @@ public class UserPermissionDialog extends Dialog
 
 
     /**
-     * Creates all the dialog content.
+     * {@inheritDoc}
      */
     protected Control createDialogArea( Composite parent )
     {

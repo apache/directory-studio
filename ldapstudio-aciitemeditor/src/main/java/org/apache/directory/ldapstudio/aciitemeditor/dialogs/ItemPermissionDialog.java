@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.aciitemeditor.dialogs;
 
 
@@ -53,10 +52,10 @@ import org.eclipse.swt.widgets.Spinner;
  */
 public class ItemPermissionDialog extends Dialog
 {
-    
+
     /** The context */
     private ACIItemValueWithContext context;
-    
+
     /** The initial value, passed by the constructor */
     private ItemPermission initialItemPermission;
 
@@ -78,12 +77,13 @@ public class ItemPermissionDialog extends Dialog
 
     /**
      * Creates a new instance of ItemPermissionDialog.
-     *
+     * 
      * @param parentShell the shell
-     * @param initialValue the initial item permission to edit, 
-     *        or null to create a new item permission
+     * @param initialItemPermission the initial item permission
+     * @param context the context
      */
-    public ItemPermissionDialog( Shell parentShell, ItemPermission initialItemPermission, ACIItemValueWithContext context )
+    public ItemPermissionDialog( Shell parentShell, ItemPermission initialItemPermission,
+        ACIItemValueWithContext context )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -101,8 +101,8 @@ public class ItemPermissionDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("ItemPermissionDialog.dialog.text") ); //$NON-NLS-1$
-        shell.setImage( Activator.getDefault().getImage( Messages.getString("ItemPermissionDialog.dialog.icon") ) ); //$NON-NLS-1$
+        shell.setText( Messages.getString( "ItemPermissionDialog.dialog.text" ) ); //$NON-NLS-1$
+        shell.setImage( Activator.getDefault().getImage( Messages.getString( "ItemPermissionDialog.dialog.icon" ) ) ); //$NON-NLS-1$
     }
 
 
@@ -121,13 +121,18 @@ public class ItemPermissionDialog extends Dialog
         }
         catch ( Exception e )
         {
-            MessageDialog.openError( getShell(), Messages.getString("ItemPermissionDialog.error.invalidItemPermission"), e.getMessage() ); //$NON-NLS-1$
+            MessageDialog.openError( getShell(), Messages
+                .getString( "ItemPermissionDialog.error.invalidItemPermission" ), e.getMessage() ); //$NON-NLS-1$
         }
     }
 
 
     /**
      * Creates all the dialog content.
+     * 
+     * @param parent the parent
+     * 
+     * @return the control
      */
     protected Control createDialogArea( Composite parent )
     {
@@ -142,7 +147,7 @@ public class ItemPermissionDialog extends Dialog
         spinnerComposite.setLayout( new GridLayout( 2, false ) );
         spinnerComposite.setLayoutData( new GridData() );
         precedenceCheckbox = new Button( spinnerComposite, SWT.CHECK );
-        precedenceCheckbox.setText( Messages.getString("ItemPermissionDialog.precedence.label") ); //$NON-NLS-1$
+        precedenceCheckbox.setText( Messages.getString( "ItemPermissionDialog.precedence.label" ) ); //$NON-NLS-1$
         precedenceCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

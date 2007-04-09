@@ -19,10 +19,11 @@
  */
 package org.apache.directory.ldapstudio.aciitemeditor;
 
+
 import java.io.IOException;
 
-import org.apache.directory.ldapstudio.aciitemeditor.widgets.ACICodeScanner;
-import org.apache.directory.ldapstudio.aciitemeditor.widgets.ACITextAttributeProvider;
+import org.apache.directory.ldapstudio.aciitemeditor.sourceeditor.ACICodeScanner;
+import org.apache.directory.ldapstudio.aciitemeditor.sourceeditor.ACITextAttributeProvider;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -40,7 +41,6 @@ import org.osgi.framework.BundleContext;
 
 
 /**
- * 
  * The activator class controls the plug-in life cycle
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -63,7 +63,7 @@ public class Activator extends AbstractUIPlugin
 
     /** The shared ACI TextAttribute Provider */
     private ACITextAttributeProvider textAttributeProvider;
-    
+
     /** The template store */
     private ContributionTemplateStore aciTemplateStore;
 
@@ -80,32 +80,31 @@ public class Activator extends AbstractUIPlugin
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+    /**
+     * {@inheritDoc}
      */
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
-        
-        // ACI Template ContextType Registry initialization
-        if ( this.aciTemplateContextTypeRegistry == null )
-        {
-            this.aciTemplateContextTypeRegistry = new ContributionContextTypeRegistry();
 
-            this.aciTemplateContextTypeRegistry.addContextType( ACIITemConstants.ACI_ITEM_TEMPLATE_ID );
-            this.aciTemplateContextTypeRegistry.getContextType( ACIITemConstants.ACI_ITEM_TEMPLATE_ID )
-                .addResolver( new GlobalTemplateVariables.Cursor() );
-        }
-        
-        // ACI Template Store initialization
-        if ( this.aciTemplateStore == null )
+        // ACI Template ContextType Registry initialization
+        if ( aciTemplateContextTypeRegistry == null )
         {
-            this.aciTemplateStore = new ContributionTemplateStore( getAciTemplateContextTypeRegistry(),
-                getPreferenceStore(), "templates" );
+            aciTemplateContextTypeRegistry = new ContributionContextTypeRegistry();
+
+            aciTemplateContextTypeRegistry.addContextType( ACIITemConstants.ACI_ITEM_TEMPLATE_ID );
+            aciTemplateContextTypeRegistry.getContextType( ACIITemConstants.ACI_ITEM_TEMPLATE_ID ).addResolver(
+                new GlobalTemplateVariables.Cursor() );
+        }
+
+        // ACI Template Store initialization
+        if ( aciTemplateStore == null )
+        {
+            aciTemplateStore = new ContributionTemplateStore( getAciTemplateContextTypeRegistry(),
+                getPreferenceStore(), "templates" ); //$NON-NLS-1$
             try
             {
-                this.aciTemplateStore.load();
+                aciTemplateStore.load();
             }
             catch ( IOException e )
             {
@@ -115,9 +114,8 @@ public class Activator extends AbstractUIPlugin
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+    /**
+     * {@inheritDoc}
      */
     public void stop( BundleContext context ) throws Exception
     {
@@ -208,8 +206,8 @@ public class Activator extends AbstractUIPlugin
         int width = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
         return width;
     }
-    
-    
+
+
     /**
      * Returns the TextAttribute Provider
      * 
@@ -225,7 +223,7 @@ public class Activator extends AbstractUIPlugin
         return textAttributeProvider;
     }
 
-    
+
     /**
      * Retuns the the Aci Code Scanner
      * 
@@ -264,5 +262,5 @@ public class Activator extends AbstractUIPlugin
     {
         return aciTemplateStore;
     }
-    
+
 }

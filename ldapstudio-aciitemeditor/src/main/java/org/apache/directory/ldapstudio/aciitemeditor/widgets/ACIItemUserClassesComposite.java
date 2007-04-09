@@ -58,14 +58,13 @@ import org.eclipse.swt.widgets.Table;
 
 /**
  * This composite contains GUI elements to edit ACI item user classes.
-
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
 public class ACIItemUserClassesComposite extends Composite
 {
-    
+
     /** The context. */
     private ACIItemValueWithContext context;
 
@@ -122,7 +121,7 @@ public class ACIItemUserClassesComposite extends Composite
         layoutData.grabExcessHorizontalSpace = true;
         layoutData.verticalAlignment = GridData.CENTER;
         setLayoutData( layoutData );
-        
+
         createComposite();
     }
 
@@ -155,7 +154,7 @@ public class ACIItemUserClassesComposite extends Composite
         composite.setLayout( gridLayout );
 
         label = new Label( composite, SWT.NONE );
-        label.setText( Messages.getString("ACIItemUserClassesComposite.description") ); //$NON-NLS-1$
+        label.setText( Messages.getString( "ACIItemUserClassesComposite.description" ) ); //$NON-NLS-1$
         label.setLayoutData( labelGridData );
 
         createTable();
@@ -256,7 +255,7 @@ public class ACIItemUserClassesComposite extends Composite
         buttonComposite.setLayout( gridLayout );
 
         editButton = new Button( buttonComposite, SWT.NONE );
-        editButton.setText( Messages.getString("ACIItemUserClassesComposite.edit.button") ); //$NON-NLS-1$
+        editButton.setText( Messages.getString( "ACIItemUserClassesComposite.edit.button" ) ); //$NON-NLS-1$
         editButton.setLayoutData( editButtonGridData );
         editButton.addSelectionListener( new SelectionAdapter()
         {
@@ -268,7 +267,7 @@ public class ACIItemUserClassesComposite extends Composite
         editButton.setEnabled( false );
 
         selectAllButton = new Button( buttonComposite, SWT.NONE );
-        selectAllButton.setText( Messages.getString("ACIItemUserClassesComposite.selectAll.button") ); //$NON-NLS-1$
+        selectAllButton.setText( Messages.getString( "ACIItemUserClassesComposite.selectAll.button" ) ); //$NON-NLS-1$
         selectAllButton.setLayoutData( selectAllButtonGridData );
         selectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -280,7 +279,7 @@ public class ACIItemUserClassesComposite extends Composite
         } );
 
         deselectAllButton = new Button( buttonComposite, SWT.NONE );
-        deselectAllButton.setText( Messages.getString("ACIItemUserClassesComposite.deselectAll.button") ); //$NON-NLS-1$
+        deselectAllButton.setText( Messages.getString( "ACIItemUserClassesComposite.deselectAll.button" ) ); //$NON-NLS-1$
         deselectAllButton.setLayoutData( deselectAllButtonGridData );
         deselectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -292,7 +291,7 @@ public class ACIItemUserClassesComposite extends Composite
         } );
 
         reverseSelectionButton = new Button( buttonComposite, SWT.NONE );
-        reverseSelectionButton.setText( Messages.getString("ACIItemUserClassesComposite.revert.buton") ); //$NON-NLS-1$
+        reverseSelectionButton.setText( Messages.getString( "ACIItemUserClassesComposite.revert.buton" ) ); //$NON-NLS-1$
         reverseSelectionButton.setLayoutData( reverseSelectionButtonGridData );
         reverseSelectionButton.addSelectionListener( new SelectionAdapter()
         {
@@ -316,8 +315,13 @@ public class ACIItemUserClassesComposite extends Composite
      */
     private class UserClassesLabelProvider extends LabelProvider
     {
+
         /**
          * Returns the error icon if the user class is checked and invalid.
+         * 
+         * @param element the element
+         * 
+         * @return the image
          */
         public Image getImage( Object element )
         {
@@ -332,7 +336,8 @@ public class ACIItemUserClassesComposite extends Composite
                     }
                     catch ( ParseException e )
                     {
-                        return Activator.getDefault().getImage( Messages.getString("ACIItemUserClassesComposite.error.icon") ); //$NON-NLS-1$
+                        return Activator.getDefault().getImage(
+                            Messages.getString( "ACIItemUserClassesComposite.error.icon" ) ); //$NON-NLS-1$
                     }
                 }
             }
@@ -341,18 +346,18 @@ public class ACIItemUserClassesComposite extends Composite
         }
     }
 
-    
+
     /**
      * Sets the context.
      * 
      * @param context the context
      */
-    public void setContext( ACIItemValueWithContext context ) 
+    public void setContext( ACIItemValueWithContext context )
     {
         this.context = context;
     }
-    
-    
+
+
     /**
      * Sets the user classes.
      * 
@@ -365,7 +370,7 @@ public class ACIItemUserClassesComposite extends Composite
         {
             tableViewer.setChecked( userClassWrapper, false );
         }
-        
+
         for ( UserClass userClass : userClasses )
         {
             for ( UserClassWrapper userClassWrapper : userClassWrappers )
@@ -408,7 +413,7 @@ public class ACIItemUserClassesComposite extends Composite
     /**
      * Shows or hides this composite.
      * 
-     * @see org.eclipse.swt.widgets.control#setVisible(boolean)
+     * @param visible true if visible
      */
     public void setVisible( boolean visible )
     {
@@ -477,15 +482,16 @@ public class ACIItemUserClassesComposite extends Composite
         UserClassWrapper userClassWrapper = getSelectedUserClassWrapper();
 
         AbstractDialogStringValueEditor editor = userClassWrapper.getValueEditor();
-        if(editor != null)
+        if ( editor != null )
         {
-            MultiValuedDialog dialog = new MultiValuedDialog( getShell(), userClassWrapper.getDisplayName(), userClassWrapper.getValues(), context, editor );
+            MultiValuedDialog dialog = new MultiValuedDialog( getShell(), userClassWrapper.getDisplayName(),
+                userClassWrapper.getValues(), context, editor );
             dialog.open();
             refreshTable();
         }
     }
-    
-    
+
+
     /**
      * Refreshes the table viewer.
      */

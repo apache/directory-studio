@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.aciitemeditor.dialogs.ItemPermissionDialog;
-import org.apache.directory.ldapstudio.aciitemeditor.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.aciitemeditor.model.UserClassWrapper;
 import org.apache.directory.shared.ldap.aci.GrantAndDenial;
 import org.apache.directory.shared.ldap.aci.ItemPermission;
@@ -60,7 +59,7 @@ import org.eclipse.swt.widgets.Table;
  */
 public class ACIItemItemPermissionsComposite extends Composite
 {
-    
+
     /** The context. */
     private ACIItemValueWithContext context;
 
@@ -116,6 +115,8 @@ public class ACIItemItemPermissionsComposite extends Composite
 
         /**
          * Returns a user-friedly string, displayed in the table.
+         * 
+         * @return the string
          */
         public String toString()
         {
@@ -358,7 +359,7 @@ public class ACIItemItemPermissionsComposite extends Composite
     /**
      * Shows or hides this composite.
      * 
-     * @see org.eclipse.swt.widgets.control#setVisible(boolean)
+     * @param visible true if visible
      */
     public void setVisible( boolean visible )
     {
@@ -372,12 +373,12 @@ public class ACIItemItemPermissionsComposite extends Composite
      * 
      * @param context the context
      */
-    public void setContext( ACIItemValueWithContext context ) 
+    public void setContext( ACIItemValueWithContext context )
     {
         this.context = context;
     }
-    
-    
+
+
     /**
      * Sets the item permissions. 
      *
@@ -445,7 +446,7 @@ public class ACIItemItemPermissionsComposite extends Composite
     private void addItemPermission()
     {
         ItemPermissionDialog dialog = new ItemPermissionDialog( getShell(), null, context );
-        if ( dialog.open() == TextDialog.OK && dialog.getItemPermission() != null )
+        if ( dialog.open() == ItemPermissionDialog.OK && dialog.getItemPermission() != null )
         {
             ItemPermissionWrapper itemPermissionWrapper = new ItemPermissionWrapper( dialog.getItemPermission() );
             itemPermissionWrappers.add( itemPermissionWrapper );
@@ -464,8 +465,9 @@ public class ACIItemItemPermissionsComposite extends Composite
         ItemPermissionWrapper oldItemPermissionWrapper = getSelectedItemPermissionWrapper();
         if ( oldItemPermissionWrapper != null )
         {
-            ItemPermissionDialog dialog = new ItemPermissionDialog( getShell(), oldItemPermissionWrapper.itemPermission, context );
-            if ( dialog.open() == TextDialog.OK )
+            ItemPermissionDialog dialog = new ItemPermissionDialog( getShell(),
+                oldItemPermissionWrapper.itemPermission, context );
+            if ( dialog.open() == ItemPermissionDialog.OK )
             {
                 oldItemPermissionWrapper.itemPermission = dialog.getItemPermission();
                 tableViewer.refresh();

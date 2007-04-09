@@ -78,7 +78,7 @@ public class IntegerDialog extends Dialog
     {
         super.configureShell( shell );
         shell.setText( DIALOG_TITLE );
-        //shell.setImage( Activator.getDefault().getImage( ValueEditorsConstants.IMG_TEXTEDITOR ) );
+        shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_INTEGEREDITOR ) );
     }
 
 

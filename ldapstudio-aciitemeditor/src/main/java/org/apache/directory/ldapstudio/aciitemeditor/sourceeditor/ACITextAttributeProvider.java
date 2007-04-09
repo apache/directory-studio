@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.aciitemeditor.widgets;
+package org.apache.directory.ldapstudio.aciitemeditor.sourceeditor;
 
 
 import java.util.HashMap;
@@ -38,18 +38,18 @@ import org.eclipse.swt.widgets.Display;
  */
 public class ACITextAttributeProvider
 {
-    public static final String DEFAULT_ATTRIBUTE = "__pos_aci_default_attribute";
-    public static final String KEYWORD_ATTRIBUTE = "__pos_aci_keyword_attribute";
-    public static final String STRING_ATTRIBUTE = "__pos_aci_string_attribute";
-    public static final String GRANT_DENY_ATTRIBUTE = "__pos_aci_grant_deny_attribute";
-    public static final String IDENTIFICATION_ATTRIBUTE = "__pos_aci_identification_attribute";
-    public static final String PRECEDENCE_ATTRIBUTE = "__pos_aci_precedence_attribute";
-    public static final String AUTHENTICATIONLEVEL_ATTRIBUTE = "__pos_aci_authenticationlevel_attribute";
-    public static final String ITEMORUSERFIRST_ATTRIBUTE = "__pos_aci_itemoruserfirst_attribute";
-    public static final String USER_ATTRIBUTE = "__pos_aci_user_attribute";
+    public static final String DEFAULT_ATTRIBUTE = "__pos_aci_default_attribute"; //$NON-NLS-1$
+    public static final String KEYWORD_ATTRIBUTE = "__pos_aci_keyword_attribute"; //$NON-NLS-1$
+    public static final String STRING_ATTRIBUTE = "__pos_aci_string_attribute"; //$NON-NLS-1$
+    public static final String GRANT_DENY_ATTRIBUTE = "__pos_aci_grant_deny_attribute"; //$NON-NLS-1$
+    public static final String IDENTIFICATION_ATTRIBUTE = "__pos_aci_identification_attribute"; //$NON-NLS-1$
+    public static final String PRECEDENCE_ATTRIBUTE = "__pos_aci_precedence_attribute"; //$NON-NLS-1$
+    public static final String AUTHENTICATIONLEVEL_ATTRIBUTE = "__pos_aci_authenticationlevel_attribute"; //$NON-NLS-1$
+    public static final String ITEMORUSERFIRST_ATTRIBUTE = "__pos_aci_itemoruserfirst_attribute"; //$NON-NLS-1$
+    public static final String USER_ATTRIBUTE = "__pos_aci_user_attribute"; //$NON-NLS-1$
 
-    public static final String GRANT_VALUE = "__pos_aci_grant_value";
-    public static final String DENY_VALUE = "__pos_aci_deny_value";
+    public static final String GRANT_VALUE = "__pos_aci_grant_value"; //$NON-NLS-1$
+    public static final String DENY_VALUE = "__pos_aci_deny_value"; //$NON-NLS-1$
 
     private Map<String, TextAttribute> attributes = new HashMap<String, TextAttribute>();
 

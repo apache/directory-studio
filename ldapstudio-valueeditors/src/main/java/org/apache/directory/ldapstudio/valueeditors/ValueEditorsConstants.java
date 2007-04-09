@@ -23,10 +23,8 @@ public interface ValueEditorsConstants
 
     public static final String IMG_INPLACE_GENERALIZEDTIMEEDITOR = "resources/icons/inplace_generalizedtimeeditor.gif";
 
-    public static final String IMG_ATDEDITOR = "resources/icons/attributetypeeditor.png";
-    
     public static final String IMG_OCDEDITOR = "resources/icons/objectclasseditor.png";
     
-    public static final String IMG_FILTEREDITOR = "resources/icons/filtereditor.png";
+    public static final String IMG_INTEGEREDITOR = "resources/icons/integereditor.gif";
     
 }

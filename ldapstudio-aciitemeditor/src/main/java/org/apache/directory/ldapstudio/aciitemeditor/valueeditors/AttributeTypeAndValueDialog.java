@@ -17,17 +17,15 @@
  *  under the License. 
  *  
  */
-
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
 import java.util.Arrays;
 
+import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator;
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorsConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -54,9 +52,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class AttributeTypeAndValueDialog extends Dialog
 {
-
-    /** The dialog title */
-    public static final String DIALOG_TITLE = "Attribute Type and Value Editor";
 
     /** The schema. */
     private Schema schema;
@@ -112,8 +107,8 @@ public class AttributeTypeAndValueDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
-        //shell.setImage( Activator.getDefault().getImage( ValueEditorsConstants.IMG_TEXTEDITOR ) );
+        shell.setText( Messages.getString("AttributeTypeAndValueDialog.title") ); //$NON-NLS-1$
+        shell.setImage( Activator.getDefault().getImage( Messages.getString("AttributeTypeAndValueDialog.icon") ) ); //$NON-NLS-1$
     }
 
 
@@ -176,7 +171,7 @@ public class AttributeTypeAndValueDialog extends Dialog
         attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
         attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
 
-        BaseWidgetUtils.createLabel( composite, " = ", 1 );
+        BaseWidgetUtils.createLabel( composite, " = ", 1 ); //$NON-NLS-1$
 
         valueText = BaseWidgetUtils.createText( composite, initialValue, 1 );
 

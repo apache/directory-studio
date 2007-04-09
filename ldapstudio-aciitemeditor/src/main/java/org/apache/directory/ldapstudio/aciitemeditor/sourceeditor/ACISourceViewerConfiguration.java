@@ -17,11 +17,10 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.aciitemeditor.widgets;
+package org.apache.directory.ldapstudio.aciitemeditor.sourceeditor;
 
 
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
-import org.apache.directory.ldapstudio.aciitemeditor.dialogs.DialogContentAssistant;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -72,7 +71,7 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
         IContentAssistProcessor aciContentAssistProcessor = new ACIContentAssistProcessor();
 
         assistant.setContentAssistProcessor( aciContentAssistProcessor, IDocument.DEFAULT_CONTENT_TYPE );
-        assistant.setDocumentPartitioning( "org.apache.directory.ldapstudio.aci" );
+        assistant.setDocumentPartitioning( "org.apache.directory.ldapstudio.aci" ); //$NON-NLS-1$
         assistant.enableAutoActivation( true );
         assistant.setAutoActivationDelay( 500 );
         assistant.setProposalPopupOrientation( IContentAssistant.PROPOSAL_STACKED );
@@ -81,7 +80,9 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
         return assistant;
     }
     
-    @Override
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentFormatter(org.eclipse.jface.text.source.ISourceViewer)
+     */
     public IContentFormatter getContentFormatter( ISourceViewer sourceViewer )
     {
         ContentFormatter formatter = new ContentFormatter();
@@ -91,10 +92,4 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
         return formatter;
     }
     
-    @Override
-    public IAutoEditStrategy[] getAutoEditStrategies( ISourceViewer sourceViewer, String contentType )
-    {
-        // TODO Auto-generated method stub
-        return super.getAutoEditStrategies( sourceViewer, contentType );
-    }
 }

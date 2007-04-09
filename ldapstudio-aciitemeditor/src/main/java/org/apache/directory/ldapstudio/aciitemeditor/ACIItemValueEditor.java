@@ -95,7 +95,7 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         {
             IEntry entry = attributeHierarchy.getAttribute().getEntry();
             IConnection connection = entry.getConnection();
-            return new ACIItemValueWithContext( connection, entry, "" );
+            return new ACIItemValueWithContext( connection, entry, "" ); //$NON-NLS-1$
         }
         else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
         {
@@ -155,26 +155,26 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         return null;
     }
 
-
-    /**
-     * Returns always the string value.
-     * 
-     * Reimplementation, because getRawValue() returns a
-     * DnValueEditorRawValueWrapper.
-     * 
-     * @param value the value
-     * 
-     * @return the display value
-     */
-    public String getDisplayValue( IValue value )
-    {
-        if ( value == null )
-        {
-            return "NULL";
-        }
-
-        String displayValue = value.getStringValue();
-        return displayValue;
-    }
+//
+//    /**
+//     * Returns always the string value.
+//     * 
+//     * Reimplementation, because getRawValue() returns a
+//     * DnValueEditorRawValueWrapper.
+//     * 
+//     * @param value the value
+//     * 
+//     * @return the display value
+//     */
+//    public String getDisplayValue( IValue value )
+//    {
+//        if ( value == null )
+//        {
+//            return "NULL";
+//        }
+//
+//        String displayValue = value.getStringValue();
+//        return displayValue;
+//    }
     
 }

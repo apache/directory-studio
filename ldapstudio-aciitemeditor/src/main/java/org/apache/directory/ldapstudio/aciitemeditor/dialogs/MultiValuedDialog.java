@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.aciitemeditor.dialogs;
 
 
@@ -25,7 +24,6 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
-import org.apache.directory.ldapstudio.aciitemeditor.widgets.Messages;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -63,13 +61,13 @@ public class MultiValuedDialog extends Dialog
 
     /** The value editor */
     private AbstractDialogStringValueEditor valueEditor;
-    
+
     /** The values, may be empty. */
     private List<String> values;
-    
+
     /** The context */
     private ACIItemValueWithContext context;
-    
+
     /** The inner composite for all the content */
     private Composite composite = null;
 
@@ -91,7 +89,7 @@ public class MultiValuedDialog extends Dialog
     /** The delete button */
     private Button deleteButton = null;
 
-    
+
     /**
      * Creates a new instance of MultiValuedDialog.
      *
@@ -101,29 +99,35 @@ public class MultiValuedDialog extends Dialog
      * @param context the context
      * @param valueEditor the detail value editor
      */
-    public MultiValuedDialog( Shell parentShell, String displayName, List<String> values, ACIItemValueWithContext context, AbstractDialogStringValueEditor valueEditor )
+    public MultiValuedDialog( Shell parentShell, String displayName, List<String> values,
+        ACIItemValueWithContext context, AbstractDialogStringValueEditor valueEditor )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        
+
         this.displayName = displayName;
         this.values = values;
         this.context = context;
         this.valueEditor = valueEditor;
     }
 
-    
+
     /**
+     * {@inheritDoc}
+     * 
      * Sets the dialog title.
      */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "Edit " + displayName );
+        shell.setText( Messages.getString("MultiValuedDialog.dialog.titlePrefix") + displayName ); //$NON-NLS-1$
+        shell.setImage( Activator.getDefault().getImage( Messages.getString("MultiValuedDialog.dialog.icon") ) ); //$NON-NLS-1$
     }
 
-    
+
     /**
+     * {@inheritDoc}
+     * 
      * Creates only a OK button.
      */
     protected void createButtonsForButtonBar( Composite parent )
@@ -132,7 +136,6 @@ public class MultiValuedDialog extends Dialog
     }
 
 
-    
     /** 
      * {@inheritDoc}
      */
@@ -151,12 +154,12 @@ public class MultiValuedDialog extends Dialog
         createTable();
 
         createButtonComposite();
-        
+
         applyDialogFont( composite );
         return composite;
     }
-    
-    
+
+
     /**
      * This method initializes table and table viewer
      */
@@ -193,8 +196,8 @@ public class MultiValuedDialog extends Dialog
             }
         } );
     }
-   
-    
+
+
     /**
      * This method initializes buttons  
      */
@@ -232,7 +235,7 @@ public class MultiValuedDialog extends Dialog
         buttonComposite.setLayout( gridLayout );
 
         addButton = new Button( buttonComposite, SWT.NONE );
-        addButton.setText( Messages.getString( "ACIItemUserPermissionsComposite.add.button" ) ); //$NON-NLS-1$
+        addButton.setText( Messages.getString( "MultiValuedDialog.button.add" ) ); //$NON-NLS-1$
         addButton.setLayoutData( addButtonGridData );
         addButton.addSelectionListener( new SelectionAdapter()
         {
@@ -243,7 +246,7 @@ public class MultiValuedDialog extends Dialog
         } );
 
         editButton = new Button( buttonComposite, SWT.NONE );
-        editButton.setText( Messages.getString( "ACIItemUserPermissionsComposite.edit.button" ) ); //$NON-NLS-1$
+        editButton.setText( Messages.getString( "MultiValuedDialog.button.edit" ) ); //$NON-NLS-1$
         editButton.setLayoutData( editButtonGridData );
         editButton.addSelectionListener( new SelectionAdapter()
         {
@@ -255,7 +258,7 @@ public class MultiValuedDialog extends Dialog
         editButton.setEnabled( false );
 
         deleteButton = new Button( buttonComposite, SWT.NONE );
-        deleteButton.setText( Messages.getString( "ACIItemUserPermissionsComposite.delete.button" ) ); //$NON-NLS-1$
+        deleteButton.setText( Messages.getString( "MultiValuedDialog.button.delete" ) ); //$NON-NLS-1$
         deleteButton.setLayoutData( deleteButtonGridData );
         deleteButton.addSelectionListener( new SelectionAdapter()
         {
@@ -267,24 +270,24 @@ public class MultiValuedDialog extends Dialog
         deleteButton.setEnabled( false );
 
     }
-    
-    
+
+
     /**
      * Opens the editor and adds the new value to the list.
      */
     private void addValue()
     {
-        Object oldRawValue = valueEditor.getRawValue( context.getConnection(), "" );
-        
+        Object oldRawValue = valueEditor.getRawValue( context.getConnection(), "" ); //$NON-NLS-1$
+
         CellEditor cellEditor = valueEditor.getCellEditor();
         cellEditor.setValue( oldRawValue );
         cellEditor.activate();
         Object newRawValue = cellEditor.getValue();
-        
-        if(newRawValue != null) 
+
+        if ( newRawValue != null )
         {
-            String newValue = (String) valueEditor.getStringOrBinaryValue( newRawValue );
-            
+            String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
+
             values.add( newValue );
             tableViewer.refresh();
         }
@@ -301,16 +304,16 @@ public class MultiValuedDialog extends Dialog
         if ( oldValue != null )
         {
             Object oldRawValue = valueEditor.getRawValue( context.getConnection(), oldValue );
-            
+
             CellEditor cellEditor = valueEditor.getCellEditor();
             cellEditor.setValue( oldRawValue );
             cellEditor.activate();
             Object newRawValue = cellEditor.getValue();
-            
-            if(newRawValue != null) 
+
+            if ( newRawValue != null )
             {
-                String newValue = (String) valueEditor.getStringOrBinaryValue( newRawValue );
-                
+                String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
+
                 values.remove( oldValue );
                 values.add( newValue );
                 tableViewer.refresh();
@@ -352,8 +355,8 @@ public class MultiValuedDialog extends Dialog
             deleteButton.setEnabled( true );
         }
     }
-    
-    
+
+
     /**
      * @return the value that is selected in the table viewer, or null.
      */
@@ -373,5 +376,5 @@ public class MultiValuedDialog extends Dialog
 
         return value;
     }
-    
+
 }

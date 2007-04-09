@@ -17,8 +17,7 @@
  *  under the License. 
  *  
  */
-
-package org.apache.directory.ldapstudio.aciitemeditor.dialogs;
+package org.apache.directory.ldapstudio.aciitemeditor.sourceeditor;
 
 
 import org.eclipse.core.commands.ExecutionEvent;

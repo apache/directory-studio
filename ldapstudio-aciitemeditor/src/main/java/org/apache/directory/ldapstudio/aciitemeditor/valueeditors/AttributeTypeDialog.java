@@ -18,16 +18,15 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
 import java.util.Arrays;
 
+import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator;
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorsConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -52,9 +51,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AttributeTypeDialog extends Dialog
 {
-
-    /** The dialog title */
-    public static final String DIALOG_TITLE = "Attribute Type Editor";
 
     /** The schema. */
     private Schema schema;
@@ -98,8 +94,8 @@ public class AttributeTypeDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
-        shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_ATDEDITOR ) );
+        shell.setText( Messages.getString("AttributeTypeDialog.title") ); //$NON-NLS-1$
+        shell.setImage( Activator.getDefault().getImage( Messages.getString("AttributeTypeDialog.icon") ) ); //$NON-NLS-1$
     }
 
 

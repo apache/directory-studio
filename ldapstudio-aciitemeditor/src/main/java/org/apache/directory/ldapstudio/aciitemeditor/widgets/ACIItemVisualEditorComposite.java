@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ACIItemVisualEditorComposite extends ScrolledComposite implements WidgetModifyListener
 {
-    
+
     /** The inner composite for all the content */
     private Composite composite = null;
 
@@ -119,9 +119,10 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
 
 
     /**
-     * This method is called from the contained ACIItemXXXComposites 
+     * This method is called from the contained ACIItemXXXComposites
      * when they are modified.
      * 
+     * @param event the event
      */
     public void widgetModified( WidgetModifyEvent event )
     {
@@ -235,9 +236,9 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
         {
             aciItem = null;
         }
-        
+
         StringBuffer buffer = new StringBuffer();
-        if(aciItem != null)
+        if ( aciItem != null )
         {
             aciItem.printToBuffer( buffer );
         }

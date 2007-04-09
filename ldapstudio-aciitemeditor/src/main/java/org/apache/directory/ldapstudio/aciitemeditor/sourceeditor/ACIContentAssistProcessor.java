@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.aciitemeditor.widgets;
+package org.apache.directory.ldapstudio.aciitemeditor.sourceeditor;
 
 
 import java.util.ArrayList;

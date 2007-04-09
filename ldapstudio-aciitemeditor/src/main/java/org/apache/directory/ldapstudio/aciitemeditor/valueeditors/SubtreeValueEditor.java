@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
 import java.text.ParseException;
@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.search.EntryWidget;
@@ -69,6 +70,9 @@ import org.eclipse.swt.widgets.Table;
  */
 public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 {
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
+
     /* (non-Javadoc)
      * @see org.apache.directory.ldapstudio.valueeditors.AbstractDialogValueEditor#openDialog(org.eclipse.swt.widgets.Shell)
      */
@@ -81,7 +85,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             SubtreeSpecificationDialog dialog = new SubtreeSpecificationDialog( shell, wrapper.connection,
                 wrapper.subtreeSpecification );
             if ( dialog.open() == TextDialog.OK
-                && ( ( dialog.getBase() != null && !"".equals( dialog.getBase() ) ) || dialog.getMinimum() != 0
+                && ( ( dialog.getBase() != null && !EMPTY.equals( dialog.getBase() ) ) || dialog.getMinimum() != 0
                     || dialog.getMaximum() != 0 || !dialog.getExclusions().isEmpty() ) )
             {
                 String base = dialog.getBase();
@@ -90,42 +94,42 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
                 List<String> exclusions = dialog.getExclusions();
 
                 StringBuffer sb = new StringBuffer();
-                sb.append( "{" );
+                sb.append( "{" ); //$NON-NLS-1$
 
                 // Adding base
-                if ( base != null && !"".equals( base ) )
+                if ( base != null && !EMPTY.equals( base ) )
                 {
-                    sb.append( " base \"" + base + "\"," );
+                    sb.append( " base \"" + base + "\"," ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 // Adding Minimum
                 if ( minimum != 0 )
                 {
-                    sb.append( " minimum " + minimum + "," );
+                    sb.append( " minimum " + minimum + "," ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 // Adding Maximum
                 if ( maximum != 0 )
                 {
-                    sb.append( " maximum " + maximum + "," );
+                    sb.append( " maximum " + maximum + "," ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 // Adding Exclusions
                 if ( !exclusions.isEmpty() )
                 {
-                    sb.append( " specificExclusions {" );
+                    sb.append( " specificExclusions {" ); //$NON-NLS-1$
 
                     for ( Iterator<String> it = exclusions.iterator(); it.hasNext(); )
                     {
-                        sb.append( " " + it.next() );
+                        sb.append( " " + it.next() ); //$NON-NLS-1$
 
                         if ( it.hasNext() )
                         {
-                            sb.append( "," );
+                            sb.append( "," ); //$NON-NLS-1$
                         }
                     }
 
-                    sb.append( " }," );
+                    sb.append( " }," ); //$NON-NLS-1$
                 }
 
                 // Removing the last ','
@@ -134,7 +138,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
                     sb.deleteCharAt( sb.length() - 1 );
                 }
 
-                sb.append( " }" );
+                sb.append( " }" ); //$NON-NLS-1$
 
                 setValue( sb.toString() );
 
@@ -183,9 +187,6 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
      */
     private class SubtreeSpecificationDialog extends Dialog
     {
-        /** The dialog title */
-        private static final String DIALOG_TITLE = "Subtree Editor";
-
         /** The connection */
         private IConnection connection;
 
@@ -240,14 +241,14 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
                 for ( Object chopBeforeExclusion : chopBeforeExclusions )
                 {
                     LdapDN dn = ( LdapDN ) chopBeforeExclusion;
-                    exclusions.add( "chopBefore: \"" + dn.toNormName() + "\"" );
+                    exclusions.add( "chopBefore: \"" + dn.toNormName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 Set chopAfterExclusions = subtreeSpecification.getChopAfterExclusions();
                 for ( Object chopAfterExclusion : chopAfterExclusions )
                 {
                     LdapDN dn = ( LdapDN ) chopAfterExclusion;
-                    exclusions.add( "chopAfter: \"" + dn.toNormName() + "\"" );
+                    exclusions.add( "chopAfter: \"" + dn.toNormName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
@@ -259,7 +260,8 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         protected void configureShell( Shell newShell )
         {
             super.configureShell( newShell );
-            newShell.setText( DIALOG_TITLE );
+            newShell.setText( Messages.getString( "SubtreeValueEditor.title" ) ); //$NON-NLS-1$
+            newShell.setImage( Activator.getDefault().getImage( Messages.getString( "SubtreeValueEditor.icon" ) ) ); //$NON-NLS-1$
         }
 
 
@@ -286,7 +288,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             composite.setLayoutData( gd );
             composite.setLayout( new GridLayout( 3, false ) );
 
-            BaseWidgetUtils.createLabel( composite, "Base:", 1 );
+            BaseWidgetUtils.createLabel( composite, Messages.getString( "SubtreeValueEditor.label.base" ), 1 ); //$NON-NLS-1$
             entryWidget = new EntryWidget( connection, null );
             entryWidget.createWidget( composite );
 
@@ -297,7 +299,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             spinnersGridData.horizontalAlignment = GridData.BEGINNING;
             spinnersGridData.widthHint = 3 * 12;
 
-            BaseWidgetUtils.createLabel( composite, "Minimum:", 1 );
+            BaseWidgetUtils.createLabel( composite, Messages.getString( "SubtreeValueEditor.label.minimum" ), 1 ); //$NON-NLS-1$
             minimumSpinner = new Spinner( composite, SWT.BORDER );
             minimumSpinner.setMinimum( 0 );
             minimumSpinner.setMaximum( Integer.MAX_VALUE );
@@ -307,7 +309,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             minimumSpinner.setSelection( initialMinimum );
             minimumSpinner.setLayoutData( spinnersGridData );
 
-            BaseWidgetUtils.createLabel( composite, "Maximum:", 1 );
+            BaseWidgetUtils.createLabel( composite, Messages.getString( "SubtreeValueEditor.label.maximum" ), 1 ); //$NON-NLS-1$
             maximumSpinner = new Spinner( composite, SWT.BORDER );
             maximumSpinner.setMinimum( 0 );
             maximumSpinner.setMaximum( Integer.MAX_VALUE );
@@ -363,7 +365,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             tableGridData.horizontalAlignment = GridData.FILL;
             tableGridData.heightHint = 100;
 
-            BaseWidgetUtils.createLabel( composite, "Exclusions:", 1 );
+            BaseWidgetUtils.createLabel( composite, Messages.getString( "SubtreeValueEditor.label.exclusions" ), 1 ); //$NON-NLS-1$
             Table exclusionsTable = new Table( composite, SWT.BORDER );
             exclusionsTable.setHeaderVisible( false );
             exclusionsTable.setLayoutData( tableGridData );
@@ -406,7 +408,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             buttonGridData.widthHint = Activator.getButtonWidth( composite );
 
             exclusionsTableAddButton = new Button( buttonComposite, SWT.PUSH );
-            exclusionsTableAddButton.setText( "Add..." );
+            exclusionsTableAddButton.setText( Messages.getString( "SubtreeValueEditor.button.add" ) ); //$NON-NLS-1$
             exclusionsTableAddButton.setLayoutData( buttonGridData );
             exclusionsTableAddButton.addSelectionListener( new SelectionAdapter()
             {
@@ -417,7 +419,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             } );
 
             exclusionsTableEditButton = new Button( buttonComposite, SWT.PUSH );
-            exclusionsTableEditButton.setText( "Edit..." );
+            exclusionsTableEditButton.setText( Messages.getString( "SubtreeValueEditor.button.edit" ) ); //$NON-NLS-1$
             exclusionsTableEditButton.setLayoutData( buttonGridData );
             exclusionsTableEditButton.addSelectionListener( new SelectionAdapter()
             {
@@ -429,7 +431,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             exclusionsTableEditButton.setEnabled( false );
 
             exclusionsTableDeleteButton = new Button( buttonComposite, SWT.PUSH );
-            exclusionsTableDeleteButton.setText( "Delete" );
+            exclusionsTableDeleteButton.setText( Messages.getString( "SubtreeValueEditor.button.delete" ) ); //$NON-NLS-1$
             exclusionsTableDeleteButton.setLayoutData( buttonGridData );
             exclusionsTableDeleteButton.addSelectionListener( new SelectionAdapter()
             {
@@ -494,7 +496,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         {
             ExclusionValueEditor valueEditor = new ExclusionValueEditor();
 
-            Object oldRawValue = valueEditor.getRawValue( connection, "" );
+            Object oldRawValue = valueEditor.getRawValue( connection, "" ); //$NON-NLS-1$
 
             CellEditor cellEditor = valueEditor.getCellEditor();
             cellEditor.setValue( oldRawValue );

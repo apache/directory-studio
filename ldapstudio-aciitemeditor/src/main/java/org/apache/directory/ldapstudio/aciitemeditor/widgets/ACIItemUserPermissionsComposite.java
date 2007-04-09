@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
-import org.apache.directory.ldapstudio.aciitemeditor.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.aciitemeditor.dialogs.UserPermissionDialog;
 import org.apache.directory.ldapstudio.aciitemeditor.model.ProtectedItemWrapper;
 import org.apache.directory.shared.ldap.aci.GrantAndDenial;
@@ -63,7 +62,7 @@ public class ACIItemUserPermissionsComposite extends Composite
 
     /** The context. */
     private ACIItemValueWithContext context;
-    
+
     /** The inner composite for all the content */
     private Composite composite = null;
 
@@ -105,8 +104,8 @@ public class ACIItemUserPermissionsComposite extends Composite
 
         /**
          * Creates a new instance of UserPermissionWrapper.
-         *
-         * @param userClassClass
+         * 
+         * @param userPermission the user permission
          */
         public UserPermissionWrapper( UserPermission userPermission )
         {
@@ -116,6 +115,8 @@ public class ACIItemUserPermissionsComposite extends Composite
 
         /**
          * Returns a user-friedly string, displayed in the table.
+         * 
+         * @return the string
          */
         public String toString()
         {
@@ -357,7 +358,7 @@ public class ACIItemUserPermissionsComposite extends Composite
     /**
      * Shows or hides this composite.
      * 
-     * @see org.eclipse.swt.widgets.control#setVisible(boolean)
+     * @param visible true if visible
      */
     public void setVisible( boolean visible )
     {
@@ -365,17 +366,17 @@ public class ACIItemUserPermissionsComposite extends Composite
         ( ( GridData ) getLayoutData() ).heightHint = visible ? -1 : 0;
     }
 
-    
+
     /**
      * Sets the context.
      * 
      * @param context the context
      */
-    public void setContext( ACIItemValueWithContext context ) 
+    public void setContext( ACIItemValueWithContext context )
     {
         this.context = context;
     }
-    
+
 
     /**
      * Sets the user permissions. 
@@ -444,7 +445,7 @@ public class ACIItemUserPermissionsComposite extends Composite
     private void addUserPermission()
     {
         UserPermissionDialog dialog = new UserPermissionDialog( getShell(), null, context );
-        if ( dialog.open() == TextDialog.OK && dialog.getUserPermission() != null )
+        if ( dialog.open() == UserPermissionDialog.OK && dialog.getUserPermission() != null )
         {
             UserPermissionWrapper userPermissionWrapper = new UserPermissionWrapper( dialog.getUserPermission() );
             userPermissionWrappers.add( userPermissionWrapper );
@@ -463,8 +464,9 @@ public class ACIItemUserPermissionsComposite extends Composite
         UserPermissionWrapper oldUserPermissionWrapper = getSelectedUserPermissionWrapper();
         if ( oldUserPermissionWrapper != null )
         {
-            UserPermissionDialog dialog = new UserPermissionDialog( getShell(), oldUserPermissionWrapper.userPermission, context );
-            if ( dialog.open() == TextDialog.OK )
+            UserPermissionDialog dialog = new UserPermissionDialog( getShell(),
+                oldUserPermissionWrapper.userPermission, context );
+            if ( dialog.open() == UserPermissionDialog.OK )
             {
                 oldUserPermissionWrapper.userPermission = dialog.getUserPermission();
                 tableViewer.refresh();
@@ -507,5 +509,4 @@ public class ACIItemUserPermissionsComposite extends Composite
         }
     }
 
-    
 }

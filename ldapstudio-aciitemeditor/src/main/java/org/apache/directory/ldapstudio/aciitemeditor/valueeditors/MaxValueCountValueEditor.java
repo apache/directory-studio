@@ -18,19 +18,18 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.ListContentProposalProvider;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
@@ -60,6 +59,12 @@ import org.eclipse.swt.widgets.Spinner;
 public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
 {
 
+    private static final String L_CURLY_TYPE = "{ type "; //$NON-NLS-1$
+    private static final String SEP_MAXCOUNT = ", maxCount "; //$NON-NLS-1$
+    private static final String R_CURLY = " }"; //$NON-NLS-1$
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
+
     /**
      * {@inheritDoc}
      * 
@@ -72,63 +77,13 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
         {
             MaxValueCountValueEditorRawValueWrapper wrapper = ( MaxValueCountValueEditorRawValueWrapper ) value;
             MaxValueCountDialog dialog = new MaxValueCountDialog( shell, wrapper.schema, wrapper.type, wrapper.maxCount );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getType() ) && dialog.getMaxCount() > -1 )
+            if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getType() ) && dialog.getMaxCount() > -1 )
             {
-                setValue( "{ type " + dialog.getType() + ", maxCount " + dialog.getMaxCount() + " }" );
+                setValue( L_CURLY_TYPE + dialog.getType() + SEP_MAXCOUNT + dialog.getMaxCount() + R_CURLY );
                 return true;
             }
         }
         return false;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns always the string value.
-     * 
-     * Reimplementation, because getRawValue() returns an 
-     * MaxValueCountValueEditorRawValueWrapper.
-     */
-    public String getDisplayValue( IValue value )
-    {
-        if ( value == null )
-        {
-            return "NULL";
-        }
-
-        String displayValue = value.getStringValue();
-        return displayValue;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns null.
-     * Modification in search result editor not supported.
-     */
-    public Object getRawValue( AttributeHierarchy attributeHierarchy )
-    {
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns an MaxValueCountValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IValue value )
-    {
-        if ( value == null || !value.isString() )
-        {
-            return null;
-        }
-        else
-        {
-            return getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() );
-        }
     }
 
 
@@ -148,23 +103,24 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
         {
             return null;
         }
-        
+
         String stringValue = ( String ) value;
-        String type = "";
+        String type = EMPTY;
         int maxCount = 0;
-        try 
+        try
         {
             // for example: { type userPassword, maxCount 10 }
-            Pattern pattern = Pattern.compile("\\s*\\{\\s*type\\s*([^,]*),\\s*maxCount\\s*(\\d*)\\s*\\}\\s*");
-            Matcher matcher = pattern.matcher(stringValue);
-            type = matcher.matches() ? matcher.group(1) : "";
-            maxCount = matcher.matches() ? Integer.valueOf( matcher.group(2) ) : 0;
+            Pattern pattern = Pattern.compile( "\\s*\\{\\s*type\\s*([^,]*),\\s*maxCount\\s*(\\d*)\\s*\\}\\s*" ); //$NON-NLS-1$
+            Matcher matcher = pattern.matcher( stringValue );
+            type = matcher.matches() ? matcher.group( 1 ) : EMPTY;
+            maxCount = matcher.matches() ? Integer.valueOf( matcher.group( 2 ) ) : 0;
         }
-        catch(Exception e)
+        catch ( Exception e )
         {
         }
-        
-        MaxValueCountValueEditorRawValueWrapper wrapper = new MaxValueCountValueEditorRawValueWrapper( schema, type, maxCount );
+
+        MaxValueCountValueEditorRawValueWrapper wrapper = new MaxValueCountValueEditorRawValueWrapper( schema, type,
+            maxCount );
         return wrapper;
     }
 
@@ -185,7 +141,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
 
         /** The attribute type, used as initial attribute type. */
         private String type;
-        
+
         /** The max count, used as initial value. */
         private int maxCount;
 
@@ -204,8 +160,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
             this.maxCount = maxCount;
         }
     }
-    
-    
+
     /**
      * This class provides a dialog to enter the MaxValueCount values.
      *
@@ -214,9 +169,6 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
      */
     private class MaxValueCountDialog extends Dialog
     {
-
-        /** The dialog title */
-        public static final String DIALOG_TITLE = "Max Value Count Editor";
 
         /** The schema. */
         private Schema schema;
@@ -254,8 +206,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
          * @param initialType the initial attribute type
          * @param initialMaxCount the initial max count
          */
-        public MaxValueCountDialog( Shell parentShell, Schema schema, String initialType,
-            int initialMaxCount )
+        public MaxValueCountDialog( Shell parentShell, Schema schema, String initialType, int initialMaxCount )
         {
             super( parentShell );
             super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -273,7 +224,8 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
         protected void configureShell( Shell shell )
         {
             super.configureShell( shell );
-            shell.setText( DIALOG_TITLE );
+            shell.setText( Messages.getString( "MaxValueCountValueEditor.title" ) ); //$NON-NLS-1$
+            shell.setImage( Activator.getDefault().getImage( Messages.getString( "MaxValueCountValueEditor.icon" ) ) ); //$NON-NLS-1$
         }
 
 
@@ -309,8 +261,8 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
             composite.setLayoutData( gd );
             composite.setLayout( new GridLayout( 5, false ) );
 
-            BaseWidgetUtils.createLabel( composite, "{ type ", 1 );
-            
+            BaseWidgetUtils.createLabel( composite, L_CURLY_TYPE, 1 );
+
             // combo widget
             String[] allAtNames = schema.getAttributeTypeDescriptionNames();
             Arrays.sort( allAtNames );
@@ -327,7 +279,8 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
                 }
             } );
             attributeTypeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-            attributeTypeComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+            attributeTypeComboField.getLayoutControl()
+                .setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
             attributeTypeCombo = ( Combo ) attributeTypeComboField.getControl();
             attributeTypeCombo.setItems( allAtNames );
             attributeTypeCombo.setText( initialType );
@@ -338,7 +291,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
             attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
             attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
 
-            BaseWidgetUtils.createLabel( composite, ", maxCount ", 1 );
+            BaseWidgetUtils.createLabel( composite, SEP_MAXCOUNT, 1 );
 
             maxCountSpinner = new Spinner( composite, SWT.BORDER );
             maxCountSpinner.setMinimum( 0 );
@@ -349,8 +302,8 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
             maxCountSpinner.setSelection( initialMaxCount );
             maxCountSpinner.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-            BaseWidgetUtils.createLabel( composite, " }", 1 );
-            
+            BaseWidgetUtils.createLabel( composite, R_CURLY, 1 );
+
             applyDialogFont( composite );
             return composite;
         }

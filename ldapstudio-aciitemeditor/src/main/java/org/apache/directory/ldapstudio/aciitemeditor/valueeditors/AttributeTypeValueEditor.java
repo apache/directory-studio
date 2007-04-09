@@ -18,14 +18,11 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.aciitemeditor;
+package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
@@ -40,6 +37,9 @@ import org.eclipse.swt.widgets.Shell;
 public class AttributeTypeValueEditor extends AbstractDialogStringValueEditor
 {
 
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
+
     /**
      * {@inheritDoc}
      * 
@@ -52,63 +52,13 @@ public class AttributeTypeValueEditor extends AbstractDialogStringValueEditor
         {
             AttributeTypeValueEditorRawValueWrapper wrapper = ( AttributeTypeValueEditorRawValueWrapper ) value;
             AttributeTypeDialog dialog = new AttributeTypeDialog( shell, wrapper.schema, wrapper.attributeType );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAttributeType() ) )
+            if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getAttributeType() ) )
             {
                 setValue( dialog.getAttributeType() );
                 return true;
             }
         }
         return false;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns always the string value.
-     * 
-     * Reimplementation, because getRawValue() returns an 
-     * AttributeTypeValueEditorRawValueWrapper.
-     */
-    public String getDisplayValue( IValue value )
-    {
-        if ( value == null )
-        {
-            return "NULL";
-        }
-
-        String displayValue = value.getStringValue();
-        return displayValue;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns null.
-     * Modification in search result editor not supported.
-     */
-    public Object getRawValue( AttributeHierarchy attributeHierarchy )
-    {
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns a AttributeTypeValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IValue value )
-    {
-        if ( value == null || !value.isString() )
-        {
-            return null;
-        }
-        else
-        {
-            return getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() );
-        }
     }
 
 

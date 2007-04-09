@@ -67,7 +67,7 @@ public class ACIItemProtectedItemsComposite extends Composite
 
     /** The context. */
     private ACIItemValueWithContext context;
-    
+
     /** The inner composite for all the content */
     private Composite composite = null;
 
@@ -96,9 +96,9 @@ public class ACIItemProtectedItemsComposite extends Composite
     private Button reverseSelectionButton = null;
 
     /** The possible protected items, used as input for the table viewer */
-    private ProtectedItemWrapper[] protectedItemWrappers = ProtectedItemWrapperFactory.createProtectedItemWrappers(); 
-        
-        
+    private ProtectedItemWrapper[] protectedItemWrappers = ProtectedItemWrapperFactory.createProtectedItemWrappers();
+
+
     /**
      * Creates a new instance of ACIItemProtectedItemsComposite.
      *
@@ -315,8 +315,13 @@ public class ACIItemProtectedItemsComposite extends Composite
      */
     private class ProtectedItemsLabelProvider extends LabelProvider
     {
+
         /**
          * Returns the error icon if the protected item is checked and invalid.
+         * 
+         * @param element the element
+         * 
+         * @return the image
          */
         public Image getImage( Object element )
         {
@@ -341,17 +346,17 @@ public class ACIItemProtectedItemsComposite extends Composite
         }
     }
 
-    
+
     /**
      * Sets the context.
      * 
      * @param context the context
      */
-    public void setContext( ACIItemValueWithContext context ) 
+    public void setContext( ACIItemValueWithContext context )
     {
         this.context = context;
     }
-    
+
 
     /**
      * Sets the protected items. 
@@ -370,7 +375,7 @@ public class ACIItemProtectedItemsComposite extends Composite
         {
             for ( ProtectedItemWrapper protectedItemWrapper : protectedItemWrappers )
             {
-                
+
                 if ( protectedItemWrapper.getClazz() == item.getClass() )
                 {
                     protectedItemWrapper.setProtectedItem( item );
@@ -410,7 +415,7 @@ public class ACIItemProtectedItemsComposite extends Composite
     /**
      * Shows or hides this composite.
      * 
-     * @see org.eclipse.swt.widgets.control#setVisible(boolean)
+     * @param visible true if visible
      */
     public void setVisible( boolean visible )
     {
@@ -477,13 +482,14 @@ public class ACIItemProtectedItemsComposite extends Composite
     private void editProtectedItem()
     {
         ProtectedItemWrapper protectedItemWrapper = getSelectedProtectedItemWrapper();
-        
+
         AbstractDialogStringValueEditor valueEditor = protectedItemWrapper.getValueEditor();
-        if(valueEditor != null)
+        if ( valueEditor != null )
         {
-            if(protectedItemWrapper.isMultivalued())
+            if ( protectedItemWrapper.isMultivalued() )
             {
-                MultiValuedDialog dialog = new MultiValuedDialog( getShell(), protectedItemWrapper.getDisplayName(), protectedItemWrapper.getValues(), context, valueEditor );
+                MultiValuedDialog dialog = new MultiValuedDialog( getShell(), protectedItemWrapper.getDisplayName(),
+                    protectedItemWrapper.getValues(), context, valueEditor );
                 dialog.open();
                 refreshTable();
             }
@@ -493,19 +499,19 @@ public class ACIItemProtectedItemsComposite extends Composite
                 String oldValue = values.isEmpty() ? null : values.get( 0 );
                 if ( oldValue == null )
                 {
-                    oldValue = "";
+                    oldValue = ""; //$NON-NLS-1$
                 }
                 Object oldRawValue = valueEditor.getRawValue( context.getConnection(), oldValue );
-                
+
                 CellEditor cellEditor = valueEditor.getCellEditor();
                 cellEditor.setValue( oldRawValue );
                 cellEditor.activate();
                 Object newRawValue = cellEditor.getValue();
-                
-                if(newRawValue != null) 
+
+                if ( newRawValue != null )
                 {
-                    String newValue = (String) valueEditor.getStringOrBinaryValue( newRawValue );
-                    
+                    String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
+
                     values.clear();
                     values.add( newValue );
                     tableViewer.refresh();
@@ -513,8 +519,8 @@ public class ACIItemProtectedItemsComposite extends Composite
             }
         }
     }
-    
-    
+
+
     /**
      * Refreshes the table viewer.
      */
@@ -522,6 +528,5 @@ public class ACIItemProtectedItemsComposite extends Composite
     {
         tableViewer.refresh();
     }
-
 
 }
