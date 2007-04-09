@@ -449,6 +449,11 @@ public class SchemasViewController
              */
             public void selectionChanged( IWorkbenchPart part, ISelection selection )
             {
+                if ( ! ( selection instanceof TreeSelection ) )
+                {
+                    return;
+                }
+                
                 TreeSelection treeSelection = ( TreeSelection ) selection;
 
                 Object selectedObject = ( ( TreeSelection ) selection ).getFirstElement();
