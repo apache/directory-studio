@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="org.apache.directory.ldapstudio.valueeditors" name="Value Editors" schema="src/main/resources/valueEditors.exsd"/>
+
+ <extension
+       point="org.apache.directory.ldapstudio.valueeditors">
+    <valueEditor
+          class="org.apache.directory.ldapstudio.valueeditors.InPlaceTextValueEditor"
+          icon="resources/icons/inplace_texteditor.gif"
+          name="In-Place Text Editor"/>
+    <valueEditor
+          class="org.apache.directory.ldapstudio.valueeditors.TextValueEditor"
+          icon="resources/icons/texteditor.gif"
+          name="Text Editor"/>
+    <valueEditor
+          class="org.apache.directory.ldapstudio.valueeditors.HexValueEditor"
+          icon="resources/icons/hexeditor.gif"
+          name="Hex Editor"/>
+  </extension>
+  
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="LDAP Browser"
+            id="org.apache.directory.ldapstudio.browser.ui.newWizards.category"/>
+      <wizard
+            category="org.apache.directory.ldapstudio.browser.ui.newWizards.category"
+            class="org.apache.directory.ldapstudio.browser.common.wizards.NewConnectionWizard"
+            hasPages="true"
+            icon="resources/icons/connection_add.gif"
+            id="org.apache.directory.ldapstudio.browser.common.wizards.NewConnectionWizard"
+            name="LDAP Connection"
+            project="false"/>
+   </extension>  
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.apache.directory.ldapstudio.browser.common.BrowserCommonPreferencesInitializer"/>
+   </extension> 
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.MainPreferencePage"
+            id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
+            name="LDAP">
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+      </page>
+      <page
+            category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
+            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.AttributesPreferencePage"
+            id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.AttributesPreferencePage"
+            name="Attributes">
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.colors"/>
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.fonts"/>
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+      </page>
+      <page
+            category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.AttributesPreferencePage"
+            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
+            id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
+            name="Binary Attributes">
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+      </page>
+      <page
+            category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.AttributesPreferencePage"
+            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.ValueEditorsPreferencePage"
+            id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.ValueEditorsPreferencePage"
+            name="Value Editors">
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+      </page>
+      <page
+            category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
+            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.BrowserPreferencePage"
+            id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.BrowserPreferencePage"
+            name="Browser">
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+      </page>            
+      <page
+            category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
+            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.EntryEditorPreferencePage"
+            id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.EntryEditorPreferencePage"
+            name="Entry Editor">
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+      </page>
+      <page
+            category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
+            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.TextFormatsPreferencePage"
+            id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.TextFormatsPreferencePage"
+            name="Text Formats">
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
+      </page>            
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            name="LDAP Filter"
+            id="org.apache.directory.ldapstudio.browser.ui.templates.filter"/>
+      <include file="resources/templates/templates.xml"/>
+   </extension>
+
+ <extension
+       point="org.eclipse.ui.keywords">
+    <keyword
+          id="org.apache.directory.ldapstudio.browser.keyword.colors"
+          label="Colors"/>
+    <keyword
+          id="org.apache.directory.ldapstudio.browser.keyword.fonts"
+          label="Fonts"/>
+    <keyword
+          id="org.apache.directory.ldapstudio.browser.keyword.ldap"
+          label="LDAP"/>
+    <keyword
+          id="org.apache.directory.ldapstudio.browser.keyword.ldif"
+          label="LDIF"/>
+ </extension>
+
+ <extension
+       point="org.eclipse.ui.bindings">
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.addValue"
+          contextId="org.eclipse.ui.contexts.dialogAndWindow"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1++"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.addAttribute"
+          contextId="org.eclipse.ui.contexts.dialogAndWindow"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+M2++"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.editAttributeDescription"
+          contextId="org.apache.directory.ldapstudio.browser.action.context"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F6"/>  
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.editAttributeDescription"
+          contextId="org.eclipse.ui.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F6"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.editValue"
+          contextId="org.apache.directory.ldapstudio.browser.action.context"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F7"/>  
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.editValue"
+          contextId="org.eclipse.ui.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F7"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.editRecord"
+          contextId="org.apache.directory.ldapstudio.browser.action.context"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F8"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.delete"
+          contextId="org.eclipse.ui.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="DEL"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.copy"
+          contextId="org.eclipse.ui.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="CTRL+C"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.paste"
+          contextId="org.eclipse.ui.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="CTRL+V"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.find"
+          contextId="org.eclipse.ui.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="CTRL+F"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.properties"
+          contextId="org.eclipse.ui.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="ALT+RETURN"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.locateInDit"
+          contextId="org.apache.directory.ldapstudio.browser.action.context"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F3"/>
+    <key
+          commandId="org.apache.directory.ldapstudio.browser.action.openSearchResult"
+          contextId="org.apache.directory.ldapstudio.browser.action.context"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F4"/>
+ </extension>
+
+ <extension
+       point="org.eclipse.ui.commands">
+    <category
+          id="org.apache.directory.ldapstudio.browser.commands"
+          name="LDAP Browser"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Add a value to an existing attribute"
+          id="org.apache.directory.ldapstudio.browser.action.addValue"
+          name="Add Value"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Add an attribute to an existing entry"
+          id="org.apache.directory.ldapstudio.browser.action.addAttribute"
+          name="Add Attribute"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Edit an attribute description"
+          id="org.apache.directory.ldapstudio.browser.action.editAttributeDescription"
+          name="Edit Attribute Description"/>          
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Edit a value"
+          id="org.apache.directory.ldapstudio.browser.action.editValue"
+          name="Edit Value"/>          
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Edit a record"
+          id="org.apache.directory.ldapstudio.browser.action.editRecord"
+          name="Edit Record"/>          
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Delete an element"
+          id="org.apache.directory.ldapstudio.browser.action.delete"
+          name="Delete"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Copy an element"
+          id="org.apache.directory.ldapstudio.browser.action.copy"
+          name="Copy"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Paste an element"
+          id="org.apache.directory.ldapstudio.browser.action.paste"
+          name="Paste"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Find an element"
+          id="org.apache.directory.ldapstudio.browser.action.find"
+          name="Find"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Properties of an element"
+          id="org.apache.directory.ldapstudio.browser.action.properties"
+          name="Properties"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Locate a DN or search result in DIT"
+          id="org.apache.directory.ldapstudio.browser.action.locateInDit"
+          name="Locate in DIT"/>
+    <command
+          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          description="Open a search result"
+          id="org.apache.directory.ldapstudio.browser.action.openSearchResult"
+          name="Open Search Result"/>
+ </extension>
+
+ <extension
+       point="org.eclipse.ui.contexts">
+       <context
+		name="Browser context"
+		description="Browser context"
+		id="org.apache.directory.ldapstudio.browser.action.context"
+		parentId="org.eclipse.ui.contexts.window">
+	</context>
+ </extension>
+ 
+</plugin>

@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDAP Studio Browser Common Plug-in
+Bundle-SymbolicName: org.apache.directory.ldapstudio.browser.common;singleton:=true
+Bundle-Version: 0.0.0.SNAPSHOT
+Bundle-Activator: org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.editors,
+ org.apache.directory.ldapstudio.browser.core
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.ldapstudio.browser.common,
+ org.apache.directory.ldapstudio.browser.common.actions,
+ org.apache.directory.ldapstudio.browser.common.actions.proxy,
+ org.apache.directory.ldapstudio.browser.common.dialogs,
+ org.apache.directory.ldapstudio.browser.common.dialogs.preferences,
+ org.apache.directory.ldapstudio.browser.common.dnd,
+ org.apache.directory.ldapstudio.browser.common.filtereditor,
+ org.apache.directory.ldapstudio.browser.common.jobs,
+ org.apache.directory.ldapstudio.browser.common.widgets,
+ org.apache.directory.ldapstudio.browser.common.widgets.browser,
+ org.apache.directory.ldapstudio.browser.common.widgets.connection,
+ org.apache.directory.ldapstudio.browser.common.widgets.entryeditor,
+ org.apache.directory.ldapstudio.browser.common.widgets.search,
+ org.apache.directory.ldapstudio.browser.common.wizards,
+ org.apache.directory.ldapstudio.valueeditors
