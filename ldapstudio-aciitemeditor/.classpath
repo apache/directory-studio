@@ -8,5 +8,5 @@
 	<classpathentry exported="true" kind="lib" path="lib/shared-ldap-0.9.6-SNAPSHOT.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="output" path="classes"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

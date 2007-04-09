@@ -148,8 +148,7 @@
 				<exclude name="plugin.xml"/>
 				<exclude name="META-INF/**"/>
 				<exclude name="src/**" />
-				<exclude name="icons/**" />
-				<exclude name="templates/**" />
+				<exclude name="resources/**" />
 			</fileset>
 		</delete>
 	</target>
