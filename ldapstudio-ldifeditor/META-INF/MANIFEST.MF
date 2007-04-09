@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDAP Studio LDIF Editor Plug-in
+Bundle-SymbolicName: org.apache.directory.ldapstudio.ldifeditor;singleton:=true
+Bundle-Version: 0.0.0.SNAPSHOT
+Bundle-Activator: org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.filesystem,
+ org.eclipse.search,
+ org.eclipse.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.views,
+ org.eclipse.ui.forms,
+ org.eclipse.jface.text,
+ org.apache.directory.ldapstudio.browser.core,
+ org.apache.directory.ldapstudio.browser.common
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.ldapstudio.ldifeditor,
+ org.apache.directory.ldapstudio.ldifeditor.dialogs,
+ org.apache.directory.ldapstudio.ldifeditor.editor,
+ org.apache.directory.ldapstudio.ldifeditor.editor.actions,
+ org.apache.directory.ldapstudio.ldifeditor.editor.reconciler,
+ org.apache.directory.ldapstudio.ldifeditor.editor.text,
+ org.apache.directory.ldapstudio.ldifeditor.widgets,
+ org.apache.directory.ldapstudio.ldifeditor.wizards
