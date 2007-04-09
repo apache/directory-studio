@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -70,7 +70,7 @@ public class EncoderDecoderDialog extends Dialog
     {
         super.configureShell( shell );
         shell.setText( DIALOG_TITLE );
-        shell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_IMAGEEDITOR ) );
+        //shell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_IMAGEEDITOR ) );
     }
 
 

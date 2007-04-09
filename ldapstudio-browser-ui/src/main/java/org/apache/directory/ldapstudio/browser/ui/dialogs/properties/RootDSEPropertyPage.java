@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetTableMetadata;
 import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetTableMetadata;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;

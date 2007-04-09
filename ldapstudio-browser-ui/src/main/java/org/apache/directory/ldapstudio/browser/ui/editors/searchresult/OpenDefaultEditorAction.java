@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 
 
 public class OpenDefaultEditorAction extends AbstractSearchResultListenerAction
@@ -32,7 +32,7 @@ public class OpenDefaultEditorAction extends AbstractSearchResultListenerAction
 
     public OpenDefaultEditorAction( OpenBestEditorAction proxy )
     {
-        super( proxy.selectionProvider, "Edit Value", null, BrowserUIConstants.ACTION_ID_EDIT_VALUE );
+        super( proxy.selectionProvider, "Edit Value", null, BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
 
         this.proxy = proxy;
     }

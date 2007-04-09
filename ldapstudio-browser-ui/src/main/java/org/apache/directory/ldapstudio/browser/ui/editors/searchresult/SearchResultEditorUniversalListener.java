@@ -27,6 +27,7 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
+import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
@@ -40,7 +41,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.actions.OpenSearchResultAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ISelection;

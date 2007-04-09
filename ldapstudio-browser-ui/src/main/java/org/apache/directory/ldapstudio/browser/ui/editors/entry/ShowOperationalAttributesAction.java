@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.eclipse.jface.action.Action;
 
 
@@ -43,8 +43,8 @@ public class ShowOperationalAttributesAction extends Action
         super( "Show Operational Attributes", AS_CHECK_BOX );
         setToolTipText( getText() );
         setEnabled( true );
-        setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
+        setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
     }
 
 
@@ -53,8 +53,8 @@ public class ShowOperationalAttributesAction extends Action
      */
     public void run()
     {
-        BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
-            BrowserUIConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES, super.isChecked() );
+        BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES, super.isChecked() );
     }
 
 }

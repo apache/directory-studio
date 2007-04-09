@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.browser.ui.views.modificationlogs;
 
 
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.widgets.ldifeditor.LdifEditorWidget;
+import org.apache.directory.ldapstudio.ldifeditor.widgets.LdifEditorWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

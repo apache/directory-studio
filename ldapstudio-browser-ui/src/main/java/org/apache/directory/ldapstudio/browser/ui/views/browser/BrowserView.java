@@ -24,6 +24,8 @@ package org.apache.directory.ldapstudio.browser.ui.views.browser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserConfiguration;
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserWidget;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
@@ -31,8 +33,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserConfiguration;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserWidget;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

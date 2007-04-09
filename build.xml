@@ -122,6 +122,24 @@
             </fileset>
         </copy>
 
+        <!-- Creation of the Browser Common Plugin -->
+        <ant dir="ldapstudio-browser-common" inheritAll="no" />
+        <!-- Copy of the Browser Common Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-browser-common/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDIF Editor Plugin -->
+        <ant dir="ldapstudio-ldifeditor" inheritAll="no" />
+        <!-- Copy of the LDIF Editor Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-ldifeditor/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
         <!-- Creation of the Browser UI Plugin -->
         <ant dir="ldapstudio-browser-ui" inheritAll="no" />
         <!-- Copy of the Browser UI Plugin in the "plugins" folder of the RCP app -->
@@ -140,6 +158,15 @@
             </fileset>
         </copy>
 
+        <!-- Creation of the Value Editors Plugin -->
+        <ant dir="ldapstudio-valueeditors" inheritAll="no" />
+        <!-- Copy of the Value Editors Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-valueeditors/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+        	
         <!-- Creation of the ACI Item Editor Plugin -->
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" />
         <!-- Copy of the ACI Item Edtior Plugin in the "plugins" folder of the RCP app -->
@@ -307,8 +334,11 @@
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-browser-common" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-ldifeditor" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-help" inheritAll="no" target="resolve" />
+        <ant dir="ldapstudio-valueeditors" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-jars" inheritAll="no" target="resolve" />
     </target>
@@ -324,9 +354,12 @@
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-browser-common" inheritAll="no" target="clean" />
+        <ant dir="ldapstudio-ldifeditor" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-feature" inheritAll="no" target="clean"/>
+        <ant dir="ldapstudio-valueeditors" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-jars" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-updatesite" inheritAll="no" target="clean" />

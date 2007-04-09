@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetFilter;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetPreferences;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetFilter;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetPreferences;
 
 
 /**

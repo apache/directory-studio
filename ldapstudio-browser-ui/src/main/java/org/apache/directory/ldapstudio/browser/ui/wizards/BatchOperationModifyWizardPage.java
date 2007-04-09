@@ -21,14 +21,14 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.ModWidget;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
-import org.apache.directory.ldapstudio.browser.ui.widgets.ModWidget;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;

@@ -21,14 +21,13 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
+import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
-import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifOutlinePage;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IPartListener2;
@@ -252,7 +251,7 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
     {
         super.entryUpdated( event );
 
-        LdifOutlinePage outlinePage = ( LdifOutlinePage ) entryEditor.getAdapter( IContentOutlinePage.class );
+        EntryEditorOutlinePage outlinePage = ( EntryEditorOutlinePage ) entryEditor.getAdapter( IContentOutlinePage.class );
         if ( outlinePage != null )
         {
             outlinePage.refresh();

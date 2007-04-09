@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
+import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.TableViewer;
 
 
@@ -37,8 +37,8 @@ public class OpenMultiValuedEditorAction extends AbstractOpenEditorAction
         this.cellEditor = this.valueEditorManager.getMultiValuedValueEditor().getCellEditor();
         this.setText( "Multivalued Editor" );
         this.setToolTipText( "Multivalued Editor" );
-        this.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_MULTIVALUEDEDITOR ) );
+        this.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_MULTIVALUEDEDITOR ) );
     }
 
 

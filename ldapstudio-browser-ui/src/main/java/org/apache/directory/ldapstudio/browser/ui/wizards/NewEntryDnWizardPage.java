@@ -23,6 +23,10 @@ package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 import java.util.Arrays;
 
+import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.ldapstudio.browser.common.widgets.DnBuilderWidget;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DummyEntry;
@@ -38,10 +42,6 @@ import org.apache.directory.ldapstudio.browser.core.model.RDNPart;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Subschema;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
-import org.apache.directory.ldapstudio.browser.ui.widgets.DnBuilderWidget;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;

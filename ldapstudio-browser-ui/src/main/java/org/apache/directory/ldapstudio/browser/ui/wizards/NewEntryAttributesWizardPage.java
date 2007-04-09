@@ -21,6 +21,12 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidget;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.OpenDefaultEditorAction;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
@@ -31,11 +37,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidget;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetActionGroup;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetConfiguration;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetUniversalListener;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.OpenDefaultEditorAction;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -242,7 +243,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         mainWidget.getViewer().getTree().setFocus();
 
         // create actions
-        actionGroup = new NewEntryAttributesWizardPageActionGroup( mainWidget, configuration );
+        actionGroup = new EntryEditorWidgetActionGroupWithAttribute( mainWidget, configuration );
         actionGroup.fillToolBar( mainWidget.getToolBarManager() );
         actionGroup.fillMenu( mainWidget.getMenuManager() );
         actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );

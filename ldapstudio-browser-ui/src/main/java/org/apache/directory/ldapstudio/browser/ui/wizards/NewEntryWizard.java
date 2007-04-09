@@ -21,6 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserCategory;
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserEntryPage;
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserSearchResultPage;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DummyEntry;
 import org.apache.directory.ldapstudio.browser.core.jobs.CreateEntryJob;
@@ -34,10 +38,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserEntryPage;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserSearchResultPage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;

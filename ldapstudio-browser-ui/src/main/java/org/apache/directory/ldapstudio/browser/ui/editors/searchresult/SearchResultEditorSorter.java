@@ -31,8 +31,8 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,12 +42,6 @@ import org.eclipse.swt.widgets.TableColumn;
 
 public class SearchResultEditorSorter extends ViewerSorter implements SelectionListener
 {
-
-    protected static final int SORT_ORDER_NONE = 0;
-
-    protected static final int SORT_ORDER_ASCENDING = 1;
-
-    protected static final int SORT_ORDER_DESCENDING = 2;
 
     protected SearchResultEditorContentProvider contentProvider;
 
@@ -74,7 +68,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         this.contentProvider = contentProvider;
 
         this.sortBy = 0;
-        this.sortOrder = SORT_ORDER_NONE;
+        this.sortOrder = BrowserCoreConstants.SORT_ORDER_NONE;
 
         this.columns = this.contentProvider.getViewer().getTable().getColumns();
         for ( int i = 0; i < this.columns.length; i++ )
@@ -146,14 +140,15 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         if ( this.sortBy == index )
         {
             // toggle sort order
-            this.sortOrder = this.sortOrder == SORT_ORDER_ASCENDING ? SORT_ORDER_DESCENDING
-                : this.sortOrder == SORT_ORDER_DESCENDING ? SORT_ORDER_NONE : SORT_ORDER_ASCENDING;
+            this.sortOrder = this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? BrowserCoreConstants.SORT_ORDER_DESCENDING
+                : this.sortOrder == BrowserCoreConstants.SORT_ORDER_DESCENDING ? BrowserCoreConstants.SORT_ORDER_NONE
+                    : BrowserCoreConstants.SORT_ORDER_ASCENDING;
         }
         else
         {
             // set new sort by
             this.sortBy = index;
-            this.sortOrder = SORT_ORDER_ASCENDING;
+            this.sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
         }
         if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
         {
@@ -166,15 +161,15 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
             columns[i].setImage( null );
         }
 
-        if ( this.sortOrder == SORT_ORDER_ASCENDING )
+        if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING )
         {
-            ( columns[index] )
-                .setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_SORT_ASCENDING ) );
+            ( columns[index] ).setImage( BrowserCommonActivator.getDefault().getImage(
+                BrowserCommonConstants.IMG_SORT_ASCENDING ) );
         }
-        else if ( this.sortOrder == SORT_ORDER_DESCENDING )
+        else if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_DESCENDING )
         {
-            ( columns[index] )
-                .setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_SORT_DESCENDING ) );
+            ( columns[index] ).setImage( BrowserCommonActivator.getDefault().getImage(
+                BrowserCommonConstants.IMG_SORT_DESCENDING ) );
         }
         else
         {
@@ -311,7 +306,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
 
     private int lessThan()
     {
-        return this.sortOrder == SORT_ORDER_ASCENDING ? -1 : 1;
+        return this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
     }
 
 
@@ -323,13 +318,14 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
 
     private int greaterThan()
     {
-        return this.sortOrder == SORT_ORDER_ASCENDING ? 1 : -1;
+        return this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
     }
 
 
     private int compare( String s1, String s2 )
     {
-        return this.sortOrder == SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 ) : s2.compareToIgnoreCase( s1 );
+        return this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 ) : s2
+            .compareToIgnoreCase( s1 );
     }
 
 }

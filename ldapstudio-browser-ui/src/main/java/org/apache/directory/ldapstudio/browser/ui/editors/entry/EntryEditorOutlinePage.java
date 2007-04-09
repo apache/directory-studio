@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.browser.ui.editors.ldif;
+package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
 import java.util.ArrayList;
@@ -42,10 +42,9 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifRec
 import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifAttrValLine;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsLdifAction;
-import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor;
+import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
+import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -58,32 +57,31 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 
 
 /**
- * This class implements the Outline Page for LDIF. 
- * It used to display LDIF files, records, and even LDAP entries.
+ * This class implements the Outline Page for the Entry Editor. 
+ * It used to display LDAP entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class LdifOutlinePage extends ContentOutlinePage
+public class EntryEditorOutlinePage extends ContentOutlinePage
 {
     /** The editor it is attached to */
-    private IEditorPart editorPart;
+    private EntryEditor entryEditor;
 
 
     /**
-     * Creates a new instance of LdifOutlinePage.
+     * Creates a new instance of EntryEditorOutlinePage.
      *
-     * @param editorPart
+     * @param entryEditor
      *      the editor the Outline page is attached to
      */
-    public LdifOutlinePage( IEditorPart editorPart )
+    public EntryEditorOutlinePage( EntryEditor entryEditor )
     {
-        this.editorPart = editorPart;
+        this.entryEditor = entryEditor;
     }
 
 
@@ -103,115 +101,75 @@ public class LdifOutlinePage extends ContentOutlinePage
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
-                if ( editorPart instanceof LdifEditor )
+                if ( !event.getSelection().isEmpty() && event.getSelection() instanceof IStructuredSelection )
                 {
-                    LdifEditor ldifEditor = ( LdifEditor ) editorPart;
-                    if ( !event.getSelection().isEmpty() && event.getSelection() instanceof IStructuredSelection )
+
+                    Object o = entryEditor.getMainWidget().getViewer().getInput();
+                    if ( o != null && o instanceof IEntry )
                     {
-                        Object element = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
+                        IEntry entry = ( IEntry ) o;
+                        IAttribute[] attributes = entry.getAttributes();
 
-                        if ( element instanceof LdifRecord )
+                        List selectionList = new ArrayList();
+
+                        Iterator it = ( ( IStructuredSelection ) event.getSelection() ).iterator();
+                        while ( it.hasNext() )
                         {
-                            LdifRecord ldifRecord = ( LdifRecord ) element;
-                            ldifEditor.selectAndReveal( ldifRecord.getDnLine().getOffset(), ldifRecord.getDnLine()
-                                .getLength() );
-                        }
-                        else if ( element instanceof List )
-                        {
-                            List list = ( List ) element;
-                            if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
+                            Object element = it.next();
+
+                            if ( element instanceof LdifAttrValLine )
                             {
-                                LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
-                                ldifEditor.selectAndReveal( line.getOffset(), line.getRawAttributeDescription()
-                                    .length() );
-                            }
-                        }
-                        else if ( element instanceof LdifAttrValLine )
-                        {
-                            LdifAttrValLine line = ( LdifAttrValLine ) element;
-                            ldifEditor.selectAndReveal( line.getOffset() + line.getRawAttributeDescription().length()
-                                + line.getRawValueType().length(), line.getRawValue().length() );
-                        }
-                        else if ( element instanceof LdifModSpec )
-                        {
-                            LdifModSpec modSpec = ( LdifModSpec ) element;
-                            ldifEditor.selectAndReveal( modSpec.getOffset(), modSpec.getModSpecType().getLength() );
-                        }
-                    }
-                }
-                else if ( editorPart instanceof EntryEditor )
-                {
-                    EntryEditor entryEditor = ( EntryEditor ) editorPart;
-                    if ( !event.getSelection().isEmpty() && event.getSelection() instanceof IStructuredSelection )
-                    {
-
-                        Object o = entryEditor.getMainWidget().getViewer().getInput();
-                        if ( o != null && o instanceof IEntry )
-                        {
-                            IEntry entry = ( IEntry ) o;
-                            IAttribute[] attributes = entry.getAttributes();
-
-                            List selectionList = new ArrayList();
-
-                            Iterator it = ( ( IStructuredSelection ) event.getSelection() ).iterator();
-                            while ( it.hasNext() )
-                            {
-                                Object element = it.next();
-
-                                if ( element instanceof LdifAttrValLine )
+                                // select the value
+                                LdifAttrValLine line = ( LdifAttrValLine ) element;
+                                for ( int a = 0; a < attributes.length; a++ )
                                 {
-                                    // select the value
-                                    LdifAttrValLine line = ( LdifAttrValLine ) element;
-                                    for ( int a = 0; a < attributes.length; a++ )
+                                    IAttribute attribute = attributes[a];
+                                    if ( attribute.getDescription().equals( line.getUnfoldedAttributeDescription() ) )
                                     {
-                                        IAttribute attribute = attributes[a];
-                                        if ( attribute.getDescription().equals( line.getUnfoldedAttributeDescription() ) )
+                                        IValue[] values = attribute.getValues();
+                                        for ( int v = 0; v < values.length; v++ )
                                         {
-                                            IValue[] values = attribute.getValues();
-                                            for ( int v = 0; v < values.length; v++ )
+                                            IValue value = values[v];
+                                            if ( value.getStringValue().equals( line.getValueAsString() ) )
                                             {
-                                                IValue value = values[v];
-                                                if ( value.getStringValue().equals( line.getValueAsString() ) )
-                                                {
-                                                    selectionList.add( value );
-                                                }
+                                                selectionList.add( value );
                                             }
                                         }
                                     }
                                 }
-                                else if ( element instanceof List )
+                            }
+                            else if ( element instanceof List )
+                            {
+                                // select attribute and all values
+                                List list = ( List ) element;
+                                if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
                                 {
-                                    // select attribute and all values
-                                    List list = ( List ) element;
-                                    if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
-                                    {
-                                        LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
-                                        for ( int a = 0; a < attributes.length; a++ )
-                                        {
-                                            IAttribute attribute = attributes[a];
-                                            if ( attribute.getDescription().equals(
-                                                line.getUnfoldedAttributeDescription() ) )
-                                            {
-                                                selectionList.add( attribute );
-                                                selectionList.addAll( Arrays.asList( attribute.getValues() ) );
-                                            }
-                                        }
-                                    }
-                                }
-                                else if ( element instanceof LdifRecord )
-                                {
+                                    LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
                                     for ( int a = 0; a < attributes.length; a++ )
                                     {
                                         IAttribute attribute = attributes[a];
-                                        selectionList.add( attribute );
-                                        selectionList.addAll( Arrays.asList( attribute.getValues() ) );
+                                        if ( attribute.getDescription().equals(
+                                            line.getUnfoldedAttributeDescription() ) )
+                                        {
+                                            selectionList.add( attribute );
+                                            selectionList.addAll( Arrays.asList( attribute.getValues() ) );
+                                        }
                                     }
                                 }
                             }
-
-                            IStructuredSelection selection = new StructuredSelection( selectionList );
-                            entryEditor.getMainWidget().getViewer().setSelection( selection );
+                            else if ( element instanceof LdifRecord )
+                            {
+                                for ( int a = 0; a < attributes.length; a++ )
+                                {
+                                    IAttribute attribute = attributes[a];
+                                    selectionList.add( attribute );
+                                    selectionList.addAll( Arrays.asList( attribute.getValues() ) );
+                                }
+                            }
                         }
+
+                        IStructuredSelection selection = new StructuredSelection( selectionList );
+                        entryEditor.getMainWidget().getViewer().setSelection( selection );
                     }
                 }
             }
@@ -269,16 +227,9 @@ public class LdifOutlinePage extends ContentOutlinePage
                 treeViewer.getTree().setEnabled( true );
             }
 
-            if ( this.editorPart != null && this.editorPart instanceof LdifEditor )
+            if ( entryEditor != null )
             {
-                if ( treeViewer.getInput() != ( ( LdifEditor ) this.editorPart ).getLdifModel() )
-                {
-                    treeViewer.setInput( ( ( LdifEditor ) this.editorPart ).getLdifModel() );
-                }
-            }
-            else if ( this.editorPart != null && this.editorPart instanceof EntryEditor )
-            {
-                Object o = ( ( EntryEditor ) this.editorPart ).getMainWidget().getViewer().getInput();
+                Object o = entryEditor.getMainWidget().getViewer().getInput();
 
                 if ( o == null )
                 {
@@ -314,10 +265,9 @@ public class LdifOutlinePage extends ContentOutlinePage
     public void dispose()
     {
         super.dispose();
-        if ( this.editorPart != null && this.editorPart instanceof LdifEditor )
+        if ( entryEditor != null )
         {
-            ( ( LdifEditor ) this.editorPart ).outlinePageClosed();
-            this.editorPart = null;
+            entryEditor = null;
         }
     }
 
@@ -507,39 +457,39 @@ public class LdifOutlinePage extends ContentOutlinePage
             // Record
             if ( element instanceof LdifContentRecord )
             {
-                return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ENTRY );
+                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_ENTRY );
             }
             else if ( element instanceof LdifChangeAddRecord )
             {
-                return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_ADD );
+                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_ADD );
             }
             else if ( element instanceof LdifChangeModifyRecord )
             {
-                return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_MODIFY );
+                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MODIFY );
             }
             else if ( element instanceof LdifChangeDeleteRecord )
             {
-                return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_DELETE );
+                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_DELETE );
             }
             else if ( element instanceof LdifChangeModDnRecord )
             {
-                return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_RENAME );
+                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_RENAME );
             }
 
             // List of AttrValLine
             else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
-                return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_ATTRIBUTE );
+                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_ATTRIBUTE );
             }
             else if ( element instanceof LdifModSpec )
             {
                 LdifModSpec modSpec = ( LdifModSpec ) element;
                 if ( modSpec.isAdd() )
-                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_MOD_ADD );
+                    return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_ADD );
                 else if ( modSpec.isReplace() )
-                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_MOD_REPLACE );
+                    return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_REPLACE );
                 else if ( modSpec.isDelete() )
-                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_MOD_DELETE );
+                    return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_DELETE );
                 else
                     return null;
             }
@@ -547,7 +497,7 @@ public class LdifOutlinePage extends ContentOutlinePage
             // AttrValLine
             else if ( element instanceof LdifAttrValLine )
             {
-                return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LDIF_VALUE );
+                return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_VALUE );
             }
 
             else

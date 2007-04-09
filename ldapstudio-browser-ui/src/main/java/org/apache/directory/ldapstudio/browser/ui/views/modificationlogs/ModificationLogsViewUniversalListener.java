@@ -24,6 +24,7 @@ package org.apache.directory.ldapstudio.browser.ui.views.modificationlogs;
 import java.io.File;
 import java.io.FileReader;
 
+import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.core.events.AttributesInitializedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
@@ -31,7 +32,6 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.INullSelectionListener;

@@ -26,10 +26,10 @@ import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
-
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
+import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
+import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableFontProvider;
@@ -177,27 +177,27 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
                         IAttribute attribute = ah.getAttributes()[i];
                         if ( attribute.isObjectClassAttribute() )
                         {
-                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserUIPlugin.getDefault()
-                                .getPreferenceStore(), BrowserUIConstants.PREFERENCE_OBJECTCLASS_FONT );
-                            return BrowserUIPlugin.getDefault().getFont( fontData );
+                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
+                                .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_OBJECTCLASS_FONT );
+                            return BrowserCommonActivator.getDefault().getFont( fontData );
                         }
                         else if ( attribute.isMustAttribute() )
                         {
-                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserUIPlugin.getDefault()
-                                .getPreferenceStore(), BrowserUIConstants.PREFERENCE_MUSTATTRIBUTE_FONT );
-                            return BrowserUIPlugin.getDefault().getFont( fontData );
+                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
+                                .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_FONT );
+                            return BrowserCommonActivator.getDefault().getFont( fontData );
                         }
                         else if ( attribute.isOperationalAttribute() )
                         {
-                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserUIPlugin.getDefault()
-                                .getPreferenceStore(), BrowserUIConstants.PREFERENCE_OPERATIONALATTRIBUTE_FONT );
-                            return BrowserUIPlugin.getDefault().getFont( fontData );
+                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
+                                .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_FONT );
+                            return BrowserCommonActivator.getDefault().getFont( fontData );
                         }
                         else
                         {
-                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserUIPlugin.getDefault()
-                                .getPreferenceStore(), BrowserUIConstants.PREFERENCE_MAYATTRIBUTE_FONT );
-                            return BrowserUIPlugin.getDefault().getFont( fontData );
+                            FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
+                                .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_FONT );
+                            return BrowserCommonActivator.getDefault().getFont( fontData );
                         }
                     }
                 }

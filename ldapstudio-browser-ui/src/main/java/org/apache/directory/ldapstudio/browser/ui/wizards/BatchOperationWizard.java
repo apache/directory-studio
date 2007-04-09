@@ -21,6 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
+import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.jobs.SearchJob;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
@@ -32,10 +34,8 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifEditor;
-import org.apache.directory.ldapstudio.browser.ui.editors.ldif.NonExistingLdifEditorInput;
-import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
+import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.ldapstudio.ldifeditor.editor.NonExistingLdifEditorInput;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;

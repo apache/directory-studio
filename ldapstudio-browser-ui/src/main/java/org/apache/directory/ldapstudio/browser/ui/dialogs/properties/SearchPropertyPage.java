@@ -21,15 +21,15 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
+import org.apache.directory.ldapstudio.browser.common.widgets.search.SearchPageWrapper;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Search;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.ui.widgets.search.SearchPageWrapper;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

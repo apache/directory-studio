@@ -26,9 +26,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.actions.CopyAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyAttributeDescriptionAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyDnAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsCsvAction;
@@ -38,17 +35,19 @@ import org.apache.directory.ldapstudio.browser.ui.actions.CopyValueAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.LocateDnInDitAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewBatchOperationAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewSearchAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.NewValueAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.OpenSchemaBrowserAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.OpenSearchResultAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.PropertiesAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.RefreshAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.ShowRawValuesAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.ValueEditorPreferencesAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.actions.proxy.SearchResultEditorActionProxy;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.IValueEditor;
-
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
+import org.apache.directory.ldapstudio.browser.common.actions.CopyAction;
+import org.apache.directory.ldapstudio.browser.common.actions.NewValueAction;
+import org.apache.directory.ldapstudio.browser.common.actions.PropertiesAction;
+import org.apache.directory.ldapstudio.browser.common.actions.RefreshAction;
+import org.apache.directory.ldapstudio.browser.common.actions.ShowRawValuesAction;
+import org.apache.directory.ldapstudio.browser.common.actions.ValueEditorPreferencesAction;
+import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserActionProxy;
+import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -315,8 +314,8 @@ public class SearchResultEditorActionGroup implements IMenuListener
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                showRawValuesAction.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-                    BrowserUIConstants.PREFERENCE_SHOW_RAW_VALUES ) );
+                showRawValuesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+                    BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
             }
         } );
         menuManager.update( true );

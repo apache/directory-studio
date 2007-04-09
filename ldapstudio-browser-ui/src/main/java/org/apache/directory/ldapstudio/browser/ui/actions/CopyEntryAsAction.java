@@ -24,14 +24,14 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
+import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
+import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.ldapstudio.browser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.ldapstudio.browser.core.jobs.ReadEntryJob;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
-
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -231,7 +231,7 @@ public abstract class CopyEntryAsAction extends BrowserAction
     public boolean isEnabled()
     {
         boolean showOperational = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
 
         if ( getSelectedSearchResults().length > 0
             && getSelectedEntries().length + getSelectedBookmarks().length + getSelectedSearches().length == 0 )

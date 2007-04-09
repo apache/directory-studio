@@ -21,7 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.actions.proxy;
 
 
-import org.apache.directory.ldapstudio.browser.ui.actions.BrowserAction;
+import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
+import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserActionProxy;
 import org.eclipse.jface.viewers.Viewer;
 
 

@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
+import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.wizards.BatchOperationWizard;

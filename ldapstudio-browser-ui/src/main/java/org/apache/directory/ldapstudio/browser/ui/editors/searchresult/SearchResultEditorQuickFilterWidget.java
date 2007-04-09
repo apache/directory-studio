@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -91,17 +91,17 @@ public class SearchResultEditorQuickFilterWidget
                 clearQuickFilterButton.setEnabled( !"".equals( quickFilterValueText.getText() ) );
                 if ( !"".equals( quickFilterValueText.getText() ) )
                 {
-                    RGB fgRgb = PreferenceConverter.getColor( BrowserUIPlugin.getDefault().getPreferenceStore(),
-                        BrowserUIConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR );
-                    RGB bgRgb = PreferenceConverter.getColor( BrowserUIPlugin.getDefault().getPreferenceStore(),
-                        BrowserUIConstants.PREFERENCE_QUICKFILTER_BACKGROUND_COLOR );
-                    Color fgColor = BrowserUIPlugin.getDefault().getColor( fgRgb );
-                    Color bgColor = BrowserUIPlugin.getDefault().getColor( bgRgb );
+                    RGB fgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
+                        BrowserCommonConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR );
+                    RGB bgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
+                        BrowserCommonConstants.PREFERENCE_QUICKFILTER_BACKGROUND_COLOR );
+                    Color fgColor = BrowserCommonActivator.getDefault().getColor( fgRgb );
+                    Color bgColor = BrowserCommonActivator.getDefault().getColor( bgRgb );
                     quickFilterValueText.setForeground( fgColor );
                     quickFilterValueText.setBackground( bgColor );
-                    FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserUIPlugin.getDefault()
-                        .getPreferenceStore(), BrowserUIConstants.PREFERENCE_QUICKFILTER_FONT );
-                    Font font = BrowserUIPlugin.getDefault().getFont( fontData );
+                    FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
+                        .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_QUICKFILTER_FONT );
+                    Font font = BrowserCommonActivator.getDefault().getFont( fontData );
                     quickFilterValueText.setFont( font );
                 }
                 else
@@ -113,7 +113,7 @@ public class SearchResultEditorQuickFilterWidget
 
         this.clearQuickFilterButton = new Button( innerComposite, SWT.PUSH );
         this.clearQuickFilterButton.setToolTipText( "Clear Quick Filter" );
-        this.clearQuickFilterButton.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_CLEAR ) );
+        this.clearQuickFilterButton.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_CLEAR ) );
         this.clearQuickFilterButton.setEnabled( false );
         this.clearQuickFilterButton.addSelectionListener( new SelectionAdapter()
         {

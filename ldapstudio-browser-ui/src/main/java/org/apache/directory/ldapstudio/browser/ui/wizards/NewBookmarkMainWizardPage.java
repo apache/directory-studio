@@ -21,12 +21,12 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
+import org.apache.directory.ldapstudio.browser.common.widgets.search.EntryWidget;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.ui.widgets.search.EntryWidget;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

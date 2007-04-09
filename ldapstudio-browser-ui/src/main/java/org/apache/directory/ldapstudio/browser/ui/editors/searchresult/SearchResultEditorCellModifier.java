@@ -30,7 +30,7 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.valueeditors.internal.ValueEditorManager;
+import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TableViewer;

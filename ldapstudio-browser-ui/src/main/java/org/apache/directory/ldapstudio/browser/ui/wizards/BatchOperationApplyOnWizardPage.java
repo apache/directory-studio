@@ -26,6 +26,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
+import org.apache.directory.ldapstudio.browser.common.widgets.search.SearchPageWrapper;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
@@ -35,11 +40,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.NameException;
-import org.apache.directory.ldapstudio.browser.ui.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.ui.widgets.search.SearchPageWrapper;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;

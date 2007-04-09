@@ -21,16 +21,16 @@
 package org.apache.directory.ldapstudio.browser.ui.perspective;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
 import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
 import org.apache.directory.ldapstudio.browser.ui.views.modificationlogs.ModificationLogsView;
 import org.apache.directory.ldapstudio.browser.ui.wizards.BatchOperationWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.NewBookmarkWizard;
-import org.apache.directory.ldapstudio.browser.ui.wizards.NewConnectionWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.NewEntryWizard;
-import org.apache.directory.ldapstudio.browser.ui.wizards.NewLdifFileWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.NewSearchWizard;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.wizards.NewConnectionWizard;
+import org.apache.directory.ldapstudio.ldifeditor.wizards.NewLdifFileWizard;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -131,7 +131,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         logFolder.addPlaceholder( "*" );
 
         // non-closable?
-        boolean isIDE = BrowserUIPlugin.isIDEEnvironment();
+        boolean isIDE = BrowserCommonActivator.isIDEEnvironment();
         if ( !isIDE )
         {
             layout.getViewLayout( BrowserView.getId() ).setCloseable( false );

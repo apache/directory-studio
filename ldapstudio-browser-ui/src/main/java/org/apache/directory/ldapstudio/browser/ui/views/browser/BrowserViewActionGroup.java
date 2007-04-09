@@ -21,12 +21,17 @@
 package org.apache.directory.ldapstudio.browser.ui.views.browser;
 
 
-import org.apache.directory.ldapstudio.browser.ui.actions.CopyAction;
+import org.apache.directory.ldapstudio.browser.common.actions.CopyAction;
+import org.apache.directory.ldapstudio.browser.common.actions.DeleteAction;
+import org.apache.directory.ldapstudio.browser.common.actions.PasteAction;
+import org.apache.directory.ldapstudio.browser.common.actions.RenameAction;
+import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserActionProxy;
+import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserViewActionProxy;
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserActionGroup;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyDnAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsCsvAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsLdifAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyUrlAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.DeleteAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.ImportExportAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.LocateEntryInDitAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.MoveAction;
@@ -34,11 +39,6 @@ import org.apache.directory.ldapstudio.browser.ui.actions.NewBatchOperationActio
 import org.apache.directory.ldapstudio.browser.ui.actions.NewBookmarkAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewEntryAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewSearchAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.PasteAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.RenameAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserActionProxy;
-import org.apache.directory.ldapstudio.browser.ui.actions.proxy.BrowserViewActionProxy;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserActionGroup;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;

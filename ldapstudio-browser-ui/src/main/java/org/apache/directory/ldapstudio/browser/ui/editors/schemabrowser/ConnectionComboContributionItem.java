@@ -21,13 +21,13 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionContentProvider;
+import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionLabelProvider;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionContentProvider;
-import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionLabelProvider;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.ComboViewer;

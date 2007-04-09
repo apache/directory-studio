@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DummyEntry;
@@ -38,8 +40,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ModelModificationExcep
 import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.jobs.RunnableContextJobAdapter;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.fieldassist.DecoratedField;
 import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;

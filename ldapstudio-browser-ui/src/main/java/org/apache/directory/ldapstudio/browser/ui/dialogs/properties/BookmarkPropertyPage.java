@@ -21,12 +21,12 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
+import org.apache.directory.ldapstudio.browser.common.widgets.search.EntryWidget;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.ui.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.ui.widgets.search.EntryWidget;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.events.ModifyEvent;

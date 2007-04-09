@@ -21,10 +21,11 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifEditor;
-import org.apache.directory.ldapstudio.browser.ui.editors.ldif.NonExistingLdifEditorInput;
+import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
+import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
+import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
+import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.ldapstudio.ldifeditor.editor.NonExistingLdifEditorInput;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
@@ -82,7 +83,7 @@ public class NewLdifFileAction extends BrowserAction
      */
     public ImageDescriptor getImageDescriptor()
     {
-        return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_LDIFEDITOR_NEW );
+        return LdifEditorActivator.getDefault().getImageDescriptor( LdifEditorConstants.IMG_LDIFEDITOR_NEW );
     }
 
 

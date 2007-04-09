@@ -24,10 +24,10 @@ package org.apache.directory.ldapstudio.browser.ui.views.connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.ldapstudio.browser.common.dnd.ConnectionTransfer;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.ui.dnd.ConnectionTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;

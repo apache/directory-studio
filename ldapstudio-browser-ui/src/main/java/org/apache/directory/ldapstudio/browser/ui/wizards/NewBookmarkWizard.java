@@ -21,6 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserCategory;
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserEntryPage;
+import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserSearchResultPage;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Bookmark;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
@@ -30,9 +33,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserCategory;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserEntryPage;
-import org.apache.directory.ldapstudio.browser.ui.widgets.browser.BrowserSearchResultPage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;

@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.ui.widgets.ViewFormWidget;
+import org.apache.directory.ldapstudio.browser.common.widgets.ViewFormWidget;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.apache.directory.ldapstudio.browser.core.internal.model.AttributeComparator;
 import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
@@ -38,7 +40,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -169,16 +170,16 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
     public void serialializeEntries( IEntry[] entries, StringBuffer text )
     {
 
-        String attributeDelimiter = BrowserUIPlugin.getDefault().getPreferenceStore().getString(
-            BrowserUIConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER );
-        String valueDelimiter = BrowserUIPlugin.getDefault().getPreferenceStore().getString(
-            BrowserUIConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER );
-        String quoteCharacter = BrowserUIPlugin.getDefault().getPreferenceStore().getString(
-            BrowserUIConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER );
-        String lineSeparator = BrowserUIPlugin.getDefault().getPreferenceStore().getString(
-            BrowserUIConstants.PREFERENCE_FORMAT_TABLE_LINESEPARATOR );
-        int binaryEncoding = BrowserUIPlugin.getDefault().getPreferenceStore().getInt(
-            BrowserUIConstants.PREFERENCE_FORMAT_TABLE_BINARYENCODING );
+        String attributeDelimiter = BrowserCommonActivator.getDefault().getPreferenceStore().getString(
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER );
+        String valueDelimiter = BrowserCommonActivator.getDefault().getPreferenceStore().getString(
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER );
+        String quoteCharacter = BrowserCommonActivator.getDefault().getPreferenceStore().getString(
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER );
+        String lineSeparator = BrowserCommonActivator.getDefault().getPreferenceStore().getString(
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_LINESEPARATOR );
+        int binaryEncoding = BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_BINARYENCODING );
 
         String[] returningAttributes = null;
         if ( this.mode == MODE_DN_ONLY )

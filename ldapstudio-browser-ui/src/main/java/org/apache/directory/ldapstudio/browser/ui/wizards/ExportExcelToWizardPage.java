@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.dialogs.preferences.TextFormatsPreferencePage;
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.TextFormatsPreferencePage;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;

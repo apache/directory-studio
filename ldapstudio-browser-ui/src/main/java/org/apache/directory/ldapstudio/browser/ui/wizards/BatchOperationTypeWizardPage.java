@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;

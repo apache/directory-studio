@@ -23,13 +23,14 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 import java.util.LinkedHashSet;
 
+import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
+import org.apache.directory.ldapstudio.browser.common.dialogs.MoveEntriesDialog;
 import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.jobs.MoveEntriesJob;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.MoveEntriesDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;

@@ -21,11 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.editors.ldif.LdifOutlinePage;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidget;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -68,7 +67,7 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
     private EntryEditorUniversalListener universalListener;
 
     /** The outline page. */
-    private LdifOutlinePage outlinePage;
+    private EntryEditorOutlinePage outlinePage;
 
 
     /**
@@ -193,7 +192,7 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
         {
             if ( outlinePage == null || outlinePage.getControl() == null || outlinePage.getControl().isDisposed() )
             {
-                outlinePage = new LdifOutlinePage( this );
+                outlinePage = new EntryEditorOutlinePage( this );
             }
             return outlinePage;
         }
@@ -320,7 +319,7 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
      * 
      * @return the outline page
      */
-    public LdifOutlinePage getOutlinePage()
+    public EntryEditorOutlinePage getOutlinePage()
     {
         return outlinePage;
     }

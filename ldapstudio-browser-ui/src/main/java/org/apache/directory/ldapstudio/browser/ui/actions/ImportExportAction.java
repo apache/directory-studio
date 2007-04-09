@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
+import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;

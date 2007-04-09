@@ -24,26 +24,26 @@ package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 import java.util.Iterator;
 
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
-import org.apache.directory.ldapstudio.browser.ui.actions.CollapseAllAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyAttributeDescriptionAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyDnAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopySearchFilterAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyUrlAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyValueAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.DeleteAllValuesAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.ExpandAllAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.LocateDnInDitAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.NewAttributeAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewBatchOperationAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewSearchAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.OpenSchemaBrowserAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.RefreshAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.proxy.EntryEditorActionProxy;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EditAttributeDescriptionAction;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.EntryEditorWidgetActionGroup;
-import org.apache.directory.ldapstudio.browser.ui.widgets.entryeditor.OpenDefaultEditorAction;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
+import org.apache.directory.ldapstudio.browser.common.actions.CollapseAllAction;
+import org.apache.directory.ldapstudio.browser.common.actions.DeleteAllValuesAction;
+import org.apache.directory.ldapstudio.browser.common.actions.NewAttributeAction;
+import org.apache.directory.ldapstudio.browser.common.actions.RefreshAction;
+import org.apache.directory.ldapstudio.browser.common.actions.proxy.EntryEditorActionProxy;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EditAttributeDescriptionAction;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
+import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.OpenDefaultEditorAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -283,10 +283,10 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                showRawValuesAction.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-                    BrowserUIConstants.PREFERENCE_SHOW_RAW_VALUES ) );
-                showOperationalAttributesAction.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore()
-                    .getBoolean( BrowserUIConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
+                showRawValuesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+                    BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
+                showOperationalAttributesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore()
+                    .getBoolean( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
             }
         } );
         menuManager.update( true );

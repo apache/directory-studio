@@ -6,8 +6,7 @@ Bundle-Version: 0.7.0
 Bundle-Activator: org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
-Require-Bundle: org.apache.directory.ldapstudio.browser.core,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.filesystem,
  org.eclipse.search,
  org.eclipse.ui,
@@ -15,11 +14,9 @@ Require-Bundle: org.apache.directory.ldapstudio.browser.core,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.views,
  org.eclipse.ui.forms,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.apache.directory.ldapstudio.browser.core,
+ org.apache.directory.ldapstudio.browser.common,
+ org.apache.directory.ldapstudio.ldifeditor;resolution:=optional
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
-Export-Package: org.apache.directory.ldapstudio.browser.ui.dialogs,
- org.apache.directory.ldapstudio.browser.ui.valueeditors,
- org.apache.directory.ldapstudio.browser.ui.valueeditors.internal;x-friends:="org.apache.directory.ldapstudio.aciitemeditor",
- org.apache.directory.ldapstudio.browser.ui.widgets;x-friends:="org.apache.directory.ldapstudio.aciitemeditor",
- org.apache.directory.ldapstudio.browser.ui.widgets.search;x-friends:="org.apache.directory.ldapstudio.aciitemeditor"

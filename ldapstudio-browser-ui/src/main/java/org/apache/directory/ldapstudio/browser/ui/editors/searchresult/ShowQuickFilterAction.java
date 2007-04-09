@@ -21,8 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
@@ -40,7 +41,7 @@ public class ShowQuickFilterAction extends Action
     {
         super( "Show Quick Filter", AS_CHECK_BOX );
         super.setToolTipText( "Show Quick Filter" );
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_FILTER ) );
+        super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_FILTER ) );
         super.setActionDefinitionId( IWorkbenchActionDefinitionIds.FIND_REPLACE );
         super.setEnabled( true );
 

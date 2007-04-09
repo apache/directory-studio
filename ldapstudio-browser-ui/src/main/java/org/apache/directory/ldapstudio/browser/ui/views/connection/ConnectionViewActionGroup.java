@@ -21,13 +21,13 @@
 package org.apache.directory.ldapstudio.browser.ui.views.connection;
 
 
+import org.apache.directory.ldapstudio.browser.common.actions.SelectAllAction;
+import org.apache.directory.ldapstudio.browser.common.actions.proxy.ConnectionViewActionProxy;
+import org.apache.directory.ldapstudio.browser.common.dnd.ConnectionTransfer;
+import org.apache.directory.ldapstudio.browser.common.dnd.SearchTransfer;
+import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionActionGroup;
 import org.apache.directory.ldapstudio.browser.ui.actions.ImportExportAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.OpenSchemaBrowserAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.SelectAllAction;
-import org.apache.directory.ldapstudio.browser.ui.actions.proxy.ConnectionViewActionProxy;
-import org.apache.directory.ldapstudio.browser.ui.dnd.ConnectionTransfer;
-import org.apache.directory.ldapstudio.browser.ui.dnd.SearchTransfer;
-import org.apache.directory.ldapstudio.browser.ui.widgets.connection.ConnectionActionGroup;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;

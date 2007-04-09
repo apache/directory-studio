@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
-import org.apache.directory.ldapstudio.browser.ui.widgets.BaseWidgetUtils;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.dialogs.IDialogConstants;

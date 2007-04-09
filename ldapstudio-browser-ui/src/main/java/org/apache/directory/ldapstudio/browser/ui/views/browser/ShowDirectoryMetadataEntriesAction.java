@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.views.browser;
 
 
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
-import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 
@@ -44,8 +44,8 @@ public class ShowDirectoryMetadataEntriesAction extends Action
     {
         super( "Show Directory Metadata", IAction.AS_CHECK_BOX );
         setEnabled( true );
-        setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_BROWSER_SHOW_DIRECTORY_META_ENTRIES ) );
+        setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_DIRECTORY_META_ENTRIES ) );
     }
 
 
@@ -54,8 +54,8 @@ public class ShowDirectoryMetadataEntriesAction extends Action
      */
     public void run()
     {
-        BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
-            BrowserUIConstants.PREFERENCE_BROWSER_SHOW_DIRECTORY_META_ENTRIES, isChecked() );
+        BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
+            BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_DIRECTORY_META_ENTRIES, isChecked() );
     }
 
 }
