@@ -20,8 +20,8 @@
 package org.apache.directory.ldapstudio.proxy.view.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.dialogs.SelectConnectionDialog;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.ui.dialogs.SelectConnectionDialog;
 import org.apache.directory.ldapstudio.proxy.Activator;
 import org.apache.directory.ldapstudio.proxy.ProxyConstants;
 import org.apache.directory.ldapstudio.proxy.view.BaseWidgetUtils;
@@ -167,7 +167,7 @@ public class ConnectWizardBrowserAvailablePage extends WizardPage implements Mod
     private void checkBrowserPluginAvailability()
     {
         if ( !isPluginAvailable( "org.apache.directory.ldapstudio.browser.core" )
-            || !isPluginAvailable( "org.apache.directory.ldapstudio.browser.ui" ) )
+            || !isPluginAvailable( "org.apache.directory.ldapstudio.browser.common" ) )
         {
             useConnectionButton.setEnabled( false );
             connectionButton.setEnabled( false );

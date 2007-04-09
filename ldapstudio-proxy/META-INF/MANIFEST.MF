@@ -9,8 +9,8 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
- org.apache.directory.ldapstudio.browser.ui;resolution:=optional,
- org.apache.directory.ldapstudio.browser.core;resolution:=optional
+ org.apache.directory.ldapstudio.browser.core;resolution:=optional,
+ org.apache.directory.ldapstudio.browser.common;resolution:=optional
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/shared-ldap-0.9.6-SNAPSHOT.jar,
