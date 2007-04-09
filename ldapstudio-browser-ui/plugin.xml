@@ -23,7 +23,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            icon="icons/browser_browserview.gif"
+            icon="resources/icons/browser_browserview.gif"
             class="org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective"
             fixed="false"
             name="LDAP"
@@ -40,19 +40,19 @@
 	<editor
           class="org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor"
           default="true"
-          icon="icons/browser_entryeditor.gif"
+          icon="resources/icons/browser_entryeditor.gif"
           id="org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor"
           name="Entry Editor"/>
  <editor
        class="org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditor"
        default="true"
-       icon="icons/browser_searchresulteditor.gif"
+       icon="resources/icons/browser_searchresulteditor.gif"
        id="org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditor"
        name="Search Result Editor"/>
  <editor
        class="org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser.SchemaBrowser"
        default="true"
-       icon="icons/browser_schemabrowsereditor.gif"
+       icon="resources/icons/browser_schemabrowsereditor.gif"
        id="org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser.SchemaBrowser"
        name="Schema Browser"/>
  </extension>
@@ -64,7 +64,7 @@
       <view
             allowMultiple="false"
             class="org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView"
-            icon="icons/browser_connectionview.gif"
+            icon="resources/icons/browser_connectionview.gif"
             category="org.apache.directory.ldapstudio.browser.ui.category"
             name="Connections"
             id="org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView"/>            
@@ -72,14 +72,14 @@
          allowMultiple="false"
          category="org.apache.directory.ldapstudio.browser.ui.category"
          class="org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView"
-         icon="icons/browser_browserview.gif"
+         icon="resources/icons/browser_browserview.gif"
          id="org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView"
          name="LDAP Browser"/>
    <view
          allowMultiple="false"
          category="org.apache.directory.ldapstudio.browser.ui.category"
          class="org.apache.directory.ldapstudio.browser.ui.views.modificationlogs.ModificationLogsView"
-         icon="icons/browser_modificationlogview.gif"
+         icon="resources/icons/browser_modificationlogview.gif"
          id="org.apache.directory.ldapstudio.browser.ui.views.modificationlogs.ModificationLogsView"
          name="Modification Logs"/>            
    </extension>
@@ -89,7 +89,7 @@
             category="org.apache.directory.ldapstudio.browser.ui.newWizards.category"
             class="org.apache.directory.ldapstudio.browser.ui.wizards.NewEntryWizard"
             hasPages="true"
-            icon="icons/entry_add.gif"
+            icon="resources/icons/entry_add.gif"
             id="org.apache.directory.ldapstudio.browser.ui.wizards.NewEntryWizard"
             name="LDAP Entry"
             project="false"/>
@@ -98,7 +98,7 @@
             category="org.apache.directory.ldapstudio.browser.ui.newWizards.category"
             class="org.apache.directory.ldapstudio.browser.ui.wizards.NewSearchWizard"
             hasPages="false"
-            icon="icons/search_new.gif"
+            icon="resources/icons/search_new.gif"
             id="org.apache.directory.ldapstudio.browser.ui.wizards.NewSearchWizard"
             name="LDAP Search"
             project="false"/>
@@ -106,7 +106,7 @@
             category="org.apache.directory.ldapstudio.browser.ui.newWizards.category"
             class="org.apache.directory.ldapstudio.browser.ui.wizards.NewBookmarkWizard"
             hasPages="true"
-            icon="icons/bookmark_add.gif"
+            icon="resources/icons/bookmark_add.gif"
             id="org.apache.directory.ldapstudio.browser.ui.wizards.NewBookmarkWizard"
             name="LDAP Bookmark"
             project="false"/>
@@ -114,7 +114,7 @@
             category="org.apache.directory.ldapstudio.browser.ui.newWizards.category"
             class="org.apache.directory.ldapstudio.browser.ui.wizards.BatchOperationWizard"
             hasPages="true"
-            icon="icons/batch.gif"
+            icon="resources/icons/batch.gif"
             id="org.apache.directory.ldapstudio.browser.ui.wizards.BatchOperationWizard"
             name="LDAP Batch Operation"
             project="false"/>
@@ -127,7 +127,7 @@
     <wizard
           category="ldapstudio-browser-ui.category1org.apache.directory.ldapstudio.browser.ui.importWizards.category"
           class="org.apache.directory.ldapstudio.browser.ui.wizards.ImportLdifWizard"
-          icon="icons/import_ldif.gif"
+          icon="resources/icons/import_ldif.gif"
           id="org.apache.directory.ldapstudio.browser.ui.wizards.ImportLdifWizard"
           name="LDIF into LDAP">
        <description>
@@ -139,7 +139,7 @@
     <wizard
           category="ldapstudio-browser-ui.category1org.apache.directory.ldapstudio.browser.ui.importWizards.category"
           class="org.apache.directory.ldapstudio.browser.ui.wizards.ImportDsmlWizard"
-          icon="icons/import_dsml.gif"
+          icon="resources/icons/import_dsml.gif"
           id="org.apache.directory.ldapstudio.browser.ui.wizards.ImportDsmlWizard"
           name="DSML into LDAP">
        <description>
@@ -157,7 +157,7 @@
     <wizard
           category="org.apache.directory.ldapstudio.browser.ui.exportWizards.category"
           class="org.apache.directory.ldapstudio.browser.ui.wizards.ExportLdifWizard"
-          icon="icons/export_ldif.gif"
+          icon="resources/icons/export_ldif.gif"
           id="org.apache.directory.ldapstudio.browser.ui.wizards.ExportLdifWizard"
           name="LDAP to LDIF">
        <description>
@@ -169,7 +169,7 @@
     <wizard
           category="org.apache.directory.ldapstudio.browser.ui.exportWizards.category"
           class="org.apache.directory.ldapstudio.browser.ui.wizards.ExportDsmlWizard"
-          icon="icons/export_dsml.gif"
+          icon="resources/icons/export_dsml.gif"
           id="org.apache.directory.ldapstudio.browser.ui.wizards.ExportDdsmlWizard"
           name="LDAP to DSML">
        <description>
@@ -181,7 +181,7 @@
     <wizard
           category="org.apache.directory.ldapstudio.browser.ui.exportWizards.category"
           class="org.apache.directory.ldapstudio.browser.ui.wizards.ExportCsvWizard"
-          icon="icons/export_csv.gif"
+          icon="resources/icons/export_csv.gif"
           id="org.apache.directory.ldapstudio.browser.ui.wizards.ExportCsvWizard"
           name="LDAP to CSV">
        <description>
@@ -193,7 +193,7 @@
     <wizard
           category="org.apache.directory.ldapstudio.browser.ui.exportWizards.category"
           class="org.apache.directory.ldapstudio.browser.ui.wizards.ExportExcelWizard"
-          icon="icons/export_xls.gif"
+          icon="resources/icons/export_xls.gif"
           id="org.apache.directory.ldapstudio.browser.ui.wizards.ExportExcelWizard"
           name="LDAP to Excel">
        <description>
@@ -209,7 +209,7 @@
           enabled="true"
           label="LDAP Search"
           class="org.apache.directory.ldapstudio.browser.ui.search.SearchPage"
-          icon="icons/browser_searchresulteditor.gif"
+          icon="resources/icons/browser_searchresulteditor.gif"
           showScopeSection="false"
           sizeHint="450,450"
           id="org.apache.directory.ldapstudio.browser.ui.search.SearchPage">
@@ -308,7 +308,7 @@
        </menu>
        <action
              class="org.apache.directory.ldapstudio.browser.ui.actions.OpenSchemaBrowserAction"
-             icon="icons/browser_schemabrowsereditor.gif"
+             icon="resources/icons/browser_schemabrowsereditor.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.OpenSchemaBrowserAction"
              label="Open Schema Browser"
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/open"
@@ -316,49 +316,49 @@
        </action>
        <action
              class="org.apache.directory.ldapstudio.browser.common.actions.NewConnectionAction"
-             icon="icons/connection_add.gif"
+             icon="resources/icons/connection_add.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewConnectionAction"
              label="New Connection..."
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newConnection"
              style="push"/>
        <action
              class="org.apache.directory.ldapstudio.browser.ui.actions.NewEntryAction"
-             icon="icons/entry_add.gif"
+             icon="resources/icons/entry_add.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewEntryAction"
              label="New Entry..."
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newEntry"
              style="push"/>
        <action
              class="org.apache.directory.ldapstudio.browser.common.actions.NewAttributeAction"
-             icon="icons/attribute_add.gif"
+             icon="resources/icons/attribute_add.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewAttributeAction"
              label="New Attribute..."
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newAttribute"
              style="push"/>
        <action
              class="org.apache.directory.ldapstudio.browser.common.actions.NewValueAction"
-             icon="icons/value_add.gif"
+             icon="resources/icons/value_add.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewValueAction"
              label="New Value"
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newValue"
              style="push"/>
        <action
              class="org.apache.directory.ldapstudio.browser.ui.actions.NewSearchAction"
-             icon="icons/search_new.gif"
+             icon="resources/icons/search_new.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewSearchAction"
              label="New Search..."
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newSearch"
              style="push"/>
        <action
              class="org.apache.directory.ldapstudio.browser.ui.actions.NewBookmarkAction"
-             icon="icons/bookmark_add.gif"
+             icon="resources/icons/bookmark_add.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewBookmarkAction"
              label="New Bookmark..."
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newBookmark"
              style="push"/>
        <action
              class="org.apache.directory.ldapstudio.browser.ui.actions.NewBatchOperationAction"
-             icon="icons/batch.gif"
+             icon="resources/icons/batch.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewBatchOperationAction"
              label="New Batch Operation..."
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newBatchOperation"
@@ -371,7 +371,7 @@
              style="push"/>
        <action
              class="org.apache.directory.ldapstudio.browser.ui.actions.NewLdifFileAction"
-             icon="icons/ldifeditor_new.gif"
+             icon="resources/icons/ldifeditor_new.gif"
              id="org.apache.directory.ldapstudio.browser.ui.actions.NewLdifFileAction"
              label="New LDIF File"
              menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newLdifFile"

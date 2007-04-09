@@ -85,15 +85,9 @@
 				<include name="**" />
 			</fileset>
 		</copy>
-		<mkdir dir="${project.build}/icons" />
-		<copy todir="${project.build}/icons">
-			<fileset dir="${basedir}/icons">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<mkdir dir="${project.build}/templates" />
-		<copy todir="${project.build}/templates">
-			<fileset dir="${basedir}/templates">
+		<mkdir dir="${project.build}/resources" />
+		<copy todir="${project.build}/resources">
+			<fileset dir="${basedir}/resources">
 				<include name="**" />
 			</fileset>
 		</copy>
@@ -161,10 +155,9 @@
 				<exclude name="plugin.properties"/>
 				<exclude name="plugin.xml"/>
 				<exclude name="about_files/**"/>
-				<exclude name="icons/**"/>
+				<exclude name="resources/**"/>
 				<exclude name="META-INF/**"/>
 				<exclude name="src/**" />
-				<exclude name="templates/**"/>
 			</fileset>
 		</delete>
 	</target>
