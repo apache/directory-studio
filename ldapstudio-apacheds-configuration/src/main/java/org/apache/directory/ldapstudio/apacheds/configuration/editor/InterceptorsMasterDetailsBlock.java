@@ -85,6 +85,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         Composite client = toolkit.createComposite( section, SWT.WRAP );
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
+        layout.makeColumnsEqualWidth = false;
         layout.marginWidth = 2;
         layout.marginHeight = 2;
         client.setLayout( layout );
@@ -93,7 +94,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
 
         // Creatig the Table and Table Viewer
         Table table = toolkit.createTable( client, SWT.NULL );
-        GridData gd = new GridData( GridData.FILL_BOTH );
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         gd.heightHint = 20;
         gd.widthHint = 100;
         table.setLayoutData( gd );
@@ -114,9 +115,12 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
                 new Interceptor( "ReferalService" ), new Interceptor( "AuthorizationService" ) } );
 
         // Creating the button(s)
-        Button b = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
+        Button addButton = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
         gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
-        b.setLayoutData( gd );
+        addButton.setLayoutData( gd );
+
+        Button deleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
+        deleteButton.setLayoutData( gd );
     }
 
 
