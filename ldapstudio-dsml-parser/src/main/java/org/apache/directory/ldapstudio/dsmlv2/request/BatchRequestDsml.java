@@ -199,7 +199,7 @@ public class BatchRequestDsml
     public String toDsml()
     {
         Document document = DocumentHelper.createDocument();
-        Element element = document.addElement( "batchResponse" );
+        Element element = document.addElement( "batchRequest" );
 
         // RequestID
         if ( requestID != 0 )
