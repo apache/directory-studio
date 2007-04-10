@@ -55,6 +55,11 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
 {
     /** The associated page */
     private FormPage page;
+    
+    // UI Fields
+    private TableViewer viewer;
+    private Button addButton;
+    private Button deleteButton;
 
 
     /**
@@ -100,7 +105,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         table.setLayoutData( gd );
         final SectionPart spart = new SectionPart( section );
         managedForm.addPart( spart );
-        TableViewer viewer = new TableViewer( table );
+        viewer = new TableViewer( table );
         viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -115,11 +120,11 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
                 new Interceptor( "ReferalService" ), new Interceptor( "AuthorizationService" ) } );
 
         // Creating the button(s)
-        Button addButton = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
+        addButton = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
         gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
         addButton.setLayoutData( gd );
 
-        Button deleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
+        deleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
         deleteButton.setLayoutData( gd );
     }
 
