@@ -17,89 +17,51 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.ldapstudio.dsmlv2.request;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.OnError;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.Processing;
+import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.ResponseOrder;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 
 /**
- * This class represents the Batch Request of a DSML Request
+ * This class represents the Batch Request. It can be used to generate an the XML String of a BatchRequest.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BatchRequest
+public class BatchRequestDsml
 {
-    /**
-     * The requests contained in the Batch Request
-     */
-    private List<LdapMessage> requests;
+    /** The Requests list */
+    private List<DsmlDecorator> requests;
 
-    /**
-     * The ID of the request
-     */
+    /** The ID of the request */
     private int requestID;
 
-    /**
-     * This enum represents the different types of processing for a Batch Request 
-     *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
-     */
-    public enum Processing
-    {
-        SEQUENTIAL, PARALLEL
-    };
-
-    /**
-     * The type of processing of the Batch Request
-     */
+    /** The type of processing of the Batch Request */
     private Processing processing;
 
-    /**
-     * This enum represents the different types of on error handling for a BatchRequest
-     *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
-     */
-    public enum OnError
-    {
-        RESUME, EXIT
-    };
-
-    /**
-     * The type of on error handling
-     */
+    /** The type of on error handling */
     private OnError onError;
 
-    /**
-     * This enum represents the different types of response order for a Batch Request
-     *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
-     */
-    public enum ResponseOrder
-    {
-        SEQUENTIAL, UNORDERED
-    };
-
-    /**
-     * The response order
-     */
+    /** The response order */
     private ResponseOrder responseOrder;
 
 
     /**
-     * Creates a new instance of BatchRequest.
+     * Creates a new instance of BatchResponseDsml.
      */
-    public BatchRequest()
+    public BatchRequestDsml()
     {
-        requests = new ArrayList<LdapMessage>();
+        requests = new ArrayList<DsmlDecorator>();
         responseOrder = ResponseOrder.SEQUENTIAL;
         processing = Processing.SEQUENTIAL;
         onError = OnError.EXIT;
@@ -107,28 +69,30 @@ public class BatchRequest
 
 
     /**
-     * Adds a request
+     * Adds a request to the Batch Request DSML.
      *
      * @param request
-     *      the resquest to add
+     *      the request to add
      * @return
-     *      true (as per the general contract of the Collection.add method)
+     *      true (as per the general contract of the Collection.add method).
      */
-    public boolean addRequest( LdapMessage request )
+    public boolean addRequest( DsmlDecorator request )
     {
         return requests.add( request );
     }
 
 
     /**
-     * Gets the current request
+     * Removes a request from the Batch Request DSML.
      *
+     * @param request
+     *      the request to remove
      * @return
-     *      the current request
+     *      true if this list contained the specified element.
      */
-    public LdapMessage getCurrentRequest()
+    public boolean removeRequest( DsmlDecorator request )
     {
-        return requests.get( requests.size() - 1 );
+        return requests.remove( request );
     }
 
 
@@ -229,33 +193,43 @@ public class BatchRequest
 
 
     /**
-     * Gets the List of all the requests in the Batch Request
-     *
-     * @return
-     *      the List of all the requests in the Batch Request
+     * Converts the Batch Request to its XML representation in the DSMLv2 format.
      */
-    public List getRequests()
+    public String toDsml()
     {
-        return requests;
-    }
+        Document document = DocumentHelper.createDocument();
+        Element element = document.addElement( "batchResponse" );
 
+        // RequestID
+        if ( requestID != 0 )
+        {
+            element.addAttribute( "requestID", "" + requestID );
+        }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        StringBuffer sb = new StringBuffer();
+        // ResponseOrder
+        if ( responseOrder == ResponseOrder.UNORDERED )
+        {
+            element.addAttribute( "responseOrder", "unordered" );
+        }
 
-        sb.append( "[" );
-        sb.append( "processing: " + processing );
-        sb.append( " - " );
-        sb.append( "onError: " + onError );
-        sb.append( " - " );
-        sb.append( "responseOrder: " + responseOrder );
-        sb.append( "]" );
+        // Processing
+        if ( processing == Processing.PARALLEL )
+        {
+            element.addAttribute( "processing", "parallel" );
+        }
 
-        return sb.toString();
+        // On Error
+        if ( onError == OnError.RESUME )
+        {
+            element.addAttribute( "onError", "resume" );
+        }
+
+        // Requests
+        for ( DsmlDecorator request : requests )
+        {
+            request.toDsml( element );
+        }
+
+        return document.asXML();
     }
 }
