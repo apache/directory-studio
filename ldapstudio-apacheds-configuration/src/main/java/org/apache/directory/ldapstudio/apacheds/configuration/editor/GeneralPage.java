@@ -158,7 +158,7 @@ public class GeneralPage extends FormPage
         toolkit.createLabel( client, "Password:" );
         passwordText = toolkit.createText( client, "secret" );
         passwordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        passwordText.setEchoChar( '●' );
+        passwordText.setEchoChar( '\u2022' );
 
         // Show Password
         toolkit.createLabel( client, "" );
@@ -175,7 +175,7 @@ public class GeneralPage extends FormPage
                 }
                 else
                 {
-                    passwordText.setEchoChar( '●' );
+                    passwordText.setEchoChar( '\u2022' );
                 }
             }
         } );
