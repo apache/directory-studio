@@ -23,6 +23,8 @@ package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -127,6 +129,16 @@ public class GeneralPage extends FormPage
         toolkit.createLabel( client, "Port:" );
         portText = toolkit.createText( client, "" );
         portText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        portText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
 
         // Authentication
         toolkit.createLabel( client, "Authentication:" );
@@ -202,21 +214,61 @@ public class GeneralPage extends FormPage
         toolkit.createLabel( client, "Max. Time Limit:" );
         maxTimeLimitText = toolkit.createText( client, "" );
         maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        maxTimeLimitText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
 
         // Max. Size Limit
         toolkit.createLabel( client, "Max. Size Limit:" );
         maxSizeLimitText = toolkit.createText( client, "" );
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        maxSizeLimitText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
 
         // Synchronization Period
         toolkit.createLabel( client, "Synchronization Period:" );
         synchPeriodText = toolkit.createText( client, "" );
         synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        synchPeriodText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
 
         // Max. Threads
         toolkit.createLabel( client, "Max. Threads:" );
         synchPeriodText = toolkit.createText( client, "" );
         synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        synchPeriodText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
     }
 
 
