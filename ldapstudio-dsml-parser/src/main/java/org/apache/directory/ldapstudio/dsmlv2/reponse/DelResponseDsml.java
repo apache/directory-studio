@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.del.DelResponse;
 import org.dom4j.Element;
 
 
@@ -51,7 +52,7 @@ public class DelResponseDsml extends LdapResponseDecorator implements DsmlDecora
      */
     public int getMessageType()
     {
-        return instance.getDelResponse().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -62,7 +63,7 @@ public class DelResponseDsml extends LdapResponseDecorator implements DsmlDecora
     {
         Element element = root.addElement( "delResponse" );
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getDelResponse().getLdapResult(), instance );
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( ( ( DelResponse ) instance ).getLdapResult(), instance );
         ldapResultDsml.toDsml( element );
         return element;
     }

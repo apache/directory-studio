@@ -48,7 +48,7 @@ public class CompareRequestDsml extends AbstractRequestDsml
      */
     public int getMessageType()
     {
-        return instance.getCompareRequest().getMessageType();
+        return instance.getMessageType();
     }
 
     
@@ -59,7 +59,7 @@ public class CompareRequestDsml extends AbstractRequestDsml
     {
         Element element = super.toDsml( root );
         
-        CompareRequest request = instance.getCompareRequest();
+        CompareRequest request = ( CompareRequest ) instance;
         
         // DN
         if ( request.getEntry() != null )

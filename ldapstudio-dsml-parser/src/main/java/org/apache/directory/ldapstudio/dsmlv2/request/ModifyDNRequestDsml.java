@@ -48,7 +48,7 @@ public class ModifyDNRequestDsml extends AbstractRequestDsml
      */
     public int getMessageType()
     {
-        return instance.getModifyDNRequest().getMessageType();
+        return instance.getMessageType();
     }
 
     
@@ -59,7 +59,7 @@ public class ModifyDNRequestDsml extends AbstractRequestDsml
     {
         Element element = super.toDsml( root );
         
-        ModifyDNRequest request = instance.getModifyDNRequest();
+        ModifyDNRequest request = ( ModifyDNRequest ) instance;
         
         // DN
         if ( request.getEntry() != null )

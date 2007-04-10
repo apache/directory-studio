@@ -31,21 +31,18 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 import javax.naming.NamingException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.AddResponseDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.AuthResponseDsml;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.CompareResponseDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.DelResponseDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.ModifyResponseDsml;
+import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResponseDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResultDoneDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.ldapstudio.dsmlv2.reponse.SearchResultReferenceDsml;
@@ -59,24 +56,28 @@ import org.apache.directory.shared.asn1.ber.IAsn1Container;
 import org.apache.directory.shared.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.asn1.codec.EncoderException;
+import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapDecoder;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
+import org.apache.directory.shared.ldap.codec.add.AddResponse;
 import org.apache.directory.shared.ldap.codec.bind.BindRequest;
 import org.apache.directory.shared.ldap.codec.bind.BindResponse;
 import org.apache.directory.shared.ldap.codec.bind.LdapAuthentication;
 import org.apache.directory.shared.ldap.codec.bind.SimpleAuthentication;
+import org.apache.directory.shared.ldap.codec.compare.CompareResponse;
+import org.apache.directory.shared.ldap.codec.del.DelResponse;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedResponse;
+import org.apache.directory.shared.ldap.codec.modify.ModifyResponse;
+import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNResponse;
+import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
+import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
+import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.StringTools;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
 import org.xmlpull.v1.XmlPullParserException;
 
 
@@ -111,8 +112,8 @@ public class Dsmlv2Engine
     private int bbLimit;
 
     private int bbposition;
-    private Document xmlResponse;
     private BatchRequest batchRequest;
+    private BatchResponseDsml batchResponse;
 
 
     /**
@@ -202,9 +203,7 @@ public class Dsmlv2Engine
      */
     private String processDSML()
     {
-        // Creating XML Document and root Element 'batchResponse'
-        xmlResponse = DocumentHelper.createDocument();
-        xmlResponse.addElement( "batchResponse" );
+        batchResponse = new BatchResponseDsml();
 
         // Binding to LDAP Server
         try
@@ -216,9 +215,8 @@ public class Dsmlv2Engine
             // Unable to connect to server
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e.getMessage() );
-
-            errorResponse.toDsml( xmlResponse.getRootElement() );
-            return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
+            batchResponse.addResponse( errorResponse );
+            return batchResponse.toDsml();
         }
 
         // Processing BatchRequest:
@@ -233,9 +231,8 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage()
                 + " - Line " + e.getLineNumber() + " - Column " + e.getColumnNumber() );
-
-            errorResponse.toDsml( xmlResponse.getRootElement() );
-            return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
+            batchResponse.addResponse( errorResponse );
+            return batchResponse.toDsml();
         }
 
         // Processing each request:
@@ -254,9 +251,8 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage()
                 + " - Line " + e.getLineNumber() + " - Column " + e.getColumnNumber() );
-
-            errorResponse.toDsml( xmlResponse.getRootElement() );
-            return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
+            batchResponse.addResponse( errorResponse );
+            return batchResponse.toDsml();
         }
 
         while ( request != null ) // (Request == null when there's no more request to process)
@@ -269,9 +265,8 @@ public class Dsmlv2Engine
                 // Then we have to send an errorResponse
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST,
                     "A requestID must be specified to each request when Processing is Parallel and ReponseOrder is Unordered." );
-
-                errorResponse.toDsml( xmlResponse.getRootElement() );
-                return xmlResponse.asXML();
+                batchResponse.addResponse( errorResponse );
+                return batchResponse.toDsml();
             }
 
             try
@@ -283,9 +278,8 @@ public class Dsmlv2Engine
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.GATEWAY_INTERNAL_ERROR,
                     "Internal Error: " + e.getMessage() );
-
-                errorResponse.toDsml( xmlResponse.getRootElement() );
-                return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
+                batchResponse.addResponse( errorResponse );
+                return batchResponse.toDsml();
             }
 
             // Checking if we need to exit processing (if an error has ocurred if onError == Exit)
@@ -304,13 +298,12 @@ public class Dsmlv2Engine
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, e.getMessage()
                     + " - Line " + e.getLineNumber() + " - Column " + e.getColumnNumber() );
-
-                errorResponse.toDsml( xmlResponse.getRootElement() );
-                return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
+                batchResponse.addResponse( errorResponse );
+                return batchResponse.toDsml();
             }
         }
 
-        return styleDocument( xmlResponse, "DSMLv2.xslt" ).asXML();
+        return batchResponse.toDsml();
     }
 
 
@@ -324,7 +317,8 @@ public class Dsmlv2Engine
      * @throws NamingException 
      * @throws DecoderException 
      */
-    private void processRequest( LdapMessage request ) throws EncoderException, IOException, DecoderException, NamingException
+    private void processRequest( LdapMessage request ) throws EncoderException, IOException, DecoderException,
+        NamingException
     {
         LdapMessage message = new LdapMessage();
 
@@ -349,38 +343,59 @@ public class Dsmlv2Engine
 
         if ( LdapConstants.ADD_RESPONSE == response.getMessageType() )
         {
-            AddResponseDsml addResponseDsml = new AddResponseDsml( response );
-            addResponseDsml.toDsml( xmlResponse.getRootElement() );
+            AddResponse addResponse = response.getAddResponse();
+            copyMessageIdAndControls( response, addResponse );
+
+            AddResponseDsml addResponseDsml = new AddResponseDsml( addResponse );
+            batchResponse.addResponse( addResponseDsml );
         }
         else if ( LdapConstants.BIND_RESPONSE == response.getMessageType() )
         {
-            AuthResponseDsml authResponseDsml = new AuthResponseDsml( response );
-            authResponseDsml.toDsml( xmlResponse.getRootElement() );
+            BindResponse bindResponse = response.getBindResponse();
+            copyMessageIdAndControls( response, bindResponse );
+
+            AuthResponseDsml authResponseDsml = new AuthResponseDsml( bindResponse );
+            batchResponse.addResponse( authResponseDsml );
         }
         else if ( LdapConstants.COMPARE_RESPONSE == response.getMessageType() )
         {
-            CompareResponseDsml authResponseDsml = new CompareResponseDsml( response );
-            authResponseDsml.toDsml( xmlResponse.getRootElement() );
+            CompareResponse compareResponse = response.getCompareResponse();
+            copyMessageIdAndControls( response, compareResponse );
+
+            CompareResponseDsml authResponseDsml = new CompareResponseDsml( compareResponse );
+            batchResponse.addResponse( authResponseDsml );
         }
         else if ( LdapConstants.DEL_RESPONSE == response.getMessageType() )
         {
-            DelResponseDsml delResponseDsml = new DelResponseDsml( response );
-            delResponseDsml.toDsml( xmlResponse.getRootElement() );
+            DelResponse delResponse = response.getDelResponse();
+            copyMessageIdAndControls( response, delResponse );
+
+            DelResponseDsml delResponseDsml = new DelResponseDsml( delResponse );
+            batchResponse.addResponse( delResponseDsml );
         }
         else if ( LdapConstants.MODIFY_RESPONSE == response.getMessageType() )
         {
-            ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml( response );
-            modifyResponseDsml.toDsml( xmlResponse.getRootElement() );
+            ModifyResponse modifyResponse = response.getModifyResponse();
+            copyMessageIdAndControls( response, modifyResponse );
+
+            ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml( modifyResponse );
+            batchResponse.addResponse( modifyResponseDsml );
         }
         else if ( LdapConstants.MODIFYDN_RESPONSE == response.getMessageType() )
         {
-            ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml( response );
-            modDNResponseDsml.toDsml( xmlResponse.getRootElement() );
+            ModifyDNResponse modifyDNResponse = response.getModifyDNResponse();
+            copyMessageIdAndControls( response, modifyDNResponse );
+
+            ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml( modifyDNResponse );
+            batchResponse.addResponse( modDNResponseDsml );
         }
         else if ( LdapConstants.EXTENDED_RESPONSE == response.getMessageType() )
         {
-            ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( response );
-            extendedResponseDsml.toDsml( xmlResponse.getRootElement() );
+            ExtendedResponse extendedResponse = response.getExtendedResponse();
+            copyMessageIdAndControls( response, extendedResponse );
+
+            ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( extendedResponse );
+            batchResponse.addResponse( extendedResponseDsml );
         }
         else if ( ( LdapConstants.SEARCH_RESULT_ENTRY == response.getMessageType() )
             || ( LdapConstants.SEARCH_RESULT_REFERENCE == response.getMessageType() )
@@ -391,33 +406,43 @@ public class Dsmlv2Engine
             //     - O to n SearchResultReference
             //     - 1 (only) SearchResultDone
             // So we have to include those individual reponses in a "General" SearchResponse
-            Element searchResponse = xmlResponse.getRootElement().addElement( "searchResponse" );
+            //            Element searchResponse = xmlResponse.getRootElement().addElement( "searchResponse" );
+            SearchResponseDsml searchResponseDsml = new SearchResponseDsml();
 
             // RequestID
             int requestID = response.getMessageId();
             if ( requestID != 0 )
             {
-                searchResponse.addAttribute( "requestID", "" + requestID );
+                searchResponseDsml.setMessageId( requestID );
             }
 
             while ( LdapConstants.SEARCH_RESULT_DONE != response.getMessageType() )
             {
                 if ( LdapConstants.SEARCH_RESULT_ENTRY == response.getMessageType() )
                 {
-                    SearchResultEntryDsml searchResultEntryDsml = new SearchResultEntryDsml( response );
-                    searchResultEntryDsml.toDsml( searchResponse );
+                    SearchResultEntry sre = response.getSearchResultEntry();
+                    copyMessageIdAndControls( response, sre );
+
+                    SearchResultEntryDsml searchResultEntryDsml = new SearchResultEntryDsml( sre );
+                    searchResponseDsml.addResponse( searchResultEntryDsml );
                 }
                 else if ( LdapConstants.SEARCH_RESULT_REFERENCE == response.getMessageType() )
                 {
-                    SearchResultReferenceDsml searchResultReferenceDsml = new SearchResultReferenceDsml( response );
-                    searchResultReferenceDsml.toDsml( searchResponse );
+                    SearchResultReference srr = response.getSearchResultReference();
+                    copyMessageIdAndControls( response, srr );
+
+                    SearchResultReferenceDsml searchResultReferenceDsml = new SearchResultReferenceDsml( srr );
+                    searchResponseDsml.addResponse( searchResultReferenceDsml );
                 }
 
                 response = readResponse( bb );
             }
 
+            SearchResultDone srd = response.getSearchResultDone();
+            copyMessageIdAndControls( response, srd );
+
             SearchResultDoneDsml searchResultDoneDsml = new SearchResultDoneDsml( response );
-            searchResultDoneDsml.toDsml( searchResponse );
+            searchResponseDsml.addResponse( searchResultDoneDsml );
         }
 
         LdapResponse realResponse = response.getLdapResponse();
@@ -434,6 +459,16 @@ public class Dsmlv2Engine
             }
         }
 
+    }
+
+
+    private void copyMessageIdAndControls( LdapMessage from, LdapMessage to )
+    {
+        to.setMessageId( from.getMessageId() );
+        for ( Control control : from.getControls() )
+        {
+            to.addControl( control );
+        }
     }
 
 
@@ -466,52 +501,8 @@ public class Dsmlv2Engine
 
         if ( batchRequest.getRequestID() != 0 )
         {
-            xmlResponse.getRootElement().addAttribute( "requestID", "" + batchRequest.getRequestID() );
+            batchResponse.setRequestID( batchRequest.getRequestID() );
         }
-    }
-
-
-    /**
-     * XML Pretty Printer XSLT Tranformation
-     * 
-     * @param document
-     *      the Dom4j Document
-     * @param stylesheet
-     *      the stylesheet to use
-     * @return
-     */
-    public Document styleDocument( Document document, String stylesheet )
-    {
-        // load the transformer using JAXP
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try
-        {
-            transformer = factory
-                .newTransformer( new StreamSource( Dsmlv2Engine.class.getResourceAsStream( stylesheet ) ) );
-        }
-        catch ( TransformerConfigurationException e1 )
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
-        // now lets style the given document
-        DocumentSource source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        try
-        {
-            transformer.transform( source, result );
-        }
-        catch ( TransformerException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        // return the transformed document
-        Document transformedDoc = result.getDocument();
-        return transformedDoc;
     }
 
 

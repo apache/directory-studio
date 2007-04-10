@@ -54,7 +54,7 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
      */
     public int getMessageType()
     {
-        return instance.getExtendedResponse().getMessageType();
+        return instance.getMessageType();
     }
 
     
@@ -64,7 +64,7 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
     public Element toDsml( Element root )
     {
         Element element = root.addElement( "extendedResponse" );
-        ExtendedResponse extendedResponse = instance.getExtendedResponse();
+        ExtendedResponse extendedResponse = ( ExtendedResponse ) instance;
 
         // LDAP Result
         LdapResultDsml ldapResultDsml = new LdapResultDsml( extendedResponse.getLdapResult(), instance );

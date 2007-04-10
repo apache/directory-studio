@@ -51,7 +51,7 @@ public class ExtendedRequestDsml extends AbstractRequestDsml
      */
     public int getMessageType()
     {
-        return instance.getExtendedRequest().getMessageType();
+        return instance.getMessageType();
     }
 
     
@@ -62,7 +62,7 @@ public class ExtendedRequestDsml extends AbstractRequestDsml
     {
         Element element = super.toDsml( root );
         
-        ExtendedRequest request = instance.getExtendedRequest();
+        ExtendedRequest request = ( ExtendedRequest ) instance;
         
         // Request Name
         if ( request.getRequestName() != null )

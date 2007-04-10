@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
 import org.dom4j.Element;
 
 
@@ -51,7 +52,7 @@ public class SearchResultDoneDsml extends LdapResponseDecorator implements DsmlD
      */
     public int getMessageType()
     {
-        return instance.getSearchResultDone().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -62,7 +63,7 @@ public class SearchResultDoneDsml extends LdapResponseDecorator implements DsmlD
     {
         Element element = root.addElement( "searchResultDone" );
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getSearchResultDone().getLdapResult(), instance );
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( ( ( SearchResultDone ) instance ).getLdapResult(), instance );
         ldapResultDsml.toDsml( element );
         return element;
     }

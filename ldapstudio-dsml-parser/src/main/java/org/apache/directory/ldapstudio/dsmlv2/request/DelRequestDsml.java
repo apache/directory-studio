@@ -48,7 +48,7 @@ public class DelRequestDsml extends AbstractRequestDsml
      */
     public int getMessageType()
     {
-        return instance.getDelRequest().getMessageType();
+        return instance.getMessageType();
     }
 
     
@@ -59,7 +59,7 @@ public class DelRequestDsml extends AbstractRequestDsml
     {
         Element element = super.toDsml( root );
         
-        DelRequest request = instance.getDelRequest();
+        DelRequest request = ( DelRequest ) instance;
         
         // DN
         if ( request.getEntry() != null )

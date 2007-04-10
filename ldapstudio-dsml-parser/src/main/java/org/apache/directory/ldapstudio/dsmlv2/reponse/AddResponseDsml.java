@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.add.AddResponse;
 import org.dom4j.Element;
 
 
@@ -41,7 +42,7 @@ public class AddResponseDsml extends LdapResponseDecorator implements DsmlDecora
      *      the message to decorate
      */
     public AddResponseDsml( LdapMessage ldapMessage )
-    {
+    {        
         super( ldapMessage );
     }
 
@@ -51,7 +52,7 @@ public class AddResponseDsml extends LdapResponseDecorator implements DsmlDecora
      */
     public int getMessageType()
     {
-        return instance.getAddResponse().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -62,7 +63,7 @@ public class AddResponseDsml extends LdapResponseDecorator implements DsmlDecora
     {
         Element element = root.addElement( "addResponse" );
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getAddResponse().getLdapResult(), instance );
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( ( ( AddResponse ) instance ).getLdapResult(), instance );
         ldapResultDsml.toDsml( element );
         return element;
     }

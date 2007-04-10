@@ -23,15 +23,25 @@ package org.apache.directory.ldapstudio.dsmlv2;
 
 import java.util.List;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
 import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest;
 import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.Processing;
 import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.ResponseOrder;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.util.Base64;
+import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+import org.dom4j.io.DocumentResult;
+import org.dom4j.io.DocumentSource;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -251,5 +261,47 @@ public class ParserUtils
         }
 
         return ( ( batchRequest.getProcessing() == Processing.PARALLEL ) && ( batchRequest.getResponseOrder() == ResponseOrder.UNORDERED ) );
+    }
+
+
+    /**
+     * XML Pretty Printer XSLT Tranformation
+     * 
+     * @param document
+     *      the Dom4j Document
+     * @return
+     */
+    public static Document styleDocument( Document document )
+    {
+        // load the transformer using JAXP
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try
+        {
+            transformer = factory.newTransformer( new StreamSource( Dsmlv2Engine.class
+                .getResourceAsStream( "DSMLv2.xslt" ) ) );
+        }
+        catch ( TransformerConfigurationException e1 )
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        // now lets style the given document
+        DocumentSource source = new DocumentSource( document );
+        DocumentResult result = new DocumentResult();
+        try
+        {
+            transformer.transform( source, result );
+        }
+        catch ( TransformerException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // return the transformed document
+        Document transformedDoc = result.getDocument();
+        return transformedDoc;
     }
 }

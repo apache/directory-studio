@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.compare.CompareResponse;
 import org.dom4j.Element;
 
 
@@ -51,7 +52,7 @@ public class CompareResponseDsml extends LdapResponseDecorator implements DsmlDe
      */
     public int getMessageType()
     {
-        return instance.getCompareResponse().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -62,7 +63,7 @@ public class CompareResponseDsml extends LdapResponseDecorator implements DsmlDe
     {
         Element element = root.addElement( "compareResponse" );
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getCompareResponse().getLdapResult(), instance );
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( ( ( CompareResponse ) instance ).getLdapResult(), instance );
         ldapResultDsml.toDsml( element );
         return element;
     }

@@ -60,7 +60,7 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
      */
     public int getMessageType()
     {
-        return instance.getSearchResultEntry().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -70,7 +70,7 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
     public Element toDsml( Element root )
     {
         Element element = root.addElement( "searchResultEntry" );
-        SearchResultEntry searchResultEntry = instance.getSearchResultEntry();
+        SearchResultEntry searchResultEntry = ( SearchResultEntry ) instance;
         element.addAttribute( "dn", searchResultEntry.getObjectName().toString() );
 
         Attributes attributes = searchResultEntry.getPartialAttributeList();

@@ -20,45 +20,41 @@
 package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
-import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
+import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.dom4j.Element;
 
 
 /**
- * This class represents the Batch Response. It can be used to generate an the XML String of a BatchResponse.
+ * This class represents the Search Response Dsml Container. 
+ * It is used to store Search Responses (Search Result Entry, 
+ * Search Result Reference and SearchResultDone).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BatchResponseDsml
+public class SearchResponseDsml extends LdapResponseDecorator implements DsmlDecorator
 {
-    /** The Responses list */
+    /** The responses */
     private List<DsmlDecorator> responses;
-
-    /** The ID of the response */
-    private int requestID;
 
 
     /**
-     * Creates a new instance of BatchResponseDsml.
+     * Creates a new instance of SearchResponseDsml.
      */
-    public BatchResponseDsml()
+    public SearchResponseDsml()
     {
-        responses = new ArrayList<DsmlDecorator>();
+        super( new LdapMessage() );
     }
 
 
     /**
-     * Adds a request to the Batch Response DSML.
+     * Adds a response.
      *
      * @param response
-     *      the request to add
+     *      the response to add
      * @return
      *      true (as per the general contract of the Collection.add method).
      */
@@ -69,10 +65,10 @@ public class BatchResponseDsml
 
 
     /**
-     * Removes a request from the Batch Response DSML.
+     * Removes a response.
      *
      * @param response
-     *      the request to remove
+     *      the response to remove
      * @return
      *      true if this list contained the specified element.
      */
@@ -82,38 +78,15 @@ public class BatchResponseDsml
     }
 
 
-    /**
-     * Gets the ID of the response
-     * @return
-     *      the ID of the response
+    /* (non-Javadoc)
+     * @see org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator#toDsml(org.dom4j.Element)
      */
-    public int getRequestID()
+    public Element toDsml( Element root )
     {
-        return requestID;
-    }
-
-
-    /**
-     * Sets the ID of the response
-     *
-     * @param requestID
-     *      the ID to set
-     */
-    public void setRequestID( int requestID )
-    {
-        this.requestID = requestID;
-    }
-
-
-    /**
-     * Converts the Batch Response to its XML representation in the DSMLv2 format.
-     */
-    public String toDsml()
-    {
-        Document document = DocumentHelper.createDocument();
-        Element element = document.addElement( "batchResponse" );
+        Element element = root.addElement( "searchResponse" );
 
         // RequestID
+        int requestID = instance.getMessageId();
         if ( requestID != 0 )
         {
             element.addAttribute( "requestID", "" + requestID );
@@ -124,6 +97,6 @@ public class BatchResponseDsml
             response.toDsml( element );
         }
 
-        return ParserUtils.styleDocument( document ).asXML();
+        return element;
     }
 }

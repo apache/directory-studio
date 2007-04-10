@@ -55,7 +55,7 @@ public class SearchResultReferenceDsml extends LdapResponseDecorator implements 
      */
     public int getMessageType()
     {
-        return instance.getSearchResultReference().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -65,7 +65,7 @@ public class SearchResultReferenceDsml extends LdapResponseDecorator implements 
     public Element toDsml( Element root )
     {
         Element element = root.addElement( "searchResultReference" );
-        SearchResultReference searchResultReference = instance.getSearchResultReference();
+        SearchResultReference searchResultReference = ( SearchResultReference ) instance;
 
         // Adding References
         List<LdapURL> refsList = searchResultReference.getSearchResultReferences();

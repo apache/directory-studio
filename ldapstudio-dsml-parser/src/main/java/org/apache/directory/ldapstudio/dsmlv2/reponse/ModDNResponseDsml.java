@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.dsmlv2.reponse;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNResponse;
 import org.dom4j.Element;
 
 
@@ -51,7 +52,7 @@ public class ModDNResponseDsml extends LdapResponseDecorator implements DsmlDeco
      */
     public int getMessageType()
     {
-        return instance.getModifyDNResponse().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -62,7 +63,7 @@ public class ModDNResponseDsml extends LdapResponseDecorator implements DsmlDeco
     {
         Element element = root.addElement( "modDNResponse" );
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( instance.getModifyDNResponse().getLdapResult(), instance );
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( ( ( ModifyDNResponse ) instance ).getLdapResult(), instance );
         ldapResultDsml.toDsml( element );
         return element;
     }

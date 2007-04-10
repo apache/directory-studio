@@ -69,7 +69,7 @@ public class SearchRequestDsml extends AbstractRequestDsml
      */
     public int getMessageType()
     {
-        return instance.getSearchRequest().getMessageType();
+        return instance.getMessageType();
     }
 
 
@@ -80,7 +80,7 @@ public class SearchRequestDsml extends AbstractRequestDsml
     {
         Element element = super.toDsml( root );
 
-        SearchRequest request = instance.getSearchRequest();
+        SearchRequest request = ( SearchRequest ) instance;
 
         // DN
         if ( request.getBaseObject() != null )

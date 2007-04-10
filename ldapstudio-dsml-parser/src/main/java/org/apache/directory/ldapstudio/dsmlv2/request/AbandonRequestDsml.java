@@ -48,7 +48,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml
      */
     public int getMessageType()
     {
-        return instance.getAbandonRequest().getMessageType();
+        return instance.getMessageType();
     }
 
     
@@ -59,7 +59,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml
     {
         Element element = super.toDsml( root );
         
-        AbandonRequest request = instance.getAbandonRequest();
+        AbandonRequest request = ( AbandonRequest ) instance;
         
         // AbandonID
         if ( request.getAbandonedMessageId() != 0 )

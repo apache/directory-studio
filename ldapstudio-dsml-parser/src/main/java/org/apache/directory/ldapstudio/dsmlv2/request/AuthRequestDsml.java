@@ -48,7 +48,7 @@ public class AuthRequestDsml extends AbstractRequestDsml
      */
     public int getMessageType()
     {
-        return instance.getBindRequest().getMessageType();
+        return instance.getMessageType();
     }
 
     
@@ -59,7 +59,7 @@ public class AuthRequestDsml extends AbstractRequestDsml
     {
         Element element = super.toDsml( root );
         
-        BindRequest request = instance.getBindRequest();
+        BindRequest request = ( BindRequest ) instance;
         
         // AbandonID
         String name = request.getName().toString();

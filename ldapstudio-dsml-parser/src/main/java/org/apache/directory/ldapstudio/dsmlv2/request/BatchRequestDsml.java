@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.dsmlv2.DsmlDecorator;
+import org.apache.directory.ldapstudio.dsmlv2.ParserUtils;
 import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.OnError;
 import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.Processing;
 import org.apache.directory.ldapstudio.dsmlv2.request.BatchRequest.ResponseOrder;
@@ -230,6 +231,6 @@ public class BatchRequestDsml
             request.toDsml( element );
         }
 
-        return document.asXML();
+        return ParserUtils.styleDocument( document ).asXML();
     }
 }
