@@ -20,7 +20,10 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfiguration;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
@@ -65,6 +68,7 @@ public class GeneralPage extends FormPage
     private Text maxTimeLimitText;
     private Text maxSizeLimitText;
     private Text synchPeriodText;
+    private Text maxThreadsText;
     private Button enableAccesControlCheckbox;
     private Button enableNTPCheckbox;
     private Button enableKerberosCheckbox;
@@ -98,6 +102,9 @@ public class GeneralPage extends FormPage
         createSettingsSection( parent, toolkit );
         createLimitsSection( parent, toolkit );
         createOptionsSection( parent, toolkit );
+
+        initFromInput();
+        addListeners();
     }
 
 
@@ -156,7 +163,7 @@ public class GeneralPage extends FormPage
 
         // Password
         toolkit.createLabel( client, "Password:" );
-        passwordText = toolkit.createText( client, "secret" );
+        passwordText = toolkit.createText( client, "" );
         passwordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         passwordText.setEchoChar( '\u2022' );
 
@@ -257,9 +264,9 @@ public class GeneralPage extends FormPage
 
         // Max. Threads
         toolkit.createLabel( client, "Max. Threads:" );
-        synchPeriodText = toolkit.createText( client, "" );
-        synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        synchPeriodText.addVerifyListener( new VerifyListener()
+        maxThreadsText = toolkit.createText( client, "" );
+        maxThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        maxThreadsText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
             {
@@ -311,5 +318,187 @@ public class GeneralPage extends FormPage
         // Enable Change Password
         enableChangePasswordCheckbox = toolkit.createButton( client, "Enable Change Password", SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+    }
+
+
+    /**
+     * Initializes the page with the Editor input.
+     */
+    private void initFromInput()
+    {
+        ServerConfiguration configuration = ( ( ServerConfigurationEditorInput ) getEditorInput() )
+            .getServerConfiguration();
+
+        // Port
+        portText.setText( "" + configuration.getPort() );
+
+        // Principal
+        String principal = configuration.getPrincipal();
+        if ( principal != null )
+        {
+            principalText.setText( principal );
+        }
+
+        // Password
+        String password = configuration.getPassword();
+        if ( password != null )
+        {
+            passwordText.setText( password );
+        }
+
+        // Allow Anonymous Access
+        allowAnonymousAccessCheckbox.setSelection( configuration.isAllowAnonymousAccess() );
+
+        // Max Time Limit
+        maxTimeLimitText.setText( "" + configuration.getMaxTimeLimit() );
+
+        // Max Size Limit
+        maxSizeLimitText.setText( "" + configuration.getMaxSizeLimit() );
+
+        // Synchronization Period
+        synchPeriodText.setText( "" + configuration.getSynchronizationPeriod() );
+
+        // Max Threads
+        maxThreadsText.setText( "" + configuration.getMaxThreads() );
+
+        // Enable Access Control
+        enableAccesControlCheckbox.setSelection( configuration.isEnableAccessControl() );
+
+        // Enable NTP
+        enableNTPCheckbox.setSelection( configuration.isEnableNTP() );
+
+        // Enable Kerberos
+        enableKerberosCheckbox.setSelection( configuration.isEnableKerberos() );
+
+        // Enable Change Password
+        enableChangePasswordCheckbox.setSelection( configuration.isEnableChangePassword() );
+    }
+
+
+    /**
+     * Add listeners to UI fields.
+     */
+    private void addListeners()
+    {
+        portText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        authenticationCombo.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        principalText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        passwordText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        allowAnonymousAccessCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        maxTimeLimitText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        maxSizeLimitText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        synchPeriodText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        maxThreadsText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        enableAccesControlCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        enableNTPCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        enableKerberosCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        enableChangePasswordCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                setEditorDirty();
+            }
+        } );
+    }
+
+
+    /**
+     * Sets the Editor as dirty.
+     */
+    private void setEditorDirty()
+    {
+        ( ( ServerConfigurationEditor ) getEditor() ).setDirty( true );
     }
 }

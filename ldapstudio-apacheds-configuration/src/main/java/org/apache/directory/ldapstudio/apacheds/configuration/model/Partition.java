@@ -20,6 +20,12 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.model;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.directory.Attributes;
+
+
 /**
  * This class represents a Partition.
  *
@@ -31,6 +37,33 @@ public class Partition
     /** The name of the partition */
     private String name;
 
+    /** The cache size of the partition */
+    private int cacheSize;
+
+    /** The suffix of the partition */
+    private String suffix;
+
+    /** The Enable Optimizer flag */
+    private boolean enableOptimizer;
+
+    /** The Synchronization On Write flag */
+    private boolean synchronizationOnWrite;
+
+    /** The Context Entry */
+    private Attributes contextEntry;
+
+    /** The indexed attributes */
+    private List<IndexedAttribute> indexedAttributes;
+
+
+    /**
+     * Creates a new instance of Partition.
+     */
+    public Partition()
+    {
+        indexedAttributes = new ArrayList<IndexedAttribute>();
+    }
+
 
     /**
      * Creates a new instance of Partition.
@@ -41,6 +74,7 @@ public class Partition
     public Partition( String name )
     {
         this.name = name;
+        indexedAttributes = new ArrayList<IndexedAttribute>();
     }
 
 
@@ -65,6 +99,178 @@ public class Partition
     public void setName( String name )
     {
         this.name = name;
+    }
+
+
+    /**
+     * Gets the cache size.
+     *
+     * @return
+     *      the cache size
+     */
+    public int getCacheSize()
+    {
+        return cacheSize;
+    }
+
+
+    /**
+     * Sets the cache size.
+     *
+     * @param cacheSize
+     *      the new cache size
+     */
+    public void setCacheSize( int cacheSize )
+    {
+        this.cacheSize = cacheSize;
+    }
+
+
+    /**
+     * Gets the Context Entry.
+     *
+     * @return
+     *      the Content Entry
+     */
+    public Attributes getContextEntry()
+    {
+        return contextEntry;
+    }
+
+
+    /**
+     * Sets the Context Entry
+     *
+     * @param contextEntry
+     *      the new Context Entry
+     */
+    public void setContextEntry( Attributes contextEntry )
+    {
+        this.contextEntry = contextEntry;
+    }
+
+
+    /**
+     * Gets the Enable Optimizer flag.
+     *
+     * @return
+     *      the Enable Optimizer flag
+     */
+    public boolean isEnableOptimizer()
+    {
+        return enableOptimizer;
+    }
+
+
+    /**
+     * Sets the Enable Optimizer flag.
+     *
+     * @param enableOptimizer
+     *      the new value for the Enable Optimizer flag
+     */
+    public void setEnableOptimizer( boolean enableOptimizer )
+    {
+        this.enableOptimizer = enableOptimizer;
+    }
+
+
+    /**
+     * Get the Indexed Attributes List.
+     *
+     * @return
+     *      the Indexed Attributes List
+     */
+    public List<IndexedAttribute> getIndexedAttributes()
+    {
+        return indexedAttributes;
+    }
+
+
+    /**
+     * Set the Indexed Attributes List.
+     *
+     * @param indexedAttributes
+     *      the new Indexed Attributes List
+     */
+    public void setIndexedAttributes( List<IndexedAttribute> indexedAttributes )
+    {
+        this.indexedAttributes = indexedAttributes;
+    }
+
+
+    /**
+     * Adds an Indexed Attribute.
+     *
+     * @param indexedAttribute
+     *      the Indexed Attribute to add
+     * @return
+     *      true (as per the general contract of the Collection.add method).
+     */
+    public boolean addIndexedAttribute( IndexedAttribute indexedAttribute )
+    {
+        return indexedAttributes.add( indexedAttribute );
+    }
+
+
+    /**
+     * Removes a Indexed Attribute.
+     *
+     * @param indexedAttribute
+     *      the Indexed Attribute to remove
+     * @return
+     *      true if this list contained the specified element.
+     */
+    public boolean removeIndexedAttribute( IndexedAttribute indexedAttribute )
+    {
+        return indexedAttributes.remove( indexedAttribute );
+    }
+
+
+    /**
+     * Gets the suffix.
+     *
+     * @return
+     *      the suffix
+     */
+    public String getSuffix()
+    {
+        return suffix;
+    }
+
+
+    /**
+     * Sets the suffix.
+     *
+     * @param suffix
+     *      the new suffix
+     */
+    public void setSuffix( String suffix )
+    {
+        this.suffix = suffix;
+    }
+
+
+    /**
+     * Gets the Synchronization On Write flag.
+     *
+     * @return
+     *      the Synchronization On Write flag
+     */
+    public boolean isSynchronizationOnWrite()
+    {
+        return synchronizationOnWrite;
+    }
+
+
+    /**
+     * Sets the Synchronization On Write flag.
+     *
+     * @param synchronizationOnWrite
+     *      the Synchronization On Write flag
+     */
+    public void setSynchronizationOnWrite( boolean synchronizationOnWrite )
+    {
+        this.synchronizationOnWrite = synchronizationOnWrite;
     }
 
 

@@ -39,20 +39,24 @@ public class ServerConfigurationEditor extends FormEditor
     /** The Editor ID */
     public static final String ID = "org.apache.directory.ldapstudio.apacheds.configuration.editor";
 
+    /** The dirty flag */
+    private boolean dirty = false;
+
     // The Pages
     private FormPage generalPage;
     private FormPage partitionsPage;
     private FormPage interceptorsPage;
     private FormPage extendedOperationsPage;
 
-    
+
     @Override
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         super.init( site, input );
-        
+
         setPartName( input.getName() );
     }
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
@@ -101,5 +105,27 @@ public class ServerConfigurationEditor extends FormEditor
     public boolean isSaveAsAllowed()
     {
         return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormEditor#isDirty()
+     */
+    public boolean isDirty()
+    {
+        return dirty;
+    }
+
+
+    /**
+     * Sets the dirty state of the editor.
+     * 
+     * @param dirty
+     *      the new dirty
+     */
+    public void setDirty( boolean dirty )
+    {
+        this.dirty = dirty;
+        editorDirtyStateChanged();
     }
 }

@@ -41,6 +41,9 @@ public class ServerConfiguration
     /** The principal */
     private String principal;
 
+    /** The password */
+    private String password;
+
     /** The flag for Allow Anonymous Access */
     private boolean allowAnonymousAccess;
 
@@ -438,6 +441,30 @@ public class ServerConfiguration
 
 
     /**
+     * Gets the password.
+     *
+     * @return
+     *      the password
+     */
+    public String getPassword()
+    {
+        return password;
+    }
+
+
+    /**
+     * Sets the password.
+     *
+     * @param password
+     *      the new password
+     */
+    public void setPassword( String password )
+    {
+        this.password = password;
+    }
+
+
+    /**
      * Gets the Path of the file corresponding to the ServerConfiguration.
      *
      * @return
@@ -531,4 +558,5 @@ public class ServerConfiguration
     {
         this.synchronizationPeriod = synchronizationPeriod;
     }
+
 }

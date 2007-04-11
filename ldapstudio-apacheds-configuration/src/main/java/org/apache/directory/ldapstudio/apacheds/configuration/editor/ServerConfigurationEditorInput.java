@@ -20,6 +20,7 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfiguration;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
@@ -33,6 +34,34 @@ import org.eclipse.ui.IPersistableElement;
  */
 public class ServerConfigurationEditorInput implements IEditorInput
 {
+    /** The Server Configuration */
+    private ServerConfiguration serverConfiguration;
+
+
+    /**
+     * Creates a new instance of ServerConfigurationEditorInput.
+     *
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    public ServerConfigurationEditorInput( ServerConfiguration serverConfiguration )
+    {
+        this.serverConfiguration = serverConfiguration;
+    }
+
+
+    /**
+     * Gets the Server Configuration
+     *
+     * @return
+     *      the Server Configuration
+     */
+    public ServerConfiguration getServerConfiguration()
+    {
+        return serverConfiguration;
+    }
+
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#getToolTipText()
      */
