@@ -53,7 +53,6 @@ public class ExtendedOperationsPage extends FormPage
     public ExtendedOperationsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
-        masterDetailsBlock = new ExtendedOperationsMasterDetailsBlock( this );
     }
 
 
@@ -64,6 +63,7 @@ public class ExtendedOperationsPage extends FormPage
     {
         final ScrolledForm form = managedForm.getForm();
         form.setText( "Extended Operations" );
+        masterDetailsBlock = new ExtendedOperationsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }
 }

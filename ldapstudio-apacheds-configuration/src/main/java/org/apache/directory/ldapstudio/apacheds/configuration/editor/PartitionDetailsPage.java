@@ -20,11 +20,31 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import java.util.List;
+
+import org.apache.directory.ldapstudio.apacheds.configuration.dialogs.IndexedAttributeDialog;
+import org.apache.directory.ldapstudio.apacheds.configuration.model.IndexedAttribute;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Partition;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,11 +68,17 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class PartitionDetailsPage implements IDetailsPage
 {
+    /** The associated Master Details Block */
+    private PartitionsMasterDetailsBlock masterDetailsBlock;
+
     /** The Managed Form */
     private IManagedForm mform;
 
     /** The input Partition */
     private Partition input;
+
+    /** The Indexed Attributes List */
+    private List<IndexedAttribute> indexedAttributes;
 
     // UI fields
     private Text nameText;
@@ -60,14 +86,144 @@ public class PartitionDetailsPage implements IDetailsPage
     private Text suffixText;
     private Button enableOptimizerCheckbox;
     private Button synchOnWriteCheckbox;
-    private Table indexedAttributesTable;
-    private Button indexedAttributeAddButton;
-    private Button indexedAttributeEditButton;
-    private Button indexedAttributeDeleteButton;
-    private Table contextEntryTable;
+    private TableViewer contextEntryTableViewer;
     private Button contextEntryAddButton;
     private Button contextEntryEditButton;
     private Button contextEntryDeleteButton;
+    private TableViewer indexedAttributesTableViewer;
+    private Button indexedAttributeAddButton;
+    private Button indexedAttributeEditButton;
+    private Button indexedAttributeDeleteButton;
+
+    // Listeners
+    /** The Text Modify Listener */
+    private ModifyListener textModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The Checkbox Selection Listener */
+    private SelectionListener checkboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The Selection Changed Listener for the Context Entry Table Viewer */
+    private ISelectionChangedListener contextEntryTableViewerListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            contextEntryEditButton.setEnabled( !event.getSelection().isEmpty() );
+            contextEntryDeleteButton.setEnabled( !event.getSelection().isEmpty() );
+        }
+    };
+
+    /** The Listener for the Add button of the Context Entry Section */
+    private SelectionListener contextEntryAddButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The Listener for the Edit button of the Context Entry Section */
+    private SelectionListener contextEntryEditButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            // masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The Listener for the Delete button of the Context Entry Section */
+    private SelectionListener contextEntryDeleteButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+    /** The Selection Changed Listener for the Indexed Attributes Table Viewer */
+    private ISelectionChangedListener indexedAttributesTableViewerListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            indexedAttributeEditButton.setEnabled( !event.getSelection().isEmpty() );
+            indexedAttributeDeleteButton.setEnabled( !event.getSelection().isEmpty() );
+        }
+    };
+
+    /** The Double Click Listener for the Indexed Attributes Table Viewer */
+    private IDoubleClickListener indexedAttributesTableViewerDoubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            editSelectedIndexedAttribute();
+        }
+    };
+
+    /** The Listener for the Add button of the Indexed Attributes Section */
+    private SelectionListener indexedAttributeAddButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            IndexedAttributeDialog dialog = new IndexedAttributeDialog( new IndexedAttribute( "", 0 ) );
+
+            if ( Dialog.OK == dialog.open() )
+            {
+                indexedAttributes.add( dialog.getIndexedAttribute() );
+                indexedAttributesTableViewer.refresh();
+                masterDetailsBlock.setEditorDirty();
+            }
+        }
+    };
+
+    /** The Listener for the Edit button of the Indexed Attributes Section */
+    private SelectionListener indexedAttributeEditButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            editSelectedIndexedAttribute();
+        }
+    };
+
+    /** The Listener for the Delete button of the Indexed Attributes Section */
+    private SelectionListener indexedAttributeDeleteButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            StructuredSelection selection = ( StructuredSelection ) indexedAttributesTableViewer.getSelection();
+            if ( !selection.isEmpty() )
+            {
+                IndexedAttribute indexedAttribute = ( IndexedAttribute ) selection.getFirstElement();
+
+                indexedAttributes.remove( indexedAttribute );
+                indexedAttributesTableViewer.refresh();
+
+                masterDetailsBlock.setEditorDirty();
+            }
+        }
+    };
+
+
+    /**
+     * Creates a new instance of PartitionDetailsPage.
+     *
+     * @param pmdb
+     *      the associated Master Details Block
+     */
+    public PartitionDetailsPage( PartitionsMasterDetailsBlock pmdb )
+    {
+        masterDetailsBlock = pmdb;
+    }
 
 
     /* (non-Javadoc)
@@ -120,6 +276,16 @@ public class PartitionDetailsPage implements IDetailsPage
         // Cache Size
         toolkit.createLabel( client, "Cache Size:" );
         cacheSizeText = toolkit.createText( client, "" );
+        cacheSizeText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
         cacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Suffix
@@ -132,7 +298,7 @@ public class PartitionDetailsPage implements IDetailsPage
         enableOptimizerCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Synchronisation On Write
-        synchOnWriteCheckbox = toolkit.createButton( client, " Synchronization on write", SWT.CHECK );
+        synchOnWriteCheckbox = toolkit.createButton( client, "Synchronization on write", SWT.CHECK );
         synchOnWriteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
     }
 
@@ -157,10 +323,13 @@ public class PartitionDetailsPage implements IDetailsPage
         client.setLayout( new GridLayout( 2, false ) );
         section.setClient( client );
 
-        contextEntryTable = toolkit.createTable( client, SWT.NONE );
+        Table contextEntryTable = toolkit.createTable( client, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gd.heightHint = 80;
         contextEntryTable.setLayoutData( gd );
+        contextEntryTableViewer = new TableViewer( contextEntryTable );
+        contextEntryTableViewer.setContentProvider( new ArrayContentProvider() );
+        contextEntryTableViewer.setLabelProvider( new LabelProvider() );
 
         GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
         buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
@@ -169,9 +338,11 @@ public class PartitionDetailsPage implements IDetailsPage
         contextEntryAddButton.setLayoutData( buttonsGD );
 
         contextEntryEditButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
+        contextEntryEditButton.setEnabled( false );
         contextEntryEditButton.setLayoutData( buttonsGD );
 
         contextEntryDeleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
+        contextEntryDeleteButton.setEnabled( false );
         contextEntryDeleteButton.setLayoutData( buttonsGD );
     }
 
@@ -196,10 +367,13 @@ public class PartitionDetailsPage implements IDetailsPage
         indexedAttributesClient.setLayout( new GridLayout( 2, false ) );
         indexedAttributesSection.setClient( indexedAttributesClient );
 
-        indexedAttributesTable = toolkit.createTable( indexedAttributesClient, SWT.NONE );
+        Table indexedAttributesTable = toolkit.createTable( indexedAttributesClient, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gd.heightHint = 80;
         indexedAttributesTable.setLayoutData( gd );
+        indexedAttributesTableViewer = new TableViewer( indexedAttributesTable );
+        indexedAttributesTableViewer.setContentProvider( new ArrayContentProvider() );
+        indexedAttributesTableViewer.setLabelProvider( new LabelProvider() );
 
         GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
         buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
@@ -208,10 +382,62 @@ public class PartitionDetailsPage implements IDetailsPage
         indexedAttributeAddButton.setLayoutData( buttonsGD );
 
         indexedAttributeEditButton = toolkit.createButton( indexedAttributesClient, "Edit...", SWT.PUSH );
+        indexedAttributeEditButton.setEnabled( false );
         indexedAttributeEditButton.setLayoutData( buttonsGD );
 
         indexedAttributeDeleteButton = toolkit.createButton( indexedAttributesClient, "Delete", SWT.PUSH );
+        indexedAttributeDeleteButton.setEnabled( false );
         indexedAttributeDeleteButton.setLayoutData( buttonsGD );
+    }
+
+
+    /**
+     * Adds listeners to UI fields.
+     */
+    private void addListeners()
+    {
+        nameText.addModifyListener( textModifyListener );
+        cacheSizeText.addModifyListener( textModifyListener );
+        suffixText.addModifyListener( textModifyListener );
+        enableOptimizerCheckbox.addSelectionListener( checkboxSelectionListener );
+        synchOnWriteCheckbox.addSelectionListener( checkboxSelectionListener );
+
+        // TODO Add a listener for the double-click on the contextEntryTable
+        contextEntryTableViewer.addSelectionChangedListener( contextEntryTableViewerListener );
+        contextEntryAddButton.addSelectionListener( contextEntryAddButtonListener );
+        contextEntryEditButton.addSelectionListener( contextEntryEditButtonListener );
+        contextEntryDeleteButton.addSelectionListener( contextEntryDeleteButtonListener );
+
+        indexedAttributesTableViewer.addSelectionChangedListener( indexedAttributesTableViewerListener );
+        indexedAttributesTableViewer.addDoubleClickListener( indexedAttributesTableViewerDoubleClickListener );
+        indexedAttributeAddButton.addSelectionListener( indexedAttributeAddButtonListener );
+        indexedAttributeEditButton.addSelectionListener( indexedAttributeEditButtonListener );
+        indexedAttributeDeleteButton.addSelectionListener( indexedAttributeDeleteButtonListener );
+    }
+
+
+    /**
+     * Removes listeners to UI fields.
+     */
+    private void removeListeners()
+    {
+        nameText.removeModifyListener( textModifyListener );
+        cacheSizeText.removeModifyListener( textModifyListener );
+        suffixText.removeModifyListener( textModifyListener );
+        enableOptimizerCheckbox.removeSelectionListener( checkboxSelectionListener );
+        synchOnWriteCheckbox.removeSelectionListener( checkboxSelectionListener );
+
+        // TODO remove the listener for the double-click on the contextEntryTable
+        contextEntryTableViewer.removeSelectionChangedListener( contextEntryTableViewerListener );
+        contextEntryAddButton.removeSelectionListener( contextEntryAddButtonListener );
+        contextEntryEditButton.removeSelectionListener( contextEntryEditButtonListener );
+        contextEntryDeleteButton.removeSelectionListener( contextEntryDeleteButtonListener );
+
+        indexedAttributesTableViewer.removeSelectionChangedListener( indexedAttributesTableViewerListener );
+        indexedAttributesTableViewer.removeDoubleClickListener( indexedAttributesTableViewerDoubleClickListener );
+        indexedAttributeAddButton.removeSelectionListener( indexedAttributeAddButtonListener );
+        indexedAttributeEditButton.removeSelectionListener( indexedAttributeEditButtonListener );
+        indexedAttributeDeleteButton.removeSelectionListener( indexedAttributeDeleteButtonListener );
     }
 
 
@@ -286,7 +512,30 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void refresh()
     {
-        nameText.setText( input.getName() );
+        removeListeners();
+
+        // Name
+        String name = input.getName();
+        nameText.setText( ( name == null ) ? "" : name );
+
+        // Cache Size
+        cacheSizeText.setText( "" + input.getCacheSize() );
+
+        // Suffix
+        String suffix = input.getSuffix();
+        suffixText.setText( ( suffix == null ) ? "" : suffix );
+
+        // Enable Optimizer
+        enableOptimizerCheckbox.setSelection( input.isEnableOptimizer() );
+
+        // Synchronization on write
+        synchOnWriteCheckbox.setSelection( input.isSynchronizationOnWrite() );
+
+        // Indexed Attributes
+        indexedAttributes = input.getIndexedAttributes();
+        indexedAttributesTableViewer.setInput( indexedAttributes );
+
+        addListeners();
     }
 
 
@@ -305,5 +554,26 @@ public class PartitionDetailsPage implements IDetailsPage
     public boolean setFormInput( Object input )
     {
         return false;
+    }
+
+
+    /**
+     * Opens an Indexed Attribute Dialog with the selected Indexed Attribute in the
+     * Indexed Attributes Table Viewer.
+     */
+    private void editSelectedIndexedAttribute()
+    {
+        StructuredSelection selection = ( StructuredSelection ) indexedAttributesTableViewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            IndexedAttribute indexedAttribute = ( IndexedAttribute ) selection.getFirstElement();
+
+            IndexedAttributeDialog dialog = new IndexedAttributeDialog( indexedAttribute );
+            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+            {
+                indexedAttributesTableViewer.refresh();
+                masterDetailsBlock.setEditorDirty();
+            }
+        }
     }
 }

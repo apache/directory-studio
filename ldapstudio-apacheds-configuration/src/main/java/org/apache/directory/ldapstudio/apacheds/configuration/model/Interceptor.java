@@ -31,6 +31,9 @@ public class Interceptor
     /** The name of the interceptor */
     private String name;
 
+    /** The class of the class of the interceptor */
+    private String classType;
+
 
     /**
      * Creates a new instance of Interceptor.
@@ -65,6 +68,30 @@ public class Interceptor
     public void setName( String name )
     {
         this.name = name;
+    }
+
+
+    /**
+     * Gets the class type of the interceptor.
+     *
+     * @return
+     *      the class type of the interceptor
+     */
+    public String getClassType()
+    {
+        return classType;
+    }
+
+
+    /**
+     * Sets the class type of the interceptor.
+     *
+     * @param classType
+     *      the new class type to set
+     */
+    public void setClassType( String classType )
+    {
+        this.classType = classType;
     }
 
 

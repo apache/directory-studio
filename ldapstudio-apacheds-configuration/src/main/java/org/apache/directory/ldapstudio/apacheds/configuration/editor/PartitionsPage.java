@@ -53,7 +53,6 @@ public class PartitionsPage extends FormPage
     public PartitionsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
-        masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
     }
 
 
@@ -64,6 +63,7 @@ public class PartitionsPage extends FormPage
     {
         ScrolledForm form = managedForm.getForm();
         form.setText( "Partitions" );
+        masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }
 }

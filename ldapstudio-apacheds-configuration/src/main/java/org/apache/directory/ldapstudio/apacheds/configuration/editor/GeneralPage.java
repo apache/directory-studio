@@ -412,14 +412,6 @@ public class GeneralPage extends FormPage
             }
         } );
 
-        showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                setEditorDirty();
-            }
-        } );
-
         allowAnonymousAccessCheckbox.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

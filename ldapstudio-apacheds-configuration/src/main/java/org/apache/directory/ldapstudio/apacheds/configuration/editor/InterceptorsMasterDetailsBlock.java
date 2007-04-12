@@ -20,6 +20,8 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import java.util.List;
+
 import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
 import org.apache.directory.ldapstudio.apacheds.configuration.PluginConstants;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Interceptor;
@@ -28,8 +30,12 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,6 +49,7 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -55,11 +62,21 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
 {
     /** The associated page */
     private FormPage page;
-    
+
+    /** The editor input */
+    private ServerConfigurationEditorInput input;
+
+    /** The Interceptors List */
+    private List<Interceptor> interceptors;
+
+    private static final String NEW_NAME = "New Interceptor ";
+
     // UI Fields
     private TableViewer viewer;
     private Button addButton;
     private Button deleteButton;
+    private Button upButton;
+    private Button downButton;
 
 
     /**
@@ -70,6 +87,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     public InterceptorsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
+        input = ( ServerConfigurationEditorInput ) page.getEditorInput();
+        interceptors = input.getServerConfiguration().getInterceptors();
     }
 
 
@@ -99,7 +118,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
 
         // Creatig the Table and Table Viewer
         Table table = toolkit.createTable( client, SWT.NULL );
-        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 4 );
         gd.heightHint = 20;
         gd.widthHint = 100;
         table.setLayoutData( gd );
@@ -114,18 +133,193 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
             }
         } );
         viewer.setContentProvider( new ArrayContentProvider() );
-        viewer.setLabelProvider( new LabelProvider() );
-        viewer.setInput( new Object[]
-            { new Interceptor( "NormalizationService" ), new Interceptor( "AuthenticationService" ),
-                new Interceptor( "ReferalService" ), new Interceptor( "AuthorizationService" ) } );
+        viewer.setLabelProvider( new LabelProvider()
+        {
+            public Image getImage( Object element )
+            {
+                return AbstractUIPlugin
+                    .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_INTERCEPTOR ).createImage();
+            }
+        } );
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
-        gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
-        addButton.setLayoutData( gd );
+        addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
         deleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
-        deleteButton.setLayoutData( gd );
+        deleteButton.setEnabled( false );
+        deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+
+        upButton = toolkit.createButton( client, "Up", SWT.PUSH );
+        upButton.setEnabled( false );
+        upButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+
+        downButton = toolkit.createButton( client, "Down", SWT.PUSH );
+        downButton.setEnabled( false );
+        downButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+
+        initFromInput();
+        addListeners();
+    }
+
+
+    /**
+     * Initializes the page with the Editor input.
+     */
+    private void initFromInput()
+    {
+        viewer.setInput( interceptors );
+    }
+
+
+    /**
+     * Add listeners to UI fields.
+     */
+    private void addListeners()
+    {
+        viewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                viewer.refresh();
+
+                deleteButton.setEnabled( !event.getSelection().isEmpty() );
+
+                enableDisableUpDownButtons();
+            }
+        } );
+
+        addButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                Interceptor newInterceptor = new Interceptor( getNewName() );
+                interceptors.add( newInterceptor );
+                viewer.refresh();
+                viewer.setSelection( new StructuredSelection( newInterceptor ) );
+                setEditorDirty();
+            }
+        } );
+
+        deleteButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
+
+                    interceptors.remove( interceptor );
+                    viewer.refresh();
+                    setEditorDirty();
+                }
+            }
+        } );
+
+        upButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
+
+                    int index = interceptors.indexOf( interceptor );
+                    if ( index > 0 )
+                    {
+                        Interceptor interceptorBefore = interceptors.get( index - 1 );
+                        if ( interceptorBefore != null )
+                        {
+                            interceptors.set( index - 1, interceptor );
+                            interceptors.set( index, interceptorBefore );
+
+                            viewer.refresh();
+                            setEditorDirty();
+                            enableDisableUpDownButtons();
+                        }
+                    }
+                }
+            }
+        } );
+
+        downButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
+
+                    int index = interceptors.indexOf( interceptor );
+                    if ( index < ( interceptors.size() - 1 ) )
+                    {
+                        Interceptor interceptorAfter = interceptors.get( index + 1 );
+                        if ( interceptorAfter != null )
+                        {
+                            interceptors.set( index + 1, interceptor );
+                            interceptors.set( index, interceptorAfter );
+
+                            viewer.refresh();
+                            setEditorDirty();
+                            enableDisableUpDownButtons();
+                        }
+                    }
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Gets a new Name for a new Extended Operation.
+     *
+     * @return 
+     *      a new Name for a new Extended Operation
+     */
+    private String getNewName()
+    {
+        int counter = 1;
+        String name = NEW_NAME;
+        boolean ok = false;
+
+        while ( !ok )
+        {
+            ok = true;
+            name = NEW_NAME + counter;
+
+            for ( Interceptor interceptor : interceptors )
+            {
+                if ( interceptor.getName().equalsIgnoreCase( name ) )
+                {
+                    ok = false;
+                }
+            }
+
+            counter++;
+        }
+
+        return name;
+    }
+
+
+    /**
+     * Enables or Disables the Up and Down Buttons.
+     */
+    private void enableDisableUpDownButtons()
+    {
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+
+        upButton.setEnabled( !selection.isEmpty() );
+        downButton.setEnabled( !selection.isEmpty() );
+        if ( !selection.isEmpty() )
+        {
+            Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
+            upButton.setEnabled( interceptors.indexOf( interceptor ) != 0 );
+            downButton.setEnabled( interceptors.indexOf( interceptor ) != ( interceptors.size() - 1 ) );
+        }
     }
 
 
@@ -172,7 +366,15 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void registerPages( DetailsPart detailsPart )
     {
-        detailsPart.registerPage( Interceptor.class, new InterceptorDetailsPage() );
+        detailsPart.registerPage( Interceptor.class, new InterceptorDetailsPage( this ) );
     }
 
+
+    /**
+     * Sets the Editor as dirty.
+     */
+    public void setEditorDirty()
+    {
+        ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+    }
 }

@@ -43,6 +43,7 @@
             default="true"
             icon="icons/editor.gif"
             id="org.apache.directory.ldapstudio.apacheds.configuration.editor"
-            name="Server Configuration Editor"/>
+            name="Server Configuration Editor">
+      </editor>
    </extension>
 </plugin>

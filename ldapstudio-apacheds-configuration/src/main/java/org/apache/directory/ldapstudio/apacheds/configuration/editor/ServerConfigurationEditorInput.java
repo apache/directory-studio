@@ -67,7 +67,7 @@ public class ServerConfigurationEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return "server.xml";
+        return serverConfiguration.getPath();
     }
 
 
@@ -85,7 +85,7 @@ public class ServerConfigurationEditorInput implements IEditorInput
      */
     public boolean exists()
     {
-        return true;
+        return ( serverConfiguration != null );
     }
 
 

@@ -20,6 +20,8 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import java.util.List;
+
 import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
 import org.apache.directory.ldapstudio.apacheds.configuration.PluginConstants;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Partition;
@@ -28,8 +30,12 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -43,6 +49,7 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -55,6 +62,14 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 {
     /** The associated page */
     private FormPage page;
+
+    /** The editor input */
+    private ServerConfigurationEditorInput input;
+
+    /** The Interceptors List */
+    private List<Partition> partitions;
+
+    private static final String NEW_NAME = "New Partition ";
 
     // UI Fields
     private TableViewer viewer;
@@ -71,6 +86,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public PartitionsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
+        input = ( ServerConfigurationEditorInput ) page.getEditorInput();
+        partitions = input.getServerConfiguration().getPartitions();
     }
 
 
@@ -113,17 +130,113 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             }
         } );
         viewer.setContentProvider( new ArrayContentProvider() );
-        viewer.setLabelProvider( new LabelProvider() );
+        viewer.setLabelProvider( new LabelProvider()
+        {
+            public Image getImage( Object element )
+            {
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_PARTITION )
+                    .createImage();
+            }
+        } );
         viewer.setInput( new Object[]
             { new Partition( "System Partition" ), new Partition( "Example Partition" ) } );
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
-        gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
-        addButton.setLayoutData( gd );
+        addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
         deleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
-        deleteButton.setLayoutData( gd );
+        deleteButton.setEnabled( false );
+        deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+
+        initFromInput();
+        addListeners();
+    }
+
+
+    /**
+     * Initializes the page with the Editor input.
+     */
+    private void initFromInput()
+    {
+        viewer.setInput( partitions );
+    }
+
+
+    /**
+     * Add listeners to UI fields.
+     */
+    private void addListeners()
+    {
+        viewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                viewer.refresh();
+
+                deleteButton.setEnabled( !event.getSelection().isEmpty() );
+            }
+        } );
+
+        addButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                Partition newPartition = new Partition( getNewName() );
+                partitions.add( newPartition );
+                viewer.refresh();
+                viewer.setSelection( new StructuredSelection( newPartition ) );
+                setEditorDirty();
+            }
+        } );
+
+        deleteButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    Partition partition = ( Partition ) selection.getFirstElement();
+
+                    partitions.remove( partition );
+                    viewer.refresh();
+                    setEditorDirty();
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Gets a new Name for a new Extended Operation.
+     *
+     * @return 
+     *      a new Name for a new Extended Operation
+     */
+    private String getNewName()
+    {
+        int counter = 1;
+        String name = NEW_NAME;
+        boolean ok = false;
+
+        while ( !ok )
+        {
+            ok = true;
+            name = NEW_NAME + counter;
+
+            for ( Partition partition : partitions )
+            {
+                if ( partition.getName().equalsIgnoreCase( name ) )
+                {
+                    ok = false;
+                }
+            }
+
+            counter++;
+        }
+
+        return name;
     }
 
 
@@ -170,6 +283,15 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void registerPages( DetailsPart detailsPart )
     {
-        detailsPart.registerPage( Partition.class, new PartitionDetailsPage() );
+        detailsPart.registerPage( Partition.class, new PartitionDetailsPage( this ) );
+    }
+
+
+    /**
+     * Sets the Editor as dirty.
+     */
+    public void setEditorDirty()
+    {
+        ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
     }
 }

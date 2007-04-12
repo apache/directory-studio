@@ -29,4 +29,7 @@ public interface PluginConstants
 {
     public static final String IMG_VERTICAL_ORIENTATION = "icons/vertical_orientation.gif";
     public static final String IMG_HORIZONTAL_ORIENTATION = "icons/horizontal_orientation.gif"; 
+    public static final String IMG_PARTITION = "icons/partition.gif"; 
+    public static final String IMG_INTERCEPTOR= "icons/interceptor.gif"; 
+    public static final String IMG_EXTENDED_OPERATION = "icons/extended_operation.gif"; 
 }

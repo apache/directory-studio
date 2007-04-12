@@ -49,7 +49,9 @@ public class ServerConfigurationEditor extends FormEditor
     private FormPage extendedOperationsPage;
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
+     */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         super.init( site, input );
@@ -63,16 +65,18 @@ public class ServerConfigurationEditor extends FormEditor
      */
     protected void addPages()
     {
-        generalPage = new GeneralPage( this );
-        partitionsPage = new PartitionsPage( this );
-        interceptorsPage = new InterceptorsPage( this );
-        extendedOperationsPage = new ExtendedOperationsPage( this );
-
         try
         {
+            generalPage = new GeneralPage( this );
             addPage( generalPage );
+
+            partitionsPage = new PartitionsPage( this );
             addPage( partitionsPage );
+
+            interceptorsPage = new InterceptorsPage( this );
             addPage( interceptorsPage );
+
+            extendedOperationsPage = new ExtendedOperationsPage( this );
             addPage( extendedOperationsPage );
         }
         catch ( PartInitException e )

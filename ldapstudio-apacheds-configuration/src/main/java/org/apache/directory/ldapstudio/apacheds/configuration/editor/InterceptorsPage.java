@@ -53,7 +53,6 @@ public class InterceptorsPage extends FormPage
     public InterceptorsPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
-        masterDetailsBlock = new InterceptorsMasterDetailsBlock( this );
     }
 
 
@@ -64,6 +63,7 @@ public class InterceptorsPage extends FormPage
     {
         final ScrolledForm form = managedForm.getForm();
         form.setText( "Interceptors" );
+        masterDetailsBlock = new InterceptorsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }
 }

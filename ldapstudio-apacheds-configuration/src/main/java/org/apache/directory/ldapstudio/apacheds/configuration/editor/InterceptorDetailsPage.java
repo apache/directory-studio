@@ -24,6 +24,8 @@ import org.apache.directory.ldapstudio.apacheds.configuration.model.Interceptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -45,6 +47,9 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class InterceptorDetailsPage implements IDetailsPage
 {
+    /** The associated Master Details Block */
+    private InterceptorsMasterDetailsBlock masterDetailsBlock;
+
     /** The Managed Form */
     private IManagedForm mform;
 
@@ -54,6 +59,28 @@ public class InterceptorDetailsPage implements IDetailsPage
     // UI fields
     private Text nameText;
     private Text classText;
+    
+    // Listeners
+    /** The Modify Listener for Text Widgets */
+    private ModifyListener textModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            masterDetailsBlock.setEditorDirty();
+        }
+    };
+
+
+    /**
+     * Creates a new instance of InterceptorDetailsPage.
+     *
+     * @param imdb
+     *      The associated Master Details Block
+     */
+    public InterceptorDetailsPage( InterceptorsMasterDetailsBlock imdb )
+    {
+        masterDetailsBlock = imdb;
+    }
 
 
     /* (non-Javadoc)
@@ -106,6 +133,25 @@ public class InterceptorDetailsPage implements IDetailsPage
         classText = toolkit.createText( client, "" );
         classText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
+    
+    /**
+     * Adds listeners to UI fields.
+     */
+    private void addListeners()
+    {
+        nameText.addModifyListener( textModifyListener );
+        classText.addModifyListener( textModifyListener );
+    }
+
+
+    /**
+     * Removes listeners to UI fields.
+     */
+    private void removeListeners()
+    {
+        nameText.removeModifyListener( textModifyListener );
+        classText.removeModifyListener( textModifyListener );
+    }
 
 
     /* (non-Javadoc)
@@ -130,8 +176,9 @@ public class InterceptorDetailsPage implements IDetailsPage
      * @see org.eclipse.ui.forms.IFormPart#commit(boolean)
      */
     public void commit( boolean onSave )
-    {
+    {        
         input.setName( nameText.getText() );
+        input.setClassType( classText.getText() );
     }
 
 
@@ -179,7 +226,17 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     public void refresh()
     {
-        nameText.setText( input.getName() );
+        removeListeners();
+        
+        // Name
+        String name = input.getName();
+        nameText.setText( ( name == null ) ? "" : name );
+
+        // Class
+        String classType = input.getClassType();
+        classText.setText( ( classType == null ) ? "" : classType );
+        
+        addListeners();
     }
 
 
