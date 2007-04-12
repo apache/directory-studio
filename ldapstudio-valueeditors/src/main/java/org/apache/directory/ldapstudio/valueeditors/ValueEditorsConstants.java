@@ -27,4 +27,6 @@ public interface ValueEditorsConstants
     
     public static final String IMG_INTEGEREDITOR = "resources/icons/integereditor.gif";
     
+    public static final String IMG_ADMINISTRATIVEROLEEDITOR = "resources/icons/administrativeroleeditor.gif";
+    
 }

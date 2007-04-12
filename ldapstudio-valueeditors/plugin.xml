@@ -45,6 +45,12 @@
           name="Integer Editor">
        <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.27"/>
     </valueEditor>
+    <valueEditor
+          class="org.apache.directory.ldapstudio.valueeditors.administrativerole.AdministrativeRoleValueEditor"
+          icon="resources/icons/administrativeroleeditor.gif"
+          name="Administrative Role Editor">
+       <attribute attributeType="administrativeRole"/>
+    </valueEditor>
    </extension>
 
 </plugin>
