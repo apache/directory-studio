@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttributes;
 
 
 /**
@@ -55,6 +56,9 @@ public class Partition
     /** The indexed attributes */
     private List<IndexedAttribute> indexedAttributes;
 
+    /** The System Partition flag */
+    private boolean systemPartition;
+
 
     /**
      * Creates a new instance of Partition.
@@ -62,6 +66,7 @@ public class Partition
     public Partition()
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
+        contextEntry = new BasicAttributes( true );
     }
 
 
@@ -71,10 +76,11 @@ public class Partition
      * @param name
      *      the name of the partition
      */
-    public Partition( String name )
+   public Partition( String name )
     {
-        this.name = name;
         indexedAttributes = new ArrayList<IndexedAttribute>();
+        contextEntry = new BasicAttributes( true );
+        this.name = name;
     }
 
 
@@ -271,6 +277,30 @@ public class Partition
     public void setSynchronizationOnWrite( boolean synchronizationOnWrite )
     {
         this.synchronizationOnWrite = synchronizationOnWrite;
+    }
+
+
+    /**
+     * Returns the System Partition flag.
+     *
+     * @return
+     *      true if the partition is the System Partition
+     */
+    public boolean isSystemPartition()
+    {
+        return systemPartition;
+    }
+
+
+    /**
+     * Sets the System Partition flag.
+     *
+     * @param systemPartition
+     *      the System Partition flag
+     */
+    public void setSystemPartition( boolean systemPartition )
+    {
+        this.systemPartition = systemPartition;
     }
 
 

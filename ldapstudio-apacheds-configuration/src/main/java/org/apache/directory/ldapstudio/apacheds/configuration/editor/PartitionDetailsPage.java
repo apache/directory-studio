@@ -20,8 +20,16 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+
+import org.apache.directory.ldapstudio.apacheds.configuration.dialogs.AttributeValueDialog;
 import org.apache.directory.ldapstudio.apacheds.configuration.dialogs.IndexedAttributeDialog;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.IndexedAttribute;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Partition;
@@ -30,13 +38,17 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -45,11 +57,13 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IDetailsPage;
 import org.eclipse.ui.forms.IFormPart;
@@ -77,6 +91,9 @@ public class PartitionDetailsPage implements IDetailsPage
     /** The input Partition */
     private Partition input;
 
+    /** The Context Entry */
+    private Attributes contextEntry;
+
     /** The Indexed Attributes List */
     private List<IndexedAttribute> indexedAttributes;
 
@@ -86,6 +103,7 @@ public class PartitionDetailsPage implements IDetailsPage
     private Text suffixText;
     private Button enableOptimizerCheckbox;
     private Button synchOnWriteCheckbox;
+    private Table contextEntryTable;
     private TableViewer contextEntryTableViewer;
     private Button contextEntryAddButton;
     private Button contextEntryEditButton;
@@ -124,12 +142,39 @@ public class PartitionDetailsPage implements IDetailsPage
         }
     };
 
+    /** The Double Click Listener for the Indexed Attributes Table Viewer */
+    private IDoubleClickListener contextEntryTableViewerDoubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            editSelectedContextEntry();
+        }
+    };
+
     /** The Listener for the Add button of the Context Entry Section */
     private SelectionListener contextEntryAddButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            masterDetailsBlock.setEditorDirty();
+            AttributeValueDialog dialog = new AttributeValueDialog( new AttributeValueObject( "", "" ) );
+            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+            {
+                AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
+                Attribute attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
+                if ( attribute != null )
+                {
+                    attribute.add( newAttributeValueObject.getValue() );
+                }
+                else
+                {
+                    contextEntry.put( new BasicAttribute( newAttributeValueObject.getAttribute(),
+                        newAttributeValueObject.getValue() ) );
+                }
+
+                contextEntryTableViewer.refresh();
+                resizeContextEntryTableColumnsToFit();
+                masterDetailsBlock.setEditorDirty();
+            }
         }
     };
 
@@ -138,7 +183,7 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            // masterDetailsBlock.setEditorDirty();
+            editSelectedContextEntry();
         }
     };
 
@@ -147,7 +192,20 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            masterDetailsBlock.setEditorDirty();
+            StructuredSelection selection = ( StructuredSelection ) contextEntryTableViewer.getSelection();
+            if ( !selection.isEmpty() )
+            {
+                AttributeValueObject attributeValueObject = ( AttributeValueObject ) selection.getFirstElement();
+
+                Attribute attribute = contextEntry.get( attributeValueObject.getAttribute() );
+                if ( attribute != null )
+                {
+                    attribute.remove( attributeValueObject.getValue() );
+                    contextEntryTableViewer.refresh();
+                    resizeContextEntryTableColumnsToFit();
+                    masterDetailsBlock.setEditorDirty();
+                }
+            }
         }
     };
 
@@ -176,7 +234,6 @@ public class PartitionDetailsPage implements IDetailsPage
         public void widgetSelected( SelectionEvent e )
         {
             IndexedAttributeDialog dialog = new IndexedAttributeDialog( new IndexedAttribute( "", 0 ) );
-
             if ( Dialog.OK == dialog.open() )
             {
                 indexedAttributes.add( dialog.getIndexedAttribute() );
@@ -207,7 +264,6 @@ public class PartitionDetailsPage implements IDetailsPage
 
                 indexedAttributes.remove( indexedAttribute );
                 indexedAttributesTableViewer.refresh();
-
                 masterDetailsBlock.setEditorDirty();
             }
         }
@@ -323,13 +379,103 @@ public class PartitionDetailsPage implements IDetailsPage
         client.setLayout( new GridLayout( 2, false ) );
         section.setClient( client );
 
-        Table contextEntryTable = toolkit.createTable( client, SWT.NONE );
+        contextEntryTable = toolkit.createTable( client, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 80;
+        gd.heightHint = 103;
         contextEntryTable.setLayoutData( gd );
+        TableColumn idColumn = new TableColumn( contextEntryTable, SWT.LEFT, 0 );
+        idColumn.setText( "Attribute" );
+        idColumn.setWidth( 100 );
+        TableColumn valueColumn = new TableColumn( contextEntryTable, SWT.LEFT, 1 );
+        valueColumn.setText( "Value" );
+        valueColumn.setWidth( 100 );
+        contextEntryTable.setHeaderVisible( true );
         contextEntryTableViewer = new TableViewer( contextEntryTable );
-        contextEntryTableViewer.setContentProvider( new ArrayContentProvider() );
-        contextEntryTableViewer.setLabelProvider( new LabelProvider() );
+        contextEntryTableViewer.setContentProvider( new IStructuredContentProvider()
+        {
+            public Object[] getElements( Object inputElement )
+            {
+                List<AttributeValueObject> elements = new ArrayList<AttributeValueObject>();
+
+                Attributes attributes = ( Attributes ) inputElement;
+
+                NamingEnumeration<? extends Attribute> ne = attributes.getAll();
+                while ( ne.hasMoreElements() )
+                {
+                    Attribute attribute = ( Attribute ) ne.nextElement();
+                    try
+                    {
+                        NamingEnumeration<?> values = attribute.getAll();
+                        while ( values.hasMoreElements() )
+                        {
+                            elements.add( new AttributeValueObject( attribute.getID(), values.nextElement() ) );
+                        }
+                    }
+                    catch ( NamingException e )
+                    {
+                    }
+                }
+
+                return elements.toArray();
+            }
+
+
+            public void dispose()
+            {
+            }
+
+
+            public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
+            {
+            }
+        } );
+        contextEntryTableViewer.setLabelProvider( new ITableLabelProvider()
+        {
+            public String getColumnText( Object element, int columnIndex )
+            {
+                if ( element != null )
+                {
+                    switch ( columnIndex )
+                    {
+                        case 0:
+                            return ( ( AttributeValueObject ) element ).getAttribute();
+                        case 1:
+                            return ( ( AttributeValueObject ) element ).getValue().toString();
+                        default:
+                            break;
+                    }
+                }
+
+                return null;
+            }
+
+
+            public Image getColumnImage( Object element, int columnIndex )
+            {
+                return null;
+            }
+
+
+            public void addListener( ILabelProviderListener listener )
+            {
+            }
+
+
+            public void dispose()
+            {
+            }
+
+
+            public boolean isLabelProperty( Object element, String property )
+            {
+                return false;
+            }
+
+
+            public void removeListener( ILabelProviderListener listener )
+            {
+            }
+        } );
 
         GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
         buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
@@ -402,7 +548,7 @@ public class PartitionDetailsPage implements IDetailsPage
         enableOptimizerCheckbox.addSelectionListener( checkboxSelectionListener );
         synchOnWriteCheckbox.addSelectionListener( checkboxSelectionListener );
 
-        // TODO Add a listener for the double-click on the contextEntryTable
+        contextEntryTableViewer.addDoubleClickListener( contextEntryTableViewerDoubleClickListener );
         contextEntryTableViewer.addSelectionChangedListener( contextEntryTableViewerListener );
         contextEntryAddButton.addSelectionListener( contextEntryAddButtonListener );
         contextEntryEditButton.addSelectionListener( contextEntryEditButtonListener );
@@ -427,7 +573,7 @@ public class PartitionDetailsPage implements IDetailsPage
         enableOptimizerCheckbox.removeSelectionListener( checkboxSelectionListener );
         synchOnWriteCheckbox.removeSelectionListener( checkboxSelectionListener );
 
-        // TODO remove the listener for the double-click on the contextEntryTable
+        contextEntryTableViewer.removeDoubleClickListener( contextEntryTableViewerDoubleClickListener );
         contextEntryTableViewer.removeSelectionChangedListener( contextEntryTableViewerListener );
         contextEntryAddButton.removeSelectionListener( contextEntryAddButtonListener );
         contextEntryEditButton.removeSelectionListener( contextEntryEditButtonListener );
@@ -531,11 +677,30 @@ public class PartitionDetailsPage implements IDetailsPage
         // Synchronization on write
         synchOnWriteCheckbox.setSelection( input.isSynchronizationOnWrite() );
 
+        // Context Entry
+        contextEntry = input.getContextEntry();
+        contextEntryTableViewer.setInput( contextEntry );
+        resizeContextEntryTableColumnsToFit();
+
         // Indexed Attributes
         indexedAttributes = input.getIndexedAttributes();
         indexedAttributesTableViewer.setInput( indexedAttributes );
 
         addListeners();
+    }
+
+
+    /**
+     * Resizes the columns to fit the size of the cells.
+     */
+    private void resizeContextEntryTableColumnsToFit()
+    {
+        // Resizing the first column
+        contextEntryTable.getColumn( 0 ).pack();
+        // Adding a little space to the first column
+        contextEntryTable.getColumn( 0 ).setWidth( contextEntryTable.getColumn( 0 ).getWidth() + 5 );
+        // Resizing the second column
+        contextEntryTable.getColumn( 1 ).pack();
     }
 
 
@@ -572,6 +737,49 @@ public class PartitionDetailsPage implements IDetailsPage
             if ( Dialog.OK == dialog.open() && dialog.isDirty() )
             {
                 indexedAttributesTableViewer.refresh();
+                masterDetailsBlock.setEditorDirty();
+            }
+        }
+    }
+
+
+    /**
+     * Opens a Context Entry Dialog with the selected Attribute Value Object in the
+     * Context Entry Table Viewer.
+     */
+    private void editSelectedContextEntry()
+    {
+        StructuredSelection selection = ( StructuredSelection ) contextEntryTableViewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            AttributeValueObject attributeValueObject = ( AttributeValueObject ) selection.getFirstElement();
+
+            String oldId = attributeValueObject.getAttribute();
+            Object oldValue = attributeValueObject.getValue();
+
+            AttributeValueDialog dialog = new AttributeValueDialog( attributeValueObject );
+            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+            {
+                Attribute attribute = contextEntry.get( oldId );
+                if ( attribute != null )
+                {
+                    attribute.remove( oldValue );
+                }
+
+                AttributeValueObject newAttributeValueObject = dialog.getAttributeValueObject();
+                attribute = contextEntry.get( newAttributeValueObject.getAttribute() );
+                if ( attribute != null )
+                {
+                    attribute.add( newAttributeValueObject.getValue() );
+                }
+                else
+                {
+                    contextEntry.put( new BasicAttribute( newAttributeValueObject.getAttribute(),
+                        newAttributeValueObject.getValue() ) );
+                }
+
+                contextEntryTableViewer.refresh();
+                resizeContextEntryTableColumnsToFit();
                 masterDetailsBlock.setEditorDirty();
             }
         }

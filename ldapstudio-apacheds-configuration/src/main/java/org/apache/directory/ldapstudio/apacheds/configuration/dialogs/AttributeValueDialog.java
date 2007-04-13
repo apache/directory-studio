@@ -20,13 +20,11 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.dialogs;
 
 
-import org.apache.directory.ldapstudio.apacheds.configuration.model.IndexedAttribute;
+import org.apache.directory.ldapstudio.apacheds.configuration.editor.AttributeValueObject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -38,31 +36,31 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the Dialog for Indexed Attribute.
+ * This class implements the Dialog for Attribute Value.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class IndexedAttributeDialog extends Dialog
+public class AttributeValueDialog extends Dialog
 {
-    /** The Indexed Attribute */
-    private IndexedAttribute indexedAttribute;
+    /** The Attribute Value Object */
+    private AttributeValueObject attributeValueObject;
 
     /** The dirty flag */
     private boolean dirty = false;
 
     // UI Fields
-    private Text attributeIdText;
-    private Text cacheSizeText;
+    private Text attributeText;
+    private Text valueText;
 
 
     /**
-     * Creates a new instance of IndexedAttributeDialog.
+     * Creates a new instance of AttributeValueDialog.
      */
-    public IndexedAttributeDialog( IndexedAttribute indexedAttribute )
+    public AttributeValueDialog( AttributeValueObject attributeValueObject )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        this.indexedAttribute = indexedAttribute;
+        this.attributeValueObject = attributeValueObject;
     }
 
 
@@ -72,7 +70,7 @@ public class IndexedAttributeDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Indexed Attribute Dialog" );
+        newShell.setText( "Attribute Value Dialog" );
     }
 
 
@@ -86,27 +84,17 @@ public class IndexedAttributeDialog extends Dialog
         composite.setLayout( layout );
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
-        Label attributeIdLabel = new Label( composite, SWT.NONE );
-        attributeIdLabel.setText( "Attribute ID:" );
+        Label attributeLabel = new Label( composite, SWT.NONE );
+        attributeLabel.setText( "Attribute:" );
 
-        attributeIdText = new Text( composite, SWT.BORDER );
-        attributeIdText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        attributeText = new Text( composite, SWT.BORDER );
+        attributeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        Label cacheSizeLabel = new Label( composite, SWT.NONE );
-        cacheSizeLabel.setText( "Cache Size:" );
+        Label valueLabel = new Label( composite, SWT.NONE );
+        valueLabel.setText( "Value:" );
 
-        cacheSizeText = new Text( composite, SWT.BORDER );
-        cacheSizeText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-        cacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        valueText = new Text( composite, SWT.BORDER );
+        valueText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         initFromInput();
         addListeners();
@@ -120,9 +108,11 @@ public class IndexedAttributeDialog extends Dialog
      */
     private void initFromInput()
     {
-        String attributeId = indexedAttribute.getAttributeId();
-        attributeIdText.setText( ( attributeId == null ) ? "" : attributeId );
-        cacheSizeText.setText( "" + indexedAttribute.getCacheSize() );
+        String attribute = attributeValueObject.getAttribute();
+        attributeText.setText( ( attribute == null ) ? "" : attribute );
+
+        Object value = attributeValueObject.getValue();
+        valueText.setText( ( value == null ) ? "" : value.toString() );
     }
 
 
@@ -131,7 +121,7 @@ public class IndexedAttributeDialog extends Dialog
      */
     private void addListeners()
     {
-        attributeIdText.addModifyListener( new ModifyListener()
+        attributeText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -139,7 +129,7 @@ public class IndexedAttributeDialog extends Dialog
             }
         } );
 
-        cacheSizeText.addModifyListener( new ModifyListener()
+        valueText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -154,29 +144,22 @@ public class IndexedAttributeDialog extends Dialog
      */
     protected void okPressed()
     {
-        indexedAttribute.setAttributeId( attributeIdText.getText() );
-        try
-        {
-            indexedAttribute.setCacheSize( Integer.parseInt( cacheSizeText.getText() ) );
-        }
-        catch ( NumberFormatException e )
-        {
-            // Nothing to do, it won't happen
-        }
+        attributeValueObject.setId( attributeText.getText() );
+        attributeValueObject.setValue( valueText.getText() );
 
         super.okPressed();
     }
 
 
     /**
-     * Gets the Indexed Attribute.
+     * Gets the Attribute Value Object.
      *
      * @return
-     *      the Indexed Attribute
+     *      the Attribute Value Object
      */
-    public IndexedAttribute getIndexedAttribute()
+    public AttributeValueObject getAttributeValueObject()
     {
-        return indexedAttribute;
+        return attributeValueObject;
     }
 
 

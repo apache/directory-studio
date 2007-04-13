@@ -1,6 +1,11 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.actions;
 
 
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
+
 import org.apache.directory.ldapstudio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.ldapstudio.apacheds.configuration.editor.ServerConfigurationEditorInput;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.ExtendedOperation;
@@ -58,13 +63,30 @@ public class OpenEditorAction extends Action implements IWorkbenchWindowActionDe
 
         Partition partition = new Partition( "System Partition" );
         partition.setSuffix( "ou=system" );
-        // TODO Add Context Entry
+        Attributes attributes = new BasicAttributes( true );
+        Attribute attribute = new BasicAttribute( "dc" );
+        attribute.add( "example" );
+        attribute.add( "com" );
+        attributes.put( attribute );
+        partition.setContextEntry( attributes );
         partition.setEnableOptimizer( true );
         partition.setCacheSize( 1000 );
         partition.setSynchronizationOnWrite( true );
         partition.addIndexedAttribute( new IndexedAttribute( "cn", 100 ) );
         partition.addIndexedAttribute( new IndexedAttribute( "ou", 30 ) );
+        partition.setSystemPartition( true );
         serverConfiguration.addPartition( partition );
+
+        Partition partition2 = new Partition( "Example Partition" );
+        partition2.setSuffix( "dc=example, dc=com" );
+        // TODO Add Context Entry
+        partition2.setEnableOptimizer( false );
+        partition2.setCacheSize( 500 );
+        partition2.setSynchronizationOnWrite( false );
+        partition2.addIndexedAttribute( new IndexedAttribute( "uid", 50 ) );
+        partition2.addIndexedAttribute( new IndexedAttribute( "dc", 15 ) );
+        partition2.setSystemPartition( false );
+        serverConfiguration.addPartition( partition2 );
 
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         try

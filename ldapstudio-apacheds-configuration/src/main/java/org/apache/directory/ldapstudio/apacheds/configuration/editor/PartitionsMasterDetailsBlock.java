@@ -134,12 +134,13 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         {
             public Image getImage( Object element )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_PARTITION )
-                    .createImage();
+
+                return AbstractUIPlugin.imageDescriptorFromPlugin(
+                    Activator.PLUGIN_ID,
+                    ( ( Partition ) element ).isSystemPartition() ? PluginConstants.IMG_PARTITION_SYSTEM
+                        : PluginConstants.IMG_PARTITION ).createImage();
             }
         } );
-        viewer.setInput( new Object[]
-            { new Partition( "System Partition" ), new Partition( "Example Partition" ) } );
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
@@ -175,6 +176,15 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
                 viewer.refresh();
 
                 deleteButton.setEnabled( !event.getSelection().isEmpty() );
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    Partition partition = ( Partition ) selection.getFirstElement();
+                    if ( partition.isSystemPartition() )
+                    {
+                        deleteButton.setEnabled( false );
+                    }
+                }
             }
         } );
 
@@ -198,10 +208,12 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
                 if ( !selection.isEmpty() )
                 {
                     Partition partition = ( Partition ) selection.getFirstElement();
-
-                    partitions.remove( partition );
-                    viewer.refresh();
-                    setEditorDirty();
+                    if ( !partition.isSystemPartition() )
+                    {
+                        partitions.remove( partition );
+                        viewer.refresh();
+                        setEditorDirty();
+                    }
                 }
             }
         } );
@@ -232,7 +244,6 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
                     ok = false;
                 }
             }
-
             counter++;
         }
 

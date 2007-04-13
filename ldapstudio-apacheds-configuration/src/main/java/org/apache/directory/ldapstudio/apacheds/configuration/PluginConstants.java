@@ -19,6 +19,7 @@
  */
 package org.apache.directory.ldapstudio.apacheds.configuration;
 
+
 /**
  * This interface contains all the Constants used in the Plugin.
  *
@@ -28,8 +29,9 @@ package org.apache.directory.ldapstudio.apacheds.configuration;
 public interface PluginConstants
 {
     public static final String IMG_VERTICAL_ORIENTATION = "icons/vertical_orientation.gif";
-    public static final String IMG_HORIZONTAL_ORIENTATION = "icons/horizontal_orientation.gif"; 
-    public static final String IMG_PARTITION = "icons/partition.gif"; 
-    public static final String IMG_INTERCEPTOR= "icons/interceptor.gif"; 
-    public static final String IMG_EXTENDED_OPERATION = "icons/extended_operation.gif"; 
+    public static final String IMG_HORIZONTAL_ORIENTATION = "icons/horizontal_orientation.gif";
+    public static final String IMG_PARTITION = "icons/partition.gif";
+    public static final String IMG_PARTITION_SYSTEM = "icons/partition_system.gif";
+    public static final String IMG_INTERCEPTOR = "icons/interceptor.gif";
+    public static final String IMG_EXTENDED_OPERATION = "icons/extended_operation.gif";
 }
