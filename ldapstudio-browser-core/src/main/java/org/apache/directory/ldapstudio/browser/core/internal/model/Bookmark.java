@@ -106,7 +106,7 @@ public class Bookmark implements IBookmark
     public void setDn( DN dn )
     {
         this.bookmarkParameter.setDn( dn );
-        this.fireBookmarkUpdated( BookmarkUpdateEvent.BOOKMARK_UPDATED );
+        this.fireBookmarkUpdated( BookmarkUpdateEvent.Detail.BOOKMARK_UPDATED );
     }
 
 
@@ -125,7 +125,7 @@ public class Bookmark implements IBookmark
     public void setName( String name )
     {
         this.bookmarkParameter.setName( name );
-        this.fireBookmarkUpdated( BookmarkUpdateEvent.BOOKMARK_UPDATED );
+        this.fireBookmarkUpdated( BookmarkUpdateEvent.Detail.BOOKMARK_UPDATED );
     }
 
 
@@ -156,7 +156,7 @@ public class Bookmark implements IBookmark
     }
 
 
-    private void fireBookmarkUpdated( int detail )
+    private void fireBookmarkUpdated( BookmarkUpdateEvent.Detail detail )
     {
         if ( this.getName() != null && !"".equals( this.getName() ) ) { //$NON-NLS-1$
             EventRegistry.fireBookmarkUpdated( new BookmarkUpdateEvent( this, detail ), this );

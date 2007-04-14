@@ -27,12 +27,26 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * An AttributeDeletedEvent indicates that an {@link IAttribute} was deleted from an {@link IEntry}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeDeletedEvent extends EntryModificationEvent
 {
 
+    /** The deleted attribute. */
     private IAttribute deletedAttribute;
 
 
+    /**
+     * Creates a new instance of AttributeDeletedEvent.
+     * 
+     * @param connection the connection
+     * @param modifiedEntry the modified entry
+     * @param deletedAttribute the deleted attribute
+     */
     public AttributeDeletedEvent( IConnection connection, IEntry modifiedEntry, IAttribute deletedAttribute )
     {
         super( connection, modifiedEntry );
@@ -40,15 +54,24 @@ public class AttributeDeletedEvent extends EntryModificationEvent
     }
 
 
+    /**
+     * Gets the deleted attribute.
+     * 
+     * @return the deleted attribute
+     */
     public IAttribute getDeletedAttribute()
     {
-        return this.deletedAttribute;
+        return deletedAttribute;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__deleted_att_from_dn, new String[]
             { getDeletedAttribute().getDescription(), getModifiedEntry().getDn().toString() } );
     }
+    
 }

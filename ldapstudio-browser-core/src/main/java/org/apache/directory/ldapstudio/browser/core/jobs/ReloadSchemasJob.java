@@ -85,7 +85,7 @@ public class ReloadSchemasJob extends AbstractAsyncBulkJob
         for ( int i = 0; i < connections.length; i++ )
         {
             EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connections[i],
-                ConnectionUpdateEvent.CONNECTION_SCHEMA_LOADED ), this );
+                ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
         }
     }
 

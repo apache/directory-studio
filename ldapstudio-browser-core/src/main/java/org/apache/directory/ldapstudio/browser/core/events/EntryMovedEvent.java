@@ -25,14 +25,28 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * An EntryMovedEvent indicates that an {@link IEntry} was moved in the underlying directory.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryMovedEvent extends EntryModificationEvent
 {
 
+    /** The old entry. */
     private IEntry oldEntry;
 
+    /** The new entry. */
     private IEntry newEntry;
 
 
+    /**
+     * Creates a new instance of EntryMovedEvent.
+     * 
+     * @param oldEntry the old entry
+     * @param newEntry the new entry
+     */
     public EntryMovedEvent( IEntry oldEntry, IEntry newEntry )
     {
         super( newEntry.getConnection(), newEntry.getParententry() );
@@ -41,18 +55,31 @@ public class EntryMovedEvent extends EntryModificationEvent
     }
 
 
+    /**
+     * Gets the new entry with the new DN.
+     * 
+     * @return the new entry
+     */
     public IEntry getNewEntry()
     {
         return newEntry;
     }
 
 
+    /**
+     * Gets the old entry with the old DN.
+     * 
+     * @return the old entry
+     */
     public IEntry getOldEntry()
     {
         return oldEntry;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__moved_oldrdn_from_oldparent_to_newparent,

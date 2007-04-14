@@ -28,14 +28,30 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 
 
+/**
+ * An EmptyValueDeletedEvent indicates that an empty {@link IValue} was deleted from an {@link IEntry}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EmptyValueDeletedEvent extends EntryModificationEvent
 {
 
+    /** The modified attribute. */
     private IAttribute modifiedAttribute;
 
+    /** The deleted value. */
     private IValue deletedValue;
 
 
+    /**
+     * Creates a new instance of EmptyValueDeletedEvent.
+     * 
+     * @param connection the connection
+     * @param modifiedEntry the modified entry
+     * @param modifiedAttribute the modified attribute
+     * @param deletedValue the deleted value
+     */
     public EmptyValueDeletedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
         IValue deletedValue )
     {
@@ -45,18 +61,31 @@ public class EmptyValueDeletedEvent extends EntryModificationEvent
     }
 
 
+    /**
+     * Gets the modified attribute.
+     * 
+     * @return the modified attribute
+     */
     public IAttribute getModifiedAttribute()
     {
         return this.modifiedAttribute;
     }
 
 
+    /**
+     * Gets the deleted value.
+     * 
+     * @return the deleted value
+     */
     public IValue getDeletedValue()
     {
         return this.deletedValue;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__empty_value_deleted_from_att_at_dn, new String[]

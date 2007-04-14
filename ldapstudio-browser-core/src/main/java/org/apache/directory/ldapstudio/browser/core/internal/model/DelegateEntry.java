@@ -446,14 +446,14 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             if ( event instanceof AttributeAddedEvent )
             {
                 AttributeAddedEvent e = ( AttributeAddedEvent ) event;
-                AttributeAddedEvent delegateEvent = new AttributeAddedEvent( e.getOriginalConnection(), this, e
+                AttributeAddedEvent delegateEvent = new AttributeAddedEvent( e.getConnection(), this, e
                     .getAddedAttribute() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof AttributeDeletedEvent )
             {
                 AttributeDeletedEvent e = ( AttributeDeletedEvent ) event;
-                AttributeDeletedEvent delegateEvent = new AttributeDeletedEvent( e.getOriginalConnection(), this, e
+                AttributeDeletedEvent delegateEvent = new AttributeDeletedEvent( e.getConnection(), this, e
                     .getDeletedAttribute() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
@@ -466,14 +466,14 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             else if ( event instanceof EmptyValueAddedEvent )
             {
                 EmptyValueAddedEvent e = ( EmptyValueAddedEvent ) event;
-                EmptyValueAddedEvent delegateEvent = new EmptyValueAddedEvent( e.getOriginalConnection(), this, e
+                EmptyValueAddedEvent delegateEvent = new EmptyValueAddedEvent( e.getConnection(), this, e
                     .getModifiedAttribute(), e.getAddedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof EmptyValueDeletedEvent )
             {
                 EmptyValueDeletedEvent e = ( EmptyValueDeletedEvent ) event;
-                EmptyValueDeletedEvent delegateEvent = new EmptyValueDeletedEvent( e.getOriginalConnection(), this, e
+                EmptyValueDeletedEvent delegateEvent = new EmptyValueDeletedEvent( e.getConnection(), this, e
                     .getModifiedAttribute(), e.getDeletedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
@@ -490,28 +490,28 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             else if ( event instanceof ValueAddedEvent )
             {
                 ValueAddedEvent e = ( ValueAddedEvent ) event;
-                ValueAddedEvent delegateEvent = new ValueAddedEvent( e.getOriginalConnection(), this, e
+                ValueAddedEvent delegateEvent = new ValueAddedEvent( e.getConnection(), this, e
                     .getModifiedAttribute(), e.getAddedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueDeletedEvent )
             {
                 ValueDeletedEvent e = ( ValueDeletedEvent ) event;
-                ValueDeletedEvent delegateEvent = new ValueDeletedEvent( e.getOriginalConnection(), this, e
+                ValueDeletedEvent delegateEvent = new ValueDeletedEvent( e.getConnection(), this, e
                     .getModifiedAttribute(), e.getDeletedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueModifiedEvent )
             {
                 ValueModifiedEvent e = ( ValueModifiedEvent ) event;
-                ValueModifiedEvent delegateEvent = new ValueModifiedEvent( e.getOriginalConnection(), this, e
+                ValueModifiedEvent delegateEvent = new ValueModifiedEvent( e.getConnection(), this, e
                     .getModifiedAttribute(), e.getOldValue(), e.getNewValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueRenamedEvent )
             {
                 ValueRenamedEvent e = ( ValueRenamedEvent ) event;
-                ValueRenamedEvent delegateEvent = new ValueRenamedEvent( e.getOriginalConnection(), this, e
+                ValueRenamedEvent delegateEvent = new ValueRenamedEvent( e.getConnection(), this, e
                     .getOldValue(), e.getNewValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }

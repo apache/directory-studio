@@ -23,18 +23,31 @@ package org.apache.directory.ldapstudio.browser.core.events;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * An BulkModificationEvent indicates that a bulk modification has occured.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BulkModificationEvent extends EntryModificationEvent
 {
 
+    /**
+     * Creates a new instance of BulkModificationEvent.
+     * 
+     * @param connection the connection
+     */
     public BulkModificationEvent( IConnection connection )
     {
         super( connection, connection.getRootDSE() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.event__bulk_modification;

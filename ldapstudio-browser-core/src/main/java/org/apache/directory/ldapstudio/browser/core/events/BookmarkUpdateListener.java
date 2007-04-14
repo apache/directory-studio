@@ -20,10 +20,23 @@
 
 package org.apache.directory.ldapstudio.browser.core.events;
 
+import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 
+
+/**
+ * A listener for {@link BookmarkUpdateEvent}s
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface BookmarkUpdateListener extends EventListener
 {
 
+    /**
+     * Called when an {@link IBookmark} was updated.
+     * 
+     * @param bookmarkUpdateEvent the bookmark update event
+     */
     public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent );
 
 }

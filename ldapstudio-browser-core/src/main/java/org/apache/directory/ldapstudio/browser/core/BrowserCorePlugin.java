@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.browser.core;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.EventPerformanceMeter;
 import org.apache.directory.ldapstudio.browser.core.model.IAuthHandler;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IReferralHandler;
@@ -52,8 +51,6 @@ public class BrowserCorePlugin extends Plugin
     /** The preferences */
     private BrowserCorePreferences preferences;
 
-    private EventPerformanceMeter eventPerformanceMeter;
-
 
     /**
      * Creates a new instance of BrowserCorePlugin.
@@ -63,7 +60,6 @@ public class BrowserCorePlugin extends Plugin
         super();
         plugin = this;
         this.preferences = new BrowserCorePreferences();
-        this.eventPerformanceMeter = new EventPerformanceMeter();
     }
 
 
@@ -74,12 +70,10 @@ public class BrowserCorePlugin extends Plugin
     {
         super.start( context );
 
-        if ( this.connectionManager == null )
+        if ( connectionManager == null )
         {
-            this.connectionManager = new ConnectionManager();
+            connectionManager = new ConnectionManager();
         }
-
-        // this.eventPerformanceMeter.start();
     }
 
 
@@ -90,17 +84,15 @@ public class BrowserCorePlugin extends Plugin
     {
         super.stop( context );
 
-        if ( this.connectionManager != null )
+        if ( connectionManager != null )
         {
-            IConnection[] connections = this.connectionManager.getConnections();
+            IConnection[] connections = connectionManager.getConnections();
             for ( int i = 0; i < connections.length; i++ )
             {
                 connections[i].close();
             }
-            this.connectionManager = null;
+            connectionManager = null;
         }
-
-        // this.eventPerformanceMeter.stop();
     }
 
 
@@ -123,7 +115,7 @@ public class BrowserCorePlugin extends Plugin
      */
     public ConnectionManager getConnectionManager()
     {
-        return this.connectionManager;
+        return connectionManager;
     }
 
 
@@ -133,7 +125,7 @@ public class BrowserCorePlugin extends Plugin
      */
     public BrowserCorePreferences getCorePreferences()
     {
-        return this.preferences;
+        return preferences;
     }
 
 

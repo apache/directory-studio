@@ -33,8 +33,8 @@ import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateListe
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
-import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
+import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.ldapstudio.ldifeditor.editor.actions.EditLdifAttributeAction;
 import org.apache.directory.ldapstudio.ldifeditor.editor.actions.EditLdifRecordAction;
 import org.apache.directory.ldapstudio.ldifeditor.editor.actions.FormatLdifDocumentAction;
@@ -469,7 +469,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         // GridData(GridData.GRAB_HORIZONTAL));
         connectionCombo = BaseWidgetUtils.createReadonlyCombo( connectionComboControl, new String[0], 0, 1 );
         connectionCombo.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, true ) );
-        connectionUpdated( new ConnectionUpdateEvent( null, 0 ) );
+        connectionUpdated( null );
         connectionCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )

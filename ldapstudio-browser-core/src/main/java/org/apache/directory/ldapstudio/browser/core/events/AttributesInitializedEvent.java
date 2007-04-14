@@ -22,18 +22,35 @@ package org.apache.directory.ldapstudio.browser.core.events;
 
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
+import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * An AttributesInitializedEvent indicates that the {@link IAttribute}s
+ * of an {@link IEntry} were newly initialized from the underlying 
+ * directory.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributesInitializedEvent extends EntryModificationEvent
 {
 
+    /**
+     * Creates a new instance of AttributesInitializedEvent.
+     * 
+     * @param initializedEntry the initialized entry
+     */
     public AttributesInitializedEvent( IEntry initializedEntry )
     {
         super( initializedEntry.getConnection(), initializedEntry );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__dn_attributes_initialized, new String[]

@@ -397,7 +397,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_OPENED )
+        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
         {
             // expand viewer
             viewer.refresh( connectionUpdateEvent.getConnection() );
@@ -413,7 +413,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
                 viewer.expandToLevel( rootDSE, 2 );
             }
         }
-        else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_CLOSED )
+        else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED )
         {
             viewer.collapseAll();
             connectionToExpandedElementsMap.remove( connectionUpdateEvent.getConnection() );

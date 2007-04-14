@@ -28,14 +28,30 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 
 
+/**
+ * An EmptyValueAddedEvent indicates that an empty {@link IValue} was added to an {@link IEntry}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EmptyValueAddedEvent extends EntryModificationEvent
 {
 
+    /** The modified attribute. */
     private IAttribute modifiedAttribute;
 
+    /** The added value. */
     private IValue addedValue;
 
 
+    /**
+     * Creates a new instance of EmptyValueAddedEvent.
+     * 
+     * @param connection the connection
+     * @param modifiedEntry the modified entry
+     * @param modifiedAttribute the modified attribute
+     * @param addedValue the added value
+     */
     public EmptyValueAddedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
         IValue addedValue )
     {
@@ -45,18 +61,31 @@ public class EmptyValueAddedEvent extends EntryModificationEvent
     }
 
 
+    /**
+     * Gets the modified attribute.
+     * 
+     * @return the modified attribute
+     */
     public IAttribute getModifiedAttribute()
     {
         return this.modifiedAttribute;
     }
 
 
+    /**
+     * Gets the added value.
+     * 
+     * @return the added value
+     */
     public IValue getAddedValue()
     {
         return this.addedValue;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__empty_value_added_to_att_at_dn, new String[]

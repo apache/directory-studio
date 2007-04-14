@@ -38,9 +38,9 @@ import org.eclipse.core.runtime.Preferences;
  */
 public class BrowserCorePreferences
 {
-    private Set binaryAttributeCache;
+    private Set<String> binaryAttributeCache;
 
-    private Set binarySyntaxCache;
+    private Set<String> binarySyntaxCache;
 
 
     /**
@@ -51,27 +51,19 @@ public class BrowserCorePreferences
      */
     public Set getBinaryAttributeOidsAndNames()
     {
-        if ( this.binaryAttributeCache == null )
+        if ( binaryAttributeCache == null )
         {
-            this.binaryAttributeCache = new HashSet();
-            BinaryAttribute[] binaryAttributes = this.getBinaryAttributes();
+            binaryAttributeCache = new HashSet<String>();
+            BinaryAttribute[] binaryAttributes =getBinaryAttributes();
             for ( int i = 0; i < binaryAttributes.length; i++ )
             {
                 if ( binaryAttributes[i].getAttributeNumericOidOrName() != null )
                 {
-                    this.binaryAttributeCache.add( binaryAttributes[i].getAttributeNumericOidOrName() );
+                    binaryAttributeCache.add( binaryAttributes[i].getAttributeNumericOidOrName() );
                 }
-                // if(binaryAttributes[i].getNames() != null) {
-                // for(int ii=0; ii<binaryAttributes[i].getNames().length; ii++)
-                // {
-                // if(binaryAttributes[i].getNames()[ii] != null) {
-                // this.binaryAttributeCache.add(binaryAttributes[i].getNames()[ii]);
-                // }
-                // }
-                // }
             }
         }
-        return this.binaryAttributeCache;
+        return binaryAttributeCache;
     }
 
 
@@ -97,7 +89,7 @@ public class BrowserCorePreferences
     public void setBinaryAttributes( BinaryAttribute[] binaryAttributes )
     {
         store( BrowserCoreConstants.PREFERENCE_BINARY_ATTRIBUTES, binaryAttributes );
-        this.binaryAttributeCache = null;
+        binaryAttributeCache = null;
     }
 
 
@@ -126,21 +118,26 @@ public class BrowserCorePreferences
     }
 
 
-    public Set getBinarySyntaxOids()
+    /**
+     * Gets the binary syntax oids.
+     * 
+     * @return the binary syntax oids
+     */
+    public Set<String> getBinarySyntaxOids()
     {
-        if ( this.binarySyntaxCache == null )
+        if ( binarySyntaxCache == null )
         {
-            this.binarySyntaxCache = new HashSet();
-            BinarySyntax[] binarySyntaxes = this.getBinarySyntaxes();
+            binarySyntaxCache = new HashSet<String>();
+            BinarySyntax[] binarySyntaxes = getBinarySyntaxes();
             for ( int i = 0; i < binarySyntaxes.length; i++ )
             {
                 if ( binarySyntaxes[i].getSyntaxNumericOid() != null )
                 {
-                    this.binarySyntaxCache.add( binarySyntaxes[i].getSyntaxNumericOid() );
+                    binarySyntaxCache.add( binarySyntaxes[i].getSyntaxNumericOid() );
                 }
             }
         }
-        return this.binarySyntaxCache;
+        return binarySyntaxCache;
     }
 
 
@@ -166,7 +163,7 @@ public class BrowserCorePreferences
     public void setBinarySyntaxes( BinarySyntax[] binarySyntaxes )
     {
         store( BrowserCoreConstants.PREFERENCE_BINARY_SYNTAXES, binarySyntaxes );
-        this.binarySyntaxCache = null;
+        binarySyntaxCache = null;
     }
 
 

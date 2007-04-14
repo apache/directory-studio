@@ -26,15 +26,30 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * An EntryAddedEvent indicates that an {@link IEntry} was added to the underlying directory.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryAddedEvent extends EntryModificationEvent
 {
 
+    /**
+     * Creates a new instance of EntryAddedEvent.
+     * 
+     * @param connection the connection
+     * @param addedEntry the added entry
+     */
     public EntryAddedEvent( IConnection connection, IEntry addedEntry )
     {
         super( connection, addedEntry );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__added_dn, new String[]

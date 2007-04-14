@@ -27,12 +27,26 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * An AttributeAddedEvent indicates that an {@link IAttribute} was added to an {@link IEntry}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeAddedEvent extends EntryModificationEvent
 {
 
+    /** The added attribute. */
     private IAttribute addedAttribute;
 
 
+    /**
+     * Creates a new instance of AttributeAddedEvent.
+     * 
+     * @param connection the connection
+     * @param modifiedEntry the modified entry
+     * @param addedAttribute the added attribute
+     */
     public AttributeAddedEvent( IConnection connection, IEntry modifiedEntry, IAttribute addedAttribute )
     {
         super( connection, modifiedEntry );
@@ -40,12 +54,20 @@ public class AttributeAddedEvent extends EntryModificationEvent
     }
 
 
+    /**
+     * Gets the added attribute.
+     * 
+     * @return the added attribute
+     */
     public IAttribute getAddedAttribute()
     {
-        return this.addedAttribute;
+        return addedAttribute;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__added_att_to_dn, new String[]

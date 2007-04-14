@@ -150,11 +150,11 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
      */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_CLOSED )
+        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED )
         {
             viewer.collapseAll();
         }
-        else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_OPENED )
+        else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
         {
             viewer.refresh( connectionUpdateEvent.getConnection() );
         }

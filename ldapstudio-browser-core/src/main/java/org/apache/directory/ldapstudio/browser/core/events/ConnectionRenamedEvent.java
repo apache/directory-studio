@@ -24,19 +24,37 @@ package org.apache.directory.ldapstudio.browser.core.events;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 
 
+/**
+ * An ConnectionRenamedEvent indicates that an {@link IConnection} was renamed.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ConnectionRenamedEvent extends ConnectionUpdateEvent
 {
 
+    /** The old name. */
     private String oldName;
 
 
+    /**
+     * Creates a new instance of ConnectionRenamedEvent.
+     * 
+     * @param connection the connection
+     * @param oldName the old name
+     */
     public ConnectionRenamedEvent( IConnection connection, String oldName )
     {
-        super( connection, CONNECTION_RENAMED );
+        super( connection, EventDetail.CONNECTION_RENAMED );
         this.oldName = oldName;
     }
 
 
+    /**
+     * Gets the old name.
+     * 
+     * @return the old name
+     */
     public String getOldName()
     {
         return oldName;

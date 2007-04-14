@@ -25,30 +25,54 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * The root of all events that indecate an {@link IEntry} modification.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class EntryModificationEvent
 {
 
-    protected IConnection originalConnection;
+    /** The connection. */
+    protected IConnection connection;
 
+    /** The entry. */
     protected IEntry modifiedEntry;
 
 
+    /**
+     * Creates a new instance of EntryModificationEvent.
+     * 
+     * @param modifiedEntry the modified entry
+     * @param connection the connection
+     */
     public EntryModificationEvent( IConnection connection, IEntry modifiedEntry )
     {
-        this.originalConnection = connection;
+        this.connection = connection;
         this.modifiedEntry = modifiedEntry;
     }
 
 
-    public IConnection getOriginalConnection()
+    /**
+     * Gets the connection.
+     * 
+     * @return the connection
+     */
+    public IConnection getConnection()
     {
-        return this.originalConnection;
+        return connection;
     }
 
 
+    /**
+     * Gets the modified entry.
+     * 
+     * @return the modified entry
+     */
     public IEntry getModifiedEntry()
     {
-        return this.modifiedEntry;
+        return modifiedEntry;
     }
 
 }

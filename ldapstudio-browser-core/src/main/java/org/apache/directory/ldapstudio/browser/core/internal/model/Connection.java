@@ -347,7 +347,7 @@ public class Connection implements IConnection, Serializable
             }
 
             EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-                ConnectionUpdateEvent.CONNECTION_OPENED ), this );
+                ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED ), this );
         }
     }
 
@@ -401,7 +401,7 @@ public class Connection implements IConnection, Serializable
             searchHandler.connectionClosed();
 
             EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-                ConnectionUpdateEvent.CONNECTION_CLOSED ), this );
+                ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED ), this );
             System.gc();
         }
     }
@@ -561,7 +561,7 @@ public class Connection implements IConnection, Serializable
                     this.schema = new Schema();
                     this.schema.loadFromRecord( schemaRecord );
                     EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-                        ConnectionUpdateEvent.CONNECTION_SCHEMA_LOADED ), this );
+                        ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
                 }
                 else
                 {
@@ -682,7 +682,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setFetchBaseDNs( fetchBaseDNs );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -696,7 +696,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setBaseDN( baseDN );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -710,7 +710,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setCountLimit( countLimit );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -724,7 +724,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setHost( host );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -738,7 +738,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setPort( port );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -752,7 +752,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -766,7 +766,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setReferralsHandlingMethod( referralsHandlingMethod );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -780,7 +780,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setEncryptionMethod( encryptionMethod );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -794,7 +794,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setTimeLimit( timeLimit );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -808,7 +808,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setBindPrincipal( bindPrincipal );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -822,7 +822,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setBindPassword( bindPassword );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -836,7 +836,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setAuthMethod( authMethod );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 
@@ -850,7 +850,7 @@ public class Connection implements IConnection, Serializable
     {
         this.connectionParameter.setConnectionProviderClassName( connectionProviderClassName );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
 
 

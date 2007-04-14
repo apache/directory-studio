@@ -25,15 +25,31 @@ import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 
 
+/**
+ * A ChildrenInitializedEvent indicates that the children
+ * of an {@link IEntry} were newly initialized from the underlying 
+ * directory.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ChildrenInitializedEvent extends EntryModificationEvent
 {
 
+    /**
+     * Creates a new instance of ChildrenInitializedEvent.
+     * 
+     * @param initializedEntry the initialized entry
+     */
     public ChildrenInitializedEvent( IEntry initializedEntry )
     {
         super( initializedEntry.getConnection(), initializedEntry );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__dn_children_initialized, new String[]

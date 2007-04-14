@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.core.events;
@@ -28,14 +28,30 @@ import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 
 
+/**
+ * An ValueDeletedEvent indicates that an {@link IValue} was deleted from an {@link IEntry}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ValueDeletedEvent extends EntryModificationEvent
 {
 
+    /** The modified attribute. */
     private IAttribute modifiedAttribute;
 
+    /** The deleted value. */
     private IValue deletedValue;
 
 
+    /**
+     * Creates a new instance of ValueDeletedEvent.
+     *
+     * @param connection the connection
+     * @param modifiedEntry the modified entry
+     * @param modifiedAttribute the modified attribute
+     * @param deletedValue the deleted value
+     */
     public ValueDeletedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
         IValue deletedValue )
     {
@@ -45,18 +61,31 @@ public class ValueDeletedEvent extends EntryModificationEvent
     }
 
 
+    /**
+     * Gets the modified attribute.
+     *
+     * @return the modified attribute
+     */
     public IAttribute getModifiedAttribute()
     {
-        return this.modifiedAttribute;
+        return modifiedAttribute;
     }
 
 
+    /**
+     * Gets the deleted value.
+     *
+     * @return the deleted value
+     */
     public IValue getDeletedValue()
     {
-        return this.deletedValue;
+        return deletedValue;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__deleted_val_from_att_at_dn, new String[]

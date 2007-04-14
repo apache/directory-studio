@@ -21,9 +21,23 @@
 package org.apache.directory.ldapstudio.browser.core.events;
 
 
+import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+
+
+/**
+ * A listener for {@link ConnectionUpdateEvent}s
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface ConnectionUpdateListener extends EventListener
 {
 
+    /**
+     * Called when an {@link IConnection} was updated.
+     * 
+     * @param connectionUpdateEvent the connection update event
+     */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent );
 
 }

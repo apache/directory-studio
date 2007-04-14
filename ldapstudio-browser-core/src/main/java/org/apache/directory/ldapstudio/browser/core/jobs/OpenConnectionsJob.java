@@ -102,12 +102,12 @@ public class OpenConnectionsJob extends AbstractAsyncBulkJob
             if ( connections[i].isOpened() )
             {
                 EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connections[i],
-                    ConnectionUpdateEvent.CONNECTION_OPENED ), this );
+                    ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED ), this );
             }
             else
             {
                 EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connections[i],
-                    ConnectionUpdateEvent.CONNECTION_CLOSED ), this );
+                    ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED ), this );
             }
         }
     }

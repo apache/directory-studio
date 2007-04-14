@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.core.events;
@@ -24,34 +24,67 @@ package org.apache.directory.ldapstudio.browser.core.events;
 import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
 
 
+/**
+ * An BookmarkUpdateEvent indicates that an {@link IBookmark} was modified.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BookmarkUpdateEvent
 {
 
-    public static final int BOOKMARK_ADDED = 1;
+    /**
+     * Contains constants to specify the event detail.
+     */
+    public enum Detail
+    {
+        /** Indicates that the bookmark was added. */
+        BOOKMARK_ADDED,
 
-    public static final int BOOKMARK_REMOVED = 2;
+        /** Indicates that the bookmark was updated. */
+        BOOKMARK_UPDATED,
 
-    public static final int BOOKMARK_UPDATED = 3;
+        /** Indicates that the bookmark was removed. */
+        BOOKMARK_REMOVED
+    }
 
-    private int detail;
+    /** The event detail. */
+    private Detail detail;
 
+    /** The updated bookmark. */
     private IBookmark bookmark;
 
 
-    public BookmarkUpdateEvent( IBookmark bookmark, int detail )
+    /**
+     * Creates a new instance of BookmarkUpdateEvent.
+     *
+     * @param bookmark the updated bookmark
+     * @param detail the event detail
+     */
+    public BookmarkUpdateEvent( IBookmark bookmark, Detail detail )
     {
         this.bookmark = bookmark;
         this.detail = detail;
     }
 
 
+    /**
+     * Gets the updated bookmark.
+     *
+     * @return the updated bookmark
+     */
     public IBookmark getBookmark()
     {
         return bookmark;
     }
 
 
-    public int getDetail()
+    /**
+     * Gets the event detail.
+     *
+     * @return the event detail
+     */
+    public Detail getDetail()
     {
         return detail;
     }

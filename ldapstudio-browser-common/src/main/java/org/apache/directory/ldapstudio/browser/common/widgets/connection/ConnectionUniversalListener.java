@@ -92,7 +92,7 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener, En
         if ( viewer != null )
         {
             viewer.refresh();
-            if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_ADDED )
+            if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_ADDED )
             {
                 viewer.setSelection( new StructuredSelection( connectionUpdateEvent.getConnection() ) );
             }

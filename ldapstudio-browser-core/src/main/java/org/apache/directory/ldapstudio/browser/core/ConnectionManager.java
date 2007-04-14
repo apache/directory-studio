@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.core;
@@ -59,14 +59,16 @@ import org.eclipse.core.runtime.IPath;
 
 
 /**
- * This class is used to manage Connections.
+ * This class is used to manage {@link IConnection}s.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
 public class ConnectionManager implements ConnectionUpdateListener, SearchUpdateListener, BookmarkUpdateListener
 {
-    private List connectionList;
+
+    /** The list of connections. */
+    private List<IConnection> connectionList;
 
 
     /**
@@ -74,8 +76,8 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public ConnectionManager()
     {
-        this.connectionList = new ArrayList();
-        this.loadConnections();
+        this.connectionList = new ArrayList<IConnection>();
+        loadConnections();
         EventRegistry.addConnectionUpdateListener( this );
         EventRegistry.addSearchUpdateListener( this );
         EventRegistry.addBookmarkUpdateListener( this );
@@ -173,12 +175,12 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     /**
      * Adds the connection to the end of the connection list. If there is
      * already a connection with this name, the new connection is renamed.
-     * 
+     *
      * @param connection
      */
     public void addConnection( IConnection connection )
     {
-        this.addConnection( this.connectionList.size(), connection );
+        addConnection( connectionList.size(), connection );
     }
 
 
@@ -186,17 +188,17 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      * Adds the connection at the specified position of the connection list.
      * If there is already a connection with this name the new connection is
      * renamed.
-     * 
+     *
      * @param index
      * @param connection
      */
     public void addConnection( int index, IConnection connection )
     {
-        if ( this.getConnection( connection.getName() ) != null )
+        if ( getConnection( connection.getName() ) != null )
         {
             String newConnectionName = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s,
                 "", connection.getName() ); //$NON-NLS-1$
-            for ( int i = 2; this.getConnection( newConnectionName ) != null; i++ )
+            for ( int i = 2; getConnection( newConnectionName ) != null; i++ )
             {
                 newConnectionName = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s,
                     i + " ", connection.getName() ); //$NON-NLS-1$
@@ -204,9 +206,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             connection.getConnectionParameter().setName( newConnectionName );
         }
 
-        this.connectionList.add( index, connection );
+        connectionList.add( index, connection );
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connection,
-            ConnectionUpdateEvent.CONNECTION_ADDED ), this );
+            ConnectionUpdateEvent.EventDetail.CONNECTION_ADDED ), this );
     }
 
 
@@ -220,7 +222,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public IConnection getConnection( String name )
     {
-        for ( Iterator it = this.connectionList.iterator(); it.hasNext(); )
+        for ( Iterator it = connectionList.iterator(); it.hasNext(); )
         {
             IConnection conn = ( IConnection ) it.next();
             if ( conn.getName().equals( name ) )
@@ -242,7 +244,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public int indexOf( IConnection connection )
     {
-        return this.connectionList.indexOf( connection );
+        return connectionList.indexOf( connection );
     }
 
 
@@ -254,9 +256,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public void removeConnection( IConnection conn )
     {
-        this.connectionList.remove( conn );
+        connectionList.remove( conn );
         EventRegistry.fireConnectionUpdated(
-            new ConnectionUpdateEvent( conn, ConnectionUpdateEvent.CONNECTION_REMOVED ), this );
+            new ConnectionUpdateEvent( conn, ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED ), this );
     }
 
 
@@ -268,7 +270,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public IConnection[] getConnections()
     {
-        return ( IConnection[] ) this.connectionList.toArray( new IConnection[0] );
+        return ( IConnection[] ) connectionList.toArray( new IConnection[0] );
     }
 
 
@@ -280,7 +282,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public int getConnectionCount()
     {
-        return this.connectionList.size();
+        return connectionList.size();
     }
 
 
@@ -289,12 +291,12 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
     {
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_ADDED
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_REMOVED
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_RENAMED
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_PARAMETER_UPDATED )
+        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_ADDED
+            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED
+            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_RENAMED
+            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED )
         {
-            this.saveConnections();
+            saveConnections();
         }
 
         if ( connectionUpdateEvent instanceof ConnectionRenamedEvent )
@@ -310,12 +312,12 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
                 oldFile.renameTo( newFile );
             }
         }
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_SCHEMA_LOADED 
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_OPENED )
+        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED
+            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
         {
-            this.saveSchema( connectionUpdateEvent.getConnection() );
+            saveSchema( connectionUpdateEvent.getConnection() );
         }
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.CONNECTION_REMOVED )
+        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED )
         {
             File file = new File( getSchemaCacheFileName( connectionUpdateEvent.getConnection().getName() ) );
             if ( file.exists() )
@@ -331,12 +333,12 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
-        if ( searchUpdateEvent.getDetail() == SearchUpdateEvent.SEARCH_ADDED
-            || searchUpdateEvent.getDetail() == SearchUpdateEvent.SEARCH_REMOVED
-            || searchUpdateEvent.getDetail() == SearchUpdateEvent.SEARCH_RENAMED
-            || searchUpdateEvent.getDetail() == SearchUpdateEvent.SEARCH_PARAMETER_UPDATED )
+        if ( searchUpdateEvent.getDetail() == SearchUpdateEvent.EventDetail.SEARCH_ADDED
+            || searchUpdateEvent.getDetail() == SearchUpdateEvent.EventDetail.SEARCH_REMOVED
+            || searchUpdateEvent.getDetail() == SearchUpdateEvent.EventDetail.SEARCH_RENAMED
+            || searchUpdateEvent.getDetail() == SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED )
         {
-            this.saveConnections();
+            saveConnections();
         }
     }
 
@@ -346,11 +348,11 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
     {
-        if ( bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.BOOKMARK_ADDED
-            || bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.BOOKMARK_REMOVED
-            || bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.BOOKMARK_UPDATED )
+        if ( bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.Detail.BOOKMARK_ADDED
+            || bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.Detail.BOOKMARK_REMOVED
+            || bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.Detail.BOOKMARK_UPDATED )
         {
-            this.saveConnections();
+            saveConnections();
         }
     }
 
@@ -380,17 +382,12 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
                 bookmarkParameters[k] = bookmarks[k].getBookmarkParameter();
             }
 
-            // object[i][0] = conn.getClass().getName();
             object[i][0] = connectionParameters;
             object[i][1] = searchParameters;
             object[i][2] = bookmarkParameters;
         }
 
-        // long t1 = System.currentTimeMillis();
-        this.save( object, getConnectionStoreFileName() );
-        // long t2 = System.currentTimeMillis();
-        // System.out.println("Saved connections in " + (t2-t1) + "ms");
-
+        save( object, getConnectionStoreFileName() );
     }
 
 
@@ -412,8 +409,6 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
         catch ( Exception e )
         {
             e.printStackTrace();
-            // BrowserPlugin.getDefault().getExceptionHandler().handleException(e.getMessage(),
-            // e);
         }
     }
 
@@ -425,11 +420,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     {
         try
         {
-            // long t1 = System.currentTimeMillis();
             Object[][] object = ( Object[][] ) this.load( getConnectionStoreFileName() );
-            // long t2 = System.currentTimeMillis();
-            // System.out.println("Loaded connections in " + (t2-t1) +
-            // "ms");
 
             if ( object != null )
             {
@@ -474,7 +465,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
                         {
                         }
 
-                        this.connectionList.add( conn );
+                        connectionList.add( conn );
                     }
 
                 }
