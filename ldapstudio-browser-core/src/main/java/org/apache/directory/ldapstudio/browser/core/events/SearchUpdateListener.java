@@ -21,6 +21,8 @@
 package org.apache.directory.ldapstudio.browser.core.events;
 
 
+import java.util.EventListener;
+
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 
 

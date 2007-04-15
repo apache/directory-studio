@@ -6,21 +6,23 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.core;
 
 
+import org.apache.directory.ldapstudio.browser.core.events.CoreEventRunner;
+import org.apache.directory.ldapstudio.browser.core.events.EventRunner;
 import org.apache.directory.ldapstudio.browser.core.model.IAuthHandler;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IReferralHandler;
@@ -51,6 +53,9 @@ public class BrowserCorePlugin extends Plugin
     /** The preferences */
     private BrowserCorePreferences preferences;
 
+    /** The event runner. */
+    private EventRunner eventRunner;
+
 
     /**
      * Creates a new instance of BrowserCorePlugin.
@@ -70,6 +75,11 @@ public class BrowserCorePlugin extends Plugin
     {
         super.start( context );
 
+        if ( eventRunner == null )
+        {
+            eventRunner = new CoreEventRunner();
+        }
+
         if ( connectionManager == null )
         {
             connectionManager = new ConnectionManager();
@@ -83,6 +93,11 @@ public class BrowserCorePlugin extends Plugin
     public void stop( BundleContext context ) throws Exception
     {
         super.stop( context );
+
+        if ( eventRunner != null )
+        {
+            eventRunner = null;
+        }
 
         if ( connectionManager != null )
         {
@@ -98,7 +113,7 @@ public class BrowserCorePlugin extends Plugin
 
     /**
      * Returns the BrowserPlugin instance.
-     * 
+     *
      * @return The BrowserPlugin instance
      */
     public static BrowserCorePlugin getDefault()
@@ -109,8 +124,8 @@ public class BrowserCorePlugin extends Plugin
 
     /**
      * Gets the Connection Manager
-     * 
-     * @return 
+     *
+     * @return
      *      the connection manager
      */
     public ConnectionManager getConnectionManager()
@@ -120,7 +135,7 @@ public class BrowserCorePlugin extends Plugin
 
 
     /**
-     * 
+     *
      * @return The preferences
      */
     public BrowserCorePreferences getCorePreferences()
@@ -155,7 +170,7 @@ public class BrowserCorePlugin extends Plugin
 
     /**
      * Gets the ReferralHanlder
-     * 
+     *
      * @return
      *      the ReferralHandler
      */
@@ -167,12 +182,23 @@ public class BrowserCorePlugin extends Plugin
 
     /**
      * Sets the ReferralHandler
-     * 
+     *
      * @param referralHandler
      *      the ReferralHandler to set
      */
     public void setReferralHandler( IReferralHandler referralHandler )
     {
         this.referralHandler = referralHandler;
+    }
+
+
+    /**
+     * Gets the event runner.
+     *
+     * @return the event runner
+     */
+    public EventRunner getEventRunner()
+    {
+        return eventRunner;
     }
 }

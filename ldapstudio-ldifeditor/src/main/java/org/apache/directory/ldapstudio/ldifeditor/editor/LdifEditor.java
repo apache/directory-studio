@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.ldifeditor.editor;
@@ -235,7 +235,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         super.init( site, input );
 
-        EventRegistry.addConnectionUpdateListener( this );
+        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
         getSite().getPage().addPartListener( this );
 
         this.valueEditorManager = new ValueEditorManager( getSite().getShell() );
@@ -611,7 +611,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     /**
      * This implementation checks if the input is of type
-     * NonExistingLdifEditorInput. In that case doSaveAs() is 
+     * NonExistingLdifEditorInput. In that case doSaveAs() is
      * called to prompt for a new file name and location.
      */
     public void doSave( IProgressMonitor progressMonitor )
@@ -632,16 +632,16 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      * - NonExistingLdifEditorInput: New file, not yet saved
      * - PathEditorInput: file opened with our internal "Open File.." action
      * - FileEditorInput: file is within workspace
-     * - JavaFileEditorInput: file opend with "Open File..." action from org.eclipse.ui.editor 
-     * 
+     * - JavaFileEditorInput: file opend with "Open File..." action from org.eclipse.ui.editor
+     *
      * In RCP the FileDialog appears.
      * In IDE the super implementation is called.
      * To detect if this plugin runs in IDE the org.eclipse.ui.ide extension point is checked.
-     * 
+     *
      */
     protected void performSaveAs( IProgressMonitor progressMonitor )
     {
-        // detect IDE or RCP: 
+        // detect IDE or RCP:
         // check if perspective org.eclipse.ui.resourcePerspective is available
         boolean isIDE = BrowserCommonActivator.isIDEEnvironment();
 

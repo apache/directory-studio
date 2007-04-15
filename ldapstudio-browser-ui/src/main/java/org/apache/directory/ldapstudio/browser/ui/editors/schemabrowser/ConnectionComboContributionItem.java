@@ -6,21 +6,22 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionContentProvider;
 import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionLabelProvider;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
@@ -94,7 +95,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
-                // Do not set the input of the schema browser if 
+                // Do not set the input of the schema browser if
                 // the selection was changed programatically.
                 if ( !inChange )
                 {
@@ -104,7 +105,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
             }
         } );
 
-        EventRegistry.addConnectionUpdateListener( this );
+        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
 
         // Initialize width of combo
         toolitem.setWidth( comboViewer.getCombo().computeSize( SWT.DEFAULT, SWT.DEFAULT, true ).x );
@@ -126,7 +127,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
     /**
      * The control item implementation of this <code>IContributionItem</code>
      * method calls the <code>createControl</code> method.
-     * 
+     *
      * @param parent the parent of the control to fill
      */
     public final void fill( Composite parent )
@@ -138,7 +139,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
     /**
      * The control item implementation of this <code>IContributionItem</code>
      * method throws an exception since controls cannot be added to menus.
-     * 
+     *
      * @param parent the menu
      * @param index menu index
      */
@@ -153,7 +154,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
      * method calls the <code>createControl</code>  method to
      * create a control under the given parent, and then creates
      * a new tool item to hold it.
-     * 
+     *
      * @param parent the ToolBar to add the new control to
      * @param index the index
      */
@@ -179,7 +180,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
 
     /**
      * Gets the connection.
-     * 
+     *
      * @return the connection
      */
     public IConnection getConnection()
@@ -196,7 +197,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
 
     /**
      * Sets the connection.
-     * 
+     *
      * @param connection the connection
      */
     public void setConnection( IConnection connection )

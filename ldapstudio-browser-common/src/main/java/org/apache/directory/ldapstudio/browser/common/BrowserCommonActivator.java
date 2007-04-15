@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
+import org.apache.directory.ldapstudio.browser.core.events.EventRunner;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -58,11 +58,11 @@ public class BrowserCommonActivator extends AbstractUIPlugin
 
     /** The filter template context type registry. */
     private ContributionContextTypeRegistry filterTemplateContextTypeRegistry;
-    
-    /** The event dispatcher */
-    private EventDispatcherSync eventDispatcher;
-    
-    
+
+    /** The event runner. */
+    private EventRunner eventRunner;
+
+
     /**
      * The constructor
      */
@@ -78,31 +78,29 @@ public class BrowserCommonActivator extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
-        
+
+        if ( eventRunner == null )
+        {
+            eventRunner = new UiThreadEventRunner();
+        }
+
         if ( fontRegistry == null )
         {
             fontRegistry = new FontRegistry( getWorkbench().getDisplay() );
         }
-        
+
         if ( colorRegistry == null )
         {
             colorRegistry = new ColorRegistry( getWorkbench().getDisplay() );
         }
-        
+
         if ( exceptionHandler == null )
         {
             exceptionHandler = new ExceptionHandler();
         }
 
-        if ( eventDispatcher == null )
-        {
-            eventDispatcher = new EventDispatcherSync();
-            eventDispatcher.startEventDispatcher();
-        }
-        EventRegistry.init( eventDispatcher );
-        
         valueEditorPreferences = new ValueEditorsPreferences();
-        
+
         if ( filterTemplateContextTypeRegistry == null )
         {
             filterTemplateContextTypeRegistry = new ContributionContextTypeRegistry();
@@ -114,9 +112,9 @@ public class BrowserCommonActivator extends AbstractUIPlugin
         if ( filterTemplateStore == null )
         {
 
-
-        BrowserCorePlugin.getDefault().setAuthHandler( new BrowserCommonAuthHandler() );
-        BrowserCorePlugin.getDefault().setReferralHandler( new BrowserCommonReferralHandler() );}
+            BrowserCorePlugin.getDefault().setAuthHandler( new BrowserCommonAuthHandler() );
+            BrowserCorePlugin.getDefault().setReferralHandler( new BrowserCommonReferralHandler() );
+        }
     }
 
 
@@ -127,33 +125,32 @@ public class BrowserCommonActivator extends AbstractUIPlugin
     {
         plugin = null;
         super.stop( context );
-        
+
+        if ( eventRunner != null )
+        {
+            eventRunner = null;
+        }
+
         if ( fontRegistry != null )
         {
             fontRegistry = null;
         }
-        
+
         if ( colorRegistry != null )
         {
             colorRegistry = null;
         }
-        
+
         if ( exceptionHandler != null )
         {
             exceptionHandler = null;
         }
 
-        if ( eventDispatcher != null )
-        {
-            eventDispatcher.stopEventDispatcher();
-            eventDispatcher = null;
-        }
-        
         if ( filterTemplateContextTypeRegistry != null )
         {
             filterTemplateContextTypeRegistry = null;
         }
-        
+
         if ( filterTemplateStore != null )
         {
             try
@@ -183,7 +180,7 @@ public class BrowserCommonActivator extends AbstractUIPlugin
     /**
      * Use this method to get SWT images. Use the IMG_ constants from
      * BrowserWidgetsConstants for the key.
-     * 
+     *
      * @param key
      *                The key (relative path to the image im filesystem)
      * @return The image discriptor or null
@@ -212,7 +209,7 @@ public class BrowserCommonActivator extends AbstractUIPlugin
      * <p>
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.
-     * 
+     *
      * @param key
      *                The key (relative path to the image im filesystem)
      * @return The SWT Image or null
@@ -233,14 +230,14 @@ public class BrowserCommonActivator extends AbstractUIPlugin
         return image;
     }
 
-    
+
     /**
      * Use this method to get SWT fonts. A FontRegistry is used to manage
      * the FontData[]->Font mapping.
      * <p>
      * Note: Don't dispose the returned SWT Font. It is disposed
      * automatically when the plugin is stopped.
-     * 
+     *
      * @param fontData
      *                the font data
      * @return The SWT Font
@@ -263,7 +260,7 @@ public class BrowserCommonActivator extends AbstractUIPlugin
      * <p>
      * Note: Don't dispose the returned color. It is disposed automatically
      * when the plugin is stopped.
-     * 
+     *
      * @param rgb
      *                the rgb color data
      * @return The SWT Color
@@ -277,32 +274,31 @@ public class BrowserCommonActivator extends AbstractUIPlugin
 
         return colorRegistry.get( rgb.toString() );
     }
-    
+
 
     /**
-     * 
+     *
      * @return The exception handler
      */
     public ExceptionHandler getExceptionHandler()
     {
         return exceptionHandler;
     }
-    
-    
+
+
     /**
      * Gets the value editors preferences.
-     * 
+     *
      * @return the value editors preferences
      */
     public ValueEditorsPreferences getValueEditorsPreferences()
     {
         return valueEditorPreferences;
     }
-    
 
 
     /**
-     * 
+     *
      * @return The filter template store
      */
     public TemplateStore getFilterTemplateStore()
@@ -312,15 +308,15 @@ public class BrowserCommonActivator extends AbstractUIPlugin
 
 
     /**
-     * 
+     *
      * @return The filter template context type registry
      */
     public ContextTypeRegistry getFilterTemplateContextTypeRegistry()
     {
         return filterTemplateContextTypeRegistry;
     }
-    
-    
+
+
     /**
      * Checks, if this plugins runs in the Eclipse IDE or in RCP environment.
      * This is done by looking for the Resource perspective extensions.
@@ -354,8 +350,19 @@ public class BrowserCommonActivator extends AbstractUIPlugin
                 }
             }
         }
-        
+
         return false;
     }
-    
+
+
+    /**
+     * Gets the event runner.
+     *
+     * @return the event runner
+     */
+    public EventRunner getEventRunner()
+    {
+        return eventRunner;
+    }
+
 }

@@ -6,21 +6,22 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.common.widgets.browser;
 
 
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.core.events.AttributesInitializedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateListener;
@@ -54,13 +55,13 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation checks if the collapsed entry more children
-         * than currently fetched. If this is the case cached children are 
+         * than currently fetched. If this is the case cached children are
          * cleared an must be fetched newly when expanding the tree.
-         * 
+         *
          * This could happen when first using a search that returns
-         * only some of an entry's children. 
+         * only some of an entry's children.
          */
         public void treeCollapsed( TreeExpansionEvent event )
         {
@@ -119,8 +120,8 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
         viewer.addTreeListener( treeViewerListener );
         viewer.addDoubleClickListener( doubleClickListener );
 
-        EventRegistry.addConnectionUpdateListener( this );
-        EventRegistry.addEntryUpdateListener( this );
+        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
     }
 
 
@@ -144,8 +145,8 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
     /**
      * {@inheritDoc}
-     * 
-     * This implementation refreshes the tree and collapses the 
+     *
+     * This implementation refreshes the tree and collapses the
      * tree when the connection is closed.
      */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
@@ -167,13 +168,13 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * This implementation refreshes the tree.
      */
     public void entryUpdated( EntryModificationEvent event )
     {
         // Don't handle attribute initalization, could cause double
-        // retrieval of children. 
+        // retrieval of children.
         //
         // When double-clicking an entry two Jobs/Threads are started:
         // - InitializeAttributesJob and

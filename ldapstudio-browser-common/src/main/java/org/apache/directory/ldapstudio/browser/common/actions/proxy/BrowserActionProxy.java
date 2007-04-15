@@ -6,21 +6,22 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.common.actions.proxy;
 
 
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateEvent;
@@ -32,9 +33,7 @@ import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateListener;
-
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -63,10 +62,10 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
         this.selectionProvider.addSelectionChangedListener( this );
         // PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener(this);
 
-        EventRegistry.addConnectionUpdateListener( this );
-        EventRegistry.addEntryUpdateListener( this );
-        EventRegistry.addSearchUpdateListener( this );
-        EventRegistry.addBookmarkUpdateListener( this );
+        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addBookmarkUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
 
         this.updateAction();
 

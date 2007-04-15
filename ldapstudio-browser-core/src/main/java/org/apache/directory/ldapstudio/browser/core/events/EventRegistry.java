@@ -6,208 +6,357 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.core.events;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleUseDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 
+/**
+ * The EventRegistry is a central point to register for LDAP Studio specific
+ * events and to fire events to registered listeners.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EventRegistry
 {
 
-    private static EventDispatcher eventDispatcher;
+    /** The list of threads with suspended event fireing. */
+    private static Set<Thread> suspendedEventFireringThreads = new HashSet<Thread>();;
+
+    /** The lock used to synchronize event fireings */
+    private static Object lock = new Object();
 
 
-    public static void init( EventDispatcher eventDispatcher )
+    /**
+     * Checks if event fireing is suspended in the current thread.
+     *
+     * @return true, if event fireing is suspended in the current thread
+     */
+    public static boolean isEventFireingSuspendedInCurrentThread()
     {
-        EventRegistry.eventDispatcher = eventDispatcher;
+        return suspendedEventFireringThreads.contains( Thread.currentThread() );
     }
 
 
+    /**
+     * Resumes event fireing in the current thread.
+     */
     public static void resumeEventFireingInCurrentThread()
     {
-        eventDispatcher.resumeEventFireingInCurrentThread();
+        suspendedEventFireringThreads.remove( Thread.currentThread() );
     }
 
 
+    /**
+     * Suspends event fireing in the current thread.
+     */
     public static void suspendEventFireingInCurrentThread()
     {
-        eventDispatcher.suspendEventFireingInCurrentThread();
+        suspendedEventFireringThreads.add( Thread.currentThread() );
     }
 
-    private static List searchUpdateListenerList = new ArrayList();
 
 
-    public static void addSearchUpdateListener( SearchUpdateListener listener )
+    /** The map with search update listeners and their runners */
+    private static Map<SearchUpdateListener, EventRunner> searchUpdateListeners = new HashMap<SearchUpdateListener, EventRunner>();
+
+
+    /**
+     * Adds the search update listener.
+     *
+     * @param listener the listener
+     * @param runner the runner
+     */
+    public static void addSearchUpdateListener( SearchUpdateListener listener, EventRunner runner )
     {
-        if ( !searchUpdateListenerList.contains( listener ) )
-            searchUpdateListenerList.add( listener );
+        assert listener != null;
+        assert runner != null;
+
+        if ( !searchUpdateListeners.containsKey( listener ) )
+        {
+            searchUpdateListeners.put( listener, runner );
+        }
     }
 
 
+    /**
+     * Removes the search update listener.
+     *
+     * @param listener the listener
+     */
     public static void removeSearchUpdateListener( SearchUpdateListener listener )
     {
-        if ( searchUpdateListenerList.contains( listener ) )
-            searchUpdateListenerList.remove( listener );
+        if ( searchUpdateListeners.containsKey( listener ) )
+        {
+            searchUpdateListeners.remove( listener );
+        }
     }
 
 
+    /**
+     * Notifies each {@link SearchUpdateListener} about the the given {@link SearchUpdateEvent}.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param searchUpdateEvent the search update event
+     * @param source the source
+     */
     public static void fireSearchUpdated( final SearchUpdateEvent searchUpdateEvent, final Object source )
     {
-        for ( int i = 0; i < searchUpdateListenerList.size(); i++ )
+        if( isEventFireingSuspendedInCurrentThread() )
         {
-            final SearchUpdateListener listener = ( SearchUpdateListener ) searchUpdateListenerList.get( i );
+            return;
+        }
+
+        Iterator<SearchUpdateListener> it = searchUpdateListeners.keySet().iterator();
+        while( it.hasNext() )
+        {
+            final SearchUpdateListener listener = it.next();
             EventRunnable runnable = new EventRunnable()
             {
-                public Object getEventObject()
-                {
-                    return searchUpdateEvent.getSearch();
-                }
-
-
                 public void run()
                 {
                     listener.searchUpdated( searchUpdateEvent );
                 }
             };
-            eventDispatcher.dispatchEvent( source, listener, runnable );
+
+            EventRunner runner = searchUpdateListeners.get( listener );
+
+            synchronized( lock )
+            {
+                runner.execute( runnable );
+            }
         }
     }
 
-    private static List bookmarkUpdateListenerList = new ArrayList();
+
+    /** The map with bookmark update listeners and their runners */
+    private static Map<BookmarkUpdateListener, EventRunner> bookmarkUpdateListeners = new HashMap<BookmarkUpdateListener, EventRunner>();
 
 
-    public static void addBookmarkUpdateListener( BookmarkUpdateListener listener )
+    /**
+     * Adds the bookmark update listener.
+     *
+     * @param listener the listener
+     * @param runner the runner
+     */
+    public static void addBookmarkUpdateListener( BookmarkUpdateListener listener, EventRunner runner )
     {
-        if ( !bookmarkUpdateListenerList.contains( listener ) )
-            bookmarkUpdateListenerList.add( listener );
+        assert listener != null;
+        assert runner != null;
+
+        if ( !bookmarkUpdateListeners.containsKey( listener ) )
+        {
+            bookmarkUpdateListeners.put( listener, runner );
+        }
     }
 
 
+    /**
+     * Removes the bookmark update listener.
+     *
+     * @param listener the listener
+     */
     public static void removeBookmarkUpdateListener( BookmarkUpdateListener listener )
     {
-        if ( bookmarkUpdateListenerList.contains( listener ) )
-            bookmarkUpdateListenerList.remove( listener );
+        if ( bookmarkUpdateListeners.containsKey( listener ) )
+        {
+            bookmarkUpdateListeners.remove( listener );
+        }
     }
 
 
+    /**
+     * Notifies each {@link BookmarkUpdateListener} about the the given {@link BookmarkUpdateEvent}.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param bookmarkUpdateEvent the bookmark update event
+     * @param source the source
+     */
     public static void fireBookmarkUpdated( final BookmarkUpdateEvent bookmarkUpdateEvent, final Object source )
     {
-        for ( int i = 0; i < bookmarkUpdateListenerList.size(); i++ )
+        if( isEventFireingSuspendedInCurrentThread() )
         {
-            final BookmarkUpdateListener listener = ( BookmarkUpdateListener ) bookmarkUpdateListenerList.get( i );
+            return;
+        }
+
+        Iterator<BookmarkUpdateListener> it = bookmarkUpdateListeners.keySet().iterator();
+        while( it.hasNext() )
+        {
+            final BookmarkUpdateListener listener = it.next();
             EventRunnable runnable = new EventRunnable()
             {
-                public Object getEventObject()
-                {
-                    return bookmarkUpdateEvent.getBookmark();
-                }
-
-
                 public void run()
                 {
                     listener.bookmarkUpdated( bookmarkUpdateEvent );
                 }
             };
-            eventDispatcher.dispatchEvent( source, listener, runnable );
+
+            EventRunner runner = bookmarkUpdateListeners.get( listener );
+            synchronized( lock )
+            {
+                runner.execute( runnable );
+            }
         }
     }
 
-    private static List connectionUpdateListenerList = new ArrayList();
+    /** The map with connection update listeners and their runners */
+    private static Map<ConnectionUpdateListener, EventRunner> connectionUpdateListeners = new HashMap<ConnectionUpdateListener, EventRunner>();
 
 
-    public static void addConnectionUpdateListener( ConnectionUpdateListener listener )
+    /**
+     * Adds the connection update listener.
+     *
+     * @param listener the listener
+     * @param runner the runner
+     */
+    public static void addConnectionUpdateListener( ConnectionUpdateListener listener, EventRunner runner )
     {
-        if ( !connectionUpdateListenerList.contains( listener ) )
-            connectionUpdateListenerList.add( listener );
+        assert listener != null;
+        assert runner != null;
+
+        if ( !connectionUpdateListeners.containsKey( listener ) )
+        {
+            connectionUpdateListeners.put( listener, runner );
+        }
     }
 
 
+    /**
+     * Removes the connection update listener.
+     *
+     * @param listener the listener
+     */
     public static void removeConnectionUpdateListener( ConnectionUpdateListener listener )
     {
-        if ( connectionUpdateListenerList.contains( listener ) )
-            connectionUpdateListenerList.remove( listener );
+        if ( connectionUpdateListeners.containsKey( listener ) )
+        {
+            connectionUpdateListeners.remove( listener );
+        }
     }
 
 
+    /**
+     * Notifies each {@link ConnectionUpdateListener} about the the given {@link ConnectionUpdateEvent}.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param connectionUpdateEvent the connection update event
+     * @param source the source
+     */
     public static void fireConnectionUpdated( final ConnectionUpdateEvent connectionUpdateEvent, final Object source )
     {
-        for ( int i = 0; i < connectionUpdateListenerList.size(); i++ )
+        if( isEventFireingSuspendedInCurrentThread() )
         {
-            final ConnectionUpdateListener listener = ( ConnectionUpdateListener ) connectionUpdateListenerList.get( i );
+            return;
+        }
+
+        Iterator<ConnectionUpdateListener> it = connectionUpdateListeners.keySet().iterator();
+        while( it.hasNext() )
+        {
+            final ConnectionUpdateListener listener = it.next();
             EventRunnable runnable = new EventRunnable()
             {
-                public Object getEventObject()
-                {
-                    return connectionUpdateEvent.getConnection();
-                }
-
-
                 public void run()
                 {
                     listener.connectionUpdated( connectionUpdateEvent );
                 }
             };
-            eventDispatcher.dispatchEvent( source, listener, runnable );
+
+            EventRunner runner = connectionUpdateListeners.get( listener );
+            synchronized( lock )
+            {
+                runner.execute( runnable );
+            }
         }
     }
 
-    private static List entryUpdateListenerList = new ArrayList();
+
+    /** The map with entry update listeners and their runners */
+    private static Map<EntryUpdateListener, EventRunner> entryUpdateListeners = new HashMap<EntryUpdateListener, EventRunner>();
 
 
-    public static void addEntryUpdateListener( EntryUpdateListener listener )
+    /**
+     * Adds the entry update listener.
+     *
+     * @param listener the listener
+     * @param runner the runner
+     */
+    public static void addEntryUpdateListener( EntryUpdateListener listener, EventRunner runner )
     {
-        if ( !entryUpdateListenerList.contains( listener ) )
-            entryUpdateListenerList.add( listener );
+        assert listener != null;
+        assert runner != null;
+
+        if ( !entryUpdateListeners.containsKey( listener ) )
+        {
+            entryUpdateListeners.put( listener, runner );
+        }
     }
 
 
+    /**
+     * Removes the entry update listener.
+     *
+     * @param listener the listener
+     */
     public static void removeEntryUpdateListener( EntryUpdateListener listener )
     {
-        if ( entryUpdateListenerList.contains( listener ) )
-            entryUpdateListenerList.remove( listener );
-    }
-
-
-    public static void fireEntryUpdated( final EntryModificationEvent event, final Object source )
-    {
-        for ( int i = 0; i < entryUpdateListenerList.size(); i++ )
+        if ( entryUpdateListeners.containsKey( listener ) )
         {
-            final EntryUpdateListener listener = ( EntryUpdateListener ) entryUpdateListenerList.get( i );
-            EventRunnable runnable = new EventRunnable()
-            {
-                public Object getEventObject()
-                {
-                    return event;
-                }
-
-
-                public void run()
-                {
-                    listener.entryUpdated( event );
-                }
-            };
-            eventDispatcher.dispatchEvent( source, listener, runnable );
+            entryUpdateListeners.remove( listener );
         }
     }
+
+
+    /**
+     * Notifies each {@link EntryUpdateListener} about the the given {@link EntryModificationEvent}.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param entryUpdateEvent the entry update event
+     * @param source the source
+     */
+    public static void fireEntryUpdated( final EntryModificationEvent entryUpdateEvent, final Object source )
+    {
+        if( isEventFireingSuspendedInCurrentThread() )
+        {
+            return;
+        }
+
+        Iterator<EntryUpdateListener> it = entryUpdateListeners.keySet().iterator();
+        while( it.hasNext() )
+        {
+            final EntryUpdateListener listener = it.next();
+            EventRunnable runnable = new EventRunnable()
+            {
+                public void run()
+                {
+                    listener.entryUpdated( entryUpdateEvent );
+                }
+            };
+
+            EventRunner runner = entryUpdateListeners.get( listener );
+            synchronized( lock )
+            {
+                runner.execute( runnable );
+            }
+        }
+    }
+
 
 }

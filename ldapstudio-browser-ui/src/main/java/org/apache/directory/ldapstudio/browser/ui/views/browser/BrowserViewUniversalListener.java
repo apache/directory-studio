@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.ui.views.browser;
@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserUniversalListener;
 import org.apache.directory.ldapstudio.browser.core.events.AttributesInitializedEvent;
@@ -92,7 +93,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation sets the input when another connection was selected.
          */
         public void selectionChanged( IWorkbenchPart part, ISelection selection )
@@ -120,7 +121,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation deactivates the shortcuts when the part is deactivated.
          */
         public void partDeactivated( IWorkbenchPartReference partRef )
@@ -140,7 +141,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation activates the shortcuts when the part is activated.
          */
         public void partActivated( IWorkbenchPartReference partRef )
@@ -225,7 +226,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
     /**
      * Creates a new instance of BrowserViewUniversalListener.
-     * 
+     *
      * @param view the browser view
      */
     public BrowserViewUniversalListener( BrowserView view )
@@ -238,10 +239,10 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         connectionToSelectedElementMap = new HashMap<IConnection, ISelection>();
 
         // register listeners
-        EventRegistry.addSearchUpdateListener( this );
-        EventRegistry.addBookmarkUpdateListener( this );
-        EventRegistry.addEntryUpdateListener( this );
-        EventRegistry.addConnectionUpdateListener( this );
+        EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addBookmarkUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
 
         view.getSite().getPage().addPartListener( partListener );
         view.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( ConnectionView.getId(),
@@ -252,7 +253,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
 
     /**
-     * Ensures that the entry editor or the search result editor are 
+     * Ensures that the entry editor or the search result editor are
      * opended and ready to show the given selection.
      *
      * @param selection the browser's selection.
@@ -391,8 +392,8 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
     /**
      * {@inheritDoc}
-     * 
-     * This implementation refreshes the tree and expands/collapses the 
+     *
+     * This implementation refreshes the tree and expands/collapses the
      * tree when the connection is opened/closed.
      */
     public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
@@ -402,7 +403,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             // expand viewer
             viewer.refresh( connectionUpdateEvent.getConnection() );
             viewer.expandToLevel( 2 );
-            
+
             // expand root DSE to show base entries
             IRootDSE rootDSE = connectionUpdateEvent.getConnection().getRootDSE();
             viewer.expandToLevel( rootDSE, 1 );
@@ -429,7 +430,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * This viewer selects the updated search.
      */
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
@@ -460,14 +461,14 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
     /**
      * {@inheritDoc}
-     * 
-     * This implementation refreshes the tree and 
+     *
+     * This implementation refreshes the tree and
      * selects an entry depending on the event type.
      */
     public void entryUpdated( EntryModificationEvent event )
     {
         // Don't handle attribute initalization, could cause double
-        // retrieval of children. 
+        // retrieval of children.
         //
         // When double-clicking an entry two Jobs/Threads are started:
         // - InitializeAttributesJob and

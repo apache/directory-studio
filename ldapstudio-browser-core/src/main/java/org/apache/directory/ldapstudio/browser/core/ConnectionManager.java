@@ -78,9 +78,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     {
         this.connectionList = new ArrayList<IConnection>();
         loadConnections();
-        EventRegistry.addConnectionUpdateListener( this );
-        EventRegistry.addSearchUpdateListener( this );
-        EventRegistry.addBookmarkUpdateListener( this );
+        EventRegistry.addConnectionUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
+        EventRegistry.addSearchUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
+        EventRegistry.addBookmarkUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
     }
 
 

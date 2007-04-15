@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
@@ -27,6 +27,7 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
@@ -109,7 +110,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation sets the editor's input when a search is selected.
          */
         public void selectionChanged( IWorkbenchPart part, ISelection selection )
@@ -138,7 +139,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation deactivates the shortcuts when the part is deactivated.
          */
         public void partDeactivated( IWorkbenchPartReference partRef )
@@ -158,7 +159,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation activates the shortcuts when the part is activated.
          */
         public void partActivated( IWorkbenchPartReference partRef )
@@ -232,7 +233,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation opens the search result when clicking thd DN link.
          */
         public void linkActivated( HyperlinkEvent e )
@@ -274,7 +275,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation removed the DN link.
          */
         public void mouseExit( MouseEvent e )
@@ -297,7 +298,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation renders the DN link.
          */
         public void mouseMove( MouseEvent e )
@@ -319,7 +320,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation renders the DN link.
          */
         public void mouseMove( MouseEvent e )
@@ -342,7 +343,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation sets the cursor's background color.
          */
         public void widgetSelected( SelectionEvent e )
@@ -369,7 +370,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation starts the value editor when pressing enter.
          */
         public void widgetDefaultSelected( SelectionEvent e )
@@ -386,7 +387,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation starts the value editor when double-clicking a cell.
          */
         public void mouseDoubleClick( MouseEvent e )
@@ -419,7 +420,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
     {
         /**
          * {@inheritDoc}
-         * 
+         *
          * This implementation starts the value editor when a non-control key is pressed.
          */
         public void keyPressed( KeyEvent e )
@@ -493,8 +494,8 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         editor.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( BrowserView.getId(),
             searchSelectionListener );
 
-        EventRegistry.addSearchUpdateListener( this );
-        EventRegistry.addEntryUpdateListener( this );
+        EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
     }
 
 
@@ -523,7 +524,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * This implementation refreshes the search result editor.
      */
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
@@ -537,8 +538,8 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
     /**
      * {@inheritDoc}
-     * 
-     * This implementation refreshes the search result editor 
+     *
+     * This implementation refreshes the search result editor
      * or starts the value editor if an empty value was added.
      */
     public void entryUpdated( EntryModificationEvent event )
@@ -677,7 +678,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
 
     /**
-     * Ensures that the table contains at least the number of 
+     * Ensures that the table contains at least the number of
      * the requested columns.
      *
      * @param count the requested number of columns

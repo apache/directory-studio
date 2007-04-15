@@ -6,21 +6,22 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
+import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
@@ -73,7 +74,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
 
     /**
      * Creates a new instance of NewEntryAttributesWizardPage.
-     * 
+     *
      * @param pageName the page name
      * @param wizard the wizard
      */
@@ -112,8 +113,8 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
 
     /**
      * {@inheritDoc}
-     * 
-     * This implementation initializes the must attributes of the 
+     *
+     * This implementation initializes the must attributes of the
      * protoype entry and initializes the entry widget when this
      * page becomes visible.
      */
@@ -251,7 +252,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         // create the listener
         universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), actionGroup
             .getOpenDefaultEditorAction() );
-        EventRegistry.addEntryUpdateListener( this );
+        EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
 
         setControl( composite );
     }
@@ -271,7 +272,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
 
     /**
      * Checks if is disposed.
-     * 
+     *
      * @return true, if is disposed
      */
     private boolean isDisposed()
