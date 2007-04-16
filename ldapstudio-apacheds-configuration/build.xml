@@ -73,6 +73,12 @@
 				<include name="**" />
 			</fileset>
 		</copy>
+		<mkdir dir="${build}/icons" />
+		<copy todir="${build}/icons">
+			<fileset dir="${basedir}/icons">
+				<include name="**" />
+			</fileset>
+		</copy>
 		<javac
 			source="1.5"
 			debug="yes"
@@ -130,6 +136,7 @@
 				<exclude name="META-INF/**" />
 				<exclude name="plugin.xml" />
 				<exclude name="src/**" />
+				<exclude name="icons/**" />
 			</fileset>
 		</delete>
 	</target>
