@@ -56,10 +56,13 @@ public class InterceptorDetailsPage implements IDetailsPage
     /** The input Interceptor */
     private Interceptor input;
 
+    /** The dirty flag */
+    private boolean dirty = false;
+
     // UI fields
     private Text nameText;
     private Text classText;
-    
+
     // Listeners
     /** The Modify Listener for Text Widgets */
     private ModifyListener textModifyListener = new ModifyListener()
@@ -67,6 +70,7 @@ public class InterceptorDetailsPage implements IDetailsPage
         public void modifyText( ModifyEvent e )
         {
             masterDetailsBlock.setEditorDirty();
+            dirty = true;
         }
     };
 
@@ -133,7 +137,8 @@ public class InterceptorDetailsPage implements IDetailsPage
         classText = toolkit.createText( client, "" );
         classText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
-    
+
+
     /**
      * Adds listeners to UI fields.
      */
@@ -176,7 +181,7 @@ public class InterceptorDetailsPage implements IDetailsPage
      * @see org.eclipse.ui.forms.IFormPart#commit(boolean)
      */
     public void commit( boolean onSave )
-    {        
+    {
         input.setName( nameText.getText() );
         input.setClassType( classText.getText() );
     }
@@ -187,8 +192,6 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     public void dispose()
     {
-        // TODO Auto-generated method stub
-
     }
 
 
@@ -206,8 +209,7 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     public boolean isDirty()
     {
-        // TODO Auto-generated method stub
-        return true;
+        return dirty;
     }
 
 
@@ -216,7 +218,6 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     public boolean isStale()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -227,7 +228,7 @@ public class InterceptorDetailsPage implements IDetailsPage
     public void refresh()
     {
         removeListeners();
-        
+
         // Name
         String name = input.getName();
         nameText.setText( ( name == null ) ? "" : name );
@@ -235,7 +236,7 @@ public class InterceptorDetailsPage implements IDetailsPage
         // Class
         String classType = input.getClassType();
         classText.setText( ( classType == null ) ? "" : classType );
-        
+
         addListeners();
     }
 

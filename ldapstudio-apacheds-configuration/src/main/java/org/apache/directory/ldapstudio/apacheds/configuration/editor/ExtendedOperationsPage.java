@@ -66,4 +66,16 @@ public class ExtendedOperationsPage extends FormPage
         masterDetailsBlock = new ExtendedOperationsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        if ( masterDetailsBlock != null )
+        {
+            masterDetailsBlock.save();
+        }
+    }
 }

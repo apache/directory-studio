@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
 import org.apache.directory.ldapstudio.apacheds.configuration.PluginConstants;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Partition;
+import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfiguration;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -63,8 +64,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     /** The associated page */
     private FormPage page;
 
-    /** The editor input */
-    private ServerConfigurationEditorInput input;
+    /** The input Server Configuration */
+    private ServerConfiguration serverConfiguration;
 
     /** The Interceptors List */
     private List<Partition> partitions;
@@ -86,8 +87,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public PartitionsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        input = ( ServerConfigurationEditorInput ) page.getEditorInput();
-        partitions = input.getServerConfiguration().getPartitions();
+        serverConfiguration = ( ( ServerConfigurationEditorInput ) page.getEditorInput() ).getServerConfiguration();
+        partitions = serverConfiguration.getPartitions();
     }
 
 
@@ -304,5 +305,18 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public void setEditorDirty()
     {
         ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+    }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        serverConfiguration.clearPartitions();
+        for ( Partition partition : partitions )
+        {
+            serverConfiguration.addPartition( partition );
+        }
     }
 }

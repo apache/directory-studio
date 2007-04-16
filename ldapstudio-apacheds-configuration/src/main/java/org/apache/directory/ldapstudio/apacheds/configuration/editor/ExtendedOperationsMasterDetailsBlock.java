@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
 import org.apache.directory.ldapstudio.apacheds.configuration.PluginConstants;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.ExtendedOperation;
+import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfiguration;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -63,8 +64,8 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     /** The associated page */
     private FormPage page;
 
-    /** The editor input */
-    private ServerConfigurationEditorInput input;
+    /** The input Server Configuration */
+    private ServerConfiguration serverConfiguration;
 
     /** The Extended Operations List */
     private List<ExtendedOperation> extendedOperations;
@@ -85,8 +86,8 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     public ExtendedOperationsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        input = ( ServerConfigurationEditorInput ) page.getEditorInput();
-        extendedOperations = input.getServerConfiguration().getExtendedOperations();
+        serverConfiguration = ( ( ServerConfigurationEditorInput ) page.getEditorInput() ).getServerConfiguration();
+        extendedOperations = serverConfiguration.getExtendedOperations();
     }
 
 
@@ -229,7 +230,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
                     ok = false;
                 }
             }
-            
+
             counter++;
         }
 
@@ -290,5 +291,18 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     public void setEditorDirty()
     {
         ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+    }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        serverConfiguration.clearExtendedOperations();
+        for ( ExtendedOperation extendedOperation : extendedOperations )
+        {
+            serverConfiguration.addExtendedOperation( extendedOperation );
+        }
     }
 }

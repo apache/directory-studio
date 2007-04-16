@@ -56,6 +56,9 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
     /** The input Interceptor */
     private ExtendedOperation input;
 
+    /** The dirty flag */
+    private boolean dirty = false;
+
     // UI fields
     private Text classTypeText;
 
@@ -66,6 +69,7 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
         public void modifyText( ModifyEvent e )
         {
             masterDetailsBlock.setEditorDirty();
+            dirty = true;
         }
     };
 
@@ -181,8 +185,6 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     public void dispose()
     {
-        // TODO Auto-generated method stub
-
     }
 
 
@@ -200,8 +202,7 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     public boolean isDirty()
     {
-        // TODO Auto-generated method stub
-        return true;
+        return dirty;
     }
 
 
@@ -210,7 +211,6 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     public boolean isStale()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 

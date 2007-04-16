@@ -493,4 +493,27 @@ public class GeneralPage extends FormPage
     {
         ( ( ServerConfigurationEditor ) getEditor() ).setDirty( true );
     }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        ServerConfiguration serverConfiguration = ( ( ServerConfigurationEditorInput ) getEditorInput() )
+            .getServerConfiguration();
+
+        serverConfiguration.setPort( Integer.parseInt( portText.getText() ) );
+        serverConfiguration.setPrincipal( principalText.getText() );
+        serverConfiguration.setPassword( passwordText.getText() );
+        serverConfiguration.setAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
+        serverConfiguration.setMaxTimeLimit( Integer.parseInt( maxTimeLimitText.getText() ) );
+        serverConfiguration.setMaxSizeLimit( Integer.parseInt( maxSizeLimitText.getText() ) );
+        serverConfiguration.setSynchronizationPeriod( Long.parseLong( synchPeriodText.getText() ) );
+        serverConfiguration.setMaxThreads( Integer.parseInt( maxThreadsText.getText() ) );
+        serverConfiguration.setEnableAccessControl( enableAccesControlCheckbox.getSelection() );
+        serverConfiguration.setEnableNTP( enableNTPCheckbox.getSelection() );
+        serverConfiguration.setEnableKerberos( enableKerberosCheckbox.getSelection() );
+        serverConfiguration.setEnableChangePassword( enableChangePasswordCheckbox.getSelection() );
+    }
 }

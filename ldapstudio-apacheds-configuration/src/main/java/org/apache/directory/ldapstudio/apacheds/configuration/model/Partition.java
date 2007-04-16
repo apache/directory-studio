@@ -57,7 +57,7 @@ public class Partition
     private List<IndexedAttribute> indexedAttributes;
 
     /** The System Partition flag */
-    private boolean systemPartition;
+    private boolean systemPartition = false;
 
 
     /**
@@ -76,7 +76,7 @@ public class Partition
      * @param name
      *      the name of the partition
      */
-   public Partition( String name )
+    public Partition( String name )
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
         contextEntry = new BasicAttributes( true );

@@ -7,7 +7,26 @@ Bundle-Activator: org.apache.directory.ldapstudio.apacheds.configuration.Activat
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/apacheds-btree-base-1.5.1-SNAPSHOT.jar,
+ lib/apacheds-core-1.5.1-SNAPSHOT.jar,
+ lib/apacheds-jdbm-store-1.5.1-SNAPSHOT.jar,
+ lib/apacheds-protocol-ldap-1.5.1-SNAPSHOT.jar,
+ lib/apacheds-schema-registries-1.5.1-SNAPSHOT.jar,
+ lib/apacheds-server-jndi-1.5.1-SNAPSHOT.jar,
+ lib/commons-collections-3.2.jar,
+ lib/commons-logging-1.1.jar,
+ lib/dom4j-1.6.1.jar,
+ lib/jdbm-1.0.jar,
+ lib/mina-core-1.0.2.jar,
+ lib/nlog4j-1.2.25.jar,
+ lib/shared-asn1-0.9.7-SNAPSHOT.jar,
+ lib/shared-asn1-codec-0.9.7-SNAPSHOT.jar,
+ lib/shared-ldap-0.9.7-SNAPSHOT.jar,
+ lib/shared-ldap-constants-0.9.7-SNAPSHOT.jar,
+ lib/spring-beans-1.2.8.jar,
+ lib/spring-context-1.2.8.jar,
+ lib/spring-core-1.2.8.jar
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.forms

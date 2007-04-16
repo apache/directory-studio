@@ -20,12 +20,14 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
+import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfigurationWriter;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 
 
 /**
@@ -43,10 +45,10 @@ public class ServerConfigurationEditor extends FormEditor
     private boolean dirty = false;
 
     // The Pages
-    private FormPage generalPage;
-    private FormPage partitionsPage;
-    private FormPage interceptorsPage;
-    private FormPage extendedOperationsPage;
+    private GeneralPage generalPage;
+    private PartitionsPage partitionsPage;
+    private InterceptorsPage interceptorsPage;
+    private ExtendedOperationsPage extendedOperationsPage;
 
 
     /* (non-Javadoc)
@@ -81,7 +83,8 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( PartInitException e )
         {
-            // TODO Add an eclipse logger.
+            Activator.getDefault().getLog().log(
+                new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK, e.getMessage(), e.getCause() ) );
         }
     }
 
@@ -91,7 +94,20 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
-        // TODO Auto-generated method stub
+        monitor.beginTask( "Saving the Server Configuration", 5 );
+        generalPage.save();
+        monitor.worked( 1 );
+        partitionsPage.save();
+        monitor.worked( 1 );
+        interceptorsPage.save();
+        monitor.worked( 1 );
+        extendedOperationsPage.save();
+        monitor.worked( 1 );
+        ServerConfigurationWriter writer = new ServerConfigurationWriter();
+        writer.write( ( ( ServerConfigurationEditorInput ) getEditorInput() ).getServerConfiguration() );
+        monitor.worked( 1 );
+        setDirty( false );
+        monitor.done();
     }
 
 

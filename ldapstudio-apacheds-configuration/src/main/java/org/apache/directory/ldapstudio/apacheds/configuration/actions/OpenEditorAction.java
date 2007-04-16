@@ -6,6 +6,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 
+import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
 import org.apache.directory.ldapstudio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.ldapstudio.apacheds.configuration.editor.ServerConfigurationEditorInput;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.ExtendedOperation;
@@ -13,6 +14,7 @@ import org.apache.directory.ldapstudio.apacheds.configuration.model.IndexedAttri
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Interceptor;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Partition;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfiguration;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -95,8 +97,8 @@ public class OpenEditorAction extends Action implements IWorkbenchWindowActionDe
         }
         catch ( PartInitException e )
         {
-            // TODO ADD A LOGGER
-            e.printStackTrace();
+            Activator.getDefault().getLog().log(
+                new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK, e.getMessage(), e.getCause() ) );
         }
     }
 

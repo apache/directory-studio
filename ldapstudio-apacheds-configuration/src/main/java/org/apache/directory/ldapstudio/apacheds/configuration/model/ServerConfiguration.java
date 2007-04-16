@@ -54,7 +54,7 @@ public class ServerConfiguration
     private int maxSizeLimit;
 
     /** The Synchonization Period */
-    private int synchronizationPeriod;
+    private long synchronizationPeriod;
 
     /** The Maximum number of Threads */
     private int maxThreads;
@@ -265,6 +265,15 @@ public class ServerConfiguration
 
 
     /**
+     * Removes all ExtendedOperations.
+     */
+    public void clearExtendedOperations()
+    {
+        extendedOperations.clear();
+    }
+
+
+    /**
      * Gets the Interceptors List.
      *
      * @return
@@ -313,6 +322,15 @@ public class ServerConfiguration
     public boolean removeInterceptor( Interceptor interceptor )
     {
         return interceptors.remove( interceptor );
+    }
+
+
+    /**
+     * Removes all interceptors.
+     */
+    public void clearInterceptors()
+    {
+        interceptors.clear();
     }
 
 
@@ -441,6 +459,15 @@ public class ServerConfiguration
 
 
     /**
+     * Removes all partitions.
+     */
+    public void clearPartitions()
+    {
+        partitions.clear();
+    }
+
+
+    /**
      * Gets the password.
      *
      * @return
@@ -542,7 +569,7 @@ public class ServerConfiguration
      * @return
      *      the Synchronization Period
      */
-    public int getSynchronizationPeriod()
+    public long getSynchronizationPeriod()
     {
         return synchronizationPeriod;
     }
@@ -554,7 +581,7 @@ public class ServerConfiguration
      * @param synchronizationPeriod
      *      the new value
      */
-    public void setSynchronizationPeriod( int synchronizationPeriod )
+    public void setSynchronizationPeriod( long synchronizationPeriod )
     {
         this.synchronizationPeriod = synchronizationPeriod;
     }

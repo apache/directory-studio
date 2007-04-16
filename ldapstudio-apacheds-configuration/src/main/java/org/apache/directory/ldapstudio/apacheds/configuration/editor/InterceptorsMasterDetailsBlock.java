@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.directory.ldapstudio.apacheds.configuration.Activator;
 import org.apache.directory.ldapstudio.apacheds.configuration.PluginConstants;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.Interceptor;
+import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfiguration;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -63,8 +64,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     /** The associated page */
     private FormPage page;
 
-    /** The editor input */
-    private ServerConfigurationEditorInput input;
+    /** The input Server Configuration */
+    private ServerConfiguration serverConfiguration;
 
     /** The Interceptors List */
     private List<Interceptor> interceptors;
@@ -87,8 +88,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     public InterceptorsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        input = ( ServerConfigurationEditorInput ) page.getEditorInput();
-        interceptors = input.getServerConfiguration().getInterceptors();
+        serverConfiguration = ( ( ServerConfigurationEditorInput ) page.getEditorInput() ).getServerConfiguration();
+        interceptors = serverConfiguration.getInterceptors();
     }
 
 
@@ -376,5 +377,18 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     public void setEditorDirty()
     {
         ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+    }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        serverConfiguration.clearInterceptors();
+        for ( Interceptor interceptor : interceptors )
+        {
+            serverConfiguration.addInterceptor( interceptor );
+        }
     }
 }

@@ -97,6 +97,9 @@ public class PartitionDetailsPage implements IDetailsPage
     /** The Indexed Attributes List */
     private List<IndexedAttribute> indexedAttributes;
 
+    /** The dirty flag */
+    private boolean dirty = false;
+
     // UI fields
     private Text nameText;
     private Text cacheSizeText;
@@ -120,6 +123,7 @@ public class PartitionDetailsPage implements IDetailsPage
         public void modifyText( ModifyEvent e )
         {
             masterDetailsBlock.setEditorDirty();
+            dirty = true;
         }
     };
 
@@ -129,6 +133,7 @@ public class PartitionDetailsPage implements IDetailsPage
         public void widgetSelected( SelectionEvent e )
         {
             masterDetailsBlock.setEditorDirty();
+            dirty = true;
         }
     };
 
@@ -174,6 +179,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 contextEntryTableViewer.refresh();
                 resizeContextEntryTableColumnsToFit();
                 masterDetailsBlock.setEditorDirty();
+                dirty = true;
             }
         }
     };
@@ -204,6 +210,7 @@ public class PartitionDetailsPage implements IDetailsPage
                     contextEntryTableViewer.refresh();
                     resizeContextEntryTableColumnsToFit();
                     masterDetailsBlock.setEditorDirty();
+                    dirty = true;
                 }
             }
         }
@@ -239,6 +246,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 indexedAttributes.add( dialog.getIndexedAttribute() );
                 indexedAttributesTableViewer.refresh();
                 masterDetailsBlock.setEditorDirty();
+                dirty = true;
             }
         }
     };
@@ -265,6 +273,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 indexedAttributes.remove( indexedAttribute );
                 indexedAttributesTableViewer.refresh();
                 masterDetailsBlock.setEditorDirty();
+                dirty = true;
             }
         }
     };
@@ -619,8 +628,6 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void dispose()
     {
-        // TODO Auto-generated method stub
-
     }
 
 
@@ -638,8 +645,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public boolean isDirty()
     {
-        // TODO Auto-generated method stub
-        return true;
+        return dirty;
     }
 
 
@@ -648,7 +654,6 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public boolean isStale()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -738,6 +743,7 @@ public class PartitionDetailsPage implements IDetailsPage
             {
                 indexedAttributesTableViewer.refresh();
                 masterDetailsBlock.setEditorDirty();
+                dirty = true;
             }
         }
     }
@@ -781,6 +787,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 contextEntryTableViewer.refresh();
                 resizeContextEntryTableColumnsToFit();
                 masterDetailsBlock.setEditorDirty();
+                dirty = true;
             }
         }
     }

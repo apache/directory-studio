@@ -34,6 +34,12 @@
                label="Open Editor"
                menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
                style="push"/>
+         <action
+               class="org.apache.directory.ldapstudio.apacheds.configuration.actions.OpenServerConfigurationAction"
+               id="org.apache.directory.ldapstudio.apacheds.configuration.openServerConfiguration"
+               label="Open..."
+               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
+               style="push"/>
       </actionSet>
    </extension>
    <extension

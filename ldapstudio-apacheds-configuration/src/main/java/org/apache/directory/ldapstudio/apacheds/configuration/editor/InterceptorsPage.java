@@ -66,4 +66,16 @@ public class InterceptorsPage extends FormPage
         masterDetailsBlock = new InterceptorsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        if ( masterDetailsBlock != null )
+        {
+            masterDetailsBlock.save();
+        }
+    }
 }

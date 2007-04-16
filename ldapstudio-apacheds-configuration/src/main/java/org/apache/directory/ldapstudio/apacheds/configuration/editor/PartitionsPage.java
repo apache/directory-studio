@@ -66,4 +66,16 @@ public class PartitionsPage extends FormPage
         masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }
+
+
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save()
+    {
+        if ( masterDetailsBlock != null )
+        {
+            masterDetailsBlock.save();
+        }
+    }
 }

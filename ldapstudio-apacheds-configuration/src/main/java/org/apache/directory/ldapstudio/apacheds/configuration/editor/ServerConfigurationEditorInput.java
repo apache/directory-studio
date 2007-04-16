@@ -67,7 +67,16 @@ public class ServerConfigurationEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return serverConfiguration.getPath();
+        String path = serverConfiguration.getPath();
+        if ( path == null )
+        {
+            return "Unsaved Editor";
+        }
+        else
+        {
+            return path;
+        }
+
     }
 
 
