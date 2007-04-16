@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="org.apache.directory.server"
+		module="apacheds-schema-registries"
+		revision="1.5.1-SNAPSHOT"
+		status="release"
+		publication="20070416154410"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="apacheds-schema-registries" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>

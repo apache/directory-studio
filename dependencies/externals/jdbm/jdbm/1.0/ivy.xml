@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="jdbm"
+		module="jdbm"
+		revision="1.0"
+		status="release"
+		publication="20070416154847"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="jdbm" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>

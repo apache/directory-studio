@@ -12,4 +12,10 @@
 	<publications>
 		<artifact name="commons-configuration" type="jar" ext="jar" conf="default"/>
 	</publications>
+
+	<dependencies>
+		<dependency org="commons-lang" name="commons-lang" rev="2.1" conf="default"/>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1" conf="default"/>
+		<dependency org="commons-collections" name="commons-collections" rev="3.2" conf="default"/>
+	</dependencies>
 </ivy-module>
