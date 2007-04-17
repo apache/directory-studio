@@ -123,4 +123,28 @@ public class ServerConfigurationEditorInput implements IEditorInput
     {
         return null;
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ServerConfigurationEditorInput )
+        {
+            ServerConfigurationEditorInput input = ( ServerConfigurationEditorInput ) obj;
+
+            if ( input.exists() && exists() )
+            {
+                String inputPath = input.getServerConfiguration().getPath();
+                String myPath = getServerConfiguration().getPath();
+
+                if ( inputPath != null && myPath != null )
+                {
+                    return inputPath.equals( myPath );
+                }
+            }
+        }
+        return false;
+    }
 }

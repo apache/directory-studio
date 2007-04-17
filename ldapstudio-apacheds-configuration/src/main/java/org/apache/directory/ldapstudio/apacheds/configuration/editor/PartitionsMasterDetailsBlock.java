@@ -70,6 +70,9 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     /** The Interceptors List */
     private List<Partition> partitions;
 
+    /** The Details Page */
+    private PartitionDetailsPage detailsPage;
+
     private static final String NEW_NAME = "New Partition ";
 
     // UI Fields
@@ -295,7 +298,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void registerPages( DetailsPart detailsPart )
     {
-        detailsPart.registerPage( Partition.class, new PartitionDetailsPage( this ) );
+        detailsPage = new PartitionDetailsPage( this );
+        detailsPart.registerPage( Partition.class, detailsPage );
     }
 
 
@@ -313,10 +317,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
      */
     public void save()
     {
-        serverConfiguration.clearPartitions();
-        for ( Partition partition : partitions )
-        {
-            serverConfiguration.addPartition( partition );
-        }
+        detailsPage.commit( true );
+        viewer.setInput( partitions );
     }
 }

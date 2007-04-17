@@ -70,6 +70,9 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     /** The Interceptors List */
     private List<Interceptor> interceptors;
 
+    /** The Details Page */
+    private InterceptorDetailsPage detailsPage;
+
     private static final String NEW_NAME = "New Interceptor ";
 
     // UI Fields
@@ -367,7 +370,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void registerPages( DetailsPart detailsPart )
     {
-        detailsPart.registerPage( Interceptor.class, new InterceptorDetailsPage( this ) );
+        detailsPage = new InterceptorDetailsPage( this );
+        detailsPart.registerPage( Interceptor.class, detailsPage );
     }
 
 
@@ -385,10 +389,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
      */
     public void save()
     {
-        serverConfiguration.clearInterceptors();
-        for ( Interceptor interceptor : interceptors )
-        {
-            serverConfiguration.addInterceptor( interceptor );
-        }
+        detailsPage.commit( true );
+        viewer.setInput( interceptors );
     }
 }

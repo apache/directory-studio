@@ -70,6 +70,9 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     /** The Extended Operations List */
     private List<ExtendedOperation> extendedOperations;
 
+    /** The Details Page */
+    private ExtendedOperationDetailsPage detailsPage;
+
     private static final String NEW_NAME = "newExtendedOperation";
 
     // UI Fields
@@ -281,7 +284,8 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void registerPages( DetailsPart detailsPart )
     {
-        detailsPart.registerPage( ExtendedOperation.class, new ExtendedOperationDetailsPage( this ) );
+        detailsPage = new ExtendedOperationDetailsPage( this );
+        detailsPart.registerPage( ExtendedOperation.class, detailsPage );
     }
 
 
@@ -299,10 +303,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
      */
     public void save()
     {
-        serverConfiguration.clearExtendedOperations();
-        for ( ExtendedOperation extendedOperation : extendedOperations )
-        {
-            serverConfiguration.addExtendedOperation( extendedOperation );
-        }
+        detailsPage.commit( true );
+        viewer.setInput( extendedOperations );
     }
 }

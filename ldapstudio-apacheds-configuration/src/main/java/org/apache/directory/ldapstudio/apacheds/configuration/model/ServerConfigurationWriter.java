@@ -20,8 +20,14 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.model;
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
@@ -43,30 +49,50 @@ import org.dom4j.io.DocumentSource;
 public class ServerConfigurationWriter
 {
     /**
-     * TODO write.
+     * Writes the Server Configuration to disk.
      *
      * @param serverConfiguration
+     *      the Server Configuration
+     * @throws ServerConfigurationWriterException
+     *      if an error occurrs when writing the Server Configuration file
      */
-    public void write( ServerConfiguration serverConfiguration )
+    public void write( ServerConfiguration serverConfiguration ) throws ServerConfigurationWriterException
     {
-        System.out.println( "Writing file to disk." );
+        try
+        {
+            BufferedWriter outFile = new BufferedWriter( new FileWriter( serverConfiguration.getPath() ) );
 
-        Document document = DocumentHelper.createDocument();
-        Element root = document.addElement( "beans" );
+            Document document = DocumentHelper.createDocument();
+            Element root = document.addElement( "beans" );
 
-        // Environment Bean
-        createEnvironmentBean( root, serverConfiguration );
+            // Environment Bean
+            createEnvironmentBean( root, serverConfiguration );
 
-        // Configuration Bean
-        createConfigurationBean( root, serverConfiguration );
+            // Configuration Bean
+            createConfigurationBean( root, serverConfiguration );
 
-        // System Partition Configuration Bean
-        createSystemPartitionConfigurationBean( root, serverConfiguration );
+            // System Partition Configuration Bean
+            createSystemPartitionConfigurationBean( root, serverConfiguration );
 
-        // User Partitions Beans
-        createUserPartitionConfigurationsBean( root, serverConfiguration );
+            // User Partitions Beans
+            createUserPartitionsConfigurationsBean( root, serverConfiguration );
 
-        System.out.println( styleDocument( document ).asXML() );
+            // CustomEditors Bean
+            createCustomEditorsBean( root );
+
+            Document stylizedDocuement = styleDocument( document );
+            stylizedDocuement.addDocType( "beans", "-//SPRING//DTD BEAN//EN",
+                "http://www.springframework.org/dtd/spring-beans.dtd" );
+            outFile.write( stylizedDocuement.asXML() );
+            outFile.close();
+        }
+        catch ( Exception e )
+        {
+            ServerConfigurationWriterException exception = new ServerConfigurationWriterException( e.getMessage(), e
+                .getCause() );
+            exception.setStackTrace( e.getStackTrace() );
+            throw exception;
+        }
     }
 
 
@@ -88,14 +114,17 @@ public class ServerConfigurationWriter
         propertyElement.addAttribute( "name", "properties" );
         Element propsElement = propertyElement.addElement( "props" );
 
+        // Key 'java.naming.security.authentication'
         Element propElement = propsElement.addElement( "prop" );
         propElement.addAttribute( "key", "java.naming.security.authentication" );
         propElement.setText( "simple" );
 
+        // Key 'java.naming.security.principal'
         propElement = propsElement.addElement( "prop" );
         propElement.addAttribute( "key", "java.naming.security.principal" );
         propElement.setText( serverConfiguration.getPrincipal() );
 
+        // Key 'java.naming.security.credentials'
         propElement = propsElement.addElement( "prop" );
         propElement.addAttribute( "key", "java.naming.security.credentials" );
         propElement.setText( serverConfiguration.getPassword() );
@@ -154,7 +183,7 @@ public class ServerConfigurationWriter
 
         // Enable NTP
         propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "enableNTP" );
+        propertyElement.addAttribute( "name", "enableNtp" );
         propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableNTP() );
 
         // EnableKerberos
@@ -180,7 +209,7 @@ public class ServerConfigurationWriter
         // SystemPartitionConfiguration
         propertyElement = configurationBean.addElement( "property" );
         propertyElement.addAttribute( "name", "systemPartitionConfiguration" );
-        propertyElement.addAttribute( "value", "systemPartitionConfiguration" );
+        propertyElement.addAttribute( "ref", "systemPartitionConfiguration" );
 
         // PartitionConfigurations
         propertyElement = configurationBean.addElement( "property" );
@@ -229,7 +258,8 @@ public class ServerConfigurationWriter
 
                 interceptorPropertyElement = interceptorBeanElement.addElement( "property" );
                 interceptorPropertyElement.addAttribute( "name", "interceptor" );
-                interceptorPropertyElement.addElement( "bean" ).addAttribute( "class", interceptor.getClassType() );
+                interceptorPropertyElement.addElement( "bean" ).addAttribute( "class",
+                    ( interceptor.getClassType() == null ? "" : interceptor.getClassType() ) );
             }
         }
 
@@ -271,8 +301,17 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createUserPartitionConfigurationsBean( Element root, ServerConfiguration serverConfiguration )
+    private void createUserPartitionsConfigurationsBean( Element root, ServerConfiguration serverConfiguration )
     {
+        int counter = 1;
+        for ( Partition partition : serverConfiguration.getPartitions() )
+        {
+            if ( !partition.isSystemPartition() )
+            {
+                createPartitionConfigurationBean( root, partition, "partition-" + counter );
+                counter++;
+            }
+        }
     }
 
 
@@ -288,10 +327,109 @@ public class ServerConfigurationWriter
      */
     private void createPartitionConfigurationBean( Element root, Partition partition, String name )
     {
-        Element systemPartitionBean = root.addElement( "bean" );
-        systemPartitionBean.addAttribute( "id", name );
-        systemPartitionBean.addAttribute( "class",
+        Element partitionBean = root.addElement( "bean" );
+        partitionBean.addAttribute( "id", name );
+        partitionBean.addAttribute( "class",
             "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" );
+
+        // Name
+        Element propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "name" );
+        propertyElement.addAttribute( "value", partition.getName() );
+
+        // CacheSize
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "cacheSize" );
+        propertyElement.addAttribute( "value", "" + partition.getCacheSize() );
+
+        // Suffix
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "suffix" );
+        propertyElement.addAttribute( "value", partition.getSuffix() );
+
+        // OptimizerEnabled
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "optimizerEnabled" );
+        propertyElement.addAttribute( "value", "" + partition.isEnableOptimizer() );
+
+        // SynchOnWrite
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "synchOnWrite" );
+        propertyElement.addAttribute( "value", "" + partition.isSynchronizationOnWrite() );
+
+        // Indexed Attributes
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "indexedAttributes" );
+        if ( partition.getIndexedAttributes().size() > 1 )
+        {
+            Element setElement = propertyElement.addElement( "set" );
+            for ( IndexedAttribute indexedAttribute : partition.getIndexedAttributes() )
+            {
+                Element beanElement = setElement.addElement( "bean" );
+                beanElement.addAttribute( "class",
+                    "org.apache.directory.server.core.partition.impl.btree.MutableIndexConfiguration" );
+
+                // AttributeID
+                Element beanPropertyElement = beanElement.addElement( "property" );
+                beanPropertyElement.addAttribute( "name", "attributeId" );
+                beanPropertyElement.addAttribute( "value", indexedAttribute.getAttributeId() );
+
+                // CacheSize
+                beanPropertyElement = beanElement.addElement( "property" );
+                beanPropertyElement.addAttribute( "name", "cacheSize" );
+                beanPropertyElement.addAttribute( "value", "" + indexedAttribute.getCacheSize() );
+            }
+        }
+
+        // ContextEntry
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "contextEntry" );
+        if ( partition.getContextEntry() != null )
+        {
+            Element valueElement = propertyElement.addElement( "value" );
+
+            Attributes contextEntry = partition.getContextEntry();
+            StringBuffer sb = new StringBuffer();
+            NamingEnumeration<? extends Attribute> ne = contextEntry.getAll();
+            while ( ne.hasMoreElements() )
+            {
+                Attribute attribute = ( Attribute ) ne.nextElement();
+                try
+                {
+                    NamingEnumeration<?> values = attribute.getAll();
+                    while ( values.hasMoreElements() )
+                    {
+                        sb.append( attribute.getID() + ": " + values.nextElement() + "\n" );
+                    }
+                }
+                catch ( NamingException e )
+                {
+                }
+            }
+
+            valueElement.setText( sb.toString() );
+        }
+    }
+
+
+    /**
+     * Creates the Custom Editors Bean.
+     *
+     * @param root
+     *      the root Element
+     */
+    private void createCustomEditorsBean( Element root )
+    {
+        Element customEditorsBean = root.addElement( "bean" );
+        customEditorsBean.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" );
+        Element propertyElement = customEditorsBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "customEditors" );
+        Element mapElement = propertyElement.addElement( "map" );
+        Element entryElement = mapElement.addElement( "entry" );
+        entryElement.addAttribute( "key", "javax.naming.directory.Attributes" );
+        Element entryBeanElement = entryElement.addElement( "bean" );
+        entryBeanElement.addAttribute( "class",
+            "org.apache.directory.server.core.configuration.AttributesPropertyEditor" );
     }
 
 
@@ -301,35 +439,23 @@ public class ServerConfigurationWriter
      * @param document
      *      the Dom4j Document
      * @return
+     *      the stylized Document
+     * @throws TransformerException 
      */
-    private Document styleDocument( Document document )
+    private Document styleDocument( Document document ) throws TransformerException
     {
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = null;
-        try
-        {
-            transformer = factory.newTransformer( new StreamSource( Activator.class
-                .getResourceAsStream( "template.xslt" ) ) );
-        }
-        catch ( TransformerConfigurationException e1 )
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+
+        transformer = factory
+            .newTransformer( new StreamSource( Activator.class.getResourceAsStream( "template.xslt" ) ) );
 
         // now lets style the given document
         DocumentSource source = new DocumentSource( document );
         DocumentResult result = new DocumentResult();
-        try
-        {
-            transformer.transform( source, result );
-        }
-        catch ( TransformerException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+        transformer.transform( source, result );
 
         // return the transformed document
         Document transformedDoc = result.getDocument();

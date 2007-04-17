@@ -620,6 +620,10 @@ public class PartitionDetailsPage implements IDetailsPage
     public void commit( boolean onSave )
     {
         input.setName( nameText.getText() );
+        input.setCacheSize( Integer.parseInt( cacheSizeText.getText() ) );
+        input.setSuffix( suffixText.getText() );
+        input.setEnableOptimizer( enableOptimizerCheckbox.getSelection() );
+        input.setSynchronizationOnWrite( synchOnWriteCheckbox.getSelection() );
     }
 
 

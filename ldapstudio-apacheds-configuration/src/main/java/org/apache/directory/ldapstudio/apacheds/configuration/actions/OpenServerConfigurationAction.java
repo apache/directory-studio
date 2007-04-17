@@ -35,7 +35,7 @@ public class OpenServerConfigurationAction extends Action implements IWorkbenchW
     public void run( IAction action )
     {
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN );
-        fd.setText( "Open a Server Configuration file" );
+        fd.setText( "Select a file" );
         fd.setFilterExtensions( new String[]
             { "*.xml", "*.*" } );
         fd.setFilterNames( new String[]
@@ -61,6 +61,7 @@ public class OpenServerConfigurationAction extends Action implements IWorkbenchW
             messageBox.setText( "Error!" );
             messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
             messageBox.open();
+            return;
         }
 
         IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -72,6 +73,7 @@ public class OpenServerConfigurationAction extends Action implements IWorkbenchW
         {
             Activator.getDefault().getLog().log(
                 new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK, e.getMessage(), e.getCause() ) );
+            return;
         }
     }
 

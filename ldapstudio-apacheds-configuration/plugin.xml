@@ -40,6 +40,12 @@
                label="Open..."
                menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
                style="push"/>
+         <action
+               class="org.apache.directory.ldapstudio.apacheds.configuration.actions.NewServerConfigurationAction"
+               id="org.apache.directory.ldapstudio.apacheds.configuration.newServerConfiguration"
+               label="New Configuration file"
+               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
+               style="push"/>
       </actionSet>
    </extension>
    <extension
