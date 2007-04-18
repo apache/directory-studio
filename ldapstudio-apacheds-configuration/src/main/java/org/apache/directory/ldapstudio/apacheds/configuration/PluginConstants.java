@@ -28,6 +28,7 @@ package org.apache.directory.ldapstudio.apacheds.configuration;
  */
 public interface PluginConstants
 {
+    // Images
     public static final String IMG_VERTICAL_ORIENTATION = "icons/vertical_orientation.gif";
     public static final String IMG_HORIZONTAL_ORIENTATION = "icons/horizontal_orientation.gif";
     public static final String IMG_PARTITION = "icons/partition.gif";

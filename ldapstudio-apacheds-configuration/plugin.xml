@@ -29,22 +29,16 @@
                id="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu"
                label="Apache DS"/>
          <action
-               class="org.apache.directory.ldapstudio.apacheds.configuration.actions.OpenEditorAction"
-               id="org.apache.directory.ldapstudio.apacheds.configuration.openEditor"
-               label="Open Editor"
-               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
-               style="push"/>
-         <action
                class="org.apache.directory.ldapstudio.apacheds.configuration.actions.OpenServerConfigurationAction"
                id="org.apache.directory.ldapstudio.apacheds.configuration.openServerConfiguration"
-               label="Open..."
+               label="Open Configuration File..."
                menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
                style="push"/>
          <action
                class="org.apache.directory.ldapstudio.apacheds.configuration.actions.NewServerConfigurationAction"
                id="org.apache.directory.ldapstudio.apacheds.configuration.newServerConfiguration"
-               label="New Configuration file"
-               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
+               label="New Configuration File"
+               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/new"
                style="push"/>
       </actionSet>
    </extension>

@@ -22,6 +22,7 @@ package org.apache.directory.ldapstudio.apacheds.configuration.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,7 +37,6 @@ import org.apache.directory.shared.ldap.message.AttributesImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -65,15 +65,13 @@ public class ServerConfigurationParser
     {
         try
         {
-            Document document = parseAndGetDocument( path );
+            SAXReader reader = new SAXReader();
+            Document document = reader.read( path );
+
             ServerConfiguration serverConfiguration = new ServerConfiguration();
             serverConfiguration.setPath( path );
 
-            // Reading the 'Environment' Bean
-            readEnvironmentBean( document, serverConfiguration );
-
-            // Reading the 'Configuration' Bean
-            readConfigurationBean( document, serverConfiguration );
+            parse( document, serverConfiguration );
 
             return serverConfiguration;
         }
@@ -95,20 +93,65 @@ public class ServerConfigurationParser
 
 
     /**
-     * Parses the ServerConfiguration File and get the associated DOM4J Document.
+     * Parses a 'server.xml' file located at the given path and returns 
+     * the corresponding ServerConfiguration Object.
      *
-     * @param path
-     *      the path of the file to parse
+     * @param inputStream
+     *      the Input Stream of the file to parse
      * @return
-     *      the associated Document
-     * @throws DocumentException
-     *      if an error occurrs during parsing
+     *      the corresponding ServerConfiguration Object
+     * @throws ServerConfigurationParserException
+     *      if an error occurrs when reading the Server Configuration file
      */
-    private Document parseAndGetDocument( String path ) throws DocumentException
+    public ServerConfiguration parse( InputStream inputStream ) throws ServerConfigurationParserException
     {
-        SAXReader reader = new SAXReader();
-        Document document = reader.read( path );
-        return document;
+        try
+        {
+            SAXReader reader = new SAXReader();
+            Document document = reader.read( inputStream );
+
+            ServerConfiguration serverConfiguration = new ServerConfiguration();
+
+            parse( document, serverConfiguration );
+
+            return serverConfiguration;
+        }
+        catch ( Exception e )
+        {
+            if ( e instanceof ServerConfigurationParserException )
+            {
+                throw ( ServerConfigurationParserException ) e;
+            }
+            else
+            {
+                ServerConfigurationParserException exception = new ServerConfigurationParserException( e.getMessage(),
+                    e.getCause() );
+                exception.setStackTrace( e.getStackTrace() );
+                throw exception;
+            }
+        }
+    }
+
+
+    /**
+     * Parses the Document.
+     *
+     * @param document
+     *      the Document
+     * @param serverConfiguration
+     *      the Server Configuration
+     * @throws NumberFormatException
+     * @throws BooleanFormatException
+     * @throws ServerConfigurationParserException
+     */
+    private void parse( Document document, ServerConfiguration serverConfiguration ) throws NumberFormatException,
+        BooleanFormatException, ServerConfigurationParserException
+    {
+        // Reading the 'Environment' Bean
+        readEnvironmentBean( document, serverConfiguration );
+
+        // Reading the 'Configuration' Bean
+        readConfigurationBean( document, serverConfiguration );
     }
 
 

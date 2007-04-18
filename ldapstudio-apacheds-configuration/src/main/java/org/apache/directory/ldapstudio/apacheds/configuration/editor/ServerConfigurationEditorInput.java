@@ -70,7 +70,7 @@ public class ServerConfigurationEditorInput implements IEditorInput
         String path = serverConfiguration.getPath();
         if ( path == null )
         {
-            return "Unsaved Editor";
+            return "New Configuration File";
         }
         else
         {
