@@ -302,17 +302,7 @@ public class ServerConfigurationParser
     private void readOtherPartitions( Element configurationBean, ServerConfiguration serverConfiguration )
         throws NumberFormatException, BooleanFormatException
     {
-        Element propertyElement = null;
-        for ( Iterator i = configurationBean.elementIterator( "property" ); i.hasNext(); )
-        {
-            Element element = ( Element ) i.next();
-            Attribute nameAttribute = element.attribute( "name" );
-            if ( nameAttribute != null && ( nameAttribute.getValue().equals( "partitionConfigurations" ) ) )
-            {
-                propertyElement = element;
-                break;
-            }
-        }
+        Element propertyElement = getBeanPropertyElement( "partitionConfigurations", configurationBean );
         if ( propertyElement != null )
         {
             Element setElement = propertyElement.element( "set" );
@@ -419,17 +409,7 @@ public class ServerConfigurationParser
     {
         List<IndexedAttribute> indexedAttributes = new ArrayList<IndexedAttribute>();
 
-        Element propertyElement = null;
-        for ( Iterator i = partitionBean.elementIterator( "property" ); i.hasNext(); )
-        {
-            Element element = ( Element ) i.next();
-            Attribute nameAttribute = element.attribute( "name" );
-            if ( nameAttribute != null && ( nameAttribute.getValue().equals( "indexedAttributes" ) ) )
-            {
-                propertyElement = element;
-                break;
-            }
-        }
+        Element propertyElement = getBeanPropertyElement( "indexedAttributes", partitionBean );
         if ( propertyElement != null )
         {
             Element setElement = propertyElement.element( "set" );
@@ -490,17 +470,7 @@ public class ServerConfigurationParser
      */
     private Attributes readPartitionContextEntry( Element partitionBean )
     {
-        Element propertyElement = null;
-        for ( Iterator i = partitionBean.elementIterator( "property" ); i.hasNext(); )
-        {
-            Element element = ( Element ) i.next();
-            Attribute nameAttribute = element.attribute( "name" );
-            if ( nameAttribute != null && ( nameAttribute.getValue().equals( "contextEntry" ) ) )
-            {
-                propertyElement = element;
-                break;
-            }
-        }
+        Element propertyElement = getBeanPropertyElement( "contextEntry", partitionBean );
         if ( propertyElement != null )
         {
             Element valueElement = propertyElement.element( "value" );
@@ -585,17 +555,7 @@ public class ServerConfigurationParser
      */
     private void readInterceptors( Element configurationBean, ServerConfiguration serverConfiguration )
     {
-        Element propertyElement = null;
-        for ( Iterator i = configurationBean.elementIterator( "property" ); i.hasNext(); )
-        {
-            Element element = ( Element ) i.next();
-            Attribute nameAttribute = element.attribute( "name" );
-            if ( nameAttribute != null && ( nameAttribute.getValue().equals( "interceptorConfigurations" ) ) )
-            {
-                propertyElement = element;
-                break;
-            }
-        }
+        Element propertyElement = getBeanPropertyElement( "interceptorConfigurations", configurationBean );
         if ( propertyElement != null )
         {
             Element listElement = propertyElement.element( "list" );
@@ -666,17 +626,7 @@ public class ServerConfigurationParser
      */
     private void readExtendedOperations( Element configurationBean, ServerConfiguration serverConfiguration )
     {
-        Element propertyElement = null;
-        for ( Iterator i = configurationBean.elementIterator( "property" ); i.hasNext(); )
-        {
-            Element element = ( Element ) i.next();
-            Attribute nameAttribute = element.attribute( "name" );
-            if ( nameAttribute != null && ( nameAttribute.getValue().equals( "extendedOperationHandlers" ) ) )
-            {
-                propertyElement = element;
-                break;
-            }
-        }
+        Element propertyElement = getBeanPropertyElement( "extendedOperationHandlers", configurationBean );
         if ( propertyElement != null )
         {
             Element listElement = propertyElement.element( "list" );
@@ -742,16 +692,48 @@ public class ServerConfigurationParser
 
 
     /**
-     * Reads the given property in the Bean and returns it.
+     * Reads the given property in the Bean and returns its value.
      *
      * @param property
      *      the property
      * @param element
-     *      the Configuration Bean Element
+     *      the Bean Element
      * @return
      *      the value of the property, or null if the property has not been found
      */
     private String readBeanProperty( String property, Element element )
+    {
+        Element propertyElement = getBeanPropertyElement( property, element );
+        if ( propertyElement != null )
+        {
+            Attribute valueAttribute = propertyElement.attribute( "value" );
+            if ( valueAttribute != null )
+            {
+                return valueAttribute.getValue();
+            }
+
+            Attribute refAttribute = propertyElement.attribute( "ref" );
+            if ( refAttribute != null )
+            {
+                return refAttribute.getValue();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Gets the given property Element in the the bean
+     *
+     * @param property
+     *      the propery
+     * @param element
+     *      the bean Element
+     * @return
+     *      the associated property, or null if the property has not been found
+     */
+    private Element getBeanPropertyElement( String property, Element element )
     {
         for ( Iterator i = element.elementIterator( "property" ); i.hasNext(); )
         {
@@ -759,17 +741,7 @@ public class ServerConfigurationParser
             Attribute nameAttribute = propertyElement.attribute( "name" );
             if ( nameAttribute != null && ( nameAttribute.getValue().equals( property ) ) )
             {
-                Attribute valueAttribute = propertyElement.attribute( "value" );
-                if ( valueAttribute != null )
-                {
-                    return valueAttribute.getValue();
-                }
-
-                Attribute refAttribute = propertyElement.attribute( "ref" );
-                if ( refAttribute != null )
-                {
-                    return refAttribute.getValue();
-                }
+                return propertyElement;
             }
         }
 
