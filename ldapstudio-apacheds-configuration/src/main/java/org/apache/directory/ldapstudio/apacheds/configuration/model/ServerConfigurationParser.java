@@ -181,7 +181,17 @@ public class ServerConfigurationParser
             serverConfiguration.setPassword( password );
         }
 
-        // TODO Add Other Values...
+        // Binary Attributes
+        String binaryAttributes = readEnvironmentBeanProperty( "java.naming.ldap.attributes.binary", environmentBean );
+        if ( binaryAttributes != null )
+        {
+            String[] attributes = binaryAttributes.split( " " );
+            
+            for( String attribute : attributes)
+            {
+                serverConfiguration.addBinaryAttribute( attribute );
+            }
+        }
     }
 
 
@@ -303,6 +313,13 @@ public class ServerConfigurationParser
         if ( enableChangePassword != null )
         {
             serverConfiguration.setEnableChangePassword( parseBoolean( enableChangePassword ) );
+        }
+
+        // EnableChangePassword
+        String denormalizeOpAttrsEnabled = readBeanProperty( "denormalizeOpAttrsEnabled", configurationBean );
+        if ( denormalizeOpAttrsEnabled != null )
+        {
+            serverConfiguration.setDenormalizeOpAttr( parseBoolean( denormalizeOpAttrsEnabled ) );
         }
 
         // SystemPartition

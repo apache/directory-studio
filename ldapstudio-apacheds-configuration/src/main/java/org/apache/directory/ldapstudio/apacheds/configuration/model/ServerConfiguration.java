@@ -71,6 +71,12 @@ public class ServerConfiguration
     /** The flag for Enable Change Password */
     private boolean enableChangePassword;
 
+    /** The flag for Denormalize Operational Attributes */
+    private boolean denormalizeOpAttr;
+
+    /** The Binary Attributes */
+    private List<String> binaryAttributes;
+
     /** The Partitions */
     private List<Partition> partitions;
 
@@ -89,6 +95,7 @@ public class ServerConfiguration
         partitions = new ArrayList<Partition>();
         interceptors = new ArrayList<Interceptor>();
         extendedOperations = new ArrayList<ExtendedOperation>();
+        binaryAttributes = new ArrayList<String>();
     }
 
 
@@ -586,4 +593,88 @@ public class ServerConfiguration
         this.synchronizationPeriod = synchronizationPeriod;
     }
 
+
+    /**
+     * Gets the Denormalize Operational Attributes flag.
+     *
+     * @return
+     *      the Denormalize Operational Attributes flag
+     */
+    public boolean isDenormalizeOpAttr()
+    {
+        return denormalizeOpAttr;
+    }
+
+
+    /**
+     * Sets the Denormalize Operational Attributes flag.
+     *
+     * @param denormalizeOpAttr
+     *      the new Denormalize Operational Attributes flag
+     */
+    public void setDenormalizeOpAttr( boolean denormalizeOpAttr )
+    {
+        this.denormalizeOpAttr = denormalizeOpAttr;
+    }
+
+
+    /**
+     * Gets the Binary Attributes List.
+     *
+     * @return
+     *      the Binary Attributes  List
+     */
+    public List<String> getBinaryAttributes()
+    {
+        return binaryAttributes;
+    }
+
+
+    /**
+     * Sets the Binary Attributes  List.
+     *
+     * @param binaryAttributes
+     *      the new value
+     */
+    public void setBinaryAttributes( List<String> binaryAttributes )
+    {
+        this.binaryAttributes = binaryAttributes;
+    }
+
+
+    /**
+     * Adds a Binary Attribute.
+     *
+     * @param binaryAttribute
+     *      the Partition to add
+     * @return
+     *      true (as per the general contract of the Collection.add method).
+     */
+    public boolean addBinaryAttribute( String binaryAttribute )
+    {
+        return binaryAttributes.add( binaryAttribute );
+    }
+
+
+    /**
+     * Removes a Binary Attribute.
+     *
+     * @param binaryAttribute
+     *      the Binary Attribute to remove
+     * @return
+     *      true if this list contained the specified element.
+     */
+    public boolean removeBinaryAttribute( String binaryAttribute )
+    {
+        return binaryAttributes.remove( binaryAttribute );
+    }
+
+
+    /**
+     * Removes all Binary Attributes.
+     */
+    public void clearBinaryAttributes()
+    {
+        binaryAttributes.clear();
+    }
 }

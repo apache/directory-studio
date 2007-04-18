@@ -128,6 +128,22 @@ public class ServerConfigurationWriter
         propElement = propsElement.addElement( "prop" );
         propElement.addAttribute( "key", "java.naming.security.credentials" );
         propElement.setText( serverConfiguration.getPassword() );
+
+        // Key 'java.naming.ldap.attributes.binary'
+        if ( !serverConfiguration.getBinaryAttributes().isEmpty() )
+        {
+            propElement = propsElement.addElement( "prop" );
+            propElement.addAttribute( "key", "java.naming.ldap.attributes.binary" );
+            StringBuffer sb = new StringBuffer();
+            for ( String attribute : serverConfiguration.getBinaryAttributes() )
+            {
+                sb.append( attribute );
+                sb.append( " " );
+            }
+            String attributes = sb.toString();
+            propElement.setText( attributes.substring( 0, attributes.length() - 1 ) );
+        }
+
     }
 
 
@@ -199,7 +215,7 @@ public class ServerConfigurationWriter
         // DenormalizeOpAttrsEnabled
         propertyElement = configurationBean.addElement( "property" );
         propertyElement.addAttribute( "name", "denormalizeOpAttrsEnabled" );
-        propertyElement.addAttribute( "value", "false" ); // TODO Add a UI Field for editing this value.
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isDenormalizeOpAttr() );
 
         // LdapPort
         propertyElement = configurationBean.addElement( "property" );

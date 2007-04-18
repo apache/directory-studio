@@ -20,12 +20,26 @@
 package org.apache.directory.ldapstudio.apacheds.configuration.editor;
 
 
+import java.util.List;
+
+import org.apache.directory.ldapstudio.apacheds.configuration.dialogs.BinaryAttributeDialog;
 import org.apache.directory.ldapstudio.apacheds.configuration.model.ServerConfiguration;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -33,6 +47,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -58,6 +73,9 @@ public class GeneralPage extends FormPage
     /** The Page Title */
     private static final String TITLE = "General";
 
+    /** The Binary Attribute List */
+    private List<String> binaryAttributes;
+
     // UI Fields
     private Text portText;
     private Combo authenticationCombo;
@@ -73,6 +91,11 @@ public class GeneralPage extends FormPage
     private Button enableNTPCheckbox;
     private Button enableKerberosCheckbox;
     private Button enableChangePasswordCheckbox;
+    private Button denormalizeOpAttrCheckbox;
+    private TableViewer binaryAttributesTableViewer;
+    private Button binaryAttributesAddButton;
+    private Button binaryAttributesEditButton;
+    private Button binaryAttributesDeleteButton;
 
 
     /**
@@ -96,10 +119,13 @@ public class GeneralPage extends FormPage
         form.setText( "General" );
 
         Composite parent = form.getBody();
-        parent.setLayout( new TableWrapLayout() );
+        TableWrapLayout twl = new TableWrapLayout();
+        twl.numColumns = 2;
+        parent.setLayout( twl );
         FormToolkit toolkit = managedForm.getToolkit();
 
         createSettingsSection( parent, toolkit );
+        createBinaryAttributesSection( parent, toolkit );
         createLimitsSection( parent, toolkit );
         createOptionsSection( parent, toolkit );
 
@@ -213,7 +239,7 @@ public class GeneralPage extends FormPage
         section.setLayoutData( td );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 4, false );
+        GridLayout glayout = new GridLayout( 2, false );
         client.setLayout( glayout );
         section.setClient( client );
 
@@ -299,7 +325,7 @@ public class GeneralPage extends FormPage
         section.setLayoutData( td );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 2, true );
+        GridLayout glayout = new GridLayout();
         client.setLayout( glayout );
         section.setClient( client );
 
@@ -318,6 +344,59 @@ public class GeneralPage extends FormPage
         // Enable Change Password
         enableChangePasswordCheckbox = toolkit.createButton( client, "Enable Change Password", SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Denormalize Operational Attributes
+        denormalizeOpAttrCheckbox = toolkit.createButton( client, "Denormalize Operational Attributes", SWT.CHECK );
+        denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+    }
+
+
+    /**
+     * Creates the Options Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createBinaryAttributesSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        section.marginWidth = 4;
+        section.setText( "Binary Attributes" );
+        section
+            .setDescription( "Set attribute type names and OID's if you want an them to be handled as binary content." );
+        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        td.grabHorizontal = true;
+        section.setLayoutData( td );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        GridLayout glayout = new GridLayout( 2, false );
+        client.setLayout( glayout );
+        section.setClient( client );
+
+        Table binaryAttributesTable = toolkit.createTable( client, SWT.NONE );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
+        gd.heightHint = 103;
+        binaryAttributesTable.setLayoutData( gd );
+        binaryAttributesTableViewer = new TableViewer( binaryAttributesTable );
+        binaryAttributesTableViewer.setContentProvider( new ArrayContentProvider() );
+        binaryAttributesTableViewer.setLabelProvider( new LabelProvider() );
+
+        GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
+        buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
+
+        binaryAttributesAddButton = toolkit.createButton( client, "Add...", SWT.PUSH );
+        binaryAttributesAddButton.setLayoutData( buttonsGD );
+
+        binaryAttributesEditButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
+        binaryAttributesEditButton.setEnabled( false );
+        binaryAttributesEditButton.setLayoutData( buttonsGD );
+
+        binaryAttributesDeleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
+        binaryAttributesDeleteButton.setEnabled( false );
+        binaryAttributesDeleteButton.setLayoutData( buttonsGD );
     }
 
 
@@ -328,6 +407,9 @@ public class GeneralPage extends FormPage
     {
         ServerConfiguration configuration = ( ( ServerConfigurationEditorInput ) getEditorInput() )
             .getServerConfiguration();
+
+        binaryAttributes = configuration.getBinaryAttributes();
+        binaryAttributesTableViewer.setInput( binaryAttributes );
 
         // Port
         portText.setText( "" + configuration.getPort() );
@@ -372,6 +454,9 @@ public class GeneralPage extends FormPage
 
         // Enable Change Password
         enableChangePasswordCheckbox.setSelection( configuration.isEnableChangePassword() );
+
+        // Denormalize Op Attr
+        denormalizeOpAttrCheckbox.setSelection( configuration.isDenormalizeOpAttr() );
     }
 
 
@@ -380,109 +465,138 @@ public class GeneralPage extends FormPage
      */
     private void addListeners()
     {
-        portText.addModifyListener( new ModifyListener()
+        // The Modify Listener
+        ModifyListener modifyListener = new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
                 setEditorDirty();
             }
-        } );
+        };
 
-        authenticationCombo.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                setEditorDirty();
-            }
-        } );
-
-        principalText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                setEditorDirty();
-            }
-        } );
-
-        passwordText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                setEditorDirty();
-            }
-        } );
-
-        allowAnonymousAccessCheckbox.addSelectionListener( new SelectionAdapter()
+        //  The Selection Listener
+        SelectionListener selectionListener = new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 setEditorDirty();
             }
-        } );
+        };
 
-        maxTimeLimitText.addModifyListener( new ModifyListener()
+        // The ISelectionChangedListener for the Binary Attributes Table
+        ISelectionChangedListener binaryAttributesTableViewerListener = new ISelectionChangedListener()
         {
-            public void modifyText( ModifyEvent e )
+            public void selectionChanged( SelectionChangedEvent event )
             {
-                setEditorDirty();
+                binaryAttributesEditButton.setEnabled( !event.getSelection().isEmpty() );
+                binaryAttributesDeleteButton.setEnabled( !event.getSelection().isEmpty() );
             }
-        } );
+        };
 
-        maxSizeLimitText.addModifyListener( new ModifyListener()
+        // The IDoubleClickListener for the Binary Attributes Table
+        IDoubleClickListener binaryAttributesTableViewerDoubleClickListener = new IDoubleClickListener()
         {
-            public void modifyText( ModifyEvent e )
+            public void doubleClick( DoubleClickEvent event )
             {
-                setEditorDirty();
+                editSelectedBinaryAttribute();
             }
-        } );
+        };
 
-        synchPeriodText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                setEditorDirty();
-            }
-        } );
-
-        maxThreadsText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                setEditorDirty();
-            }
-        } );
-
-        enableAccesControlCheckbox.addSelectionListener( new SelectionAdapter()
+        // The SelectionListener for the Binary Attributes Add Button
+        SelectionListener binaryAttributesAddButtonListener = new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                setEditorDirty();
-            }
-        } );
+                BinaryAttributeDialog dialog = new BinaryAttributeDialog( "" );
+                if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+                {
+                    String newAttribute = dialog.getAttribute();
+                    if ( newAttribute != null && !"".equals( newAttribute )
+                        && !binaryAttributes.contains( newAttribute ) )
+                    {
+                        binaryAttributes.add( newAttribute );
 
-        enableNTPCheckbox.addSelectionListener( new SelectionAdapter()
+                        binaryAttributesTableViewer.refresh();
+                        setEditorDirty();
+                    }
+                }
+            }
+        };
+
+        // The SelectionListener for the Binary Attributes Edit Button
+        SelectionListener binaryAttributesEditButtonListener = new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                setEditorDirty();
+                editSelectedBinaryAttribute();
             }
-        } );
+        };
 
-        enableKerberosCheckbox.addSelectionListener( new SelectionAdapter()
+        // The SelectionListener for the Binary Attributes Delete Button
+        SelectionListener binaryAttributesDeleteButtonListener = new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                setEditorDirty();
-            }
-        } );
+                StructuredSelection selection = ( StructuredSelection ) binaryAttributesTableViewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    String attribute = ( String ) selection.getFirstElement();
+                    binaryAttributes.remove( attribute );
 
-        enableChangePasswordCheckbox.addSelectionListener( new SelectionAdapter()
+                    binaryAttributesTableViewer.refresh();
+                    setEditorDirty();
+                }
+            }
+        };
+
+        portText.addModifyListener( modifyListener );
+        authenticationCombo.addModifyListener( modifyListener );
+        principalText.addModifyListener( modifyListener );
+        passwordText.addModifyListener( modifyListener );
+        allowAnonymousAccessCheckbox.addSelectionListener( selectionListener );
+        maxTimeLimitText.addModifyListener( modifyListener );
+        maxSizeLimitText.addModifyListener( modifyListener );
+        synchPeriodText.addModifyListener( modifyListener );
+        maxThreadsText.addModifyListener( modifyListener );
+        enableAccesControlCheckbox.addSelectionListener( selectionListener );
+        enableNTPCheckbox.addSelectionListener( selectionListener );
+        enableKerberosCheckbox.addSelectionListener( selectionListener );
+        enableChangePasswordCheckbox.addSelectionListener( selectionListener );
+        denormalizeOpAttrCheckbox.addSelectionListener( selectionListener );
+        binaryAttributesTableViewer.addSelectionChangedListener( binaryAttributesTableViewerListener );
+        binaryAttributesTableViewer.addDoubleClickListener( binaryAttributesTableViewerDoubleClickListener );
+        binaryAttributesAddButton.addSelectionListener( binaryAttributesAddButtonListener );
+        binaryAttributesEditButton.addSelectionListener( binaryAttributesEditButtonListener );
+        binaryAttributesDeleteButton.addSelectionListener( binaryAttributesDeleteButtonListener );
+    }
+
+
+    /**
+     * Opens a Binary Attribute Dialog with the selected Attribute Value Object in the
+     * Binary Attributes Table Viewer.
+     */
+    private void editSelectedBinaryAttribute()
+    {
+        StructuredSelection selection = ( StructuredSelection ) binaryAttributesTableViewer.getSelection();
+        if ( !selection.isEmpty() )
         {
-            public void widgetSelected( SelectionEvent e )
+            String oldAttribute = ( String ) selection.getFirstElement();
+
+            BinaryAttributeDialog dialog = new BinaryAttributeDialog( oldAttribute );
+            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
             {
+                binaryAttributes.remove( oldAttribute );
+
+                String newAttribute = dialog.getAttribute();
+                if ( newAttribute != null && !"".equals( newAttribute ) && !binaryAttributes.contains( newAttribute ) )
+                {
+                    binaryAttributes.add( newAttribute );
+                }
+
+                binaryAttributesTableViewer.refresh();
                 setEditorDirty();
             }
-        } );
+        }
     }
 
 
@@ -515,5 +629,6 @@ public class GeneralPage extends FormPage
         serverConfiguration.setEnableNTP( enableNTPCheckbox.getSelection() );
         serverConfiguration.setEnableKerberos( enableKerberosCheckbox.getSelection() );
         serverConfiguration.setEnableChangePassword( enableChangePasswordCheckbox.getSelection() );
+        serverConfiguration.setDenormalizeOpAttr( denormalizeOpAttrCheckbox.getSelection() );
     }
 }
