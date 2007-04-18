@@ -19,20 +19,7 @@
 <ivy-module version="1.0">
     <info organisation="org.apache.directory.ldapstudio" module="ldapdtudio-apacheds-configuration"/>
     <dependencies>
-		<!-- <dependency org="commons-configuration" name="commons-configuration" rev="1.2"/> -->
-		<dependency org="org.springframework" name="spring-context" rev="1.2.8"/>
-		<dependency org="org.apache.directory.server" name="apacheds-core" rev="1.5.1-SNAPSHOT"/>
-		<dependency org="org.apache.directory.server" name="apacheds-schema-registries" rev="1.5.1-SNAPSHOT"/>
-		<dependency org="org.apache.directory.server" name="apacheds-jdbm-store" rev="1.5.1-SNAPSHOT"/>
-		<dependency org="org.apache.directory.server" name="apacheds-btree-base" rev="1.5.1-SNAPSHOT"/>
-		<dependency org="org.apache.directory.server" name="apacheds-server-jndi" rev="1.5.1-SNAPSHOT"/>
-		<dependency org="org.apache.directory.server" name="apacheds-protocol-ldap" rev="1.5.1-SNAPSHOT"/>
 		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.7-SNAPSHOT"/>
-		<dependency org="org.apache.directory.shared" name="shared-ldap-constants" rev="0.9.7-SNAPSHOT"/>
-		<dependency org="org.apache.directory.shared" name="shared-asn1" rev="0.9.7-SNAPSHOT"/>
-		<dependency org="org.apache.directory.shared" name="shared-asn1-codec" rev="0.9.7-SNAPSHOT"/>
-		<dependency org="org.apache.mina" name="mina-core" rev="1.0.2"/>
-		<dependency org="jdbm" name="jdbm" rev="1.0"/>
 		<dependency org="org.dom4j" name="dom4j" rev="1.6.1"/>
     </dependencies>
 </ivy-module>

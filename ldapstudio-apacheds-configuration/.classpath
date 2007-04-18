@@ -5,24 +5,12 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="lib/apacheds-btree-base-1.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/apacheds-core-1.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/apacheds-jdbm-store-1.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/apacheds-protocol-ldap-1.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/apacheds-schema-registries-1.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/apacheds-server-jndi-1.5.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/jdbm-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/mina-core-1.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/nlog4j-1.2.25.jar"/>
 	<classpathentry kind="lib" path="lib/shared-asn1-0.9.7-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/shared-asn1-codec-0.9.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/shared-ldap-0.9.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/shared-ldap-constants-0.9.7-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/spring-beans-1.2.8.jar"/>
-	<classpathentry kind="lib" path="lib/spring-context-1.2.8.jar"/>
-	<classpathentry kind="lib" path="lib/spring-core-1.2.8.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
