@@ -182,8 +182,11 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
-        input.setName( nameText.getText() );
-        input.setClassType( classText.getText() );
+        if ( input != null )
+        {
+            input.setName( nameText.getText() );
+            input.setClassType( classText.getText() );
+        }
     }
 
 

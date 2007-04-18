@@ -176,7 +176,10 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
-        input.setClassType( classTypeText.getText() );
+        if ( input != null )
+        {
+            input.setClassType( classTypeText.getText() );
+        }
     }
 
 
