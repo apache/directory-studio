@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDAP Studio Help Plugin
+Bundle-SymbolicName: org.apache.directory.ldapstudio.schemas.feature;singleton:=true
+Bundle-Version: 0.7.0
+Bundle-Localization: plugin
+Eclipse-LazyStart: true
+Bundle-Vendor: Apache Software Foundation
