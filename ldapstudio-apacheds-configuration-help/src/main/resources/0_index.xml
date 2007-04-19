@@ -328,6 +328,306 @@
 					for Operational Attributes on the server.</para>
 				</simplesect>
 	    	</section>
+	    	
+	    	<!-- CONFIGURATION EDITOR PARTITIONS PAGE SECTION -->
+			<section id="configuration_editor_partitions">
+				<title>Partitions Page</title>
+				<para>
+					The <emphasis role="strong">Partitions Page</emphasis> of the Configuration Editor allows you 
+					to edit the server partitions.
+				</para>
+				<para>
+					The page is divided vertically in two parts.
+				</para>
+				<para>
+					You can choose the orientation of the page by clicking on the appropriate button ("Horizontal 
+					Orientation" 
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/gettingstarted/horizontal_orientation.gif" format="GIF" />
+						</imageobject>
+					 or "Vertical Orientation" 
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/gettingstarted/vertical_orientation.gif" format="GIF" />
+						</imageobject>) at the right of the page.
+				</para>
+				<para>
+					The left side of the page shows the partitions defined on the server. This is where you 
+					can add or delete a partition.
+				</para>
+				<screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata scale="50"
+						    	fileref="images/gettingstarted/partitions_page_partitions_list.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+				<para>
+					The right side of the page display and lets you edit the details of the selected 
+					partition in the left side.
+				</para>
+				
+				<simplesect id="partitions_partition_details">
+					<title>Partition details</title>
+					<screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/gettingstarted/partitions_page_partition_details.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+					<para>A <emphasis role="strong">Name</emphasis> is mandatory for the partition.</para>
+					<para>A <emphasis role="strong">Cache Size</emphasis> is mandatory for the partition.</para>
+					<para>Check the <emphasis role="strong">Enable Optimizer</emphasis> checkbox to enable the 
+					optimizer for the partition.</para>
+					<para>Check the <emphasis role="strong">Synchronization On Write</emphasis> checkbox to 
+					enable the synchronization on write for the partition.</para>
+				</simplesect>
+				
+				<simplesect id="partitions_context_entry">
+					<title>Context Entry</title>
+					<para>This section allows you to specify to the server the attribute/value pairs that will 
+					be used for the Context Entry of the partition.</para>
+					<screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/gettingstarted/partitions_page_context_entry.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+					<para>Use the <emphasis role="strong">Add...</emphasis>, <emphasis role="strong">Edit...</emphasis> 
+					and <emphasis role="strong">Delete</emphasis> buttons to set your values.</para>
+				</simplesect>
+				
+				<simplesect id="partitions_indexed_attributes">
+					<title>Indexed Attributes</title>
+					<para>This section allows you to specify to the server the attributes that should be 
+					indexed and the their cache size.</para>
+					<screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/gettingstarted/partitions_page_indexed_attributes.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+					<para>Use the <emphasis role="strong">Add...</emphasis>, <emphasis role="strong">Edit...</emphasis> 
+					and <emphasis role="strong">Delete</emphasis> buttons to set the indexed attributes.</para>
+				</simplesect>
+				<para>
+				</para>
+				<para>
+					The following icons can appear in the Partitions Page.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/partition.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Standard Partition</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/partition_system.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>System Partition</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+	    	</section>
+	    	
+	    	<!-- CONFIGURATION EDITOR INTERCEPTORS PAGE SECTION -->
+			<section id="configuration_editor_interceptors">
+				<title>Interceptors Page</title>
+				<para>
+					The <emphasis role="strong">Interceptors Page</emphasis> of the Configuration Editor allows you 
+					to edit the server interceptors.
+				</para>
+				<para>
+					The page is divided vertically in two parts.
+				</para>
+				<para>
+					You can choose the orientation of the page by clicking on the appropriate button ("Horizontal 
+					Orientation" 
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/gettingstarted/horizontal_orientation.gif" format="GIF" />
+						</imageobject>
+					 or "Vertical Orientation" 
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/gettingstarted/vertical_orientation.gif" format="GIF" />
+						</imageobject>) at the right of the page.
+				</para>
+				<para>
+					The left side of the page shows the interceptors defined on the server. This is where you 
+					can add or delete an interceptor.
+				</para> 
+				<para>
+					You can also choose the order of the interceptors in the interceptors' chain using the "Up" and "Down" buttons.
+				</para>
+				<screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata scale="50"
+						    	fileref="images/gettingstarted/interceptors_page_interceptors_list.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+				<para>
+					The right side of the page display and lets you edit the details of the selected 
+					partition in the left side.
+				</para>
+				
+				<simplesect id="interceptors_interceptor_details">
+					<title>Interceptor details</title>
+					<screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/gettingstarted/interceptors_page_interceptor_details.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+					<para>A <emphasis role="strong">Name</emphasis> is mandatory for the interceptor.</para>
+					<para>The <emphasis role="strong">Class</emphasis> of the interceptor is mandatory.</para>
+				</simplesect>
+				<para>
+				</para>
+				<para>
+					The following icons can appear in the Interceptors Page.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/interceptor.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Interceptor</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+	    	</section>
+	    	
+	    	<!-- CONFIGURATION EDITOR EXTENDED OPERATIONS PAGE SECTION -->
+			<section id="configuration_editor_extended_operations">
+				<title>Extended Operations Page</title>
+				<para>
+					The <emphasis role="strong">Extended Operations Page</emphasis> of the Configuration Editor allows you 
+					to edit the server extended operations.
+				</para>
+				<para>
+					The page is divided vertically in two parts.
+				</para>
+				<para>
+					You can choose the orientation of the page by clicking on the appropriate button ("Horizontal 
+					Orientation" 
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/gettingstarted/horizontal_orientation.gif" format="GIF" />
+						</imageobject>
+					 or "Vertical Orientation" 
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/gettingstarted/vertical_orientation.gif" format="GIF" />
+						</imageobject>) at the right of the page.
+				</para>
+				<para>
+					The left side of the page shows the extended operations defined on the server. This is where you 
+					can add or delete an extended operation.
+				</para>
+				<screenshot>
+				    <mediaobject>
+					    <imageobject>
+						    <imagedata scale="50"
+						    	fileref="images/gettingstarted/extended_operations_page_extended_operations_list.png" format="PNG" />
+					    </imageobject>
+				    </mediaobject>
+			    </screenshot>
+				<para>
+					The right side of the page display and lets you edit the details of the selected 
+					partition in the left side.
+				</para>
+				
+				<simplesect id="extended_operations_extended_operation_details">
+					<title>Extended Operation details</title>
+					<screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/gettingstarted/extended_operations_page_extended_operation_details.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+					<para>The <emphasis role="strong">Class</emphasis> of the extended operation is mandatory.</para>
+				</simplesect>
+				<para>
+				</para>
+				<para>
+					The following icons can appear in the Extended Operations Page.
+				</para>
+				<para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/gettingstarted/extended_operation.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Extended Operation</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+	    	</section>	    	
 	    </section>
 	</chapter>
 	
