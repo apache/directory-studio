@@ -1,0 +1,55 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<project default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	<property name="project.name" value="org.apache.directory.ldapstudio.schemas.feature" />
+	<property name="project.version" value="0.7.0" />
+
+	<property name="project.output" value="${basedir}/target" />
+		
+	<!-- ================================== -->
+	<!--                                       JAR                                   -->
+	<!-- ================================== -->
+	<target name="jar" description="Creates jar file">
+		<mkdir dir="${project.output}" />
+		<jar destfile="${project.output}/${project.name}_${project.version}.jar">
+			<fileset dir="${basedir}">
+				<exclude name=".project"/>
+				<exclude name="build.properties"/>
+				<exclude name="build.xml"/>
+				<exclude name="target/**"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<!-- ================================== -->
+	<!--                                       CLEAN                              -->
+	<!-- ================================== -->
+	<target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
+		<delete includeemptydirs="true">
+			<fileset dir="${basedir}">
+				<exclude name=".project"/>
+				<exclude name="build.properties"/>
+				<exclude name="build.xml"/>
+				<exclude name="feature.xml"/>
+				<exclude name="ldapstudio.png"/>
+				<exclude name="META-INF/**"/>
+			</fileset>
+		</delete>
+	</target>
+</project>
