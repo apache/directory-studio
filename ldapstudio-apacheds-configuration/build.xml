@@ -70,6 +70,11 @@
 				<include name="*.jar" />
 			</fileset>
 		</copy>
+		<copy todir="${project.build}">
+			<fileset dir="${basedir}/src/main/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
 		<mkdir dir="${build}/META-INF" />
 		<copy todir="${build}/META-INF">
 			<fileset dir="${basedir}/META-INF">
