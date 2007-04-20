@@ -70,7 +70,7 @@
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		<copy todir="${project.build}">
+		<copy todir="${build}">
 			<fileset dir="${basedir}/src/main/resources">
 				<include name="**" />
 			</fileset>
