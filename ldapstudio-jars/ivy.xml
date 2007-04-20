@@ -20,5 +20,6 @@
 	<info organisation="org.apache.directory.ldapstudio" module="ldapdstudio-jars"/>
 	<dependencies>
 		<dependency org="antlr" name="antlr" rev="2.7.6"/>
+    	<dependency org="org.apache.directory.ldapstudio" name="ldapstudio-dsml-parser" rev="0.3"/>
     </dependencies>
 </ivy-module>

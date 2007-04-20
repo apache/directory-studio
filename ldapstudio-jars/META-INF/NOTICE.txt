@@ -3,5 +3,4 @@ Apache Directory LDAP StudioCopyright 2007 The Apache Software FoundationThis
 This product uses Ivy (http://www.jayasoft.fr/).
 
 This product uses Ant (http://ant.apache.org/).
-
-This product includes a distribution ANTLR 2 (http://www.antlr.org).
+This product includes a distribution ANTLR 2 (http://www.antlr.org).This product includes a distribution Dom4j (http://www.dom4j.org).
