@@ -5,12 +5,5 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/nlog4j-1.2.25.jar"/>
-	<classpathentry kind="lib" path="lib/shared-asn1-0.9.7-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/shared-ldap-0.9.7-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/shared-ldap-constants-0.9.7-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

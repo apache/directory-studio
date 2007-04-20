@@ -18,8 +18,4 @@
 -->
 <ivy-module version="1.0">
     <info organisation="org.apache.directory.ldapstudio" module="ldapdtudio-apacheds-configuration"/>
-    <dependencies>
-		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.7-SNAPSHOT"/>
-		<dependency org="org.dom4j" name="dom4j" rev="1.6.1"/>
-    </dependencies>
 </ivy-module>
