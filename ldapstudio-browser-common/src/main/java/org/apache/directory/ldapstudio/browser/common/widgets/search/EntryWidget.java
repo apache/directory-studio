@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.common.widgets.search;
@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Composite;
 
 
 /**
- * The EntryWidget could be used to select an entry. 
+ * The EntryWidget could be used to select an entry.
  * It is composed
  * <ul>
  * <li>a combo to manually enter an DN or to choose one from
@@ -53,13 +53,13 @@ import org.eclipse.swt.widgets.Composite;
  * <li>an up button to switch to the parent's DN
  * <li>a browse button to open a {@link SelectEntryDialog}
  * </ul>
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
 public class EntryWidget extends BrowserWidget
 {
-    
+
     /** The DN combo. */
     private Combo dnCombo;
 
@@ -101,7 +101,7 @@ public class EntryWidget extends BrowserWidget
 
     /**
      * Creates the widget.
-     * 
+     *
      * @param parent the parent
      */
     public void createWidget( final Composite parent )
@@ -114,7 +114,7 @@ public class EntryWidget extends BrowserWidget
         gd.horizontalSpan = 1;
         gd.widthHint = 200;
         dnCombo.setLayoutData( gd );
-        
+
         // DN history
         String[] history = HistoryUtils.load( BrowserCommonConstants.DIALOGSETTING_KEY_DN_HISTORY );
         dnCombo.setItems( history );
@@ -135,7 +135,7 @@ public class EntryWidget extends BrowserWidget
                 notifyListeners();
             }
         } );
-        
+
         // Up button
         upButton = new Button( textAndUpComposite, SWT.PUSH );
         upButton.setToolTipText( "Parent" );
@@ -174,7 +174,7 @@ public class EntryWidget extends BrowserWidget
                             entry = job.getReadEntry();
                         }
                     }
-                    
+
                     if( entry == null )
                     {
                         entry = connection.getRootDSE();
@@ -217,7 +217,7 @@ public class EntryWidget extends BrowserWidget
 
     /**
      * Sets the enabled state of the widget.
-     * 
+     *
      * @param b true to enable the widget, false to disable the widget
      */
     public void setEnabled( boolean b )
@@ -253,9 +253,9 @@ public class EntryWidget extends BrowserWidget
 
 
     /**
-     * Gets the DN.
-     * 
-     * @return the DN
+     * Gets the DN or <code>null</code> if the DN isn't valid.
+     *
+     * @return the DN or <code>null</code> if the DN isn't valid
      */
     public DN getDn()
     {
@@ -265,7 +265,7 @@ public class EntryWidget extends BrowserWidget
 
     /**
      * Gets the connection.
-     * 
+     *
      * @return the connection
      */
     public IConnection getConnection()
@@ -276,7 +276,7 @@ public class EntryWidget extends BrowserWidget
 
     /**
      * Sets the input.
-     * 
+     *
      * @param dn the DN
      * @param connection the connection
      */
