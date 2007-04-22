@@ -75,6 +75,9 @@ public class EntryWidget extends BrowserWidget
     /** The selected DN. */
     private DN dn;
 
+    /** The suffix. */
+    private DN suffix;
+
 
     /**
      * Creates a new instance of EntryWidget.
@@ -94,8 +97,22 @@ public class EntryWidget extends BrowserWidget
      */
     public EntryWidget( IConnection connection, DN dn )
     {
+        this( connection, dn, null );
+    }
+
+
+    /**
+     * Creates a new instance of EntryWidget.
+     *
+     * @param connection the connection
+     * @param dn the initial DN
+     * @param suffix the suffix
+     */
+    public EntryWidget( IConnection connection, DN dn, DN suffix )
+    {
         this.connection = connection;
         this.dn = dn;
+        this.suffix = suffix;
     }
 
 
@@ -163,36 +180,59 @@ public class EntryWidget extends BrowserWidget
             {
                 if ( connection != null )
                 {
-                    IEntry entry = null;
-                    if ( dn != null && dn.getRdns().length > 0 )
+                    // get root entry
+                    IEntry rootEntry = connection.getRootDSE();
+                    if( suffix != null && suffix.getRdns().length > 0 )
                     {
-                        entry = connection.getEntryFromCache( dn );
+                        rootEntry = connection.getEntryFromCache( suffix );
+                        if ( rootEntry == null )
+                        {
+                            ReadEntryJob job = new ReadEntryJob( connection, suffix );
+                            RunnableContextJobAdapter.execute( job );
+                            rootEntry = job.getReadEntry();
+                        }
+                    }
+
+                    // calculate initial DN
+                    DN initialDN = dn;
+                    if( suffix != null && suffix.getRdns().length > 0 )
+                    {
+                        if( initialDN != null && initialDN.getRdns().length > 0 )
+                        {
+                            initialDN = new DN( initialDN, suffix );
+                        }
+                    }
+
+                    // get initial entry
+                    IEntry entry = rootEntry;
+                    if ( initialDN != null && initialDN.getRdns().length > 0 )
+                    {
+                        entry = connection.getEntryFromCache( initialDN );
                         if ( entry == null )
                         {
-                            ReadEntryJob job = new ReadEntryJob( connection, dn );
+                            ReadEntryJob job = new ReadEntryJob( connection, initialDN );
                             RunnableContextJobAdapter.execute( job );
                             entry = job.getReadEntry();
                         }
                     }
 
-                    if( entry == null )
-                    {
-                        entry = connection.getRootDSE();
-                    }
 
-                    if ( entry != null )
+                    // open dialog
+                    SelectEntryDialog dialog = new SelectEntryDialog( parent.getShell(), "Select DN", rootEntry, entry );
+                    dialog.open();
+                    IEntry selectedEntry = dialog.getSelectedEntry();
+
+                    // get selected DN
+                    if ( selectedEntry != null )
                     {
-                        SelectEntryDialog dialog = new SelectEntryDialog( parent.getShell(), "Select DN", connection,
-                            entry );
-                        dialog.open();
-                        IEntry selectedEntry = dialog.getSelectedEntry();
-                        if ( selectedEntry != null )
+                        dn = selectedEntry.getDn();
+                        if( suffix != null && suffix.getRdns().length > 0 )
                         {
-                            dn = selectedEntry.getDn();
-                            dnChanged();
-                            internalSetEnabled();
-                            notifyListeners();
+                            dn = dn.getLocalName( suffix );
                         }
+                        dnChanged();
+                        internalSetEnabled();
+                        notifyListeners();
                     }
                 }
             }
@@ -253,6 +293,17 @@ public class EntryWidget extends BrowserWidget
 
 
     /**
+     * Gets the suffix DN or <code>null</code> if not set.
+     *
+     * @return the suffix DN or <code>null</code> if not set
+     */
+    public DN getSuffix()
+    {
+        return suffix;
+    }
+
+
+    /**
      * Gets the DN or <code>null</code> if the DN isn't valid.
      *
      * @return the DN or <code>null</code> if the DN isn't valid
@@ -282,10 +333,24 @@ public class EntryWidget extends BrowserWidget
      */
     public void setInput( IConnection connection, DN dn )
     {
-        if ( this.connection != connection || this.dn != dn )
+        setInput( connection, dn, null );
+    }
+
+
+    /**
+     * Sets the input.
+     *
+     * @param connection the connection
+     * @param dn the DN
+     * @param suffix the suffix
+     */
+    public void setInput( IConnection connection, DN dn, DN suffix )
+    {
+        if ( this.connection != connection || this.dn != dn || this.suffix != suffix )
         {
             this.connection = connection;
             this.dn = dn;
+            this.suffix = suffix;
             dnChanged();
         }
     }

@@ -49,7 +49,7 @@ public class SelectEntryDialog extends Dialog
 
     private Image image;
 
-    private IConnection connection;
+    private IEntry rootEntry;
 
     private IEntry initialEntry;
 
@@ -64,20 +64,20 @@ public class SelectEntryDialog extends Dialog
     private BrowserWidget mainWidget;
 
 
-    public SelectEntryDialog( Shell parentShell, String title, IConnection connection, IEntry initialEntry )
+    public SelectEntryDialog( Shell parentShell, String title, IEntry rootEntry, IEntry initialEntry )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         this.title = title;
-        this.connection = connection;
+        this.rootEntry = rootEntry;
         this.initialEntry = initialEntry;
         this.selectedEntry = null;
     }
 
 
-    public SelectEntryDialog( Shell parentShell, String title, Image image, IConnection connection, IEntry initialEntry )
+    public SelectEntryDialog( Shell parentShell, String title, Image image, IEntry rootEntry, IEntry initialEntry )
     {
-        this( parentShell, title, connection, initialEntry );
+        this( parentShell, title, rootEntry, initialEntry );
         this.image = image;
     }
 
@@ -145,7 +145,7 @@ public class SelectEntryDialog extends Dialog
         this.mainWidget = new BrowserWidget( this.configuration, null );
         this.mainWidget.createWidget( composite );
         this.mainWidget.setInput( new IEntry[]
-            { this.connection.getRootDSE() } );
+            { rootEntry } );
 
         // create actions and context menu (and register global actions)
         this.actionGroup = new BrowserActionGroup( this.mainWidget, this.configuration );
