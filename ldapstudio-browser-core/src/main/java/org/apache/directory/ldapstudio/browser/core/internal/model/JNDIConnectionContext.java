@@ -223,10 +223,6 @@ public class JNDIConnectionContext
                     {
                         this.namingEnumeration = searchCtx.search( searchBase, filter, controls );
                     }
-                    catch ( NameNotFoundException nffe )
-                    {
-
-                    }
                     catch ( NamingException ne )
                     {
                         this.namingException = ne;

@@ -187,7 +187,6 @@ public class Connection implements IConnection, Serializable
 
         try
         {
-
             this.entryToChildrenFilterMap = new HashMap();
             this.dnToEntryCache = new HashMap();
             this.entryToAttributeInfoMap = new HashMap();
@@ -244,7 +243,7 @@ public class Connection implements IConnection, Serializable
 
     public void fetchRootDSE( ExtendedProgressMonitor monitor )
     {
-        if ( this.connectionProvider != null )
+        if ( this.connectionProvider != null && !monitor.errorsReported() )
         {
             try
             {
@@ -256,6 +255,11 @@ public class Connection implements IConnection, Serializable
             {
                 monitor.reportError( BrowserCoreMessages.model__error_loading_rootdse );
                 this.rootDSE = null;
+            }
+
+            if ( monitor.errorsReported() )
+            {
+                close();
             }
         }
     }
@@ -424,9 +428,15 @@ public class Connection implements IConnection, Serializable
         if( !isFetchBaseDNs() && getBaseDN() != null && !"".equals( getBaseDN().toString() ))
         {
             // only add the specified base DN
-            IEntry entry = new BaseDNEntry( new DN( getBaseDN() ), this );
-            rootDSE.addChild( entry );
+            DN dn = getBaseDN();
+            IEntry entry = new BaseDNEntry( new DN( dn ), this );
             cacheEntry( entry );
+            rootDSE.addChild( entry );
+            
+            // check if entry exists
+            search = new Search( null, this, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_OBJECT, 1, 0,
+                IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
+            search( search, monitor );
         }
         else
         {

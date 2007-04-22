@@ -115,7 +115,7 @@ public class ConnectionSearchHandler
             }
             else
             {
-                monitor.reportError( BrowserCoreMessages.model__no_such_entry );
+                monitor.reportError( BrowserCoreMessages.bind( BrowserCoreMessages.model__no_such_entry, dn ) );
                 return null;
             }
         }
