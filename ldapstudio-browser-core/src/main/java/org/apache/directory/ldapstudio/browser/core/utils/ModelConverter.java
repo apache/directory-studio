@@ -6,21 +6,24 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.core.utils;
 
 
+/**
+ * Utilities to convert between models
+ */
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
 import org.apache.directory.ldapstudio.browser.core.internal.model.DummyEntry;
@@ -48,6 +51,18 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifSepLine
 public class ModelConverter
 {
 
+
+    /**
+     * Converts the given {@link LdifContentRecord} to an {@link DummyEntry}.
+     *
+     * @param ldifContentRecord the ldif content record to convert
+     * @param connection the connection
+     *
+     * @return the resulting dummy entry
+     *
+     * @throws ModelModificationException the model modification exception
+     * @throws NameException the name exception
+     */
     public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IConnection connection )
         throws NameException, ModelModificationException
     {
@@ -55,6 +70,17 @@ public class ModelConverter
     }
 
 
+    /**
+     * Converts the given {@link LdifChangeAddRecord} to an {@link DummyEntry}.
+     *
+     * @param ldifChangeAddRecord the ldif change add record to convert
+     * @param connection the connection
+     *
+     * @return the resulting dummy entry
+     *
+     * @throws ModelModificationException the model modification exception
+     * @throws NameException the name exception
+     */
     public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IConnection connection )
         throws NameException, ModelModificationException
     {
@@ -62,10 +88,20 @@ public class ModelConverter
     }
 
 
+    /**
+     * Creates an {@link DummyEntry} from the given {@link LdifRecord}.
+     *
+     * @param connection the connection
+     * @param ldifRecord the ldif record
+     *
+     * @return the dummy entry
+     *
+     * @throws ModelModificationException the model modification exception
+     * @throws NameException the name exception
+     */
     private static DummyEntry createIntern( LdifRecord ldifRecord, IConnection connection ) throws NameException,
         ModelModificationException
     {
-
         LdifPart[] parts = ldifRecord.getParts();
 
         EventRegistry.suspendEventFireingInCurrentThread();

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.ldapstudio.browser.core.utils;
@@ -24,9 +24,22 @@ package org.apache.directory.ldapstudio.browser.core.utils;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 
 
+/**
+ * Utilies for filter handling.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdapFilterUtils
 {
 
+    /**
+     * Creates a filter from the given value.
+     *
+     * @param value the value
+     *
+     * @return the filter
+     */
     public static String getFilter( IValue value )
     {
         if ( value.isString() )
@@ -45,11 +58,15 @@ public class LdapFilterUtils
             {
                 int b = ( int ) bytes[i];
                 if ( b < 0 )
+                {
                     b = 256 + b;
+                }
                 String s = Integer.toHexString( b );
                 filter.append( "\\" );
                 if ( s.length() == 1 )
+                {
                     filter.append( "0" );
+                }
                 filter.append( s );
             }
 
@@ -60,23 +77,26 @@ public class LdapFilterUtils
 
 
     /**
-     * 
-     * From RFC2254:
-     * 
+     * Encodes the given value according RFC2254.
+     *
      * <pre>
-     *  If a value should contain any of the following characters
-     *         Character       ASCII value
-     *         ---------------------------
-     *         *               0x2a
-     *         (               0x28
-     *         )               0x29
-     *         \               0x5c
-     *         NUL             0x00
-     *  the character must be encoded as the backslash '\' character (ASCII
-     *  0x5c) followed by the two hexadecimal digits representing the ASCII
-     *  value of the encoded character. The case of the two hexadecimal
-     *  digits is not significant.
+     * If a value should contain any of the following characters
+     * Character       ASCII value
+     * ---------------------------
+     * *               0x2a
+     * (               0x28
+     * )               0x29
+     * \               0x5c
+     * NUL             0x00
+     * the character must be encoded as the backslash '\' character (ASCII
+     * 0x5c) followed by the two hexadecimal digits representing the ASCII
+     * value of the encoded character. The case of the two hexadecimal
+     * digits is not significant.
      * </pre>
+     *
+     * @param value the value
+     *
+     * @return the encoded value
      */
     public static String getEncodedValue( String value )
     {
