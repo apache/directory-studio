@@ -111,10 +111,20 @@ public class BrowserCommonActivator extends AbstractUIPlugin
 
         if ( filterTemplateStore == null )
         {
-
-            BrowserCorePlugin.getDefault().setAuthHandler( new BrowserCommonAuthHandler() );
-            BrowserCorePlugin.getDefault().setReferralHandler( new BrowserCommonReferralHandler() );
+            filterTemplateStore = new ContributionTemplateStore( getFilterTemplateContextTypeRegistry(),
+                getPreferenceStore(), "templates" );
+            try
+            {
+                filterTemplateStore.load();
+            }
+            catch ( IOException e )
+            {
+                e.printStackTrace();
+            }
         }
+
+        BrowserCorePlugin.getDefault().setAuthHandler( new BrowserCommonAuthHandler() );
+        BrowserCorePlugin.getDefault().setReferralHandler( new BrowserCommonReferralHandler() );
     }
 
 

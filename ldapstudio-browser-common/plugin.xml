@@ -260,6 +260,15 @@
           name="Open Search Result"/>
  </extension>
 
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            name="LDAP Filter"
+            id="org.apache.directory.ldapstudio.browser.ui.templates.filter"/>
+      <include file="resources/templates/templates.xml"/>
+   </extension>
+
  <extension
        point="org.eclipse.ui.contexts">
        <context
