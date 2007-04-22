@@ -139,6 +139,36 @@ public class DN implements Serializable
 
 
     /**
+     * Creates a new instance of DN using the given local name and suffix.
+     * The given local name and suffix are cloned.
+     *
+     * @param localName the local name
+     * @param suffix the suffix
+     */
+    public DN( DN localName, DN suffix )
+    {
+        if ( localName == null )
+        {
+            throw new IllegalArgumentException( BrowserCoreMessages.model__empty_dn );
+        }
+        if ( suffix == null )
+        {
+            throw new IllegalArgumentException( BrowserCoreMessages.model__empty_dn );
+        }
+
+        this.rdns = new RDN[localName.getRdns().length + suffix.getRdns().length];
+        for ( int i = 0; i < localName.getRdns().length; i++ )
+        {
+            this.rdns[i] = new RDN( localName.getRdns()[i] );
+        }
+        for ( int i = 0; i < suffix.getRdns().length; i++ )
+        {
+            this.rdns[i + localName.getRdns().length] = new RDN( suffix.getRdns()[i] );
+        }
+    }
+
+
+    /**
      * Creates a new instance of DN. The given strings are parsed.
      *
      * @param rdn the rdn
@@ -206,6 +236,32 @@ public class DN implements Serializable
             DN parent = new DN();
             parent.rdns = parentRdns;
             return parent;
+        }
+    }
+
+
+    /**
+     * Extracts the local name by stripping the given
+     * suffix from this DN.
+     *
+     * @param suffix the suffix to strip
+     *
+     * @return the local name
+     */
+    public DN getLocalName( DN suffix )
+    {
+        if ( suffix != null && suffix.getRdns().length > 0 )
+        {
+            DN localName = new DN();
+            for ( int i = getRdns().length - suffix.getRdns().length - 1; i >= 0; i-- )
+            {
+                localName = new DN( getRdns()[i], localName );
+            }
+            return localName;
+        }
+        else
+        {
+            return this;
         }
     }
 
