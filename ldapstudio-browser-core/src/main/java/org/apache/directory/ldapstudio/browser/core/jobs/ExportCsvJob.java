@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
+import org.apache.directory.ldapstudio.browser.core.internal.model.AttributeDescription;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ConnectionException;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ReferralException;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -124,11 +126,11 @@ public class ExportCsvJob extends AbstractEclipseJob
                     bufferedWriter.write( attributeDelimiter );
             }
             bufferedWriter.write( BrowserCoreConstants.LINE_SEPARATOR );
-
+            
             // export
             int count = 0;
             export( connection, searchParameter, bufferedWriter, count, monitor, exportAttributes, attributeDelimiter,
-                valueDelimiter, quoteCharacter, lineSeparator, binaryEncoding, exportDn );
+                valueDelimiter, quoteCharacter, lineSeparator, encoding, binaryEncoding, exportDn );
 
             // close file
             bufferedWriter.close();
@@ -145,7 +147,7 @@ public class ExportCsvJob extends AbstractEclipseJob
 
     private static void export( IConnection connection, SearchParameter searchParameter, BufferedWriter bufferedWriter,
         int count, ExtendedProgressMonitor monitor, String[] attributes, String attributeDelimiter,
-        String valueDelimiter, String quoteCharacter, String lineSeparator, int binaryEncoding, boolean exportDn )
+        String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
         throws IOException, ConnectionException
     {
         try
@@ -160,8 +162,8 @@ public class ExportCsvJob extends AbstractEclipseJob
                 {
 
                     LdifContentRecord record = ( LdifContentRecord ) container;
-                    bufferedWriter.write( recordToCsv( record, attributes, attributeDelimiter, valueDelimiter,
-                        quoteCharacter, lineSeparator, binaryEncoding, exportDn ) );
+                    bufferedWriter.write( recordToCsv( connection, record, attributes, attributeDelimiter, valueDelimiter,
+                        quoteCharacter, lineSeparator, encoding, binaryEncoding, exportDn ) );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
@@ -198,7 +200,7 @@ public class ExportCsvJob extends AbstractEclipseJob
                         // export recursive
                         export( referralSearch.getConnection(), referralSearch.getSearchParameter(), bufferedWriter,
                             count, monitor, attributes, attributeDelimiter, valueDelimiter, quoteCharacter,
-                            lineSeparator, binaryEncoding, exportDn );
+                            lineSeparator, encoding, binaryEncoding, exportDn );
                     }
                 }
             }
@@ -211,12 +213,12 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    private static String recordToCsv( LdifContentRecord record, String[] attributes, String attributeDelimiter,
-        String valueDelimiter, String quoteCharacter, String lineSeparator, int binaryEncoding, boolean exportDn )
+    private static String recordToCsv( IConnection connection, LdifContentRecord record, String[] attributes, String attributeDelimiter,
+        String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
     {
 
         // group multi-valued attributes
-        Map attributeMap = getAttributeMap( record, valueDelimiter, binaryEncoding );
+        Map attributeMap = getAttributeMap( connection, record, valueDelimiter, encoding, binaryEncoding );
 
         // print attributes
         StringBuffer sb = new StringBuffer();
@@ -233,9 +235,11 @@ public class ExportCsvJob extends AbstractEclipseJob
         {
 
             String attributeName = attributes[i];
-            if ( attributeMap.containsKey( attributeName ) )
+            AttributeDescription ad = new AttributeDescription( attributeName );
+            String oidString = ad.toOidString( connection.getSchema() );
+            if ( attributeMap.containsKey( oidString ) )
             {
-                String value = ( String ) attributeMap.get( attributeName );
+                String value = ( String ) attributeMap.get( oidString );
 
                 // escape
                 value = value.replaceAll( quoteCharacter, quoteCharacter + quoteCharacter );
@@ -259,18 +263,22 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    static Map getAttributeMap( LdifContentRecord record, String valueDelimiter, int binaryEncoding )
+    static Map getAttributeMap( IConnection connection, LdifContentRecord record, String valueDelimiter, String encoding, int binaryEncoding )
     {
         Map attributeMap = new HashMap();
         LdifAttrValLine[] lines = record.getAttrVals();
         for ( int i = 0; i < lines.length; i++ )
         {
             String attributeName = lines[i].getUnfoldedAttributeDescription();
-
-            if ( LdifUtils.mustEncode( lines[i].getValueAsBinary() ) )
+            if ( connection != null )
             {
-
-                String value = BrowserCoreConstants.BINARY;
+                // convert attributeName to oid
+                AttributeDescription ad = new AttributeDescription( attributeName );
+                attributeName = ad.toOidString( connection.getSchema() );
+            }
+            String value = lines[i].getValueAsString();
+            if ( ! Charset.forName( encoding ).newEncoder().canEncode( value ) )
+            {
                 if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_BASE64 )
                 {
                     value = LdifUtils.base64encode( lines[i].getValueAsBinary() );
@@ -278,6 +286,10 @@ public class ExportCsvJob extends AbstractEclipseJob
                 else if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_HEX )
                 {
                     value = LdifUtils.hexEncode( lines[i].getValueAsBinary() );
+                }
+                else
+                {
+                    value = BrowserCoreConstants.BINARY;
                 }
 
                 if ( attributeMap.containsKey( attributeName ) )
@@ -292,7 +304,6 @@ public class ExportCsvJob extends AbstractEclipseJob
             }
             else
             {
-                String value = lines[i].getValueAsString();
                 if ( attributeMap.containsKey( attributeName ) )
                 {
                     String oldValue = ( String ) attributeMap.get( attributeName );

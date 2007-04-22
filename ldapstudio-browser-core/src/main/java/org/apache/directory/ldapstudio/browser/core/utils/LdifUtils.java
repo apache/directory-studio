@@ -171,42 +171,6 @@ public class LdifUtils
 
 
     /**
-     * Checks if the given byte array must be encoded to be
-     * used in an LDIF.
-     *
-     * @param b the b the byte array to check
-     *
-     * @return true, if must encode
-     */
-    public static boolean mustEncode( byte[] b )
-    {
-        if ( b == null || b.length < 1 )
-        {
-            return false;
-        }
-
-        if ( b[0] == ' ' || b[0] == ':' || b[0] == '<' )
-        {
-            return true;
-        }
-        if ( b[b.length - 1] == ' ' )
-        {
-            return true;
-        }
-
-        for ( int i = 0; i < b.length; i++ )
-        {
-            if ( b[i] == '\n' || b[i] == '\r' || b[i] == '\u0000' || ( ( b[i] & 0x7F ) != 0x7F ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
      * Checks if the given string must be encoded to be
      * used in an LDIF.
      *
@@ -255,10 +219,10 @@ public class LdifUtils
      */
     public static String getStringValue( IValue value, int binaryEncoding )
     {
-        String s;
-        byte[] binary = value.getBinaryValue();
-        if ( value.isBinary() && LdifUtils.mustEncode( binary ) )
+        String s = value.getStringValue();
+        if ( value.isBinary() && LdifUtils.mustEncode( s ) )
         {
+            byte[] binary = value.getBinaryValue();
             if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_BASE64 )
             {
                 s = LdifUtils.base64encode( binary );
@@ -271,11 +235,6 @@ public class LdifUtils
             {
                 s = BrowserCoreConstants.BINARY;
             }
-        }
-        else
-        {
-            s = value.getStringValue();
-
         }
         return s;
     }

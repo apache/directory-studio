@@ -33,6 +33,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
+import org.apache.directory.ldapstudio.browser.core.internal.model.AttributeDescription;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ConnectionException;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ReferralException;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
@@ -189,7 +190,7 @@ public class ExportXlsJob extends AbstractEclipseJob
                 if ( container instanceof LdifContentRecord )
                 {
                     LdifContentRecord record = ( LdifContentRecord ) container;
-                    recordToHSSFRow( record, sheet, headerRow, attributeNameMap, valueDelimiter, binaryEncoding,
+                    recordToHSSFRow( connection, record, sheet, headerRow, attributeNameMap, valueDelimiter, binaryEncoding,
                         exportDn );
 
                     count++;
@@ -240,12 +241,12 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
-    private static void recordToHSSFRow( LdifContentRecord record, HSSFSheet sheet, HSSFRow headerRow,
+    private static void recordToHSSFRow( IConnection connection, LdifContentRecord record, HSSFSheet sheet, HSSFRow headerRow,
         Map headerRowAttributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
     {
 
         // group multi-valued attributes
-        Map attributeMap = ExportCsvJob.getAttributeMap( record, valueDelimiter, binaryEncoding );
+        Map attributeMap = ExportCsvJob.getAttributeMap( null, record, valueDelimiter, "UTF-16", binaryEncoding );
 
         // output attributes
         HSSFRow row = sheet.createRow( sheet.getLastRowNum() + 1 );
