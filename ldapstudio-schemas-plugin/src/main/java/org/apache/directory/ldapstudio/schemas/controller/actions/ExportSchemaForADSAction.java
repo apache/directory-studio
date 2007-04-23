@@ -28,7 +28,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.naming.NamingException;
 
@@ -37,6 +39,7 @@ import org.apache.directory.ldapstudio.schemas.PluginConstants;
 import org.apache.directory.ldapstudio.schemas.model.AttributeType;
 import org.apache.directory.ldapstudio.schemas.model.ObjectClass;
 import org.apache.directory.ldapstudio.schemas.model.Schema;
+import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.ViewUtils;
 import org.apache.directory.ldapstudio.schemas.view.views.SchemasView;
 import org.apache.directory.ldapstudio.schemas.view.views.wrappers.SchemaWrapper;
@@ -131,6 +134,11 @@ public class ExportSchemaForADSAction extends Action
                     sb.append( "objectclass: metaSchema\n" );
                     sb.append( "objectclass: top\n" );
                     sb.append( "cn: " + schema.getName() + "\n" );
+                    String[] schemaDependencies = getSchemaDependencies( schema );
+                    for (String schemaName : schemaDependencies )
+                    {
+                        sb.append( "m-dependencies: " + schemaName + "\n" );
+                    }
                     sb.append( "\n" );
 
                     try
@@ -307,5 +315,84 @@ public class ExportSchemaForADSAction extends Action
                 }
             }
         }
+    }
+
+
+    /**
+     * Gets the schema dependencies.
+     *
+     * @param schema
+     *      the schema
+     * @return
+     *      an array containing the names of all the schemas which the given
+     *      schema depends on
+     */
+    private String[] getSchemaDependencies( Schema schema )
+    {
+        Set<String> schemaNames = new HashSet<String>();
+        SchemaPool schemaPool = SchemaPool.getInstance();
+
+        // Looping on Attribute Types
+        for ( AttributeType at : schema.getAttributeTypesAsArray() )
+        {
+            // Superior
+            String supName = at.getSuperior();
+            if ( supName != null )
+            {
+                AttributeType sup = schemaPool.getAttributeType( supName );
+                if ( sup != null )
+                {
+                    if ( !schema.equals( sup.getOriginatingSchema() ) )
+                    {
+                        schemaNames.add( sup.getOriginatingSchema().getName() );
+                    }
+                }
+            }
+        }
+
+        // Looping on Object Classes
+        for ( ObjectClass oc : schema.getObjectClassesAsArray() )
+        {
+            // Superiors
+            for ( String supName : oc.getSuperiors() )
+            {
+                ObjectClass sup = schemaPool.getObjectClass( supName );
+                if ( sup != null )
+                {
+                    if ( !schema.equals( sup.getOriginatingSchema() ) )
+                    {
+                        schemaNames.add( sup.getOriginatingSchema().getName() );
+                    }
+                }
+            }
+
+            // Mays
+            for ( String mayName : oc.getMay() )
+            {
+                AttributeType may = schemaPool.getAttributeType( mayName );
+                if ( may != null )
+                {
+                    if ( !schema.equals( may.getOriginatingSchema() ) )
+                    {
+                        schemaNames.add( may.getOriginatingSchema().getName() );
+                    }
+                }
+            }
+
+            // Musts
+            for ( String mustName : oc.getMust() )
+            {
+                AttributeType must = schemaPool.getAttributeType( mustName );
+                if ( must != null )
+                {
+                    if ( !schema.equals( must.getOriginatingSchema() ) )
+                    {
+                        schemaNames.add( must.getOriginatingSchema().getName() );
+                    }
+                }
+            }
+        }
+
+        return schemaNames.toArray( new String[0] );
     }
 }
