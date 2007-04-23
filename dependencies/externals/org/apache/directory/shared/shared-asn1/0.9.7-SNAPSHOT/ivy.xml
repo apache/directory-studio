@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="org.apache.directory.shared"
+		module="shared-asn1"
+		revision="0.9.7-SNAPSHOT"
+		status="release"
+		publication="20070422220000"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="shared-asn1" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>
