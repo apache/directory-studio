@@ -27,6 +27,5 @@
 		<dependency org="org.apache.directory.server" name="apacheds-core-shared" rev="1.5.0-SNAPSHOT"/>
 		<dependency org="org.apache.directory.shared" name="shared-converter" rev="0.9.6-SNAPSHOT"/>
 		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.6-SNAPSHOT"/>
-		<dependency org="org.slf4j" name="nlog4j" rev="1.2.24"/>
     </dependencies>
 </ivy-module>
