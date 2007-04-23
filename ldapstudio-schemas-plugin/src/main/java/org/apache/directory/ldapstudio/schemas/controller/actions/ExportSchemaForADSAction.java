@@ -190,7 +190,7 @@ public class ExportSchemaForADSAction extends Action
                         sb.append( "\n" );
 
                         // Generation the Matching Rules Node
-                        sb.append( "dn: ou=macthingRules, cn=" + schema.getName() + ", ou=schema\n" );
+                        sb.append( "dn: ou=matchingRules, cn=" + schema.getName() + ", ou=schema\n" );
                         sb.append( "objectclass: organizationalUnit\n" );
                         sb.append( "objectclass: top\n" );
                         sb.append( "ou: matchingrules\n" );
