@@ -400,4 +400,73 @@
         <ant dir="ldapstudio-updatesite" inheritAll="no" target="clean" />
         <delete dir="${ldapstudio-complete.output}" />
     </target>
+
+    <target name="release" description="Releases">
+        <!-- Setting some properties -->
+        <property name="packages-folder" value="${basedir}/packages" />
+        <property name="packages-folder.macosx" value="${packages-folder}/MacOSX" />
+        <property name="packages-folder.windows" value="${packages-folder}/Windows" />
+        <property name="packages-folder.linux-i386" value="${packages-folder}/Linuxi386" />
+        <property name="packages-folder.linux-ppc" value="${packages-folder}/LinuxPPC" />
+
+        <!-- Cleaning the 'packages' folder (just in case) -->
+        <delete includeemptydirs="true" failonerror="no">
+			<fileset dir="${packages-folder}" />
+		</delete>
+
+        <!-- Cleaning latest build (just in case) -->
+        <antcall target="clean"/>
+        <!-- Generating LDAP Studio for Mac OS X -->
+        <antcall target="bundle">
+            <param name="ldapstudio-rcp.os.name" value="macosx"/>
+            <param name="ldapstudio-rcp.os.arch" value="i386"/>
+            <param name="ldapstudio-rcp.os.extension" value=".app"/>
+        </antcall>
+        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
+        <move todir="${packages-folder.macosx}">          <fileset dir="${ldapstudio-complete.output}"/>        </move>
+
+        <!-- Cleaning latest build -->
+        <antcall target="clean"/>
+        <!-- Generating LDAP Studio for Windows -->
+        <antcall target="bundle">
+            <param name="ldapstudio-rcp.os.name" value="win32"/>
+            <param name="ldapstudio-rcp.os.arch" value="x86"/>
+            <param name="ldapstudio-rcp.os.extension" value=".exe"/>
+        </antcall>
+        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
+        <move todir="${packages-folder.windows}">          <fileset dir="${ldapstudio-complete.output}"/>        </move>
+
+        <!-- Cleaning latest build -->
+        <antcall target="clean"/>
+        <!-- Generating LDAP Studio for Linux i386 -->
+        <antcall target="bundle">
+            <param name="ldapstudio-rcp.os.name" value="linux"/>
+            <param name="ldapstudio-rcp.os.arch" value="i386"/>
+            <param name="ldapstudio-rcp.os.extension" value=""/>
+        </antcall>
+        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
+		<mkdir dir="${packages-folder.linux-i386}" />
+        <tar compression="gzip" destfile="${packages-folder.linux-i386}/LDAP_Studio_Linux_i386.tar.gz">
+            <tarfileset dir="${ldapstudio-complete.output}">
+				<include name="**" />
+			</tarfileset>
+        </tar>
+
+        <!-- Cleaning latest build-->
+        <antcall target="clean"/>
+        <!-- Generating LDAP Studio for Linux PPC -->
+        <antcall target="bundle">
+            <param name="ldapstudio-rcp.os.name" value="linux"/>
+            <param name="ldapstudio-rcp.os.arch" value="ppc"/>
+            <param name="ldapstudio-rcp.os.extension" value=""/>
+        </antcall>
+        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
+		<mkdir dir="${packages-folder.linux-ppc}" />
+        <tar compression="gzip" destfile="${packages-folder.linux-ppc}/LDAP_Studio_Linux_PPC.tar.gz">
+            <tarfileset dir="${ldapstudio-complete.output}">
+				<include name="**" />
+			</tarfileset>
+        </tar>
+        
+    </target>
 </project>
