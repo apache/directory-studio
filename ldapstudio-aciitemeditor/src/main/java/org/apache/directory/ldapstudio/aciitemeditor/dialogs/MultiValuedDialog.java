@@ -24,6 +24,11 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
+import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
+import org.apache.directory.ldapstudio.browser.core.internal.model.Value;
+import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
+import org.apache.directory.ldapstudio.browser.core.model.IValue;
+import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -277,7 +282,19 @@ public class MultiValuedDialog extends Dialog
      */
     private void addValue()
     {
-        Object oldRawValue = valueEditor.getRawValue( context.getConnection(), "" ); //$NON-NLS-1$
+        
+        Object oldRawValue;
+        try
+        {
+            IAttribute attribute = new Attribute( context.getEntry(), "" ); //$NON-NLS-1$
+            IValue value = new Value( attribute, "" ); //$NON-NLS-1$
+            oldRawValue = valueEditor.getRawValue( value ); //$NON-NLS-1$
+        }
+        catch ( ModelModificationException e )
+        {
+            oldRawValue = valueEditor.getRawValue( context.getConnection(), "" ); //$NON-NLS-1$
+        }
+        
 
         CellEditor cellEditor = valueEditor.getCellEditor();
         cellEditor.setValue( oldRawValue );
@@ -303,7 +320,17 @@ public class MultiValuedDialog extends Dialog
         String oldValue = getSelectedValue();
         if ( oldValue != null )
         {
-            Object oldRawValue = valueEditor.getRawValue( context.getConnection(), oldValue );
+            Object oldRawValue;
+            try
+            {
+                IAttribute attribute = new Attribute( context.getEntry(), "" ); //$NON-NLS-1$
+                IValue value = new Value( attribute, oldValue ); //$NON-NLS-1$
+                oldRawValue = valueEditor.getRawValue( value ); //$NON-NLS-1$
+            }
+            catch ( ModelModificationException e )
+            {
+                oldRawValue = valueEditor.getRawValue( context.getConnection(), oldValue );
+            }
 
             CellEditor cellEditor = valueEditor.getCellEditor();
             cellEditor.setValue( oldRawValue );

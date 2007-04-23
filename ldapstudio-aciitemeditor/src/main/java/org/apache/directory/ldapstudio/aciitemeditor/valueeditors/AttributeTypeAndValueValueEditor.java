@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 
-import org.apache.directory.ldapstudio.aciitemeditor.Activator;
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;

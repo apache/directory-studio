@@ -10,6 +10,12 @@
             name="ACI Item Editor">
          <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.1"/>
       </valueEditor>
+      <valueEditor
+            class="org.apache.directory.ldapstudio.aciitemeditor.valueeditors.SubtreeValueEditor"
+            icon="resources/icons/subtreeeditor.png"
+            name="Subtree Specification Editor">
+         <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.45"/>
+      </valueEditor>
    </extension>
    <extension
          point="org.eclipse.ui.editors.templates">

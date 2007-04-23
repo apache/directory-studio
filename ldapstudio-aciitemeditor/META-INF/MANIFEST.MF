@@ -17,8 +17,4 @@ Require-Bundle: org.eclipse.ui,
  org.apache.directory.ldapstudio.browser.common,
  org.apache.directory.ldapstudio.valueeditors
 Eclipse-LazyStart: true
-Bundle-ClassPath: .,
- lib/shared-ldap-0.9.6-SNAPSHOT.jar,
- lib/shared-asn1-0.9.6-SNAPSHOT.jar,
- lib/commons-collections-3.1.jar,
- lib/nlog4j-1.2.24.jar
+Bundle-ClassPath: .
