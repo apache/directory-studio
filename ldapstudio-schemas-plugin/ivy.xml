@@ -28,6 +28,5 @@
 		<dependency org="org.apache.directory.shared" name="shared-converter" rev="0.9.6-SNAPSHOT"/>
 		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.6-SNAPSHOT"/>
 		<dependency org="org.slf4j" name="nlog4j" rev="1.2.24"/>
-		<dependency org="velocity" name="velocity-dep" rev="1.4"/>
     </dependencies>
 </ivy-module>
