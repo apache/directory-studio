@@ -1007,6 +1007,7 @@ public class ObjectClassEditorOverviewPage extends FormPage implements PoolListe
             oidText.setEditable( false );
             descriptionText.setEditable( false );
             addButtonSuperiorsTable.setEnabled( false );
+            removeButtonSuperiorsTable.setEnabled( false );
             classTypeCombo.setEnabled( false );
             obsoleteCheckbox.setEnabled( false );
             addButtonMandatoryTable.setEnabled( false );
