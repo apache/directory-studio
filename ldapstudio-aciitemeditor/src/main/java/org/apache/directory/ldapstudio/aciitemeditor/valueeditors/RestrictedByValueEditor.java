@@ -29,6 +29,7 @@ import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
@@ -83,6 +84,18 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
             }
         }
         return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * Returns an AttributeTypeAndValueValueEditorRawValueWrapper.
+     */
+    public Object getRawValue( IValue value )
+    {
+        return value != null ? getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() )
+            : null;
     }
 
 

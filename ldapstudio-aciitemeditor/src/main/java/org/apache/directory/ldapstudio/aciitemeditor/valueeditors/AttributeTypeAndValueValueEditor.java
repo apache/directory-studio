@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.aciitemeditor.valueeditors;
 
 import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
@@ -61,6 +62,18 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
             }
         }
         return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * Returns an AttributeTypeAndValueValueEditorRawValueWrapper.
+     */
+    public Object getRawValue( IValue value )
+    {
+        return value != null ? getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() )
+            : null;
     }
 
 
