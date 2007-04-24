@@ -169,7 +169,10 @@ class SubtreeSpecificationDialog extends Dialog
         returnValue = sb.toString();
 
         // save filter and dn history
-        filterWidget.saveDialogSettings();
+        if ( refinementOrFilterVisible )
+        {
+            filterWidget.saveDialogSettings();
+        }
         entryWidget.saveDialogSettings();
 
         super.okPressed();
