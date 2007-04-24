@@ -337,17 +337,19 @@ public class GeneralPage extends FormPage
         enableNTPCheckbox = toolkit.createButton( client, "Enable NTP", SWT.CHECK );
         enableNTPCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
+        // Denormalize Operational Attributes
+        denormalizeOpAttrCheckbox = toolkit.createButton( client, "Denormalize Operational Attributes", SWT.CHECK );
+        denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
         // Enable Kerberos
         enableKerberosCheckbox = toolkit.createButton( client, "Enable Kerberos", SWT.CHECK );
         enableKerberosCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        enableKerberosCheckbox.setEnabled( false );
 
         // Enable Change Password
         enableChangePasswordCheckbox = toolkit.createButton( client, "Enable Change Password", SWT.CHECK );
         enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Denormalize Operational Attributes
-        denormalizeOpAttrCheckbox = toolkit.createButton( client, "Denormalize Operational Attributes", SWT.CHECK );
-        denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        enableChangePasswordCheckbox.setEnabled( false );
     }
 
 
