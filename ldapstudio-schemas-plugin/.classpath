@@ -6,19 +6,14 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
-	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
-	<classpathentry kind="lib" path="lib/nlog4j-1.2.25.jar"/>
-	<classpathentry kind="lib" path="lib/shared-converter-0.9.6-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/xercesImpl-2.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/apacheds-core-shared-1.5.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/commons-configuration-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/checkstyle-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/shared-asn1-0.9.6-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/shared-ldap-0.9.6-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/checkstyle-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="lib/shared-converter-0.9.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl-2.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-configuration-1.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
