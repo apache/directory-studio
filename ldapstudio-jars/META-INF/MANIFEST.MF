@@ -6,7 +6,7 @@ Bundle-Version: 0.8.0
 Bundle-Localization: plugin
 Bundle-Vendor: Apache Software Foundation
 Bundle-ClassPath: lib/antlr-2.7.6.jar,
- lib/commons-collections-3.1.jar,
+ lib/commons-collections-3.2.jar,
  lib/dom4j-1.6.1.jar,
  lib/ldapstudio-dsml-parser-0.3.jar,
  lib/nlog4j-1.2.25.jar,
