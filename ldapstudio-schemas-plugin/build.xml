@@ -18,7 +18,7 @@
 -->
 <project default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
 	<property name="project.name" value="org.apache.directory.ldapstudio.schemas" />
-	<property name="project.version" value="0.7.0" />
+	<property name="project.version" value="0.8.0" />
 
 	<property name="ldapstudio.schemas.output" value="${basedir}/target" />
 	<property name="ldapstudio.schemas.build" value="${ldapstudio.schemas.output}/build" />

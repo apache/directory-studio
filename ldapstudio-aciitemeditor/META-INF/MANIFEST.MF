@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDAP Studio ACI Item Editor Plug-in
 Bundle-SymbolicName: org.apache.directory.ldapstudio.aciitemeditor;singleton:=true
-Bundle-Version: 0.7.0
+Bundle-Version: 0.8.0
 Bundle-Activator: org.apache.directory.ldapstudio.aciitemeditor.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

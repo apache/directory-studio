@@ -18,7 +18,7 @@
 -->
 <project default="generate" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
 	<property name="project.name" value="org.apache.directory.ldapstudio.schemas.feature" />
-	<property name="project.version" value="0.7.0" />
+	<property name="project.version" value="0.8.0" />
 
 	<property name="project.plugins" value="${basedir}/plugins" />
 	<property name="project.features" value="${basedir}/features" />
