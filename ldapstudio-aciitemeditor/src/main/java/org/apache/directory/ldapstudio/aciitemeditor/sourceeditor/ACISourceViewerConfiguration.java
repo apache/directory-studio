@@ -21,7 +21,6 @@ package org.apache.directory.ldapstudio.aciitemeditor.sourceeditor;
 
 
 import org.apache.directory.ldapstudio.aciitemeditor.Activator;
-import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
