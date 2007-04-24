@@ -242,6 +242,8 @@ public class SchemasViewController
 
                 if ( selection instanceof SchemaWrapper )
                 {
+                    manager.add( openLocalFile );
+                    manager.add( new Separator() );
                     Schema schema = ( ( SchemaWrapper ) selection ).getMySchema();
                     if ( schema.type == SchemaType.coreSchema )
                     {
