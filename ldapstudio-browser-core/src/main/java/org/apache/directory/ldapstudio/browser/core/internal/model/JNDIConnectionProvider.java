@@ -28,7 +28,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.naming.Context;
-import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.ReferralException;

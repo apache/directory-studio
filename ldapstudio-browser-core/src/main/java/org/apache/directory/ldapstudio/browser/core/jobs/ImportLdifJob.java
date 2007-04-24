@@ -34,9 +34,7 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
-import org.apache.directory.ldapstudio.browser.core.events.AttributesInitializedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.BulkModificationEvent;
-import org.apache.directory.ldapstudio.browser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;

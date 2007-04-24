@@ -21,15 +21,11 @@
 package org.apache.directory.ldapstudio.browser.core.internal.model;
 
 
-import javax.naming.Name;
-import javax.naming.NameParser;
 import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
-import javax.naming.ldap.InitialLdapContext;
 
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.NameException;
-import org.apache.directory.ldapstudio.browser.core.model.URL;
 
 
 public class JNDIUtils

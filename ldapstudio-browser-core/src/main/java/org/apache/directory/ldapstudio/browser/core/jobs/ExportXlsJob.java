@@ -33,7 +33,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.browser.core.BrowserCoreMessages;
 import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.internal.model.AttributeDescription;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ConnectionException;
 import org.apache.directory.ldapstudio.browser.core.internal.model.ReferralException;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
