@@ -29,9 +29,6 @@ import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.ldapstudio.browser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
-
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

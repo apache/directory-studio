@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.ui;
 
 import java.net.URL;
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;

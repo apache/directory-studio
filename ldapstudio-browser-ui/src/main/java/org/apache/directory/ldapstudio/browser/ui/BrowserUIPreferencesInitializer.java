@@ -21,7 +21,6 @@
 package org.apache.directory.ldapstudio.browser.ui;
 
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
