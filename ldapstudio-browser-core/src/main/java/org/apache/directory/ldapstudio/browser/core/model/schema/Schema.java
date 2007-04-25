@@ -54,6 +54,8 @@ public class Schema implements Serializable
 
     private static final long serialVersionUID = 2439355717760227167L;
 
+    public static final String SCHEMA_FILTER = "(objectClass=subschema)";
+    
     public static final String SCHEMA_ATTRIBUTE_OBJECTCLASSES = "objectClasses";
 
     public static final String SCHEMA_ATTRIBUTE_ATTRIBUTETYPES = "attributeTypes";

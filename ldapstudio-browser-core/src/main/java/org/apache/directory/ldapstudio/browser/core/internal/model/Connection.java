@@ -290,7 +290,7 @@ public class Connection implements IConnection, Serializable
                         SearchParameter sp = new SearchParameter();
                         sp.setSearchBase( new DN( this.rootDSE.getAttribute(
                             IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ).getStringValue() ) );
-                        sp.setFilter( ISearch.FILTER_TRUE );
+                        sp.setFilter( Schema.SCHEMA_FILTER );
                         sp.setScope( ISearch.SCOPE_OBJECT );
                         sp.setReturningAttributes( new String[]
                             { IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
@@ -557,7 +557,7 @@ public class Connection implements IConnection, Serializable
                 SearchParameter sp = new SearchParameter();
                 sp.setSearchBase( new DN( this.rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
                     .getStringValue() ) );
-                sp.setFilter( ISearch.FILTER_TRUE );
+                sp.setFilter( Schema.SCHEMA_FILTER );
                 sp.setScope( ISearch.SCOPE_OBJECT );
                 sp.setReturningAttributes( new String[]
                     { Schema.SCHEMA_ATTRIBUTE_OBJECTCLASSES, Schema.SCHEMA_ATTRIBUTE_ATTRIBUTETYPES,
