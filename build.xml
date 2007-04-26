@@ -447,8 +447,12 @@
         <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
 		<mkdir dir="${packages-folder.linux-i386}" />
         <tar compression="gzip" destfile="${packages-folder.linux-i386}/LDAP_Studio_Linux_i386.tar.gz">
+            <tarfileset dir="${ldapstudio-complete.output}" mode="755">
+				<include name="LDAP Studio/LDAP Studio" />
+			</tarfileset>
             <tarfileset dir="${ldapstudio-complete.output}">
 				<include name="**" />
+				<exclude name="LDAP Studio/LDAP Studio" />
 			</tarfileset>
         </tar>
 
@@ -463,8 +467,12 @@
         <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
 		<mkdir dir="${packages-folder.linux-ppc}" />
         <tar compression="gzip" destfile="${packages-folder.linux-ppc}/LDAP_Studio_Linux_PPC.tar.gz">
+            <tarfileset dir="${ldapstudio-complete.output}" mode="755">
+				<include name="LDAP Studio/LDAP Studio" />
+			</tarfileset>
             <tarfileset dir="${ldapstudio-complete.output}">
 				<include name="**" />
+				<exclude name="LDAP Studio/LDAP Studio" />
 			</tarfileset>
         </tar>
         
