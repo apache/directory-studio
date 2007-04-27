@@ -273,7 +273,7 @@
     </target>
     
     <target name="setPermission_linux" description="Sets the right permissions on Linux">
-        <chmod file="${ldapstudio-complete.build}/LDAP Studio" perm="755"/>
+        <chmod file="${ldapstudio-complete.build}/ldapstudio" perm="755"/>
     </target>
 
     <target name="setPermission_win32" description="Sets the right permissions on Windows">
@@ -448,11 +448,11 @@
 		<mkdir dir="${packages-folder.linux-i386}" />
         <tar compression="gzip" destfile="${packages-folder.linux-i386}/LDAP_Studio_Linux_i386.tar.gz">
             <tarfileset dir="${ldapstudio-complete.output}" mode="755">
-				<include name="LDAP Studio/LDAP Studio" />
+				<include name="LDAP Studio/ldapstudio" />
 			</tarfileset>
             <tarfileset dir="${ldapstudio-complete.output}">
 				<include name="**" />
-				<exclude name="LDAP Studio/LDAP Studio" />
+				<exclude name="LDAP Studio/ldapstudio" />
 			</tarfileset>
         </tar>
 
@@ -468,11 +468,11 @@
 		<mkdir dir="${packages-folder.linux-ppc}" />
         <tar compression="gzip" destfile="${packages-folder.linux-ppc}/LDAP_Studio_Linux_PPC.tar.gz">
             <tarfileset dir="${ldapstudio-complete.output}" mode="755">
-				<include name="LDAP Studio/LDAP Studio" />
+				<include name="LDAP Studio/ldapstudio" />
 			</tarfileset>
             <tarfileset dir="${ldapstudio-complete.output}">
 				<include name="**" />
-				<exclude name="LDAP Studio/LDAP Studio" />
+				<exclude name="LDAP Studio/ldapstudio" />
 			</tarfileset>
         </tar>
         

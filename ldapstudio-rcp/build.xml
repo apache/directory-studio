@@ -58,6 +58,18 @@
         <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
     </condition>
 
+
+    <!-- Setting up App Name Extension-->
+    <condition property="ldapstudio-rcp.appname" value="LDAP Studio" >
+        <or>
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="win"/>
+        </or>
+    </condition>
+    <condition property="ldapstudio-rcp.appname" value="ldapstudio" >
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
+    </condition>
+
     <!-- Setting up OS Architecture-->
     <property name="ldapstudio-rcp.os.arch" value="${os.arch}" />
 
@@ -199,7 +211,7 @@
 			update="true"/>
 		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
 		
-		<move file="${ldapstudio-rcp.application}/eclipse${ldapstudio-rcp.os.extension}" tofile="${ldapstudio-rcp.application}/LDAP Studio${ldapstudio-rcp.os.extension}">
+		<move file="${ldapstudio-rcp.application}/eclipse${ldapstudio-rcp.os.extension}" tofile="${ldapstudio-rcp.application}/${ldapstudio-rcp.appname}${ldapstudio-rcp.os.extension}">
 		</move>
 		<move file="${ldapstudio-rcp.output}/${project.name}_${project.version}.jar" tofile="${ldapstudio-rcp.application}/plugins/${project.name}_${project.version}.jar">
 		</move>
@@ -214,7 +226,7 @@
 	</target>
 
 	<target name="setPermission_linux" description="Sets the right permissions on Linux">
-		<chmod file="${ldapstudio-rcp.application}/LDAP Studio" perm="755" />
+		<chmod file="${ldapstudio-rcp.application}/ldapstudio" perm="755" />
 	</target>
 	
 	<target name="setPermission_win32" description="Sets the right permissions on windows">
