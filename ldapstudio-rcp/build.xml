@@ -63,7 +63,7 @@
     <condition property="ldapstudio-rcp.appname" value="LDAP Studio" >
         <or>
             <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="win"/>
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
         </or>
     </condition>
     <condition property="ldapstudio-rcp.appname" value="ldapstudio" >
