@@ -20,7 +20,6 @@
     <property name="project.name" value="ldapstudio-complete" />
     <property name="project.version" value="1.0.0" />
     <property name="ldapstudio-complete.output" value="${basedir}/target" />
-    <property name="ldapstudio-complete.build" value="${ldapstudio-complete.output}/LDAP Studio" />    
     <property name="ldapstudio-complete.userguides" value="${ldapstudio-complete.output}/userguides" />    
     
     <!-- Setting up OS Name-->
@@ -45,6 +44,17 @@
         <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
     </condition>
 
+	<!-- Setting up build folder -->
+	<condition property="ldapstudio-complete.build" value="${ldapstudio-complete.output}/LDAP Studio" >
+        <or>
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
+        </or>
+    </condition>
+    <condition property="ldapstudio-complete.build" value="${ldapstudio-complete.output}/ldapstudio" >
+            <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
+    </condition>
+	
     <!-- Setting up a special property if target OS is Mac OS X-->
     <condition property="isTargetMacOSX" value="true" >
             <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
@@ -81,7 +91,7 @@
         <ant dir="ldapstudio-rcp" inheritAll="no" />
         <!-- Copy of the RCP app -->
         <copy todir="${ldapstudio-complete.build}">
-            <fileset dir="${basedir}/ldapstudio-rcp/target/LDAP Studio">
+            <fileset dir="${basedir}/ldapstudio-rcp/target/ldapstudio">
                 <include name="**" />
             </fileset>
         </copy>
@@ -258,6 +268,15 @@
 			</fileset>
 		</copy>
 
+    	<!-- Copy the legal stuff -->
+        <copy todir="${ldapstudio-complete.build}">
+          <fileset dir="${basedir}/docs">
+               <include name="LICENSE.txt"/>
+               <include name="NOTICE.txt"/>
+               <include name="Release Notes.txt"/>
+          </fileset>
+        </copy>
+    	
         <!-- Setting Permissions -->
         <antcall target="setPermission_${ldapstudio-rcp.os.name}" />
         
@@ -415,64 +434,60 @@
 		</delete>
 
         <!-- Cleaning latest build (just in case) -->
-        <antcall target="clean"/>
+        <antcall target="clean" inheritall="false"/>
         <!-- Generating LDAP Studio for Mac OS X -->
-        <antcall target="bundle">
+        <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="macosx"/>
             <param name="ldapstudio-rcp.os.arch" value="i386"/>
             <param name="ldapstudio-rcp.os.extension" value=".app"/>
         </antcall>
-        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
         <move todir="${packages-folder.macosx}">          <fileset dir="${ldapstudio-complete.output}"/>        </move>
 
         <!-- Cleaning latest build -->
-        <antcall target="clean"/>
+        <antcall target="clean" inheritall="false"/>
         <!-- Generating LDAP Studio for Windows -->
-        <antcall target="bundle">
+        <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="win32"/>
             <param name="ldapstudio-rcp.os.arch" value="x86"/>
             <param name="ldapstudio-rcp.os.extension" value=".exe"/>
         </antcall>
-        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
         <move todir="${packages-folder.windows}">          <fileset dir="${ldapstudio-complete.output}"/>        </move>
 
         <!-- Cleaning latest build -->
-        <antcall target="clean"/>
+        <antcall target="clean" inheritall="false"/>
         <!-- Generating LDAP Studio for Linux i386 -->
-        <antcall target="bundle">
+        <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="linux"/>
             <param name="ldapstudio-rcp.os.arch" value="i386"/>
             <param name="ldapstudio-rcp.os.extension" value=""/>
         </antcall>
-        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
 		<mkdir dir="${packages-folder.linux-i386}" />
         <tar compression="gzip" destfile="${packages-folder.linux-i386}/LDAP_Studio_Linux_i386.tar.gz">
             <tarfileset dir="${ldapstudio-complete.output}" mode="755">
-				<include name="LDAP Studio/ldapstudio" />
+				<include name="ldapstudio/ldapstudio" />
 			</tarfileset>
             <tarfileset dir="${ldapstudio-complete.output}">
 				<include name="**" />
-				<exclude name="LDAP Studio/ldapstudio" />
+				<exclude name="ldapstudio/ldapstudio" />
 			</tarfileset>
         </tar>
 
         <!-- Cleaning latest build-->
-        <antcall target="clean"/>
+        <antcall target="clean" inheritall="false"/>
         <!-- Generating LDAP Studio for Linux PPC -->
-        <antcall target="bundle">
+        <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="linux"/>
             <param name="ldapstudio-rcp.os.arch" value="ppc"/>
             <param name="ldapstudio-rcp.os.extension" value=""/>
         </antcall>
-        <copy todir="${ldapstudio-complete.build}">          <fileset dir="${basedir}/docs">               <include name="LICENSE.txt"/>               <include name="NOTICE.txt"/>               <include name="Release Notes.txt"/>          </fileset>        </copy>
 		<mkdir dir="${packages-folder.linux-ppc}" />
         <tar compression="gzip" destfile="${packages-folder.linux-ppc}/LDAP_Studio_Linux_PPC.tar.gz">
             <tarfileset dir="${ldapstudio-complete.output}" mode="755">
-				<include name="LDAP Studio/ldapstudio" />
+				<include name="ldapstudio/ldapstudio" />
 			</tarfileset>
             <tarfileset dir="${ldapstudio-complete.output}">
 				<include name="**" />
-				<exclude name="LDAP Studio/ldapstudio" />
+				<exclude name="ldapstudio/ldapstudio" />
 			</tarfileset>
         </tar>
         

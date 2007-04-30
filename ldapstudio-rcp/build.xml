@@ -170,7 +170,7 @@
 	<!-- ================================== -->
 	<!--     Eclipse RCP-based product      -->
 	<!-- ================================== -->
-	<property name="ldapstudio-rcp.application" value="${ldapstudio-rcp.output}/LDAP Studio" />
+	<property name="ldapstudio-rcp.application" value="${ldapstudio-rcp.output}/ldapstudio" />
 	<property name="ldapstudio-rcp.application.zip" value="${ldapstudio-rcp.output}/${project.name}_${project.version}-${ldapstudio-rcp.os.name}-${os.arch}.zip" />
 
 	<target name="product" depends="jar" description="Create the standalone eclipse RCP application">
