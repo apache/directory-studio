@@ -232,7 +232,7 @@
         <!-- Copy of the Schemas Editor Feature in the "features" folder -->
 		<property name="ldapstudio-schemas-feature.project" value="${basedir}/ldapstudio-schemas-feature" />
 		<property name="ldapstudio-schemas-feature.name" value="org.apache.directory.ldapstudio.schemas.feature" />
-		<property name="ldapstudio-schemas-feature.version" value="0.7.0" />
+		<property name="ldapstudio-schemas-feature.version" value="0.8.0" />
 		<mkdir dir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}" />
 		<copy todir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}">
 			<fileset dir="${ldapstudio-schemas-feature.project}">
@@ -245,7 +245,7 @@
 	    <!-- Copy of the Browser Feature in the "features" folder -->
 		<property name="ldapstudio-browser-feature.project" value="${basedir}/ldapstudio-browser-feature" />
 		<property name="ldapstudio-browser-feature.name" value="org.apache.directory.ldapstudio.browser.feature" />
-		<property name="ldapstudio-browser-feature.version" value="0.7.0" />
+		<property name="ldapstudio-browser-feature.version" value="0.8.0" />
 		<mkdir dir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}" />
 		<copy todir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}">
 			<fileset dir="${ldapstudio-browser-feature.project}">
