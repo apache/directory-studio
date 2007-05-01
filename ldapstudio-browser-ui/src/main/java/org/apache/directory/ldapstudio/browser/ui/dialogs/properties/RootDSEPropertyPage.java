@@ -31,6 +31,7 @@ import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -101,130 +102,26 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         Text typeText = BaseWidgetUtils.createLabeledText( composite, "-", 1 );
         if ( connection != null && connection.getRootDSE() != null )
         {
-
-            boolean typeDetected = false;
-
-            // check OpenLDAP
-            IAttribute ocAttribute = connection.getRootDSE().getAttribute( "objectClass" );
-            if ( ocAttribute != null )
+            // Try to detect LDAP server from RootDSE
+            //   
+            IRootDSE rootDSE = connection.getRootDSE();
+            String type = detectOpenLDAP( rootDSE );
+            if ( type == null )
             {
-                for ( int i = 0; i < ocAttribute.getStringValues().length; i++ )
+                type = detectSiemensDirX( rootDSE );
+                if ( type == null )
                 {
-                    if ( "OpenLDAProotDSE".equals( ocAttribute.getStringValues()[i] ) )
+                    type = detectActiveDirectory( rootDSE );
+                    if ( type == null )
                     {
-                        IAttribute ccAttribute = connection.getRootDSE().getAttribute( "configContext" );
-                        if ( ccAttribute != null )
-                        {
-                            typeText.setText( "OpenLDAP 2.3" );
-                            typeDetected = true;
-                        }
-                        if ( !typeDetected )
-                        {
-                            IAttribute scAttribute = connection.getRootDSE().getAttribute( "supportedControl" );
-                            if ( scAttribute != null )
-                            {
-                                for ( int sci = 0; sci < scAttribute.getStringValues().length; sci++ )
-                                {
-                                    // if("1.2.840.113556.1.4.319".equals(scAttribute.getStringValues()[sci]))
-                                    // {
-                                    if ( "2.16.840.1.113730.3.4.18".equals( scAttribute.getStringValues()[sci] ) )
-                                    {
-                                        typeText.setText( "OpenLDAP 2.2" );
-                                        typeDetected = true;
-                                    }
-                                }
-                            }
-
-                        }
-                        if ( !typeDetected )
-                        {
-                            IAttribute seAttribute = connection.getRootDSE().getAttribute( "supportedExtension" );
-                            if ( seAttribute != null )
-                            {
-                                for ( int sei = 0; sei < seAttribute.getStringValues().length; sei++ )
-                                {
-                                    if ( "1.3.6.1.4.1.4203.1.11.3".equals( seAttribute.getStringValues()[sei] ) )
-                                    {
-                                        typeText.setText( "OpenLDAP 2.1" );
-                                        typeDetected = true;
-                                    }
-                                }
-                            }
-                        }
-                        if ( !typeDetected )
-                        {
-                            IAttribute sfAttribute = connection.getRootDSE().getAttribute( "supportedFeatures" );
-                            if ( sfAttribute != null )
-                            {
-                                for ( int sfi = 0; sfi < sfAttribute.getStringValues().length; sfi++ )
-                                {
-                                    if ( "1.3.6.1.4.1.4203.1.5.4".equals( sfAttribute.getStringValues()[sfi] ) )
-                                    {
-                                        typeText.setText( "OpenLDAP 2.0" );
-                                        typeDetected = true;
-                                    }
-                                }
-                            }
-                        }
-                        if ( !typeDetected )
-                        {
-                            typeText.setText( "OpenLDAP" );
-                            typeDetected = true;
-                        }
+                        type = detectByVendorName( rootDSE );
                     }
                 }
             }
 
-            // check Siemens DirX
-            IAttribute ssseAttribute = connection.getRootDSE().getAttribute( "subSchemaSubentry" );
-            if ( ssseAttribute != null )
+            if ( type != null )
             {
-                for ( int i = 0; i < ssseAttribute.getStringValues().length; i++ )
-                {
-                    if ( "cn=LDAPGlobalSchemaSubentry".equals( ssseAttribute.getStringValues()[i] ) )
-                    {
-                        typeText.setText( "Siemens DirX" );
-                    }
-                }
-            }
-
-            // check active directory
-            IAttribute rdncAttribute = connection.getRootDSE().getAttribute( "rootDomainNamingContext" );
-            if ( rdncAttribute != null )
-            {
-                IAttribute ffAttribute = connection.getRootDSE().getAttribute( "forestFunctionality" );
-                if ( ffAttribute != null )
-                {
-                    typeText.setText( "Microsoft Active Directory 2003" );
-                }
-                else
-                {
-                    typeText.setText( "Microsoft Active Directory 2000" );
-                }
-            }
-
-            // check Novell eDirectory / Sun Directory Server / Netscape
-            // Directory Server
-            IAttribute vnAttribute = connection.getRootDSE().getAttribute( "vendorName" );
-            IAttribute vvAttribute = connection.getRootDSE().getAttribute( "vendorVersion" );
-            if ( vnAttribute != null && vnAttribute.getStringValues().length > 0 && vvAttribute != null
-                && vvAttribute.getStringValues().length > 0 )
-            {
-                if ( vnAttribute.getStringValues()[0].indexOf( "Novell" ) > -1
-                    || vvAttribute.getStringValues()[0].indexOf( "eDirectory" ) > -1 )
-                {
-                    typeText.setText( "Novell eDirectory" );
-                }
-                if ( vnAttribute.getStringValues()[0].indexOf( "Sun" ) > -1
-                    || vvAttribute.getStringValues()[0].indexOf( "Sun" ) > -1 )
-                {
-                    typeText.setText( "Sun Directory Server" );
-                }
-                if ( vnAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1
-                    || vvAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1 )
-                {
-                    typeText.setText( "Netscape Directory Server" );
-                }
+                typeText.setText( type );
             }
         }
         addInfo( connection, composite, "vendorName", "Vendor Name:" );
@@ -251,7 +148,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         controlsViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            controlsViewer.setInput( ((RootDSE)connection.getRootDSE()).getSupportedControls() );
+            controlsViewer.setInput( ( ( RootDSE ) connection.getRootDSE() ).getSupportedControls() );
         }
         this.controlsTab = new TabItem( this.tabFolder, SWT.NONE );
         this.controlsTab.setText( "Controls" );
@@ -267,7 +164,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         extensionViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            extensionViewer.setInput( ((RootDSE)connection.getRootDSE()).getSupportedExtensions() );
+            extensionViewer.setInput( ( ( RootDSE ) connection.getRootDSE() ).getSupportedExtensions() );
         }
         this.extensionsTab = new TabItem( this.tabFolder, SWT.NONE );
         this.extensionsTab.setText( "Extensions" );
@@ -283,7 +180,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         featureViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            featureViewer.setInput( ((RootDSE)connection.getRootDSE()).getSupportedFeatures() );
+            featureViewer.setInput( ( ( RootDSE ) connection.getRootDSE() ).getSupportedFeatures() );
         }
         this.featuresTab = new TabItem( this.tabFolder, SWT.NONE );
         this.featuresTab.setText( "Features" );
@@ -322,6 +219,196 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
 
         // setControl(composite);
         return this.tabFolder;
+    }
+
+
+    /** Check various LDAP servers via vendorName attribute.
+     * 
+     * @param rootDSE
+     */
+    private String detectByVendorName( IRootDSE rootDSE )
+    {
+
+        String result = null;
+
+        IAttribute vnAttribute = rootDSE.getAttribute( "vendorName" );
+        IAttribute vvAttribute = rootDSE.getAttribute( "vendorVersion" );
+
+        if ( vnAttribute != null && vnAttribute.getStringValues().length > 0 && vvAttribute != null
+            && vvAttribute.getStringValues().length > 0 )
+        {
+            if ( vnAttribute.getStringValues()[0].indexOf( "Apache Software Foundation" ) > -1 )
+            {
+                result = "Apache Directory Server";
+            }
+            if ( vnAttribute.getStringValues()[0].indexOf( "Novell" ) > -1
+                || vvAttribute.getStringValues()[0].indexOf( "eDirectory" ) > -1 )
+            {
+                result = "Novell eDirectory";
+            }
+            if ( vnAttribute.getStringValues()[0].indexOf( "Sun" ) > -1
+                || vvAttribute.getStringValues()[0].indexOf( "Sun" ) > -1 )
+            {
+                result = "Sun Directory Server";
+            }
+            if ( vnAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1
+                || vvAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1 )
+            {
+                result = "Netscape Directory Server";
+            }
+            if ( vnAttribute.getStringValues()[0].indexOf( "International Business Machines" ) > -1
+                && ( ( vvAttribute.getStringValues()[0].indexOf( "6.0" ) > -1 ) )
+                || ( vvAttribute.getStringValues()[0].indexOf( "5.2" ) > -1 ) )
+            {
+                result = "IBM Tivoli Directory Server";
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Tries to detect a Microsoft Active Directory.
+     * 
+     * @param rootDSE
+     * @return name of directory type, or null if no Active Directory server server was detected
+     */
+    private String detectActiveDirectory( IRootDSE rootDSE )
+    {
+
+        String result = null;
+
+        // check active directory
+        IAttribute rdncAttribute = rootDSE.getAttribute( "rootDomainNamingContext" );
+        if ( rdncAttribute != null )
+        {
+            IAttribute ffAttribute = rootDSE.getAttribute( "forestFunctionality" );
+            if ( ffAttribute != null )
+            {
+                result = "Microsoft Active Directory 2003";
+            }
+            else
+            {
+                result = "Microsoft Active Directory 2000";
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Tries to detect a Siemens DirX server.
+     * 
+     * @param rootDSE 
+     * @return name of directory type, or null if no DirX server server was detected
+     */
+    private String detectSiemensDirX( IRootDSE rootDSE )
+    {
+
+        String result = null;
+
+        IAttribute ssseAttribute = rootDSE.getAttribute( "subSchemaSubentry" );
+        if ( ssseAttribute != null )
+        {
+            for ( int i = 0; i < ssseAttribute.getStringValues().length; i++ )
+            {
+                if ( "cn=LDAPGlobalSchemaSubentry".equals( ssseAttribute.getStringValues()[i] ) )
+                {
+                    result = "Siemens DirX";
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Tries to detect an OpenLDAP server
+     * 
+     * @param rootDSE
+     * @return name (and sometimes version) of directory type, or null if no OpenLDAP server was detected
+     */
+    private String detectOpenLDAP( IRootDSE rootDSE )
+    {
+
+        String result = null;
+        boolean typeDetected = false;
+
+        // check OpenLDAP
+        IAttribute ocAttribute = rootDSE.getAttribute( "objectClass" );
+        if ( ocAttribute != null )
+        {
+            for ( int i = 0; i < ocAttribute.getStringValues().length; i++ )
+            {
+                if ( "OpenLDAProotDSE".equals( ocAttribute.getStringValues()[i] ) )
+                {
+                    IAttribute ccAttribute = rootDSE.getAttribute( "configContext" );
+                    if ( ccAttribute != null )
+                    {
+                        result = "OpenLDAP 2.3";
+                        typeDetected = true;
+                    }
+                    if ( !typeDetected )
+                    {
+                        IAttribute scAttribute = rootDSE.getAttribute( "supportedControl" );
+                        if ( scAttribute != null )
+                        {
+                            for ( int sci = 0; sci < scAttribute.getStringValues().length; sci++ )
+                            {
+                                // if("1.2.840.113556.1.4.319".equals(scAttribute.getStringValues()[sci]))
+                                // {
+                                if ( "2.16.840.1.113730.3.4.18".equals( scAttribute.getStringValues()[sci] ) )
+                                {
+                                    result = "OpenLDAP 2.2";
+                                    typeDetected = true;
+                                }
+                            }
+                        }
+
+                    }
+                    if ( !typeDetected )
+                    {
+                        IAttribute seAttribute = rootDSE.getAttribute( "supportedExtension" );
+                        if ( seAttribute != null )
+                        {
+                            for ( int sei = 0; sei < seAttribute.getStringValues().length; sei++ )
+                            {
+                                if ( "1.3.6.1.4.1.4203.1.11.3".equals( seAttribute.getStringValues()[sei] ) )
+                                {
+                                    result = "OpenLDAP 2.1";
+                                    typeDetected = true;
+                                }
+                            }
+                        }
+                    }
+                    if ( !typeDetected )
+                    {
+                        IAttribute sfAttribute = rootDSE.getAttribute( "supportedFeatures" );
+                        if ( sfAttribute != null )
+                        {
+                            for ( int sfi = 0; sfi < sfAttribute.getStringValues().length; sfi++ )
+                            {
+                                if ( "1.3.6.1.4.1.4203.1.5.4".equals( sfAttribute.getStringValues()[sfi] ) )
+                                {
+                                    result = "OpenLDAP 2.0";
+                                    typeDetected = true;
+                                }
+                            }
+                        }
+                    }
+                    if ( !typeDetected )
+                    {
+                        result = "OpenLDAP";
+                        typeDetected = true;
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
 
