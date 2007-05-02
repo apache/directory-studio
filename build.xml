@@ -427,6 +427,7 @@
         <property name="packages-folder.windows" value="${packages-folder}/Windows" />
         <property name="packages-folder.linux-i386" value="${packages-folder}/Linuxi386" />
         <property name="packages-folder.linux-ppc" value="${packages-folder}/LinuxPPC" />
+        <property name="packages-folder.updatesite" value="${packages-folder}/updatesite" />
 
         <!-- Cleaning the 'packages' folder (just in case) -->
         <delete includeemptydirs="true" failonerror="no">
@@ -491,5 +492,15 @@
 			</tarfileset>
         </tar>
         
+        <!-- Cleaning latest build-->
+        <antcall target="clean" inheritall="false"/>
+        <!-- Generating LDAP Studio's update site -->
+        <ant dir="ldapstudio-updatesite" inheritAll="no"/>
+		<mkdir dir="${packages-folder.updatesite}" />
+		<move todir="${packages-folder.updatesite}">            <fileset dir="ldapstudio-updatesite">
+                <include name="features/**"/>
+                <include name="plugins/**"/>
+                <include name="site--xml.html"/>
+            </fileset>        </move>
     </target>
 </project>
