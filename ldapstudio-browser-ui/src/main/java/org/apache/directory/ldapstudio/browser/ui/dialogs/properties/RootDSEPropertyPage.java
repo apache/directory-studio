@@ -279,8 +279,8 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
                 result = "Netscape Directory Server";
             }
             if ( vnAttribute.getStringValues()[0].indexOf( "International Business Machines" ) > -1
-                && ( ( vvAttribute.getStringValues()[0].indexOf( "6.0" ) > -1 ) )
-                || ( vvAttribute.getStringValues()[0].indexOf( "5.2" ) > -1 ) )
+                && ( ( vvAttribute.getStringValues()[0].indexOf( "6.0" ) > -1 ) || ( vvAttribute.getStringValues()[0]
+                    .indexOf( "5.2" ) > -1 ) ) )
             {
                 result = "IBM Tivoli Directory Server";
             }
