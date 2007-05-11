@@ -21,11 +21,10 @@
 package org.apache.directory.ldapstudio.browser.core.internal.model;
 
 
-import java.net.URL;
 import java.util.Arrays;
-import java.util.Properties;
 
 import org.apache.directory.ldapstudio.browser.core.model.DN;
+import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
@@ -36,25 +35,6 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 {
 
     private static final long serialVersionUID = -8445018787232919754L;
-
-    public static Properties oidMap = new Properties();
-    static
-    {
-
-        try
-        {
-            URL url = RootDSE.class.getClassLoader().getResource(
-                "org/apache/directory/ldapstudio/browser/core/model/ldap_oids.txt" ); //$NON-NLS-1$
-            if(url != null)
-            {
-                oidMap.load( url.openStream() );
-            }
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
-    }
 
 
     protected RootDSE()
@@ -67,18 +47,21 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
         super( new DN(), connection );
     }
 
-    
+
     public IEntry getParententry()
     {
         return null;
     }
-    
+
 
     public String[] getSupportedExtensions()
     {
-        if ( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION ) != null )
+        IAttribute supportedExtensionsAttr = getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION );
+        if ( supportedExtensionsAttr != null )
         {
-            return get( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION ).getStringValues() );
+            String[] stringValues = supportedExtensionsAttr.getStringValues();
+            Arrays.sort( stringValues );
+            return stringValues;
         }
         else
         {
@@ -89,9 +72,12 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
     public String[] getSupportedControls()
     {
-        if ( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ) != null )
+        IAttribute supportedControlsAttr = getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL );
+        if ( supportedControlsAttr != null )
         {
-            return get( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ).getStringValues() );
+            String[] stringValues = supportedControlsAttr.getStringValues();
+            Arrays.sort( stringValues );
+            return stringValues;
         }
         else
         {
@@ -102,32 +88,17 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
     public String[] getSupportedFeatures()
     {
-        if ( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES ) != null )
+        IAttribute supportedFeaturesAttr = getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES );
+        if ( supportedFeaturesAttr != null )
         {
-            return get( getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES ).getStringValues() );
+            String[] stringValues = supportedFeaturesAttr.getStringValues();
+            Arrays.sort( stringValues );
+            return stringValues;
         }
         else
         {
             return new String[0];
         }
-    }
-
-
-    private String[] get( String[] a )
-    {
-        for ( int i = 0; i < a.length; i++ )
-        {
-            if ( oidMap.containsKey( a[i] ) )
-            {
-                String s = ( String ) oidMap.get( a[i] );
-                a[i] = s;
-                if ( s.matches( "^\".*\"" ) ) { //$NON-NLS-1$
-                    a[i] = s.substring( 1, s.indexOf( "\"", 1 ) ); //$NON-NLS-1$
-                }
-            }
-        }
-        Arrays.sort( a );
-        return a;
     }
 
 }

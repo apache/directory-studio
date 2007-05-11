@@ -67,7 +67,7 @@ public interface IRootDSE extends IEntry
     /**
      * Gets the supported extensions.
      * 
-     * @return the supported extensions
+     * @return the OIDs of the supported extensions
      */
     public String[] getSupportedExtensions();
 
@@ -75,7 +75,7 @@ public interface IRootDSE extends IEntry
     /**
      * Gets the supported controls.
      * 
-     * @return the supported controls
+     * @return the OIDs of the the supported controls
      */
     public String[] getSupportedControls();
 
@@ -83,7 +83,7 @@ public interface IRootDSE extends IEntry
     /**
      * Gets the supported features.
      * 
-     * @return the supported features
+     * @return the OIDs of the the supported features
      */
     public String[] getSupportedFeatures();
 
