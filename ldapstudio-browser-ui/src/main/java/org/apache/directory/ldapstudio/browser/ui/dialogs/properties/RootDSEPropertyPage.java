@@ -24,6 +24,8 @@ package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetTableMetadata;
@@ -33,7 +35,6 @@ import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
 import org.apache.directory.ldapstudio.browser.core.model.IValue;
-
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -74,6 +75,21 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
     private TabItem featuresTab;
 
     private TabItem rawTab;
+
+    public static ResourceBundle oidDescriptions = null;
+    // Load RessourceBundle with OID descriptions
+    static
+    {
+        try
+        {
+            oidDescriptions = ResourceBundle
+                .getBundle( "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.OIDDescriptions" );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+    }
 
 
     public RootDSEPropertyPage()
@@ -148,7 +164,9 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         controlsViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            controlsViewer.setInput( ( ( RootDSE ) connection.getRootDSE() ).getSupportedControls() );
+            String[] supportedControls = ( ( RootDSE ) connection.getRootDSE() ).getSupportedControls();
+            addDescritionsToOIDs( supportedControls );
+            controlsViewer.setInput( supportedControls );
         }
         this.controlsTab = new TabItem( this.tabFolder, SWT.NONE );
         this.controlsTab.setText( "Controls" );
@@ -164,7 +182,9 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         extensionViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            extensionViewer.setInput( ( ( RootDSE ) connection.getRootDSE() ).getSupportedExtensions() );
+            String[] supportedExtensions = ( ( RootDSE ) connection.getRootDSE() ).getSupportedExtensions();
+            addDescritionsToOIDs( supportedExtensions );
+            extensionViewer.setInput( supportedExtensions );
         }
         this.extensionsTab = new TabItem( this.tabFolder, SWT.NONE );
         this.extensionsTab.setText( "Extensions" );
@@ -180,7 +200,9 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         featureViewer.setLabelProvider( new LabelProvider() );
         if ( connection != null && connection.getRootDSE() != null )
         {
-            featureViewer.setInput( ( ( RootDSE ) connection.getRootDSE() ).getSupportedFeatures() );
+            String[] supportedFeatures = ( ( RootDSE ) connection.getRootDSE() ).getSupportedFeatures();
+            addDescritionsToOIDs( supportedFeatures );
+            featureViewer.setInput( supportedFeatures );
         }
         this.featuresTab = new TabItem( this.tabFolder, SWT.NONE );
         this.featuresTab.setText( "Features" );
@@ -409,6 +431,30 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         }
 
         return result;
+    }
+
+
+    /**
+     * Add descriptions to OIDs, if known. uses the form "OID (description)". The array content is modified by this method.  
+     * 
+     * @param oids 
+     */
+    private void addDescritionsToOIDs( String[] oids )
+    {
+        if ( oidDescriptions != null )
+        {
+            for ( int i = 0; i < oids.length; ++i )
+            {
+                try
+                {
+                    String description = oidDescriptions.getString( oids[i] );
+                    oids[i] = oids[i] + " (" + description + ")";
+                }
+                catch ( MissingResourceException ignored )
+                {
+                }
+            }
+        }
     }
 
 
