@@ -42,7 +42,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.apache.directory.ldapstudio.application"
-            name="LDAP Studio">
+            name="Apache Directory LDAP Studio">
          <property
                name="aboutText"
                value="%aboutText"/>
