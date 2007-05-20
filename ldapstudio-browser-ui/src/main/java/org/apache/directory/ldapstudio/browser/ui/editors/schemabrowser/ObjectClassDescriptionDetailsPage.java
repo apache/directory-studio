@@ -517,7 +517,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                superclassesSection.setText( "Superlasses (0)" );
+                superclassesSection.setText( "Superclasses (0)" );
                 superLinks = new Hyperlink[0];
                 Text superText = toolkit.createText( superClient, getNonNullString( null ), SWT.NONE );
                 superText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
