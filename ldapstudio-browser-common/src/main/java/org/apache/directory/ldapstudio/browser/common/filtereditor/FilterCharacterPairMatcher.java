@@ -21,10 +21,8 @@
 package org.apache.directory.ldapstudio.browser.common.filtereditor;
 
 
-// TODO: Refactor Filter Editor
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
-
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
@@ -32,43 +30,62 @@ import org.eclipse.jface.text.source.ICharacterPairMatcher;
 import org.eclipse.jface.text.source.ISourceViewer;
 
 
+/**
+ * The FilterCharacterPairMatcher implements the ICharacterPairMatcher interface
+ * to match the peer opening and closing parentesis.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FilterCharacterPairMatcher implements ICharacterPairMatcher
 {
 
-    private ISourceViewer sourceViewer;
-
+    /** The filter parser. */
     private LdapFilterParser parser;
 
+    /** The anchor. */
     private int anchor;
 
 
+    /**
+     * Creates a new instance of FilterCharacterPairMatcher.
+     * 
+     * @param sourceViewer the source viewer
+     * @param parser the filter parser
+     */
     public FilterCharacterPairMatcher( ISourceViewer sourceViewer, LdapFilterParser parser )
     {
-        super();
-        this.sourceViewer = sourceViewer;
         this.parser = parser;
         this.clear();
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.source.ICharacterPairMatcher#dispose()
+     */
     public void dispose()
     {
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.source.ICharacterPairMatcher#clear()
+     */
     public void clear()
     {
-        this.anchor = LEFT;
+        anchor = LEFT;
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.source.ICharacterPairMatcher#match(org.eclipse.jface.text.IDocument, int)
+     */
     public IRegion match( IDocument document, int offset )
     {
-
-        LdapFilter model = this.parser.getModel();
+        LdapFilter model = parser.getModel();
         if ( model != null )
         {
-            LdapFilter filter = this.parser.getModel().getFilter( offset - 1 );
+            LdapFilter filter = parser.getModel().getFilter( offset - 1 );
 
             if ( filter != null && filter.getStartToken() != null && filter.getStopToken() != null )
             {
@@ -78,13 +95,13 @@ public class FilterCharacterPairMatcher implements ICharacterPairMatcher
 
                 if ( left == offset - 1 )
                 {
-                    this.anchor = LEFT;
+                    anchor = LEFT;
                     IRegion region = new Region( left, right - left + 1 );
                     return region;
                 }
                 if ( right == offset - 1 )
                 {
-                    this.anchor = RIGHT;
+                    anchor = RIGHT;
                     IRegion region = new Region( left, right - left + 1 );
                     return region;
                 }
@@ -95,9 +112,12 @@ public class FilterCharacterPairMatcher implements ICharacterPairMatcher
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.source.ICharacterPairMatcher#getAnchor()
+     */
     public int getAnchor()
     {
-        return this.anchor;
+        return anchor;
     }
 
 }

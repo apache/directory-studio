@@ -229,6 +229,13 @@ public interface BrowserCommonConstants
     
     public static final String IMG_DELETE_ALL = "resources/icons/delete_all.gif";
 
+    public static final String IMG_ATD = "resources/icons/atd.png";
+
+    public static final String IMG_OCD = "resources/icons/ocd.png";
+
+    public static final String IMG_MRD = "resources/icons/mrd.png";
+
+
 
 
     

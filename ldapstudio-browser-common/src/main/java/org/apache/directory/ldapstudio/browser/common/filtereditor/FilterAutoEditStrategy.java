@@ -21,152 +21,228 @@
 package org.apache.directory.ldapstudio.browser.common.filtereditor;
 
 
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapAndFilterComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterComponent;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapNotFilterComponent;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapOrFilterComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterToken;
-
-import org.eclipse.jface.text.DefaultAutoIndentStrategy;
+import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.TextUtilities;
-import org.eclipse.jface.text.source.SourceViewer;
 
 
-// TODO: Refactor Filter Editor
-public class FilterAutoEditStrategy extends DefaultAutoIndentStrategy implements IAutoEditStrategy
+/**
+ * The FilterAutoEditStrategy implements the IAutoEditStrategy for the filter editor widget.
+ * It provides smart parentesis handling when typing the filter.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy implements IAutoEditStrategy
 {
 
+    /** The Constant INDENT_STRING. */
     public static final String INDENT_STRING = "    ";
 
+    /** The filter parser. */
     private LdapFilterParser parser;
 
-    private SourceViewer sourceViewer;
 
-    private int autoRightParenthesisFilterOffset;
-
-
-    public FilterAutoEditStrategy( SourceViewer sourceViewer, LdapFilterParser parser )
+    /**
+     * Creates a new instance of FilterAutoEditStrategy.
+     * 
+     * @param parser the filter parser
+     */
+    public FilterAutoEditStrategy( LdapFilterParser parser )
     {
-        super();
-        this.sourceViewer = sourceViewer;
-        this.parser = parser;
-        this.autoRightParenthesisFilterOffset = -1;
+        this.init( parser );
     }
 
 
+    /**
+     * Init.
+     * 
+     * @param parser the parser
+     */
+    private void init( LdapFilterParser parser )
+    {
+        this.parser = parser;
+    }
+
+
+    /**
+     * @see org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy#customizeDocumentCommand(org.eclipse.jface.text.IDocument, org.eclipse.jface.text.DocumentCommand)
+     */
     public void customizeDocumentCommand( IDocument d, DocumentCommand c )
     {
+        super.customizeDocumentCommand( d, c );
+        AutoEditParameters aep = new AutoEditParameters( c.text, c.offset, c.length, c.caretOffset, c.shiftsCaret );
+        customizeAutoEditParameters( aep );
+        c.offset = aep.offset;
+        c.length = aep.length;
+        c.text = aep.text;
+        c.caretOffset = aep.caretOffset;
+        c.shiftsCaret = aep.shiftsCaret;
+    }
 
-        LdapFilter filter = this.parser.getModel().getFilter( c.offset );
 
-        // this.dumpDocumentCommand(c);
+    /**
+     * Customizes auto edit parameters.
+     * 
+     * @param aep the auto edit parameters
+     */
+    public void customizeAutoEditParameters( AutoEditParameters aep )
+    {
+        LdapFilter filter = parser.getModel().getFilter( aep.offset );
+        //System.out.println(filter);
 
-        if ( c.length == 0 && c.text != null )
+        if ( aep.length > 0 && ( aep.text == null || "".equals( aep.text ) ) )
         {
-            // new line
-            if ( TextUtilities.endsWith( d.getLegalLineDelimiters(), c.text ) != -1 )
+            // delete surrounding parenthesis after deleting the last character
+            if ( filter.toString().length() - aep.length == 2 && filter.getStartToken() != null
+                && filter.getStopToken() != null
+                && aep.offset >= filter.getStartToken().getOffset() + filter.getStartToken().getLength()
+                && aep.offset + aep.length <= filter.getStopToken().getOffset() )
             {
-                super.customizeDocumentCommand( d, c );
-                if ( filter != null && filter.getFilterComponent() != null )
-                {
-                    LdapFilterToken startToken = filter.getFilterComponent().getStartToken();
-                    if ( startToken != null
-                        && ( startToken.getType() == LdapFilterToken.AND || startToken.getType() == LdapFilterToken.OR ) )
-                    {
+                aep.offset -= 1;
+                aep.length += 2;
+                aep.caretOffset = aep.offset;
+                aep.shiftsCaret = false;
+            }
+        }
 
-                        if ( startToken.getOffset() == c.offset - 1 )
+        if ( aep.length == 0 && aep.text != null && !"".equals( aep.text ) )
+        {
+            boolean isNewFilter = aep.text.equals( "(" );
+            boolean isSurroundNew = false;
+            boolean isSurroundNested = false;
+            boolean isSurroundBeforeOtherFilter = false;
+            boolean isSurroundAfterOtherFilter = false;
+            if ( aep.text.matches( "[a-zA-Z0-9-\\.&|!]+" ) && filter != null )
+            {
+                isSurroundNew = filter.getStartToken() == null && aep.offset == 0 && !aep.text.startsWith( "(" )
+                    && !aep.text.endsWith( ")" );
+
+                if ( filter.getStartToken() != null
+                    && filter.getFilterComponent() != null
+                    && ( filter.getFilterComponent() instanceof LdapAndFilterComponent
+                        || filter.getFilterComponent() instanceof LdapOrFilterComponent || filter.getFilterComponent() instanceof LdapNotFilterComponent ) )
+                {
+                    LdapFilterComponent fc = filter.getFilterComponent();
+                    LdapFilter[] filters = fc.getFilters();
+
+                    if ( filters.length == 0 && aep.offset > fc.getStartToken().getOffset() )
+                    {
+                        // no nested filter yet
+                        isSurroundNested = true;
+                    }
+
+                    if ( filters.length > 0 && aep.offset > fc.getStartToken().getOffset()
+                        && aep.offset < filters[0].getStartToken().getOffset() )
+                    {
+                        // before first nested filter
+                        isSurroundNested = true;
+                    }
+
+                    if ( filters.length > 0 && aep.offset > filters[filters.length - 1].getStopToken().getOffset()
+                        && aep.offset <= filter.getStopToken().getOffset() )
+                    {
+                        // after last nested filter
+                        isSurroundNested = true;
+                    }
+
+                    for ( int i = 0; i < filters.length; i++ )
+                    {
+                        if ( filters.length > i + 1 )
                         {
-                            c.text += INDENT_STRING;
-                            if ( filter.getStopToken() != null && filter.getStopToken().getOffset() == c.offset )
+                            if ( aep.offset > filters[i].getStopToken().getOffset()
+                                && aep.offset <= filters[i + 1].getStopToken().getOffset() )
                             {
-                                c.caretOffset = c.offset + c.text.length();
-                                c.shiftsCaret = false;
-                                c.text += "\n";
-                                super.customizeDocumentCommand( d, c );
+                                // between nested filter
+                                isSurroundNested = true;
                             }
                         }
                     }
                 }
+
+                isSurroundBeforeOtherFilter = filter.getStartToken() != null
+                    && aep.offset == filter.getStartToken().getOffset();
+
+                isSurroundAfterOtherFilter = filter.getStopToken() != null
+                    && aep.offset == filter.getStopToken().getOffset()
+                    && ( filter.getFilterComponent() instanceof LdapAndFilterComponent
+                        || filter.getFilterComponent() instanceof LdapOrFilterComponent || filter.getFilterComponent() instanceof LdapNotFilterComponent );
             }
 
-            // filter start/stop
-            if ( c.text.equals( "(" ) )
+            // add opening parenthesis '('
+            if ( isSurroundNew || isSurroundNested || isSurroundAfterOtherFilter || isSurroundBeforeOtherFilter )
             {
-                c.text = "()";
-                c.caretOffset = c.offset + 1;
-                c.shiftsCaret = false;
-                this.autoRightParenthesisFilterOffset = c.offset;
+                aep.text = "(" + aep.text;
+                aep.caretOffset = aep.offset + aep.text.length();
+                aep.shiftsCaret = false;
             }
-            else if ( c.text.equals( ")" ) )
+
+            // add closing parenthesis ')'
+            if ( isNewFilter || isSurroundNew || isSurroundNested || isSurroundAfterOtherFilter
+                || isSurroundBeforeOtherFilter )
             {
-                LdapFilter filter2 = this.parser.getModel().getFilter( this.autoRightParenthesisFilterOffset );
-                if ( filter2 != null && filter2.getStopToken() != null
-                    && filter2.getStopToken().getOffset() == c.offset )
-                {
-                    c.text = "";
-                    c.caretOffset = c.offset + 1;
-                    c.shiftsCaret = false;
-                }
-                this.autoRightParenthesisFilterOffset = -1;
+                aep.text = aep.text + ")";
+                aep.caretOffset = aep.offset + aep.text.length() - 1;
+                aep.shiftsCaret = false;
             }
 
-            // tab to IDENT_STRING
-            if ( c.text.equals( "\t" ) )
+            // translate tab to IDENT_STRING
+            if ( aep.text.equals( "\t" ) )
             {
-                c.text = INDENT_STRING;
+                aep.text = INDENT_STRING;
             }
-
-            // smart formatting
-            if ( filter != null && filter.getStartToken() != null && filter.getFilterComponent() == null )
-            {
-                if ( c.text.equals( "&" ) || c.text.equals( "|" ) )
-                {
-                    if ( filter.getStartToken().getOffset() == c.offset - 1 )
-                    {
-                        c.text += "\n";
-                        super.customizeDocumentCommand( d, c );
-                        c.text += INDENT_STRING + "()";
-                        c.caretOffset = c.offset + c.text.length() - 1;
-                        c.shiftsCaret = false;
-                        if ( filter.getStopToken() != null && filter.getStopToken().getOffset() == c.offset )
-                        {
-                            c.text += "\n";
-                            super.customizeDocumentCommand( d, c );
-                        }
-
-                    }
-                }
-                else if ( c.text.equals( "!" ) )
-                {
-                    if ( filter.getStartToken().getOffset() == c.offset - 1 )
-                    {
-                        c.text += "()";
-                        c.caretOffset = c.offset + c.text.length() - 1;
-                        c.shiftsCaret = false;
-                    }
-                }
-            }
-
         }
     }
 
-
-    private void autoIndentAfterNewLine()
+    /**
+     * Helper class.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public static class AutoEditParameters
     {
 
+        /** The text. */
+        public String text;
+
+        /** The offset. */
+        public int offset;
+
+        /** The length. */
+        public int length;
+
+        /** The caret offset. */
+        public int caretOffset;
+
+        /** The shifts caret flag. */
+        public boolean shiftsCaret;
+
+
+        /**
+         * Creates a new instance of AutoEditParameters.
+         * 
+         * @param text the text
+         * @param offset the offset
+         * @param length the length
+         * @param caretOffset the caret offset
+         * @param shiftsCaret the shifts caret flag
+         */
+        public AutoEditParameters( String text, int offset, int length, int caretOffset, boolean shiftsCaret )
+        {
+            this.text = text;
+            this.offset = offset;
+            this.length = length;
+            this.caretOffset = caretOffset;
+            this.shiftsCaret = shiftsCaret;
+        }
     }
 
-
-    private void dumpDocumentCommand( DocumentCommand command )
-    {
-        System.out.println( "----------------------------------" );
-        System.out.println( "  offset     : " + command.offset );
-        System.out.println( "  length     : " + command.length );
-        System.out.println( "  text       : " + command.text );
-        System.out.println( "  caretoffset: " + command.caretOffset );
-        System.out.println( "  shiftsCaret: " + command.shiftsCaret );
-        System.out.println( "  doit       : " + command.doit );
-
-    }
 }

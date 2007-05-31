@@ -34,7 +34,6 @@ import org.apache.directory.ldapstudio.browser.core.model.Control;
 import org.apache.directory.ldapstudio.browser.core.model.DN;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.events.ModifyEvent;
@@ -133,9 +132,6 @@ public class SearchPageWrapper extends BrowserWidget
     /** The style. */
     protected int style;
 
-    /** The filter parser. */
-    protected LdapFilterParser parser;
-
     /** The search name label. */
     protected Label searchNameLabel;
 
@@ -201,7 +197,6 @@ public class SearchPageWrapper extends BrowserWidget
      */
     public SearchPageWrapper( int style )
     {
-        this.parser = new LdapFilterParser();
         this.style = style;
     }
 
@@ -666,10 +661,9 @@ public class SearchPageWrapper extends BrowserWidget
         }
         if ( filterWidget != null )
         {
-            parser.parse( filterWidget.getFilter() );
-            if ( !parser.getModel().toString().equals( search.getFilter() ) )
+            if ( !filterWidget.getFilter().equals( search.getFilter() ) )
             {
-                search.getSearchParameter().setFilter( parser.getModel().toString() );
+                search.getSearchParameter().setFilter( filterWidget.getFilter() );
                 searchModified = true;
             }
             filterWidget.saveDialogSettings();

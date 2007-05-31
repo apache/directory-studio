@@ -123,7 +123,7 @@ public class FilterDialog extends Dialog
         // create and configure source viewer
         sourceViewer = new SourceViewer( composite, new VerticalRuler( 0 ), SWT.H_SCROLL | SWT.V_SCROLL );
         sourceViewer.getControl().setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        configuration = new FilterSourceViewerConfiguration( this.sourceViewer, this.parser, this.connection );
+        configuration = new FilterSourceViewerConfiguration( this.parser, this.connection );
         sourceViewer.configure( configuration );
 
         // set document

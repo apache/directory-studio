@@ -21,6 +21,13 @@
 package org.apache.directory.ldapstudio.browser.core.model.filter.parser;
 
 
+/**
+ * 
+ * TODO LdapFilterScanner.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdapFilterScanner
 {
 
@@ -72,13 +79,19 @@ public class LdapFilterScanner
     // value of the encoded character. The case of the two hexadecimal
     // digits is not significant.
 
+    /** The filter to scan */
     private String filter;
 
+    /** The current position */
     private int pos;
 
+    /** The last token type. */
     private int lastTokenType;
 
 
+    /**
+     * Creates a new instance of LdapFilterScanner.
+     */
     public LdapFilterScanner()
     {
         super();
@@ -86,7 +99,13 @@ public class LdapFilterScanner
     }
 
 
-    public void setFilter( String filter )
+    
+    /**
+     * Resets this scanner.
+     * 
+     * @param filter the new filter to scan
+     */
+    public void reset( String filter )
     {
         this.filter = filter;
         this.pos = -1;
@@ -94,12 +113,24 @@ public class LdapFilterScanner
     }
 
 
+    /**
+     * Gets the character at the current position.
+     * 
+     * @return the character at the current position
+     */
     private char currentChar()
     {
         return 0 <= pos && pos < filter.length() ? filter.charAt( pos ) : '\u0000';
     }
 
 
+    
+    /**
+     * Increments the position counter and gets
+     * the character at that positon.
+     * 
+     * @return the character at the next position
+     */
     private char nextChar()
     {
         pos++;
@@ -107,6 +138,12 @@ public class LdapFilterScanner
     }
 
 
+    /**
+     * Decrements the position counter and gets
+     * the character at that positon.
+     * 
+     * @return the character at the previous position
+     */
     private char prevChar()
     {
         pos--;

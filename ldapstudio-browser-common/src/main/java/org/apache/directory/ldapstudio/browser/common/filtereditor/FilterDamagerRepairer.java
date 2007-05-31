@@ -24,7 +24,6 @@ package org.apache.directory.ldapstudio.browser.common.filtereditor;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterToken;
-
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -33,69 +32,85 @@ import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationRepairer;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.graphics.RGB;
 
 
+/**
+ * The FilterDamagerRepairer is used for syntax highlighting.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FilterDamagerRepairer implements IPresentationDamager, IPresentationRepairer
 {
 
     private static final TextAttribute DEFAULT_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
         .getColor( new RGB( 0, 0, 0 ) ) );
 
-    private static final TextAttribute AND_OR_NOT_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 0, 127, 0 ) ), null, SWT.BOLD );
+    private static final TextAttribute AND_OR_NOT_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
+        .getDefault().getColor( new RGB( 0, 127, 0 ) ), null, SWT.BOLD );
 
-    private static final TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 127, 0, 85 ) ) );
+    private static final TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
+        .getDefault().getColor( new RGB( 127, 0, 85 ) ) );
 
-    private static final TextAttribute FILTER_TYPE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 255, 0, 0 ) ), null, SWT.BOLD );
+    private static final TextAttribute FILTER_TYPE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
+        .getDefault().getColor( new RGB( 255, 0, 0 ) ), null, SWT.BOLD );
 
-    private static final TextAttribute VALUE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault().getColor(
-        new RGB( 0, 0, 127 ) ) );
+    private static final TextAttribute VALUE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
+        .getColor( new RGB( 0, 0, 127 ) ) );
 
-    private static final TextAttribute PARENTHESIS_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 0, 0, 0 ) ), null, SWT.BOLD );
+    private static final TextAttribute PARENTHESIS_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
+        .getDefault().getColor( new RGB( 0, 0, 0 ) ), null, SWT.BOLD );
 
-    private SourceViewer sourceViewer;
-
+    /** The filter parser. */
     private LdapFilterParser parser;
 
+    /** The document. */
     private IDocument document;
 
 
-    public FilterDamagerRepairer( SourceViewer sourceViewer, LdapFilterParser parser )
+    /**
+     * Creates a new instance of FilterDamagerRepairer.
+     * 
+     * @param parser the filter parser
+     */
+    public FilterDamagerRepairer( LdapFilterParser parser )
     {
-        super();
-        this.sourceViewer = sourceViewer;
         this.parser = parser;
         this.document = null;
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.presentation.IPresentationDamager#setDocument(org.eclipse.jface.text.IDocument)
+     */
     public void setDocument( IDocument document )
     {
         this.document = document;
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.presentation.IPresentationDamager#getDamageRegion(org.eclipse.jface.text.ITypedRegion, org.eclipse.jface.text.DocumentEvent, boolean)
+     */
     public IRegion getDamageRegion( ITypedRegion partition, DocumentEvent event, boolean documentPartitioningChanged )
     {
         return partition;
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.presentation.IPresentationRepairer#createPresentation(org.eclipse.jface.text.TextPresentation, org.eclipse.jface.text.ITypedRegion)
+     */
     public void createPresentation( TextPresentation presentation, ITypedRegion damage )
     {
-
         // parse the filter
-        this.parser.parse( this.document.get() );
+        parser.parse( this.document.get() );
 
         // get tokens
-        LdapFilterToken[] tokens = this.parser.getModel().getTokens();
+        LdapFilterToken[] tokens = parser.getModel().getTokens();
 
         // syntax highlighting
         for ( int i = 0; i < tokens.length; i++ )
@@ -128,10 +143,16 @@ public class FilterDamagerRepairer implements IPresentationDamager, IPresentatio
                     this.addStyleRange( presentation, tokens[i], DEFAULT_TEXT_ATTRIBUTE );
             }
         }
-
     }
 
 
+    /**
+     * Adds the style range.
+     * 
+     * @param presentation the presentation
+     * @param textAttribute the text attribute
+     * @param token the token
+     */
     private void addStyleRange( TextPresentation presentation, LdapFilterToken token, TextAttribute textAttribute )
     {
         StyleRange range = new StyleRange( token.getOffset(), token.getLength(), textAttribute.getForeground(),

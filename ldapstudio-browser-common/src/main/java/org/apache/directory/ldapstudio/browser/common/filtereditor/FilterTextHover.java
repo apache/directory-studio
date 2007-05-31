@@ -24,33 +24,42 @@ package org.apache.directory.ldapstudio.browser.common.filtereditor;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterToken;
-
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.source.ISourceViewer;
 
 
+/**
+ * The FilterTextHover is used to display error messages in a tooltip.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FilterTextHover implements ITextHover
 {
 
-    private ISourceViewer sourceViewer;
-
+    /** The filter parser. */
     private LdapFilterParser parser;
 
 
-    public FilterTextHover( ISourceViewer sourceViewer, LdapFilterParser parser )
+    /**
+     * Creates a new instance of FilterTextHover.
+     *
+     * @param parser filter parser
+     */
+    public FilterTextHover( LdapFilterParser parser )
     {
-        super();
-        this.sourceViewer = sourceViewer;
         this.parser = parser;
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.ITextHover#getHoverInfo(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion)
+     */
     public String getHoverInfo( ITextViewer textViewer, IRegion hoverRegion )
     {
-        LdapFilter[] invalidFilters = this.parser.getModel().getInvalidFilters();
+        LdapFilter[] invalidFilters = parser.getModel().getInvalidFilters();
         for ( int i = 0; i < invalidFilters.length; i++ )
         {
             if ( invalidFilters[i].getStartToken() != null )
@@ -66,7 +75,7 @@ public class FilterTextHover implements ITextHover
             }
         }
 
-        LdapFilterToken[] tokens = this.parser.getModel().getTokens();
+        LdapFilterToken[] tokens = parser.getModel().getTokens();
         for ( int i = 0; i < tokens.length; i++ )
         {
             if ( tokens[i].getType() == LdapFilterToken.ERROR )
@@ -84,6 +93,9 @@ public class FilterTextHover implements ITextHover
     }
 
 
+    /**
+     * @see org.eclipse.jface.text.ITextHover#getHoverRegion(org.eclipse.jface.text.ITextViewer, int)
+     */
     public IRegion getHoverRegion( ITextViewer textViewer, int offset )
     {
         return new Region( offset, 1 );

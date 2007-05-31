@@ -59,7 +59,7 @@ public class LdapFilterParser
 
         // reset state
         this.filterStack = new Stack();
-        this.scanner.setFilter( ldapFilter );
+        this.scanner.reset( ldapFilter );
         this.model = new LdapFilter();
 
         // handle error tokens before filter
@@ -210,14 +210,6 @@ public class LdapFilterParser
         {
             filter.addOtherToken( new LdapFilterToken( LdapFilterToken.ERROR, token.getValue(), token.getOffset() ) );
         }
-    }
-
-
-    public static void main( String[] args )
-    {
-        LdapFilterParser parser = new LdapFilterParser();
-        parser.parse( "(sn" );
-
     }
 
 }
