@@ -2,17 +2,17 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=LDAP Studio
-AppVerName=LDAP Studio 0.8.0
+AppName=Apache Directory Studio
+AppVerName=Apache Directory Studio 0.8.0
 AppPublisher=Apache Software Foundation
 AppPublisherURL=http://directory.apache.org/ldapstudio
 AppSupportURL=http://directory.apache.org/ldapstudio
 AppUpdatesURL=http://directory.apache.org/ldapstudio
-DefaultDirName={pf}\LDAP Studio
-DefaultGroupName=LDAP Studio
-LicenseFile=C:\LDAP Studio/LICENSE.txt
-OutputDir=C:\Documents and Settings\Pierre-Arnaud\Bureau\LDAP Studio 0.8.0
-OutputBaseFilename=LDAP_Studio_0.8.0_Windows
+DefaultDirName={pf}\Apache Directory Studio
+DefaultGroupName=Apache Directory Studio
+LicenseFile=C:\Apache Directory Studio/LICENSE.txt
+OutputDir=C:\Documents and Settings\Pierre-Arnaud\Bureau\Apache Directory Studio 0.8.0
+OutputBaseFilename=Apache Directory Studio_0.8.0_Windows
 Compression=lzma
 SolidCompression=yes
 
@@ -24,20 +24,20 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\LDAP Studio\LDAP Studio.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\LDAP Studio\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Apache Directory Studio\Apache Directory Studio.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Apache Directory Studio\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\LDAP Studio"; Filename: "{app}\LDAP Studio.exe"; WorkingDir: "{app}"
+Name: "{group}\Apache Directory Studio"; Filename: "{app}\Apache Directory Studio.exe"; WorkingDir: "{app}"
 Name: "{group}\License"; Filename: "{app}\LICENSE.txt"
 Name: "{group}\Notice"; Filename: "{app}\NOTICE.txt"
 Name: "{group}\Release Notes"; Filename: "{app}\Release Notes.txt"
-Name: "{group}\{cm:ProgramOnTheWeb,LDAP Studio}"; Filename: "http://directory.apache.org/ldapstudio"
-Name: "{group}\{cm:UninstallProgram,LDAP Studio}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\LDAP Studio"; Filename: "{app}\LDAP Studio.exe"; Tasks: desktopicon; WorkingDir: "{app}"
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\LDAP Studio"; Filename: "{app}\LDAP Studio.exe"; Tasks: quicklaunchicon; WorkingDir: "{app}"
+Name: "{group}\{cm:ProgramOnTheWeb,Apache Directory Studio}"; Filename: "http://directory.apache.org/ldapstudio"
+Name: "{group}\{cm:UninstallProgram,Apache Directory Studio}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\Apache Directory Studio"; Filename: "{app}\Apache Directory Studio.exe"; Tasks: desktopicon; WorkingDir: "{app}"
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Apache Directory Studio"; Filename: "{app}\Apache Directory Studio.exe"; Tasks: quicklaunchicon; WorkingDir: "{app}"
 
 [Run]
-Filename: "{app}\LDAP Studio.exe"; Description: "{cm:LaunchProgram,LDAP Studio}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\Apache Directory Studio.exe"; Description: "{cm:LaunchProgram,Apache Directory Studio}"; Flags: nowait postinstall skipifsilent
 

@@ -45,7 +45,7 @@
     </condition>
 
 	<!-- Setting up build folder -->
-	<condition property="ldapstudio-complete.build" value="${ldapstudio-complete.output}/LDAP Studio" >
+	<condition property="ldapstudio-complete.build" value="${ldapstudio-complete.output}/Apache Directory Studio" >
         <or>
             <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
             <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
@@ -65,7 +65,7 @@
     <!-- ================================== -->
     <target name="help" description="Shows help">
         <echo>Available commands:</echo>
-	<echo>  bundle - Generate and bundles a complete version of LDAP Studio</echo>
+	<echo>  bundle - Generate and bundles a complete version of Apache Directory Studio</echo>
 	<echo>      When bundling you can specify the target operating system using this option:</echo>
 	<echo>          o -Dldapstudio-rcp.os.name=macosx for Mac OS X</echo>
 	<echo>          o -Dldapstudio-rcp.os.name=linux for Linux</echo>
@@ -87,7 +87,7 @@
         <!-- Creation of the folders -->
         <mkdir dir="${ldapstudio-complete.build}" />
 
-        <!-- Creation of the LDAP Studio RCP application -->
+        <!-- Creation of the Apache Directory Studio RCP application -->
         <ant dir="ldapstudio-rcp" inheritAll="no" />
         <!-- Copy of the RCP app -->
         <copy todir="${ldapstudio-complete.build}">
@@ -96,9 +96,9 @@
             </fileset>
         </copy>
 
-        <!-- Creation of the LDAP Studio RCP Help application -->
+        <!-- Creation of the Apache Directory Studio RCP Help application -->
         <ant dir="ldapstudio-rcp-help" inheritAll="no" />
-        <!-- Copy of the LDAP Studio RCP Help Plugin in the "plugins" folder of the RCP app -->
+        <!-- Copy of the Apache Directory Studio RCP Help Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
             <fileset dir="${basedir}/ldapstudio-rcp-help/target/">
                 <include name="*.jar" />
@@ -216,7 +216,7 @@
         <!-- Property for the features -->
 		<property name="project.features" value="${ldapstudio-complete.build}/features" />
 
-        <!-- Copy of the LDAP Studio RCP Feature in the "features" folder -->
+        <!-- Copy of the Apache Directory Studio RCP Feature in the "features" folder -->
 		<property name="ldapstudio-rcp-feature.project" value="${basedir}/ldapstudio-rcp-feature" />
 		<property name="ldapstudio-rcp-feature.name" value="org.apache.directory.ldapstudio.rcp.feature" />
 		<property name="ldapstudio-rcp-feature.version" value="0.7.0" />
@@ -288,7 +288,7 @@
     <!--        Set Right Permissions       -->
     <!-- ================================== -->
     <target name="setPermission_macosx" description="Sets the right permissions on Mac OS X">
-        <chmod file="${ldapstudio-complete.build}/LDAP Studio.app/Contents/MacOS/LDAPStudio" perm="755"/>
+        <chmod file="${ldapstudio-complete.build}/Apache Directory Studio.app/Contents/MacOS/LDAPStudio" perm="755"/>
     </target>
     
     <target name="setPermission_linux" description="Sets the right permissions on Linux">
@@ -296,14 +296,21 @@
     </target>
 
     <target name="setPermission_win32" description="Sets the right permissions on Windows">
-        <chmod file="${ldapstudio-complete.build}/LDAP Studio.exe" perm="755" />
+        <chmod file="${ldapstudio-complete.build}/Apache Directory Studio.exe" perm="755" />
     </target>
     
     <!-- ================================== -->
     <!--         Repackage Mac OS X         -->
     <!-- ================================== -->
-    <target name="repackage_MacOSX" description="Special repackage for Mac OS X" if="isTargetMacOSX">        <property name="app.dir" location="${ldapstudio-complete.build}/LDAP Studio.app" />        <property name="java.dir" location="${app.dir}/Contents/Resources/Java" />
-        <mkdir dir="${java.dir}"/>        <move todir="${java.dir}">          <fileset dir="${ldapstudio-complete.build}">               <exclude name="LDAP Studio.app/**"/>          </fileset>        </move>
+    <target name="repackage_MacOSX" description="Special repackage for Mac OS X" if="isTargetMacOSX">
+        <property name="app.dir" location="${ldapstudio-complete.build}/Apache Directory Studio.app" />
+        <property name="java.dir" location="${app.dir}/Contents/Resources/Java" />
+        <mkdir dir="${java.dir}"/>
+        <move todir="${java.dir}">
+          <fileset dir="${ldapstudio-complete.build}">
+               <exclude name="Apache Directory Studio.app/**"/>
+          </fileset>
+        </move>
     </target>
 
     <!-- ================================== -->
@@ -313,7 +320,7 @@
         <!-- Creation of the folders -->
         <mkdir dir="${ldapstudio-complete.userguides}" />
 
-        <!-- Creation of the LDAP Studio RCP user guides -->
+        <!-- Creation of the Apache Directory Studio RCP user guides -->
         <ant dir="ldapstudio-rcp-help" inheritAll="no" target="static-html" />
         <ant dir="ldapstudio-rcp-help" inheritAll="no" target="static-pdf" />
         <!-- Copy of the RCP user guides -->
@@ -329,7 +336,7 @@
             </fileset>
         </copy>
 
-        <!-- Creation of the LDAP Studio Browser user guides -->
+        <!-- Creation of the Apache Directory Studio Browser user guides -->
         <ant dir="ldapstudio-browser-help" inheritAll="no" target="static-html" />
         <ant dir="ldapstudio-browser-help" inheritAll="no" target="static-pdf" />
         <!-- Copy of the browser user guides -->
@@ -345,7 +352,7 @@
             </fileset>
         </copy>
 
-        <!-- Creation of the LDAP Studio Schemas Editor user guides -->
+        <!-- Creation of the Apache Directory Studio Schemas Editor user guides -->
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="static-html" />
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="static-pdf" />
         <!-- Copy of the schemas user guides -->
@@ -436,27 +443,31 @@
 
         <!-- Cleaning latest build (just in case) -->
         <antcall target="clean" inheritall="false"/>
-        <!-- Generating LDAP Studio for Mac OS X -->
+        <!-- Generating Apache Directory Studio for Mac OS X -->
         <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="macosx"/>
             <param name="ldapstudio-rcp.os.arch" value="i386"/>
             <param name="ldapstudio-rcp.os.extension" value=".app"/>
         </antcall>
-        <move todir="${packages-folder.macosx}">          <fileset dir="${ldapstudio-complete.output}"/>        </move>
+        <move todir="${packages-folder.macosx}">
+          <fileset dir="${ldapstudio-complete.output}"/>
+        </move>
 
         <!-- Cleaning latest build -->
         <antcall target="clean" inheritall="false"/>
-        <!-- Generating LDAP Studio for Windows -->
+        <!-- Generating Apache Directory Studio for Windows -->
         <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="win32"/>
             <param name="ldapstudio-rcp.os.arch" value="x86"/>
             <param name="ldapstudio-rcp.os.extension" value=".exe"/>
         </antcall>
-        <move todir="${packages-folder.windows}">          <fileset dir="${ldapstudio-complete.output}"/>        </move>
+        <move todir="${packages-folder.windows}">
+          <fileset dir="${ldapstudio-complete.output}"/>
+        </move>
 
         <!-- Cleaning latest build -->
         <antcall target="clean" inheritall="false"/>
-        <!-- Generating LDAP Studio for Linux i386 -->
+        <!-- Generating Apache Directory Studio for Linux i386 -->
         <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="linux"/>
             <param name="ldapstudio-rcp.os.arch" value="i386"/>
@@ -475,7 +486,7 @@
 
         <!-- Cleaning latest build-->
         <antcall target="clean" inheritall="false"/>
-        <!-- Generating LDAP Studio for Linux PPC -->
+        <!-- Generating Apache Directory Studio for Linux PPC -->
         <antcall target="bundle" inheritall="false">
             <param name="ldapstudio-rcp.os.name" value="linux"/>
             <param name="ldapstudio-rcp.os.arch" value="ppc"/>
@@ -494,13 +505,15 @@
         
         <!-- Cleaning latest build-->
         <antcall target="clean" inheritall="false"/>
-        <!-- Generating LDAP Studio's update site -->
+        <!-- Generating Apache Directory Studio's update site -->
         <ant dir="ldapstudio-updatesite" inheritAll="no"/>
 		<mkdir dir="${packages-folder.updatesite}" />
-		<move todir="${packages-folder.updatesite}">            <fileset dir="ldapstudio-updatesite">
+		<move todir="${packages-folder.updatesite}">
+            <fileset dir="ldapstudio-updatesite">
                 <include name="features/**"/>
                 <include name="plugins/**"/>
                 <include name="site--xml.html"/>
-            </fileset>        </move>
+            </fileset>
+        </move>
     </target>
 </project>

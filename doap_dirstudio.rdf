@@ -16,11 +16,11 @@
   <Project rdf:about="http://directory.apache.org/ldapstudio/">
     <created>2007-05-04</created>
     <license rdf:resource="http://usefulinc.com/doap/licenses/asl20" />
-    <name>Apache Directory LDAP Studio</name>
+    <name>Apache Directory Studio</name>
     <homepage rdf:resource="http://directory.apache.org/ldapstudio/" />
     <asfext:pmc rdf:resource="http://directory.apache.org" />
-    <shortdesc>LDAP Studio is a complete LDAP tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</shortdesc>
-    <description>LDAP Studio is a complete LDAP tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server. Developed as a sub-project of the Directory Top Level Project, LDAP Studio is an Eclipse RCP application that takes full advantage of the benefits inherent in the Eclipse platform. Composed of several Eclipse (OSGi) plugins, LDAP Studio can be easily upgraded with additional plugins. LDAP Studio plugins can even run within a full installation of Eclipse itself.</description>
+    <shortdesc>Apache Directory Studio is a complete LDAP tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</shortdesc>
+    <description>Apache Directory Studio is a complete LDAP tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server. Developed as a sub-project of the Directory Top Level Project, Apache Directory Studio is an Eclipse RCP application that takes full advantage of the benefits inherent in the Eclipse platform. Composed of several Eclipse (OSGi) plugins, Apache Directory Studio can be easily upgraded with additional plugins. Apache Directory Studio plugins can even run within a full installation of Eclipse itself.</description>
     <bug-database rdf:resource="http://issues.apache.org/jira/browse/DIRSTUDIO" />
     <mailing-list rdf:resource="http://directory.apache.org/ldapstudio/mailing-lists.html" />
     <download-page rdf:resource="http://directory.apache.org/ldapstudio/downloads.html" />

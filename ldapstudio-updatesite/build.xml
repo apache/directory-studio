@@ -29,120 +29,120 @@
 	<target name="generate" description="Generates the update site. Generates and copies features and plugins.">
 		
 		<!-- Creation of the Features -->
-		<!-- LDAP Studio RCP Feature -->
+		<!-- Apache Directory Studio RCP Feature -->
 		<ant dir="../ldapstudio-rcp-feature" inheritAll="no" />
-        <!-- LDAP Studio Schemas Editor Feature -->
+        <!-- Apache Directory Studio Schemas Editor Feature -->
         <ant dir="../ldapstudio-schemas-feature" inheritAll="no" />
-	    <!-- LDAP Studio Browser Feature -->
+	    <!-- Apache Directory Studio Browser Feature -->
 	    <ant dir="../ldapstudio-browser-feature" inheritAll="no" />
-	    <!-- LDAP Studio Apache DS Configuration Feature -->
+	    <!-- Apache Directory Studio Apache DS Configuration Feature -->
 	    <ant dir="../ldapstudio-apacheds-configuration-feature" inheritAll="no" />
 	    
 	    <!-- Copying the Features -->
 	    <copy todir="${project.features}">
-            <!-- LDAP Studio RCP Feature  -->
+            <!-- Apache Directory Studio RCP Feature  -->
             <fileset dir="../ldapstudio-rcp-feature/target">
 				<include name="*.jar" />
 			</fileset>
-            <!-- LDAP Studio Schemas Editor Feature  -->
+            <!-- Apache Directory Studio Schemas Editor Feature  -->
 	        <fileset dir="../ldapstudio-schemas-feature/target">
                 <include name="*.jar" />
             </fileset>
-            <!-- LDAP Studio Browser Feature  -->
+            <!-- Apache Directory Studio Browser Feature  -->
 	        <fileset dir="../ldapstudio-browser-feature/target">
 	            <include name="*.jar" />
 	        </fileset>
-	        <!-- LDAP Studio Apache DS Configuration Feature -->
+	        <!-- Apache Directory Studio Apache DS Configuration Feature -->
 	        <fileset dir="../ldapstudio-apacheds-configuration-feature/target">
 	            <include name="*.jar" />
 	        </fileset>
 	    </copy>
 	    
         <!-- Creation of the Plugins -->
-	    <!-- LDAP Studio RCP -->
+	    <!-- Apache Directory Studio RCP -->
 	    <ant dir="../ldapstudio-rcp" target="jar" inheritAll="no" />
-	    <!-- LDAP Studio Help Plugin -->
+	    <!-- Apache Directory Studio Help Plugin -->
 	    <ant dir="../ldapstudio-rcp-help" target="jar" inheritAll="no" />		
-	    <!-- LDAP Studio Schemas Editor Plugin -->
+	    <!-- Apache Directory Studio Schemas Editor Plugin -->
 	    <ant dir="../ldapstudio-schemas-plugin" inheritAll="no" />
-	    <!-- LDAP Studio Schemas Editor Help Plugin -->
+	    <!-- Apache Directory Studio Schemas Editor Help Plugin -->
 	    <ant dir="../ldapstudio-schemas-help" inheritAll="no" />
-	    <!-- LDAP Studio Browser Core Plugin -->
+	    <!-- Apache Directory Studio Browser Core Plugin -->
 	    <ant dir="../ldapstudio-browser-core" inheritAll="no" />
-	    <!-- LDAP Studio Browser Common Plugin -->
+	    <!-- Apache Directory Studio Browser Common Plugin -->
 	    <ant dir="../ldapstudio-browser-common" inheritAll="no" />	
-	    <!-- LDAP Studio Jars Plugin -->
+	    <!-- Apache Directory Studio Jars Plugin -->
 	    <ant dir="../ldapstudio-jars" inheritAll="no" />	    
-	    <!-- LDAP Studio LDIF Editor Plugin -->
+	    <!-- Apache Directory Studio LDIF Editor Plugin -->
 	    <ant dir="../ldapstudio-ldifeditor" inheritAll="no" />
-	    <!-- LDAP Studio Value Editors Plugin -->
+	    <!-- Apache Directory Studio Value Editors Plugin -->
 	    <ant dir="../ldapstudio-valueeditors" inheritAll="no" />
-	    <!-- LDAP Studio ACI Item Editor Plugin -->
+	    <!-- Apache Directory Studio ACI Item Editor Plugin -->
 	    <ant dir="../ldapstudio-aciitemeditor" inheritAll="no" />	
-	    <!-- LDAP Studio Browser Help Plugin -->
+	    <!-- Apache Directory Studio Browser Help Plugin -->
 	    <ant dir="../ldapstudio-browser-help" inheritAll="no" />	    
-	    <!-- LDAP Studio Browser UI Plugin -->
+	    <!-- Apache Directory Studio Browser UI Plugin -->
 	    <ant dir="../ldapstudio-browser-ui" inheritAll="no" />	    
-	    <!-- LDAP Studio Apache DS Configuration Plugin -->
+	    <!-- Apache Directory Studio Apache DS Configuration Plugin -->
 	    <ant dir="../ldapstudio-apacheds-configuration" inheritAll="no" />	    
-        <!-- LDAP Studio Apache DS Configuration Help Plugin -->
+        <!-- Apache Directory Studio Apache DS Configuration Help Plugin -->
 	    <ant dir="../ldapstudio-apacheds-configuration-help" inheritAll="no" />
 	    
 	    <!-- Copying the Plugins -->
 	    <copy todir="${project.plugins}">
-            <!-- LDAP Studio RCP -->
+            <!-- Apache Directory Studio RCP -->
 	        <fileset dir="../ldapstudio-rcp/target">
 	            <include name="*.jar" />
 	        </fileset>
-	       <!-- LDAP Studio Help Plugin -->
+	       <!-- Apache Directory Studio Help Plugin -->
 	        <fileset dir="../ldapstudio-rcp-help/target">
 	            <include name="*.jar" />
 	        </fileset>
-	       <!-- LDAP Studio Schemas Editor Plugin -->
+	       <!-- Apache Directory Studio Schemas Editor Plugin -->
             <fileset dir="../ldapstudio-schemas-plugin/target">
 	            <include name="*.jar" />
 	        </fileset>
-	        <!-- LDAP Studio Schemas Editor Help Plugin -->
+	        <!-- Apache Directory Studio Schemas Editor Help Plugin -->
             <fileset dir="../ldapstudio-schemas-help/target">
 	            <include name="*.jar" />
 	        </fileset>
-            <!-- LDAP Studio Browser Core Plugin -->
+            <!-- Apache Directory Studio Browser Core Plugin -->
             <fileset dir="../ldapstudio-browser-core/target">
 	            <include name="*.jar" />
 	        </fileset>
-	        <!-- LDAP Studio Browser Common Plugin -->
+	        <!-- Apache Directory Studio Browser Common Plugin -->
             <fileset dir="../ldapstudio-browser-common/target">
 	            <include name="*.jar" />
 	        </fileset>
-	           <!-- LDAP Studio LDIF Editor Plugin -->
+	           <!-- Apache Directory Studio LDIF Editor Plugin -->
             <fileset dir="../ldapstudio-ldifeditor/target">
 	            <include name="*.jar" />
 	        </fileset>
-            <!-- LDAP Studio Value Editors Plugin -->
+            <!-- Apache Directory Studio Value Editors Plugin -->
 	        <fileset dir="../ldapstudio-valueeditors/target">
 	            <include name="*.jar" />
 	        </fileset>
-            <!-- LDAP Studio Browser Help Plugin -->
+            <!-- Apache Directory Studio Browser Help Plugin -->
             <fileset dir="../ldapstudio-browser-help/target">
 	            <include name="*.jar" />
 	        </fileset>
-	        <!-- LDAP Studio Browser UI Plugin -->
+	        <!-- Apache Directory Studio Browser UI Plugin -->
 	        <fileset dir="../ldapstudio-browser-ui/target">
 	            <include name="*.jar" />
 	        </fileset>
-            <!-- LDAP Studio ACI Item Editor Plugin -->
+            <!-- Apache Directory Studio ACI Item Editor Plugin -->
 	        <fileset dir="../ldapstudio-aciitemeditor/target">
 	            <include name="*.jar" />
 	        </fileset>
-            <!-- LDAP Studio Jars Plugin -->
+            <!-- Apache Directory Studio Jars Plugin -->
 	        <fileset dir="../ldapstudio-jars/target">
 	            <include name="*.jar" />
 	        </fileset>
-	        <!-- LDAP Studio Apache DS Configuration Plugin -->
+	        <!-- Apache Directory Studio Apache DS Configuration Plugin -->
 	        <fileset dir="../ldapstudio-apacheds-configuration/target">
 	            <include name="*.jar" />
 	        </fileset>
-            <!-- LDAP Studio Apache DS Configuration Plugin Help -->
+            <!-- Apache Directory Studio Apache DS Configuration Plugin Help -->
             <fileset dir="../ldapstudio-apacheds-configuration-help/target">
 	            <include name="*.jar" />
 	        </fileset>
