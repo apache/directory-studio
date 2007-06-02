@@ -49,7 +49,7 @@ public class Application implements IPlatformRunnable
     {
         //Set up a simple configuration that logs on the console.
         PropertyConfigurator.configure( Platform.getBundle( Application.PLUGIN_ID ).getResource( "log4j.conf" ) ); //$NON-NLS-1$
-        logger.info( "Entering LDAP Studio." ); //$NON-NLS-1$
+        logger.info( "Entering Apache Directory Studio." ); //$NON-NLS-1$
         Display display = PlatformUI.createDisplay();
         
         try
@@ -66,7 +66,7 @@ public class Application implements IPlatformRunnable
         finally
         {
             display.dispose();
-            logger.info( "Exiting LDAP Studio." ); //$NON-NLS-1$
+            logger.info( "Exiting Apache Directory Studio." ); //$NON-NLS-1$
         }
     }
 }

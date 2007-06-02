@@ -42,7 +42,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.apache.directory.ldapstudio.application"
-            name="Apache Directory LDAP Studio">
+            name="Apache Directory Studio">
          <property
                name="aboutText"
                value="%aboutText"/>
@@ -81,7 +81,7 @@
          </view>
       <category
             id="org.apache.directory.ldapstudio.rcp.ui.category"
-            name="LDAP Studio RCP"/>
+            name="Apache Directory Studio RCP"/>
    </extension>
 
 </plugin>

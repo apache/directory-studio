@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.ldapstudio.schemas.feature"
-      label="LDAP Studio Schemas Editor"
+      label="Apache Directory Studio Schemas Editor"
       version="0.8.0"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
@@ -10,7 +10,7 @@
       image="ldapstudio.png">
 
    <description>
-      The LDAP Studio Schemas Feature contains all plugins related to the
+      The Apache Directory Studio Schemas Feature contains all plugins related to the
 Schemas Editor.
    </description>
 
@@ -220,7 +220,7 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="LDAP Studio" url="http://directory.apache.org/ldapstudio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/ldapstudio/update"/>
    </url>
 
    <plugin

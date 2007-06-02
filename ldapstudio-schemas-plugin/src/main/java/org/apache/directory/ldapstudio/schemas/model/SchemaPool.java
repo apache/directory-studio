@@ -49,7 +49,7 @@ import org.eclipse.ui.XMLMemento;
  * This class represents the Schema Pool.
  * 
  * A pool of schema is a common repository for all the currently loaded
- * schemas in LDAP Studio Schemas Editor Plugin.
+ * schemas in Apache Directory Studio Schemas Editor Plugin.
  */
 public class SchemaPool implements SchemaListener
 {

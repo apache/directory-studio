@@ -20,7 +20,7 @@
 -->
 <book>
 	<bookinfo>
-		<title>Apache Directory LDAP Studio</title>
+		<title>Apache Directory Studio</title>
 		<subtitle>User's Guide</subtitle>
 		<releaseinfo>Version 0.6.0</releaseinfo>
 		<copyright>
@@ -56,8 +56,8 @@
 		<!-- DOWNLOAD AND INSTALLATION SECTION -->
 		<section id="download_install">
 			<title>Download and install</title>
-			<para>The latest version of LDAP Studio can be downloaded from the 
-			LDAP Studio Downloads page, at this address : 
+			<para>The latest version of Apache Directory Studio can be downloaded from the 
+			Apache Directory Studio Downloads page, at this address : 
 			<ulink url="http://directory.apache.org/ldapstudio/downloads.html">http://directory.apache.org/ldapstudio/downloads.html</ulink>.</para>
 			<para><emphasis role="strong">System requirements</emphasis></para>
 			<para>
@@ -70,8 +70,8 @@
 			<para>Follow this installation process:</para>
 			<para>
 				<itemizedlist>
-					<listitem>Step 1: Double-click the downloaded package to mount the LDAP Studio DMG.</listitem>
-					<listitem>Step 2: Drag and drop LDAP Studio to your Applications folder.</listitem>
+					<listitem>Step 1: Double-click the downloaded package to mount the Apache Directory Studio DMG.</listitem>
+					<listitem>Step 2: Drag and drop Apache Directory Studio to your Applications folder.</listitem>
 				</itemizedlist>
 			</para>
 			<para><emphasis role="strong">Installing on Linux</emphasis></para>
@@ -79,7 +79,7 @@
 			<para>
 				<itemizedlist>
 					<listitem>Step 1: Uncompress the Tar Gzip archive ('tar xzf ldapstudio-0.6.0-linux-i386.tar.gz' for the i386 Linux version).</listitem>
-					<listitem>Step 2: Move the LDAP Studio folder to the location of your choice.</listitem>
+					<listitem>Step 2: Move the Apache Directory Studio folder to the location of your choice.</listitem>
 				</itemizedlist>
 			</para>
 			<para><emphasis role="strong">Installing on Windows</emphasis></para>
@@ -101,23 +101,23 @@
 		
 		<!-- RUNNING LDAP STUDIO SECTION -->
 		<section id="running">
-			<title>Running LDAP Studio</title>
+			<title>Running Apache Directory Studio</title>
 			<para><emphasis role="strong">Mac OS X</emphasis></para>
-			<para>If you followed the instructions on the "Download and install" page, simply double-click the LDAP Studio application located in your Applications folder.</para>
+			<para>If you followed the instructions on the "Download and install" page, simply double-click the Apache Directory Studio application located in your Applications folder.</para>
 			<para><emphasis role="strong">Linux</emphasis></para>
-			<para>After installing the LDAP Studio in a directory, you can start LDAP Studio by running the LDAP Studio executable included with the release.</para>
+			<para>After installing the Apache Directory Studio in a directory, you can start Apache Directory Studio by running the Apache Directory Studio executable included with the release.</para>
 			<para><emphasis role="strong">Windows</emphasis></para>
-			<para>If you followed the instructions on the "Download and install" page, simply click on the LDAP Studio executable in the LDAP Studio folder located in the All programs item of the Start menu.</para>
+			<para>If you followed the instructions on the "Download and install" page, simply click on the Apache Directory Studio executable in the Apache Directory Studio folder located in the All programs item of the Start menu.</para>
 			<para><emphasis role="strong">Solaris</emphasis></para>
 			<para>TO DO</para>
 		</section>
 		
 		<!-- UPDATING LDAP STUDIO SECTION -->
 		<section id="updating">
-			<title>Updating LDAP Studio</title>
-			<para>To check to see whether there are updates for features of LDAP Studio (requires Internet access):</para>
+			<title>Updating Apache Directory Studio</title>
+			<para>To check to see whether there are updates for features of Apache Directory Studio (requires Internet access):</para>
 			<para>1. Click  <emphasis role="strong">Help > Software Updates > <imageobject><imagedata contentdepth="1em" fileref="images/search-updates.png" format="PNG" /></imageobject> Search for updates...</emphasis>. 
-				This will contact LDAP Studio Web site to discover what versions of those features are available. The potential 
+				This will contact Apache Directory Studio Web site to discover what versions of those features are available. The potential 
 				upgrades are presented in on the next page.</para>
 			<para>2. Select the feature versions that you wish to upgrade, and click <emphasis role="strong">Next</emphasis>.</para>
 			<para>3. Carefully review the license agreements for the upgraded features. If the terms of 
@@ -134,7 +134,7 @@
 			<!-- INSPECTING THE CURRENT CONFIGURATION SECTION -->
 			<section id="inspecting_configuration">
 				<title>Inspecting the current configuration</title>
-				<para>The <emphasis role="strong">Help > <imageobject><imagedata contentdepth="1em" fileref="images/about.png" format="PNG" /></imageobject> About LDAP Studio</emphasis> dialog shows most of the important information about the features and plug-in configured
+				<para>The <emphasis role="strong">Help > <imageobject><imagedata contentdepth="1em" fileref="images/about.png" format="PNG" /></imageobject> About Apache Directory Studio</emphasis> dialog shows most of the important information about the features and plug-in configured
 					 in the product. To find out further detailed information about the current configuration:</para>
 				<para>1. Open the update configuration manager by clicking <emphasis role="strong"> Help > Software Updates > <imageobject><imagedata contentdepth="1em" fileref="images/manage-configuration.png" format="PNG" /></imageobject> Manage Configuration</emphasis>. 
 					This opens the Product Configuration dialog.</para>
@@ -175,13 +175,13 @@
 		<!-- REPORTING A BUG SECTION -->
 		<section id="reporting_a_bug">
 			<title>Reporting a bug</title>
-			<para>Use the <emphasis role="strong">Help > <imageobject><imagedata contentdepth="1em" fileref="images/bug-report.png" format="PNG" /></imageobject> Report a bug...</emphasis> menu item to report any bug you find on LDAP Studio.</para>
+			<para>Use the <emphasis role="strong">Help > <imageobject><imagedata contentdepth="1em" fileref="images/bug-report.png" format="PNG" /></imageobject> Report a bug...</emphasis> menu item to report any bug you find on Apache Directory Studio.</para>
 			<para>You will be redirected on your default Web browser to our issue tracking software called Jira.</para>
 			<para>You can also reach it using this address : <ulink url="https://issues.apache.org/jira/browse/DIRSTUDIO">https://issues.apache.org/jira/browse/DIRSTUDIO</ulink></para>
 			<para><imageobject><imagedata scale="50" fileref="images/jira-screenshot.png" format="PNG" /></imageobject></para>
 			<para>To report a bug:</para>
 			<para>1. Click the <emphasis role="strong">Create a new issue</emphasis> link in the menu.</para>
-			<para>2. Make sure the selected project is 'Directory LDAP Studio' and the issue type is 'Bug'. Click <emphasis role="strong">Next</emphasis>.</para>
+			<para>2. Make sure the selected project is 'Directory Apache Directory Studio' and the issue type is 'Bug'. Click <emphasis role="strong">Next</emphasis>.</para>
 			<para>3. Fill in the issue form giving the more details you can on the bug you have found.</para>
 			<para>4. Click the <emphasis role="strong">Create</emphasis> button to create the new issue.</para>
 		</section>
@@ -733,13 +733,13 @@
 		<!-- RELEASE NOTES SECTION -->
 		<section id="release_notes">
 			<title>Release notes</title>
-            <para><emphasis role="strong">LDAP Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
+            <para><emphasis role="strong">Apache Directory Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
             <para>Includes :</para>
             <para>
                 <itemizedlist spacing="normal" mark="bullet">
-					<listitem>LDAP Studio RCP 0.6.0</listitem>
-					<listitem>LDAP Studio Browser Plugin 0.6.0</listitem>
-					<listitem>LDAP Studio Schemas Editor Plugin 0.6.0</listitem>
+					<listitem>Apache Directory Studio RCP 0.6.0</listitem>
+					<listitem>Apache Directory Studio Browser Plugin 0.6.0</listitem>
+					<listitem>Apache Directory Studio Schemas Editor Plugin 0.6.0</listitem>
                 </itemizedlist>
             </para>
         </section> <!-- end Release Notes Section -->

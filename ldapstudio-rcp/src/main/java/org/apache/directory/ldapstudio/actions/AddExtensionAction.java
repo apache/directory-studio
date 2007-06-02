@@ -40,7 +40,7 @@ import org.eclipse.update.ui.UpdateManagerUI;
 /**
  * This class implements the Add Extension Action.
  * It uses Eclipse built-in extension system to allow users
- * to add extensions to LDAP Studio.
+ * to add extensions to Apache Directory Studio.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

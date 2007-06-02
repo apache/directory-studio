@@ -60,7 +60,7 @@
 
 
     <!-- Setting up App Name Extension-->
-    <condition property="ldapstudio-rcp.appname" value="LDAP Studio" >
+    <condition property="ldapstudio-rcp.appname" value="Apache Directory Studio" >
         <or>
             <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
             <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
@@ -222,7 +222,7 @@
 	<!--        Set Right Permissions       -->
 	<!-- ================================== -->
 	<target name="setPermission_macosx" description="Sets the right permissions on Mac OS X">
-		<chmod file="${ldapstudio-rcp.application}/LDAP Studio.app/Contents/MacOS/LDAPStudio" perm="755" />
+		<chmod file="${ldapstudio-rcp.application}/Apache Directory Studio.app/Contents/MacOS/LDAPStudio" perm="755" />
 	</target>
 
 	<target name="setPermission_linux" description="Sets the right permissions on Linux">
@@ -230,7 +230,7 @@
 	</target>
 	
 	<target name="setPermission_win32" description="Sets the right permissions on windows">
-			<chmod file="${ldapstudio-rcp.application}/LDAP Studio.exe" perm="755" />
+			<chmod file="${ldapstudio-rcp.application}/Apache Directory Studio.exe" perm="755" />
 	</target>
 
 	<!-- ================================== -->

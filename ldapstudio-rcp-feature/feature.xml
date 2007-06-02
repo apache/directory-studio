@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.ldapstudio.feature"
-      label="LDAP Studio RCP"
+      label="Apache Directory Studio RCP"
       version="0.7.0"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
@@ -10,8 +10,8 @@
       image="ldapstudio.png">
 
    <description>
-      The LDAP Studio RCP Feature contains all plugins related to the
-LDAP Studio RCP Tooling Platform.
+      The Apache Directory Studio RCP Feature contains all plugins related to the
+Apache Directory Studio RCP Tooling Platform.
    </description>
 
    <copyright>
@@ -220,7 +220,7 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="LDAP Studio" url="http://directory.apache.org/ldapstudio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/ldapstudio/update"/>
    </url>
 
    <plugin

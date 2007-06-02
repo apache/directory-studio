@@ -20,7 +20,7 @@
 -->
 <book>
 	<bookinfo>
-		<title>Apache Directory LDAP Studio</title>
+		<title>Apache Directory Studio</title>
 		<subtitle>Schemas Editor User's Guide</subtitle>
 		<releaseinfo>Version 0.6.0</releaseinfo>
 		<copyright>
@@ -60,13 +60,13 @@
         <section id="download_install">
 		    <title>Download and installation</title>
 		    <para>
-		 	    Beside the integration in LDAP Studio the LDAP Studio Schemas Editor can also be installed
+		 	    Beside the integration in Apache Directory Studio the Apache Directory Studio Schemas Editor can also be installed
 		 	    as a plug-in into a regular Eclipse installation. This section describes this
 		 	    alternative. 
 		    </para>
 		    <para>
 			    Using the Eclipse Install/Update Manager is the easiest way to 
-			    install the LDAP Studio Schemas Editor plug-in.
+			    install the Apache Directory Studio Schemas Editor plug-in.
 			    From workbench menu choose
 			    <emphasis role="strong">
 			    <menuchoice>
@@ -91,10 +91,10 @@
 			    </screenshot>
 		    </para>
 		    <para>
-			    Next please specify the LDAP Studio update site. Click the <emphasis role="strong">New Remote Site...</emphasis> button.
+			    Next please specify the Apache Directory Studio update site. Click the <emphasis role="strong">New Remote Site...</emphasis> button.
 			    In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
 			    <itemizedlist>
-				    <listitem>Name: LDAP Studio Update Site</listitem>
+				    <listitem>Name: Apache Directory Studio Update Site</listitem>
 				    <listitem>URL: http://directory.apache.org/ldapstudio/update/</listitem>
 			    </itemizedlist>
 			    <screenshot>
@@ -120,7 +120,7 @@
 		    </para>
 		    <para>
 			    Now the install manager checks the update site and presents the search results. Select the
-			    feature you want to install - of course the LDAP Studio Schemas Editor - and click 
+			    feature you want to install - of course the Apache Directory Studio Schemas Editor - and click 
 			    <emphasis role="strong">Next</emphasis>.
 			    <screenshot>
 				    <mediaobject>
@@ -132,7 +132,7 @@
 			    </screenshot>
 		    </para>
 		    <para>
-			    Accept the license agreement, the LDAP Studio Schemas Editor is distributed under the 
+			    Accept the license agreement, the Apache Directory Studio Schemas Editor is distributed under the 
 			    Apache License, Version 2.0.
 			    <screenshot>
 				    <mediaobject>
@@ -144,7 +144,7 @@
 			    </screenshot>
 		    </para>
 		    <para>
-			    In the next dialog ensure that the LDAP Studio Schemas Editor feature is selected and 
+			    In the next dialog ensure that the Apache Directory Studio Schemas Editor feature is selected and 
 			    click to <emphasis role="strong">Finish</emphasis>.
 			    <screenshot>
 				    <mediaobject>
@@ -921,13 +921,13 @@
 								<entry>User's Home directory</entry>
 							</row>
 							<row>
-								<entry>Save schemas configuration when exiting LDAP Studio</entry>
-								<entry>Select this option if you want the opened schemas to saved automatically when LDAP Studio exits.</entry>
+								<entry>Save schemas configuration when exiting Apache Directory Studio</entry>
+								<entry>Select this option if you want the opened schemas to saved automatically when Apache Directory Studio exits.</entry>
 								<entry>On</entry>
 							</row>
 							<row>
 								<entry>Use specific core files</entry>
-								<entry>Select this option if you want to use different core files from the standard ones bundled with LDAP Studio.</entry>
+								<entry>Select this option if you want to use different core files from the standard ones bundled with Apache Directory Studio.</entry>
 								<entry>Off</entry>
 							</row>
 							<row>
@@ -985,13 +985,13 @@
         <!-- RELEASE NOTES SECTION -->
 		<section id="release_notes">
 			<title>Release notes</title>
-            <para><emphasis role="strong">LDAP Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
+            <para><emphasis role="strong">Apache Directory Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
             <para>Includes :</para>
             <para>
                 <itemizedlist spacing="normal" mark="bullet">
-					<listitem>LDAP Studio RCP 0.6.0</listitem>
-					<listitem>LDAP Studio Browser Plugin 0.6.0</listitem>
-					<listitem>LDAP Studio Schemas Editor Plugin 0.6.0</listitem>
+					<listitem>Apache Directory Studio RCP 0.6.0</listitem>
+					<listitem>Apache Directory Studio Browser Plugin 0.6.0</listitem>
+					<listitem>Apache Directory Studio Schemas Editor Plugin 0.6.0</listitem>
                 </itemizedlist>
             </para>
         </section>

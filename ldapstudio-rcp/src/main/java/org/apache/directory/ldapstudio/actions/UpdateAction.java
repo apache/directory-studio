@@ -33,7 +33,7 @@ import org.eclipse.update.ui.UpdateManagerUI;
 /**
  * This class implements the Update Action.
  * It uses Eclipse Built-in system to search updates for all plugins
- * installed on LDAP Studio.
+ * installed on Apache Directory Studio.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
