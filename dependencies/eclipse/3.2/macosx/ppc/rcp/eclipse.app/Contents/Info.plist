@@ -9,7 +9,7 @@
 		 <key>CFBundleInfoDictionaryVersion</key>
 		 <string>6.0</string>
 		 <key>CFBundleName</key>
-		 <string>LDAP Studio</string>
+		 <string>Apache Directory Studio</string>
 		 <key>CFBundlePackageType</key>
 		 <string>APPL</string>
 		 <key>CFBundleSignature</key>
