@@ -20,19 +20,19 @@
 	<title>Getting started</title>
 	
 	<para>
-		This getting started guide provides a brief introduction to the LDAP Studio Browser. 
+		This getting started guide provides a brief introduction to the Apache Directory Studio Browser. 
 	</para>
 	
 	<section id="gettingstarted_download_install">
 		<title>Download and installation</title>
 		<para>
-		 	Beside the integration in LDAP Studio the LDAP Studio Browser could also be installed
+		 	Beside the integration in Apache Directory Studio the Apache Directory Studio Browser could also be installed
 		 	as a plug-in into a regular Eclipse installation. This section describes this
 		 	alternative. 
 		 </para>
 		 <para>
 			Using the Eclipse Install/Update Manager is the easiest way to 
-			install the LDAP Studio Browser plug-in.
+			install the Apache Directory Studio Browser plug-in.
 			From workbench menu choose
 			<emphasis role="strong">
 			<menuchoice>
@@ -57,10 +57,10 @@
 			</screenshot>
 		</para>
 		<para>
-			Next please specify the LDAP Studio update site. Click the <emphasis role="strong">New Remote Site...</emphasis> button.
+			Next please specify the Apache Directory Studio update site. Click the <emphasis role="strong">New Remote Site...</emphasis> button.
 			In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
 			<itemizedlist>
-				<listitem>Name: LDAP Studio Update Site</listitem>
+				<listitem>Name: Apache Directory Studio Update Site</listitem>
 				<listitem>URL: http://directory.apache.org/ldapstudio/update/</listitem>
 			</itemizedlist>
 			<screenshot>
@@ -86,7 +86,7 @@
 		</para>
 		<para>
 			Now the install manager checks the update site and presents the search results. Select the
-			feature you want to install - of course the LDAP Studio Browser - and click 
+			feature you want to install - of course the Apache Directory Studio Browser - and click 
 			<emphasis role="strong">Next</emphasis>.
 			<screenshot>
 				<mediaobject>
@@ -98,7 +98,7 @@
 			</screenshot>
 		</para>
 		<para>
-			Accept the license agreement, the LDAP Studio Browser is distributed under the 
+			Accept the license agreement, the Apache Directory Studio Browser is distributed under the 
 			Apache License, Version 2.0.
 			<screenshot>
 				<mediaobject>
@@ -110,7 +110,7 @@
 			</screenshot>
 		</para>
 		<para>
-			In the next dialog ensure that the LDAP Studio Browser feature is selected and 
+			In the next dialog ensure that the Apache Directory Studio Browser feature is selected and 
 			click to <emphasis role="strong">Finish</emphasis>.
 			<screenshot>
 				<mediaobject>
@@ -143,7 +143,7 @@
 	<section id="gettingstarted_open_perspecitve">
 		<title>Open LDAP perspective</title>
 		<para>
-			To use the LDAP Studio Browser plug-in open the LDAP perspective. Therefore go to
+			To use the Apache Directory Studio Browser plug-in open the LDAP perspective. Therefore go to
 			<emphasis role="strong">
 			<menuchoice>
 				<guimenu>Window</guimenu>

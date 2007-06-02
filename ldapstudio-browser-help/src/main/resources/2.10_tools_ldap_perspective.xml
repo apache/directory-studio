@@ -19,7 +19,7 @@
 <section id="tools_ldap_perspective">
 	<title>LDAP perspective</title>
 	<para>
-		The LDAP Studio Browser plug-in provides a LDAP perspective. It is designed for working
+		The Apache Directory Studio Browser plug-in provides a LDAP perspective. It is designed for working
 		with an LDAP directory (browse, edit, search) as well as for editing LDIF
 		files. The views and edtiors are arranged as follows:
 	</para>

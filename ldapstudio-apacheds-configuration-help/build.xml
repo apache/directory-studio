@@ -114,7 +114,7 @@
 
 		<replaceregexp file="${project.build}/toc.xml"
 		                         match="&lt;toc [^>]*>"
-		                         replace="&lt;toc topic=&#34;html/index.html&#34; label=&#34;LDAP Studio Apache DS Configuration User's Guide\&#34;>"
+		                         replace="&lt;toc topic=&#34;html/index.html&#34; label=&#34;Apache Directory Studio Apache DS Configuration User's Guide\&#34;>"
 		                         byline="true"/>
 		
 		<copy todir="${project.build}" overwrite="true">

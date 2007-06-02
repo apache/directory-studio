@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: LDAP Studio Proxy Plug-in
+Bundle-Name: Apache Directory Studio Proxy Plug-in
 Bundle-SymbolicName: org.apache.directory.ldapstudio.proxy;singleton:=true
 Bundle-Version: 0.7.0
 Bundle-Activator: org.apache.directory.ldapstudio.proxy.Activator

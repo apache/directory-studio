@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.ldapstudio.apacheds.configuration.feature"
-      label="LDAP Studio Apache DS Configuration"
+      label="Apache Directory Studio Apache DS Configuration"
       version="0.8.0"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
@@ -10,7 +10,7 @@
       image="ldapstudio.png">
 
    <description>
-      The LDAP Studio Apache DS Feature contains all plugins related to Apache DS.
+      The Apache Directory Studio Apache DS Feature contains all plugins related to Apache DS.
    </description>
 
    <copyright>
@@ -219,7 +219,7 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="LDAP Studio" url="http://directory.apache.org/ldapstudio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/ldapstudio/update"/>
    </url>
 
    <plugin

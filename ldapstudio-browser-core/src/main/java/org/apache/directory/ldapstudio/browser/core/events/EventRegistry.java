@@ -29,7 +29,7 @@ import java.util.Set;
 
 
 /**
- * The EventRegistry is a central point to register for LDAP Studio specific
+ * The EventRegistry is a central point to register for Apache Directory Studio specific
  * events and to fire events to registered listeners.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.ldapstudio.browser.feature"
-      label="LDAP Studio Browser"
+      label="Apache Directory Studio Browser"
       version="0.8.0"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
@@ -10,7 +10,7 @@
       image="ldapstudio.png">
 
    <description>
-      The LDAP Studio Browser Feature contains all plugins related to the LDAP Browser.
+      The Apache Directory Studio Browser Feature contains all plugins related to the LDAP Browser.
    </description>
 
    <copyright>
@@ -218,7 +218,7 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="LDAP Studio" url="http://directory.apache.org/ldapstudio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/ldapstudio/update"/>
    </url>
 
    <plugin
