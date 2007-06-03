@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.browser.ui.views.modificationlogs;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
@@ -206,6 +207,36 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
         {
         }
 
+    }
+    
+	/**
+     * Clears the input and deletes the logfiles for it
+     * 
+     */
+    public void clearInput()
+    {
+        StringBuffer sb = new StringBuffer( "" );
+        FileWriter fw = null;
+        File[] files = input.getConnection().getModificationLogger().getFiles();
+        input.getConnection().getModificationLogger().dispose();
+        for ( int i = 0; i < files.length; i++ )
+        {
+            try
+            {
+                if ( files[i] != null && files[i].exists() && !files[i].delete() )
+                {
+                    fw = new FileWriter( files[i] );
+                    fw.write( "" );
+                }
+
+            }
+            catch ( Exception e )
+            {
+                sb.append( e.getMessage() );
+            }
+        }
+        view.getMainWidget().getSourceViewer().setTopIndex( 0 );
+        view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
     }
 
 }

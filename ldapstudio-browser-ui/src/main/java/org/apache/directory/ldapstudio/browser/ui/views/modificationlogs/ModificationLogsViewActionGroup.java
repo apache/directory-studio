@@ -54,6 +54,9 @@ public class ModificationLogsViewActionGroup implements IMenuListener
 
     /** The Constant refreshAction. */
     private static final String refreshAction = "refreshAction";
+    
+    /** The Constant refreshAction. */
+    private static final String clearAction = "clearAction";
 
     /** The modification logs view action map. */
     private Map<String, ModificationLogsViewActionProxy> modificationLogsViewActionMap;
@@ -76,6 +79,8 @@ public class ModificationLogsViewActionGroup implements IMenuListener
             view ) ) );
         modificationLogsViewActionMap.put( refreshAction, new ModificationLogsViewActionProxy( viewer,
             new RefreshAction( view ) ) );
+        modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, new ClearAction(
+            view ) ) );
     }
 
 
@@ -111,6 +116,7 @@ public class ModificationLogsViewActionGroup implements IMenuListener
     public void fillActionBars( IActionBars actionBars )
     {
         // Tool Bar
+    	actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( clearAction ) );
         actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( refreshAction ) );
         actionBars.getToolBarManager().add( new Separator() );
         actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( olderAction ) );

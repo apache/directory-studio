@@ -230,5 +230,7 @@ public interface BrowserUIConstants
     public static final String IMG_PREVIOUS = "resources/icons/previous.gif";
 
     public static final String IMG_REFRESH = "resources/icons/refresh.gif";
+    
+    public static final String IMG_CLEAR = "resources/icons/delete.gif";
 
 }
