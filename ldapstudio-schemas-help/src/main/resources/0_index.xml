@@ -95,7 +95,7 @@
 			    In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
 			    <itemizedlist>
 				    <listitem>Name: Apache Directory Studio Update Site</listitem>
-				    <listitem>URL: http://directory.apache.org/ldapstudio/update/</listitem>
+				    <listitem>URL: http://directory.apache.org/studio/update/</listitem>
 			    </itemizedlist>
 			    <screenshot>
 				    <mediaobject>
