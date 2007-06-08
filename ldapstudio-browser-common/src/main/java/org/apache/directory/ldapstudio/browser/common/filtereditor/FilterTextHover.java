@@ -21,9 +21,16 @@
 package org.apache.directory.ldapstudio.browser.common.filtereditor;
 
 
+import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterExtensibleComponent;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterItemComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterToken;
+import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
+import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
@@ -42,6 +49,9 @@ public class FilterTextHover implements ITextHover
     /** The filter parser. */
     private LdapFilterParser parser;
 
+    /** The schema, used to retrieve attributeType and objectClass information. */
+    private Schema schema;
+
 
     /**
      * Creates a new instance of FilterTextHover.
@@ -55,10 +65,79 @@ public class FilterTextHover implements ITextHover
 
 
     /**
+     * Sets the schema, used to retrieve attributeType and objectClass information.
+     * 
+     * @param schema the schema
+     */
+    public void setSchema( Schema schema )
+    {
+        this.schema = schema;
+    }
+
+
+    /**
      * @see org.eclipse.jface.text.ITextHover#getHoverInfo(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion)
      */
     public String getHoverInfo( ITextViewer textViewer, IRegion hoverRegion )
     {
+        // check attribute type, object class or matching rule values
+        if ( schema != null )
+        {
+            LdapFilter filter = parser.getModel().getFilter( hoverRegion.getOffset() );
+
+            if ( filter.getFilterComponent() instanceof LdapFilterItemComponent )
+            {
+                LdapFilterItemComponent fc = ( LdapFilterItemComponent ) filter.getFilterComponent();
+                if ( fc.getAttributeToken() != null
+                    && fc.getAttributeToken().getOffset() <= hoverRegion.getOffset()
+                    && hoverRegion.getOffset() <= fc.getAttributeToken().getOffset()
+                        + fc.getAttributeToken().getLength() )
+                {
+                    String attributeType = fc.getAttributeToken().getValue();
+                    AttributeTypeDescription attributeTypeDescription = schema
+                        .getAttributeTypeDescription( attributeType );
+                    return attributeTypeDescription.getLine() != null ? attributeTypeDescription.getLine()
+                        .getUnfoldedValue() : null;
+                }
+                if ( fc.getAttributeToken() != null
+                    && IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( fc.getAttributeToken().getValue() )
+                    && fc.getValueToken() != null && fc.getValueToken().getOffset() <= hoverRegion.getOffset()
+                    && hoverRegion.getOffset() <= fc.getValueToken().getOffset() + fc.getValueToken().getLength() )
+                {
+                    String objectClass = fc.getValueToken().getValue();
+                    ObjectClassDescription objectClassDescription = schema.getObjectClassDescription( objectClass );
+                    return objectClassDescription.getLine() != null ? objectClassDescription.getLine()
+                        .getUnfoldedValue() : null;
+                }
+            }
+            if ( filter.getFilterComponent() instanceof LdapFilterExtensibleComponent )
+            {
+                LdapFilterExtensibleComponent fc = ( LdapFilterExtensibleComponent ) filter.getFilterComponent();
+                if ( fc.getAttributeToken() != null
+                    && fc.getAttributeToken().getOffset() <= hoverRegion.getOffset()
+                    && hoverRegion.getOffset() <= fc.getAttributeToken().getOffset()
+                        + fc.getAttributeToken().getLength() )
+                {
+                    String attributeType = fc.getAttributeToken().getValue();
+                    AttributeTypeDescription attributeTypeDescription = schema
+                        .getAttributeTypeDescription( attributeType );
+                    return attributeTypeDescription.getLine() != null ? attributeTypeDescription.getLine()
+                        .getUnfoldedValue() : null;
+                }
+                if ( fc.getMatchingRuleToken() != null
+                    && fc.getMatchingRuleToken().getOffset() <= hoverRegion.getOffset()
+                    && hoverRegion.getOffset() <= fc.getMatchingRuleToken().getOffset()
+                        + fc.getMatchingRuleToken().getLength() )
+                {
+                    String matchingRule = fc.getMatchingRuleToken().getValue();
+                    MatchingRuleDescription matchingRuleDescription = schema.getMatchingRuleDescription( matchingRule );
+                    return matchingRuleDescription.getLine() != null ? matchingRuleDescription.getLine()
+                        .getUnfoldedValue() : null;
+                }
+            }
+        }
+
+        // check invalid tokens
         LdapFilter[] invalidFilters = parser.getModel().getInvalidFilters();
         for ( int i = 0; i < invalidFilters.length; i++ )
         {
@@ -75,6 +154,7 @@ public class FilterTextHover implements ITextHover
             }
         }
 
+        // check error tokens
         LdapFilterToken[] tokens = parser.getModel().getTokens();
         for ( int i = 0; i < tokens.length; i++ )
         {

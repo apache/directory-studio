@@ -23,15 +23,23 @@ package org.apache.directory.ldapstudio.browser.common.filtereditor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterItemComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterToken;
+import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
+import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
@@ -60,6 +68,25 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     IContentProposalProvider
 {
 
+    private static final Comparator<String> nameAndOidComparator = new Comparator<String>()
+    {
+        public int compare( String s1, String s2 )
+        {
+            if ( s1.matches( "[0-9\\.]+" ) && !s2.matches( "[0-9\\.]+" ) )
+            {
+                return 1;
+            }
+            else if ( !s1.matches( "[0-9\\.]+" ) && s2.matches( "[0-9\\.]+" ) )
+            {
+                return -1;
+            }
+            else
+            {
+                return s1.compareToIgnoreCase( s2 );
+            }
+        }
+    };
+
     /** The parser. */
     private LdapFilterParser parser;
 
@@ -71,6 +98,18 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
 
     /** The schema, used to retrieve attributeType and objectClass information. */
     private Schema schema;
+
+    /** The possible attribute types. */
+    private Map<String, AttributeTypeDescription> possibleAttributeTypes;
+
+    /** The possible filter types. */
+    private Map<String, String> possibleFilterTypes;
+
+    /** The possible object classes. */
+    private Map<String, ObjectClassDescription> possibleObjectClasses;
+
+    /** The possible matching rules. */
+    private Map<String, MatchingRuleDescription> possibleMatchingRules;
 
 
     /**
@@ -95,14 +134,24 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
         this.parser = parser;
         this.sourceViewer = sourceViewer;
 
-        this.autoActivationCharacters = new char[1 + 26 + 26];
+        this.autoActivationCharacters = new char[7 + 10 + 26 + 26];
         this.autoActivationCharacters[0] = '(';
-        int i = 1;
+        this.autoActivationCharacters[1] = ')';
+        this.autoActivationCharacters[2] = '&';
+        this.autoActivationCharacters[3] = '|';
+        this.autoActivationCharacters[4] = '!';
+        this.autoActivationCharacters[5] = ':';
+        this.autoActivationCharacters[6] = '.';
+        int i = 7;
         for ( char c = 'a'; c <= 'z'; c++, i++ )
         {
             this.autoActivationCharacters[i] = c;
         }
         for ( char c = 'A'; c <= 'Z'; c++, i++ )
+        {
+            this.autoActivationCharacters[i] = c;
+        }
+        for ( char c = '0'; c <= '9'; c++, i++ )
         {
             this.autoActivationCharacters[i] = c;
         }
@@ -117,6 +166,53 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     public void setSchema( Schema schema )
     {
         this.schema = schema;
+
+        possibleAttributeTypes = new TreeMap<String, AttributeTypeDescription>( nameAndOidComparator );
+        possibleFilterTypes = new LinkedHashMap<String, String>();
+        possibleObjectClasses = new TreeMap<String, ObjectClassDescription>( nameAndOidComparator );
+        possibleMatchingRules = new TreeMap<String, MatchingRuleDescription>( nameAndOidComparator );
+
+        if ( schema != null )
+        {
+            AttributeTypeDescription[] attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
+            for ( int i = 0; i < attributeTypeDescriptions.length; i++ )
+            {
+                AttributeTypeDescription description = attributeTypeDescriptions[i];
+                possibleAttributeTypes.put( description.getNumericOID(), description );
+                for ( int k = 0; k < description.getNames().length; k++ )
+                {
+                    possibleAttributeTypes.put( description.getNames()[k], description );
+                }
+            }
+
+            possibleFilterTypes.put( "=", "= (equals)" );
+            possibleFilterTypes.put( "=*", "=* (present)" );
+            possibleFilterTypes.put( "<=", "<= (less than or equals)" );
+            possibleFilterTypes.put( ">=", ">= (greater than or equals)" );
+            possibleFilterTypes.put( "~=", "~= (approximately)" );
+
+            ObjectClassDescription[] objectClassDescriptions = schema.getObjectClassDescriptions();
+            for ( int i = 0; i < objectClassDescriptions.length; i++ )
+            {
+                ObjectClassDescription description = objectClassDescriptions[i];
+                possibleObjectClasses.put( description.getNumericOID(), description );
+                for ( int k = 0; k < description.getNames().length; k++ )
+                {
+                    possibleObjectClasses.put( description.getNames()[k], description );
+                }
+            }
+
+            MatchingRuleDescription[] matchingRuleDescriptions = schema.getMatchingRuleDescriptions();
+            for ( int i = 0; i < matchingRuleDescriptions.length; i++ )
+            {
+                MatchingRuleDescription description = matchingRuleDescriptions[i];
+                possibleMatchingRules.put( description.getNumericOID(), description );
+                for ( int k = 0; k < description.getNames().length; k++ )
+                {
+                    possibleMatchingRules.put( description.getNames()[k], description );
+                }
+            }
+        }
     }
 
 
@@ -199,8 +295,6 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
      */
     private ICompletionProposal[] computeCompletionProposals( int offset )
     {
-        String[] possibleAttributeTypes = schema == null ? new String[0] : schema.getAttributeTypeDescriptionNames();
-        Arrays.sort( possibleAttributeTypes );
         String[] possibleObjectClasses = schema == null ? new String[0] : schema.getObjectClassDescriptionNames();
         Arrays.sort( possibleObjectClasses );
 
@@ -208,12 +302,9 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
         LdapFilter filter = parser.getModel().getFilter( offset );
         if ( filter != null )
         {
-            String attributeType = null;
-
-            // case 1: open curly started, show templates and all attribute types
+            // case 0: open curly started, show templates and all attribute types
             if ( filter.getStartToken() != null && filter.getFilterComponent() == null )
             {
-
                 if ( sourceViewer != null )
                 {
                     ICompletionProposal[] templateProposals = super.computeCompletionProposals( sourceViewer, offset );
@@ -222,127 +313,285 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                         proposalList.addAll( Arrays.asList( templateProposals ) );
                     }
                 }
-
-                for ( int k = 0; k < possibleAttributeTypes.length; k++ )
-                {
-                    ICompletionProposal proposal = new CompletionProposal( possibleAttributeTypes[k], offset, 0,
-                        possibleAttributeTypes[k].length(), getAttributeTypeImage(), null, null, schema
-                            .getAttributeTypeDescription( possibleAttributeTypes[k] ).getLine().getUnfoldedValue() );
-                    proposalList.add( proposal );
-                }
+                addPossibleAttributeTypes( proposalList, "", offset );
             }
 
-            // case 2: editing attribute type: show matching attribute types
-            else if ( filter.getFilterComponent() instanceof LdapFilterItemComponent
-                && filter.getFilterComponent().getStartToken().getOffset() <= offset
-                && offset <= filter.getFilterComponent().getStartToken().getOffset()
-                    + filter.getFilterComponent().getStartToken().getLength() )
+            // case A: simple filter
+            if ( filter.getFilterComponent() != null && filter.getFilterComponent() instanceof LdapFilterItemComponent )
             {
                 LdapFilterItemComponent fc = ( LdapFilterItemComponent ) filter.getFilterComponent();
-                for ( int k = 0; k < possibleAttributeTypes.length; k++ )
+
+                // case A1: editing attribute type: show matching attribute types
+                if ( fc.getStartToken().getOffset() <= offset
+                    && offset <= fc.getStartToken().getOffset() + fc.getStartToken().getLength() )
                 {
-                    if ( possibleAttributeTypes[k].equalsIgnoreCase( fc.getAttributeToken().getValue() ) )
+                    addPossibleAttributeTypes( proposalList, fc.getAttributeToken().getValue(), fc.getAttributeToken()
+                        .getOffset() );
+                }
+
+                String attributeType = null;
+                if ( schema != null && schema.hasAttributeTypeDescription( fc.getAttributeToken().getValue() ) )
+                {
+                    attributeType = fc.getAttributeToken().getValue();
+                }
+
+                // case A2: after attribte type: show possible filter types and extensible match options
+                if ( attributeType != null )
+                {
+                    if ( ( fc.getAttributeToken().getOffset() <= offset || fc.getFilterToken() != null )
+                        && offset <= fc.getAttributeToken().getOffset() + fc.getAttributeToken().getLength()
+                            + ( fc.getFilterToken() != null ? fc.getFilterToken().getLength() : 0 ) )
                     {
-                    }
-                    else if ( possibleAttributeTypes[k].startsWith( fc.getAttributeToken().getValue() ) )
-                    {
-                        ICompletionProposal proposal = new CompletionProposal( possibleAttributeTypes[k], fc
-                            .getAttributeToken().getOffset(), fc.getAttributeToken().getLength(),
-                            possibleAttributeTypes[k].length(), getAttributeTypeImage(), null, null, schema
-                                .getAttributeTypeDescription( possibleAttributeTypes[k] ).getLine().getUnfoldedValue() );
-                        proposalList.add( proposal );
+                        //String attributeType = fc.getAttributeToken().getValue();
+                        String filterType = fc.getFilterToken() != null ? fc.getFilterToken().getValue() : "";
+                        int filterTypeOffset = fc.getAttributeToken().getOffset() + fc.getAttributeToken().getLength();
+                        addPossibleFilterTypes( proposalList, attributeType, filterType, filterTypeOffset );
                     }
                 }
-            }
 
-            if ( filter.getFilterComponent() instanceof LdapFilterItemComponent )
-            {
-                LdapFilterItemComponent fc = ( LdapFilterItemComponent ) filter.getFilterComponent();
-                for ( int k = 0; k < possibleAttributeTypes.length; k++ )
+                // case A3: editing objectClass attribute: show matching object classes
+                if ( attributeType != null && IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( attributeType ) )
                 {
-                    if ( possibleAttributeTypes[k].equalsIgnoreCase( fc.getAttributeToken().getValue() ) )
+                    if ( ( fc.getValueToken() != null && fc.getValueToken().getOffset() <= offset || fc
+                        .getFilterToken() != null )
+                        && offset <= fc.getAttributeToken().getOffset() + fc.getAttributeToken().getLength()
+                            + ( fc.getFilterToken() != null ? fc.getFilterToken().getLength() : 0 )
+                            + ( fc.getValueToken() != null ? fc.getValueToken().getLength() : 0 ) )
                     {
-                        attributeType = fc.getAttributeToken().getValue();
-                        break;
-                    }
-                }
-            }
-
-            // case 3: after attribte type: show possible assertion types
-            if ( attributeType != null && filter.getFilterComponent() instanceof LdapFilterItemComponent )
-            {
-                LdapFilterItemComponent fc = ( LdapFilterItemComponent ) filter.getFilterComponent();
-                if ( ( fc.getAttributeToken().getOffset() <= offset || fc.getFilterToken() != null )
-                    && offset <= fc.getAttributeToken().getOffset() + fc.getAttributeToken().getLength()
-                        + ( fc.getFilterToken() != null ? fc.getFilterToken().getLength() : 0 ) )
-                {
-                    LdapFilterToken filterTypeToken = fc.getFilterToken();
-
-                    // determine matching assertion types depending on the schema's attribute type description
-                    List<String> possibleAssertionTypes = new ArrayList<String>( Arrays.asList( new String[]
-                        { "=", "=*", "<=", ">=", "~=" } ) );
-                    if ( schema != null )
-                    {
-                        if ( schema.getAttributeTypeDescription( attributeType )
-                            .getEqualityMatchingRuleDescriptionOIDTransitive() == null )
-                        {
-                            possibleAssertionTypes.remove( "=" );
-                            possibleAssertionTypes.remove( "~=" );
-                        }
-                        if ( schema.getAttributeTypeDescription( attributeType )
-                            .getOrderingMatchingRuleDescriptionOIDTransitive() == null )
-                        {
-                            possibleAssertionTypes.remove( "<=" );
-                            possibleAssertionTypes.remove( ">=" );
-                        }
-                    }
-                    for ( String possibleAssertionType : possibleAssertionTypes )
-                    {
-                        if ( filterTypeToken == null
-                            || !possibleAssertionType.equalsIgnoreCase( filterTypeToken.getValue() ) )
-                        {
-                            ICompletionProposal proposal = new CompletionProposal( possibleAssertionType, fc
-                                .getAttributeToken().getOffset()
-                                + fc.getAttributeToken().getLength(), filterTypeToken != null ? filterTypeToken
-                                .getLength() : 0, possibleAssertionType.length(), null, null, null, null );
-                            proposalList.add( proposal );
-                        }
+                        addPossibleObjectClasses( proposalList, fc.getValueToken() == null ? "" : fc.getValueToken()
+                            .getValue(), fc.getValueToken() == null ? offset : fc.getValueToken().getOffset() );
                     }
                 }
             }
 
-            // case 4: editing objectClass attribute: show matching object classes
-            if ( attributeType != null && IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( attributeType )
-                && filter.getFilterComponent() instanceof LdapFilterItemComponent )
+            // case B: extensible filter
+            if ( filter.getFilterComponent() != null
+                && filter.getFilterComponent() instanceof LdapFilterExtensibleComponent )
             {
-                LdapFilterItemComponent fc = ( LdapFilterItemComponent ) filter.getFilterComponent();
-                if ( ( fc.getValueToken() != null && fc.getValueToken().getOffset() <= offset || fc.getFilterToken() != null )
-                    && offset <= fc.getAttributeToken().getOffset() + fc.getAttributeToken().getLength()
-                        + ( fc.getFilterToken() != null ? fc.getFilterToken().getLength() : 0 )
-                        + ( fc.getValueToken() != null ? fc.getValueToken().getLength() : 0 ) )
+                LdapFilterExtensibleComponent fc = ( LdapFilterExtensibleComponent ) filter.getFilterComponent();
+
+                // case B1: editing extensible attribute type: show matching attribute types
+                if ( fc.getAttributeToken() != null && fc.getAttributeToken().getOffset() <= offset
+                    && offset <= fc.getAttributeToken().getOffset() + fc.getAttributeToken().getLength() )
                 {
-                    LdapFilterToken valueToken = fc.getValueToken();
-                    for ( int k = 0; k < possibleObjectClasses.length; k++ )
+                    addPossibleAttributeTypes( proposalList, fc.getAttributeToken().getValue(), fc.getAttributeToken()
+                        .getOffset() );
+                }
+
+                // case B2: editing dn
+                if ( fc.getDnAttrToken() != null && fc.getDnAttrToken().getOffset() <= offset
+                    && offset <= fc.getDnAttrToken().getOffset() + fc.getDnAttrToken().getLength() )
+                {
+                    addDnAttr( proposalList, fc.getDnAttrToken().getValue(), fc.getDnAttrToken().getOffset() );
+                }
+
+                // case B3: editing matching rule
+                if ( fc.getMatchingRuleColonToken() != null
+                    && fc.getMatchingRuleToken() == null
+                    && fc.getMatchingRuleColonToken().getOffset() <= offset
+                    && offset <= fc.getMatchingRuleColonToken().getOffset()
+                        + fc.getMatchingRuleColonToken().getLength() )
+                {
+                    if ( fc.getDnAttrColonToken() == null )
                     {
-                        if ( fc.getValueToken() == null
-                            || possibleObjectClasses[k].startsWith( fc.getValueToken().getValue() ) )
-                        {
-                            ICompletionProposal proposal = new CompletionProposal( possibleObjectClasses[k], fc
-                                .getAttributeToken().getOffset()
-                                + fc.getAttributeToken().getLength() + fc.getFilterToken().getLength(),
-                                valueToken != null ? valueToken.getLength() : 0, possibleObjectClasses[k].length(),
-                                getObjectClassImage(), null, null, schema.getObjectClassDescription(
-                                    possibleObjectClasses[k] ).getLine().getUnfoldedValue() );
-                            proposalList.add( proposal );
-                        }
+                        addDnAttr( proposalList, "", offset );
                     }
+                    addPossibleMatchingRules( proposalList, "", offset, fc.getEqualsColonToken(), fc.getEqualsToken() );
+                }
+                if ( fc.getMatchingRuleToken() != null && fc.getMatchingRuleToken().getOffset() <= offset
+                    && offset <= fc.getMatchingRuleToken().getOffset() + fc.getMatchingRuleToken().getLength() )
+                {
+                    if ( fc.getDnAttrColonToken() == null )
+                    {
+                        addDnAttr( proposalList, fc.getMatchingRuleToken().getValue(), fc.getMatchingRuleToken()
+                            .getOffset() );
+                    }
+
+                    String matchingRuleValue = fc.getMatchingRuleToken().getValue();
+                    addPossibleMatchingRules( proposalList, matchingRuleValue, fc.getMatchingRuleToken().getOffset(),
+                        fc.getEqualsColonToken(), fc.getEqualsToken() );
                 }
             }
         }
 
-        //System.out.println(proposalList);
-
         return proposalList.toArray( new ICompletionProposal[0] );
+    }
+
+
+    /**
+     * Adds the possible attribute types to the proposal list.
+     * 
+     * @param proposalList the proposal list
+     * @param attributeType the current attribute type
+     * @param offset the offset
+     */
+    private void addPossibleAttributeTypes( List<ICompletionProposal> proposalList, String attributeType, int offset )
+    {
+        if ( schema != null )
+        {
+            for ( String possibleAttributeType : possibleAttributeTypes.keySet() )
+            {
+                AttributeTypeDescription description = possibleAttributeTypes.get( possibleAttributeType );
+                if ( possibleAttributeType.toUpperCase().startsWith( attributeType.toUpperCase() ) )
+                {
+                    String replacementString = possibleAttributeType;
+                    String displayString = possibleAttributeType;
+                    if ( displayString.equals( description.getNumericOID() ) )
+                    {
+                        displayString += " (" + description.toString() + ")";
+                    }
+                    else
+                    {
+                        displayString += " (" + description.getNumericOID() + ")";
+                    }
+
+                    ICompletionProposal proposal = new CompletionProposal( replacementString, offset, attributeType
+                        .length(), replacementString.length(), getAttributeTypeImage(), displayString, null, schema
+                        .getAttributeTypeDescription( possibleAttributeType ).getLine().getUnfoldedValue() );
+                    proposalList.add( proposal );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Adds the possible attribute types to the proposal list.
+     * 
+     * @param proposalList the proposal list
+     * @param attributeType the current attribute type
+     * @param offset the offset
+     */
+    private void addPossibleFilterTypes( List<ICompletionProposal> proposalList, String attributeType,
+        String filterType, int offset )
+    {
+        if ( schema != null )
+        {
+            Map<String, String> copy = new LinkedHashMap<String, String>( possibleFilterTypes );
+            if ( schema.getAttributeTypeDescription( attributeType ).getEqualityMatchingRuleDescriptionOIDTransitive() == null )
+            {
+                copy.remove( "=" );
+                copy.remove( "~=" );
+            }
+            if ( schema.getAttributeTypeDescription( attributeType ).getOrderingMatchingRuleDescriptionOIDTransitive() == null )
+            {
+                copy.remove( "<=" );
+                copy.remove( ">=" );
+            }
+
+            for ( String possibleFilterType : copy.keySet() )
+            {
+                String replacementString = possibleFilterType;
+                String displayString = copy.get( possibleFilterType );
+
+                ICompletionProposal proposal = new CompletionProposal( replacementString, offset, filterType.length(),
+                    possibleFilterType.length(), getFilterTypeImage(), displayString, null, null );
+                proposalList.add( proposal );
+            }
+        }
+    }
+
+
+    /**
+     * Adds the possible object classes to the proposal list.
+     * 
+     * @param proposalList the proposal list
+     * @param objectClasses the object class
+     * @param offset the offset
+     */
+    private void addPossibleObjectClasses( List<ICompletionProposal> proposalList, String objectClass, int offset )
+    {
+        if ( schema != null )
+        {
+            for ( String possibleObjectClass : possibleObjectClasses.keySet() )
+            {
+                ObjectClassDescription description = possibleObjectClasses.get( possibleObjectClass );
+                if ( possibleObjectClass.toUpperCase().startsWith( objectClass.toUpperCase() ) )
+                {
+                    String replacementString = possibleObjectClass;
+                    String displayString = possibleObjectClass;
+                    if ( displayString.equals( description.getNumericOID() ) )
+                    {
+                        displayString += " (" + description.toString() + ")";
+                    }
+                    else
+                    {
+                        displayString += " (" + description.getNumericOID() + ")";
+                    }
+
+                    ICompletionProposal proposal = new CompletionProposal( replacementString, offset, objectClass
+                        .length(), replacementString.length(), getObjectClassImage(), displayString, null, schema
+                        .getObjectClassDescription( possibleObjectClass ).getLine().getUnfoldedValue() );
+                    proposalList.add( proposal );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Adds the possible matching rules (that fits to the given attribute type) to the proposal list.
+     * 
+     * @param proposalList the proposal list
+     * @param matchingRule the matching rule
+     * @param offset the offset
+     */
+    private void addPossibleMatchingRules( List<ICompletionProposal> proposalList, String matchingRule, int offset,
+        LdapFilterToken equalsColonToken, LdapFilterToken equalsToken )
+    {
+        if ( schema != null )
+        {
+            for ( String possibleMatchingRule : possibleMatchingRules.keySet() )
+            {
+                if ( possibleMatchingRule.toUpperCase().startsWith( matchingRule.toUpperCase() ) )
+                {
+                    MatchingRuleDescription description = schema.getMatchingRuleDescription( possibleMatchingRule );
+                    String replacementString = possibleMatchingRule;
+                    if ( equalsColonToken == null )
+                    {
+                        replacementString += ":";
+                    }
+                    if ( equalsToken == null )
+                    {
+                        replacementString += "=";
+                    }
+                    String displayString = possibleMatchingRule;
+                    if ( displayString.equals( description.getNumericOID() ) )
+                    {
+                        displayString += " (" + description.toString() + ")";
+                    }
+                    else
+                    {
+                        displayString += " (" + description.getNumericOID() + ")";
+                    }
+
+                    ICompletionProposal proposal = new CompletionProposal( replacementString, offset, matchingRule
+                        .length(), replacementString.length(), getMatchingRuleImage(), displayString, null, schema
+                        .getMatchingRuleDescription( possibleMatchingRule ).getLine().getUnfoldedValue() );
+                    proposalList.add( proposal );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Adds the dn: proposal to the proposal list.
+     * 
+     * @param proposalList the proposal list
+     * @param dnAttr the dn attr
+     * @param offset the offset
+     */
+    private void addDnAttr( List<ICompletionProposal> proposalList, String dnAttr, int offset )
+    {
+        if ( "dn".toUpperCase().startsWith( dnAttr.toUpperCase() ) )
+        {
+            String replacementString = "dn:";
+            String displayString = "dn: ()";
+            ICompletionProposal proposal = new CompletionProposal( replacementString, offset, dnAttr.length(),
+                replacementString.length(), null, displayString, null, null );
+            proposalList.add( proposal );
+        }
     }
 
 
@@ -358,6 +607,17 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
 
 
     /**
+     * Gets the filter type image.
+     * 
+     * @return the filter type image
+     */
+    private Image getFilterTypeImage()
+    {
+        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_FILTER_EDITOR );
+    }
+
+
+    /**
      * Gets the object class image.
      * 
      * @return the object class image
@@ -365,6 +625,17 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     private Image getObjectClassImage()
     {
         return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_OCD );
+    }
+
+
+    /**
+     * Gets the matching rule image.
+     * 
+     * @return the matching rule image
+     */
+    private Image getMatchingRuleImage()
+    {
+        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_MRD );
     }
 
 

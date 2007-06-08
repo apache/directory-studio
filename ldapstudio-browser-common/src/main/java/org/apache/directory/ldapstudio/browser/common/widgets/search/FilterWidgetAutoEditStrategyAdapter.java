@@ -51,9 +51,6 @@ public class FilterWidgetAutoEditStrategyAdapter
     /** The combo. */
     private Combo combo;
 
-    /** The filter parser. */
-    private LdapFilterParser parser;
-
     /** The old texts. */
     private List<String> oldTexts;
 
@@ -73,7 +70,6 @@ public class FilterWidgetAutoEditStrategyAdapter
     public FilterWidgetAutoEditStrategyAdapter( Combo combo, LdapFilterParser parser )
     {
         this.combo = combo;
-        this.parser = parser;
 
         this.oldTexts = new ArrayList<String>();
         this.verifyEvents = new ArrayList<VerifyEvent>();
@@ -108,7 +104,7 @@ public class FilterWidgetAutoEditStrategyAdapter
         if ( !inApplyComboCustomization )
         {
             String oldText = combo.getText();
-            parser.parse( oldText );
+            //parser.parse( oldText );
 
             oldTexts.add( oldText );
             verifyEvents.add( e );
@@ -138,7 +134,7 @@ public class FilterWidgetAutoEditStrategyAdapter
 
             // apply auto edit strategy
             AutoEditParameters autoEditParameters = new AutoEditParameters( text, offset, length, -1, true );
-            autoEditStrategy.customizeAutoEditParameters( autoEditParameters );
+            autoEditStrategy.customizeAutoEditParameters( oldText, autoEditParameters );
 
             // get current selection
             Point oldSelection = combo.getSelection();

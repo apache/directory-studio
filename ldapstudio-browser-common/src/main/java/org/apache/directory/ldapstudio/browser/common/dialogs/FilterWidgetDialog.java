@@ -23,6 +23,9 @@ package org.apache.directory.ldapstudio.browser.common.dialogs;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
+import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.common.widgets.search.FilterWidget;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.eclipse.jface.dialogs.Dialog;
@@ -32,6 +35,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 
@@ -55,6 +59,9 @@ public class FilterWidgetDialog extends Dialog
 
     /** The filter. */
     private String filter;
+
+    /** The error message label. */
+    private Label errorMessageLabel;
 
 
     /**
@@ -133,8 +140,32 @@ public class FilterWidgetDialog extends Dialog
         filterWidget = new FilterWidget( connection, filter != null ? filter : "" );
         filterWidget.createWidget( inner );
         filterWidget.setFocus();
+        filterWidget.addWidgetModifyListener( new WidgetModifyListener()
+        {
+            public void widgetModified( WidgetModifyEvent event )
+            {
+                validate();
+            }
+        } );
+
+        errorMessageLabel = BaseWidgetUtils.createLabel( inner, "Please enter a valid filter.", 2 );
+
+        validate();
 
         return composite;
+    }
+
+
+    /**
+     * Validates the filter.
+     */
+    protected void validate()
+    {
+        if ( getButton( IDialogConstants.OK_ID ) != null )
+        {
+            getButton( IDialogConstants.OK_ID ).setEnabled( filterWidget.getFilter() != null );
+        }
+        errorMessageLabel.setText( filterWidget.getFilter() == null ? "Please enter a valid filter." : "" );
     }
 
 }

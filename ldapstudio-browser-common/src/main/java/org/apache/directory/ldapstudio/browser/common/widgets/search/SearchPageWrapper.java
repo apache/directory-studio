@@ -659,7 +659,7 @@ public class SearchPageWrapper extends BrowserWidget
             searchModified = true;
             searchBaseWidget.saveDialogSettings();
         }
-        if ( filterWidget != null )
+        if ( filterWidget != null && filterWidget.getFilter() != null )
         {
             if ( !filterWidget.getFilter().equals( search.getFilter() ) )
             {
@@ -815,9 +815,9 @@ public class SearchPageWrapper extends BrowserWidget
 
 
     /**
-     * Checks if is valid.
+     * Checks if the search page parameters are valid.
      * 
-     * @return true, if is valid
+     * @return true, it the search page parameters are valid
      */
     public boolean isValid()
     {
@@ -833,7 +833,7 @@ public class SearchPageWrapper extends BrowserWidget
         {
             return false;
         }
-        if ( filterWidget != null && "".equals( filterWidget.getFilter() ) )
+        if ( filterWidget != null && filterWidget.getFilter() == null )
         {
             return false;
         }
@@ -842,6 +842,35 @@ public class SearchPageWrapper extends BrowserWidget
     }
 
 
+    
+    /**
+     * Gets the error message or null if the search page is valid.
+     * 
+     * @return the error message or null if the search page is valid
+     */
+    public String getErrorMessage()
+    {
+        if ( connectionWidget != null && connectionWidget.getConnection() == null )
+        {
+            return "Please select a connection.";
+        }
+        if ( searchBaseWidget != null && searchBaseWidget.getDn() == null )
+        {
+            return "Please enter a valid search base DN.";
+        }
+        if ( searchNameText != null && "".equals( searchNameText.getText() ) )
+        {
+            return "Please enter a search name.";
+        }
+        if ( filterWidget != null && filterWidget.getFilter() == null )
+        {
+            return "Please enter a valid filter.";
+        }
+        
+        return null;
+    }
+    
+    
     /**
      * Sets the enabled state of the widget.
      * 

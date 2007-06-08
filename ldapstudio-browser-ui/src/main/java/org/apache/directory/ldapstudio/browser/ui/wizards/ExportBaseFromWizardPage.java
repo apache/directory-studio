@@ -80,11 +80,13 @@ public abstract class ExportBaseFromWizardPage extends WizardPage implements Wid
 
 
     /**
-     * Validates this page
+     * Validates this page and sets the error message
+     * if this page is not valid.
      */
     protected void validate()
     {
         setPageComplete( spw.isValid() );
+        setErrorMessage( spw.getErrorMessage() );
     }
 
 

@@ -30,21 +30,31 @@ import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
 import org.apache.directory.ldapstudio.browser.core.internal.model.Search;
 import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.core.utils.Utils;
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 
+/**
+ * The SearchPropertyPage implements the property page for an {@link ISearch}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchPropertyPage extends PropertyPage implements IWorkbenchPropertyPage, WidgetModifyListener
 {
 
+    /** The search. */
     private ISearch search;
 
+    /** The search page wrapper. */
     private SearchPageWrapper spw;
 
 
+    /**
+     * Creates a new instance of SearchPropertyPage.
+     */
     public SearchPropertyPage()
     {
         super();
@@ -52,13 +62,19 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.DialogPage#dispose()
+     */
     public void dispose()
     {
-        this.spw.removeWidgetModifyListener( this );
+        spw.removeWidgetModifyListener( this );
         super.dispose();
     }
 
 
+    /**
+     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createContents( Composite parent )
     {
 
@@ -77,34 +93,43 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
-        this.spw = new SearchPageWrapper( SearchPageWrapper.CONNECTION_READONLY );
-        this.spw.createContents( composite );
-        this.spw.loadFromSearch( this.search );
-        this.spw.addWidgetModifyListener( this );
+        spw = new SearchPageWrapper( SearchPageWrapper.CONNECTION_READONLY );
+        spw.createContents( composite );
+        spw.loadFromSearch( search );
+        spw.addWidgetModifyListener( this );
+
+        widgetModified( new WidgetModifyEvent( this ) );
 
         return composite;
     }
 
 
+    /**
+     * @see org.eclipse.jface.preference.PreferencePage#performOk()
+     */
     public boolean performOk()
     {
-        boolean modified = this.spw.saveToSearch( this.search );
-        if ( modified && this.search.getConnection() != null && this.search.getConnection().isOpened() )
+        boolean modified = spw.saveToSearch( search );
+        if ( modified && search.getConnection() != null && search.getConnection().isOpened() )
         {
             // send update event to force saving of new search parameters.
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( this.search,
+            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
                 SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED ), this );
 
-            return this.spw.performSearch( this.search );
+            return spw.performSearch( search );
         }
 
         return true;
     }
 
 
+    /**
+     * @see org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent)
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
-        setValid( this.spw.isValid() );
+        setValid( spw.isValid() );
+        setErrorMessage( spw.getErrorMessage() );
     }
 
 }

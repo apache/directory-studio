@@ -24,6 +24,7 @@ package org.apache.directory.ldapstudio.browser.common.filtereditor;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapAndFilterComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterComponent;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterItemComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapNotFilterComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapOrFilterComponent;
@@ -107,6 +108,10 @@ public class FilterFormattingStrategy implements IFormattingStrategy
         if ( fc instanceof LdapFilterItemComponent )
         {
             sb.append( '(' ).append( ( ( LdapFilterItemComponent ) fc ).toString() ).append( ')' );
+        }
+        else if ( fc instanceof LdapFilterExtensibleComponent )
+        {
+            sb.append( '(' ).append( ( ( LdapFilterExtensibleComponent ) fc ).toString() ).append( ')' );
         }
         else if ( fc instanceof LdapNotFilterComponent )
         {

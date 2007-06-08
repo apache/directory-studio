@@ -22,8 +22,7 @@ package org.apache.directory.ldapstudio.browser.core.model.filter.parser;
 
 
 /**
- * 
- * TODO LdapFilterScanner.
+ * The LdapFilterScanner is a scanner for LDAP filters. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -151,6 +150,12 @@ public class LdapFilterScanner
     }
 
 
+    /**
+     * Increments the position counter as long as there are
+     * line breaks and gets the character at that positon.
+     * 
+     * @return the character at the next position
+     */
     private char nextNonLinebreakChar()
     {
         while ( nextChar() == '\n' );
@@ -158,6 +163,12 @@ public class LdapFilterScanner
     }
 
 
+    /**
+     * Decrements the position counter as long as there are
+     * line breaks and gets the character at that positon.
+     * 
+     * @return the character at the previous position
+     */
     private char prevNonLinebreakChar()
     {
         while ( prevChar() == '\n' );
@@ -165,15 +176,11 @@ public class LdapFilterScanner
     }
 
 
-    // private char nextNonWhitespaceChar() {
-    // while(Character.isWhitespace(nextChar()));
-    // return currentChar();
-    // }
-    // private char prevNonWhitespaceChar() {
-    // while(Character.isWhitespace(prevChar()));
-    // return currentChar();
-    // }
-
+    /**
+     * Gets the next token.
+     * 
+     * @return the next token
+     */
     public LdapFilterToken nextToken()
     {
         char c;
@@ -285,6 +292,11 @@ public class LdapFilterScanner
                         return new LdapFilterToken( this.lastTokenType, "=", pos );
                     }
                 }
+                else if ( lastTokenType == LdapFilterToken.EXTENSIBLE_EQUALS_COLON )
+                {
+                    this.lastTokenType = LdapFilterToken.EQUAL;
+                    return new LdapFilterToken( this.lastTokenType, "=", pos );
+                }
                 break;
             case '>':
                 if ( lastTokenType == LdapFilterToken.ATTRIBUTE )
@@ -328,17 +340,57 @@ public class LdapFilterScanner
                     }
                 }
                 break;
+            case ':':
+                char t1 = nextChar();
+                char t2 = nextChar();
+                char t3 = nextChar();
+                prevChar();
+                prevChar();
+                prevChar();
+                if ( ( lastTokenType == LdapFilterToken.LPAR || lastTokenType == LdapFilterToken.EXTENSIBLE_ATTRIBUTE )
+                    &&
+                    ( 
+//                        ( t1 == ':' && t2 != '=' )
+//                        ||
+//                        ( ( t1 == 'd' || t1 == 'D' ) && t2 == ':' && t3 == ':' )
+//                        ||
+                        ( ( t1 == 'd' || t1 == 'D' )  && ( t2 == 'n' || t2 == 'N' ) && ( t3 == ':' ) )
+                    )
+                    )
+                {
+                    this.lastTokenType = LdapFilterToken.EXTENSIBLE_DNATTR_COLON;
+                    return new LdapFilterToken( this.lastTokenType, ":", pos );
+                }
+                else if ( ( lastTokenType == LdapFilterToken.EXTENSIBLE_ATTRIBUTE
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID 
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON )
+                    && t1 == '=' )
+                {
+                    this.lastTokenType = LdapFilterToken.EXTENSIBLE_EQUALS_COLON;
+                    return new LdapFilterToken( this.lastTokenType, ":", pos );
+                }
+                else if ( ( lastTokenType == LdapFilterToken.LPAR
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_ATTRIBUTE 
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR 
+                    || lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR_COLON ) )
+                {
+                    this.lastTokenType = LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON;
+                    return new LdapFilterToken( this.lastTokenType, ":", pos );
+                }
+                break;
+                
         } // switch
         prevChar();
 
-        // check attribute
+        // check attribute or extensible attribute
         if ( this.lastTokenType == LdapFilterToken.LPAR )
         {
             StringBuffer sb = new StringBuffer();
 
             // first char must be non-whitespace
             c = nextChar();
-            while ( c != '=' && c != '<' && c != '>' && c != '~' && c != '(' && c != ')' && c != '\u0000'
+            while ( c != ':' && c != '=' && c != '<' && c != '>' && c != '~' && c != '(' && c != ')' && c != '\u0000'
                 && !Character.isWhitespace( c ) )
             {
                 sb.append( c );
@@ -348,8 +400,17 @@ public class LdapFilterScanner
 
             if ( sb.length() > 0 )
             {
-                this.lastTokenType = LdapFilterToken.ATTRIBUTE;
-                return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
+                boolean isExtensible = ( c == ':' );
+                if(isExtensible)
+                {
+                    this.lastTokenType = LdapFilterToken.EXTENSIBLE_ATTRIBUTE;
+                    return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
+                }
+                else
+                {
+                    this.lastTokenType = LdapFilterToken.ATTRIBUTE;
+                    return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
+                }
             }
         }
 
@@ -374,6 +435,46 @@ public class LdapFilterScanner
             }
         }
 
+        // check extensible dn
+        if ( lastTokenType == LdapFilterToken.EXTENSIBLE_DNATTR_COLON )
+        {
+            char t1 = nextChar();
+            char t2 = nextChar();
+            char t3 = nextChar();
+            prevChar();
+            if ( ( t1 == 'd' || t1 == 'D' )
+                && ( t2 == 'n' || t2 == 'N' )
+                && ( t3 == ':' || t3 == '\u0000' ) )
+            {
+                this.lastTokenType = LdapFilterToken.EXTENSIBLE_DNATTR;
+                return new LdapFilterToken( this.lastTokenType, ""+t1+t2, pos - 1 );
+            }
+            prevChar();
+            prevChar();
+        }
+        
+        // check extensible matchingrule
+        if ( lastTokenType == LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON )
+        {
+            StringBuffer sb = new StringBuffer();
+
+            // first char must be non-whitespace
+            c = nextChar();
+            while ( c != ':' && c != '=' && c != '<' && c != '>' && c != '~' && c != '(' && c != ')' && c != '\u0000'
+                && !Character.isWhitespace( c ) )
+            {
+                sb.append( c );
+                c = nextChar();
+            }
+            prevChar();
+
+            if ( sb.length() > 0 )
+            {
+                this.lastTokenType = LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID;
+                return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
+            }
+        }
+        
         // no match
         StringBuffer sb = new StringBuffer();
         c = nextChar();

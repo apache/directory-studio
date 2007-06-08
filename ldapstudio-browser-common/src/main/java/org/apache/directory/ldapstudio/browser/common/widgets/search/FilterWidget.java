@@ -37,6 +37,8 @@ import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -48,7 +50,7 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * The FileterWidget could be used to specify an LDAP filter. 
- * It is composed of a text with a content assit to enter 
+ * It is composed of a combo with a content assist to enter 
  * a filter and a button to open a {@link FilterDialog}.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -77,6 +79,9 @@ public class FilterWidget extends BrowserWidget
 
     /** The inital filter. */
     private String initalFilter;
+
+    /** The filter parser. */
+    private LdapFilterParser parser;
 
 
     /**
@@ -129,9 +134,15 @@ public class FilterWidget extends BrowserWidget
         filterComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
         filterComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         filterCombo = ( Combo ) filterComboField.getControl();
+        filterCombo.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                notifyListeners();
+            }
+        } );
 
-        // content proposal adapter
-        LdapFilterParser parser = new LdapFilterParser();
+        parser = new LdapFilterParser();
         contentAssistProcessor = new FilterContentAssistProcessor( parser );
         filterCPA = new ContentProposalAdapter( filterCombo, new ComboContentAdapter(), contentAssistProcessor,
             KeyStroke.getInstance( SWT.CTRL, ' ' ), null );
@@ -172,13 +183,14 @@ public class FilterWidget extends BrowserWidget
 
 
     /**
-     * Gets the filter.
+     * Gets the filter or null if the filter is invalid. 
      * 
-     * @return the filter
+     * @return the filter or null if the filter is invalid
      */
     public String getFilter()
     {
-        return filterCombo.getText();
+        parser.parse( filterCombo.getText() );
+        return parser.getModel().isValid() ? filterCombo.getText() : null;
     }
 
 
@@ -200,9 +212,13 @@ public class FilterWidget extends BrowserWidget
      */
     public void setConnection( IConnection connection )
     {
-        this.connection = connection;
-        contentAssistProcessor.setSchema( connection == null ? null : connection.getSchema() );
-        filterCPA.setAutoActivationCharacters( contentAssistProcessor.getCompletionProposalAutoActivationCharacters() );
+        if ( this.connection != connection )
+        {
+            this.connection = connection;
+            contentAssistProcessor.setSchema( connection == null ? null : connection.getSchema() );
+            filterCPA.setAutoActivationCharacters( contentAssistProcessor
+                .getCompletionProposalAutoActivationCharacters() );
+        }
     }
 
 

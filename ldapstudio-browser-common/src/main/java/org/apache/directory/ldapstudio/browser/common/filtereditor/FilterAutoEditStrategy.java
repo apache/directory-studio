@@ -57,17 +57,6 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
      */
     public FilterAutoEditStrategy( LdapFilterParser parser )
     {
-        this.init( parser );
-    }
-
-
-    /**
-     * Init.
-     * 
-     * @param parser the parser
-     */
-    private void init( LdapFilterParser parser )
-    {
         this.parser = parser;
     }
 
@@ -79,7 +68,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
     {
         super.customizeDocumentCommand( d, c );
         AutoEditParameters aep = new AutoEditParameters( c.text, c.offset, c.length, c.caretOffset, c.shiftsCaret );
-        customizeAutoEditParameters( aep );
+        customizeAutoEditParameters( d.get(), aep );
         c.offset = aep.offset;
         c.length = aep.length;
         c.text = aep.text;
@@ -91,12 +80,27 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
     /**
      * Customizes auto edit parameters.
      * 
+     * @param currentFilter the current filter
      * @param aep the auto edit parameters
      */
-    public void customizeAutoEditParameters( AutoEditParameters aep )
+    public void customizeAutoEditParameters( String currentFilter, AutoEditParameters aep )
     {
+        parser.parse( currentFilter );
         LdapFilter filter = parser.getModel().getFilter( aep.offset );
-        //System.out.println(filter);
+
+        // check balanced parenthesis
+        int balanced = 0;
+        for ( int i = 0; i < currentFilter.length(); i++ )
+        {
+            if ( currentFilter.charAt( i ) == '(' )
+            {
+                balanced++;
+            }
+            else if ( currentFilter.charAt( i ) == ')' )
+            {
+                balanced--;
+            }
+        }
 
         if ( aep.length > 0 && ( aep.text == null || "".equals( aep.text ) ) )
         {
@@ -116,11 +120,12 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
         if ( aep.length == 0 && aep.text != null && !"".equals( aep.text ) )
         {
             boolean isNewFilter = aep.text.equals( "(" );
+            boolean isNewNestedFilter = aep.text.equals( "&" ) || aep.text.equals( "|" ) || aep.text.equals( "!" );
             boolean isSurroundNew = false;
             boolean isSurroundNested = false;
             boolean isSurroundBeforeOtherFilter = false;
             boolean isSurroundAfterOtherFilter = false;
-            if ( aep.text.matches( "[a-zA-Z0-9-\\.&|!]+" ) && filter != null )
+            if ( aep.text.matches( "[a-zA-Z0-9-\\.&|!:]+" ) && filter != null )
             {
                 isSurroundNew = filter.getStartToken() == null && aep.offset == 0 && !aep.text.startsWith( "(" )
                     && !aep.text.endsWith( ")" );
@@ -184,13 +189,31 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
                 aep.shiftsCaret = false;
             }
 
+            // add parenthesis for nested filters
+            if ( isNewNestedFilter )
+            {
+                aep.text = aep.text + "()";
+                aep.caretOffset = aep.offset + aep.text.length() - 1;
+                aep.shiftsCaret = false;
+            }
+
             // add closing parenthesis ')'
             if ( isNewFilter || isSurroundNew || isSurroundNested || isSurroundAfterOtherFilter
                 || isSurroundBeforeOtherFilter )
             {
-                aep.text = aep.text + ")";
-                aep.caretOffset = aep.offset + aep.text.length() - 1;
-                aep.shiftsCaret = false;
+                if ( balanced == 0 )
+                {
+                    aep.text = aep.text + ")";
+                    if( aep.caretOffset == -1 )
+                    {
+                        aep.caretOffset = aep.offset + aep.text.length() - 1;
+                        aep.shiftsCaret = false;
+                    }
+                    
+                    System.out.println(aep.text + ", " + aep.caretOffset);
+                    //aep.caretOffset = aep.offset + aep.text.length() - 1;
+                    //aep.shiftsCaret = false;
+                }
             }
 
             // translate tab to IDENT_STRING

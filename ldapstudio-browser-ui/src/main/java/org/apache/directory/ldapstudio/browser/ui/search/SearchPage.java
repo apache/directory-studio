@@ -36,6 +36,7 @@ import org.eclipse.search.ui.ISearchPageContainer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -57,6 +58,9 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
 
     /** The search page wrapper. */
     private SearchPageWrapper spw;
+
+    /** The error message label. */
+    private Label errorMessageLabel;
 
 
     /**
@@ -159,6 +163,8 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
         spw.loadFromSearch( search );
         spw.addWidgetModifyListener( this );
 
+        errorMessageLabel = BaseWidgetUtils.createLabel( parent, "", 3 );
+
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_dialog" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
@@ -184,6 +190,9 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
     public void widgetModified( WidgetModifyEvent event )
     {
         container.setPerformActionEnabled( spw.isValid() );
+
+        setErrorMessage( spw.getErrorMessage() );
+        errorMessageLabel.setText( getErrorMessage() != null ? getErrorMessage() : "" );
     }
 
 }

@@ -26,21 +26,34 @@ import java.util.Stack;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapAndFilterComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterComponent;
+import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterItemComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapNotFilterComponent;
 import org.apache.directory.ldapstudio.browser.core.model.filter.LdapOrFilterComponent;
 
 
+/**
+ * The LdapFilterParser implements a parser for LDAP filters.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdapFilterParser
 {
 
+    /** The scanner. */
     private LdapFilterScanner scanner;
 
-    private Stack filterStack;
+    /** The filter stack. */
+    private Stack<LdapFilter> filterStack;
 
+    /** The parsed LDAP filter model. */
     private LdapFilter model;
 
 
+    /**
+     * Creates a new instance of LdapFilterParser.
+     */
     public LdapFilterParser()
     {
         this.scanner = new LdapFilterScanner();
@@ -48,42 +61,49 @@ public class LdapFilterParser
     }
 
 
+    /**
+     * Gets the parsed LDAP filter model.
+     * 
+     * @return the parsed model
+     */
     public LdapFilter getModel()
     {
-        return this.model;
+        return model;
     }
 
 
+    /**
+     * Parses the given LDAP filter.
+     * 
+     * @param ldapFilter the LDAP filter
+     */
     public void parse( String ldapFilter )
     {
-
         // reset state
-        this.filterStack = new Stack();
-        this.scanner.reset( ldapFilter );
-        this.model = new LdapFilter();
+        filterStack = new Stack<LdapFilter>();
+        scanner.reset( ldapFilter );
+        model = new LdapFilter();
 
         // handle error tokens before filter
-        LdapFilterToken token = this.scanner.nextToken();
+        LdapFilterToken token = scanner.nextToken();
         while ( token.getType() != LdapFilterToken.LPAR && token.getType() != LdapFilterToken.EOF )
         {
-            this.handleError( false, token, this.model );
+            handleError( false, token, model );
             token = scanner.nextToken();
         }
 
         // check filter start
         if ( token.getType() == LdapFilterToken.LPAR )
         {
-
             // start top level filter
-            this.model.setStartToken( token );
-            filterStack.push( this.model );
+            model.setStartToken( token );
+            filterStack.push( model );
 
             // loop till filter end or EOF
             do
             {
-
                 // next token
-                token = this.scanner.nextToken();
+                token = scanner.nextToken();
 
                 switch ( token.getType() )
                 {
@@ -92,7 +112,7 @@ public class LdapFilterParser
                         LdapFilter newFilter = new LdapFilter();
                         newFilter.setStartToken( token );
 
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
                         if ( filterComponent != null && filterComponent.addFilter( newFilter ) )
                         {
@@ -107,8 +127,8 @@ public class LdapFilterParser
                     }
                     case LdapFilterToken.RPAR:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.pop();
-                        this.handleError( currentFilter.setStopToken( token ), token, currentFilter );
+                        LdapFilter currentFilter = filterStack.pop();
+                        handleError( currentFilter.setStopToken( token ), token, currentFilter );
                         /*
                          * if(!filterStack.isEmpty()) { LdapFilter parentFilter =
                          * (LdapFilter) filterStack.peek(); LdapFilterComponent
@@ -119,43 +139,55 @@ public class LdapFilterParser
                     }
                     case LdapFilterToken.AND:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         LdapAndFilterComponent filterComponent = new LdapAndFilterComponent( currentFilter );
                         filterComponent.setStartToken( token );
-                        this.handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
+                        handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
                         break;
                     }
                     case LdapFilterToken.OR:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         LdapOrFilterComponent filterComponent = new LdapOrFilterComponent( currentFilter );
                         filterComponent.setStartToken( token );
-                        this.handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
+                        handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
                         break;
                     }
                     case LdapFilterToken.NOT:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         LdapNotFilterComponent filterComponent = new LdapNotFilterComponent( currentFilter );
                         filterComponent.setStartToken( token );
-                        this.handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
+                        handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
                         break;
                     }
                     case LdapFilterToken.ATTRIBUTE:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         LdapFilterItemComponent filterComponent = new LdapFilterItemComponent( currentFilter );
                         filterComponent.setAttributeToken( token );
-                        this.handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
+                        handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
                         break;
                     }
                     case LdapFilterToken.VALUE:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
-                        this.handleError( ( filterComponent instanceof LdapFilterItemComponent )
-                            && ( ( LdapFilterItemComponent ) filterComponent ).setValueToken( token ), token,
-                            currentFilter );
+                        if( filterComponent instanceof LdapFilterItemComponent )
+                        {
+                            handleError( ( filterComponent instanceof LdapFilterItemComponent )
+                                && ( ( LdapFilterItemComponent ) filterComponent ).setValueToken( token ), token,
+                                currentFilter );
+                        }
+                        else if( filterComponent instanceof LdapFilterExtensibleComponent )
+                        {
+                            handleError( ( filterComponent instanceof LdapFilterExtensibleComponent )
+                                && ( ( LdapFilterExtensibleComponent ) filterComponent ).setValueToken( token ), token,
+                                currentFilter );
+                        }
+                        else {
+                            handleError( false, token, currentFilter );
+                        }
                         break;
                     }
                     case LdapFilterToken.EQUAL:
@@ -164,46 +196,135 @@ public class LdapFilterParser
                     case LdapFilterToken.APROX:
                     case LdapFilterToken.PRESENT:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
-                        this.handleError( ( filterComponent instanceof LdapFilterItemComponent )
-                            && ( ( LdapFilterItemComponent ) filterComponent ).setFiltertypeToken( token ), token,
-                            currentFilter );
+                        if( filterComponent instanceof LdapFilterItemComponent )
+                        {
+                            handleError( ( filterComponent instanceof LdapFilterItemComponent )
+                                && ( ( LdapFilterItemComponent ) filterComponent ).setFiltertypeToken( token ), token,
+                                currentFilter );
+                        }
+                        else if( filterComponent instanceof LdapFilterExtensibleComponent )
+                        {
+                            handleError( ( filterComponent instanceof LdapFilterExtensibleComponent )
+                                && ( ( LdapFilterExtensibleComponent ) filterComponent ).setEqualsToken( token ), token,
+                                currentFilter );
+                        }
+                        else {
+                            handleError( false, token, currentFilter );
+                        }
                         break;
                     }
                     case LdapFilterToken.WHITESPACE:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilter currentFilter = filterStack.peek();
                         currentFilter.addOtherToken( token );
                         break;
                     }
+                    case LdapFilterToken.EXTENSIBLE_ATTRIBUTE:
+                    {
+                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilterExtensibleComponent filterComponent = new LdapFilterExtensibleComponent( currentFilter );
+                        filterComponent.setAttributeToken( token );
+                        handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
+                        break;
+                    }
+                    case LdapFilterToken.EXTENSIBLE_DNATTR_COLON:
+                    {
+                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
+                        if( filterComponent == null )
+                        {
+                            filterComponent = new LdapFilterExtensibleComponent( currentFilter );
+                            (( LdapFilterExtensibleComponent ) filterComponent ).setDnAttrColonToken( token );
+                            handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
+                        }
+                        else
+                        {
+                            handleError( ( filterComponent instanceof LdapFilterExtensibleComponent )
+                                && ( ( LdapFilterExtensibleComponent ) filterComponent ).setDnAttrColonToken( token ), token,
+                                currentFilter );
+                        }
+                        break;
+                    }
+                    case LdapFilterToken.EXTENSIBLE_DNATTR:
+                    {
+                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
+                        handleError( ( filterComponent instanceof LdapFilterExtensibleComponent )
+                            && ( ( LdapFilterExtensibleComponent ) filterComponent ).setDnAttrToken( token ), token,
+                            currentFilter );
+                        break;
+                    }
+                    case LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON:
+                    {
+                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
+                        if( filterComponent == null )
+                        {
+                            filterComponent = new LdapFilterExtensibleComponent( currentFilter );
+                            (( LdapFilterExtensibleComponent ) filterComponent ).setMatchingRuleColonToken( token );
+                            handleError( currentFilter.setFilterComponent( filterComponent ), token, currentFilter );
+                        }
+                        else
+                        {
+                            handleError( ( filterComponent instanceof LdapFilterExtensibleComponent )
+                                && ( ( LdapFilterExtensibleComponent ) filterComponent ).setMatchingRuleColonToken( token ), token,
+                                currentFilter );
+                        }
+                        break;
+                    }
+                    case LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID:
+                    {
+                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                        LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
+                        handleError( ( filterComponent instanceof LdapFilterExtensibleComponent )
+                            && ( ( LdapFilterExtensibleComponent ) filterComponent ).setMatchingRuleToken( token ), token,
+                            currentFilter );
+                        break;
+                    }
+                    case LdapFilterToken.EXTENSIBLE_EQUALS_COLON:
+                        {
+                            LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
+                            LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
+                            handleError( ( filterComponent instanceof LdapFilterExtensibleComponent )
+                                && ( ( LdapFilterExtensibleComponent ) filterComponent ).setEqualsColonToken( token ), token,
+                                currentFilter );
+                            break;
+                        }
+                    
                     case LdapFilterToken.EOF:
                     {
-                        this.model.addOtherToken( token );
+                        model.addOtherToken( token );
                         break;
                     }
                     default:
                     {
-                        LdapFilter currentFilter = ( LdapFilter ) filterStack.peek();
-                        this.handleError( false, token, currentFilter );
+                        LdapFilter currentFilter = filterStack.peek();
+                        handleError( false, token, currentFilter );
                     }
                 }
             }
             while ( !filterStack.isEmpty() && token.getType() != LdapFilterToken.EOF );
-
         }
 
         // handle error token after filter
         token = scanner.nextToken();
         while ( token.getType() != LdapFilterToken.EOF )
         {
-            this.handleError( false, token, this.model );
+            handleError( false, token, model );
             token = scanner.nextToken();
         }
-
     }
 
 
+    /**
+     * Helper method to handle parse errors.
+     * 
+     * @param success the success flag
+     * @param filter the filter
+     * @param token the token
+     */
     private void handleError( boolean success, LdapFilterToken token, LdapFilter filter )
     {
         if ( !success )

@@ -24,8 +24,11 @@ package org.apache.directory.ldapstudio.browser.common.filtereditor;
 import org.apache.directory.ldapstudio.browser.common.widgets.DialogContentAssistant;
 import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
+import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.formatter.ContentFormatter;
@@ -36,6 +39,8 @@ import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 
 
 /**
@@ -107,6 +112,7 @@ public class FilterSourceViewerConfiguration extends SourceViewerConfiguration
     {
         this.connection = connection;
         contentAssistProcessor.setSchema( connection == null ? null : connection.getSchema() );
+        textHover.setSchema( connection == null ? null : connection.getSchema() );
     }
 
 
@@ -137,6 +143,7 @@ public class FilterSourceViewerConfiguration extends SourceViewerConfiguration
         if ( textHover == null )
         {
             textHover = new FilterTextHover( parser );
+            textHover.setSchema( connection == null ? null : connection.getSchema() );
         }
         return textHover;
     }
@@ -209,8 +216,26 @@ public class FilterSourceViewerConfiguration extends SourceViewerConfiguration
             contentAssistant.setContentAssistProcessor( contentAssistProcessor, IDocument.DEFAULT_CONTENT_TYPE );
             contentAssistant.enableAutoActivation( true );
             contentAssistant.setAutoActivationDelay( 100 );
+
+            contentAssistant.setContextInformationPopupOrientation( IContentAssistant.CONTEXT_INFO_ABOVE );
+            contentAssistant.setInformationControlCreator( getInformationControlCreator( sourceViewer ) );
+
         }
         return contentAssistant;
     }
 
+
+    /**
+     * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getInformationControlCreator(org.eclipse.jface.text.source.ISourceViewer)
+     */
+    public IInformationControlCreator getInformationControlCreator( ISourceViewer sourceViewer )
+    {
+        return new IInformationControlCreator()
+        {
+            public IInformationControl createInformationControl( Shell parent )
+            {
+                return new DefaultInformationControl( parent, SWT.WRAP, null );
+            }
+        };
+    }
 }

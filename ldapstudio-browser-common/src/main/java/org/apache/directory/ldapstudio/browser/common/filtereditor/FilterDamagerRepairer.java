@@ -131,9 +131,15 @@ public class FilterDamagerRepairer implements IPresentationDamager, IPresentatio
                 case LdapFilterToken.LESS:
                 case LdapFilterToken.APROX:
                 case LdapFilterToken.PRESENT:
+                case LdapFilterToken.EXTENSIBLE_DNATTR_COLON:
+                case LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON:
+                case LdapFilterToken.EXTENSIBLE_EQUALS_COLON:
                     this.addStyleRange( presentation, tokens[i], FILTER_TYPE_TEXT_ATTRIBUTE );
                     break;
                 case LdapFilterToken.ATTRIBUTE:
+                case LdapFilterToken.EXTENSIBLE_ATTRIBUTE:
+                case LdapFilterToken.EXTENSIBLE_DNATTR:
+                case LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID:
                     this.addStyleRange( presentation, tokens[i], ATTRIBUTE_TEXT_ATTRIBUTE );
                     break;
                 case LdapFilterToken.VALUE:

@@ -88,7 +88,8 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
     private void validate()
     {
-        setPageComplete( getApplyOnDns() != null || this.spw.isValid() );
+        setPageComplete( getApplyOnDns() != null || spw.isValid() );
+        setErrorMessage( searchButton.getSelection() ? spw.getErrorMessage() : null );
     }
 
 

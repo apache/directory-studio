@@ -146,7 +146,7 @@ class SubtreeSpecificationDialog extends Dialog
     }
 
 
-    /* (non-Javadoc)
+    /** (non-Javadoc)
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     protected void configureShell( Shell newShell )
@@ -157,7 +157,7 @@ class SubtreeSpecificationDialog extends Dialog
     }
 
 
-    /* (non-Javadoc)
+    /** (non-Javadoc)
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
     protected void okPressed()
@@ -179,7 +179,7 @@ class SubtreeSpecificationDialog extends Dialog
     }
 
 
-    /* (non-Javadoc)
+    /** (non-Javadoc)
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     protected Control createDialogArea( Composite parent )
@@ -493,6 +493,11 @@ class SubtreeSpecificationDialog extends Dialog
         {
             subtreeSpecification = null;
             valid &= false;
+        }
+        
+        if ( refinementOrFilterVisible && filterButton.getSelection() )
+        {
+            valid &= filterWidget.getFilter() != null;
         }
 
         if ( getButton( IDialogConstants.OK_ID ) != null )
