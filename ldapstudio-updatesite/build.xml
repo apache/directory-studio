@@ -36,7 +36,7 @@
 	    <!-- Apache Directory Studio Browser Feature -->
 	    <ant dir="../ldapstudio-browser-feature" inheritAll="no" />
 	    <!-- Apache Directory Studio Apache DS Configuration Feature -->
-	    <ant dir="../ldapstudio-apacheds-configuration-feature" inheritAll="no" />
+	    <ant dir="../studio-apacheds-configuration-feature" inheritAll="no" />
 	    
 	    <!-- Copying the Features -->
 	    <copy todir="${project.features}">
@@ -53,7 +53,7 @@
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Apache DS Configuration Feature -->
-	        <fileset dir="../ldapstudio-apacheds-configuration-feature/target">
+	        <fileset dir="../studio-apacheds-configuration-feature/target">
 	            <include name="*.jar" />
 	        </fileset>
 	    </copy>
@@ -78,15 +78,15 @@
 	    <!-- Apache Directory Studio Value Editors Plugin -->
 	    <ant dir="../ldapstudio-valueeditors" inheritAll="no" />
 	    <!-- Apache Directory Studio ACI Item Editor Plugin -->
-	    <ant dir="../ldapstudio-aciitemeditor" inheritAll="no" />	
+	    <ant dir="../studio-aciitemeditor" inheritAll="no" />	
 	    <!-- Apache Directory Studio Browser Help Plugin -->
 	    <ant dir="../ldapstudio-browser-help" inheritAll="no" />	    
 	    <!-- Apache Directory Studio Browser UI Plugin -->
 	    <ant dir="../ldapstudio-browser-ui" inheritAll="no" />	    
 	    <!-- Apache Directory Studio Apache DS Configuration Plugin -->
-	    <ant dir="../ldapstudio-apacheds-configuration" inheritAll="no" />	    
+	    <ant dir="../studio-apacheds-configuration" inheritAll="no" />	    
         <!-- Apache Directory Studio Apache DS Configuration Help Plugin -->
-	    <ant dir="../ldapstudio-apacheds-configuration-help" inheritAll="no" />
+	    <ant dir="../studio-apacheds-configuration-help" inheritAll="no" />
 	    
 	    <!-- Copying the Plugins -->
 	    <copy todir="${project.plugins}">
@@ -131,7 +131,7 @@
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio ACI Item Editor Plugin -->
-	        <fileset dir="../ldapstudio-aciitemeditor/target">
+	        <fileset dir="../studio-aciitemeditor/target">
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Jars Plugin -->
@@ -139,11 +139,11 @@
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Apache DS Configuration Plugin -->
-	        <fileset dir="../ldapstudio-apacheds-configuration/target">
+	        <fileset dir="../studio-apacheds-configuration/target">
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Apache DS Configuration Plugin Help -->
-            <fileset dir="../ldapstudio-apacheds-configuration-help/target">
+            <fileset dir="../studio-apacheds-configuration-help/target">
 	            <include name="*.jar" />
 	        </fileset>
 	    </copy>
@@ -154,10 +154,10 @@
 	<!--                                       CLEAN                              -->
 	<!-- ================================== -->
 	<target name="clean" description="Deletes any generated file">
-		<ant dir="../ldapstudio-aciitemeditor" inheritAll="no" target="clean"/>
-		<ant dir="../ldapstudio-apacheds-configuration" inheritAll="no" target="clean"/>
-		<ant dir="../ldapstudio-apacheds-configuration-feature" inheritAll="no" target="clean"/>
-		<ant dir="../ldapstudio-apacheds-configuration-help" inheritAll="no" target="clean"/>
+		<ant dir="../studio-aciitemeditor" inheritAll="no" target="clean"/>
+		<ant dir="../studio-apacheds-configuration" inheritAll="no" target="clean"/>
+		<ant dir="../studio-apacheds-configuration-feature" inheritAll="no" target="clean"/>
+		<ant dir="../studio-apacheds-configuration-help" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-browser-common" inheritAll="no" target="clean" />
         <ant dir="../ldapstudio-browser-core" inheritAll="no" target="clean" />
         <ant dir="../ldapstudio-browser-feature" inheritAll="no" target="clean"/>

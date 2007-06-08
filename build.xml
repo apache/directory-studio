@@ -178,10 +178,10 @@
         </copy>
         	
         <!-- Creation of the ACI Item Editor Plugin -->
-        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" />
+        <ant dir="studio-aciitemeditor" inheritAll="no" />
         <!-- Copy of the ACI Item Edtior Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-aciitemeditor/target">
+            <fileset dir="${basedir}/studio-aciitemeditor/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -196,19 +196,19 @@
         </copy>
 
         <!-- Creation of the Apache DS Configuration Plugin -->
-        <ant dir="ldapstudio-apacheds-configuration" inheritAll="no" />
+        <ant dir="studio-apacheds-configuration" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-apacheds-configuration/target">
+            <fileset dir="${basedir}/studio-apacheds-configuration/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the Apache DS Configuration Help Plugin -->
-        <ant dir="ldapstudio-apacheds-configuration-help" inheritAll="no" />
+        <ant dir="studio-apacheds-configuration-help" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-apacheds-configuration-help/target">
+            <fileset dir="${basedir}/studio-apacheds-configuration-help/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -256,12 +256,12 @@
 		</copy>
 
         <!-- Copy of the Apache DS Configuration Feature in the "features" folder -->
-		<property name="ldapstudio-apacheds-configuration-feature.project" value="${basedir}/ldapstudio-apacheds-configuration-feature" />
-		<property name="ldapstudio-apacheds-configuration-feature.name" value="org.apache.directory.ldapstudio.apacheds.configuration.feature" />
-		<property name="ldapstudio-apacheds-configuration-feature.version" value="0.8.0" />
-		<mkdir dir="${project.features}/${ldapstudio-apacheds-configuration-feature.name}_${ldapstudio-apacheds-configuration-feature.version}" />
-		<copy todir="${project.features}/${ldapstudio-apacheds-configuration-feature.name}_${ldapstudio-apacheds-configuration-feature.version}">
-			<fileset dir="${ldapstudio-apacheds-configuration-feature.project}">
+		<property name="studio-apacheds-configuration-feature.project" value="${basedir}/studio-apacheds-configuration-feature" />
+		<property name="studio-apacheds-configuration-feature.name" value="org.apache.directory.ldapstudio.apacheds.configuration.feature" />
+		<property name="studio-apacheds-configuration-feature.version" value="0.8.0" />
+		<mkdir dir="${project.features}/${studio-apacheds-configuration-feature.name}_${studio-apacheds-configuration-feature.version}" />
+		<copy todir="${project.features}/${studio-apacheds-configuration-feature.name}_${studio-apacheds-configuration-feature.version}">
+			<fileset dir="${studio-apacheds-configuration-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
 				<include name="META-INF/**" />
@@ -378,7 +378,7 @@
         <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="javadoc" />
+        <ant dir="studio-aciitemeditor" inheritAll="no" target="javadoc" />
     </target>
 
     <!-- ================================== -->
@@ -396,10 +396,10 @@
         <ant dir="ldapstudio-browser-ui" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-browser-help" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-valueeditors" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="resolve" />
+        <ant dir="studio-aciitemeditor" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-jars" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-apacheds-configuration" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-apacheds-configuration-help" inheritAll="no" target="resolve" />
+        <ant dir="studio-apacheds-configuration" inheritAll="no" target="resolve" />
+        <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="resolve" />
     </target>
 
     <!-- ================================== -->
@@ -419,10 +419,10 @@
         <ant dir="ldapstudio-browser-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-browser-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-valueeditors" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-aciitemeditor" inheritAll="no" target="clean" />
+        <ant dir="studio-aciitemeditor" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-jars" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-apacheds-configuration" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-apacheds-configuration-help" inheritAll="no" target="clean" />
+        <ant dir="studio-apacheds-configuration" inheritAll="no" target="clean" />
+        <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-updatesite" inheritAll="no" target="clean" />
         <delete dir="${ldapstudio-complete.output}" />
     </target>

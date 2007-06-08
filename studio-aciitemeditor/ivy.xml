@@ -17,5 +17,5 @@
   under the License.
 -->
 <ivy-module version="1.0">
-	<info organisation="org.apache.directory.ldapstudio" module="ldapstudio-aciitemeditor"/>
+	<info organisation="org.apache.directory.ldapstudio" module="studio-aciitemeditor"/>
 </ivy-module>
