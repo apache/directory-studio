@@ -491,6 +491,36 @@ public class Schema implements Serializable
         this.mrdMapByName = mrdMapByName;
     }
 
+    
+    /**
+     * 
+     * @return an array of all matching rule description names
+     */
+    public String[] getMatchingRuleDescriptionNames()
+    {
+        Set set = new HashSet();
+        for ( Iterator it = this.mrdMapByName.values().iterator(); it.hasNext(); )
+        {
+            MatchingRuleDescription mrd = ( MatchingRuleDescription ) it.next();
+            for ( int i = 0; i < mrd.getNames().length; i++ )
+            {
+                set.add( mrd.getNames()[i] );
+            }
+        }
+        return ( String[] ) set.toArray( new String[set.size()] );
+    }
+
+
+    public MatchingRuleDescription[] getMatchingRuleDescriptions()
+    {
+        Set set = new HashSet();
+        for ( Iterator it = this.mrdMapByName.values().iterator(); it.hasNext(); )
+        {
+            MatchingRuleDescription mrd = ( MatchingRuleDescription ) it.next();
+            set.add( mrd );
+        }
+        return ( MatchingRuleDescription[] ) set.toArray( new MatchingRuleDescription[set.size()] );
+    }
 
     public void addMatchingRuleDescription( MatchingRuleDescription mrd )
     {
