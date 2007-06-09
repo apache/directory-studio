@@ -23,10 +23,10 @@ package org.apache.directory.ldapstudio.valueeditors.password;
 
 import java.util.Arrays;
 
-import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsConstants;
+import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CheckBindJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;

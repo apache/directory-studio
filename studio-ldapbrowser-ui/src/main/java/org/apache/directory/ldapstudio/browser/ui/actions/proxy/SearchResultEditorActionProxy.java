@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.actions.proxy;
 
 
-import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
-import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorCursor;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 
 
 public class SearchResultEditorActionProxy extends BrowserActionProxy

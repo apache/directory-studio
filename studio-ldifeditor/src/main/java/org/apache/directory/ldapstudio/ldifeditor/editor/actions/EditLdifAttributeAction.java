@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
-import org.apache.directory.ldapstudio.browser.common.wizards.AttributeWizard;
 import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;

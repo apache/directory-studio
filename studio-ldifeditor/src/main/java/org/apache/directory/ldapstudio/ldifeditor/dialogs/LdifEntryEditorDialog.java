@@ -21,13 +21,13 @@
 package org.apache.directory.ldapstudio.ldifeditor.dialogs;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidget;
-import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
-import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
-import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
-import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
+import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
+import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
+import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
+import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
+import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;

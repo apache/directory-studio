@@ -24,9 +24,6 @@ package org.apache.directory.ldapstudio.ldifeditor.editor;
 import java.io.File;
 import java.util.ResourceBundle;
 
-import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.common.actions.ValueEditorPreferencesAction;
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.ldapstudio.ldifeditor.editor.actions.EditLdifAttributeAction;
@@ -40,6 +37,9 @@ import org.apache.directory.ldapstudio.ldifeditor.editor.text.LdifPartitionScann
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;

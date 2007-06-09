@@ -21,12 +21,12 @@
 package org.apache.directory.ldapstudio.valueeditors.dn;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.common.widgets.search.EntryWidget;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsConstants;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.dialogs.Dialog;

@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.common.widgets.search.SearchPageWrapper;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
@@ -124,7 +124,7 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
 
 
     /**
-     * @see org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent)
+     * @see org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent)
      */
     public void widgetModified( WidgetModifyEvent event )
     {

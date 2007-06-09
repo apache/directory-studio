@@ -26,30 +26,30 @@
             id="org.apache.directory.ldapstudio.browser.ui.newWizards.category"/>
       <wizard
             category="org.apache.directory.ldapstudio.browser.ui.newWizards.category"
-            class="org.apache.directory.ldapstudio.browser.common.wizards.NewConnectionWizard"
+            class="org.apache.directory.studio.ldapbrowser.common.wizards.NewConnectionWizard"
             hasPages="true"
             icon="resources/icons/connection_add.gif"
-            id="org.apache.directory.ldapstudio.browser.common.wizards.NewConnectionWizard"
+            id="org.apache.directory.studio.ldapbrowser.common.wizards.NewConnectionWizard"
             name="LDAP Connection"
             project="false"/>
    </extension>  
 
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.apache.directory.ldapstudio.browser.common.BrowserCommonPreferencesInitializer"/>
+      <initializer class="org.apache.directory.studio.ldapbrowser.common.BrowserCommonPreferencesInitializer"/>
    </extension> 
 
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.MainPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.MainPreferencePage"
             id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
             name="LDAP">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
-            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.AttributesPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.AttributesPreferencePage"
             id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.AttributesPreferencePage"
             name="Attributes">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.colors"/>
@@ -58,35 +58,35 @@
       </page>
       <page
             category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.AttributesPreferencePage"
-            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
             id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
             name="Binary Attributes">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.AttributesPreferencePage"
-            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.ValueEditorsPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.ValueEditorsPreferencePage"
             id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.ValueEditorsPreferencePage"
             name="Value Editors">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
-            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.BrowserPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BrowserPreferencePage"
             id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.BrowserPreferencePage"
             name="Browser">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
       </page>            
       <page
             category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
-            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.EntryEditorPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.EntryEditorPreferencePage"
             id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.EntryEditorPreferencePage"
             name="Entry Editor">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
-            class="org.apache.directory.ldapstudio.browser.common.dialogs.preferences.TextFormatsPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.TextFormatsPreferencePage"
             id="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.TextFormatsPreferencePage"
             name="Text Formats">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>

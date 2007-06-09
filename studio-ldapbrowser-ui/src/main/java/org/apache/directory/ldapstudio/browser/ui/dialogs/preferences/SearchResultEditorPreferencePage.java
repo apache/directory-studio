@@ -21,11 +21,11 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.preferences;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;

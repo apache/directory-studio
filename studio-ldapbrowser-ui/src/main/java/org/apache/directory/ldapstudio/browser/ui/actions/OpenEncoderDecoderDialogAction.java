@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
-import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.ui.dialogs.EncoderDecoderDialog;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 

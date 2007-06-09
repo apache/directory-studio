@@ -21,11 +21,11 @@
 package org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.ldapstudio.ldifeditor.editor.ILdifEditor;
 import org.apache.directory.ldapstudio.ldifeditor.widgets.LdifEditorWidget;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;

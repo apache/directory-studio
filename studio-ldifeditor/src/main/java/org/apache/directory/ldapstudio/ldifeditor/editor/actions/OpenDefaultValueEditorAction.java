@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 
 
 public class OpenDefaultValueEditorAction extends AbstractLdifAction

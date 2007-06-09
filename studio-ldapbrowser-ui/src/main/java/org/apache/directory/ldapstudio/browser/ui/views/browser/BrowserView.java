@@ -24,9 +24,9 @@ package org.apache.directory.ldapstudio.browser.ui.views.browser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserConfiguration;
-import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserWidget;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserConfiguration;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;

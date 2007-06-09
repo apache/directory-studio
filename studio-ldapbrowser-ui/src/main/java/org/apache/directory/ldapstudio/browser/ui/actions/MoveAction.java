@@ -23,8 +23,8 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 import java.util.LinkedHashSet;
 
-import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
-import org.apache.directory.ldapstudio.browser.common.dialogs.MoveEntriesDialog;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.MoveEntriesDialog;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.jobs.MoveEntriesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;

@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserCategory;
-import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserEntryPage;
-import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserSearchResultPage;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Bookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;

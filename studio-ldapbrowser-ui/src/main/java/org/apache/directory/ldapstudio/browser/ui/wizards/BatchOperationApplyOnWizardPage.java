@@ -26,11 +26,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.common.widgets.search.SearchPageWrapper;
+import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;

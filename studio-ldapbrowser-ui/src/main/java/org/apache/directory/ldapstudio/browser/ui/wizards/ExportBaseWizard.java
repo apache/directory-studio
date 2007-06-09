@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
-import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;

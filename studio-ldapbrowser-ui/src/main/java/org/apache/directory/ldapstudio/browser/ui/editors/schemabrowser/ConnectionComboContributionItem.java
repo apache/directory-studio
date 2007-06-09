@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionContentProvider;
-import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionLabelProvider;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionContentProvider;
+import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionLabelProvider;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;

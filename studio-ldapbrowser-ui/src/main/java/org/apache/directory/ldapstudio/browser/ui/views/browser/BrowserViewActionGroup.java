@@ -21,13 +21,6 @@
 package org.apache.directory.ldapstudio.browser.ui.views.browser;
 
 
-import org.apache.directory.ldapstudio.browser.common.actions.CopyAction;
-import org.apache.directory.ldapstudio.browser.common.actions.DeleteAction;
-import org.apache.directory.ldapstudio.browser.common.actions.PasteAction;
-import org.apache.directory.ldapstudio.browser.common.actions.RenameAction;
-import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserActionProxy;
-import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserViewActionProxy;
-import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserActionGroup;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyDnAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsCsvAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsLdifAction;
@@ -39,6 +32,13 @@ import org.apache.directory.ldapstudio.browser.ui.actions.NewBatchOperationActio
 import org.apache.directory.ldapstudio.browser.ui.actions.NewBookmarkAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewEntryAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.NewSearchAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.RenameAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserViewActionProxy;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserActionGroup;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;

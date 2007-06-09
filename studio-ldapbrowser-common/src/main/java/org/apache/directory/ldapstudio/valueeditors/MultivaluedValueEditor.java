@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.common.dialogs.MultivaluedDialog;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.MultivaluedDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;

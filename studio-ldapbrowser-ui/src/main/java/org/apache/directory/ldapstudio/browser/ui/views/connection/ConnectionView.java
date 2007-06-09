@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.views.connection;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionConfiguration;
-import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionWidget;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionConfiguration;
+import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.viewers.ISelection;

@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.ModWidget;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.ldapbrowser.common.widgets.ModWidget;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;

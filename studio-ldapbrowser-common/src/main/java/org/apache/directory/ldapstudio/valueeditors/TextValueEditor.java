@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.valueeditors;
 
 
-import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.eclipse.swt.widgets.Shell;
 
 

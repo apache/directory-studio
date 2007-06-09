@@ -25,14 +25,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.common.widgets.browser.BrowserUniversalListener;
 import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor;
 import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditorInput;
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorInput;
 import org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;

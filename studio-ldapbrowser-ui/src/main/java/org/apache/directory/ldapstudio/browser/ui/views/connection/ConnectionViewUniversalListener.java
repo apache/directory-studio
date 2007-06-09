@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.views.connection;
 
 
-import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionUniversalListener;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
 import org.apache.directory.ldapstudio.browser.ui.views.modificationlogs.ModificationLogsView;
+import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.viewers.DoubleClickEvent;

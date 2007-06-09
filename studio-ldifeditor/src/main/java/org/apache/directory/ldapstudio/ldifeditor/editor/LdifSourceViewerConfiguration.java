@@ -31,7 +31,7 @@ import org.apache.directory.ldapstudio.ldifeditor.editor.text.LdifDamagerRepaire
 import org.apache.directory.ldapstudio.ldifeditor.editor.text.LdifDoubleClickStrategy;
 import org.apache.directory.ldapstudio.ldifeditor.editor.text.LdifPartitionScanner;
 import org.apache.directory.ldapstudio.ldifeditor.editor.text.LdifTextHover;
-import org.apache.directory.ldapstudio.browser.common.widgets.DialogContentAssistant;
+import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;

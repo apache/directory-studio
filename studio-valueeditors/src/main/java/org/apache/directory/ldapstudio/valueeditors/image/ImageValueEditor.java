@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.valueeditors.image;
 
 
-import org.apache.directory.ldapstudio.browser.common.dialogs.TextDialog;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogBinaryValueEditor;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;

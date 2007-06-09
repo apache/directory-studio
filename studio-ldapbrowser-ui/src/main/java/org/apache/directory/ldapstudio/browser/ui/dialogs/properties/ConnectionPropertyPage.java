@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 
-import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionPageModifyListener;
-import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionPageWrapper;
+import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionPageModifyListener;
+import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionPageWrapper;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;

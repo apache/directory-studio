@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 
-import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
-import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
