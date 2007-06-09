@@ -17,7 +17,7 @@
   under the License.
 -->
 <ivy-module version="1.0">
-	<info organisation="org.apache.directory.ldapstudio" module="studio-ldapbrowser-help"/>
+	<info organisation="org.apache.directory.studio" module="studio-ldapbrowser-help"/>
 	<dependencies>
 		<dependency org="org.apache.xalan" name="xalan" rev="2.7.0"/>
 		<dependency org="docbook" name="docbook-xml" rev="4.5"/>

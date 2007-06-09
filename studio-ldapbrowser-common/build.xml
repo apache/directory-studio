@@ -122,7 +122,7 @@
 		<mkdir dir="${basedir}/doc" />
 		<javadoc destdir="${basedir}/doc">
 			<fileset dir="src/main/java" defaultexcludes="yes">
-				<include name="org/apache/directory/ldapstudio/**/*.java"/>
+				<include name="org/apache/directory/studio/**/*.java"/>
 			</fileset>
 		</javadoc>
 	</target>
