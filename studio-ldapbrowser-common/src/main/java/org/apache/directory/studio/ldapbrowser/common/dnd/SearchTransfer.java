@@ -50,7 +50,7 @@ public class SearchTransfer extends ByteArrayTransfer
 {
 
     /** The Constant TYPENAME. */
-    private static final String TYPENAME = "org.apache.directory.ldapstudio.browser.search";
+    private static final String TYPENAME = "org.apache.directory.studio.ldapbrowser.search";
 
     /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );

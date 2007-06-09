@@ -38,33 +38,33 @@
             class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             name="LDIF Editor">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldif"/>
       </page>
       <page
             category="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorContentAssistPreferencePage"
             id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorContentAssistPreferencePage"
             name="Content Assist">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldif"/>
       </page>
       <page
             category="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorSyntaxColoringPreferencePage"
             id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorSyntaxColoringPreferencePage"
             name="Syntax Coloring">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.colors"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldif"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.colors"/>
       </page>
       <page
             category="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorTemplatesPreferencePage"
             id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorTemplatesPreferencePage"
             name="Templates">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldif"/>
       </page>
    </extension>      
 

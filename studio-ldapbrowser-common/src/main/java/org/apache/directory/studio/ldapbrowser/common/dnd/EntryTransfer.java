@@ -52,7 +52,7 @@ public class EntryTransfer extends ByteArrayTransfer
 {
 
     /** The Constant TYPENAME. */
-    private static final String TYPENAME = "org.apache.directory.ldapstudio.browser.entry";
+    private static final String TYPENAME = "org.apache.directory.studio.ldapbrowser.entry";
 
     /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );

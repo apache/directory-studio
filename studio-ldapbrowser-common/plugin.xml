@@ -45,52 +45,52 @@
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.MainPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
             name="LDAP">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.AttributesPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.AttributesPreferencePage"
             name="Attributes">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.colors"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.fonts"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.colors"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.fonts"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.AttributesPreferencePage"
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.BinaryAttributesAndSyntaxesPreferencePage"
             name="Binary Attributes">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.AttributesPreferencePage"
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.ValueEditorsPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.ValueEditorsPreferencePage"
             name="Value Editors">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BrowserPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.BrowserPreferencePage"
             name="Browser">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>            
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.EntryEditorPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.EntryEditorPreferencePage"
             name="Entry Editor">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.TextFormatsPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.TextFormatsPreferencePage"
             name="Text Formats">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldif"/>
       </page>            
    </extension>
 
@@ -106,16 +106,16 @@
  <extension
        point="org.eclipse.ui.keywords">
     <keyword
-          id="org.apache.directory.ldapstudio.browser.keyword.colors"
+          id="org.apache.directory.studio.ldapbrowser.keyword.colors"
           label="Colors"/>
     <keyword
-          id="org.apache.directory.ldapstudio.browser.keyword.fonts"
+          id="org.apache.directory.studio.ldapbrowser.keyword.fonts"
           label="Fonts"/>
     <keyword
-          id="org.apache.directory.ldapstudio.browser.keyword.ldap"
+          id="org.apache.directory.studio.ldapbrowser.keyword.ldap"
           label="LDAP"/>
     <keyword
-          id="org.apache.directory.ldapstudio.browser.keyword.ldif"
+          id="org.apache.directory.studio.ldapbrowser.keyword.ldif"
           label="LDIF"/>
  </extension>
 
@@ -196,65 +196,65 @@
  <extension
        point="org.eclipse.ui.commands">
     <category
-          id="org.apache.directory.ldapstudio.browser.commands"
+          id="org.apache.directory.studio.ldapbrowser.commands"
           name="LDAP Browser"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Add a value to an existing attribute"
           id="org.apache.directory.studio.ldapbrowser.action.addValue"
           name="Add Value"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Add an attribute to an existing entry"
           id="org.apache.directory.studio.ldapbrowser.action.addAttribute"
           name="Add Attribute"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Edit an attribute description"
           id="org.apache.directory.studio.ldapbrowser.action.editAttributeDescription"
           name="Edit Attribute Description"/>          
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Edit a value"
           id="org.apache.directory.studio.ldapbrowser.action.editValue"
           name="Edit Value"/>          
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Edit a record"
           id="org.apache.directory.studio.ldapbrowser.action.editRecord"
           name="Edit Record"/>          
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Delete an element"
           id="org.apache.directory.studio.ldapbrowser.action.delete"
           name="Delete"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Copy an element"
           id="org.apache.directory.studio.ldapbrowser.action.copy"
           name="Copy"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Paste an element"
           id="org.apache.directory.studio.ldapbrowser.action.paste"
           name="Paste"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Find an element"
           id="org.apache.directory.studio.ldapbrowser.action.find"
           name="Find"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Properties of an element"
           id="org.apache.directory.studio.ldapbrowser.action.properties"
           name="Properties"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Locate a DN or search result in DIT"
           id="org.apache.directory.studio.ldapbrowser.action.locateInDit"
           name="Locate in DIT"/>
     <command
-          categoryId="org.apache.directory.ldapstudio.browser.commands"
+          categoryId="org.apache.directory.studio.ldapbrowser.commands"
           description="Open a search result"
           id="org.apache.directory.studio.ldapbrowser.action.openSearchResult"
           name="Open Search Result"/>

@@ -32,7 +32,7 @@
     <extension
        point="org.eclipse.ui.perspectiveExtensions">
     <perspectiveExtension targetID="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective">
-       <actionSet id="org.apache.directory.ldapstudio.browser.ldapMenuActionSet"/>
+       <actionSet id="org.apache.directory.studio.ldapbrowser.ldapMenuActionSet"/>
     </perspectiveExtension>
  </extension>
  <extension
@@ -228,7 +228,7 @@
             class="org.apache.directory.studio.ldapbrowser.preferences.SearchResultEditorPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.SearchResultEditorPreferencePage"
             name="Search Result Editor">
-         <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>
    </extension>
 
@@ -287,11 +287,11 @@
  <extension
        point="org.eclipse.ui.actionSets">
     <actionSet
-          id="org.apache.directory.ldapstudio.browser.ldapMenuActionSet"
+          id="org.apache.directory.studio.ldapbrowser.ldapMenuActionSet"
           label="LDAP Menu"
           visible="false">
        <menu
-             id="org.apache.directory.ldapstudio.browser.ldapMenu"
+             id="org.apache.directory.studio.ldapbrowser.ldapMenu"
              label="LDAP">
           <groupMarker name="newConnection"/>
           <groupMarker name="newEntry"/>
@@ -311,7 +311,7 @@
              icon="resources/icons/browser_schemabrowsereditor.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
              label="Open Schema Browser"
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/open"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/open"
              style="push">
        </action>
        <action
@@ -319,62 +319,62 @@
              icon="resources/icons/connection_add.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewConnectionAction"
              label="New Connection..."
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newConnection"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newConnection"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
              icon="resources/icons/entry_add.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
              label="New Entry..."
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newEntry"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newEntry"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction"
              icon="resources/icons/attribute_add.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewAttributeAction"
              label="New Attribute..."
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newAttribute"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newAttribute"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction"
              icon="resources/icons/value_add.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewValueAction"
              label="New Value"
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newValue"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newValue"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
              icon="resources/icons/search_new.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
              label="New Search..."
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newSearch"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newSearch"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
              icon="resources/icons/bookmark_add.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
              label="New Bookmark..."
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newBookmark"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newBookmark"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
              icon="resources/icons/batch.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
              label="New Batch Operation..."
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newBatchOperation"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newBatchOperation"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenEncoderDecoderDialogAction"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.OpenEncoderDecoderDialogAction"
              label="Open Encoder/Decoder"
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/open"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/open"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
              icon="resources/icons/ldifeditor_new.gif"
              id="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
              label="New LDIF File"
-             menubarPath="org.apache.directory.ldapstudio.browser.ldapMenu/newLdifFile"
+             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newLdifFile"
              style="push"/>
     </actionSet>
  </extension>
@@ -386,7 +386,7 @@
     <decorator
           adaptable="false"
           class="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserViewLabelDecorator"
-          id="org.apache.directory.ldapstudio.browser.decorator"
+          id="org.apache.directory.studio.ldapbrowser.decorator"
           label="LDAP Decorator"
           lightweight="true"
           location="BOTTOM_RIGHT"

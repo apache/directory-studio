@@ -50,7 +50,7 @@ public class ConnectionTransfer extends ByteArrayTransfer
 {
 
     /** The Constant TYPENAME. */
-    private static final String TYPENAME = "org.apache.directory.ldapstudio.browser.connection";
+    private static final String TYPENAME = "org.apache.directory.studio.ldapbrowser.connection";
 
     /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );
