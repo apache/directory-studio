@@ -35,8 +35,8 @@
     </release>
     <repository>
       <SVNRepository>
-        <location rdf:resource="http://svn.apache.org/repos/asf/directory/ldapstudio/"/>
-        <browse rdf:resource="http://svn.apache.org/viewvc/directory/ldapstudio/"/>
+        <location rdf:resource="http://svn.apache.org/repos/asf/directory/studio/"/>
+        <browse rdf:resource="http://svn.apache.org/viewvc/directory/studio/"/>
       </SVNRepository>
     </repository>
     <maintainer>
