@@ -32,7 +32,7 @@ import org.apache.directory.ldapstudio.browser.common.actions.RefreshAction;
 import org.apache.directory.ldapstudio.browser.common.actions.UnfilterChildrenAction;
 import org.apache.directory.ldapstudio.browser.common.actions.UpAction;
 import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserViewActionProxy;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;

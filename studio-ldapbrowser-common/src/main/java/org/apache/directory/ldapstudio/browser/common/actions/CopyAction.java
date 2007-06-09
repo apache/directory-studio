@@ -28,12 +28,12 @@ import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserActio
 import org.apache.directory.ldapstudio.browser.common.dnd.ConnectionTransfer;
 import org.apache.directory.ldapstudio.browser.common.dnd.EntryTransfer;
 import org.apache.directory.ldapstudio.browser.common.dnd.ValuesTransfer;
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;

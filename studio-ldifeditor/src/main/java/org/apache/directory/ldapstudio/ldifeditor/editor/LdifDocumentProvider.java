@@ -33,13 +33,13 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifRecord;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.ldapstudio.ldifeditor.editor.text.LdifExternalAnnotationModel;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;

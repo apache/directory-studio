@@ -24,8 +24,8 @@ package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleUseDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleUseDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;

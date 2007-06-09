@@ -15,8 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.views,
  org.eclipse.ui.forms,
  org.eclipse.jface.text,
- org.apache.directory.ldapstudio.browser.core,
  org.apache.directory.ldapstudio.browser.common,
- org.apache.directory.ldapstudio.ldifeditor;resolution:=optional
+ org.apache.directory.ldapstudio.ldifeditor;resolution:=optional,
+ org.apache.directory.studio.ldapbrowser.core
 Eclipse-LazyStart: true
 Bundle-ClassPath: .

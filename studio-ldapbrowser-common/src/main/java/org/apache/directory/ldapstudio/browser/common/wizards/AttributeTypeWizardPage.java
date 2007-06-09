@@ -27,8 +27,8 @@ import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.ListContentProposalProvider;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.DecoratedField;

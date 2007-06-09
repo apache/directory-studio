@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.browser.common.wizards;
 
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;

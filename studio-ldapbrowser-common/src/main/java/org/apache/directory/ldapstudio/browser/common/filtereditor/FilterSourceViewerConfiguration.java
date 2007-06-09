@@ -22,8 +22,8 @@ package org.apache.directory.ldapstudio.browser.common.filtereditor;
 
 
 import org.apache.directory.ldapstudio.browser.common.widgets.DialogContentAssistant;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;

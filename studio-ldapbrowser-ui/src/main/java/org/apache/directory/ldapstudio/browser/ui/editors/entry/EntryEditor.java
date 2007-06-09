@@ -22,9 +22,9 @@ package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidget;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

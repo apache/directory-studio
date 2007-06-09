@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.browser.common.widgets;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.eclipse.core.runtime.Platform;
 
 

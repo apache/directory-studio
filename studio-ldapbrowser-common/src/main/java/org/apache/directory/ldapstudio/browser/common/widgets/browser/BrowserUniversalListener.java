@@ -22,13 +22,13 @@ package org.apache.directory.ldapstudio.browser.common.widgets.browser;
 
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.core.events.AttributesInitializedEvent;
-import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
-import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;

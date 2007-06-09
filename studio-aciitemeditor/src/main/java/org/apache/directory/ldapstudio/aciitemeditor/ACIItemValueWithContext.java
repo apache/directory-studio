@@ -20,8 +20,8 @@
 package org.apache.directory.ldapstudio.aciitemeditor;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
 /**

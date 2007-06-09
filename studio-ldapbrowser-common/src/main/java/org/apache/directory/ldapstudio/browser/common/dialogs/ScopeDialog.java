@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.browser.common.dialogs;
 
 
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

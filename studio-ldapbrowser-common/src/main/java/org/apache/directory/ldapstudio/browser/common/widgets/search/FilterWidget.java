@@ -27,8 +27,8 @@ import org.apache.directory.ldapstudio.browser.common.filtereditor.FilterContent
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.BrowserWidget;
 import org.apache.directory.ldapstudio.browser.common.widgets.HistoryUtils;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;

@@ -22,10 +22,10 @@ package org.apache.directory.ldapstudio.browser.common;
 
 
 import org.apache.directory.ldapstudio.browser.common.dialogs.CredentialsDialog;
-import org.apache.directory.ldapstudio.browser.core.internal.model.Credentials;
-import org.apache.directory.ldapstudio.browser.core.model.ConnectionParameter;
-import org.apache.directory.ldapstudio.browser.core.model.IAuthHandler;
-import org.apache.directory.ldapstudio.browser.core.model.ICredentials;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Credentials;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IAuthHandler;
+import org.apache.directory.studio.ldapbrowser.core.model.ICredentials;
 
 import org.eclipse.ui.PlatformUI;
 

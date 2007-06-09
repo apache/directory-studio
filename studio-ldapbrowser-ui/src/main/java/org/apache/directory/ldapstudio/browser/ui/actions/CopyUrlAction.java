@@ -23,9 +23,9 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
 import org.apache.directory.ldapstudio.browser.common.actions.CopyAction;
-import org.apache.directory.ldapstudio.browser.core.model.URL;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.URL;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.TextTransfer;

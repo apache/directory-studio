@@ -26,15 +26,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
-import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
-import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;

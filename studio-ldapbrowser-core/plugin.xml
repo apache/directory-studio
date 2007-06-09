@@ -21,7 +21,7 @@
 <plugin>
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.apache.directory.ldapstudio.browser.core.BrowserCorePreferencesInitializer"/>
+      <initializer class="org.apache.directory.studio.ldapbrowser.core.BrowserCorePreferencesInitializer"/>
    </extension>
 
 </plugin>

@@ -28,11 +28,11 @@ import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAda
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.BrowserWidget;
 import org.apache.directory.ldapstudio.browser.common.widgets.HistoryUtils;
-import org.apache.directory.ldapstudio.browser.core.jobs.ReadEntryJob;
-import org.apache.directory.ldapstudio.browser.core.model.DN;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

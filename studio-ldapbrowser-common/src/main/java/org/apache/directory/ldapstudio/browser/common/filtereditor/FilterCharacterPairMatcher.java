@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.common.filtereditor;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;

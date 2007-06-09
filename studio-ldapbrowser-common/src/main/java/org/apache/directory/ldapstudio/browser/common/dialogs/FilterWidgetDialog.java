@@ -27,7 +27,7 @@ import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
 import org.apache.directory.ldapstudio.browser.common.widgets.search.FilterWidget;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;

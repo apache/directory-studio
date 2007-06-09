@@ -32,12 +32,12 @@ import java.util.Set;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;

@@ -12,8 +12,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
+ org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.ldapstudio.jars,
- org.apache.directory.ldapstudio.browser.core,
  org.apache.directory.ldapstudio.browser.common,
  org.apache.directory.ldapstudio.valueeditors
 Eclipse-LazyStart: true

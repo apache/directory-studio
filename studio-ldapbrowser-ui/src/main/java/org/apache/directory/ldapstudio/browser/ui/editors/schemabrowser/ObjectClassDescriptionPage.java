@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;

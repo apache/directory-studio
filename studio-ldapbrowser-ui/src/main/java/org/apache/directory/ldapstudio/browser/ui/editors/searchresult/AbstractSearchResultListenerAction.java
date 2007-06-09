@@ -23,12 +23,12 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
-import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
-import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;

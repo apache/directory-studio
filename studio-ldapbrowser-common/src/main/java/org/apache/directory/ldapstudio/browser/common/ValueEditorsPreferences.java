@@ -24,9 +24,9 @@ package org.apache.directory.ldapstudio.browser.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeValueProviderRelation;
-import org.apache.directory.ldapstudio.browser.core.model.schema.SyntaxValueProviderRelation;
-import org.apache.directory.ldapstudio.browser.core.utils.Utils;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 

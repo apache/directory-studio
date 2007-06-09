@@ -21,11 +21,11 @@ package org.apache.directory.ldapstudio.proxy.view.wizards;
 
 
 import org.apache.directory.ldapstudio.browser.common.dialogs.SelectConnectionDialog;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.proxy.Activator;
 import org.apache.directory.ldapstudio.proxy.ProxyConstants;
 import org.apache.directory.ldapstudio.proxy.view.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.proxy.view.HistoryUtils;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -166,7 +166,7 @@ public class ConnectWizardBrowserAvailablePage extends WizardPage implements Mod
 
     private void checkBrowserPluginAvailability()
     {
-        if ( !isPluginAvailable( "org.apache.directory.ldapstudio.browser.core" )
+        if ( !isPluginAvailable( "org.apache.directory.studio.ldapbrowser.core" )
             || !isPluginAvailable( "org.apache.directory.ldapstudio.browser.common" ) )
         {
             useConnectionButton.setEnabled( false );

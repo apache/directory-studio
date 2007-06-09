@@ -23,10 +23,10 @@ package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.ldapstudio.ldifeditor.widgets.LdifEditorWidget;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

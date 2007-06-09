@@ -20,7 +20,6 @@
 package org.apache.directory.ldapstudio.proxy.view;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapOrFilterComponent;
 import org.apache.directory.ldapstudio.proxy.Activator;
 import org.apache.directory.ldapstudio.proxy.controller.ProxyViewController;
 import org.apache.directory.ldapstudio.proxy.model.LdapMessageWithPDU;
@@ -29,6 +28,7 @@ import org.apache.directory.ldapstudio.proxy.model.LdapProxyListener;
 import org.apache.directory.ldapstudio.proxy.view.wrappers.IWrapper;
 import org.apache.directory.ldapstudio.proxy.view.wrappers.LdapMessageWrapper;
 import org.apache.directory.ldapstudio.proxy.view.wrappers.LdapProxyWrapper;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapOrFilterComponent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;

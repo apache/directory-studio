@@ -30,16 +30,16 @@ import java.util.Map;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
-import org.apache.directory.ldapstudio.browser.core.internal.model.AttributeComparator;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.AttributeComparator;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 

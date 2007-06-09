@@ -21,17 +21,17 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.text;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifEOFPart;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifInvalidPart;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifPart;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifLineBase;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifSepLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifValueLineBase;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEOFPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifInvalidPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifLineBase;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultTextDoubleClickStrategy;

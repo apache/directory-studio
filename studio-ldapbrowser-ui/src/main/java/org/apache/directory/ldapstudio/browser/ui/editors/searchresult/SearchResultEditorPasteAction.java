@@ -23,9 +23,9 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 import org.apache.directory.ldapstudio.browser.common.actions.PasteAction;
 import org.apache.directory.ldapstudio.browser.common.dnd.ValuesTransfer;
-import org.apache.directory.ldapstudio.browser.core.jobs.CreateValuesJob;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
 
 /**

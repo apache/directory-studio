@@ -22,14 +22,14 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
 import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser.SchemaBrowserManager;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 

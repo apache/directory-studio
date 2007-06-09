@@ -23,10 +23,10 @@ package org.apache.directory.ldapstudio.browser.common.widgets.entryeditor;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;

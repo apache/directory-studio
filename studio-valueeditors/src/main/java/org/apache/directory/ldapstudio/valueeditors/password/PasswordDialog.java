@@ -25,13 +25,13 @@ import java.util.Arrays;
 
 import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.jobs.CheckBindJob;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.Password;
-import org.apache.directory.ldapstudio.browser.core.utils.Utils;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsConstants;
+import org.apache.directory.studio.ldapbrowser.core.jobs.CheckBindJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.Password;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;

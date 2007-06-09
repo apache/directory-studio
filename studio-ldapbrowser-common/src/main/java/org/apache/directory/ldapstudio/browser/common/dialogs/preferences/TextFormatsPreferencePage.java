@@ -30,8 +30,8 @@ import org.apache.directory.ldapstudio.browser.common.widgets.LineSeparatorInput
 import org.apache.directory.ldapstudio.browser.common.widgets.OptionsInput;
 import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.ldapstudio.browser.common.widgets.WidgetModifyListener;
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;

@@ -23,11 +23,11 @@ package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 import java.util.ArrayList;
 
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
-import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;

@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;

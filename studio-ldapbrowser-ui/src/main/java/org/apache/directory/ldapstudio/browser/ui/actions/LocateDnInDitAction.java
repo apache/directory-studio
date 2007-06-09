@@ -21,12 +21,12 @@
 package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.DN;
-import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.model.NameException;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 

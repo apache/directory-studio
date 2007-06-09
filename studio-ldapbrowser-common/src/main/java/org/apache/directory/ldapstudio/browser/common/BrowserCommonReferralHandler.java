@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.ldapstudio.browser.common.dialogs.SelectReferralConnectionDialog;
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IReferralHandler;
-import org.apache.directory.ldapstudio.browser.core.model.URL;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
+import org.apache.directory.studio.ldapbrowser.core.model.URL;
 
 import org.eclipse.ui.PlatformUI;
 

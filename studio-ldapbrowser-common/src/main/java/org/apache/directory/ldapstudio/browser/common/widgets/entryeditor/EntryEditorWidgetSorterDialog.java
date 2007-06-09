@@ -24,7 +24,7 @@ package org.apache.directory.ldapstudio.browser.common.widgets.entryeditor;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;

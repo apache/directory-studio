@@ -24,10 +24,10 @@ package org.apache.directory.ldapstudio.ldifeditor.editor.reconciler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifPart;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.ldapstudio.ldifeditor.editor.ILdifEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;

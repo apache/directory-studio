@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.browser.core.jobs.AbstractEclipseJob;
-import org.apache.directory.ldapstudio.browser.core.jobs.ExtendedProgressMonitor;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 
 
 /**

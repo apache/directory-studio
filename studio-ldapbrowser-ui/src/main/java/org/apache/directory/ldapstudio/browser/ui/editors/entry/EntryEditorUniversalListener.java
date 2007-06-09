@@ -23,11 +23,11 @@ package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 import org.apache.directory.ldapstudio.browser.common.actions.SelectionUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
-import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
-import org.apache.directory.ldapstudio.browser.core.model.IBookmark;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.ISearchResult;
 import org.apache.directory.ldapstudio.browser.ui.views.browser.BrowserView;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IPartListener2;

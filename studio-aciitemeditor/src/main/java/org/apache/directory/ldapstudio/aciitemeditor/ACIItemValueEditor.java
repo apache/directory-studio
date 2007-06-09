@@ -21,11 +21,11 @@ package org.apache.directory.ldapstudio.aciitemeditor;
 
 
 import org.apache.directory.ldapstudio.aciitemeditor.dialogs.ACIItemDialog;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.swt.widgets.Shell;
 
 

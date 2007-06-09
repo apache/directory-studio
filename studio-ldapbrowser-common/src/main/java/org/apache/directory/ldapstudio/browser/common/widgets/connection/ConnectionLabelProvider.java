@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.browser.common.widgets.connection;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 

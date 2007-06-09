@@ -29,12 +29,12 @@ import java.util.ResourceBundle;
 
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetTableMetadata;
-import org.apache.directory.ldapstudio.browser.core.internal.model.RootDSE;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.IRootDSE;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;

@@ -23,9 +23,9 @@ package org.apache.directory.ldapstudio.browser.common.wizards;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionPageWrapper;
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.jobs.OpenConnectionsJob;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.jobs.OpenConnectionsJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;

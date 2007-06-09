@@ -19,7 +19,7 @@
  */
 package org.apache.directory.ldapstudio.aciitemeditor.sourceeditor;
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.eclipse.jface.text.formatter.IFormattingStrategy;
 import org.eclipse.jface.text.source.ISourceViewer;
 

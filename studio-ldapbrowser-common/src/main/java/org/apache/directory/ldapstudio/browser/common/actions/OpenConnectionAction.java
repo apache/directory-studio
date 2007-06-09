@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.browser.common.actions;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
-import org.apache.directory.ldapstudio.browser.core.jobs.OpenConnectionsJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.OpenConnectionsJob;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 

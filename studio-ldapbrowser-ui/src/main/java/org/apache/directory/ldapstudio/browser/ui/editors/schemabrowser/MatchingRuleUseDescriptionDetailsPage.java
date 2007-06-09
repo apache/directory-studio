@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleUseDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleUseDescription;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

@@ -21,7 +21,7 @@
 package org.apache.directory.ldapstudio.browser.common.widgets.connection;
 
 
-import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 

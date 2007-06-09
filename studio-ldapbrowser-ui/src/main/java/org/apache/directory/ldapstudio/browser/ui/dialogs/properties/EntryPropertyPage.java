@@ -23,13 +23,13 @@ package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 
 import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
-import org.apache.directory.ldapstudio.browser.core.jobs.InitializeAttributesJob;
-import org.apache.directory.ldapstudio.browser.core.jobs.InitializeChildrenJob;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.utils.Utils;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.SWT;

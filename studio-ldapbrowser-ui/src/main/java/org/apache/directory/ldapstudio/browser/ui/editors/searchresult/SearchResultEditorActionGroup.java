@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyAttributeDescriptionAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyDnAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyEntryAsCsvAction;
@@ -48,6 +47,7 @@ import org.apache.directory.ldapstudio.browser.common.actions.ShowRawValuesActio
 import org.apache.directory.ldapstudio.browser.common.actions.ValueEditorPreferencesAction;
 import org.apache.directory.ldapstudio.browser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;

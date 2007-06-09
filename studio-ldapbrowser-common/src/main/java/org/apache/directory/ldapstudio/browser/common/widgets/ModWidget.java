@@ -24,8 +24,8 @@ package org.apache.directory.ldapstudio.browser.common.widgets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.DecoratedField;

@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.browser.common.widgets.entryeditor;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
-import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaUtils;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.swt.widgets.Display;

@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterToken;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.PaintManager;

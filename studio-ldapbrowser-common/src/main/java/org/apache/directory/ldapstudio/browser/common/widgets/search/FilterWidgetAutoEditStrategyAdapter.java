@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.apache.directory.ldapstudio.browser.common.filtereditor.FilterAutoEditStrategy;
 import org.apache.directory.ldapstudio.browser.common.filtereditor.FilterAutoEditStrategy.AutoEditParameters;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;

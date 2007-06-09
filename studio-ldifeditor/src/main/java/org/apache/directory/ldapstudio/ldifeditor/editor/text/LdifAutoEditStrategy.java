@@ -21,16 +21,16 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.text;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifPart;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifChangeModifyRecord;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifModSpec;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifModSpecTypeLine;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.ldapstudio.ldifeditor.editor.ILdifEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifModSpec;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecTypeLine;
 
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;

@@ -21,14 +21,14 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.MatchingRuleUseDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.ObjectClassDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.SchemaPart;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleUseDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;

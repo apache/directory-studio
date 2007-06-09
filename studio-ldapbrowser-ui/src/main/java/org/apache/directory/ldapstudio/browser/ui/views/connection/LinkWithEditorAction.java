@@ -20,14 +20,14 @@
 package org.apache.directory.ldapstudio.browser.ui.views.connection;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor;
 import org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditorInput;
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.ldapstudio.browser.ui.editors.searchresult.SearchResultEditorInput;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;

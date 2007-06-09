@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.browser.common.widgets;
 
 import java.nio.charset.Charset;
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 
 
 /**

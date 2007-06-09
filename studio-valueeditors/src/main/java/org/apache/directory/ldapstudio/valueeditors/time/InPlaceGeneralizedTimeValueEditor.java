@@ -26,8 +26,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
 import org.apache.directory.ldapstudio.valueeditors.AbstractInPlaceStringValueEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
 
 /**

@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifRecord;
 import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.ISourceViewer;

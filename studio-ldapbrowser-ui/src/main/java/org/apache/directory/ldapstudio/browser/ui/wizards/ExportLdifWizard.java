@@ -21,8 +21,8 @@
 package org.apache.directory.ldapstudio.browser.ui.wizards;
 
 
-import org.apache.directory.ldapstudio.browser.core.jobs.ExportLdifJob;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 

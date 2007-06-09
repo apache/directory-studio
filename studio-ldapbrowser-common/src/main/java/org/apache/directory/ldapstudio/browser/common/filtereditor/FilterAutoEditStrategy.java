@@ -21,12 +21,12 @@
 package org.apache.directory.ldapstudio.browser.common.filtereditor;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapAndFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilter;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapNotFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.LdapOrFilterComponent;
-import org.apache.directory.ldapstudio.browser.core.model.filter.parser.LdapFilterParser;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapAndFilterComponent;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapNotFilterComponent;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapOrFilterComponent;
+import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.DocumentCommand;
 import org.eclipse.jface.text.IAutoEditStrategy;

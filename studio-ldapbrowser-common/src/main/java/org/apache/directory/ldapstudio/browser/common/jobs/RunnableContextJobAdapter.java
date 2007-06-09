@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.browser.common.jobs;
 
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.core.jobs.AbstractEclipseJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

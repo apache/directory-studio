@@ -21,11 +21,11 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifFile;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifPart;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.container.LdifModSpec;
 import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifModSpec;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.source.ISourceViewer;

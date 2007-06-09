@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.directory.ldapstudio.browser.common.widgets.search.EntryWidget;
-import org.apache.directory.ldapstudio.browser.core.model.DN;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.RDN;
-import org.apache.directory.ldapstudio.browser.core.model.RDNPart;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.RDN;
+import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.DecoratedField;

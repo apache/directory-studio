@@ -26,9 +26,9 @@ import org.apache.directory.ldapstudio.browser.common.widgets.connection.Connect
 import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionConfiguration;
 import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionUniversalListener;
 import org.apache.directory.ldapstudio.browser.common.widgets.connection.ConnectionWidget;
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.URL;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.URL;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

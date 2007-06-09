@@ -22,7 +22,7 @@ package org.apache.directory.ldapstudio.browser.common.dialogs.preferences;
 
 
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.model.schema.BinarySyntax;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

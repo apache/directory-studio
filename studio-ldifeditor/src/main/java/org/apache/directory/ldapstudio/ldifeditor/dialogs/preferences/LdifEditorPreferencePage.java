@@ -23,9 +23,9 @@ package org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences;
 
 import org.apache.directory.ldapstudio.browser.common.dialogs.preferences.TextFormatsPreferencePage;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

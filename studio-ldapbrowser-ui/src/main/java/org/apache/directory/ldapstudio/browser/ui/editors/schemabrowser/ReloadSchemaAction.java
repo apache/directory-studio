@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.browser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.ldapstudio.browser.core.jobs.ReloadSchemasJob;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.action.Action;
 
 

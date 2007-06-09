@@ -80,7 +80,7 @@ public class ConnectWizard extends Wizard
      */
     private boolean isBrowserPluginAvailable()
     {
-        return ( isPluginAvailable( "org.apache.directory.ldapstudio.browser.core" ) && isPluginAvailable( "org.apache.directory.ldapstudio.browser.core" ) );
+        return ( isPluginAvailable( "org.apache.directory.studio.ldapbrowser.core" ) && isPluginAvailable( "org.apache.directory.studio.ldapbrowser.core" ) );
     }
 
 

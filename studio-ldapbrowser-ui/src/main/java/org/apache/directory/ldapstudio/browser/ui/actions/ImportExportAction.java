@@ -22,9 +22,6 @@ package org.apache.directory.ldapstudio.browser.ui.actions;
 
 
 import org.apache.directory.ldapstudio.browser.common.actions.BrowserAction;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIConstants;
 import org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportCsvWizard;
@@ -33,6 +30,9 @@ import org.apache.directory.ldapstudio.browser.ui.wizards.ExportExcelWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ExportLdifWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ImportDsmlWizard;
 import org.apache.directory.ldapstudio.browser.ui.wizards.ImportLdifWizard;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizard;

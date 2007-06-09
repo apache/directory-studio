@@ -21,21 +21,21 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.internal.model.DummyConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.LdifPart;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifControlLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifDeloldrdnLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifDnLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifNewrdnLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifNewsuperiorLine;
-import org.apache.directory.ldapstudio.browser.core.model.ldif.lines.LdifValueLineBase;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
 import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDeloldrdnLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewrdnLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewsuperiorLine;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 

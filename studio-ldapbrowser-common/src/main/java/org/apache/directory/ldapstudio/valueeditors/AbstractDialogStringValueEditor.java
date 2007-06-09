@@ -21,18 +21,18 @@
 package org.apache.directory.ldapstudio.valueeditors;
 
 
-import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.internal.model.Attribute;
-import org.apache.directory.ldapstudio.browser.core.jobs.CreateValuesJob;
-import org.apache.directory.ldapstudio.browser.core.jobs.DeleteAttributesValueJob;
-import org.apache.directory.ldapstudio.browser.core.jobs.ModifyValueJob;
-import org.apache.directory.ldapstudio.browser.core.model.AttributeHierarchy;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.model.ModelModificationException;
-import org.apache.directory.ldapstudio.browser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ModifyValueJob;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 
 
 /**

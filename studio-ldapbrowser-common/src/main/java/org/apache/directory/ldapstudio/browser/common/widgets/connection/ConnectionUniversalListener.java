@@ -22,16 +22,16 @@ package org.apache.directory.ldapstudio.browser.common.widgets.connection;
 
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
-import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateEvent;
-import org.apache.directory.ldapstudio.browser.core.events.BookmarkUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.ldapstudio.browser.core.events.ConnectionUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.events.EntryModificationEvent;
-import org.apache.directory.ldapstudio.browser.core.events.EntryUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.events.EventRegistry;
-import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateEvent;
-import org.apache.directory.ldapstudio.browser.core.events.SearchUpdateListener;
-import org.apache.directory.ldapstudio.browser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 

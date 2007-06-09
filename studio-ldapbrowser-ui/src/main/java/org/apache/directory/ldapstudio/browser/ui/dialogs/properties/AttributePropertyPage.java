@@ -24,10 +24,10 @@ package org.apache.directory.ldapstudio.browser.ui.dialogs.properties;
 import java.util.Arrays;
 
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.model.IAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.IValue;
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.utils.Utils;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.events.SelectionAdapter;

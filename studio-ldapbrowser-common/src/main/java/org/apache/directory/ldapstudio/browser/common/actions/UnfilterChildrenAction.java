@@ -23,8 +23,8 @@ package org.apache.directory.ldapstudio.browser.common.actions;
 
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonActivator;
 import org.apache.directory.ldapstudio.browser.common.BrowserCommonConstants;
-import org.apache.directory.ldapstudio.browser.core.jobs.InitializeChildrenJob;
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 

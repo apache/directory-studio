@@ -21,10 +21,10 @@
 package org.apache.directory.ldapstudio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
 import org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.ldapstudio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 
 
 public class OpenBestValueEditorAction extends AbstractOpenValueEditorAction

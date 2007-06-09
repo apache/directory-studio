@@ -23,7 +23,7 @@ package org.apache.directory.ldapstudio.browser.common.widgets.browser;
 
 import java.util.Arrays;
 
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
 /**

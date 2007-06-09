@@ -21,9 +21,9 @@
 package org.apache.directory.ldapstudio.valueeditors.address;
 
 
-import org.apache.directory.ldapstudio.browser.core.BrowserCoreConstants;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.ldapstudio.valueeditors.ValueEditorsConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;

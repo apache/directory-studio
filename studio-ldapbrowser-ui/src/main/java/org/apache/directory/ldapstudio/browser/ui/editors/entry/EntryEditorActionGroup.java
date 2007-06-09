@@ -23,7 +23,6 @@ package org.apache.directory.ldapstudio.browser.ui.editors.entry;
 
 import java.util.Iterator;
 
-import org.apache.directory.ldapstudio.browser.core.model.IEntry;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyAttributeDescriptionAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopyDnAction;
 import org.apache.directory.ldapstudio.browser.ui.actions.CopySearchFilterAction;
@@ -44,6 +43,7 @@ import org.apache.directory.ldapstudio.browser.common.actions.proxy.EntryEditorA
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EditAttributeDescriptionAction;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
 import org.apache.directory.ldapstudio.browser.common.widgets.entryeditor.OpenDefaultEditorAction;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;

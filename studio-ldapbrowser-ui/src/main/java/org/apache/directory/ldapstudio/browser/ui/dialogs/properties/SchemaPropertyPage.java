@@ -27,11 +27,11 @@ import java.util.Date;
 
 import org.apache.directory.ldapstudio.browser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
-import org.apache.directory.ldapstudio.browser.core.jobs.ReloadSchemasJob;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
-import org.apache.directory.ldapstudio.browser.core.utils.Utils;
+import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;

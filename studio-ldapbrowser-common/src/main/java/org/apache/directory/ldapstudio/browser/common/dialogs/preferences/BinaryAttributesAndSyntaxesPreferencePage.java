@@ -28,14 +28,14 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.directory.ldapstudio.browser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.ldapstudio.browser.core.ConnectionManager;
-import org.apache.directory.ldapstudio.browser.core.BrowserCorePlugin;
-import org.apache.directory.ldapstudio.browser.core.model.IConnection;
-import org.apache.directory.ldapstudio.browser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.BinaryAttribute;
-import org.apache.directory.ldapstudio.browser.core.model.schema.BinarySyntax;
-import org.apache.directory.ldapstudio.browser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.ldapstudio.browser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.BinaryAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;

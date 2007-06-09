@@ -1,8 +1,8 @@
 
 package org.apache.directory.ldapstudio.browser.common;
 
-import org.apache.directory.ldapstudio.browser.core.events.EventRunnable;
-import org.apache.directory.ldapstudio.browser.core.events.EventRunner;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRunnable;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
 import org.eclipse.swt.widgets.Display;
 
 
