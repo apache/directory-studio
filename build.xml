@@ -106,19 +106,19 @@
         </copy>
 
         <!-- Creation of the Schemas Editor Plugin -->
-        <ant dir="studio-schemas-plugin" inheritAll="no" />
+        <ant dir="studio-schemaeditor-plugin" inheritAll="no" />
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/studio-schemas-plugin/target">
+            <fileset dir="${basedir}/studio-schemaeditor-plugin/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the Schemas Editor Help Plugin -->
-        <ant dir="studio-schemas-help" inheritAll="no" />
+        <ant dir="studio-schemaeditor-help" inheritAll="no" />
         <!-- Copy of the Schemas Editor Help Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/studio-schemas-help/target">
+            <fileset dir="${basedir}/studio-schemaeditor-help/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -230,12 +230,12 @@
 		</copy>
 		
         <!-- Copy of the Schemas Editor Feature in the "features" folder -->
-		<property name="studio-schemas-feature.project" value="${basedir}/studio-schemas-feature" />
-		<property name="studio-schemas-feature.name" value="org.apache.directory.ldapstudio.schemas.feature" />
-		<property name="studio-schemas-feature.version" value="0.8.0" />
-		<mkdir dir="${project.features}/${studio-schemas-feature.name}_${studio-schemas-feature.version}" />
-		<copy todir="${project.features}/${studio-schemas-feature.name}_${studio-schemas-feature.version}">
-			<fileset dir="${studio-schemas-feature.project}">
+		<property name="studio-schemaeditor-feature.project" value="${basedir}/studio-schemaeditor-feature" />
+		<property name="studio-schemaeditor-feature.name" value="org.apache.directory.ldapstudio.schemas.feature" />
+		<property name="studio-schemaeditor-feature.version" value="0.8.0" />
+		<mkdir dir="${project.features}/${studio-schemaeditor-feature.name}_${studio-schemaeditor-feature.version}" />
+		<copy todir="${project.features}/${studio-schemaeditor-feature.name}_${studio-schemaeditor-feature.version}">
+			<fileset dir="${studio-schemaeditor-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
 				<include name="META-INF/**" />
@@ -353,17 +353,17 @@
         </copy>
 
         <!-- Creation of the Apache Directory Studio Schemas Editor user guides -->
-        <ant dir="studio-schemas-help" inheritAll="no" target="static-html" />
-        <ant dir="studio-schemas-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-schemaeditor-help" inheritAll="no" target="static-html" />
+        <ant dir="studio-schemaeditor-help" inheritAll="no" target="static-pdf" />
         <!-- Copy of the schemas user guides -->
         <mkdir dir="${ldapstudio-complete.userguides}/schemas_editor" />
         <copy todir="${ldapstudio-complete.userguides}/schemas_editor">
-            <fileset dir="${basedir}/studio-schemas-help/target/html">
+            <fileset dir="${basedir}/studio-schemaeditor-help/target/html">
                 <include name="**" />
             </fileset>
         </copy>
         <copy todir="${ldapstudio-complete.userguides}">
-            <fileset dir="${basedir}/studio-schemas-help/target/pdf">
+            <fileset dir="${basedir}/studio-schemaeditor-help/target/pdf">
                 <include name="**/*.pdf" />
             </fileset>
         </copy>
@@ -374,7 +374,7 @@
     <!-- ================================== -->
     <target name="javadoc" description="Generate Javadoc files">
         <ant dir="studio-rcp" inheritAll="no" target="javadoc" />
-        <ant dir="studio-schemas-plugin" inheritAll="no" target="javadoc" />
+        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="javadoc" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="javadoc" />
@@ -387,8 +387,8 @@
     <target name="resolve" description="Resolves the library dependencies using Ivy">
         <ant dir="studio-rcp" inheritAll="no" target="resolve" />
         <ant dir="studio-rcp-help" inheritAll="no" target="resolve" />
-        <ant dir="studio-schemas-plugin" inheritAll="no" target="resolve" />
-        <ant dir="studio-schemas-help" inheritAll="no" target="resolve" />
+        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="resolve" />
+        <ant dir="studio-schemaeditor-help" inheritAll="no" target="resolve" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="resolve" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="resolve" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="resolve" />
@@ -409,9 +409,9 @@
         <ant dir="studio-rcp" inheritAll="no" target="clean"/>
         <ant dir="studio-rcp-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-rcp-help" inheritAll="no" target="clean"/>
-        <ant dir="studio-schemas-plugin" inheritAll="no" target="clean"/>
-        <ant dir="studio-schemas-help" inheritAll="no" target="clean" />
-        <ant dir="studio-schemas-feature" inheritAll="no" target="clean"/>
+        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="clean"/>
+        <ant dir="studio-schemaeditor-help" inheritAll="no" target="clean" />
+        <ant dir="studio-schemaeditor-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="clean" />
         <ant dir="studio-ldifeditor" inheritAll="no" target="clean" />
