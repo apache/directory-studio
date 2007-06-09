@@ -52,7 +52,7 @@ public class Perspective implements IPerspectiveFactory
         layout.getViewLayout( LdapMessageView.ID ).setCloseable( false );
 
         // Perspective shortcuts
-        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" );
+        layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" );
         layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.schemas.perspective" );
         layout.addPerspectiveShortcut( Perspective.ID );
 

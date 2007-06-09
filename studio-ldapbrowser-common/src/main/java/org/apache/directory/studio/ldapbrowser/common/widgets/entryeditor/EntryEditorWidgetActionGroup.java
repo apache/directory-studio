@@ -347,23 +347,23 @@ public class EntryEditorWidgetActionGroup
             if ( commandService != null )
             {
                 IAction da = ( IAction ) entryEditorActionMap.get( deleteAction );
-                da.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.delete" );
+                da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
                 commandService.getCommand( da.getActionDefinitionId() ).setHandler( new ActionHandler( da ) );
 
                 IAction ca = ( IAction ) entryEditorActionMap.get( copyAction );
-                ca.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.copy" );
+                ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
                 commandService.getCommand( ca.getActionDefinitionId() ).setHandler( new ActionHandler( ca ) );
 
                 IAction pa = ( IAction ) entryEditorActionMap.get( pasteAction );
-                pa.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.paste" );
+                pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
                 commandService.getCommand( pa.getActionDefinitionId() ).setHandler( new ActionHandler( pa ) );
 
-                showQuickFilterAction.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.find" );
+                showQuickFilterAction.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.find" );
                 commandService.getCommand( showQuickFilterAction.getActionDefinitionId() ).setHandler(
                     new ActionHandler( showQuickFilterAction ) );
 
                 IAction pda = ( IAction ) entryEditorActionMap.get( propertyDialogAction );
-                pda.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.properties" );
+                pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
                 commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
             }
         }

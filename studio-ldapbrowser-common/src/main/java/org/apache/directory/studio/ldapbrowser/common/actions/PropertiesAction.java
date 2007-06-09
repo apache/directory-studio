@@ -102,50 +102,50 @@ public class PropertiesAction extends BrowserAction
         if ( getSelectedValues().length == 1 )
         {
             element = ( IAdaptable ) getSelectedValues()[0];
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.ValuePropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage";
             title = getSelectedValues()[0].toString();
         }
         else if ( getSelectedAttributes().length == 1 )
         {
             element = ( IAdaptable ) getSelectedAttributes()[0];
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.AttributePropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage";
             title = getSelectedAttributes()[0].toString();
         }
         else if ( getSelectedAttributeHierarchies().length == 1 )
         {
             IAttribute att = getSelectedAttributeHierarchies()[0].getAttribute();
             element = att;
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.AttributePropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage";
             title = att.toString();
         }
         else if ( getSelectedSearches().length == 1 )
         {
             element = ( IAdaptable ) getSelectedSearches()[0];
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.SearchPropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage";
             title = getSelectedSearches()[0].getName();
         }
         else if ( getSelectedBookmarks().length == 1 )
         {
             element = ( IAdaptable ) getSelectedBookmarks()[0];
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.BookmarkPropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage";
             title = getSelectedBookmarks()[0].getName();
         }
         else if ( getSelectedEntries().length == 1 )
         {
             element = ( IAdaptable ) getSelectedEntries()[0];
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.EntryPropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage";
             title = getSelectedEntries()[0].getDn().toString();
         }
         else if ( getSelectedSearchResults().length == 1 )
         {
             element = ( IAdaptable ) getSelectedSearchResults()[0];
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.EntryPropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage";
             title = getSelectedSearchResults()[0].getDn().toString();
         }
         else if ( getSelectedConnections().length == 1 )
         {
             element = ( IAdaptable ) getSelectedConnections()[0];
-            pageId = "org.apache.directory.ldapstudio.browser.ui.dialogs.properties.ConnectionPropertyPage";
+            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ConnectionPropertyPage";
             title = getSelectedConnections()[0].getName();
         }
 

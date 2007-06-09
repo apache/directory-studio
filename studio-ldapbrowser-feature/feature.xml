@@ -229,7 +229,7 @@ of your accepting any such warranty or additional liability.
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.ldapstudio.browser.ui"
+         id="org.apache.directory.studio.ldapbrowser.ui"
          download-size="0"
          install-size="0"
          version="0.8.0"

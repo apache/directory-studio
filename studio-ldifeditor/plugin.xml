@@ -17,7 +17,7 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             canFinishEarly="true"
-            category="org.apache.directory.ldapstudio.browser.ui.newWizards.category"
+            category="org.apache.directory.studio.ldapbrowser.newWizards"
             class="org.apache.directory.ldapstudio.ldifeditor.wizards.NewLdifFileWizard"
             hasPages="false"
             icon="resources/icons/ldifeditor_new.gif"
@@ -34,7 +34,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.MainPreferencePage"
+            category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
             class="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             id="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             name="LDIF Editor">

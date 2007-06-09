@@ -4,7 +4,7 @@ package org.apache.directory.ldapstudio.ldifeditor;
 public interface LdifEditorConstants
 {
 
-    public static final String ACTION_ID_EDIT_RECORD = "org.apache.directory.ldapstudio.browser.action.editRecord";
+    public static final String ACTION_ID_EDIT_RECORD = "org.apache.directory.studio.ldapbrowser.action.editRecord";
 
     public static final String PREFERENCE_LDIFEDITOR_FORMATTER_AUTOWRAP = "ldifEditorFormatterAutoWrap";
 

@@ -241,7 +241,7 @@ public class BrowserActionGroup implements IMenuListener
             if ( commandService != null )
             {
                 IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
-                pda.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.properties" );
+                pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
                 commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
 
                 IAction ra = ( IAction ) browserActionMap.get( refreshAction );

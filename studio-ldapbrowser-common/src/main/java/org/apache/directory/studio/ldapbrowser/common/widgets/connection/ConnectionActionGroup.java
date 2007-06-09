@@ -260,19 +260,19 @@ public class ConnectionActionGroup implements IMenuListener
             if ( commandService != null )
             {
                 IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
-                ca.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.copy" );
+                ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
                 commandService.getCommand( ca.getActionDefinitionId() ).setHandler( new ActionHandler( ca ) );
 
                 IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
-                pa.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.paste" );
+                pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
                 commandService.getCommand( pa.getActionDefinitionId() ).setHandler( new ActionHandler( pa ) );
 
                 IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
-                da.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.delete" );
+                da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
                 commandService.getCommand( da.getActionDefinitionId() ).setHandler( new ActionHandler( da ) );
 
                 IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
-                pda.setActionDefinitionId( "org.apache.directory.ldapstudio.browser.action.properties" );
+                pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
                 commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
 
             }

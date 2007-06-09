@@ -70,7 +70,7 @@ public class Perspective implements IPerspectiveFactory
         layout.getViewLayout( SearchView.ID ).setCloseable( false );
 
         // Adding Perspective shortcuts
-        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
+        layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
         layout.addPerspectiveShortcut( Perspective.ID );
 
         // Adding View shortcuts

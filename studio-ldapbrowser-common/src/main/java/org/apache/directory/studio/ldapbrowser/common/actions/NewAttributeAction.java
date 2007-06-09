@@ -140,7 +140,7 @@ public class NewAttributeAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return "org.apache.directory.ldapstudio.browser.action.addAttribute";
+        return "org.apache.directory.studio.ldapbrowser.action.addAttribute";
     }
 
 

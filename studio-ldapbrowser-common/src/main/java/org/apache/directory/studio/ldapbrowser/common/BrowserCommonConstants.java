@@ -8,9 +8,9 @@ public interface BrowserCommonConstants
 
     
     
-    public static final String ACTION_ID_EDIT_VALUE = "org.apache.directory.ldapstudio.browser.action.editValue";
+    public static final String ACTION_ID_EDIT_VALUE = "org.apache.directory.studio.ldapbrowser.action.editValue";
 
-    public static final String ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION = "org.apache.directory.ldapstudio.browser.action.editAttributeDescription";
+    public static final String ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION = "org.apache.directory.studio.ldapbrowser.action.editAttributeDescription";
 
 
     
@@ -30,7 +30,7 @@ public interface BrowserCommonConstants
 
     
     
-    public static final String FILTER_TEMPLATE_ID = "org.apache.directory.ldapstudio.browser.ui.templates.filter";
+    public static final String FILTER_TEMPLATE_ID = "org.apache.directory.studio.ldapbrowser.common.templates.filter";
 
     
     public static final String PREFERENCE_TIME_LIMIT = "timeLimit";
@@ -145,7 +145,7 @@ public interface BrowserCommonConstants
 
     public static final int SHOW_RDN_VALUE = 2;
     
-    public static final String PREFERENCEPAGEID_VALUEEDITORS = "org.apache.directory.ldapstudio.browser.ui.dialogs.preferences.ValueEditorsPreferencePage";
+    public static final String PREFERENCEPAGEID_VALUEEDITORS = "org.apache.directory.studio.ldapbrowser.preferences.ValueEditorsPreferencePage";
 
     public static final String IMG_TEMPLATE = "resources/icons/template.gif";
     

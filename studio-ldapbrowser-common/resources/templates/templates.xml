@@ -19,24 +19,24 @@
 -->
 <templates>
 	<template 
-		id="org.apache.directory.ldapstudio.browser.ui.templates.filter.and" 
+		id="org.apache.directory.studio.ldapbrowser.common.templates.filter.and" 
 		name="&amp;" 
 		description="AND filter"
-		context="org.apache.directory.ldapstudio.browser.ui.templates.filter" 
+		context="org.apache.directory.studio.ldapbrowser.common.templates.filter" 
 		enabled="true"
 		deleted="false">&amp;(${cursor})</template>
 	<template 
-		id="org.apache.directory.ldapstudio.browser.ui.templates.filter.or" 
+		id="org.apache.directory.studio.ldapbrowser.common.templates.filter.or" 
 		name="|" 
 		description="OR filter"
-		context="org.apache.directory.ldapstudio.browser.ui.templates.filter" 
+		context="org.apache.directory.studio.ldapbrowser.common.templates.filter" 
 		enabled="true"
 		deleted="false">|(${cursor})</template>
 	<template 
-		id="org.apache.directory.ldapstudio.browser.ui.templates.filter.not" 
+		id="org.apache.directory.studio.ldapbrowser.common.templates.filter.not" 
 		name="!"
 		description="NOT filter"
-		context="org.apache.directory.ldapstudio.browser.ui.templates.filter" 
+		context="org.apache.directory.studio.ldapbrowser.common.templates.filter" 
 		enabled="true" 
 		deleted="false">!(${cursor})</template>
 

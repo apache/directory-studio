@@ -101,7 +101,7 @@ public class NewValueAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return "org.apache.directory.ldapstudio.browser.action.addValue";
+        return "org.apache.directory.studio.ldapbrowser.action.addValue";
     }
 
 

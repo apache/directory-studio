@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 /**
  * The EntryEditorWidget is a reusable widget to display and edit the attributes of an entry.
  * It is used by 
- * {@link org.apache.directory.ldapstudio.browser.ui.editors.entry.EntryEditor}, 
+ * {@link org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor}, 
  * {@link org.apache.directory.studio.ldapbrowser.common.dialogs.MultivaluedDialog}, 
  * {@link org.apache.directory.studio.ldapbrowser.common.dialogs.LdifEntryEditorDialog} and 
  * {@link org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryAttributesWizardPage}. 

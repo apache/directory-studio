@@ -45,7 +45,7 @@ public class Perspective implements IPerspectiveFactory
         layout.addStandaloneView( WelcomeView.ID, false, IPageLayout.LEFT, 1.0f, editorArea );
         layout.getViewLayout( WelcomeView.ID ).setCloseable( false );
 
-        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.browser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
+        layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
         layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.schemas.perspective" ); //$NON-NLS-1$ 
     
         layout.addShowViewShortcut( WelcomeView.ID );

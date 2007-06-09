@@ -760,7 +760,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                 IContextService.class );
             contextActivation = contextService
-                .activateContext( "org.apache.directory.ldapstudio.browser.action.context" );
+                .activateContext( "org.apache.directory.studio.ldapbrowser.action.context" );
 
             this.activateGlobalActionHandlers();
         }

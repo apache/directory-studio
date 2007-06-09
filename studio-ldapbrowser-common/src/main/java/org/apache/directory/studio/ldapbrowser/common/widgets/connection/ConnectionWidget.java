@@ -36,7 +36,7 @@ import org.eclipse.ui.IActionBars;
 /**
  * The ConnectionWidget is a reusable widget that displays all connections
  * in a table viewer. It is used by 
- * {@link org.apache.directory.ldapstudio.browser.ui.views.connection.ConnectionView}, 
+ * {@link org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView}, 
  * {@link org.apache.directory.studio.ldapbrowser.common.dialogs.SelectConnectionDialog} and 
  * {@link org.apache.directory.studio.ldapbrowser.common.dialogs.SelectReferralConnectionDialog}. 
  * 
