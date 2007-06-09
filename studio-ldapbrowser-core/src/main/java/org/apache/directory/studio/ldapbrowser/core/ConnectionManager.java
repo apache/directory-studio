@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.ConnectionRenamedEvent;
@@ -127,7 +128,31 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      */
     public static final String getConnectionStoreFileName()
     {
-        return BrowserCorePlugin.getDefault().getStateLocation().append( "connections.xml" ).toOSString(); //$NON-NLS-1$
+        String filename = BrowserCorePlugin.getDefault().getStateLocation().append( "connections.xml" ).toOSString(); //$NON-NLS-1$
+        File file = new File( filename );
+        if ( !file.exists() )
+        {
+            // try to convert old connections.xml
+            String oldFilename = filename.replaceAll( "org.apache.directory.studio.ldapbrowser.core",
+                "org.apache.directory.ldapstudio.browser.core" );
+            File oldFile = new File( oldFilename );
+            if ( oldFile.exists() )
+            {
+                try
+                {
+                    String oldContent = FileUtils.readFileToString( oldFile, "UTF-8" );
+                    String newContent = oldContent.replaceAll( "org.apache.directory.ldapstudio.browser.core",
+                        "org.apache.directory.studio.ldapbrowser.core" );
+                    FileUtils.writeStringToFile( file, newContent, "UTF-8" );
+                }
+                catch ( IOException e )
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return filename;
     }
 
 
@@ -257,8 +282,8 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     public void removeConnection( IConnection conn )
     {
         connectionList.remove( conn );
-        EventRegistry.fireConnectionUpdated(
-            new ConnectionUpdateEvent( conn, ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED ), this );
+        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( conn,
+            ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED ), this );
     }
 
 
