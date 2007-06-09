@@ -20,61 +20,61 @@
 <!-- This file is used to store the code templates for the ACI Item syntax  -->
 <templates>
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.identificationTag" 
+		id="org.apache.directory.studio.aciitemeditor.templates.identificationTag" 
 		name="identificationTag"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">identificationTag "${cursor}",
 </template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.precedence" 
+		id="org.apache.directory.studio.aciitemeditor.templates.precedence" 
 		name="precedence"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">precedence ${cursor},
 </template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.authenticationLevel" 
+		id="org.apache.directory.studio.aciitemeditor.templates.authenticationLevel" 
 		name="authenticationLevel"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">authenticationLevel ${cursor},
 </template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.none" 
+		id="org.apache.directory.studio.aciitemeditor.templates.none" 
 		name="none"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">none</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.simple" 
+		id="org.apache.directory.studio.aciitemeditor.templates.simple" 
 		name="simple"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">simple</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.strong" 
+		id="org.apache.directory.studio.aciitemeditor.templates.strong" 
 		name="strong"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">strong</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.itemOrUserFirst" 
+		id="org.apache.directory.studio.aciitemeditor.templates.itemOrUserFirst" 
 		name="itemOrUserFirst"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">itemOrUserFirst ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.itemFirst" 
+		id="org.apache.directory.studio.aciitemeditor.templates.itemFirst" 
 		name="itemFirst"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">itemFirst : 
 {
@@ -82,9 +82,9 @@
 }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.userFirst" 
+		id="org.apache.directory.studio.aciitemeditor.templates.userFirst" 
 		name="userFirst"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">userFirst : 
 {
@@ -92,9 +92,9 @@
 }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.userClasses" 
+		id="org.apache.directory.studio.aciitemeditor.templates.userClasses" 
 		name="userClasses"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">userClasses 
 {
@@ -102,9 +102,9 @@
 }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.userPermissions" 
+		id="org.apache.directory.studio.aciitemeditor.templates.userPermissions" 
 		name="userPermissions"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">userPermissions 
 {
@@ -112,9 +112,9 @@
 }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.protectedItems" 
+		id="org.apache.directory.studio.aciitemeditor.templates.protectedItems" 
 		name="protectedItems"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">protectedItems 
 {
@@ -122,9 +122,9 @@
 }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.itemPermissions" 
+		id="org.apache.directory.studio.aciitemeditor.templates.itemPermissions" 
 		name="itemPermissions"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">itemPermissions 
 {
@@ -132,219 +132,219 @@
 }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantAdd" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantAdd" 
 		name="grantAdd"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantAdd</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyAdd" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyAdd" 
 		name="denyAdd"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyAdd</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantDiscloseOnError" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantDiscloseOnError" 
 		name="grantDiscloseOnError"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantDiscloseOnError</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyDiscloseOnError" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyDiscloseOnError" 
 		name="denyDiscloseOnError"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyDiscloseOnError</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantRead" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantRead" 
 		name="grantRead"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantRead</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyRead" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyRead" 
 		name="denyRead"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyRead</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantRemove" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantRemove" 
 		name="grantRemove"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantRemove</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyRemove" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyRemove" 
 		name="denyRemove"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyRemove</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantBrowse" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantBrowse" 
 		name="grantBrowse"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantBrowse</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyBrowse" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyBrowse" 
 		name="denyBrowse"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyBrowse</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantExport" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantExport" 
 		name="grantExport"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantExport</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyExport" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyExport" 
 		name="denyExport"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyExport</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantImport" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantImport" 
 		name="grantImport"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantImport</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyImport" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyImport" 
 		name="denyImport"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyImport</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantModify" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantModify" 
 		name="grantModify"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantModify</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyModify" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyModify" 
 		name="denyModify"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyModify</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantRename" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantRename" 
 		name="grantRename"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantRename</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyRename" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyRename" 
 		name="denyRename"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyRename</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantReturnDN" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantReturnDN" 
 		name="grantReturnDN"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantReturnDN</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyReturnDN" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyReturnDN" 
 		name="denyReturnDN"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyReturnDN</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantCompare" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantCompare" 
 		name="grantCompare"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantCompare</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyCompare" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyCompare" 
 		name="denyCompare"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyCompare</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantFilterMatch" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantFilterMatch" 
 		name="grantFilterMatch"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantFilterMatch</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyFilterMatch" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyFilterMatch" 
 		name="denyFilterMatch"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyFilterMatch</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantInvoke" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantInvoke" 
 		name="grantInvoke"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantInvoke</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.denyInvoke" 
+		id="org.apache.directory.studio.aciitemeditor.templates.denyInvoke" 
 		name="denyInvoke"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">denyInvoke</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.classes" 
+		id="org.apache.directory.studio.aciitemeditor.templates.classes" 
 		name="classes"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">classes ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.entry" 
+		id="org.apache.directory.studio.aciitemeditor.templates.entry" 
 		name="entry"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">entry</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.allUserAttributeTypes" 
+		id="org.apache.directory.studio.aciitemeditor.templates.allUserAttributeTypes" 
 		name="allUserAttributeTypes"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">allUserAttributeTypes</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.allUserAttributeTypesAndValues" 
+		id="org.apache.directory.studio.aciitemeditor.templates.allUserAttributeTypesAndValues" 
 		name="allUserAttributeTypesAndValues"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">allUserAttributeTypesAndValues</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.grantsAndDenials" 
+		id="org.apache.directory.studio.aciitemeditor.templates.grantsAndDenials" 
 		name="grantsAndDenials"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">grantsAndDenials
 {
@@ -352,177 +352,177 @@
 }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.allUsers" 
+		id="org.apache.directory.studio.aciitemeditor.templates.allUsers" 
 		name="allUsers"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">allUsers</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.thisEntry" 
+		id="org.apache.directory.studio.aciitemeditor.templates.thisEntry" 
 		name="thisEntry"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">thisEntry</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.attributeType" 
+		id="org.apache.directory.studio.aciitemeditor.templates.attributeType" 
 		name="attributeType"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">attributeType ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.allAttributeValues" 
+		id="org.apache.directory.studio.aciitemeditor.templates.allAttributeValues" 
 		name="allAttributeValues"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">allAttributeValues ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.selfValue" 
+		id="org.apache.directory.studio.aciitemeditor.templates.selfValue" 
 		name="selfValue"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">selfValue ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.item" 
+		id="org.apache.directory.studio.aciitemeditor.templates.item" 
 		name="item"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">item:${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.item" 
+		id="org.apache.directory.studio.aciitemeditor.templates.item" 
 		name="item:"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">item:${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.and" 
+		id="org.apache.directory.studio.aciitemeditor.templates.and" 
 		name="and:"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">and:${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.or" 
+		id="org.apache.directory.studio.aciitemeditor.templates.or" 
 		name="or:"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">or:${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.not" 
+		id="org.apache.directory.studio.aciitemeditor.templates.not" 
 		name="not:"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">not:${cursor}</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.name" 
+		id="org.apache.directory.studio.aciitemeditor.templates.name" 
 		name="name"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">name { ${cursor} }</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.userGroup" 
+		id="org.apache.directory.studio.aciitemeditor.templates.userGroup" 
 		name="userGroup"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">userGroup { ${cursor} }</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.subtree" 
+		id="org.apache.directory.studio.aciitemeditor.templates.subtree" 
 		name="subtree"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">subtree { ${cursor} }</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.base" 
+		id="org.apache.directory.studio.aciitemeditor.templates.base" 
 		name="base"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">base ${cursor}</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.specificExclusions" 
+		id="org.apache.directory.studio.aciitemeditor.templates.specificExclusions" 
 		name="specificExclusions"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">specificExclusions ${cursor}</template>	
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.chopBefore" 
+		id="org.apache.directory.studio.aciitemeditor.templates.chopBefore" 
 		name="chopBefore:"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">chopBefore:${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.chopAfter" 
+		id="org.apache.directory.studio.aciitemeditor.templates.chopAfter" 
 		name="chopAfter:"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">chopAfter:${cursor}</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.minimum" 
+		id="org.apache.directory.studio.aciitemeditor.templates.minimum" 
 		name="minimum"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">minimum ${cursor}</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.maximum" 
+		id="org.apache.directory.studio.aciitemeditor.templates.maximum" 
 		name="maximum"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">maximum ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.valuesIn" 
+		id="org.apache.directory.studio.aciitemeditor.templates.valuesIn" 
 		name="valuesIn"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">valuesIn ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.type" 
+		id="org.apache.directory.studio.aciitemeditor.templates.type" 
 		name="type"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">type ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.maxCount" 
+		id="org.apache.directory.studio.aciitemeditor.templates.maxCount" 
 		name="maxCount"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">maxCount ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.maxImmSub" 
+		id="org.apache.directory.studio.aciitemeditor.templates.maxImmSub" 
 		name="maxImmSub"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">maxImmSub ${cursor}</template>
 		
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.maxValueCount" 
+		id="org.apache.directory.studio.aciitemeditor.templates.maxValueCount" 
 		name="maxValueCount"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">maxValueCount { ${cursor} }</template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.aciitemeditor.templates.restrictedBy" 
+		id="org.apache.directory.studio.aciitemeditor.templates.restrictedBy" 
 		name="restrictedBy"
-		context="org.apache.directory.ldapstudio.aciitemeditor.templates" 
+		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
 		deleted="false">restrictedBy { ${cursor} }</template>
 
