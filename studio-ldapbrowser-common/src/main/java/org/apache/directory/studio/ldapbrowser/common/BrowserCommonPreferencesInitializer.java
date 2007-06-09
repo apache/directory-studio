@@ -24,11 +24,11 @@ package org.apache.directory.studio.ldapbrowser.common;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager.ValueEditorExtension;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueProviderRelation;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueProviderRelation;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;

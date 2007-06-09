@@ -32,11 +32,11 @@ import java.util.Set;
 
 import javax.naming.Name;
 
-import org.apache.directory.ldapstudio.valueeditors.AbstractDialogStringValueEditor;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.UserClass;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
+import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.osgi.util.NLS;
 
 

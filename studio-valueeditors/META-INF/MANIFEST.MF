@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Value Editors Plug-in
-Bundle-SymbolicName: org.apache.directory.ldapstudio.valueeditors;singleton:=true
+Bundle-SymbolicName: org.apache.directory.studio.valueeditors;singleton:=true
 Bundle-Version: 0.8.0
-Bundle-Activator: org.apache.directory.ldapstudio.valueeditors.ValueEditorsActivator
+Bundle-Activator: org.apache.directory.studio.valueeditors.ValueEditorsActivator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
@@ -11,11 +11,11 @@ Require-Bundle: org.eclipse.ui,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.common
 Eclipse-LazyStart: true
-Export-Package: org.apache.directory.ldapstudio.valueeditors,
- org.apache.directory.ldapstudio.valueeditors.address,
- org.apache.directory.ldapstudio.valueeditors.dn,
- org.apache.directory.ldapstudio.valueeditors.image,
- org.apache.directory.ldapstudio.valueeditors.integer,
- org.apache.directory.ldapstudio.valueeditors.objectclass,
- org.apache.directory.ldapstudio.valueeditors.password,
- org.apache.directory.ldapstudio.valueeditors.time
+Export-Package: org.apache.directory.studio.valueeditors,
+ org.apache.directory.studio.valueeditors.address,
+ org.apache.directory.studio.valueeditors.dn,
+ org.apache.directory.studio.valueeditors.image,
+ org.apache.directory.studio.valueeditors.integer,
+ org.apache.directory.studio.valueeditors.objectclass,
+ org.apache.directory.studio.valueeditors.password,
+ org.apache.directory.studio.valueeditors.time

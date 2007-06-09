@@ -4,12 +4,12 @@
    <extension
          point="org.eclipse.ui.editors">
     <editor
-          class="org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor"
-          contributorClass="org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditorContributor"
+          class="org.apache.directory.studio.ldifeditor.editor.LdifEditor"
+          contributorClass="org.apache.directory.studio.ldifeditor.editor.LdifEditorContributor"
           default="true"
           extensions="ldif, ldiflog"
           icon="resources/icons/ldifeditor.gif"
-          id="org.apache.directory.ldapstudio.ldifeditor.editor.LdifEditor"
+          id="org.apache.directory.studio.ldifeditor.editor.LdifEditor"
           name="LDIF Editor"/>         
    </extension>
 
@@ -18,50 +18,50 @@
       <wizard
             canFinishEarly="true"
             category="org.apache.directory.studio.ldapbrowser.newWizards"
-            class="org.apache.directory.ldapstudio.ldifeditor.wizards.NewLdifFileWizard"
+            class="org.apache.directory.studio.ldifeditor.wizards.NewLdifFileWizard"
             hasPages="false"
             icon="resources/icons/ldifeditor_new.gif"
-            id="org.apache.directory.ldapstudio.ldifeditor.wizards.NewLdifFileWizard"
+            id="org.apache.directory.studio.ldifeditor.wizards.NewLdifFileWizard"
             name="LDIF File"
             project="false"/>
    </extension>
 
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.apache.directory.ldapstudio.ldifeditor.LdifEditorPreferencesInitializer"/>
+      <initializer class="org.apache.directory.studio.ldifeditor.LdifEditorPreferencesInitializer"/>
    </extension>   
       
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
-            class="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
-            id="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
+            class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
+            id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             name="LDIF Editor">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
       </page>
       <page
-            category="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
-            class="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorContentAssistPreferencePage"
-            id="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorContentAssistPreferencePage"
+            category="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
+            class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorContentAssistPreferencePage"
+            id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorContentAssistPreferencePage"
             name="Content Assist">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
       </page>
       <page
-            category="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
-            class="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorSyntaxColoringPreferencePage"
-            id="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorSyntaxColoringPreferencePage"
+            category="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
+            class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorSyntaxColoringPreferencePage"
+            id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorSyntaxColoringPreferencePage"
             name="Syntax Coloring">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.colors"/>
       </page>
       <page
-            category="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
-            class="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorTemplatesPreferencePage"
-            id="org.apache.directory.ldapstudio.ldifeditor.dialogs.preferences.LdifEditorTemplatesPreferencePage"
+            category="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
+            class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorTemplatesPreferencePage"
+            id="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorTemplatesPreferencePage"
             name="Templates">
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldap"/>
          <keywordReference id="org.apache.directory.ldapstudio.browser.keyword.ldif"/>
@@ -72,23 +72,23 @@
          point="org.eclipse.ui.editors.templates">
       <contextType
             class="org.eclipse.jface.text.templates.TemplateContextType"
-            id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifFile"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifFile"
             name="LDIF File"/>
       <contextType
             class="org.eclipse.jface.text.templates.TemplateContextType"
-            id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifAttrValRecord"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifAttrValRecord"
             name="LDIF Attribute Value Record"/>
       <contextType
             class="org.eclipse.jface.text.templates.TemplateContextType"
-            id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecord"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecord"
             name="LDIF Modification Record"/>
       <contextType
             class="org.eclipse.jface.text.templates.TemplateContextType"
-            id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationItem"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifModificationItem"
             name="LDIF Modification Item"/>
       <contextType
             class="org.eclipse.jface.text.templates.TemplateContextType"
-            id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModdnRecord"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifModdnRecord"
             name="LDIF Moddn Record"/>
       <include file="resources/templates/templates.xml"/>
    </extension>

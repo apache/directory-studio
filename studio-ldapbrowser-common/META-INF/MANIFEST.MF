@@ -13,8 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.apache.directory.studio.ldapbrowser.core
 Eclipse-LazyStart: true
-Export-Package: org.apache.directory.ldapstudio.valueeditors,
- org.apache.directory.studio.ldapbrowser.common,
+Export-Package: org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.common.actions,
  org.apache.directory.studio.ldapbrowser.common.actions.proxy,
  org.apache.directory.studio.ldapbrowser.common.dialogs,
@@ -27,4 +26,5 @@ Export-Package: org.apache.directory.ldapstudio.valueeditors,
  org.apache.directory.studio.ldapbrowser.common.widgets.connection,
  org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor,
  org.apache.directory.studio.ldapbrowser.common.widgets.search,
- org.apache.directory.studio.ldapbrowser.common.wizards
+ org.apache.directory.studio.ldapbrowser.common.wizards,
+ org.apache.directory.studio.valueeditors

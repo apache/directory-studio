@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.TreeViewer;
 
 

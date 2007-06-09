@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import java.util.Arrays;
 
-import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.valueeditors.IValueEditor;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.TableViewer;
 
 

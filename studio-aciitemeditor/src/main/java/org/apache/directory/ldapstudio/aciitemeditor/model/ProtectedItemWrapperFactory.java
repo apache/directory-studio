@@ -25,9 +25,9 @@ import org.apache.directory.ldapstudio.aciitemeditor.valueeditors.AttributeTypeV
 import org.apache.directory.ldapstudio.aciitemeditor.valueeditors.FilterValueEditor;
 import org.apache.directory.ldapstudio.aciitemeditor.valueeditors.MaxValueCountValueEditor;
 import org.apache.directory.ldapstudio.aciitemeditor.valueeditors.RestrictedByValueEditor;
-import org.apache.directory.ldapstudio.valueeditors.TextValueEditor;
-import org.apache.directory.ldapstudio.valueeditors.integer.IntegerValueEditor;
 import org.apache.directory.shared.ldap.aci.ProtectedItem;
+import org.apache.directory.studio.valueeditors.TextValueEditor;
+import org.apache.directory.studio.valueeditors.integer.IntegerValueEditor;
 
 
 /**

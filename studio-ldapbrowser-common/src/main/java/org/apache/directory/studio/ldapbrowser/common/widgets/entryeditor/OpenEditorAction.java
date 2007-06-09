@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 import java.util.Arrays;
 
-import org.apache.directory.ldapstudio.valueeditors.IValueEditor;
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.valueeditors.IValueEditor;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
 

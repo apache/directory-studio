@@ -20,10 +20,10 @@
 <templates>
 
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifContentRecord" 
+		id="org.apache.directory.studio.ldifeditor.templates.ldifContentRecord" 
 		name="dn: " 
 		description="LDIF content record"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifFile" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifFile" 
 		enabled="true" 
 		image="icons/ldif_add.gif"
 		icon="icons/ldif_add.gif"
@@ -32,10 +32,10 @@ objectClass: ${objectClass}
 ${cursor}
 </template>
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifChangeAddRecord" 
+		id="org.apache.directory.studio.ldifeditor.templates.ldifChangeAddRecord" 
 		name="changetype: add" 
 		description="LDIF change add record"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifFile" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifFile" 
 		enabled="true" 
 		deleted="false">dn: ${dn}
 changetype: add
@@ -43,30 +43,30 @@ objectClass: ${objectClass}
 ${cursor}
 </template>
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templatesldifChangeModifyRecord" 
+		id="org.apache.directory.studio.ldifeditor.templatesldifChangeModifyRecord" 
 		name="changetype: modify" 
 		description="LDIF change modify record"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifFile" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifFile" 
 		enabled="true" 
 		deleted="false">dn: ${dn}
 changetype: modify
 ${cursor}
 </template>
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifChangeDeleteRecord" 
+		id="org.apache.directory.studio.ldifeditor.templates.ldifChangeDeleteRecord" 
 		name="changetype: delete" 
 		description="LDIF change delete record"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifFile" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifFile" 
 		enabled="true" 
 		deleted="false">dn: ${dn}
 changetype: delete
 ${cursor}
 </template>
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifChangeModdnRecord" 
+		id="org.apache.directory.studio.ldifeditor.templates.ldifChangeModdnRecord" 
 		name="changetype: moddn" 
 		description="LDIF change modify dn record"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifFile" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifFile" 
 		enabled="true" 
 		deleted="false">dn: ${dn}
 changetype: moddn
@@ -77,37 +77,37 @@ ${cursor}
 </template>
 
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecordAddModification" 
+		id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordAddModification" 
 		name="add: " 
 		description="Add value"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecord" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecord" 
 		enabled="true" >add: ${attribute}
 ${attribute}: ${value}
 -
 ${cursor}</template>
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.ui.templates.ldifModificationRecordReplaceModification" 
+		id="org.apache.directory.studio.ldifeditor.ui.templates.ldifModificationRecordReplaceModification" 
 		name="replace: " 
 		description="Replace value"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecord" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecord" 
 		enabled="true" >replace: ${attribute}
 ${attribute}: ${value}
 -
 ${cursor}</template>
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecordDeleteModification" 
+		id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordDeleteModification" 
 		name="delete: " 
 		description="Delete value"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecord" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecord" 
 		enabled="true" >delete: ${attribute}
 ${attribute}: ${value}
 -
 ${cursor}</template>
 	<template 
-		id="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecordDelete2Modification" 
+		id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordDelete2Modification" 
 		name="delete: " 
 		description="Delete attribute"
-		context="org.apache.directory.ldapstudio.ldifeditor.templates.ldifModificationRecord" 
+		context="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecord" 
 		enabled="true" >delete: ${attribute}
 -
 ${cursor}</template>

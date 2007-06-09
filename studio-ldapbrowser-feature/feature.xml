@@ -264,14 +264,14 @@ of your accepting any such warranty or additional liability.
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.ldapstudio.valueeditors"
+         id="org.apache.directory.studio.valueeditors"
          download-size="0"
          install-size="0"
          version="0.8.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.ldapstudio.ldifeditor"
+         id="org.apache.directory.studio.ldifeditor"
          download-size="0"
          install-size="0"
          version="0.8.0"

@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.apache.directory.ldapstudio.valueeditors">
+<schema targetNamespace="org.apache.directory.studio.valueeditors">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.apache.directory.ldapstudio.valueeditors" id="valueEditors" name="Value Editors"/>
+         <meta.schema plugin="org.apache.directory.studio.valueeditors" id="valueEditors" name="Value Editors"/>
       </appInfo>
       <documentation>
          A ValueEditor knows how to display and edit values of an LDAP attribute .ValueEditors are used from the entry editor or search result editor to display values to edit values in a user-friendly way.
@@ -75,7 +75,7 @@
                   The specific class implementing the function.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.apache.directory.ldapstudio.valueeditors.IValueEditor"/>
+                  <meta.attribute kind="java" basedOn="org.apache.directory.studio.valueeditors.IValueEditor"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -133,12 +133,12 @@
          &lt;p&gt;
 &lt;pre&gt;
    &lt;extension
-       point=&quot;org.apache.directory.ldapstudio.valueeditors&quot;&gt;
+       point=&quot;org.apache.directory.studio.valueeditors&quot;&gt;
 
     &lt;valueEditor
           name=&quot;Text Editor&quot;
           icon=&quot;resources/icons/texteditor.gif&quot;
-          class=&quot;oorg.apache.directory.ldapstudio.valueeditors.TextValueEditor&quot;
+          class=&quot;oorg.apache.directory.studio.valueeditors.TextValueEditor&quot;
           /&gt;
    &lt;/extension&gt;         
 &lt;/pre&gt;
@@ -151,7 +151,7 @@
          <meta.section type="apiInfo"/>
       </appInfo>
       <documentation>
-         Extension callback objects implement the org.apache.directory.ldapstudio.valueeditors.IValueEditor interface. There are also abstract base classes in org.apache.directory.ldapstudio.valueeditors package.
+         Extension callback objects implement the org.apache.directory.studio.valueeditors.IValueEditor interface. There are also abstract base classes in org.apache.directory.studio.valueeditors package.
       </documentation>
    </annotation>
 

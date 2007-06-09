@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
-import org.apache.directory.ldapstudio.valueeditors.ValueEditorManager;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.TableViewer;

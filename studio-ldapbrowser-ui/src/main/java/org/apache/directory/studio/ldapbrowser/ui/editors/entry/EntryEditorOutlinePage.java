@@ -28,8 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.ldapstudio.ldifeditor.LdifEditorActivator;
-import org.apache.directory.ldapstudio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -45,6 +43,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrVal
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsLdifAction;
+import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
+import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;

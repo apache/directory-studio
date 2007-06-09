@@ -3,7 +3,7 @@
 <plugin>
 
    <extension
-         point="org.apache.directory.ldapstudio.valueeditors">
+         point="org.apache.directory.studio.valueeditors">
       <valueEditor
             class="org.apache.directory.ldapstudio.aciitemeditor.ACIItemValueEditor"
             icon="resources/icons/aciitemeditor.gif"

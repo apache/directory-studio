@@ -21,8 +21,8 @@ package org.apache.directory.ldapstudio.aciitemeditor.model;
 
 
 import org.apache.directory.ldapstudio.aciitemeditor.valueeditors.SubtreeValueEditor;
-import org.apache.directory.ldapstudio.valueeditors.dn.DnValueEditor;
 import org.apache.directory.shared.ldap.aci.UserClass;
+import org.apache.directory.studio.valueeditors.dn.DnValueEditor;
 
 
 /**

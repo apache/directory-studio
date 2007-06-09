@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 
 
-import org.apache.directory.ldapstudio.ldifeditor.widgets.LdifEditorWidget;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldifeditor.widgets.LdifEditorWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
