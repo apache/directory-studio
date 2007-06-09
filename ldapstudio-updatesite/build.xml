@@ -34,7 +34,7 @@
         <!-- Apache Directory Studio Schemas Editor Feature -->
         <ant dir="../ldapstudio-schemas-feature" inheritAll="no" />
 	    <!-- Apache Directory Studio Browser Feature -->
-	    <ant dir="../ldapstudio-browser-feature" inheritAll="no" />
+	    <ant dir="../studio-ldapbrowser-feature" inheritAll="no" />
 	    <!-- Apache Directory Studio Apache DS Configuration Feature -->
 	    <ant dir="../studio-apacheds-configuration-feature" inheritAll="no" />
 	    
@@ -49,7 +49,7 @@
                 <include name="*.jar" />
             </fileset>
             <!-- Apache Directory Studio Browser Feature  -->
-	        <fileset dir="../ldapstudio-browser-feature/target">
+	        <fileset dir="../studio-ldapbrowser-feature/target">
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Apache DS Configuration Feature -->
@@ -68,21 +68,21 @@
 	    <!-- Apache Directory Studio Schemas Editor Help Plugin -->
 	    <ant dir="../ldapstudio-schemas-help" inheritAll="no" />
 	    <!-- Apache Directory Studio Browser Core Plugin -->
-	    <ant dir="../ldapstudio-browser-core" inheritAll="no" />
+	    <ant dir="../studio-ldapbrowser-core" inheritAll="no" />
 	    <!-- Apache Directory Studio Browser Common Plugin -->
-	    <ant dir="../ldapstudio-browser-common" inheritAll="no" />	
+	    <ant dir="../studio-ldapbrowser-common" inheritAll="no" />	
 	    <!-- Apache Directory Studio Jars Plugin -->
-	    <ant dir="../ldapstudio-jars" inheritAll="no" />	    
+	    <ant dir="../studio-jars" inheritAll="no" />	    
 	    <!-- Apache Directory Studio LDIF Editor Plugin -->
-	    <ant dir="../ldapstudio-ldifeditor" inheritAll="no" />
+	    <ant dir="../studio-ldifeditor" inheritAll="no" />
 	    <!-- Apache Directory Studio Value Editors Plugin -->
 	    <ant dir="../ldapstudio-valueeditors" inheritAll="no" />
 	    <!-- Apache Directory Studio ACI Item Editor Plugin -->
 	    <ant dir="../studio-aciitemeditor" inheritAll="no" />	
 	    <!-- Apache Directory Studio Browser Help Plugin -->
-	    <ant dir="../ldapstudio-browser-help" inheritAll="no" />	    
+	    <ant dir="../studio-ldapbrowser-help" inheritAll="no" />	    
 	    <!-- Apache Directory Studio Browser UI Plugin -->
-	    <ant dir="../ldapstudio-browser-ui" inheritAll="no" />	    
+	    <ant dir="../studio-ldapbrowser-ui" inheritAll="no" />	    
 	    <!-- Apache Directory Studio Apache DS Configuration Plugin -->
 	    <ant dir="../studio-apacheds-configuration" inheritAll="no" />	    
         <!-- Apache Directory Studio Apache DS Configuration Help Plugin -->
@@ -107,15 +107,15 @@
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Browser Core Plugin -->
-            <fileset dir="../ldapstudio-browser-core/target">
+            <fileset dir="../studio-ldapbrowser-core/target">
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Browser Common Plugin -->
-            <fileset dir="../ldapstudio-browser-common/target">
+            <fileset dir="../studio-ldapbrowser-common/target">
 	            <include name="*.jar" />
 	        </fileset>
 	           <!-- Apache Directory Studio LDIF Editor Plugin -->
-            <fileset dir="../ldapstudio-ldifeditor/target">
+            <fileset dir="../studio-ldifeditor/target">
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Value Editors Plugin -->
@@ -123,11 +123,11 @@
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Browser Help Plugin -->
-            <fileset dir="../ldapstudio-browser-help/target">
+            <fileset dir="../studio-ldapbrowser-help/target">
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Browser UI Plugin -->
-	        <fileset dir="../ldapstudio-browser-ui/target">
+	        <fileset dir="../studio-ldapbrowser-ui/target">
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio ACI Item Editor Plugin -->
@@ -135,7 +135,7 @@
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Jars Plugin -->
-	        <fileset dir="../ldapstudio-jars/target">
+	        <fileset dir="../studio-jars/target">
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Apache DS Configuration Plugin -->
@@ -158,13 +158,13 @@
 		<ant dir="../studio-apacheds-configuration" inheritAll="no" target="clean"/>
 		<ant dir="../studio-apacheds-configuration-feature" inheritAll="no" target="clean"/>
 		<ant dir="../studio-apacheds-configuration-help" inheritAll="no" target="clean"/>
-        <ant dir="../ldapstudio-browser-common" inheritAll="no" target="clean" />
-        <ant dir="../ldapstudio-browser-core" inheritAll="no" target="clean" />
-        <ant dir="../ldapstudio-browser-feature" inheritAll="no" target="clean"/>
-        <ant dir="../ldapstudio-browser-help" inheritAll="no" target="clean" />
-        <ant dir="../ldapstudio-browser-ui" inheritAll="no" target="clean" />
-        <ant dir="../ldapstudio-jars" inheritAll="no" target="clean" />
-        <ant dir="../ldapstudio-ldifeditor" inheritAll="no" target="clean" />
+        <ant dir="../studio-ldapbrowser-common" inheritAll="no" target="clean" />
+        <ant dir="../studio-ldapbrowser-core" inheritAll="no" target="clean" />
+        <ant dir="../studio-ldapbrowser-feature" inheritAll="no" target="clean"/>
+        <ant dir="../studio-ldapbrowser-help" inheritAll="no" target="clean" />
+        <ant dir="../studio-ldapbrowser-ui" inheritAll="no" target="clean" />
+        <ant dir="../studio-jars" inheritAll="no" target="clean" />
+        <ant dir="../studio-ldifeditor" inheritAll="no" target="clean" />
 		<ant dir="../ldapstudio-rcp" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
 		<ant dir="../ldapstudio-rcp-help" inheritAll="no" target="clean"/>

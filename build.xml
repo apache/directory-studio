@@ -124,46 +124,46 @@
         </copy>
 
         <!-- Creation of the Browser Core Plugin -->
-        <ant dir="ldapstudio-browser-core" inheritAll="no" />
+        <ant dir="studio-ldapbrowser-core" inheritAll="no" />
         <!-- Copy of the Browser Core Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-browser-core/target">
+            <fileset dir="${basedir}/studio-ldapbrowser-core/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the Browser Common Plugin -->
-        <ant dir="ldapstudio-browser-common" inheritAll="no" />
+        <ant dir="studio-ldapbrowser-common" inheritAll="no" />
         <!-- Copy of the Browser Common Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-browser-common/target">
+            <fileset dir="${basedir}/studio-ldapbrowser-common/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the LDIF Editor Plugin -->
-        <ant dir="ldapstudio-ldifeditor" inheritAll="no" />
+        <ant dir="studio-ldifeditor" inheritAll="no" />
         <!-- Copy of the LDIF Editor Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-ldifeditor/target">
+            <fileset dir="${basedir}/studio-ldifeditor/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the Browser UI Plugin -->
-        <ant dir="ldapstudio-browser-ui" inheritAll="no" />
+        <ant dir="studio-ldapbrowser-ui" inheritAll="no" />
         <!-- Copy of the Browser UI Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-browser-ui/target">
+            <fileset dir="${basedir}/studio-ldapbrowser-ui/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the Browser Help Plugin -->
-        <ant dir="ldapstudio-browser-help" inheritAll="no" />
+        <ant dir="studio-ldapbrowser-help" inheritAll="no" />
         <!-- Copy of the Browser Help Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-browser-help/target">
+            <fileset dir="${basedir}/studio-ldapbrowser-help/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -187,10 +187,10 @@
         </copy>
 
 	    <!-- Creation of the Jars Plugin -->
-        <ant dir="ldapstudio-jars" inheritAll="no" />
+        <ant dir="studio-jars" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-jars/target">
+            <fileset dir="${basedir}/studio-jars/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -243,12 +243,12 @@
 		</copy>
 		
 	    <!-- Copy of the Browser Feature in the "features" folder -->
-		<property name="ldapstudio-browser-feature.project" value="${basedir}/ldapstudio-browser-feature" />
-		<property name="ldapstudio-browser-feature.name" value="org.apache.directory.ldapstudio.browser.feature" />
-		<property name="ldapstudio-browser-feature.version" value="0.8.0" />
-		<mkdir dir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}" />
-		<copy todir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}">
-			<fileset dir="${ldapstudio-browser-feature.project}">
+		<property name="studio-ldapbrowser-feature.project" value="${basedir}/studio-ldapbrowser-feature" />
+		<property name="studio-ldapbrowser-feature.name" value="org.apache.directory.ldapstudio.browser.feature" />
+		<property name="studio-ldapbrowser-feature.version" value="0.8.0" />
+		<mkdir dir="${project.features}/${studio-ldapbrowser-feature.name}_${studio-ldapbrowser-feature.version}" />
+		<copy todir="${project.features}/${studio-ldapbrowser-feature.name}_${studio-ldapbrowser-feature.version}">
+			<fileset dir="${studio-ldapbrowser-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
 				<include name="META-INF/**" />
@@ -337,17 +337,17 @@
         </copy>
 
         <!-- Creation of the Apache Directory Studio Browser user guides -->
-        <ant dir="ldapstudio-browser-help" inheritAll="no" target="static-html" />
-        <ant dir="ldapstudio-browser-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="static-html" />
+        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="static-pdf" />
         <!-- Copy of the browser user guides -->
         <mkdir dir="${ldapstudio-complete.userguides}/ldap_browser" />
         <copy todir="${ldapstudio-complete.userguides}/ldap_browser">
-            <fileset dir="${basedir}/ldapstudio-browser-help/target/html">
+            <fileset dir="${basedir}/studio-ldapbrowser-help/target/html">
                 <include name="**" />
             </fileset>
         </copy>
         <copy todir="${ldapstudio-complete.userguides}">
-            <fileset dir="${basedir}/ldapstudio-browser-help/target/pdf">
+            <fileset dir="${basedir}/studio-ldapbrowser-help/target/pdf">
                 <include name="**/*.pdf" />
             </fileset>
         </copy>
@@ -375,9 +375,9 @@
     <target name="javadoc" description="Generate Javadoc files">
         <ant dir="ldapstudio-rcp" inheritAll="no" target="javadoc" />
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-browser-core" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-browser-ui" inheritAll="no" target="javadoc" />
+        <ant dir="studio-dsml-parser" inheritAll="no" target="javadoc" />
+        <ant dir="studio-ldapbrowser-core" inheritAll="no" target="javadoc" />
+        <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="javadoc" />
         <ant dir="studio-aciitemeditor" inheritAll="no" target="javadoc" />
     </target>
 
@@ -389,15 +389,15 @@
         <ant dir="ldapstudio-rcp-help" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-dsml-parser" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-browser-core" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-browser-common" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-ldifeditor" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-browser-ui" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-browser-help" inheritAll="no" target="resolve" />
+        <ant dir="studio-dsml-parser" inheritAll="no" target="resolve" />
+        <ant dir="studio-ldapbrowser-core" inheritAll="no" target="resolve" />
+        <ant dir="studio-ldapbrowser-common" inheritAll="no" target="resolve" />
+        <ant dir="studio-ldifeditor" inheritAll="no" target="resolve" />
+        <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="resolve" />
+        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="resolve" />
         <ant dir="ldapstudio-valueeditors" inheritAll="no" target="resolve" />
         <ant dir="studio-aciitemeditor" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-jars" inheritAll="no" target="resolve" />
+        <ant dir="studio-jars" inheritAll="no" target="resolve" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="resolve" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="resolve" />
     </target>
@@ -412,15 +412,15 @@
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-schemas-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-browser-core" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-browser-common" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-ldifeditor" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-browser-ui" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-browser-help" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-browser-feature" inheritAll="no" target="clean"/>
+        <ant dir="studio-ldapbrowser-core" inheritAll="no" target="clean" />
+        <ant dir="studio-ldapbrowser-common" inheritAll="no" target="clean" />
+        <ant dir="studio-ldifeditor" inheritAll="no" target="clean" />
+        <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="clean" />
+        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="clean" />
+        <ant dir="studio-ldapbrowser-feature" inheritAll="no" target="clean"/>
         <ant dir="ldapstudio-valueeditors" inheritAll="no" target="clean" />
         <ant dir="studio-aciitemeditor" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-jars" inheritAll="no" target="clean" />
+        <ant dir="studio-jars" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="clean" />
         <ant dir="ldapstudio-updatesite" inheritAll="no" target="clean" />
