@@ -30,9 +30,9 @@
 		
 		<!-- Creation of the Features -->
 		<!-- Apache Directory Studio RCP Feature -->
-		<ant dir="../ldapstudio-rcp-feature" inheritAll="no" />
+		<ant dir="../studio-rcp-feature" inheritAll="no" />
         <!-- Apache Directory Studio Schemas Editor Feature -->
-        <ant dir="../ldapstudio-schemas-feature" inheritAll="no" />
+        <ant dir="../studio-schemas-feature" inheritAll="no" />
 	    <!-- Apache Directory Studio Browser Feature -->
 	    <ant dir="../studio-ldapbrowser-feature" inheritAll="no" />
 	    <!-- Apache Directory Studio Apache DS Configuration Feature -->
@@ -41,11 +41,11 @@
 	    <!-- Copying the Features -->
 	    <copy todir="${project.features}">
             <!-- Apache Directory Studio RCP Feature  -->
-            <fileset dir="../ldapstudio-rcp-feature/target">
+            <fileset dir="../studio-rcp-feature/target">
 				<include name="*.jar" />
 			</fileset>
             <!-- Apache Directory Studio Schemas Editor Feature  -->
-	        <fileset dir="../ldapstudio-schemas-feature/target">
+	        <fileset dir="../studio-schemas-feature/target">
                 <include name="*.jar" />
             </fileset>
             <!-- Apache Directory Studio Browser Feature  -->
@@ -60,13 +60,13 @@
 	    
         <!-- Creation of the Plugins -->
 	    <!-- Apache Directory Studio RCP -->
-	    <ant dir="../ldapstudio-rcp" target="jar" inheritAll="no" />
+	    <ant dir="../studio-rcp" target="jar" inheritAll="no" />
 	    <!-- Apache Directory Studio Help Plugin -->
-	    <ant dir="../ldapstudio-rcp-help" target="jar" inheritAll="no" />		
+	    <ant dir="../studio-rcp-help" target="jar" inheritAll="no" />		
 	    <!-- Apache Directory Studio Schemas Editor Plugin -->
-	    <ant dir="../ldapstudio-schemas-plugin" inheritAll="no" />
+	    <ant dir="../studio-schemas-plugin" inheritAll="no" />
 	    <!-- Apache Directory Studio Schemas Editor Help Plugin -->
-	    <ant dir="../ldapstudio-schemas-help" inheritAll="no" />
+	    <ant dir="../studio-schemas-help" inheritAll="no" />
 	    <!-- Apache Directory Studio Browser Core Plugin -->
 	    <ant dir="../studio-ldapbrowser-core" inheritAll="no" />
 	    <!-- Apache Directory Studio Browser Common Plugin -->
@@ -76,7 +76,7 @@
 	    <!-- Apache Directory Studio LDIF Editor Plugin -->
 	    <ant dir="../studio-ldifeditor" inheritAll="no" />
 	    <!-- Apache Directory Studio Value Editors Plugin -->
-	    <ant dir="../ldapstudio-valueeditors" inheritAll="no" />
+	    <ant dir="../studio-valueeditors" inheritAll="no" />
 	    <!-- Apache Directory Studio ACI Item Editor Plugin -->
 	    <ant dir="../studio-aciitemeditor" inheritAll="no" />	
 	    <!-- Apache Directory Studio Browser Help Plugin -->
@@ -91,19 +91,19 @@
 	    <!-- Copying the Plugins -->
 	    <copy todir="${project.plugins}">
             <!-- Apache Directory Studio RCP -->
-	        <fileset dir="../ldapstudio-rcp/target">
+	        <fileset dir="../studio-rcp/target">
 	            <include name="*.jar" />
 	        </fileset>
 	       <!-- Apache Directory Studio Help Plugin -->
-	        <fileset dir="../ldapstudio-rcp-help/target">
+	        <fileset dir="../studio-rcp-help/target">
 	            <include name="*.jar" />
 	        </fileset>
 	       <!-- Apache Directory Studio Schemas Editor Plugin -->
-            <fileset dir="../ldapstudio-schemas-plugin/target">
+            <fileset dir="../studio-schemas-plugin/target">
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Schemas Editor Help Plugin -->
-            <fileset dir="../ldapstudio-schemas-help/target">
+            <fileset dir="../studio-schemas-help/target">
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Browser Core Plugin -->
@@ -119,7 +119,7 @@
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Value Editors Plugin -->
-	        <fileset dir="../ldapstudio-valueeditors/target">
+	        <fileset dir="../studio-valueeditors/target">
 	            <include name="*.jar" />
 	        </fileset>
             <!-- Apache Directory Studio Browser Help Plugin -->
@@ -165,13 +165,13 @@
         <ant dir="../studio-ldapbrowser-ui" inheritAll="no" target="clean" />
         <ant dir="../studio-jars" inheritAll="no" target="clean" />
         <ant dir="../studio-ldifeditor" inheritAll="no" target="clean" />
-		<ant dir="../ldapstudio-rcp" inheritAll="no" target="clean"/>
-        <ant dir="../ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
-		<ant dir="../ldapstudio-rcp-help" inheritAll="no" target="clean"/>
-        <ant dir="../ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
-        <ant dir="../ldapstudio-schemas-help" inheritAll="no" target="clean"/>
-        <ant dir="../ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
-        <ant dir="../ldapstudio-valueeditors" inheritAll="no" target="clean"/>
+		<ant dir="../studio-rcp" inheritAll="no" target="clean"/>
+        <ant dir="../studio-rcp-feature" inheritAll="no" target="clean"/>
+		<ant dir="../studio-rcp-help" inheritAll="no" target="clean"/>
+        <ant dir="../studio-schemas-feature" inheritAll="no" target="clean"/>
+        <ant dir="../studio-schemas-help" inheritAll="no" target="clean"/>
+        <ant dir="../studio-schemas-plugin" inheritAll="no" target="clean"/>
+        <ant dir="../studio-valueeditors" inheritAll="no" target="clean"/>
 		<delete includeemptydirs="true">
 			<fileset dir="${project.plugins}"/>
 			<fileset dir="${project.features}"/>

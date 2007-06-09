@@ -17,8 +17,5 @@
   under the License.
 -->
 <ivy-module version="1.0">
-	<info organisation="org.apache.directory.ldapstudio" module="ldapstudio-proxy"/>
-	<dependencies>
-		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.6-SNAPSHOT"/>
-    </dependencies>
+	<info organisation="org.apache.directory.ldapstudio" module="studio-valueeditors"/>
 </ivy-module>

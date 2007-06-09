@@ -15,21 +15,21 @@
    <launcherArgs>
    </launcherArgs>
 
-   <windowImages i16="/ldapstudio-rcp/resources/icons/window/ldapstudio_16x16.gif" i32="/ldapstudio-rcp/resources/icons/window/ldapstudio_32x32.gif" i48="/ldapstudio-rcp/resources/icons/window/ldapstudio_48x48.gif" i64="/ldapstudio-rcp/resources/icons/window/ldapstudio_64x64.gif" i128="/ldapstudio-rcp/resources/icons/window/ldapstudio_128x128.gif"/>
+   <windowImages i16="/studio-rcp/resources/icons/window/ldapstudio_16x16.gif" i32="/studio-rcp/resources/icons/window/ldapstudio_32x32.gif" i48="/studio-rcp/resources/icons/window/ldapstudio_48x48.gif" i64="/studio-rcp/resources/icons/window/ldapstudio_64x64.gif" i128="/studio-rcp/resources/icons/window/ldapstudio_128x128.gif"/>
 
    <launcher name="Apache Directory Studio">
-      <linux icon="/ldapstudio-rcp/resources/icons/linux/ldapstudio.xpm"/>
-      <macosx icon="/ldapstudio-rcp/resources/icons/macosx/ldapstudio.icns"/>
+      <linux icon="/studio-rcp/resources/icons/linux/ldapstudio.xpm"/>
+      <macosx icon="/studio-rcp/resources/icons/macosx/ldapstudio.icns"/>
       <solaris/>
       <win useIco="false">
          <bmp
-            winSmallHigh="/ldapstudio-rcp/resources/icons/windows/ldapstudio_16x16_32-bits.bmp"
-            winSmallLow="/ldapstudio-rcp/resources/icons/windows/ldapstudio_16x16_8-bits.bmp"
-            win24Low="/ldapstudio-rcp/resources/icons/windows/ldapstudio_24x24_8-bits.bmp"
-            winMediumHigh="/ldapstudio-rcp/resources/icons/windows/ldapstudio_32x32_32-bits.bmp"
-            winMediumLow="/ldapstudio-rcp/resources/icons/windows/ldapstudio_32x32_8-bits.bmp"
-            winLargeHigh="/ldapstudio-rcp/resources/icons/windows/ldapstudio_48x48_32-bits.bmp"
-            winLargeLow="/ldapstudio-rcp/resources/icons/windows/ldapstudio_48x48_8-bits.bmp"/>
+            winSmallHigh="/studio-rcp/resources/icons/windows/ldapstudio_16x16_32-bits.bmp"
+            winSmallLow="/studio-rcp/resources/icons/windows/ldapstudio_16x16_8-bits.bmp"
+            win24Low="/studio-rcp/resources/icons/windows/ldapstudio_24x24_8-bits.bmp"
+            winMediumHigh="/studio-rcp/resources/icons/windows/ldapstudio_32x32_32-bits.bmp"
+            winMediumLow="/studio-rcp/resources/icons/windows/ldapstudio_32x32_8-bits.bmp"
+            winLargeHigh="/studio-rcp/resources/icons/windows/ldapstudio_48x48_32-bits.bmp"
+            winLargeLow="/studio-rcp/resources/icons/windows/ldapstudio_48x48_8-bits.bmp"/>
       </win>
    </launcher>
 

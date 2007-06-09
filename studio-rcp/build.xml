@@ -20,9 +20,9 @@
     <property name="project.name" value="org.apache.directory.ldapstudio" />
     <property name="project.version" value="0.7.0" />
 
-    <property name="ldapstudio-rcp.output" value="${basedir}/target" />
-    <property name="ldapstudio-rcp.build" value="${ldapstudio-rcp.output}/build" />
-    <property name="ldapstudio-rcp.src" value="${basedir}/src/main/java" />
+    <property name="studio-rcp.output" value="${basedir}/target" />
+    <property name="studio-rcp.build" value="${studio-rcp.output}/build" />
+    <property name="studio-rcp.src" value="${basedir}/src/main/java" />
     <property name="lib.dir" value="lib" />
 
     <property name="repository.dir" location="../dependencies/externals/" />
@@ -30,48 +30,48 @@
     <!-- Configuring Ivy (Needs to be AFTER the $repository.dir declaration) -->
     <ivy:configure file="../tools/ivyconf.xml" />
 
-    <property name="ldapstudio-rcp.eclipse.dir" value="../dependencies/eclipse" />
-    <property name="ldapstudio-rcp.eclipse.version" value="3.2" />
-	<property name="ldapstudio-rcp.eclipse.uiideplugin.filename" value="org.eclipse.ui.ide_3.2.1.M20060915-1030" />
-	<property name="ldapstudio-rcp.eclipse.uieditorsplugin.filename" value="org.eclipse.ui.editors_3.2.1.r321_v20060721" />
-	<property name="ldapstudio-rcp.eclipse.searchplugin.filename" value="org.eclipse.search_3.2.1.r321_v20060726" />
+    <property name="studio-rcp.eclipse.dir" value="../dependencies/eclipse" />
+    <property name="studio-rcp.eclipse.version" value="3.2" />
+	<property name="studio-rcp.eclipse.uiideplugin.filename" value="org.eclipse.ui.ide_3.2.1.M20060915-1030" />
+	<property name="studio-rcp.eclipse.uieditorsplugin.filename" value="org.eclipse.ui.editors_3.2.1.r321_v20060721" />
+	<property name="studio-rcp.eclipse.searchplugin.filename" value="org.eclipse.search_3.2.1.r321_v20060726" />
 
 	    <!-- Setting up OS Name-->
-    <condition property="ldapstudio-rcp.os.name" value="macosx" >
+    <condition property="studio-rcp.os.name" value="macosx" >
             <os name="Mac OS X"/>
     </condition>
-    <condition property="ldapstudio-rcp.os.name" value="linux" >
+    <condition property="studio-rcp.os.name" value="linux" >
             <os family="unix" />
     </condition>
-    <condition property="ldapstudio-rcp.os.name" value="win32">
+    <condition property="studio-rcp.os.name" value="win32">
             <os family="windows" />
     </condition>
 
     <!-- Setting up OS Extension-->
-    <condition property="ldapstudio-rcp.os.extension" value=".app" >
-        <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
+    <condition property="studio-rcp.os.extension" value=".app" >
+        <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
     </condition>
-    <condition property="ldapstudio-rcp.os.extension" value="" >
-        <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
+    <condition property="studio-rcp.os.extension" value="" >
+        <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
-    <condition property="ldapstudio-rcp.os.extension" value=".exe">
-        <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
+    <condition property="studio-rcp.os.extension" value=".exe">
+        <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
     </condition>
 
 
     <!-- Setting up App Name Extension-->
-    <condition property="ldapstudio-rcp.appname" value="Apache Directory Studio" >
+    <condition property="studio-rcp.appname" value="Apache Directory Studio" >
         <or>
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
+            <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
+            <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
         </or>
     </condition>
-    <condition property="ldapstudio-rcp.appname" value="ldapstudio" >
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
+    <condition property="studio-rcp.appname" value="ldapstudio" >
+            <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
 
     <!-- Setting up OS Architecture-->
-    <property name="ldapstudio-rcp.os.arch" value="${os.arch}" />
+    <property name="studio-rcp.os.arch" value="${os.arch}" />
 
 	<!-- ================================== -->
 	<!--              RESOLVE               -->
@@ -97,8 +97,8 @@
 	<!--             COMPILE                -->
 	<!-- ================================== -->
 	<target name="compile" depends="resolve,checkclasses,build-classpath" unless="classes-up2date" description="Compiles the plugin">
-		<mkdir dir="${ldapstudio-rcp.build}" />
-		<copy todir="${ldapstudio-rcp.build}">
+		<mkdir dir="${studio-rcp.build}" />
+		<copy todir="${studio-rcp.build}">
 			<fileset dir="${basedir}">
 				<include name="log4j.conf" />
 				<include name="plugin.xml" />
@@ -109,40 +109,40 @@
 				<include name="product_lg.gif" />
 			</fileset>
 		</copy>
-		<mkdir dir="${ldapstudio-rcp.build}/${lib.dir}" />
-		<copy todir="${ldapstudio-rcp.build}/${lib.dir}">
+		<mkdir dir="${studio-rcp.build}/${lib.dir}" />
+		<copy todir="${studio-rcp.build}/${lib.dir}">
 			<fileset dir="${basedir}/${lib.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
-		<mkdir dir="${ldapstudio-rcp.build}/META-INF" />
-		<copy todir="${ldapstudio-rcp.build}/META-INF">
+		<mkdir dir="${studio-rcp.build}/META-INF" />
+		<copy todir="${studio-rcp.build}/META-INF">
 			<fileset dir="${basedir}/META-INF">
 				<include name="**" />
 			</fileset>
 		</copy>
-		<mkdir dir="${ldapstudio-rcp.build}/resources" />
-		<copy todir="${ldapstudio-rcp.build}/resources">
+		<mkdir dir="${studio-rcp.build}/resources" />
+		<copy todir="${studio-rcp.build}/resources">
 			<fileset dir="${basedir}/resources">
 				<include name="**" />
 			</fileset>
 		</copy>
-		<copy todir="${ldapstudio-rcp.build}">
+		<copy todir="${studio-rcp.build}">
 			<fileset dir="${basedir}/src/main/resources">
 				<include name="**" />
 			</fileset>
 		</copy>
-		<javac source="1.5" debug="yes" srcdir="${ldapstudio-rcp.src}" excludes="" destdir="${ldapstudio-rcp.build}" classpathref="classpath" listfiles="yes" />
+		<javac source="1.5" debug="yes" srcdir="${studio-rcp.src}" excludes="" destdir="${studio-rcp.build}" classpathref="classpath" listfiles="yes" />
 
 		<tstamp>
 			<format pattern="yyyy-MMM-dd, HH:mm 'GMT'Z" property="timestamp" locale="en" />
 		</tstamp>
-		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${ldapstudio-rcp.build}/compile.timestamp" />
+		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${studio-rcp.build}/compile.timestamp" />
 	</target>
 
 	<target name="checkclasses">
-		<uptodate property="classes-up2date" targetfile="${ldapstudio-rcp.build}/compile.timestamp">
-			<srcfiles dir="${ldapstudio-rcp.src}" />
+		<uptodate property="classes-up2date" targetfile="${studio-rcp.build}/compile.timestamp">
+			<srcfiles dir="${studio-rcp.src}" />
 		</uptodate>
 	</target>
 
@@ -150,8 +150,8 @@
 	<!--              JAR                   -->
 	<!-- ================================== -->
 	<target name="jar" description="Creates jar file" depends="compile">
-		<jar destfile="${ldapstudio-rcp.output}/${project.name}_${project.version}.jar" manifest="${ldapstudio-rcp.build}/META-INF/MANIFEST.MF">
-			<fileset dir="${ldapstudio-rcp.build}" excludes="compile.timestamp" />
+		<jar destfile="${studio-rcp.output}/${project.name}_${project.version}.jar" manifest="${studio-rcp.build}/META-INF/MANIFEST.MF">
+			<fileset dir="${studio-rcp.build}" excludes="compile.timestamp" />
 		</jar>
 	</target>
 
@@ -170,67 +170,67 @@
 	<!-- ================================== -->
 	<!--     Eclipse RCP-based product      -->
 	<!-- ================================== -->
-	<property name="ldapstudio-rcp.application" value="${ldapstudio-rcp.output}/ldapstudio" />
-	<property name="ldapstudio-rcp.application.zip" value="${ldapstudio-rcp.output}/${project.name}_${project.version}-${ldapstudio-rcp.os.name}-${os.arch}.zip" />
+	<property name="studio-rcp.application" value="${studio-rcp.output}/ldapstudio" />
+	<property name="studio-rcp.application.zip" value="${studio-rcp.output}/${project.name}_${project.version}-${studio-rcp.os.name}-${os.arch}.zip" />
 
 	<target name="product" depends="jar" description="Create the standalone eclipse RCP application">
-		<mkdir dir="${ldapstudio-rcp.application}" />
-		<copy todir="${ldapstudio-rcp.application}" failonerror="true" overwrite="true" preservelastmodified="yes">
-			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/${ldapstudio-rcp.os.name}/${ldapstudio-rcp.os.arch}/rcp/" />
+		<mkdir dir="${studio-rcp.application}" />
+		<copy todir="${studio-rcp.application}" failonerror="true" overwrite="true" preservelastmodified="yes">
+			<fileset dir="${studio-rcp.eclipse.dir}/${studio-rcp.eclipse.version}/${studio-rcp.os.name}/${studio-rcp.os.arch}/rcp/" />
 		</copy>
-		<mkdir dir="${ldapstudio-rcp.application}/features" />
-		<mkdir dir="${ldapstudio-rcp.application}/plugins" />
-		<copy todir="${ldapstudio-rcp.application}/plugins" failonerror="true" overwrite="true">
-			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/${ldapstudio-rcp.os.name}/${ldapstudio-rcp.os.arch}" excludes="rcp/" />
-			<fileset dir="${ldapstudio-rcp.eclipse.dir}/${ldapstudio-rcp.eclipse.version}/plugins" />
+		<mkdir dir="${studio-rcp.application}/features" />
+		<mkdir dir="${studio-rcp.application}/plugins" />
+		<copy todir="${studio-rcp.application}/plugins" failonerror="true" overwrite="true">
+			<fileset dir="${studio-rcp.eclipse.dir}/${studio-rcp.eclipse.version}/${studio-rcp.os.name}/${studio-rcp.os.arch}" excludes="rcp/" />
+			<fileset dir="${studio-rcp.eclipse.dir}/${studio-rcp.eclipse.version}/plugins" />
 		</copy>
 		
 		<!-- Replace some plugin.xml to get rid of unused actions, menus, wizard, views, ... -->
 		<move 
-			file="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.searchplugin.filename}.plugin.xml" 
-			tofile="${ldapstudio-rcp.application}/plugins/plugin.xml" />
-		<zip destfile="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.searchplugin.filename}.jar"
-			basedir="${ldapstudio-rcp.application}/plugins"
+			file="${studio-rcp.application}/plugins/${studio-rcp.eclipse.searchplugin.filename}.plugin.xml" 
+			tofile="${studio-rcp.application}/plugins/plugin.xml" />
+		<zip destfile="${studio-rcp.application}/plugins/${studio-rcp.eclipse.searchplugin.filename}.jar"
+			basedir="${studio-rcp.application}/plugins"
 			includes="plugin.xml" 
 			update="true"/>
-		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<delete file="${studio-rcp.application}/plugins/plugin.xml" />
 		<move 
-			file="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uiideplugin.filename}.plugin.xml" 
-			tofile="${ldapstudio-rcp.application}/plugins/plugin.xml" />
-		<zip destfile="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uiideplugin.filename}.jar"
-			basedir="${ldapstudio-rcp.application}/plugins"
+			file="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uiideplugin.filename}.plugin.xml" 
+			tofile="${studio-rcp.application}/plugins/plugin.xml" />
+		<zip destfile="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uiideplugin.filename}.jar"
+			basedir="${studio-rcp.application}/plugins"
 			includes="plugin.xml" 
 			update="true"/>
-		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<delete file="${studio-rcp.application}/plugins/plugin.xml" />
 		<move 
-			file="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uieditorsplugin.filename}.plugin.xml" 
-			tofile="${ldapstudio-rcp.application}/plugins/plugin.xml" />
-		<zip destfile="${ldapstudio-rcp.application}/plugins/${ldapstudio-rcp.eclipse.uieditorsplugin.filename}.jar"
-			basedir="${ldapstudio-rcp.application}/plugins"
+			file="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uieditorsplugin.filename}.plugin.xml" 
+			tofile="${studio-rcp.application}/plugins/plugin.xml" />
+		<zip destfile="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uieditorsplugin.filename}.jar"
+			basedir="${studio-rcp.application}/plugins"
 			includes="plugin.xml" 
 			update="true"/>
-		<delete file="${ldapstudio-rcp.application}/plugins/plugin.xml" />
+		<delete file="${studio-rcp.application}/plugins/plugin.xml" />
 		
-		<move file="${ldapstudio-rcp.application}/eclipse${ldapstudio-rcp.os.extension}" tofile="${ldapstudio-rcp.application}/${ldapstudio-rcp.appname}${ldapstudio-rcp.os.extension}">
+		<move file="${studio-rcp.application}/eclipse${studio-rcp.os.extension}" tofile="${studio-rcp.application}/${studio-rcp.appname}${studio-rcp.os.extension}">
 		</move>
-		<move file="${ldapstudio-rcp.output}/${project.name}_${project.version}.jar" tofile="${ldapstudio-rcp.application}/plugins/${project.name}_${project.version}.jar">
+		<move file="${studio-rcp.output}/${project.name}_${project.version}.jar" tofile="${studio-rcp.application}/plugins/${project.name}_${project.version}.jar">
 		</move>
-		<antcall target="setPermission_${ldapstudio-rcp.os.name}" />
+		<antcall target="setPermission_${studio-rcp.os.name}" />
 	</target>
 
 	<!-- ================================== -->
 	<!--        Set Right Permissions       -->
 	<!-- ================================== -->
 	<target name="setPermission_macosx" description="Sets the right permissions on Mac OS X">
-		<chmod file="${ldapstudio-rcp.application}/Apache Directory Studio.app/Contents/MacOS/LDAPStudio" perm="755" />
+		<chmod file="${studio-rcp.application}/Apache Directory Studio.app/Contents/MacOS/LDAPStudio" perm="755" />
 	</target>
 
 	<target name="setPermission_linux" description="Sets the right permissions on Linux">
-		<chmod file="${ldapstudio-rcp.application}/ldapstudio" perm="755" />
+		<chmod file="${studio-rcp.application}/ldapstudio" perm="755" />
 	</target>
 	
 	<target name="setPermission_win32" description="Sets the right permissions on windows">
-			<chmod file="${ldapstudio-rcp.application}/Apache Directory Studio.exe" perm="755" />
+			<chmod file="${studio-rcp.application}/Apache Directory Studio.exe" perm="755" />
 	</target>
 
 	<!-- ================================== -->

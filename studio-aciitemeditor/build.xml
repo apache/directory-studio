@@ -55,8 +55,8 @@
 			<pathelement location="${basedir}/../studio-ldapbrowser-core/target/build"/>
 			<pathelement location="${basedir}/../studio-ldapbrowser-common/target/classes"/>
 			<pathelement location="${basedir}/../studio-ldapbrowser-common/target/build"/>
-			<pathelement location="${basedir}/../ldapstudio-valueeditors/target/classes"/>
-			<pathelement location="${basedir}/../ldapstudio-valueeditors/target/build"/>
+			<pathelement location="${basedir}/../studio-valueeditors/target/classes"/>
+			<pathelement location="${basedir}/../studio-valueeditors/target/build"/>
 			<pathelement location="target/classes"/>
 		</path>
 	</target>

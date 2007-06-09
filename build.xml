@@ -23,41 +23,41 @@
     <property name="ldapstudio-complete.userguides" value="${ldapstudio-complete.output}/userguides" />    
     
     <!-- Setting up OS Name-->
-    <condition property="ldapstudio-rcp.os.name" value="macosx" >
+    <condition property="studio-rcp.os.name" value="macosx" >
             <os name="Mac OS X"/>
     </condition>
-    <condition property="ldapstudio-rcp.os.name" value="linux" >
+    <condition property="studio-rcp.os.name" value="linux" >
             <os family="unix" />
     </condition>
-    <condition property="ldapstudio-rcp.os.name" value="win32">
+    <condition property="studio-rcp.os.name" value="win32">
             <os family="windows" />
     </condition>
 
     <!-- Setting up OS Extension-->
-    <condition property="ldapstudio-rcp.os.extension" value=".app" >
-        <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
+    <condition property="studio-rcp.os.extension" value=".app" >
+        <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
     </condition>
-    <condition property="ldapstudio-rcp.os.extension" value="" >
-        <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
+    <condition property="studio-rcp.os.extension" value="" >
+        <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
-    <condition property="ldapstudio-rcp.os.extension" value=".exe">
-        <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
+    <condition property="studio-rcp.os.extension" value=".exe">
+        <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
     </condition>
 
 	<!-- Setting up build folder -->
 	<condition property="ldapstudio-complete.build" value="${ldapstudio-complete.output}/Apache Directory Studio" >
         <or>
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="win32"/>
+            <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
+            <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
         </or>
     </condition>
     <condition property="ldapstudio-complete.build" value="${ldapstudio-complete.output}/ldapstudio" >
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="linux"/>
+            <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
 	
     <!-- Setting up a special property if target OS is Mac OS X-->
     <condition property="isTargetMacOSX" value="true" >
-            <equals arg1="${ldapstudio-rcp.os.name}" arg2="macosx"/>
+            <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
     </condition>
 
     <!-- ================================== -->
@@ -67,13 +67,13 @@
         <echo>Available commands:</echo>
 	<echo>  bundle - Generate and bundles a complete version of Apache Directory Studio</echo>
 	<echo>      When bundling you can specify the target operating system using this option:</echo>
-	<echo>          o -Dldapstudio-rcp.os.name=macosx for Mac OS X</echo>
-	<echo>          o -Dldapstudio-rcp.os.name=linux for Linux</echo>
-	<echo>          o -Dldapstudio-rcp.os.name=win32 for Windows</echo>
+	<echo>          o -Dstudio-rcp.os.name=macosx for Mac OS X</echo>
+	<echo>          o -Dstudio-rcp.os.name=linux for Linux</echo>
+	<echo>          o -Dstudio-rcp.os.name=win32 for Windows</echo>
 	<echo>      and the target architecture using this option:</echo>
-	<echo>          o -Dldapstudio-rcp.os.arch=i386 for i386 architecture (Linux and Mac OS X)</echo>
-	<echo>          o -Dldapstudio-rcp.os.arch=x86 for x86 architecture (Windows only)</echo>
-	<echo>          o -Dldapstudio-rcp.os.arch=ppc for PowerPC architecture</echo>
+	<echo>          o -Dstudio-rcp.os.arch=i386 for i386 architecture (Linux and Mac OS X)</echo>
+	<echo>          o -Dstudio-rcp.os.arch=x86 for x86 architecture (Windows only)</echo>
+	<echo>          o -Dstudio-rcp.os.arch=ppc for PowerPC architecture</echo>
         <echo>  clean - Delete any generated file (javadoc, classes, jars, distribution)</echo>
         <echo>  javadoc - Generate Javadoc files</echo>
         <echo>  userguides - Generate HTML and PDF user guides</echo>
@@ -88,37 +88,37 @@
         <mkdir dir="${ldapstudio-complete.build}" />
 
         <!-- Creation of the Apache Directory Studio RCP application -->
-        <ant dir="ldapstudio-rcp" inheritAll="no" />
+        <ant dir="studio-rcp" inheritAll="no" />
         <!-- Copy of the RCP app -->
         <copy todir="${ldapstudio-complete.build}">
-            <fileset dir="${basedir}/ldapstudio-rcp/target/ldapstudio">
+            <fileset dir="${basedir}/studio-rcp/target/ldapstudio">
                 <include name="**" />
             </fileset>
         </copy>
 
         <!-- Creation of the Apache Directory Studio RCP Help application -->
-        <ant dir="ldapstudio-rcp-help" inheritAll="no" />
+        <ant dir="studio-rcp-help" inheritAll="no" />
         <!-- Copy of the Apache Directory Studio RCP Help Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-rcp-help/target/">
+            <fileset dir="${basedir}/studio-rcp-help/target/">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the Schemas Editor Plugin -->
-        <ant dir="ldapstudio-schemas-plugin" inheritAll="no" />
+        <ant dir="studio-schemas-plugin" inheritAll="no" />
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-schemas-plugin/target">
+            <fileset dir="${basedir}/studio-schemas-plugin/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
         <!-- Creation of the Schemas Editor Help Plugin -->
-        <ant dir="ldapstudio-schemas-help" inheritAll="no" />
+        <ant dir="studio-schemas-help" inheritAll="no" />
         <!-- Copy of the Schemas Editor Help Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-schemas-help/target">
+            <fileset dir="${basedir}/studio-schemas-help/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -169,10 +169,10 @@
         </copy>
 
         <!-- Creation of the Value Editors Plugin -->
-        <ant dir="ldapstudio-valueeditors" inheritAll="no" />
+        <ant dir="studio-valueeditors" inheritAll="no" />
         <!-- Copy of the Value Editors Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-valueeditors/target">
+            <fileset dir="${basedir}/studio-valueeditors/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -217,12 +217,12 @@
 		<property name="project.features" value="${ldapstudio-complete.build}/features" />
 
         <!-- Copy of the Apache Directory Studio RCP Feature in the "features" folder -->
-		<property name="ldapstudio-rcp-feature.project" value="${basedir}/ldapstudio-rcp-feature" />
-		<property name="ldapstudio-rcp-feature.name" value="org.apache.directory.ldapstudio.rcp.feature" />
-		<property name="ldapstudio-rcp-feature.version" value="0.7.0" />
-        <mkdir dir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}" />
-		<copy todir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}">
-			<fileset dir="${ldapstudio-rcp-feature.project}">
+		<property name="studio-rcp-feature.project" value="${basedir}/studio-rcp-feature" />
+		<property name="studio-rcp-feature.name" value="org.apache.directory.ldapstudio.rcp.feature" />
+		<property name="studio-rcp-feature.version" value="0.7.0" />
+        <mkdir dir="${project.features}/${studio-rcp-feature.name}_${studio-rcp-feature.version}" />
+		<copy todir="${project.features}/${studio-rcp-feature.name}_${studio-rcp-feature.version}">
+			<fileset dir="${studio-rcp-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
 				<include name="META-INF/**" />
@@ -230,12 +230,12 @@
 		</copy>
 		
         <!-- Copy of the Schemas Editor Feature in the "features" folder -->
-		<property name="ldapstudio-schemas-feature.project" value="${basedir}/ldapstudio-schemas-feature" />
-		<property name="ldapstudio-schemas-feature.name" value="org.apache.directory.ldapstudio.schemas.feature" />
-		<property name="ldapstudio-schemas-feature.version" value="0.8.0" />
-		<mkdir dir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}" />
-		<copy todir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}">
-			<fileset dir="${ldapstudio-schemas-feature.project}">
+		<property name="studio-schemas-feature.project" value="${basedir}/studio-schemas-feature" />
+		<property name="studio-schemas-feature.name" value="org.apache.directory.ldapstudio.schemas.feature" />
+		<property name="studio-schemas-feature.version" value="0.8.0" />
+		<mkdir dir="${project.features}/${studio-schemas-feature.name}_${studio-schemas-feature.version}" />
+		<copy todir="${project.features}/${studio-schemas-feature.name}_${studio-schemas-feature.version}">
+			<fileset dir="${studio-schemas-feature.project}">
 				<include name="feature.xml" />
 				<include name="ldapstudio.png" />
 				<include name="META-INF/**" />
@@ -278,7 +278,7 @@
         </copy>
     	
         <!-- Setting Permissions -->
-        <antcall target="setPermission_${ldapstudio-rcp.os.name}" />
+        <antcall target="setPermission_${studio-rcp.os.name}" />
         
         <!-- Special repackaging for Mac OS X -->
         <antcall target="repackage_MacOSX" />
@@ -321,17 +321,17 @@
         <mkdir dir="${ldapstudio-complete.userguides}" />
 
         <!-- Creation of the Apache Directory Studio RCP user guides -->
-        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="static-html" />
-        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-rcp-help" inheritAll="no" target="static-html" />
+        <ant dir="studio-rcp-help" inheritAll="no" target="static-pdf" />
         <!-- Copy of the RCP user guides -->
         <mkdir dir="${ldapstudio-complete.userguides}/ldap_studio" />
         <copy todir="${ldapstudio-complete.userguides}/ldap_studio">
-            <fileset dir="${basedir}/ldapstudio-rcp-help/target/html">
+            <fileset dir="${basedir}/studio-rcp-help/target/html">
                 <include name="**" />
             </fileset>
         </copy>
         <copy todir="${ldapstudio-complete.userguides}">
-            <fileset dir="${basedir}/ldapstudio-rcp-help/target/pdf">
+            <fileset dir="${basedir}/studio-rcp-help/target/pdf">
                 <include name="**/*.pdf" />
             </fileset>
         </copy>
@@ -353,17 +353,17 @@
         </copy>
 
         <!-- Creation of the Apache Directory Studio Schemas Editor user guides -->
-        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="static-html" />
-        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-schemas-help" inheritAll="no" target="static-html" />
+        <ant dir="studio-schemas-help" inheritAll="no" target="static-pdf" />
         <!-- Copy of the schemas user guides -->
         <mkdir dir="${ldapstudio-complete.userguides}/schemas_editor" />
         <copy todir="${ldapstudio-complete.userguides}/schemas_editor">
-            <fileset dir="${basedir}/ldapstudio-schemas-help/target/html">
+            <fileset dir="${basedir}/studio-schemas-help/target/html">
                 <include name="**" />
             </fileset>
         </copy>
         <copy todir="${ldapstudio-complete.userguides}">
-            <fileset dir="${basedir}/ldapstudio-schemas-help/target/pdf">
+            <fileset dir="${basedir}/studio-schemas-help/target/pdf">
                 <include name="**/*.pdf" />
             </fileset>
         </copy>
@@ -373,8 +373,8 @@
     <!--              JAVADOC               -->
     <!-- ================================== -->
     <target name="javadoc" description="Generate Javadoc files">
-        <ant dir="ldapstudio-rcp" inheritAll="no" target="javadoc" />
-        <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="javadoc" />
+        <ant dir="studio-rcp" inheritAll="no" target="javadoc" />
+        <ant dir="studio-schemas-plugin" inheritAll="no" target="javadoc" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="javadoc" />
@@ -385,17 +385,17 @@
     <!--              RESOLVE               -->
     <!-- ================================== -->
     <target name="resolve" description="Resolves the library dependencies using Ivy">
-        <ant dir="ldapstudio-rcp" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="resolve" />
+        <ant dir="studio-rcp" inheritAll="no" target="resolve" />
+        <ant dir="studio-rcp-help" inheritAll="no" target="resolve" />
+        <ant dir="studio-schemas-plugin" inheritAll="no" target="resolve" />
+        <ant dir="studio-schemas-help" inheritAll="no" target="resolve" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="resolve" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="resolve" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="resolve" />
         <ant dir="studio-ldifeditor" inheritAll="no" target="resolve" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="resolve" />
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="resolve" />
-        <ant dir="ldapstudio-valueeditors" inheritAll="no" target="resolve" />
+        <ant dir="studio-valueeditors" inheritAll="no" target="resolve" />
         <ant dir="studio-aciitemeditor" inheritAll="no" target="resolve" />
         <ant dir="studio-jars" inheritAll="no" target="resolve" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="resolve" />
@@ -406,24 +406,24 @@
     <!--               CLEAN                -->
     <!-- ================================== -->
     <target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
-        <ant dir="ldapstudio-rcp" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-rcp-help" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-schemas-plugin" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-schemas-help" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-schemas-feature" inheritAll="no" target="clean"/>
+        <ant dir="studio-rcp" inheritAll="no" target="clean"/>
+        <ant dir="studio-rcp-feature" inheritAll="no" target="clean"/>
+        <ant dir="studio-rcp-help" inheritAll="no" target="clean"/>
+        <ant dir="studio-schemas-plugin" inheritAll="no" target="clean"/>
+        <ant dir="studio-schemas-help" inheritAll="no" target="clean" />
+        <ant dir="studio-schemas-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="clean" />
         <ant dir="studio-ldifeditor" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-feature" inheritAll="no" target="clean"/>
-        <ant dir="ldapstudio-valueeditors" inheritAll="no" target="clean" />
+        <ant dir="studio-valueeditors" inheritAll="no" target="clean" />
         <ant dir="studio-aciitemeditor" inheritAll="no" target="clean" />
         <ant dir="studio-jars" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="clean" />
-        <ant dir="ldapstudio-updatesite" inheritAll="no" target="clean" />
+        <ant dir="studio-updatesite" inheritAll="no" target="clean" />
         <delete dir="${ldapstudio-complete.output}" />
     </target>
 
@@ -445,9 +445,9 @@
         <antcall target="clean" inheritall="false"/>
         <!-- Generating Apache Directory Studio for Mac OS X -->
         <antcall target="bundle" inheritall="false">
-            <param name="ldapstudio-rcp.os.name" value="macosx"/>
-            <param name="ldapstudio-rcp.os.arch" value="i386"/>
-            <param name="ldapstudio-rcp.os.extension" value=".app"/>
+            <param name="studio-rcp.os.name" value="macosx"/>
+            <param name="studio-rcp.os.arch" value="i386"/>
+            <param name="studio-rcp.os.extension" value=".app"/>
         </antcall>
         <move todir="${packages-folder.macosx}">
           <fileset dir="${ldapstudio-complete.output}"/>
@@ -457,9 +457,9 @@
         <antcall target="clean" inheritall="false"/>
         <!-- Generating Apache Directory Studio for Windows -->
         <antcall target="bundle" inheritall="false">
-            <param name="ldapstudio-rcp.os.name" value="win32"/>
-            <param name="ldapstudio-rcp.os.arch" value="x86"/>
-            <param name="ldapstudio-rcp.os.extension" value=".exe"/>
+            <param name="studio-rcp.os.name" value="win32"/>
+            <param name="studio-rcp.os.arch" value="x86"/>
+            <param name="studio-rcp.os.extension" value=".exe"/>
         </antcall>
         <move todir="${packages-folder.windows}">
           <fileset dir="${ldapstudio-complete.output}"/>
@@ -469,9 +469,9 @@
         <antcall target="clean" inheritall="false"/>
         <!-- Generating Apache Directory Studio for Linux i386 -->
         <antcall target="bundle" inheritall="false">
-            <param name="ldapstudio-rcp.os.name" value="linux"/>
-            <param name="ldapstudio-rcp.os.arch" value="i386"/>
-            <param name="ldapstudio-rcp.os.extension" value=""/>
+            <param name="studio-rcp.os.name" value="linux"/>
+            <param name="studio-rcp.os.arch" value="i386"/>
+            <param name="studio-rcp.os.extension" value=""/>
         </antcall>
 		<mkdir dir="${packages-folder.linux-i386}" />
         <tar compression="gzip" destfile="${packages-folder.linux-i386}/LDAP_Studio_Linux_i386.tar.gz">
@@ -488,9 +488,9 @@
         <antcall target="clean" inheritall="false"/>
         <!-- Generating Apache Directory Studio for Linux PPC -->
         <antcall target="bundle" inheritall="false">
-            <param name="ldapstudio-rcp.os.name" value="linux"/>
-            <param name="ldapstudio-rcp.os.arch" value="ppc"/>
-            <param name="ldapstudio-rcp.os.extension" value=""/>
+            <param name="studio-rcp.os.name" value="linux"/>
+            <param name="studio-rcp.os.arch" value="ppc"/>
+            <param name="studio-rcp.os.extension" value=""/>
         </antcall>
 		<mkdir dir="${packages-folder.linux-ppc}" />
         <tar compression="gzip" destfile="${packages-folder.linux-ppc}/LDAP_Studio_Linux_PPC.tar.gz">
@@ -506,10 +506,10 @@
         <!-- Cleaning latest build-->
         <antcall target="clean" inheritall="false"/>
         <!-- Generating Apache Directory Studio's update site -->
-        <ant dir="ldapstudio-updatesite" inheritAll="no"/>
+        <ant dir="studio-updatesite" inheritAll="no"/>
 		<mkdir dir="${packages-folder.updatesite}" />
 		<move todir="${packages-folder.updatesite}">
-            <fileset dir="ldapstudio-updatesite">
+            <fileset dir="studio-updatesite">
                 <include name="features/**"/>
                 <include name="plugins/**"/>
                 <include name="site--xml.html"/>
