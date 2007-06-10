@@ -288,7 +288,10 @@ public class ValueEditorManager
             return this.getCurrentValueEditor( attributeHierarchy.getAttribute().getEntry(), attributeHierarchy
                 .getAttribute().getDescription() );
         }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
+        else if ( attributeHierarchy.size() == 1
+            && attributeHierarchy.getAttribute().getValueSize() == 1
+            && attributeHierarchy.getAttributeDescription().equalsIgnoreCase(
+                attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
             // special case objectClass and RDN: always return MV-editor
             // perhaps this should be moved somewhere else
