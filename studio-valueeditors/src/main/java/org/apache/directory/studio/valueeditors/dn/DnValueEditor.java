@@ -55,7 +55,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
             DN dn;
             try
             {
-                dn = new DN( wrapper.dn );
+                dn = wrapper.dn != null ? new DN( wrapper.dn ) : null;
             }
             catch ( NameException e )
             {
