@@ -209,10 +209,6 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
                         aep.caretOffset = aep.offset + aep.text.length() - 1;
                         aep.shiftsCaret = false;
                     }
-                    
-                    System.out.println(aep.text + ", " + aep.caretOffset);
-                    //aep.caretOffset = aep.offset + aep.text.length() - 1;
-                    //aep.shiftsCaret = false;
                 }
             }
 
