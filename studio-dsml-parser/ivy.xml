@@ -17,7 +17,7 @@
   under the License.
 -->
 <ivy-module version="1.0">
-	<info organisation="org.apache.directory.ldapstudio" module="ldapdstudio-dsml-parser"/>
+	<info organisation="org.apache.directory.studio" module="studio-dsml-parser"/>
 	<dependencies>
 		<dependency org="org.slf4j" name="nlog4j" rev="1.2.25"/>
 		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.6-SNAPSHOT"/>
