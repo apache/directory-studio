@@ -1,6 +1,6 @@
 RewriteEngine on
 
-RewriteBase /ldapstudio/update
+RewriteBase /studio/update
 
 RewriteRule ^site.xml$ site--xml.cgi [L]
 
