@@ -143,7 +143,6 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             for ( int i = 0; i < oldFilenames.length; i++ )
             {
                 File oldFile = new File( oldFilenames[i] );
-                System.out.println("Trying oldFile " + oldFile);
                 if ( oldFile.exists() )
                 {
                     try
