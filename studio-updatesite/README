@@ -1,12 +1,12 @@
 Apache Directory Studio Update Site:
 ------------------------
-The update site is located under https://directory.apache.org/ldapstudio/udpate. 
+The update site is located under https://directory.apache.org/studio/udpate. 
 
 The main update site consists of the following files:
 
  +--directory.apache.org
     |
-    +--ldapstudio
+    +--studio
        |
        +--update
           |
