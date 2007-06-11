@@ -17,5 +17,5 @@
   under the License.
 -->
 <ivy-module version="1.0">
-    <info organisation="org.apache.directory.ldapstudio" module="ldapdtudio-apacheds-configuration"/>
+    <info organisation="org.apache.directory.studio" module="ldapdtudio-apacheds-configuration"/>
 </ivy-module>

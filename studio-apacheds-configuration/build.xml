@@ -17,7 +17,7 @@
   under the License.
 -->
 <project default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
-	<property name="project.name" value="org.apache.directory.ldapstudio.apacheds.configuration" />
+	<property name="project.name" value="org.apache.directory.studio.apacheds.configuration" />
 	<property name="project.version" value="0.8.0" />
 
 	<property name="output" value="${basedir}/target" />
@@ -125,7 +125,7 @@
 		<mkdir dir="${basedir}/doc" />
 		<javadoc destdir="${basedir}/doc">
 			<fileset dir="src/main/java" defaultexcludes="yes">
-				<include name="org/apache/directory/ldapstudio/**"/>
+				<include name="org/apache/directory/studio/**"/>
 			</fileset>
 		</javadoc>
 	</target>

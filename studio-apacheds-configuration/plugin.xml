@@ -22,33 +22,33 @@
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            id="org.apache.directory.ldapstudio.apacheds.configuration.actionset"
+            id="org.apache.directory.studio.apacheds.configuration.actionset"
             label="Apache DS"
             visible="true">
          <menu
-               id="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu"
+               id="org.apache.directory.studio.apacheds.configuration.actionset.menu"
                label="Apache DS"/>
          <action
-               class="org.apache.directory.ldapstudio.apacheds.configuration.actions.OpenServerConfigurationAction"
-               id="org.apache.directory.ldapstudio.apacheds.configuration.openServerConfiguration"
+               class="org.apache.directory.studio.apacheds.configuration.actions.OpenServerConfigurationAction"
+               id="org.apache.directory.studio.apacheds.configuration.openServerConfiguration"
                label="Open Configuration File..."
-               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/open"
+               menubarPath="org.apache.directory.studio.apacheds.configuration.actionset.menu/open"
                style="push"/>
          <action
-               class="org.apache.directory.ldapstudio.apacheds.configuration.actions.NewServerConfigurationAction"
-               id="org.apache.directory.ldapstudio.apacheds.configuration.newServerConfiguration"
+               class="org.apache.directory.studio.apacheds.configuration.actions.NewServerConfigurationAction"
+               id="org.apache.directory.studio.apacheds.configuration.newServerConfiguration"
                label="New Configuration File"
-               menubarPath="org.apache.directory.ldapstudio.apacheds.configuration.actionset.menu/new"
+               menubarPath="org.apache.directory.studio.apacheds.configuration.actionset.menu/new"
                style="push"/>
       </actionSet>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.apache.directory.ldapstudio.apacheds.configuration.editor.ServerConfigurationEditor"
+            class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
             default="true"
             icon="icons/editor.gif"
-            id="org.apache.directory.ldapstudio.apacheds.configuration.editor"
+            id="org.apache.directory.studio.apacheds.configuration.editor"
             name="Server Configuration Editor">
       </editor>
    </extension>
