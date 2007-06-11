@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Jars Plugin
-Bundle-SymbolicName: org.apache.directory.ldapstudio.jars
+Bundle-SymbolicName: org.apache.directory.studio.jars
 Bundle-Version: 0.8.0
 Bundle-Localization: plugin
 Bundle-Vendor: Apache Software Foundation
@@ -38,10 +38,10 @@ Export-Package: antlr,
  org.apache.commons.collections.list,
  org.apache.commons.collections.map,
  org.apache.commons.collections.set,
- org.apache.directory.ldapstudio.dsmlv2,
- org.apache.directory.ldapstudio.dsmlv2.engine,
- org.apache.directory.ldapstudio.dsmlv2.reponse,
- org.apache.directory.ldapstudio.dsmlv2.request,
+ org.apache.directory.studio.dsmlv2,
+ org.apache.directory.studio.dsmlv2.engine,
+ org.apache.directory.studio.dsmlv2.reponse,
+ org.apache.directory.studio.dsmlv2.request,
  org.apache.directory.shared.asn1,
  org.apache.directory.shared.asn1.ber,
  org.apache.directory.shared.asn1.ber.grammar,

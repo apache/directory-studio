@@ -17,9 +17,9 @@
   under the License.
 -->
 <ivy-module version="1.0">
-	<info organisation="org.apache.directory.ldapstudio" module="ldapdstudio-jars"/>
+	<info organisation="org.apache.directory.studio" module="studio-jars"/>
 	<dependencies>
 		<dependency org="antlr" name="antlr" rev="2.7.6"/>
-    	<dependency org="org.apache.directory.ldapstudio" name="studio-dsml-parser" rev="0.3"/>
+    	<dependency org="org.apache.directory.studio" name="studio-dsml-parser" rev="0.3"/>
     </dependencies>
 </ivy-module>
