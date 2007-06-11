@@ -51,7 +51,7 @@
             <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
         </or>
     </condition>
-    <condition property="studio-complete.build" value="${studio-complete.output}/studio" >
+    <condition property="studio-complete.build" value="${studio-complete.output}/ApacheDirectoryStudio" >
             <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
 	
@@ -288,7 +288,7 @@
     <!--        Set Right Permissions       -->
     <!-- ================================== -->
     <target name="setPermission_macosx" description="Sets the right permissions on Mac OS X">
-        <chmod file="${studio-complete.build}/Apache Directory Studio.app/Contents/MacOS/studio" perm="755"/>
+        <chmod file="${studio-complete.build}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755"/>
     </target>
     
     <target name="setPermission_linux" description="Sets the right permissions on Linux">
