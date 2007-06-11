@@ -132,22 +132,32 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
         File file = new File( filename );
         if ( !file.exists() )
         {
-            // try to convert old connections.xml
-            String oldFilename = filename.replaceAll( "org.apache.directory.studio.ldapbrowser.core",
+            // try to convert old connections.xml:
+            // 1st search it in current workspace with the old ldapstudio plugin ID
+            // 2nd search it in old .ldapstudio workspace with the old ldapstudio plugin ID
+            String[] oldFilenames = new String[2];
+            oldFilenames[0] = filename.replace( "org.apache.directory.studio.ldapbrowser.core",
                 "org.apache.directory.ldapstudio.browser.core" );
-            File oldFile = new File( oldFilename );
-            if ( oldFile.exists() )
+            oldFilenames[1] = oldFilenames[0].replace( ".ApacheDirectoryStudio",
+                ".ldapstudio" );
+            for ( int i = 0; i < oldFilenames.length; i++ )
             {
-                try
+                File oldFile = new File( oldFilenames[i] );
+                System.out.println("Trying oldFile " + oldFile);
+                if ( oldFile.exists() )
                 {
-                    String oldContent = FileUtils.readFileToString( oldFile, "UTF-8" );
-                    String newContent = oldContent.replaceAll( "org.apache.directory.ldapstudio.browser.core",
-                        "org.apache.directory.studio.ldapbrowser.core" );
-                    FileUtils.writeStringToFile( file, newContent, "UTF-8" );
-                }
-                catch ( IOException e )
-                {
-                    e.printStackTrace();
+                    try
+                    {
+                        String oldContent = FileUtils.readFileToString( oldFile, "UTF-8" );
+                        String newContent = oldContent.replace( "org.apache.directory.ldapstudio.browser.core",
+                            "org.apache.directory.studio.ldapbrowser.core" );
+                        FileUtils.writeStringToFile( file, newContent, "UTF-8" );
+                        break;
+                    }
+                    catch ( IOException e )
+                    {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
