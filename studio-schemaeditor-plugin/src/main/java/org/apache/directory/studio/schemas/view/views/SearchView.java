@@ -366,7 +366,7 @@ public class SearchView extends ViewPart implements PoolListener
 
 
     /* (non-Javadoc)
-     * @see org.safhaus.ldapstudio.model.PoolListener#poolChanged(org.safhaus.ldapstudio.model.SchemaPool, org.safhaus.ldapstudio.model.LDAPModelEvent)
+     * @see org.apache.directory.studio.schemas.model.PoolListener#poolChanged(org.apache.directory.studio.schemas.model.SchemaPool, org.apache.directory.studio.schemas.model.LDAPModelEvent)
      */
     public void poolChanged( SchemaPool p, LDAPModelEvent e )
     {

@@ -7,7 +7,7 @@
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
       arch="ppc,x86"
-      image="ldapstudio.png">
+      image="studio.png">
 
    <description>
       The Apache Directory Studio LDAP Browser Feature contains all plugins related to the LDAP Browser.
@@ -243,7 +243,7 @@ of your accepting any such warranty or additional liability.
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.ldapstudio.jars"
+         id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
          version="0.8.0"

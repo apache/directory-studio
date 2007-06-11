@@ -65,7 +65,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         defineActions( layout );
         defineLayout( layout );
 
-        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.schemas.perspective" ); //$NON-NLS-1$ 
+        layout.addPerspectiveShortcut( "org.apache.directory.studio.schemas.perspective" ); //$NON-NLS-1$ 
         layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$ 
     }
 
