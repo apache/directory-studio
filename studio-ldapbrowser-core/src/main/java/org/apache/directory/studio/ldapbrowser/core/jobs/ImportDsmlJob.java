@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.ldapstudio.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.ldapstudio.dsmlv2.reponse.ErrorResponse;
+import org.apache.directory.studio.dsmlv2.Dsmlv2ResponseParser;
+import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
+import org.apache.directory.studio.dsmlv2.reponse.ErrorResponse;
 import org.apache.directory.shared.ldap.codec.LdapResponse;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;

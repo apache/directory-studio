@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.ldapstudio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.ldapstudio.dsmlv2.request.SearchRequestDsml;
+import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
+import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
