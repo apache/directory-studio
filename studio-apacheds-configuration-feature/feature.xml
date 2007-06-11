@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.apache.directory.ldapstudio.apacheds.configuration.feature"
+      id="org.apache.directory.studio.apacheds.configuration.feature"
       label="Apache Directory Studio Apache DS Configuration"
       version="0.8.0"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
       arch="ppc,x86"
-      image="ldapstudio.png">
+      image="studio.png">
 
    <description>
       The Apache Directory Studio Apache DS Feature contains all plugins related to Apache DS.
@@ -223,21 +223,21 @@ of your accepting any such warranty or additional liability.
    </url>
 
    <plugin
-         id="org.apache.directory.ldapstudio.apacheds.configuration"
+         id="org.apache.directory.studio.apacheds.configuration"
          download-size="0"
          install-size="0"
          version="0.8.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.ldapstudio.jars"
+         id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
          version="0.8.0"
          unpack="false"/>
          
 	<plugin
-         id="org.apache.directory.ldapstudio.apacheds.configuration.help"
+         id="org.apache.directory.studio.apacheds.configuration.help"
          download-size="0"
          install-size="0"
          version="0.8.0"
