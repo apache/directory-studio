@@ -23,22 +23,22 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
-            class="org.apache.directory.ldapstudio.proxy.view.ProxyView"
+            class="org.apache.directory.studio.proxy.view.ProxyView"
             icon="resources/icons/proxy_view.png"
-            id="org.apache.directory.ldapstudio.proxy.view.ProxyView"
+            id="org.apache.directory.studio.proxy.view.ProxyView"
             name="Proxy"/>
       <view
             allowMultiple="false"
-            class="org.apache.directory.ldapstudio.proxy.view.LdapMessageView"
+            class="org.apache.directory.studio.proxy.view.LdapMessageView"
             icon="resources/icons/ldap-message_view.png"
-            id="org.apache.directory.ldapstudio.proxy.view.LdapMessageView"
+            id="org.apache.directory.studio.proxy.view.LdapMessageView"
             name="LDAP Message"/>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.apache.directory.ldapstudio.proxy.view.Perspective"
+            class="org.apache.directory.studio.proxy.view.Perspective"
             icon="resources/icons/perspective.png"
-            id="org.apache.directory.ldapstudio.proxy.perspective"
+            id="org.apache.directory.studio.proxy.perspective"
             name="LDAP Proxy"/>
    </extension></plugin>
