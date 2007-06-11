@@ -78,7 +78,7 @@
 			<para>Follow this installation process:</para>
 			<para>
 				<itemizedlist>
-					<listitem>Step 1: Uncompress the Tar Gzip archive ('tar xzf ldapstudio-0.6.0-linux-i386.tar.gz' for the i386 Linux version).</listitem>
+					<listitem>Step 1: Uncompress the Tar Gzip archive ('tar xzf apachedirectorystudio-0.6.0-linux-i386.tar.gz' for the i386 Linux version).</listitem>
 					<listitem>Step 2: Move the Apache Directory Studio folder to the location of your choice.</listitem>
 				</itemizedlist>
 			</para>
