@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Help Plugin
-Bundle-SymbolicName: org.apache.directory.ldapstudio.feature;singleton:=true
+Bundle-SymbolicName: org.apache.directory.studio.feature;singleton:=true
 Bundle-Version: 0.7.0
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
