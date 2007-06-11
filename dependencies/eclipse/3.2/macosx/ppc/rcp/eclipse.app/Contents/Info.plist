@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 		 <key>CFBundleExecutable</key>
-		 <string>LDAPStudio</string>
+		 <string>ApacheDirectoryStudio</string>
 		 <key>CFBundleIconFile</key>
-		 <string>ldapstudio.icns</string>
+		 <string>studio.icns</string>
 		 <key>CFBundleInfoDictionaryVersion</key>
 		 <string>6.0</string>
 		 <key>CFBundleName</key>

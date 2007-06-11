@@ -3,7 +3,7 @@
 <site enabled="true" policy="USER-EXCLUDE" updateable="true" url="platform:/base/">
 <feature id="org.eclipse.rcp" url="features/org.eclipse.rcp_3.2.1.r321_v20060801-2ekW2BxmcpPUOoq/" version="3.2.1.r321_v20060801-2ekW2BxmcpPUOoq">
 </feature>
-<feature id="org.apache.directory.ldapstudio.feature" url="features/org.apache.directory.ldapstudio.feature_1.0.0/" version="1.0.0">
+<feature id="org.apache.directory.studio.feature" url="features/org.apache.directory.studio.feature_1.0.0/" version="1.0.0">
 </feature>
 </site>
 </config>
