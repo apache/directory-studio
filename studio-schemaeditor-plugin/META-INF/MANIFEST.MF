@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Schemas Editor Plug-in
-Bundle-SymbolicName: org.apache.directory.ldapstudio.schemas;singleton:=true
+Bundle-SymbolicName: org.apache.directory.studio.schemas;singleton:=true
 Bundle-Version: 0.8.0
-Bundle-Activator: org.apache.directory.ldapstudio.schemas.Activator
+Bundle-Activator: org.apache.directory.studio.schemas.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.apache.directory.ldapstudio.jars,
+ org.apache.directory.studio.jars,
  org.eclipse.jface.text,
  org.eclipse.ui.forms,
  org.eclipse.search

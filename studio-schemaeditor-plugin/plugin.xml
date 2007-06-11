@@ -22,206 +22,206 @@
 <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.apache.directory.ldapstudio.schemas.view.perspectives.Perspective"
+            class="org.apache.directory.studio.schemas.view.perspectives.Perspective"
             icon="ressources/icons/schemas_perspective.gif"
-            id="org.apache.directory.ldapstudio.schemas.perspective"
+            id="org.apache.directory.studio.schemas.perspective"
             name="%studio-schemaeditor-plugin.perspective.schemas.name"/>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="org.apache.directory.ldapstudio.schemas.view.category"
+            id="org.apache.directory.studio.schemas.view.category"
             name="%studio-schemaeditor-plugin.views.category.name"/>
       <view
             allowMultiple="false"
-            category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.views.SchemaElementsView"
+            category="org.apache.directory.studio.schemas.view.category"
+            class="org.apache.directory.studio.schemas.view.views.SchemaElementsView"
             icon="ressources/icons/schema_elements_view.png"
-            id="org.apache.directory.ldapstudio.schemas.view.SchemaElementsView"
+            id="org.apache.directory.studio.schemas.view.SchemaElementsView"
             name="%studio-schemaeditor-plugin.views.schemaElements.name"/>
       <view
             allowMultiple="false"
-            category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.views.SchemasView"
+            category="org.apache.directory.studio.schemas.view.category"
+            class="org.apache.directory.studio.schemas.view.views.SchemasView"
             icon="ressources/icons/schemas_view.png"
-            id="org.apache.directory.ldapstudio.schemas.view.SchemasView"
+            id="org.apache.directory.studio.schemas.view.SchemasView"
             name="%studio-schemaeditor-plugin.views.schemas.name"/>
       <view
             allowMultiple="false"
-            category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.views.SearchView"
+            category="org.apache.directory.studio.schemas.view.category"
+            class="org.apache.directory.studio.schemas.view.views.SearchView"
             icon="ressources/icons/search.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.SearchView"
+            id="org.apache.directory.studio.schemas.view.SearchView"
             name="%studio-schemaeditor-plugin.views.search.name"/>
       <view
             allowMultiple="false"
-            category="org.apache.directory.ldapstudio.schemas.view.category"
-            class="org.apache.directory.ldapstudio.schemas.view.views.HierarchyView"
+            category="org.apache.directory.studio.schemas.view.category"
+            class="org.apache.directory.studio.schemas.view.views.HierarchyView"
             icon="ressources/icons/hierarchy_view.png"
-            id="org.apache.directory.ldapstudio.schemas.view.HierarchyView"
+            id="org.apache.directory.studio.schemas.view.HierarchyView"
             name="Hierarchy"/>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.openalocalschema.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.OpenLocal"
+            id="org.apache.directory.studio.schemas.cmd.OpenLocal"
             name="%studio-schemaeditor-plugin.commands.openalocalschema.name">
       </command>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.saveselectedschema.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.Save"
+            id="org.apache.directory.studio.schemas.cmd.Save"
             name="%studio-schemaeditor-plugin.commands.saveselectedschema.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.saveselectedschemaas.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.SaveAs"
+            id="org.apache.directory.studio.schemas.cmd.SaveAs"
             name="%studio-schemaeditor-plugin.commands.saveselectedschemaas.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.saveallschemas.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.SaveAll"
+            id="org.apache.directory.studio.schemas.cmd.SaveAll"
             name="%studio-schemaeditor-plugin.commands.saveallschemas.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.removeselectedschema.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.RemoveSchema"
+            id="org.apache.directory.studio.schemas.cmd.RemoveSchema"
             name="%studio-schemaeditor-plugin.commands.removeselectedschema.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.viewschemasourcecode.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.OpenSchemaSourceCode"
+            id="org.apache.directory.studio.schemas.cmd.OpenSchemaSourceCode"
             name="%studio-schemaeditor-plugin.commands.viewschemasourcecode.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.delete.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.Delete"
+            id="org.apache.directory.studio.schemas.cmd.Delete"
             name="%studio-schemaeditor-plugin.commands.delete.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.createanewschema.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.CreateANewSchema"
+            id="org.apache.directory.studio.schemas.cmd.CreateANewSchema"
             name="%studio-schemaeditor-plugin.commands.createanewschema.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.createanewobjectclass.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.CreateANewObjectClass"
+            id="org.apache.directory.studio.schemas.cmd.CreateANewObjectClass"
             name="%studio-schemaeditor-plugin.commands.createanewobjectclass.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="%studio-schemaeditor-plugin.commands.createanewattributetype.description"
-            id="org.apache.directory.ldapstudio.schemas.cmd.CreateANewAttributeType"
+            id="org.apache.directory.studio.schemas.cmd.CreateANewAttributeType"
             name="%studio-schemaeditor-plugin.commands.createanewattributetype.name"/>
       <category
-            id="org.apache.directory.ldapstudio.schemas.category"
+            id="org.apache.directory.studio.schemas.category"
             name="%studio-schemaeditor-plugin.commands.category.name"/>
       <command
-            categoryId="org.apache.directory.ldapstudio.schemas.category"
+            categoryId="org.apache.directory.studio.schemas.category"
             description="Opens Type Hierarchy"
-            id="org.apache.directory.ldapstudio.schemas.cmd.OpenTypeHierarchy"
+            id="org.apache.directory.studio.schemas.cmd.OpenTypeHierarchy"
             name="Open Type Hierarchy"/>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="org.apache.directory.ldapstudio.schemas.cmd.OpenLocal"
+            commandId="org.apache.directory.studio.schemas.cmd.OpenLocal"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+O">
       </key>
       <key
-            commandId="org.apache.directory.ldapstudio.schemas.cmd.OpenTypeHierarchy"
+            commandId="org.apache.directory.studio.schemas.cmd.OpenTypeHierarchy"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F4"/>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.apache.directory.ldapstudio.schemas.view.editors.objectClass.ObjectClassEditor"
+            class="org.apache.directory.studio.schemas.view.editors.objectClass.ObjectClassEditor"
             default="false"
             icon="ressources/icons/object_class.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.objectClassEditor"
+            id="org.apache.directory.studio.schemas.view.objectClassEditor"
             name="%studio-schemaeditor-plugin.editors.objectclasseditor.name"/>
       <editor
-            class="org.apache.directory.ldapstudio.schemas.view.editors.attributeType.AttributeTypeEditor"
+            class="org.apache.directory.studio.schemas.view.editors.attributeType.AttributeTypeEditor"
             default="false"
             icon="ressources/icons/attribute_type.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.attributeTypeEditor"
+            id="org.apache.directory.studio.schemas.view.attributeTypeEditor"
             name="%studio-schemaeditor-plugin.editors.attributetypeeditor.name"/>
       <editor
-            class="org.apache.directory.ldapstudio.schemas.view.editors.schema.SchemaEditor"
+            class="org.apache.directory.studio.schemas.view.editors.schema.SchemaEditor"
             default="false"
             icon="ressources/icons/schema.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.schemaformeditor"
+            id="org.apache.directory.studio.schemas.view.schemaformeditor"
             name="%studio-schemaeditor-plugin.editors.schemaeditor.name"/>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="org.apache.directory.ldapstudio.schemas.view.wizards.category"
+            id="org.apache.directory.studio.schemas.view.wizards.category"
             name="%studio-schemaeditor-plugin.wizards.category.name"/>
       <wizard
-            category="org.apache.directory.ldapstudio.schemas.view.wizards.category"
-            class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
+            category="org.apache.directory.studio.schemas.view.wizards.category"
+            class="org.apache.directory.studio.schemas.view.wizards.CreateANewSchemaWizard"
             icon="ressources/icons/schema_new.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewSchemaWizard"
+            id="org.apache.directory.studio.schemas.view.wizards.CreateANewSchemaWizard"
             name="%studio-schemaeditor-plugin.wizards.createanewschema.name"/>
       <wizard
-            category="org.apache.directory.ldapstudio.schemas.view.wizards.category"
-            class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjectClassWizard"
+            category="org.apache.directory.studio.schemas.view.wizards.category"
+            class="org.apache.directory.studio.schemas.view.wizards.CreateANewObjectClassWizard"
             icon="ressources/icons/object_class_new.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewObjecClassWizard"
+            id="org.apache.directory.studio.schemas.view.wizards.CreateANewObjecClassWizard"
             name="%studio-schemaeditor-plugin.wizards.createanewobjectclass.name"/>
       <wizard
-            category="org.apache.directory.ldapstudio.schemas.view.wizards.category"
-            class="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"
+            category="org.apache.directory.studio.schemas.view.wizards.category"
+            class="org.apache.directory.studio.schemas.view.wizards.CreateANewAttributeTypeWizard"
             icon="ressources/icons/attribute_type_new.gif"
-            id="org.apache.directory.ldapstudio.schemas.view.wizards.CreateANewAttributeTypeWizard"
+            id="org.apache.directory.studio.schemas.view.wizards.CreateANewAttributeTypeWizard"
             name="%studio-schemaeditor-plugin.wizards.createanewattributetype.name"/>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasEditorPreferencePage"
-            id="org.apache.directory.ldapstudio.schemas.preferences.general"
+            class="org.apache.directory.studio.schemas.view.preferences.SchemasEditorPreferencePage"
+            id="org.apache.directory.studio.schemas.preferences.general"
             name="%studio-schemaeditor-plugin.preferencepages.general.name"/>
       <page
-            category="org.apache.directory.ldapstudio.schemas.preferences.general"
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemaElementsViewPreferencePage"
-            id="org.apache.directory.ldapstudio.schemas.preferences.schemaElementsView"
+            category="org.apache.directory.studio.schemas.preferences.general"
+            class="org.apache.directory.studio.schemas.view.preferences.SchemaElementsViewPreferencePage"
+            id="org.apache.directory.studio.schemas.preferences.schemaElementsView"
             name="Schema Elements View"/>
       <page
-            category="org.apache.directory.ldapstudio.schemas.preferences.general"
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.SchemasViewPreferencePage"
-            id="org.apache.directory.ldapstudio.schemas.preferences.schemasView"
+            category="org.apache.directory.studio.schemas.preferences.general"
+            class="org.apache.directory.studio.schemas.view.preferences.SchemasViewPreferencePage"
+            id="org.apache.directory.studio.schemas.preferences.schemasView"
             name="Schemas View"/>
       <page
-            category="org.apache.directory.ldapstudio.schemas.preferences.general"
-            class="org.apache.directory.ldapstudio.schemas.view.preferences.HierarchyViewPreferencePage"
-            id="org.apache.directory.ldapstudio.schemas.preferences.hierarchyView"
+            category="org.apache.directory.studio.schemas.preferences.general"
+            class="org.apache.directory.studio.schemas.view.preferences.HierarchyViewPreferencePage"
+            id="org.apache.directory.studio.schemas.preferences.hierarchyView"
             name="Hierarchy View"/>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.apache.directory.ldapstudio.schemas.controller.PreferenceInitializer"/>
+      <initializer class="org.apache.directory.studio.schemas.controller.PreferenceInitializer"/>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="false"
-            class="org.apache.directory.ldapstudio.schemas.view.SchemasEditorLabelDecorator"
-            id="org.apache.directory.ldapstudio.schemas.decorator"
+            class="org.apache.directory.studio.schemas.view.SchemasEditorLabelDecorator"
+            id="org.apache.directory.studio.schemas.decorator"
             label="Schemas Editor Decorator"
             lightweight="true"
             location="BOTTOM_RIGHT"
             state="true">
             <enablement>
           		<or>
-            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.views.wrappers.AttributeTypeWrapper"/>
-            		<objectClass name="org.apache.directory.ldapstudio.schemas.view.views.wrappers.ObjectClassWrapper"/>
-            		<objectClass name="org.apache.directory.ldapstudio.schemas.model.AttributeType"/>
-            		<objectClass name="org.apache.directory.ldapstudio.schemas.model.ObjectClass"/>
+            		<objectClass name="org.apache.directory.studio.schemas.view.views.wrappers.AttributeTypeWrapper"/>
+            		<objectClass name="org.apache.directory.studio.schemas.view.views.wrappers.ObjectClassWrapper"/>
+            		<objectClass name="org.apache.directory.studio.schemas.model.AttributeType"/>
+            		<objectClass name="org.apache.directory.studio.schemas.model.ObjectClass"/>
           		
           		
           		</or>
@@ -234,10 +234,10 @@
    <extension
          point="org.eclipse.search.searchPages">
       <page
-            class="org.apache.directory.ldapstudio.schemas.view.search.SearchPage"
+            class="org.apache.directory.studio.schemas.view.search.SearchPage"
             enabled="true"
             icon="ressources/icons/search.gif"
-            id="org.apache.directory.ldapstudio.schemas.search"
+            id="org.apache.directory.studio.schemas.search"
             label="Schemas Search"
             showScopeSection="false"
             sizeHint="450,300"/>
