@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio RCP Application
-Bundle-SymbolicName: org.apache.directory.ldapstudio;singleton:=true
+Bundle-SymbolicName: org.apache.directory.studio;singleton:=true
 Bundle-Version: 0.7.0
-Bundle-Activator: org.apache.directory.ldapstudio.Activator
+Bundle-Activator: org.apache.directory.studio.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,

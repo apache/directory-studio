@@ -18,13 +18,13 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.actions;
+package org.apache.directory.studio.actions;
 
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.directory.ldapstudio.Messages;
+import org.apache.directory.studio.Messages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -51,7 +51,7 @@ public class ReportABugAction extends Action implements IWorkbenchWindowActionDe
      */
     public ReportABugAction()
     {
-        setId( "org.apache.directory.ldapstudio.reportABug" ); //$NON-NLS-1$
+        setId( "org.apache.directory.studio.reportABug" ); //$NON-NLS-1$
         setText( Messages.getString( "ReportABugAction.Report_a_bug" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "ReportABugAction.Open_a_web_browser" ) ); //$NON-NLS-1$
         setEnabled( true );

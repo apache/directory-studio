@@ -18,13 +18,13 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.actions;
+package org.apache.directory.studio.actions;
 
 
 import java.io.File;
 import java.text.MessageFormat;
 
-import org.apache.directory.ldapstudio.Messages;
+import org.apache.directory.studio.Messages;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
@@ -63,7 +63,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
      */
     public OpenFileAction()
     {
-        setId( "org.apache.directory.ldapstudio.openFile" ); //$NON-NLS-1$
+        setId( "org.apache.directory.studio.openFile" ); //$NON-NLS-1$
         setText( Messages.getString( "OpenFileAction.Open_File" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "OpenFileAction.Open_file_from_filesystem" ) ); //$NON-NLS-1$
         setEnabled( true );

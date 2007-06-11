@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio;
+package org.apache.directory.studio;
 
 
 import org.eclipse.swt.graphics.Point;

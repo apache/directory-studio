@@ -18,14 +18,14 @@
  *  
  */
 
-package org.apache.directory.ldapstudio;
+package org.apache.directory.studio;
 
 
-import org.apache.directory.ldapstudio.actions.ManageConfigurationAction;
-import org.apache.directory.ldapstudio.actions.OpenFileAction;
-import org.apache.directory.ldapstudio.actions.ReportABugAction;
-import org.apache.directory.ldapstudio.actions.UpdateAction;
-import org.apache.directory.ldapstudio.view.ImageKeys;
+import org.apache.directory.studio.actions.ManageConfigurationAction;
+import org.apache.directory.studio.actions.OpenFileAction;
+import org.apache.directory.studio.actions.ReportABugAction;
+import org.apache.directory.studio.actions.UpdateAction;
+import org.apache.directory.studio.view.ImageKeys;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;

@@ -18,10 +18,10 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.actions;
+package org.apache.directory.studio.actions;
 
 
-import org.apache.directory.ldapstudio.Messages;
+import org.apache.directory.studio.Messages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -50,7 +50,7 @@ public class ManageConfigurationAction extends Action implements IAction
     public ManageConfigurationAction( IWorkbenchWindow window )
     {
         this.window = window;
-        setId( "org.apache.directory.ldapstudio.manageConfiguration" ); //$NON-NLS-1$
+        setId( "org.apache.directory.studio.manageConfiguration" ); //$NON-NLS-1$
         setText( Messages.getString( "ManageConfigurationAction.Manage_Configuration" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "ManageConfigurationAction.Manage_configuration_for_LDAP_Studio" ) ); //$NON-NLS-1$
     }

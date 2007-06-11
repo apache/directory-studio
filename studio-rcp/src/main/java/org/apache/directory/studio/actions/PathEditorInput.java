@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.actions;
+package org.apache.directory.studio.actions;
 
 
 import org.eclipse.core.runtime.IPath;

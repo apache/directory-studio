@@ -18,13 +18,13 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.actions;
+package org.apache.directory.studio.actions;
 
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.directory.ldapstudio.Messages;
+import org.apache.directory.studio.Messages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -58,7 +58,7 @@ public class AddExtensionAction extends Action implements IAction
     public AddExtensionAction( IWorkbenchWindow window )
     {
         this.window = window;
-        setId( "org.apache.directory.ldapstudio.newExtensions" ); //$NON-NLS-1$
+        setId( "org.apache.directory.studio.newExtensions" ); //$NON-NLS-1$
         setText( Messages.getString( "AddExtensionAction.Add_Extensions" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "AddExtensionAction.Search_for_new_extensions" ) ); //$NON-NLS-1$
     }
@@ -89,7 +89,7 @@ public class AddExtensionAction extends Action implements IAction
                 try
                 {
                     String homeBase = System.getProperty(
-                        "ldapstudio.homebase", Messages.getString( "AddExtensionAction.LDAP_Studio_Home_Base" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        "studio.homebase", Messages.getString( "AddExtensionAction.LDAP_Studio_Home_Base" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     URL url = new URL( homeBase );
                     scope.addSearchSite( Messages.getString( "AddExtensionAction.LDAP_Studio_Site" ), url, null ); //$NON-NLS-1$
                 }

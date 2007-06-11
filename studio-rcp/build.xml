@@ -17,7 +17,7 @@
   under the License.
 -->
 <project default="product" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
-    <property name="project.name" value="org.apache.directory.ldapstudio" />
+    <property name="project.name" value="org.apache.directory.studio" />
     <property name="project.version" value="0.7.0" />
 
     <property name="studio-rcp.output" value="${basedir}/target" />
@@ -66,7 +66,7 @@
             <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
         </or>
     </condition>
-    <condition property="studio-rcp.appname" value="ldapstudio" >
+    <condition property="studio-rcp.appname" value="ApacheDirectoryStudio" >
             <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
 
@@ -162,7 +162,7 @@
 		<mkdir dir="${basedir}/doc" />
 		<javadoc destdir="${basedir}/doc">
 			<fileset dir="src/main/java" defaultexcludes="yes">
-				<include name="org/apache/directory/ldapstudio/**"/>
+				<include name="org/apache/directory/studio/**"/>
 			</fileset>
 		</javadoc>
 	</target>
@@ -170,7 +170,7 @@
 	<!-- ================================== -->
 	<!--     Eclipse RCP-based product      -->
 	<!-- ================================== -->
-	<property name="studio-rcp.application" value="${studio-rcp.output}/ldapstudio" />
+	<property name="studio-rcp.application" value="${studio-rcp.output}/studio" />
 	<property name="studio-rcp.application.zip" value="${studio-rcp.output}/${project.name}_${project.version}-${studio-rcp.os.name}-${os.arch}.zip" />
 
 	<target name="product" depends="jar" description="Create the standalone eclipse RCP application">
@@ -222,11 +222,11 @@
 	<!--        Set Right Permissions       -->
 	<!-- ================================== -->
 	<target name="setPermission_macosx" description="Sets the right permissions on Mac OS X">
-		<chmod file="${studio-rcp.application}/Apache Directory Studio.app/Contents/MacOS/LDAPStudio" perm="755" />
+		<chmod file="${studio-rcp.application}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755" />
 	</target>
 
 	<target name="setPermission_linux" description="Sets the right permissions on Linux">
-		<chmod file="${studio-rcp.application}/ldapstudio" perm="755" />
+		<chmod file="${studio-rcp.application}/ApacheDirectoryStudio" perm="755" />
 	</target>
 	
 	<target name="setPermission_win32" description="Sets the right permissions on windows">
@@ -244,7 +244,7 @@
 				<exclude name="build.properties" />
 				<exclude name="build.xml" />
 				<exclude name="ivy.xml" />
-				<exclude name="ldapstudio.product" />
+				<exclude name="studio.product" />
 				<exclude name="log4j.conf" />
 				<exclude name="META-INF/**" />
 				<exclude name="plugin_customization.ini" />

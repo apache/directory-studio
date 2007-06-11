@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio;
+package org.apache.directory.studio;
 
 
 import org.apache.log4j.Logger;
@@ -38,7 +38,7 @@ import org.eclipse.ui.PlatformUI;
 public class Application implements IPlatformRunnable
 {
 
-    public static final String PLUGIN_ID = "org.apache.directory.ldapstudio"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "org.apache.directory.studio"; //$NON-NLS-1$
     private static Logger logger = Logger.getLogger( Application.class );
 
 

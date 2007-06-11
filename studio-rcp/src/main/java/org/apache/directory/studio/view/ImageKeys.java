@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.view;
+package org.apache.directory.studio.view;
 
 
 /**

@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio;
+package org.apache.directory.studio;
 
 
 import java.util.MissingResourceException;
@@ -38,7 +38,7 @@ public class Messages
     // The logger
     private static Logger logger = Logger.getLogger( Messages.class );
 
-    private static final String BUNDLE_NAME = "org.apache.directory.ldapstudio.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "org.apache.directory.studio.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
 

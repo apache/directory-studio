@@ -18,13 +18,13 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.view;
+package org.apache.directory.studio.view;
 
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.directory.ldapstudio.Messages;
+import org.apache.directory.studio.Messages;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,7 +49,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class WelcomeView extends ViewPart
 {
-    public static final String ID = "org.apache.directory.ldapstudio.view.WelcomeView"; //$NON-NLS-1$
+    public static final String ID = "org.apache.directory.studio.view.WelcomeView"; //$NON-NLS-1$
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -68,7 +68,7 @@ public class WelcomeView extends ViewPart
 
         // LDAP Browser Plugin Image & Button
         Image ldapBrowserImage = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
-            "ldapstudio_ldap-browser-plugin.png" ) ); //$NON-NLS-1$
+            "studio_ldap-browser-plugin.png" ) ); //$NON-NLS-1$
         Button ldapBrowserButton = new Button( container, SWT.FLAT );
         ldapBrowserButton.setImage( ldapBrowserImage );
         ldapBrowserButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
@@ -84,7 +84,7 @@ public class WelcomeView extends ViewPart
 
         // Schemas Editor Plugin Image & Button
         Image schemasEditorImage = new Image( PlatformUI.getWorkbench().getDisplay(), getClass().getResourceAsStream(
-            "ldapstudio_schemas-editor-plugin.png" ) ); //$NON-NLS-1$
+            "studio_schemas-editor-plugin.png" ) ); //$NON-NLS-1$
         Button schemasEditorButton = new Button( container, SWT.FLAT );
         schemasEditorButton.setImage( schemasEditorImage );
         schemasEditorButton.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
@@ -94,7 +94,7 @@ public class WelcomeView extends ViewPart
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
                     PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(
-                        "org.apache.directory.ldapstudio.schemas.perspective" ) ); //$NON-NLS-1$
+                        "org.apache.directory.studio.schemas.perspective" ) ); //$NON-NLS-1$
             }
         } );
 

@@ -1,5 +1,5 @@
 /* XPM */
-static char * ldapstudio_xpm[] = {
+static char * studio_xpm[] = {
 "48 48 1461 2",
 "  	c None",
 ". 	c #7CC6E8",

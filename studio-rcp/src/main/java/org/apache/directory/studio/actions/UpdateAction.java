@@ -18,10 +18,10 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.actions;
+package org.apache.directory.studio.actions;
 
 
-import org.apache.directory.ldapstudio.Messages;
+import org.apache.directory.studio.Messages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -51,7 +51,7 @@ public class UpdateAction extends Action implements IAction
     public UpdateAction( IWorkbenchWindow window )
     {
         this.window = window;
-        setId( "org.apache.directory.ldapstudio.newUpdates" ); //$NON-NLS-1$
+        setId( "org.apache.directory.studio.newUpdates" ); //$NON-NLS-1$
         setText( Messages.getString( "UpdateAction.Search_for_updates" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "UpdateAction.Search_for_updates_for_LDAP_Studio" ) ); //$NON-NLS-1$
     }

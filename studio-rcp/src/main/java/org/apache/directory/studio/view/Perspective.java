@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.ldapstudio.view;
+package org.apache.directory.studio.view;
 
 
 import org.eclipse.ui.IPageLayout;
@@ -46,7 +46,7 @@ public class Perspective implements IPerspectiveFactory
         layout.getViewLayout( WelcomeView.ID ).setCloseable( false );
 
         layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
-        layout.addPerspectiveShortcut( "org.apache.directory.ldapstudio.schemas.perspective" ); //$NON-NLS-1$ 
+        layout.addPerspectiveShortcut( "org.apache.directory.studio.schemas.perspective" ); //$NON-NLS-1$ 
     
         layout.addShowViewShortcut( WelcomeView.ID );
     }
