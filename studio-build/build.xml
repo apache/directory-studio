@@ -70,22 +70,17 @@
 		<mkdir dir="${target.classes}"/>
 		<javac source="1.5" srcdir="${src.main.java}" destdir="${target.classes}" classpathref="classpath" />
 		<copy todir="${target.classes}" failonerror="false">
-			<fileset dir="${src.main.resources}">
-				<include name="**" />
-			</fileset>
+			<fileset dir="${src.main.resources}" />
 		</copy>
 		<!-- Compiling test sources -->
 		<mkdir dir="${target.test-classes}"/>
-		<javac source="1.5" srcdir="${src.test.java}" destdir="${target.test-classes}" classpathref="classpath" >
+		<javac source="1.5" srcdir="${src.test.java}" destdir="${target.test-classes}" classpathref="classpath">
 			<classpath>
-			      <pathelement path="${lib.dir}"/>
-			      <pathelement path="${target.classes}"/>
+				<pathelement path="${target.classes}" />
 		    </classpath>
 		</javac>
 		<copy todir="${target.test-classes}" failonerror="false">
-			<fileset dir="${src.test.resources}">
-				<include name="**" />
-			</fileset>
+			<fileset dir="${src.test.resources}" />
 		</copy>
 	</target>
 	
