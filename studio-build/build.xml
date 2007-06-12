@@ -1,0 +1,141 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<project name="studio.build" default ="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+	
+	<!-- Setting standard project properties -->
+	<property name="src" value="${basedir}/src" />
+	<property name="src.main.java" value="${src}/main/java" />
+	<property name="src.main.resources" value="${src}/main/resources" />
+	<property name="src.test.java" value="${src}/test/java" />
+	<property name="src.test.resources" value="${src}/test/resources" />
+	<property name="target" value="${basedir}/target" />
+	<property name="target.classes" value="${target}/classes" />
+	<property name="target.test-classes" value="${target}/test-classes" />
+	<property name="target.build" value="${target}/build" />
+	<property name="target.doc" value="${target}/doc" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	
+	<!-- Loading specific project properties -->
+	<property  file="${basedir}/plugin.properties" />
+	
+
+	<!-- INSTALL-IVY TASK -->
+	<target name="install-ivy">
+		<!-- Installing Ivy -->
+		<path id="ivy.lib.path">
+			<fileset dir="../tools" includes="ivy.jar"/>
+		</path> 
+		<taskdef resource="fr/jayasoft/ivy/ant/antlib.xml" uri="antlib:fr.jayasoft.ivy.ant" classpathref="ivy.lib.path"/> 
+		<!-- Configuring Ivy -->
+		<property name="repository.dir" location="../dependencies/externals/"/>
+		<ivy:configure file="../tools/ivyconf.xml"/>
+	</target>
+
+	<!-- RETRIEVE-DEPENDENCIES TASK -->
+	<target name="retrieve-dependencies" depends="install-ivy" description="Retreive dependencies with ivy">
+		<ivy:retrieve/>
+	</target>
+
+	
+	<!-- BUILD-CLASSPATH TASK -->
+	<target name="build-classpath" description="Computes the classpath" >
+		<path id="classpath">
+			<!-- Project dependencies -->
+			<fileset dir="${lib.dir}" />
+		</path>
+	</target>
+	
+
+	<!-- COMPILE TASK -->
+	<target name="compile" depends="retrieve-dependencies,build-classpath" description="Compiles the sources">
+		<!-- Compiling main sources -->
+		<mkdir dir="${target.classes}"/>
+		<javac source="1.5" srcdir="${src.main.java}" destdir="${target.classes}" classpathref="classpath" />
+		<copy todir="${target.classes}" failonerror="false">
+			<fileset dir="${src.main.resources}">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<!-- Compiling test sources -->
+		<mkdir dir="${target.test-classes}"/>
+		<javac source="1.5" srcdir="${src.test.java}" destdir="${target.test-classes}" classpathref="classpath" />
+		<copy todir="${target.test-classes}" failonerror="false">
+			<fileset dir="${src.test.resources}">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+	
+
+	<!-- JAR TASK -->
+	<target name="jar" depends="compile" description="Creates a Jar from the compiled sources">
+		<copy todir="${target.build}" failonerror="false">
+			<fileset dir="${target.classes}">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="META-INF/**" />
+			</fileset>
+		</copy>
+		<jar destfile="${target}/${project.name}-${project.version}.jar" manifest="${target.build}/META-INF/MANIFEST.MF">
+			<fileset dir="${target.build}" />
+		</jar>
+	</target>
+	
+	
+	<!-- PLUGIN TASK -->
+	<target name="plugin" depends="compile" description="Creates a Jar from the compiled sources">
+		<copy todir="${target.build}" failonerror="false">
+			<fileset dir="${target.classes}">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="about.html" />
+				<include name="lib/**" />
+				<include name="META-INF/**" />
+				<include name="plugin.properties" />
+				<include name="plugin.xml" />
+				<include name="resources/**" />
+			</fileset>
+		</copy>
+		<jar destfile="${target}/${project.id}_${project.version}.jar" manifest="${target.build}/META-INF/MANIFEST.MF">
+			<fileset dir="${target.build}" />
+		</jar>
+	</target>
+
+
+	<!-- JAVADOC TASK -->
+	<target name="javadoc" depends="build-classpath" description="Generate Javadoc files">
+		<mkdir dir="${target.doc}" />
+		<javadoc destdir="${target.doc}" classpathref="classpath">
+			<fileset dir="${src.main.java}" defaultexcludes="yes">
+				<include name="**/*.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+
+	
+	<!-- CLEAN TASK -->
+	<target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
+		<echo>Cleaning ${project.name} (${project.id}) version ${project.version}</echo>
+		<delete dir="${lib.dir}"/>
+		<delete dir="${target}"/>
+	</target>
+	
+</project>
