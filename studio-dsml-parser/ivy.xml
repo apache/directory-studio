@@ -25,5 +25,6 @@
 		<dependency org="commons-collections" name="commons-collections" rev="3.1"/>
 		<dependency org="org.dom4j" name="dom4j" rev="1.6.1"/>
 		<dependency org="org.xmlpull" name="xpp3" rev="1.1.3_8"/>
+		<dependency org="junit" name="junit" rev="3.8.2"/>
     </dependencies>
 </ivy-module>
