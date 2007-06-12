@@ -35,7 +35,6 @@
 	<property file="${basedir}/project.properties" />
 	<property file="${basedir}/plugin.properties" />
 	
-	
 
 	<!-- INSTALL-IVY TASK -->
 	<target name="install-ivy">
@@ -49,8 +48,10 @@
 		<ivy:configure file="../tools/ivyconf.xml"/>
 	</target>
 
+	
 	<!-- RETRIEVE-DEPENDENCIES TASK -->
 	<target name="retrieve-dependencies" depends="install-ivy" description="Retreive dependencies with ivy">
+		<mkdir dir="${lib.dir}"/>
 		<ivy:retrieve/>
 	</target>
 
