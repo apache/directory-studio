@@ -29,10 +29,10 @@ package org.apache.directory.studio.apacheds.configuration;
 public interface PluginConstants
 {
     // Images
-    public static final String IMG_VERTICAL_ORIENTATION = "icons/vertical_orientation.gif";
-    public static final String IMG_HORIZONTAL_ORIENTATION = "icons/horizontal_orientation.gif";
-    public static final String IMG_PARTITION = "icons/partition.gif";
-    public static final String IMG_PARTITION_SYSTEM = "icons/partition_system.gif";
-    public static final String IMG_INTERCEPTOR = "icons/interceptor.gif";
-    public static final String IMG_EXTENDED_OPERATION = "icons/extended_operation.gif";
+    public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif";
+    public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif";
+    public static final String IMG_PARTITION = "resources/icons/partition.gif";
+    public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif";
+    public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif";
+    public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif";
 }

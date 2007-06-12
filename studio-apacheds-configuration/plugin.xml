@@ -47,7 +47,7 @@
       <editor
             class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
             default="true"
-            icon="icons/editor.gif"
+            icon="resources/icons/editor.gif"
             id="org.apache.directory.studio.apacheds.configuration.editor"
             name="Server Configuration Editor">
       </editor>
