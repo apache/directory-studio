@@ -31,8 +31,10 @@
 	<property name="target.doc" value="${target}/doc" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	
-	<!-- Loading specific project properties -->
-	<property  file="${basedir}/plugin.properties" />
+	<!-- Loading specific project or plugin properties -->
+	<property file="${basedir}/project.properties" />
+	<property file="${basedir}/plugin.properties" />
+	
 	
 
 	<!-- INSTALL-IVY TASK -->
@@ -74,7 +76,12 @@
 		</copy>
 		<!-- Compiling test sources -->
 		<mkdir dir="${target.test-classes}"/>
-		<javac source="1.5" srcdir="${src.test.java}" destdir="${target.test-classes}" classpathref="classpath" />
+		<javac source="1.5" srcdir="${src.test.java}" destdir="${target.test-classes}" classpathref="classpath" >
+			<classpath>
+			      <pathelement path="${lib.dir}"/>
+			      <pathelement path="${target.classes}"/>
+		    </classpath>
+		</javac>
 		<copy todir="${target.test-classes}" failonerror="false">
 			<fileset dir="${src.test.resources}">
 				<include name="**" />
