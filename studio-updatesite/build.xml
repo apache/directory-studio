@@ -60,9 +60,9 @@
 	    
         <!-- Creation of the Plugins -->
 	    <!-- Apache Directory Studio RCP -->
-	    <ant dir="../studio-rcp" target="jar" inheritAll="no" />
+	    <ant dir="../studio-rcp" inheritAll="no" />
 	    <!-- Apache Directory Studio Help Plugin -->
-	    <ant dir="../studio-rcp-help" target="jar" inheritAll="no" />		
+	    <ant dir="../studio-rcp-help" inheritAll="no" />		
 	    <!-- Apache Directory Studio Schemas Editor Plugin -->
 	    <ant dir="../studio-schemaeditor-plugin" inheritAll="no" />
 	    <!-- Apache Directory Studio Schemas Editor Help Plugin -->

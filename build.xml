@@ -20,7 +20,8 @@
     <property name="project.name" value="studio-complete" />
     <property name="project.version" value="1.0.0" />
     <property name="studio-complete.output" value="${basedir}/target" />
-    <property name="studio-complete.userguides" value="${studio-complete.output}/userguides" />    
+    <property name="studio-complete.build" value="${studio-complete.output}/ApacheDirectoryStudio" />
+    <property name="studio-complete.userguides" value="${studio-complete.output}/userguides" />
     
     <!-- Setting up OS Name-->
     <condition property="studio-rcp.os.name" value="macosx" >
@@ -42,17 +43,6 @@
     </condition>
     <condition property="studio-rcp.os.extension" value=".exe">
         <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
-    </condition>
-
-	<!-- Setting up build folder -->
-	<condition property="studio-complete.build" value="${studio-complete.output}/Apache Directory Studio" >
-        <or>
-            <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
-            <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
-        </or>
-    </condition>
-    <condition property="studio-complete.build" value="${studio-complete.output}/ApacheDirectoryStudio" >
-            <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
 	
     <!-- Setting up a special property if target OS is Mac OS X-->
@@ -84,14 +74,33 @@
     <!--               BUNDLE               -->
     <!-- ================================== -->
     <target name="bundle" description="Bundles the complete application">
-        <!-- Creation of the folders -->
+        <condition property="application.plugins" value="${studio-complete.build}/Apache Directory Studio.app/Contents/Resources/Java/plugins" >
+            <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
+        </condition>
+        <condition property="application.plugins" value="${studio-complete.build}/plugins" >
+            <or>
+                <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
+                <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
+            </or>
+        </condition>
+        <condition property="application.features" value="${studio-complete.build}/Apache Directory Studio.app/Contents/Resources/Java/features" >
+            <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
+        </condition>
+        <condition property="application.features" value="${studio-complete.build}/features" >
+            <or>
+                <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
+                <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
+            </or>
+        </condition>
+    
+	    <!-- Creation of the build folder -->
         <mkdir dir="${studio-complete.build}" />
 
         <!-- Creation of the Apache Directory Studio RCP application -->
         <ant dir="studio-rcp" inheritAll="no" />
         <!-- Copy of the RCP app -->
         <copy todir="${studio-complete.build}">
-            <fileset dir="${basedir}/studio-rcp/target/studio">
+            <fileset dir="${basedir}/studio-rcp/target/ApacheDirectoryStudio">
                 <include name="**" />
             </fileset>
         </copy>
@@ -99,7 +108,7 @@
         <!-- Creation of the Apache Directory Studio RCP Help application -->
         <ant dir="studio-rcp-help" inheritAll="no" />
         <!-- Copy of the Apache Directory Studio RCP Help Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-rcp-help/target/">
                 <include name="*.jar" />
             </fileset>
@@ -108,7 +117,7 @@
         <!-- Creation of the Schemas Editor Plugin -->
         <ant dir="studio-schemaeditor-plugin" inheritAll="no" />
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-schemaeditor-plugin/target">
                 <include name="*.jar" />
             </fileset>
@@ -117,7 +126,7 @@
         <!-- Creation of the Schemas Editor Help Plugin -->
         <ant dir="studio-schemaeditor-help" inheritAll="no" />
         <!-- Copy of the Schemas Editor Help Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-schemaeditor-help/target">
                 <include name="*.jar" />
             </fileset>
@@ -126,7 +135,7 @@
         <!-- Creation of the Browser Core Plugin -->
         <ant dir="studio-ldapbrowser-core" inheritAll="no" />
         <!-- Copy of the Browser Core Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-ldapbrowser-core/target">
                 <include name="*.jar" />
             </fileset>
@@ -135,7 +144,7 @@
         <!-- Creation of the Browser Common Plugin -->
         <ant dir="studio-ldapbrowser-common" inheritAll="no" />
         <!-- Copy of the Browser Common Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-ldapbrowser-common/target">
                 <include name="*.jar" />
             </fileset>
@@ -144,7 +153,7 @@
         <!-- Creation of the LDIF Editor Plugin -->
         <ant dir="studio-ldifeditor" inheritAll="no" />
         <!-- Copy of the LDIF Editor Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-ldifeditor/target">
                 <include name="*.jar" />
             </fileset>
@@ -153,7 +162,7 @@
         <!-- Creation of the Browser UI Plugin -->
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" />
         <!-- Copy of the Browser UI Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-ldapbrowser-ui/target">
                 <include name="*.jar" />
             </fileset>
@@ -162,7 +171,7 @@
         <!-- Creation of the Browser Help Plugin -->
         <ant dir="studio-ldapbrowser-help" inheritAll="no" />
         <!-- Copy of the Browser Help Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-ldapbrowser-help/target">
                 <include name="*.jar" />
             </fileset>
@@ -171,7 +180,7 @@
         <!-- Creation of the Value Editors Plugin -->
         <ant dir="studio-valueeditors" inheritAll="no" />
         <!-- Copy of the Value Editors Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-valueeditors/target">
                 <include name="*.jar" />
             </fileset>
@@ -180,7 +189,7 @@
         <!-- Creation of the ACI Item Editor Plugin -->
         <ant dir="studio-aciitemeditor" inheritAll="no" />
         <!-- Copy of the ACI Item Edtior Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-aciitemeditor/target">
                 <include name="*.jar" />
             </fileset>
@@ -189,7 +198,7 @@
 	    <!-- Creation of the Jars Plugin -->
         <ant dir="studio-jars" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-jars/target">
                 <include name="*.jar" />
             </fileset>
@@ -198,7 +207,7 @@
         <!-- Creation of the Apache DS Configuration Plugin -->
         <ant dir="studio-apacheds-configuration" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-apacheds-configuration/target">
                 <include name="*.jar" />
             </fileset>
@@ -207,66 +216,48 @@
         <!-- Creation of the Apache DS Configuration Help Plugin -->
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${studio-complete.build}/plugins">
+        <copy todir="${application.plugins}">
             <fileset dir="${basedir}/studio-apacheds-configuration-help/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
 
-        <!-- Property for the features -->
-		<property name="project.features" value="${studio-complete.build}/features" />
 
+        <!-- Creation of the Apache Directory Studio RCP Feature -->
+        <ant dir="studio-rcp-feature" inheritAll="no" />
         <!-- Copy of the Apache Directory Studio RCP Feature in the "features" folder -->
-		<property name="studio-rcp-feature.project" value="${basedir}/studio-rcp-feature" />
-		<property name="studio-rcp-feature.name" value="org.apache.directory.studio.rcp.feature" />
-		<property name="studio-rcp-feature.version" value="0.7.0" />
-        <mkdir dir="${project.features}/${studio-rcp-feature.name}_${studio-rcp-feature.version}" />
-		<copy todir="${project.features}/${studio-rcp-feature.name}_${studio-rcp-feature.version}">
-			<fileset dir="${studio-rcp-feature.project}">
-				<include name="feature.xml" />
-				<include name="studio.png" />
-				<include name="META-INF/**" />
-			</fileset>
-		</copy>
+        <copy todir="${application.features}">
+            <fileset dir="${basedir}/studio-rcp-feature/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
 		
+        <!-- Creation of the Schemas Editor Feature -->
+        <ant dir="studio-schemaeditor-feature" inheritAll="no" />
         <!-- Copy of the Schemas Editor Feature in the "features" folder -->
-		<property name="studio-schemaeditor-feature.project" value="${basedir}/studio-schemaeditor-feature" />
-		<property name="studio-schemaeditor-feature.name" value="org.apache.directory.studio.schemas.feature" />
-		<property name="studio-schemaeditor-feature.version" value="0.8.0" />
-		<mkdir dir="${project.features}/${studio-schemaeditor-feature.name}_${studio-schemaeditor-feature.version}" />
-		<copy todir="${project.features}/${studio-schemaeditor-feature.name}_${studio-schemaeditor-feature.version}">
-			<fileset dir="${studio-schemaeditor-feature.project}">
-				<include name="feature.xml" />
-				<include name="studio.png" />
-				<include name="META-INF/**" />
-			</fileset>
-		</copy>
+        <copy todir="${application.features}">
+            <fileset dir="${basedir}/studio-schemaeditor-feature/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
 		
-	    <!-- Copy of the Browser Feature in the "features" folder -->
-		<property name="studio-ldapbrowser-feature.project" value="${basedir}/studio-ldapbrowser-feature" />
-		<property name="studio-ldapbrowser-feature.name" value="org.apache.directory.studio.browser.feature" />
-		<property name="studio-ldapbrowser-feature.version" value="0.8.0" />
-		<mkdir dir="${project.features}/${studio-ldapbrowser-feature.name}_${studio-ldapbrowser-feature.version}" />
-		<copy todir="${project.features}/${studio-ldapbrowser-feature.name}_${studio-ldapbrowser-feature.version}">
-			<fileset dir="${studio-ldapbrowser-feature.project}">
-				<include name="feature.xml" />
-				<include name="studio.png" />
-				<include name="META-INF/**" />
-			</fileset>
-		</copy>
+	    <!-- Creation of the LDAP Browser Feature -->
+	    <ant dir="studio-ldapbrowser-feature" inheritAll="no" />
+	    <!-- Copy of the LDAP Browser Feature in the "features" folder -->
+	    <copy todir="${application.features}">
+            <fileset dir="${basedir}/studio-ldapbrowser-feature/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
 
+        <!-- Creation of the Apache DS Configuration Feature -->
+        <ant dir="studio-apacheds-configuration-feature" inheritAll="no" />
         <!-- Copy of the Apache DS Configuration Feature in the "features" folder -->
-		<property name="studio-apacheds-configuration-feature.project" value="${basedir}/studio-apacheds-configuration-feature" />
-		<property name="studio-apacheds-configuration-feature.name" value="org.apache.directory.studio.apacheds.configuration.feature" />
-		<property name="studio-apacheds-configuration-feature.version" value="0.8.0" />
-		<mkdir dir="${project.features}/${studio-apacheds-configuration-feature.name}_${studio-apacheds-configuration-feature.version}" />
-		<copy todir="${project.features}/${studio-apacheds-configuration-feature.name}_${studio-apacheds-configuration-feature.version}">
-			<fileset dir="${studio-apacheds-configuration-feature.project}">
-				<include name="feature.xml" />
-				<include name="studio.png" />
-				<include name="META-INF/**" />
-			</fileset>
-		</copy>
+        <copy todir="${application.features}">
+            <fileset dir="${basedir}/studio-apacheds-configuration-feature/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
 
     	<!-- Copy the legal stuff -->
         <copy todir="${studio-complete.build}">
@@ -279,9 +270,6 @@
     	
         <!-- Setting Permissions -->
         <antcall target="setPermission_${studio-rcp.os.name}" />
-        
-        <!-- Special repackaging for Mac OS X -->
-        <antcall target="repackage_MacOSX" />
     </target>
 	
     <!-- ================================== -->
