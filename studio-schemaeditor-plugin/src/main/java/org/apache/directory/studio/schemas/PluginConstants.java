@@ -229,45 +229,45 @@ public interface PluginConstants
     
 
     // Images - Actions
-    public static final String IMG_CREATE_A_NEW_ATTRIBUTETYPE = "ressources/icons/attribute_type_new.gif"; //$NON-NLS-1$
-    public static final String IMG_CREATE_A_NEW_OBJECTCLASS = "ressources/icons/object_class_new.gif"; //$NON-NLS-1$
-    public static final String IMG_CREATE_A_NEW_SCHEMA = "ressources/icons/schema_new.png"; //$NON-NLS-1$
-    public static final String IMG_DELETE = "ressources/icons/delete.gif"; //$NON-NLS-1$
-    public static final String IMG_ERASE_SEARCH = "ressources/icons/erase_search.gif"; //$NON-NLS-1$
-    public static final String IMG_EXPORT_SCHEMA_FOR_ADS = "ressources/icons/export_schema_for_ads.png"; //$NON-NLS-1$
-    public static final String IMG_HIDE_OBJECT_CLASSES = "ressources/icons/hide_object_classes.png"; //$NON-NLS-1$
-    public static final String IMG_HIDE_ATTRIBUTE_TYPES = "ressources/icons/hide_attribute_types.png"; //$NON-NLS-1$
-    public static final String IMG_LINK_WITH_EDITOR = "ressources/icons/link_with_editor.gif"; //$NON-NLS-1$
-    public static final String IMG_COLLAPSE_ALL = "ressources/icons/collapse_all.gif"; //$NON-NLS-1$
-    public static final String IMG_OPEN = "ressources/icons/open.png"; //$NON-NLS-1$
-    public static final String IMG_REMOVE_SCHEMA = "ressources/icons/schema_remove.png"; //$NON-NLS-1$
-    public static final String IMG_SAVE = "ressources/icons/save.gif"; //$NON-NLS-1$
-    public static final String IMG_SAVE_AS = "ressources/icons/save_as.png"; //$NON-NLS-1$
-    public static final String IMG_SAVE_ALL = "ressources/icons/save_all.png"; //$NON-NLS-1$
-    public static final String IMG_SHOW_PREFERENCES = "ressources/icons/preferences.png"; //$NON-NLS-1$
-    public static final String IMG_SHOW_SUBTYPE_HIERARCHY = "ressources/icons/hierarchy_subtype.png"; //$NON-NLS-1$
-    public static final String IMG_SHOW_SUPERTYPE_HIERARCHY = "ressources/icons/hierarchy_supertype.png"; //$NON-NLS-1$
-    public static final String IMG_SORT = "ressources/icons/sort.gif"; //$NON-NLS-1$
+    public static final String IMG_CREATE_A_NEW_ATTRIBUTETYPE = "resources/icons/attribute_type_new.gif"; //$NON-NLS-1$
+    public static final String IMG_CREATE_A_NEW_OBJECTCLASS = "resources/icons/object_class_new.gif"; //$NON-NLS-1$
+    public static final String IMG_CREATE_A_NEW_SCHEMA = "resources/icons/schema_new.png"; //$NON-NLS-1$
+    public static final String IMG_DELETE = "resources/icons/delete.gif"; //$NON-NLS-1$
+    public static final String IMG_ERASE_SEARCH = "resources/icons/erase_search.gif"; //$NON-NLS-1$
+    public static final String IMG_EXPORT_SCHEMA_FOR_ADS = "resources/icons/export_schema_for_ads.png"; //$NON-NLS-1$
+    public static final String IMG_HIDE_OBJECT_CLASSES = "resources/icons/hide_object_classes.png"; //$NON-NLS-1$
+    public static final String IMG_HIDE_ATTRIBUTE_TYPES = "resources/icons/hide_attribute_types.png"; //$NON-NLS-1$
+    public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif"; //$NON-NLS-1$
+    public static final String IMG_COLLAPSE_ALL = "resources/icons/collapse_all.gif"; //$NON-NLS-1$
+    public static final String IMG_OPEN = "resources/icons/open.png"; //$NON-NLS-1$
+    public static final String IMG_REMOVE_SCHEMA = "resources/icons/schema_remove.png"; //$NON-NLS-1$
+    public static final String IMG_SAVE = "resources/icons/save.gif"; //$NON-NLS-1$
+    public static final String IMG_SAVE_AS = "resources/icons/save_as.png"; //$NON-NLS-1$
+    public static final String IMG_SAVE_ALL = "resources/icons/save_all.png"; //$NON-NLS-1$
+    public static final String IMG_SHOW_PREFERENCES = "resources/icons/preferences.png"; //$NON-NLS-1$
+    public static final String IMG_SHOW_SUBTYPE_HIERARCHY = "resources/icons/hierarchy_subtype.png"; //$NON-NLS-1$
+    public static final String IMG_SHOW_SUPERTYPE_HIERARCHY = "resources/icons/hierarchy_supertype.png"; //$NON-NLS-1$
+    public static final String IMG_SORT = "resources/icons/sort.gif"; //$NON-NLS-1$
 
     // Images - Views
-    public static final String IMG_ATTRIBUTE_TYPE = "ressources/icons/attribute_type.gif"; //$NON-NLS-1$
-    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION = "ressources/icons/attribute_type_overlay_operation.gif"; //$NON-NLS-1$
-    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION = "ressources/icons/attribute_type_overlay_userApplication.gif"; //$NON-NLS-1$
-    public static final String IMG_FOLDER_ATTRIBUTE_TYPE = "ressources/icons/folder_at.gif"; //$NON-NLS-1$
-    public static final String IMG_FOLDER_OBJECT_CLASS = "ressources/icons/folder_oc.gif"; //$NON-NLS-1$
-    public static final String IMG_OBJECT_CLASS = "ressources/icons/object_class.gif"; //$NON-NLS-1$
-    public static final String IMG_OBJECT_CLASS_OVERLAY_ABSTRACT = "ressources/icons/object_class_overlay_abstract.gif"; //$NON-NLS-1$
-    public static final String IMG_OBJECT_CLASS_OVERLAY_AUXILIARY = "ressources/icons/object_class_overlay_auxiliary.gif"; //$NON-NLS-1$
-    public static final String IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL = "ressources/icons/object_class_overlay_structural.gif"; //$NON-NLS-1$
-    public static final String IMG_OBJECT_CLASS_WARNING = "ressources/icons/object_class_warning.gif"; //$NON-NLS-1$
-    public static final String IMG_SCHEMA = "ressources/icons/schema.gif"; //$NON-NLS-1$
-    public static final String IMG_SCHEMA_CORE = "ressources/icons/schema_core.gif"; //$NON-NLS-1$
-    public static final String IMG_WARNING_OVERLAY = "ressources/icons/warning_overlay.gif"; //$NON-NLS-1$
+    public static final String IMG_ATTRIBUTE_TYPE = "resources/icons/attribute_type.gif"; //$NON-NLS-1$
+    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION = "resources/icons/attribute_type_overlay_operation.gif"; //$NON-NLS-1$
+    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION = "resources/icons/attribute_type_overlay_userApplication.gif"; //$NON-NLS-1$
+    public static final String IMG_FOLDER_ATTRIBUTE_TYPE = "resources/icons/folder_at.gif"; //$NON-NLS-1$
+    public static final String IMG_FOLDER_OBJECT_CLASS = "resources/icons/folder_oc.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS = "resources/icons/object_class.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_OVERLAY_ABSTRACT = "resources/icons/object_class_overlay_abstract.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_OVERLAY_AUXILIARY = "resources/icons/object_class_overlay_auxiliary.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL = "resources/icons/object_class_overlay_structural.gif"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_WARNING = "resources/icons/object_class_warning.gif"; //$NON-NLS-1$
+    public static final String IMG_SCHEMA = "resources/icons/schema.gif"; //$NON-NLS-1$
+    public static final String IMG_SCHEMA_CORE = "resources/icons/schema_core.gif"; //$NON-NLS-1$
+    public static final String IMG_WARNING_OVERLAY = "resources/icons/warning_overlay.gif"; //$NON-NLS-1$
 
     // Images - Wizards
-    public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "ressources/icons/attribute_type_new_wizard.png"; //$NON-NLS-1$
-    public static final String IMG_OBJECT_CLASS_NEW_WIZARD = "ressources/icons/object_class_new_wizard.png"; //$NON-NLS-1$
-    public static final String IMG_SCHEMA_NEW_WIZARD = "ressources/icons/schema_new_wizard.png"; //$NON-NLS-1$
+    public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "resources/icons/attribute_type_new_wizard.png"; //$NON-NLS-1$
+    public static final String IMG_OBJECT_CLASS_NEW_WIZARD = "resources/icons/object_class_new_wizard.png"; //$NON-NLS-1$
+    public static final String IMG_SCHEMA_NEW_WIZARD = "resources/icons/schema_new_wizard.png"; //$NON-NLS-1$
 
     // Action IDs
     public static final String CMD_COLLAPSE_ALL = Activator.PLUGIN_ID + ".cmd.CollapseAll"; //$NON-NLS-1$

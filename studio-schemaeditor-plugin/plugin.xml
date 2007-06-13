@@ -23,7 +23,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.apache.directory.studio.schemas.view.perspectives.Perspective"
-            icon="ressources/icons/schemas_perspective.gif"
+            icon="resources/icons/schemas_perspective.gif"
             id="org.apache.directory.studio.schemas.perspective"
             name="%studio-schemaeditor-plugin.perspective.schemas.name"/>
    </extension>
@@ -36,28 +36,28 @@
             allowMultiple="false"
             category="org.apache.directory.studio.schemas.view.category"
             class="org.apache.directory.studio.schemas.view.views.SchemaElementsView"
-            icon="ressources/icons/schema_elements_view.png"
+            icon="resources/icons/schema_elements_view.png"
             id="org.apache.directory.studio.schemas.view.SchemaElementsView"
             name="%studio-schemaeditor-plugin.views.schemaElements.name"/>
       <view
             allowMultiple="false"
             category="org.apache.directory.studio.schemas.view.category"
             class="org.apache.directory.studio.schemas.view.views.SchemasView"
-            icon="ressources/icons/schemas_view.png"
+            icon="resources/icons/schemas_view.png"
             id="org.apache.directory.studio.schemas.view.SchemasView"
             name="%studio-schemaeditor-plugin.views.schemas.name"/>
       <view
             allowMultiple="false"
             category="org.apache.directory.studio.schemas.view.category"
             class="org.apache.directory.studio.schemas.view.views.SearchView"
-            icon="ressources/icons/search.gif"
+            icon="resources/icons/search.gif"
             id="org.apache.directory.studio.schemas.view.SearchView"
             name="%studio-schemaeditor-plugin.views.search.name"/>
       <view
             allowMultiple="false"
             category="org.apache.directory.studio.schemas.view.category"
             class="org.apache.directory.studio.schemas.view.views.HierarchyView"
-            icon="ressources/icons/hierarchy_view.png"
+            icon="resources/icons/hierarchy_view.png"
             id="org.apache.directory.studio.schemas.view.HierarchyView"
             name="Hierarchy"/>
    </extension>
@@ -140,19 +140,19 @@
       <editor
             class="org.apache.directory.studio.schemas.view.editors.objectClass.ObjectClassEditor"
             default="false"
-            icon="ressources/icons/object_class.gif"
+            icon="resources/icons/object_class.gif"
             id="org.apache.directory.studio.schemas.view.objectClassEditor"
             name="%studio-schemaeditor-plugin.editors.objectclasseditor.name"/>
       <editor
             class="org.apache.directory.studio.schemas.view.editors.attributeType.AttributeTypeEditor"
             default="false"
-            icon="ressources/icons/attribute_type.gif"
+            icon="resources/icons/attribute_type.gif"
             id="org.apache.directory.studio.schemas.view.attributeTypeEditor"
             name="%studio-schemaeditor-plugin.editors.attributetypeeditor.name"/>
       <editor
             class="org.apache.directory.studio.schemas.view.editors.schema.SchemaEditor"
             default="false"
-            icon="ressources/icons/schema.gif"
+            icon="resources/icons/schema.gif"
             id="org.apache.directory.studio.schemas.view.schemaformeditor"
             name="%studio-schemaeditor-plugin.editors.schemaeditor.name"/>
    </extension>
@@ -164,19 +164,19 @@
       <wizard
             category="org.apache.directory.studio.schemas.view.wizards.category"
             class="org.apache.directory.studio.schemas.view.wizards.CreateANewSchemaWizard"
-            icon="ressources/icons/schema_new.gif"
+            icon="resources/icons/schema_new.gif"
             id="org.apache.directory.studio.schemas.view.wizards.CreateANewSchemaWizard"
             name="%studio-schemaeditor-plugin.wizards.createanewschema.name"/>
       <wizard
             category="org.apache.directory.studio.schemas.view.wizards.category"
             class="org.apache.directory.studio.schemas.view.wizards.CreateANewObjectClassWizard"
-            icon="ressources/icons/object_class_new.gif"
+            icon="resources/icons/object_class_new.gif"
             id="org.apache.directory.studio.schemas.view.wizards.CreateANewObjecClassWizard"
             name="%studio-schemaeditor-plugin.wizards.createanewobjectclass.name"/>
       <wizard
             category="org.apache.directory.studio.schemas.view.wizards.category"
             class="org.apache.directory.studio.schemas.view.wizards.CreateANewAttributeTypeWizard"
-            icon="ressources/icons/attribute_type_new.gif"
+            icon="resources/icons/attribute_type_new.gif"
             id="org.apache.directory.studio.schemas.view.wizards.CreateANewAttributeTypeWizard"
             name="%studio-schemaeditor-plugin.wizards.createanewattributetype.name"/>
    </extension>
@@ -236,7 +236,7 @@
       <page
             class="org.apache.directory.studio.schemas.view.search.SearchPage"
             enabled="true"
-            icon="ressources/icons/search.gif"
+            icon="resources/icons/search.gif"
             id="org.apache.directory.studio.schemas.search"
             label="Schemas Search"
             showScopeSection="false"

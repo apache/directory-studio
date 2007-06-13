@@ -48,7 +48,7 @@ public class Syntaxes
         try
         {
             syntaxes = new ArrayList<Syntax>();
-            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/syntaxes.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/utils/syntaxes.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of syntaxes to parse

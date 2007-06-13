@@ -219,25 +219,25 @@ public class SchemaPool implements SchemaListener
      */
     private void loadCoreSchemasFromBundle()
     {
-        URL urlApache = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/apache.schema" ); //$NON-NLS-1$
+        URL urlApache = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/apache.schema" ); //$NON-NLS-1$
         URL urlApachedns = Platform.getBundle( Activator.PLUGIN_ID )
-            .getResource( "ressources/schemas/apachedns.schema" ); //$NON-NLS-1$
+            .getResource( "resources/schemas/apachedns.schema" ); //$NON-NLS-1$
         URL urlApachemeta = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
-            "ressources/schemas/apachemeta.schema" ); //$NON-NLS-1$
-        URL urlAutofs = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/autofs.schema" ); //$NON-NLS-1$
+            "resources/schemas/apachemeta.schema" ); //$NON-NLS-1$
+        URL urlAutofs = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/autofs.schema" ); //$NON-NLS-1$
         URL urlCollective = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
-            "ressources/schemas/collective.schema" ); //$NON-NLS-1$
-        URL urlCorba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/corba.schema" ); //$NON-NLS-1$
-        URL urlCore = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/core.schema" ); //$NON-NLS-1$
-        URL urlCosine = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/cosine.schema" ); //$NON-NLS-1$
-        URL urlDhcp = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/dhcp.schema" ); //$NON-NLS-1$
+            "resources/schemas/collective.schema" ); //$NON-NLS-1$
+        URL urlCorba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/corba.schema" ); //$NON-NLS-1$
+        URL urlCore = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/core.schema" ); //$NON-NLS-1$
+        URL urlCosine = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/cosine.schema" ); //$NON-NLS-1$
+        URL urlDhcp = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/dhcp.schema" ); //$NON-NLS-1$
         URL urlInetorgperson = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
-            "ressources/schemas/inetorgperson.schema" ); //$NON-NLS-1$
-        URL urlJava = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/java.schema" ); //$NON-NLS-1$
-        URL urlKrb5kdc = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/krb5kdc.schema" ); //$NON-NLS-1$
-        URL urlNis = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/nis.schema" ); //$NON-NLS-1$
-        URL urlSamba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/samba.schema" ); //$NON-NLS-1$
-        URL urlSystem = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/schemas/system.schema" ); //$NON-NLS-1$
+            "resources/schemas/inetorgperson.schema" ); //$NON-NLS-1$
+        URL urlJava = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/java.schema" ); //$NON-NLS-1$
+        URL urlKrb5kdc = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/krb5kdc.schema" ); //$NON-NLS-1$
+        URL urlNis = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/nis.schema" ); //$NON-NLS-1$
+        URL urlSamba = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/samba.schema" ); //$NON-NLS-1$
+        URL urlSystem = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/schemas/system.schema" ); //$NON-NLS-1$
 
         schemaPool.addSchema( urlApache, SchemaType.coreSchema, false );
         schemaPool.addSchema( urlApachedns, SchemaType.coreSchema, false );

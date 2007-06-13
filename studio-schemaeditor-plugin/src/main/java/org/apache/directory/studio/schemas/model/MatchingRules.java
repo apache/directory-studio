@@ -54,7 +54,7 @@ public class MatchingRules
         try
         {
             equalityMatchingRules = new ArrayList<MatchingRule>();
-            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/utils/matching_rules.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of matching rules to parse for EQUALITY
@@ -87,7 +87,7 @@ public class MatchingRules
         {
             orderingMatchingRules = new ArrayList<MatchingRule>();
 
-            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/utils/matching_rules.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of matching rules to parse for ORDERING
@@ -119,7 +119,7 @@ public class MatchingRules
         try
         {
             substringMatchingRules = new ArrayList<MatchingRule>();
-            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "ressources/utils/matching_rules.xml" ); //$NON-NLS-1$
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource( "resources/utils/matching_rules.xml" ); //$NON-NLS-1$
             XMLConfiguration config = new XMLConfiguration( url );
 
             // We get the number of matching rules to parse for SUBSTRING
