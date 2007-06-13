@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.apache.directory.studio.apacheds.configuration.feature"
-      label="Apache Directory Studio Apache DS Configuration"
-      version="0.8.0"
+      id="%project.id"
+      label="%project.name"
+      version="%project.version"
       provider-name="Apache Software Foundation"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
