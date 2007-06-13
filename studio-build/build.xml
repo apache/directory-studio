@@ -31,9 +31,10 @@
 	<property name="target.doc" value="${target}/doc" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	
-	<!-- Loading specific project or plugin properties -->
+	<!-- Loading specific project, plugin or feature properties -->
 	<property file="${basedir}/project.properties" />
 	<property file="${basedir}/plugin.properties" />
+	<property file="${basedir}/feature.properties" />
 	
 
 	<!-- INSTALL-IVY TASK -->
@@ -103,7 +104,7 @@
 	
 	
 	<!-- PLUGIN TASK -->
-	<target name="plugin" depends="compile" description="Creates a Jar from the compiled sources">
+	<target name="plugin" depends="compile" description="Creates a Plugin Jar from the compiled sources">
 		<copy todir="${target.build}" failonerror="false">
 			<fileset dir="${target.classes}">
 				<include name="**" />
@@ -115,6 +116,22 @@
 				<include name="plugin.properties" />
 				<include name="plugin.xml" />
 				<include name="resources/**" />
+			</fileset>
+		</copy>
+		<jar destfile="${target}/${project.id}_${project.version}.jar" manifest="${target.build}/META-INF/MANIFEST.MF">
+			<fileset dir="${target.build}" />
+		</jar>
+	</target>
+	
+	
+	<!-- FEATURE TASK -->
+	<target name="feature" description="Creates a Feature Jar">
+		<copy todir="${target.build}" failonerror="false">
+			<fileset dir="${basedir}">
+				<include name="feature.xml" />
+				<include name="feature.properties" />
+				<include name="META-INF/**" />
+				<include name="studio.png**" />
 			</fileset>
 		</copy>
 		<jar destfile="${target}/${project.id}_${project.version}.jar" manifest="${target.build}/META-INF/MANIFEST.MF">
