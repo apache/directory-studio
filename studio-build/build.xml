@@ -52,6 +52,7 @@
 	
 	<!-- RETRIEVE-DEPENDENCIES TASK -->
 	<target name="retrieve-dependencies" depends="install-ivy" description="Retreive dependencies with ivy">
+		<echo>Retrieving dependencies for ${project.name} (${project.id}) version ${project.version}</echo>
 		<mkdir dir="${lib.dir}"/>
 		<ivy:retrieve/>
 	</target>
@@ -59,6 +60,7 @@
 	
 	<!-- BUILD-CLASSPATH TASK -->
 	<target name="build-classpath" description="Computes the classpath" >
+		<echo>Building classpath for ${project.name} (${project.id}) version ${project.version}</echo>
 		<path id="classpath">
 			<!-- Project dependencies -->
 			<fileset dir="${lib.dir}" />
@@ -68,6 +70,7 @@
 
 	<!-- COMPILE TASK -->
 	<target name="compile" depends="retrieve-dependencies,build-classpath" description="Compiles the sources">
+		<echo>Compiling ${project.name} (${project.id}) version ${project.version}</echo>
 		<!-- Compiling main sources -->
 		<mkdir dir="${target.classes}"/>
 		<javac source="1.5" srcdir="${src.main.java}" destdir="${target.classes}" classpathref="classpath" />
