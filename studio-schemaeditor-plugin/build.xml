@@ -19,8 +19,13 @@
 <project default="plugin">
 	<import file="../studio-build/build.xml"/>
 	
+	<!-- RETRIEVE-STUDIO-JAR-DEPENDENCIES TASK -->
+	<target name="retrieve-studio-jar-dependencies" description="Compiles the dependencies of the project" >
+		<ant dir="../studio-jars" target="retrieve-dependencies" inheritall="false" />
+	</target>
+	
 	<!-- BUILD-CLASSPATH TASK -->
-	<target name="build-classpath" description="Computes the classpath" >
+	<target name="build-classpath" depends="retrieve-studio-jar-dependencies" description="Computes the classpath" >
 		<path id="classpath">
 			<!-- Project dependencies -->
 			<fileset dir="${lib.dir}" />

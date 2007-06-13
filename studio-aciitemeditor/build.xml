@@ -19,12 +19,20 @@
 <project default="plugin">
 	<import file="../studio-build/build.xml"/>
 	
+	
+	<!-- RETRIEVE-STUDIO-JAR-DEPENDENCIES TASK -->
+	<target name="retrieve-studio-jar-dependencies" description="Compiles the dependencies of the project" >
+		<ant dir="../studio-jars" target="retrieve-dependencies" inheritall="false" />
+	</target>
+	
+	
 	<!-- COMPILE-DEPENDENCIES TASK -->
 	<target name="compile-dependencies" description="Compiles the dependencies of the project" >
 		<ant dir="../studio-ldapbrowser-core" target="compile" inheritall="false" />
 		<ant dir="../studio-ldapbrowser-common" target="compile" inheritall="false" />
 		<ant dir="../studio-valueeditors" target="compile" inheritall="false" />
 	</target>
+	
 		
 	<!-- BUILD-CLASSPATH TASK -->
 	<target name="build-classpath" depends="compile-dependencies" description="Computes the classpath" >
