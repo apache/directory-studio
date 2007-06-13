@@ -35,7 +35,7 @@
 	
 		
 	<!-- BUILD-CLASSPATH TASK -->
-	<target name="build-classpath" depends="compile-dependencies" description="Computes the classpath" >
+	<target name="build-classpath" depends="retrieve-studio-jar-dependencies, compile-dependencies" description="Computes the classpath" >
 		<echo>Building classpath for ${project.name} (${project.id}) version ${project.version}</echo>
 		<path id="classpath">
 			<!-- Project dependencies -->
