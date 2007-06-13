@@ -29,6 +29,8 @@
 	<property name="target.test-classes" value="${target}/test-classes" />
 	<property name="target.build" value="${target}/build" />
 	<property name="target.doc" value="${target}/doc" />
+	<property name="target.html" value="${target}/html" />
+	<property name="target.pdf" value="${target}/pdf" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	
 	<!-- Loading specific project, plugin or feature properties -->
@@ -159,6 +161,185 @@
 		<echo>Cleaning ${project.name} (${project.id}) version ${project.version}</echo>
 		<delete dir="${lib.dir}"/>
 		<delete dir="${target}"/>
+		<delete dir="${basedir}/docbook-xml"/>
+		<delete dir="${basedir}/docbook-xsl"/>
+	</target>
+	
+	
+	<!-- HELP-ECLIPSE TASK -->
+	<target name="prepare-help" depends="retrieve-dependencies" description="Prepares the help generation">
+		<mkdir dir="${basedir}/docbook-xml" />
+		<unzip dest="${basedir}/docbook-xml">
+			<fileset dir="${basedir}/lib">
+				<include name="**/docbook-xml*.zip"/>
+			</fileset>
+		</unzip>
+		<unzip dest="${basedir}">
+			<fileset dir="${basedir}/lib">
+				<include name="**/docbook-xsl*.zip"/>
+			</fileset>
+		</unzip>
+		<property name="fromregexp" value="^(docbook-xsl-[^/]+)/(.*)" />
+		<property name="toregexp" value="docbook-xsl/\2" />
+		<move todir="${basedir}">
+			<fileset dir="${basedir}">
+				<include name="docbook-xsl-*/**"/>
+			</fileset>
+			<!--<mapper type="regexp" from="${fromregexp}" to="${toregexp}" />-->
+			<regexpmapper from="${fromregexp}" to="${toregexp}" handledirsep="true" />
+		</move>
+		<delete includeemptydirs="true">
+			<fileset dir="${basedir}">
+				<include name="docbook-xsl-*"/>
+			</fileset>
+		</delete>
+    </target>
+	
+	
+	<!-- HELP-ECLIPSE TASK -->
+	<target name="help-eclipse" depends="prepare-help" description="Generates the help for Eclipse">
+		<mkdir dir="${target.build}" />
+		<xslt in="${src.main.resources}/0_index.xml" out="${target.build}/index.html" style="${basedir}/docbook-xsl/eclipse/eclipse.xsl">
+			<classpath location="${lib.dir}/xalan-2.7.0.jar" />
+			<param name="ignore.image.scaling" expression="1" />
+			<param name="manifest.in.base.dir" expression="0" />
+			<param name="base.dir" expression="html/" />
+			<param name="html.stylesheet" expression="css/book.css" />
+			<param name="table.cell.borders.thickness" expression="1" />
+			<!-- <param name="table.borders.with.css" expression="1" /> -->
+			<param name="generate.section.toc.level" expression="5" />
+			<param name="toc.max.depth" expression="1" />
+			<param name="chunk.first.sections" expression="1" />
+			<param name="chunk.section.depth" expression="5" />
+			<param name="chunk.fast" expression="1" />
+			<param name="chunk.separate.lots" expression="1" />
+			<!--<param name="chunk.tocs.and.lots" expression="1" />-->
+			<param name="ulink.target" expression="_self" />
+			<param name="suppress.navigation" expression="1" />
+			<param name="html.cleanup" expression="1" />
+			<param name="html.cellpadding" expression="3" />
+			<param name="use.id.as.filename" expression="1" />
+			<param name="chapter.autolabel" expression="0" />
+			<param name="section.autolabel" expression="0" />
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="iso8859_1" />
+			<outputproperty name="indent" value="es" />
+		</xslt>
+		<replaceregexp file="${target.build}/toc.xml"
+		                         match="&lt;toc [^>]*>"
+		                         replace="&lt;toc topic=&#34;html/index.html&#34; label=&#34;${project.name}\&#34;>"
+		                         byline="true"/>
+		<copy todir="${target.build}" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="plugin.xml" />
+				<include name="plugin.properties" />
+				<include name="about.html" />
+			</fileset>
+		</copy>
+		<mkdir dir="${target.build}/META-INF" />
+		<copy todir="${target.build}/META-INF">
+			<fileset dir="${basedir}/META-INF">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<mkdir dir="${target.build}/about_files" />
+		<copy todir="${target.build}/about_files">
+			<fileset dir="${basedir}/about_files">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<mkdir dir="${target.build}/html" />
+		<copy todir="${target.build}/html">
+			<fileset dir="${basedir}/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<jar destfile="${target}/${project.id}_${project.version}.jar" manifest="${target.build}/META-INF/MANIFEST.MF">
+			<fileset dir="${target.build}" />
+		</jar>
+	</target>
+
+	
+	<!-- HELP-HTML TASK -->
+	<target name="help-html" depends="prepare-help" description="Generates the help in HTML">
+		<mkdir dir="${target.html}" />
+		<copy todir="${target.html}">
+			<fileset dir="${basedir}/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<xslt in="${src.main.resources}/0_index.xml" out="${target.html}/index.html" style="${basedir}/docbook-xsl/html/chunk.xsl">
+			<classpath location="lib/xalan-2.7.0.jar" />			
+			<param name="ignore.image.scaling" expression="1" />
+			<param name="manifest.in.base.dir" expression="0" />
+			<!-- <param name="base.dir" expression="html/" /> -->
+			<param name="html.stylesheet" expression="css/book.css" />
+			<param name="table.cell.borders.thickness" expression="1" />
+			<!-- <param name="table.borders.with.css" expression="1" /> -->
+			<param name="generate.section.toc.level" expression="5" />
+			<param name="toc.max.depth" expression="3" />
+			<param name="chunk.first.sections" expression="1" />
+			<param name="chunk.section.depth" expression="5" />
+			<param name="chunk.fast" expression="1" />
+			<param name="chunk.separate.lots" expression="1" />
+			<!--<param name="chunk.tocs.and.lots" expression="1" />-->
+			<param name="ulink.target" expression="_self" />
+			<param name="suppress.navigation" expression="0" />
+			<param name="html.cleanup" expression="1" />
+			<param name="html.cellpadding" expression="3" />
+			<param name="use.id.as.filename" expression="1" />
+			<param name="chapter.autolabel" expression="0" />
+			<param name="section.autolabel" expression="0" />
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="iso8859_1" />
+			<outputproperty name="indent" value="es" />
+		</xslt>
+	</target>
+	
+
+	<!-- HELP-PDF TASK -->
+	<target name="help-pdf" depends="prepare-help" description="Generates the help in PDF">
+		<property name="fop.dir" value="${lib.dir}"/>
+		<taskdef name="fop"
+		         classname="org.apache.fop.tools.anttasks.Fop">
+		         <classpath>
+		            <pathelement location="${fop.dir}/avalon-framework-api-4.2.0.jar"/>
+		            <pathelement location="${fop.dir}/avalon-framework-impl-4.2.0.jar"/>
+		            <pathelement location="${fop.dir}/commons-logging-1.1.jar"/>
+		            <pathelement location="${fop.dir}/commons-io-1.3.1.jar"/>
+		            <pathelement location="${fop.dir}/fop-0.9.3.jar"/>
+		            <pathelement location="${fop.dir}/batik-all-1.6.jar"/>
+		            <pathelement location="${fop.dir}/xmlgraphics-commons-1.1.jar"/>
+		         </classpath>
+		</taskdef>
+		
+		<mkdir dir="${target.pdf}" />
+		<copy todir="${target.pdf}">
+			<fileset dir="${basedir}/resources">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<xslt in="${src.main.resources}/0_index.xml" out="${target.pdf}/${project.name}.fo" style="${basedir}/docbook-xsl/fo/docbook.xsl">
+			<classpath location="lib/xalan-2.7.0.jar" />			
+			<param name="manifest.in.base.dir" expression="0" />
+			<param name="generate.section.toc.level" expression="5" />
+			<param name="toc.max.depth" expression="3" />
+			<param name="ulink.target" expression="_self" />
+			<param name="suppress.navigation" expression="0" />
+			<param name="use.id.as.filename" expression="1" />
+			<param name="chapter.autolabel" expression="I" />
+			<param name="section.autolabel" expression="1" />
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="iso8859_1" />
+			<outputproperty name="indent" value="es" />
+		</xslt>
+		<fop format="application/pdf" basedir="${target.pdf}" 
+	        fofile="${target.pdf}/${project.name}.fo"
+	        outfile="${target.pdf}/${project.name}.pdf" />
 	</target>
 	
 </project>
