@@ -285,7 +285,7 @@
 					and <emphasis role="strong">Delete</emphasis> buttons to set your Binary Attributes.</para>
 				</simplesect>
 					
-				<simplesect id="general_binary_attributes">
+				<simplesect id="general_limits">
 					<title>Limits</title>
 					<para>This section allows you to specify the Limits of the server.</para>
 					 <screenshot>
