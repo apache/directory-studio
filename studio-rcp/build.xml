@@ -16,27 +16,10 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project default="product" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
-    <property name="project.name" value="org.apache.directory.studio" />
-    <property name="project.version" value="0.7.0" />
-
-    <property name="studio-rcp.output" value="${basedir}/target" />
-    <property name="studio-rcp.build" value="${studio-rcp.output}/build" />
-    <property name="studio-rcp.src" value="${basedir}/src/main/java" />
-    <property name="lib.dir" value="lib" />
-
-    <property name="repository.dir" location="../dependencies/externals/" />
-
-    <!-- Configuring Ivy (Needs to be AFTER the $repository.dir declaration) -->
-    <ivy:configure file="../tools/ivyconf.xml" />
-
-    <property name="studio-rcp.eclipse.dir" value="../dependencies/eclipse" />
-    <property name="studio-rcp.eclipse.version" value="3.2" />
-	<property name="studio-rcp.eclipse.uiideplugin.filename" value="org.eclipse.ui.ide_3.2.1.M20060915-1030" />
-	<property name="studio-rcp.eclipse.uieditorsplugin.filename" value="org.eclipse.ui.editors_3.2.1.r321_v20060721" />
-	<property name="studio-rcp.eclipse.searchplugin.filename" value="org.eclipse.search_3.2.1.r321_v20060726" />
-
-	    <!-- Setting up OS Name-->
+<project default="product">
+	<import file="../studio-build/build.xml"/>
+	
+	<!-- Setting up OS Name-->
     <condition property="studio-rcp.os.name" value="macosx" >
             <os name="Mac OS X"/>
     </condition>
@@ -57,8 +40,7 @@
     <condition property="studio-rcp.os.extension" value=".exe">
         <equals arg1="${studio-rcp.os.name}" arg2="win32"/>
     </condition>
-
-
+	
     <!-- Setting up App Name Extension-->
     <condition property="studio-rcp.appname" value="Apache Directory Studio" >
         <or>
@@ -69,192 +51,141 @@
     <condition property="studio-rcp.appname" value="ApacheDirectoryStudio" >
             <equals arg1="${studio-rcp.os.name}" arg2="linux"/>
     </condition>
-
+	
     <!-- Setting up OS Architecture-->
     <property name="studio-rcp.os.arch" value="${os.arch}" />
 
-	<!-- ================================== -->
-	<!--              RESOLVE               -->
-	<!-- ================================== -->
-	<target name="resolve" description="--> retreive dependencies with ivy">
-		<ivy:retrieve />
-	</target>
+    <!-- Setting up Product properties -->
+	<property name="studio-rcp.dir" value="${target}/ApacheDirectoryStudio"/>
+	<property name="studio-rcp.dir.plugins" value="${studio-rcp.dir}/plugins"/>
+	<property name="studio-rcp.dir.features" value="${studio-rcp.dir}/features"/>
+	<property name="studio-rcp.eclipse.dir" value="../dependencies/eclipse" />
+    <property name="studio-rcp.eclipse.version" value="3.2" />
+	<property name="studio-rcp.eclipse.uiideplugin.filename" value="org.eclipse.ui.ide_3.2.1.M20060915-1030" />
+	<property name="studio-rcp.eclipse.uieditorsplugin.filename" value="org.eclipse.ui.editors_3.2.1.r321_v20060721" />
+	<property name="studio-rcp.eclipse.searchplugin.filename" value="org.eclipse.search_3.2.1.r321_v20060726" />
+	
+    <!-- Setting up a special property if target OS is Mac OS X -->
+    <condition property="isTargetMacOSX" value="true" >
+            <equals arg1="${studio-rcp.os.name}" arg2="macosx"/>
+    </condition>
 
-
-	<!-- ================================== -->
-	<!--             CLASSPATH              -->
-	<!-- ================================== -->
-	<target name="build-classpath" description="Computes a classpath according to current OS">
+	
+	<!-- BUILD-CLASSPATH TASK -->
+	<target name="build-classpath" description="Computes the classpath" >
+		<echo>Building classpath for ${project.name} (${project.id}) version ${project.version}</echo>
 		<path id="classpath">
-			<fileset dir="../dependencies/eclipse/3.2">
-				<include name="**/*.jar" />
-			</fileset>
+			<!-- Project dependencies -->
 			<fileset dir="${lib.dir}" />
+			<!-- Eclipse dependencies -->
+			<fileset dir="../dependencies/eclipse/3.2">
+				<include name="**/*.jar"/>
+			</fileset>
 		</path>
 	</target>
+	
 
-	<!-- ================================== -->
-	<!--             COMPILE                -->
-	<!-- ================================== -->
-	<target name="compile" depends="resolve,checkclasses,build-classpath" unless="classes-up2date" description="Compiles the plugin">
-		<mkdir dir="${studio-rcp.build}" />
-		<copy todir="${studio-rcp.build}">
+	<!-- PLUGIN TASK -->
+	<target name="plugin" depends="pre-plugin,studio-build.plugin" />
+	
+	
+	<!-- PRE-PLUGIN TASK -->
+	<target name="pre-plugin">
+		<mkdir dir="${target.build}"/>
+		<copy todir="${target.build}" failonerror="false">
 			<fileset dir="${basedir}">
 				<include name="log4j.conf" />
-				<include name="plugin.xml" />
-				<include name="toc.xml" />
-				<include name="plugin.properties" />
-				<include name="splash.bmp" />
 				<include name="plugin_customization.ini" />
 				<include name="product_lg.gif" />
+				<include name="splash.bmp" />
 			</fileset>
 		</copy>
-		<mkdir dir="${studio-rcp.build}/${lib.dir}" />
-		<copy todir="${studio-rcp.build}/${lib.dir}">
-			<fileset dir="${basedir}/${lib.dir}">
-				<include name="*.jar" />
-			</fileset>
-		</copy>
-		<mkdir dir="${studio-rcp.build}/META-INF" />
-		<copy todir="${studio-rcp.build}/META-INF">
-			<fileset dir="${basedir}/META-INF">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<mkdir dir="${studio-rcp.build}/resources" />
-		<copy todir="${studio-rcp.build}/resources">
-			<fileset dir="${basedir}/resources">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<copy todir="${studio-rcp.build}">
-			<fileset dir="${basedir}/src/main/resources">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<javac source="1.5" debug="yes" srcdir="${studio-rcp.src}" excludes="" destdir="${studio-rcp.build}" classpathref="classpath" listfiles="yes" />
-
-		<tstamp>
-			<format pattern="yyyy-MMM-dd, HH:mm 'GMT'Z" property="timestamp" locale="en" />
-		</tstamp>
-		<echo message="${project.name}-${project.version} compiled ${timestamp} by ${user.name}" file="${studio-rcp.build}/compile.timestamp" />
-	</target>
-
-	<target name="checkclasses">
-		<uptodate property="classes-up2date" targetfile="${studio-rcp.build}/compile.timestamp">
-			<srcfiles dir="${studio-rcp.src}" />
-		</uptodate>
-	</target>
-
-	<!-- ================================== -->
-	<!--              JAR                   -->
-	<!-- ================================== -->
-	<target name="jar" description="Creates jar file" depends="compile">
-		<jar destfile="${studio-rcp.output}/${project.name}_${project.version}.jar" manifest="${studio-rcp.build}/META-INF/MANIFEST.MF">
-			<fileset dir="${studio-rcp.build}" excludes="compile.timestamp" />
-		</jar>
-	</target>
-
-	<!-- ================================== -->
-	<!--              JAVADOC               -->
-	<!-- ================================== -->
-	<target name="javadoc" description="Generate Javadoc files">
-		<mkdir dir="${basedir}/doc" />
-		<javadoc destdir="${basedir}/doc">
-			<fileset dir="src/main/java" defaultexcludes="yes">
-				<include name="org/apache/directory/studio/**"/>
-			</fileset>
-		</javadoc>
 	</target>
 	
-	<!-- ================================== -->
-	<!--     Eclipse RCP-based product      -->
-	<!-- ================================== -->
-	<property name="studio-rcp.application" value="${studio-rcp.output}/studio" />
-	<property name="studio-rcp.application.zip" value="${studio-rcp.output}/${project.name}_${project.version}-${studio-rcp.os.name}-${os.arch}.zip" />
-
-	<target name="product" depends="jar" description="Create the standalone eclipse RCP application">
-		<mkdir dir="${studio-rcp.application}" />
-		<copy todir="${studio-rcp.application}" failonerror="true" overwrite="true" preservelastmodified="yes">
+	
+	<!-- PRODUCT TASK -->
+	<target name="product" depends="plugin">
+		<!-- Creating the folder structure -->
+		<mkdir dir="${studio-rcp.dir}"/>
+		<mkdir dir="${studio-rcp.dir.features}" />
+		<mkdir dir="${studio-rcp.dir.plugins}" />
+		<!-- Copying the application and the plugins -->
+		<copy todir="${studio-rcp.dir}" failonerror="true" overwrite="true" preservelastmodified="yes">
 			<fileset dir="${studio-rcp.eclipse.dir}/${studio-rcp.eclipse.version}/${studio-rcp.os.name}/${studio-rcp.os.arch}/rcp/" />
 		</copy>
-		<mkdir dir="${studio-rcp.application}/features" />
-		<mkdir dir="${studio-rcp.application}/plugins" />
-		<copy todir="${studio-rcp.application}/plugins" failonerror="true" overwrite="true">
+		<copy todir="${studio-rcp.dir.plugins}" failonerror="true" overwrite="true">
 			<fileset dir="${studio-rcp.eclipse.dir}/${studio-rcp.eclipse.version}/${studio-rcp.os.name}/${studio-rcp.os.arch}" excludes="rcp/" />
 			<fileset dir="${studio-rcp.eclipse.dir}/${studio-rcp.eclipse.version}/plugins" />
 		</copy>
-		
-		<!-- Replace some plugin.xml to get rid of unused actions, menus, wizard, views, ... -->
+
+		<!-- Replacing some plugin.xml to get rid of unused actions, menus, wizard, views, ... -->
 		<move 
-			file="${studio-rcp.application}/plugins/${studio-rcp.eclipse.searchplugin.filename}.plugin.xml" 
-			tofile="${studio-rcp.application}/plugins/plugin.xml" />
-		<zip destfile="${studio-rcp.application}/plugins/${studio-rcp.eclipse.searchplugin.filename}.jar"
-			basedir="${studio-rcp.application}/plugins"
+			file="${studio-rcp.dir}/plugins/${studio-rcp.eclipse.searchplugin.filename}.plugin.xml" 
+			tofile="${studio-rcp.dir.plugins}/plugin.xml" />
+		<zip destfile="${studio-rcp.dir.plugins}/${studio-rcp.eclipse.searchplugin.filename}.jar"
+			basedir="${studio-rcp.dir.plugins}"
 			includes="plugin.xml" 
 			update="true"/>
-		<delete file="${studio-rcp.application}/plugins/plugin.xml" />
+		<delete file="${studio-rcp.dir.plugins}/plugin.xml" />
 		<move 
-			file="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uiideplugin.filename}.plugin.xml" 
-			tofile="${studio-rcp.application}/plugins/plugin.xml" />
-		<zip destfile="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uiideplugin.filename}.jar"
-			basedir="${studio-rcp.application}/plugins"
+			file="${studio-rcp.dir.plugins}/${studio-rcp.eclipse.uiideplugin.filename}.plugin.xml" 
+			tofile="${studio-rcp.dir.plugins}/plugin.xml" />
+		<zip destfile="${studio-rcp.dir.plugins}/${studio-rcp.eclipse.uiideplugin.filename}.jar"
+			basedir="${studio-rcp.dir.plugins}"
 			includes="plugin.xml" 
 			update="true"/>
-		<delete file="${studio-rcp.application}/plugins/plugin.xml" />
+		<delete file="${studio-rcp.dir.plugins}/plugin.xml" />
 		<move 
-			file="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uieditorsplugin.filename}.plugin.xml" 
-			tofile="${studio-rcp.application}/plugins/plugin.xml" />
-		<zip destfile="${studio-rcp.application}/plugins/${studio-rcp.eclipse.uieditorsplugin.filename}.jar"
-			basedir="${studio-rcp.application}/plugins"
+			file="${studio-rcp.dir.plugins}/${studio-rcp.eclipse.uieditorsplugin.filename}.plugin.xml" 
+			tofile="${studio-rcp.dir.plugins}/plugin.xml" />
+		<zip destfile="${studio-rcp.dir.plugins}/${studio-rcp.eclipse.uieditorsplugin.filename}.jar"
+			basedir="${studio-rcp.dir.plugins}"
 			includes="plugin.xml" 
 			update="true"/>
-		<delete file="${studio-rcp.application}/plugins/plugin.xml" />
-		
-		<move file="${studio-rcp.application}/eclipse${studio-rcp.os.extension}" tofile="${studio-rcp.application}/${studio-rcp.appname}${studio-rcp.os.extension}">
-		</move>
-		<move file="${studio-rcp.output}/${project.name}_${project.version}.jar" tofile="${studio-rcp.application}/plugins/${project.name}_${project.version}.jar">
-		</move>
+		<delete file="${studio-rcp.dir.plugins}/plugin.xml" />
+		<!-- Renaming the application-->
+		<move file="${studio-rcp.dir}/eclipse${studio-rcp.os.extension}" tofile="${studio-rcp.dir}/${studio-rcp.appname}${studio-rcp.os.extension}" />
+		<!-- Copying the generated plugin -->
+		<copy todir="${studio-rcp.dir.plugins}" failonerror="true">
+			<fileset dir="${target}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<!-- Setting correct permission -->
 		<antcall target="setPermission_${studio-rcp.os.name}" />
+		<!-- Repackaging application for Mac OS X -->
+		<antcall target="repackage_MacOSX" />
 	</target>
 
-	<!-- ================================== -->
-	<!--        Set Right Permissions       -->
-	<!-- ================================== -->
+	
+	<!-- SETPERMISSION_MACOSX TASK -->
 	<target name="setPermission_macosx" description="Sets the right permissions on Mac OS X">
-		<chmod file="${studio-rcp.application}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755" />
+		<chmod file="${studio-rcp.dir}/${studio-rcp.appname}${studio-rcp.os.extension}/Contents/MacOS/ApacheDirectoryStudio" perm="755" />
 	</target>
 
+	
+	<!-- SETPERMISSION_LINUX TASK -->
 	<target name="setPermission_linux" description="Sets the right permissions on Linux">
-		<chmod file="${studio-rcp.application}/ApacheDirectoryStudio" perm="755" />
+		<chmod file="${studio-rcp.dir}/${studio-rcp.appname}${studio-rcp.os.extension}" perm="755" />
+	</target>
+
+	
+	<!-- SETPERMISSION_WIN32 TASK -->
+	<target name="setPermission_win32" description="Sets the right permissions on windows">
+			<chmod file="${studio-rcp.dir}/${studio-rcp.appname}${studio-rcp.os.extension}" perm="755" />
 	</target>
 	
-	<target name="setPermission_win32" description="Sets the right permissions on windows">
-			<chmod file="${studio-rcp.application}/Apache Directory Studio.exe" perm="755" />
-	</target>
 
-	<!-- ================================== -->
-	<!--               CLEAN                -->
-	<!-- ================================== -->
-	<target name="clean" description="Deletes any generated file (javadoc, classes, jars, distribution)">
-		<delete includeemptydirs="true">
-			<fileset dir="${basedir}">
-				<exclude name=".project" />
-				<exclude name=".classpath" />
-				<exclude name="build.properties" />
-				<exclude name="build.xml" />
-				<exclude name="ivy.xml" />
-				<exclude name="studio.product" />
-				<exclude name="log4j.conf" />
-				<exclude name="META-INF/**" />
-				<exclude name="plugin_customization.ini" />
-				<exclude name="plugin.properties" />
-				<exclude name="plugin.xml" />
-				<exclude name="product_lg.gif" />
-				<exclude name="resources/**" />
-				<exclude name="splash.bmp" />
-				<exclude name="src/**" />
-			</fileset>
-		</delete>
-	</target>
+	<!-- REPACKAGE_MACOSX TASK -->
+    <target name="repackage_MacOSX" description="Special repackage for Mac OS X" if="isTargetMacOSX">
+        <property name="application" location="${studio-rcp.dir}/${studio-rcp.appname}${studio-rcp.os.extension}" />
+        <property name="java.dir" location="${application}/Contents/Resources/Java" />
+        <mkdir dir="${java.dir}"/>
+        <move todir="${java.dir}">
+          <fileset dir="${studio-rcp.dir}">
+               <exclude name="${studio-rcp.appname}${studio-rcp.os.extension}/**"/>
+          </fileset>
+        </move>
+    </target>
+	
 </project>
