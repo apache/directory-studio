@@ -16,7 +16,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project  default="plugin">
+<project default="plugin">
 	<import file="../studio-build/build.xml"/>
 	
 	<!-- BUILD-CLASSPATH TASK -->
