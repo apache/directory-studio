@@ -60,6 +60,7 @@
 		<echo>          o -Dstudio-rcp.os.arch=i386 for i386 architecture (Linux and Mac OS X)</echo>
 		<echo>          o -Dstudio-rcp.os.arch=x86 for x86 architecture (Windows only)</echo>
 		<echo>          o -Dstudio-rcp.os.arch=ppc for PowerPC architecture</echo>
+		<echo>          o -Dstudio-rcp.os.arch=amd64 for AMD64 architecture</echo>
         <echo>  clean - Delete any generated file (javadoc, classes, jars, distribution)</echo>
         <echo>  javadoc - Generate Javadoc files</echo>
         <echo>  userguides - Generate HTML and PDF user guides</echo>
@@ -429,8 +430,8 @@
         <property name="packages.windows" value="${packages}/ApacheDirectoryStudio_Windows.zip" />
         <property name="packages.linux-i386" value="${packages}/ApacheDirectoryStudio_Linux_i386.tar.gz" />
         <property name="packages.linux-ppc" value="${packages}/ApacheDirectoryStudio_Linux_PPC.tar.gz" />
+        <property name="packages.linux-amd64" value="${packages}/ApacheDirectoryStudio_Linux_AMD64.tar.gz" />
         <property name="packages.updatesite" value="${packages}/ApacheDirectoryStudio_UpdateSite.zip" />
-
 
         <!-- Cleaning the 'packages' folder (just in case) -->
         <delete includeemptydirs="true" failonerror="no">
@@ -495,6 +496,24 @@
             <param name="studio-rcp.os.extension" value=""/>
         </antcall>
         <tar compression="gzip" destfile="${packages.linux-ppc}">
+            <tarfileset dir="${target}" mode="755">
+				<include name="ApacheDirectoryStudio/ApacheDirectoryStudio" />
+			</tarfileset>
+            <tarfileset dir="${target}">
+				<include name="**" />
+				<exclude name="ApacheDirectoryStudio/ApacheDirectoryStudio" />
+			</tarfileset>
+        </tar>
+        
+        <!-- Cleaning latest build-->
+        <antcall target="clean" inheritall="false"/>
+        <!-- Generating Apache Directory Studio for Linux AMD64 -->
+        <antcall target="bundle" inheritall="false">
+            <param name="studio-rcp.os.name" value="linux"/>
+            <param name="studio-rcp.os.arch" value="amd64"/>
+            <param name="studio-rcp.os.extension" value=""/>
+        </antcall>
+        <tar compression="gzip" destfile="${packages.linux-amd64}">
             <tarfileset dir="${target}" mode="755">
 				<include name="ApacheDirectoryStudio/ApacheDirectoryStudio" />
 			</tarfileset>
