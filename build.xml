@@ -291,8 +291,8 @@
         <mkdir dir="${target.userguides}" />
 
         <!-- Creation of the Apache Directory Studio RCP user guides -->
-        <ant dir="studio-rcp-help" inheritAll="no" target="static-html" />
-        <ant dir="studio-rcp-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-rcp-help" inheritAll="no" target="help-html" />
+        <ant dir="studio-rcp-help" inheritAll="no" target="help-pdf" />
         <!-- Copy of the RCP user guides -->
         <mkdir dir="${target.userguides}/apache_directory_studio" />
         <copy todir="${target.userguides}/apache_directory_studio">
@@ -307,8 +307,8 @@
         </copy>
 
         <!-- Creation of the Apache Directory Studio Browser user guides -->
-        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="static-html" />
-        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="help-html" />
+        <ant dir="studio-ldapbrowser-help" inheritAll="no" target="help-pdf" />
         <!-- Copy of the browser user guides -->
         <mkdir dir="${target.userguides}/ldap_browser" />
         <copy todir="${target.userguides}/ldap_browser">
@@ -323,8 +323,8 @@
         </copy>
 
         <!-- Creation of the Apache Directory Studio Schemas Editor user guides -->
-        <ant dir="studio-schemaeditor-help" inheritAll="no" target="static-html" />
-        <ant dir="studio-schemaeditor-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-schemaeditor-help" inheritAll="no" target="help-html" />
+        <ant dir="studio-schemaeditor-help" inheritAll="no" target="help-pdf" />
         <!-- Copy of the schemas user guides -->
         <mkdir dir="${target.userguides}/schemas_editor" />
         <copy todir="${target.userguides}/schemas_editor">
@@ -339,8 +339,8 @@
         </copy>
     	
         <!-- Creation of the Apache Directory Studio Apache DS Configration user guides -->
-        <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="static-html" />
-        <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="static-pdf" />
+        <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="help-html" />
+        <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="help-pdf" />
         <!-- Copy of the schemas user guides -->
         <mkdir dir="${target.userguides}/apacheds_configuration" />
         <copy todir="${target.userguides}/apacheds_configuration">
