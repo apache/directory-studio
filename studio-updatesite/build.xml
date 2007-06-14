@@ -16,18 +16,20 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project default="generate" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
-	<property name="project.name" value="org.apache.directory.studio.updatesite" />
-	<property name="project.version" value="0.8.0" />
+<project default="generate">
+	<import file="../studio-build/build.xml"/>
 
-	<property name="project.plugins" value="${basedir}/plugins" />
-	<property name="project.features" value="${basedir}/features" />
+	<!-- Setting updatesite properties -->
+	<property name="updatesite" value="${target}/updatesite" />
+	<property name="updatesite.plugins" value="${updatesite}/plugins" />
+	<property name="updatesite.features" value="${updatesite}/features" />
 		
-	<!-- ================================== -->
-	<!--                              GENERATE                                  -->
-	<!-- ================================== -->
+	<!-- GENERATE TASK -->
 	<target name="generate" description="Generates the update site. Generates and copies features and plugins.">
-		
+		<mkdir dir="${updatesite}"/>
+		<mkdir dir="${updatesite.plugins}"/>
+		<mkdir dir="${updatesite.features}"/>
+
 		<!-- Creation of the Features -->
 		<!-- Apache Directory Studio RCP Feature -->
 		<ant dir="../studio-rcp-feature" inheritAll="no" />
@@ -37,9 +39,20 @@
 	    <ant dir="../studio-ldapbrowser-feature" inheritAll="no" />
 	    <!-- Apache Directory Studio Apache DS Configuration Feature -->
 	    <ant dir="../studio-apacheds-configuration-feature" inheritAll="no" />
-	    
+	
+		<!-- Copying updatesite files -->
+	    <copy todir="${updatesite}">
+		    <fileset dir="${basedir}">
+				<include name="index.html" />
+				<include name="site--xml.cgi" />
+				<include name="site--xml.html" />
+				<include name="site.xml" />
+				<include name="web/**" />
+			</fileset>
+		</copy>
+	
 	    <!-- Copying the Features -->
-	    <copy todir="${project.features}">
+	    <copy todir="${updatesite.features}">
             <!-- Apache Directory Studio RCP Feature  -->
             <fileset dir="../studio-rcp-feature/target">
 				<include name="*.jar" />
@@ -89,7 +102,7 @@
 	    <ant dir="../studio-apacheds-configuration-help" inheritAll="no" />
 	    
 	    <!-- Copying the Plugins -->
-	    <copy todir="${project.plugins}">
+	    <copy todir="${updatesite.plugins}">
             <!-- Apache Directory Studio RCP -->
 	        <fileset dir="../studio-rcp/target">
 	            <include name="*.jar" />
@@ -148,34 +161,4 @@
 	        </fileset>
 	    </copy>
 	</target>
-	
-	
-	<!-- ================================== -->
-	<!--                                       CLEAN                              -->
-	<!-- ================================== -->
-	<target name="clean" description="Deletes any generated file">
-		<ant dir="../studio-aciitemeditor" inheritAll="no" target="clean"/>
-		<ant dir="../studio-apacheds-configuration" inheritAll="no" target="clean"/>
-		<ant dir="../studio-apacheds-configuration-feature" inheritAll="no" target="clean"/>
-		<ant dir="../studio-apacheds-configuration-help" inheritAll="no" target="clean"/>
-        <ant dir="../studio-ldapbrowser-common" inheritAll="no" target="clean" />
-        <ant dir="../studio-ldapbrowser-core" inheritAll="no" target="clean" />
-        <ant dir="../studio-ldapbrowser-feature" inheritAll="no" target="clean"/>
-        <ant dir="../studio-ldapbrowser-help" inheritAll="no" target="clean" />
-        <ant dir="../studio-ldapbrowser-ui" inheritAll="no" target="clean" />
-        <ant dir="../studio-jars" inheritAll="no" target="clean" />
-        <ant dir="../studio-ldifeditor" inheritAll="no" target="clean" />
-		<ant dir="../studio-rcp" inheritAll="no" target="clean"/>
-        <ant dir="../studio-rcp-feature" inheritAll="no" target="clean"/>
-		<ant dir="../studio-rcp-help" inheritAll="no" target="clean"/>
-        <ant dir="../studio-schemaeditor-feature" inheritAll="no" target="clean"/>
-        <ant dir="../studio-schemaeditor-help" inheritAll="no" target="clean"/>
-        <ant dir="../studio-schemaeditor-plugin" inheritAll="no" target="clean"/>
-        <ant dir="../studio-valueeditors" inheritAll="no" target="clean"/>
-		<delete includeemptydirs="true">
-			<fileset dir="${project.plugins}"/>
-			<fileset dir="${project.features}"/>
-		</delete>
-	</target>
-	
 </project>
