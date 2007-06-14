@@ -377,7 +377,7 @@
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="retrieve-dependencies" />
-        <ant dir="studio-jars" inheritAll="no" target="resolve" />
+        <ant dir="studio-jars" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="retrieve-dependencies" />
