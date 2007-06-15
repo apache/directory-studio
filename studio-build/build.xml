@@ -131,7 +131,7 @@
 	
 	<!-- FEATURE TASK -->
 	<target name="feature" description="Creates a Feature Jar">
-		<copy todir="${target.build}" failonerror="false">
+		<copy todir="${target}/${project.id}_${project.version}" failonerror="false">
 			<fileset dir="${basedir}">
 				<include name="feature.xml" />
 				<include name="feature.properties" />
@@ -139,8 +139,8 @@
 				<include name="studio.png**" />
 			</fileset>
 		</copy>
-		<jar destfile="${target}/${project.id}_${project.version}.jar" manifest="${target.build}/META-INF/MANIFEST.MF">
-			<fileset dir="${target.build}" />
+		<jar destfile="${target}/${project.id}_${project.version}.jar" manifest="${target}/${project.id}_${project.version}/META-INF/MANIFEST.MF">
+			<fileset dir="${target}/${project.id}_${project.version}" />
 		</jar>
 	</target>
 

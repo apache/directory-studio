@@ -223,7 +223,7 @@
         <!-- Copy of the Apache Directory Studio RCP Feature in the "features" folder -->
         <copy todir="${application.features}">
             <fileset dir="studio-rcp-feature/target">
-                <include name="*.jar" />
+                <exclude name="*.jar" />
             </fileset>
         </copy>
 		
@@ -232,7 +232,7 @@
         <!-- Copy of the Schemas Editor Feature in the "features" folder -->
         <copy todir="${application.features}">
             <fileset dir="studio-schemaeditor-feature/target">
-                <include name="*.jar" />
+                <exclude name="*.jar" />
             </fileset>
         </copy>
 		
@@ -241,7 +241,7 @@
 	    <!-- Copy of the LDAP Browser Feature in the "features" folder -->
 	    <copy todir="${application.features}">
             <fileset dir="studio-ldapbrowser-feature/target">
-                <include name="*.jar" />
+                <exclude name="*.jar" />
             </fileset>
         </copy>
 
@@ -250,7 +250,7 @@
         <!-- Copy of the Apache DS Configuration Feature in the "features" folder -->
         <copy todir="${application.features}">
             <fileset dir="studio-apacheds-configuration-feature/target">
-                <include name="*.jar" />
+                <exclude name="*.jar" />
             </fileset>
         </copy>
 
