@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Apache DS Schema Editor Plug-in
+Bundle-SymbolicName: org.apache.directory.studio.apacheds.schemaeditor;singleton:=true
+Bundle-Version: 0.0.0.development
+Bundle-Activator: org.apache.directory.studio.apacheds.schemaeditor.Activator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.apache.directory.studio.jars
+Eclipse-LazyStart: true
+Bundle-ClassPath: .
