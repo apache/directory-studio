@@ -58,20 +58,7 @@
       </product>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            class="org.apache.directory.studio.view.Perspective"
-            icon="resources/icons/welcome-perspective.gif"
-            id="org.apache.directory.studio.perspective"
-            name="Welcome"/>
-   </extension>
-   <extension
          point="org.eclipse.ui.views">
-      <view
-            category="org.apache.directory.studio.rcp.ui.category"
-            class="org.apache.directory.studio.view.WelcomeView"
-            id="org.apache.directory.studio.view.WelcomeView"
-            name="Welcome View"/>
 	  <view
             name="Progress"
             icon="resources/icons/progress.gif"
@@ -79,9 +66,6 @@
             class="org.eclipse.ui.ExtensionFactory:progressView"
             id="org.eclipse.ui.views.ProgressView">
          </view>
-      <category
-            id="org.apache.directory.studio.rcp.ui.category"
-            name="Apache Directory Studio RCP"/>
    </extension>
    
       <extension
