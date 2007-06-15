@@ -39,7 +39,9 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
     {
         if ( obj instanceof Syntax )
         {
-            return ( ( Syntax ) obj ).getName();
+            Syntax syntax = ( Syntax ) obj;
+            
+            return syntax.getName() + "  -  (" + syntax.getOid()  + ")";
         }
         else if ( obj instanceof NonExistingSyntax )
         {
