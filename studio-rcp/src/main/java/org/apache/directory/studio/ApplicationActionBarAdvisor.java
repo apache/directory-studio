@@ -97,6 +97,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction forwardHistoryAction;
     private IWorkbenchAction nextAction;
     private IWorkbenchAction previousAction;
+    private IWorkbenchAction introAction;
 
     /**
      * Creates a new instance of ApplicationActionBarAdvisor.
@@ -250,6 +251,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         previousAction = ActionFactory.PREVIOUS.create( window );
         register( previousAction );
+        
+        introAction = ActionFactory.INTRO.create(window);
+        register(introAction);
 
     }
 
@@ -343,6 +347,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         windowMenu.add( preferencesAction );
 
         // Help
+        helpMenu.add( introAction );
+        helpMenu.add( new Separator() );
         helpMenu.add( helpAction );
         helpMenu.add( dynamicHelpAction );
         helpMenu.add( reportABug );

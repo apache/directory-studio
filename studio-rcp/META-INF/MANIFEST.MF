@@ -9,7 +9,8 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.update.core,
  org.eclipse.update.ui,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.ui.intro
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/nlog4j-1.2.24.jar

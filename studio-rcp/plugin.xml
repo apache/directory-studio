@@ -83,5 +83,32 @@
             id="org.apache.directory.studio.rcp.ui.category"
             name="Apache Directory Studio RCP"/>
    </extension>
+   
+      <extension
+         point="org.eclipse.ui.intro">
+      <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            id="studio.intro">
+      </intro>
+      <introProductBinding
+            introId="studio.intro"
+            productId="org.apache.directory.studio.product">
+      </introProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.config">
+      <config
+            introId="studio.intro"
+            content="resources/intro.xml"
+            id="ApacheDirectoryStudio.configId">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx">
+            </implementation>
+         </presentation>
+      </config>
+   </extension>
 
 </plugin>
