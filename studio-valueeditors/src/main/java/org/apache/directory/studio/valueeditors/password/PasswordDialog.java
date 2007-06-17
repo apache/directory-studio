@@ -54,22 +54,29 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The PasswordDialog is used from the password value editor to view the current password
+ * and to enter a new password.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class PasswordDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "Password Editor";
-
-    public static final String[] HASH_METHODS =
+    /** The supported hash methods */
+    private static final String[] HASH_METHODS =
         { Password.HASH_METHOD_SHA, Password.HASH_METHOD_SSHA, Password.HASH_METHOD_MD5, Password.HASH_METHOD_SMD5,
             Password.HASH_METHOD_CRYPT, Password.HASH_METHOD_NO };
 
-    public static final int CURRENT_TAB = 0;
+    private static final int CURRENT_TAB = 0;
 
-    public static final int NEW_TAB = 1;
+    private static final int NEW_TAB = 1;
 
-    public static final String SELECTED_TAB_DIALOGSETTINGS_KEY = PasswordDialog.class.getName() + ".tab";
+    private static final String SELECTED_TAB_DIALOGSETTINGS_KEY = PasswordDialog.class.getName() + ".tab";
 
-    public static final String SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY = PasswordDialog.class.getName() + ".hashMethod";
+    private static final String SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY = PasswordDialog.class.getName()
+        + ".hashMethod";
 
     private TabFolder tabFolder;
 
@@ -90,6 +97,8 @@ public class PasswordDialog extends Dialog
     private Text currentPasswordValueHexText;
 
     private Text currentPasswordSaltHexText;
+
+    private Button showCurrentPasswordDetailsButton;
 
     private Text testPasswordText;
 
@@ -113,11 +122,20 @@ public class PasswordDialog extends Dialog
 
     private Button newSaltButton;
 
+    private Button showNewPasswordDetailsButton;
+
     private byte[] returnPassword;
 
     private Button okButton;
 
 
+    /**
+     * Creates a new instance of PasswordDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param currentPassword the current password, null if none
+     * @param entry the entry used to bind 
+     */
     public PasswordDialog( Shell parentShell, byte[] currentPassword, IEntry entry )
     {
         super( parentShell );
@@ -136,45 +154,57 @@ public class PasswordDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( "Password Editor" );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_PASSWORDEDITOR ) );
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
         // create password
         if ( newPassword != null )
         {
-            this.returnPassword = this.newPassword.toBytes();
+            returnPassword = newPassword.toBytes();
         }
         else
         {
-            this.returnPassword = null;
+            returnPassword = null;
         }
 
         // save selected hash method to dialog settings, selected tab will be
         // saved int close()
         ValueEditorsActivator.getDefault().getDialogSettings().put( SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY,
-            this.newPasswordHashMethodCombo.getText() );
+            newPasswordHashMethodCombo.getText() );
 
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
     public boolean close()
     {
         // save selected tab to dialog settings
         ValueEditorsActivator.getDefault().getDialogSettings().put( SELECTED_TAB_DIALOGSETTINGS_KEY,
-            this.tabFolder.getSelectionIndex() );
+            tabFolder.getSelectionIndex() );
 
         return super.close();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -183,23 +213,24 @@ public class PasswordDialog extends Dialog
         // load dialog settings
         try
         {
-            int tabIndex = ValueEditorsActivator.getDefault().getDialogSettings().getInt( SELECTED_TAB_DIALOGSETTINGS_KEY );
-            if ( this.currentPassword == null || this.currentPassword.toBytes().length == 0 )
+            int tabIndex = ValueEditorsActivator.getDefault().getDialogSettings().getInt(
+                SELECTED_TAB_DIALOGSETTINGS_KEY );
+            if ( currentPassword == null || currentPassword.toBytes().length == 0 )
             {
                 tabIndex = NEW_TAB;
             }
-            this.tabFolder.setSelection( tabIndex );
+            tabFolder.setSelection( tabIndex );
         }
         catch ( Exception e )
         {
         }
         try
         {
-            String hashMethod = ValueEditorsActivator.getDefault().getDialogSettings()
-                .get( SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY );
+            String hashMethod = ValueEditorsActivator.getDefault().getDialogSettings().get(
+                SELECTED_HASH_METHOD_DIALOGSETTINGS_KEY );
             if ( Arrays.asList( HASH_METHODS ).contains( hashMethod ) )
             {
-                this.newPasswordHashMethodCombo.setText( hashMethod );
+                newPasswordHashMethodCombo.setText( hashMethod );
             }
         }
         catch ( Exception e )
@@ -211,22 +242,24 @@ public class PasswordDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 3 / 2;
         gd.heightHint = convertVerticalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) / 2;
         composite.setLayoutData( gd );
 
-        this.tabFolder = new TabFolder( composite, SWT.TOP );
+        tabFolder = new TabFolder( composite, SWT.TOP );
         GridLayout mainLayout = new GridLayout();
         mainLayout.marginWidth = 0;
         mainLayout.marginHeight = 0;
-        this.tabFolder.setLayout( mainLayout );
-        this.tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        this.tabFolder.addSelectionListener( new SelectionAdapter()
+        tabFolder.setLayout( mainLayout );
+        tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        tabFolder.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -235,9 +268,9 @@ public class PasswordDialog extends Dialog
         } );
 
         // current password
-        if ( this.currentPassword != null && this.currentPassword.toBytes().length > 0 )
+        if ( currentPassword != null && currentPassword.toBytes().length > 0 )
         {
-            currentPasswordContainer = new Composite( this.tabFolder, SWT.NONE );
+            currentPasswordContainer = new Composite( tabFolder, SWT.NONE );
             GridLayout currentLayout = new GridLayout( 2, false );
             currentLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
             currentLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
@@ -248,7 +281,7 @@ public class PasswordDialog extends Dialog
             BaseWidgetUtils.createLabel( currentPasswordContainer, "Current Password:", 1 );
             currentPasswordText = BaseWidgetUtils.createReadonlyText( currentPasswordContainer, "", 1 );
 
-            /* Label dummy = */new Label( currentPasswordContainer, SWT.NONE );
+            new Label( currentPasswordContainer, SWT.NONE );
             Composite currentPasswordDetailContainer = BaseWidgetUtils.createColumnContainer( currentPasswordContainer,
                 2, 1 );
             BaseWidgetUtils.createLabel( currentPasswordDetailContainer, "Hash Method:", 1 );
@@ -257,6 +290,15 @@ public class PasswordDialog extends Dialog
             currentPasswordValueHexText = BaseWidgetUtils.createLabeledText( currentPasswordDetailContainer, "", 1 );
             BaseWidgetUtils.createLabel( currentPasswordDetailContainer, "Salt (Hex):", 1 );
             currentPasswordSaltHexText = BaseWidgetUtils.createLabeledText( currentPasswordDetailContainer, "", 1 );
+            showCurrentPasswordDetailsButton = BaseWidgetUtils.createCheckbox( currentPasswordDetailContainer,
+                "Show current password details", 1 );
+            showCurrentPasswordDetailsButton.addSelectionListener( new SelectionAdapter()
+            {
+                public void widgetSelected( SelectionEvent arg0 )
+                {
+                    updateCurrentPasswordGroup();
+                }
+            } );
 
             BaseWidgetUtils.createLabel( currentPasswordContainer, "Verify Password:", 1 );
             testPasswordText = BaseWidgetUtils.createPasswordText( currentPasswordContainer, "", 1 );
@@ -268,7 +310,7 @@ public class PasswordDialog extends Dialog
                 }
             } );
 
-            /* Label dummyLabel = */new Label( currentPasswordContainer, SWT.NONE );
+            new Label( currentPasswordContainer, SWT.NONE );
             Composite verifyPasswordButtonContainer = BaseWidgetUtils.createColumnContainer( currentPasswordContainer,
                 2, 1 );
             verifyPasswordButton = BaseWidgetUtils.createButton( verifyPasswordButtonContainer, "Verify", 1 );
@@ -290,13 +332,13 @@ public class PasswordDialog extends Dialog
                 }
             } );
 
-            this.currentTab = new TabItem( this.tabFolder, SWT.NONE );
-            this.currentTab.setText( "Current Password" );
-            this.currentTab.setControl( currentPasswordContainer );
+            currentTab = new TabItem( tabFolder, SWT.NONE );
+            currentTab.setText( "Current Password" );
+            currentTab.setControl( currentPasswordContainer );
         }
 
         // new password
-        newPasswordContainer = new Composite( this.tabFolder, SWT.NONE );
+        newPasswordContainer = new Composite( tabFolder, SWT.NONE );
         GridLayout newLayout = new GridLayout( 2, false );
         newLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
         newLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
@@ -342,49 +384,83 @@ public class PasswordDialog extends Dialog
         newPasswordPreviewValueHexText = BaseWidgetUtils.createLabeledText( newPasswordPreviewDetailContainer, ":", 1 );
         BaseWidgetUtils.createLabel( newPasswordPreviewDetailContainer, "Salt (Hex):", 1 );
         newPasswordPreviewSaltHexText = BaseWidgetUtils.createLabeledText( newPasswordPreviewDetailContainer, "", 1 );
+        showNewPasswordDetailsButton = BaseWidgetUtils.createCheckbox( newPasswordPreviewDetailContainer,
+            "Show new password details", 1 );
+        showNewPasswordDetailsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                updateNewPasswordGroup();
+            }
+        } );
 
-        this.newTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.newTab.setText( "New Password" );
-        this.newTab.setControl( newPasswordContainer );
+        newTab = new TabItem( tabFolder, SWT.NONE );
+        newTab.setText( "New Password" );
+        newTab.setControl( newPasswordContainer );
 
         applyDialogFont( composite );
         return composite;
     }
 
 
+    /**
+     * Updates the current password tab.
+     */
     private void updateCurrentPasswordGroup()
     {
-        if ( this.currentPassword != null )
+        // set current password to the UI widgets
+        if ( currentPassword != null )
         {
-            this.currentPasswordHashMethodText.setText( Utils.getNonNullString( this.currentPassword.getHashMethod() ) );
-            this.currentPasswordValueHexText.setText( Utils.getNonNullString( this.currentPassword
-                .getHashedPasswordAsHexString() ) );
-            this.currentPasswordSaltHexText
-                .setText( Utils.getNonNullString( this.currentPassword.getSaltAsHexString() ) );
-            this.currentPasswordText.setText( this.currentPassword.toString() );
+            currentPasswordHashMethodText.setText( Utils.getNonNullString( currentPassword.getHashMethod() ) );
+            currentPasswordValueHexText.setText( Utils
+                .getNonNullString( currentPassword.getHashedPasswordAsHexString() ) );
+            currentPasswordSaltHexText.setText( Utils.getNonNullString( currentPassword.getSaltAsHexString() ) );
+            currentPasswordText.setText( currentPassword.toString() );
         }
 
-        this.testPasswordText.setEnabled( this.currentPassword != null
-            && this.currentPassword.getHashedPassword() != null && this.currentPassword.toBytes().length > 0 );
-        this.verifyPasswordButton.setEnabled( this.testPasswordText.isEnabled()
-            && !"".equals( this.testPasswordText.getText() ) );
-        this.bindPasswordButton.setEnabled( this.testPasswordText.isEnabled()
-            && !"".equals( this.testPasswordText.getText() ) && this.entry != null );
-
-        if ( this.verifyPasswordButton.isEnabled() )
-            getShell().setDefaultButton( this.verifyPasswordButton );
+        // show password details?
+        if ( showCurrentPasswordDetailsButton.getSelection() )
+        {
+            currentPasswordText.setEchoChar( '\0' );
+            currentPasswordValueHexText.setEchoChar( '\0' );
+            currentPasswordSaltHexText.setEchoChar( '\0' );
+        }
         else
-            getShell().setDefaultButton( this.okButton );
-        // this.currentPasswordText.getParent().layout();
+        {
+            currentPasswordText.setEchoChar( '\u2022' );
+            currentPasswordValueHexText.setEchoChar( '\u2022' );
+            currentPasswordSaltHexText.setEchoChar( currentPasswordSaltHexText.getText().equals(
+                Utils.getNonNullString( null ) ) ? '\0' : '\u2022' );
+        }
+
+        // enable/disable test field and buttons
+        testPasswordText.setEnabled( currentPassword != null && currentPassword.getHashedPassword() != null
+            && currentPassword.toBytes().length > 0 );
+        verifyPasswordButton.setEnabled( testPasswordText.isEnabled() && !"".equals( testPasswordText.getText() ) );
+        bindPasswordButton.setEnabled( testPasswordText.isEnabled() && !"".equals( testPasswordText.getText() )
+            && entry != null );
+
+        // default dialog button
+        if ( verifyPasswordButton.isEnabled() )
+        {
+            getShell().setDefaultButton( verifyPasswordButton );
+        }
+        else
+        {
+            getShell().setDefaultButton( okButton );
+        }
     }
 
 
+    /**
+     * Verifies the current password.
+     */
     private void verifyCurrentPassword()
     {
-        String testPassword = this.testPasswordText.getText();
-        if ( this.currentPassword != null )
+        String testPassword = testPasswordText.getText();
+        if ( currentPassword != null )
         {
-            if ( this.currentPassword.verify( testPassword ) )
+            if ( currentPassword.verify( testPassword ) )
             {
                 MessageDialog dialog = new MessageDialog( getShell(), "Password Verification", getShell().getImage(),
                     "Password verified sucessfully", MessageDialog.INFORMATION, new String[]
@@ -402,16 +478,17 @@ public class PasswordDialog extends Dialog
     }
 
 
+    /**
+     * Binds to the directory using the test password.
+     */
     private void bindCurrentPassword()
     {
-
-        if ( !"".equals( this.testPasswordText.getText() ) && this.entry != null )
+        if ( !"".equals( testPasswordText.getText() ) && entry != null )
         {
-
-            IConnection connection = ( IConnection ) this.entry.getConnection().clone();;
+            IConnection connection = ( IConnection ) entry.getConnection().clone();;
             connection.setName( null );
-            connection.setBindPrincipal( this.entry.getDn().toString() );
-            connection.setBindPassword( this.testPasswordText.getText() );
+            connection.setBindPrincipal( entry.getDn().toString() );
+            connection.setBindPassword( testPasswordText.getText() );
             connection.setAuthMethod( IConnection.AUTH_SIMPLE );
 
             CheckBindJob job = new CheckBindJob( connection );
@@ -421,36 +498,59 @@ public class PasswordDialog extends Dialog
                 MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Authentication",
                     "The authentication was successful." );
             }
-
         }
     }
 
 
+    /**
+     * Updates the new password tab.
+     */
     private void updateNewPasswordGroup()
     {
-        this.newPassword = new Password( this.newPasswordHashMethodCombo.getText(), this.newPasswordText.getText() );
-        if ( !"".equals( this.newPasswordText.getText() ) || this.newPassword.getHashMethod() == null )
+        // set new password to the UI widgets
+        newPassword = new Password( newPasswordHashMethodCombo.getText(), newPasswordText.getText() );
+        if ( !"".equals( newPasswordText.getText() ) || newPassword.getHashMethod() == null )
         {
-            newPasswordPreviewValueHexText.setText( Utils.getNonNullString( this.newPassword
-                .getHashedPasswordAsHexString() ) );
-            newPasswordPreviewSaltHexText.setText( Utils.getNonNullString( this.newPassword.getSaltAsHexString() ) );
-            newPasswordPreviewText.setText( this.newPassword.toString() );
-            newSaltButton.setEnabled( this.newPassword.getSalt() != null );
-            this.okButton.setEnabled( true );
-            getShell().setDefaultButton( this.okButton );
+            newPasswordPreviewValueHexText
+                .setText( Utils.getNonNullString( newPassword.getHashedPasswordAsHexString() ) );
+            newPasswordPreviewSaltHexText.setText( Utils.getNonNullString( newPassword.getSaltAsHexString() ) );
+            newPasswordPreviewText.setText( newPassword.toString() );
+            newSaltButton.setEnabled( newPassword.getSalt() != null );
+            okButton.setEnabled( true );
+            getShell().setDefaultButton( okButton );
         }
         else
         {
-            this.newPassword = null;
+            newPassword = null;
             newPasswordPreviewValueHexText.setText( Utils.getNonNullString( null ) );
             newPasswordPreviewSaltHexText.setText( Utils.getNonNullString( null ) );
             newPasswordPreviewText.setText( Utils.getNonNullString( null ) );
             newSaltButton.setEnabled( false );
-            this.okButton.setEnabled( false );
+            okButton.setEnabled( false );
+        }
+
+        // show password details?
+        if ( showNewPasswordDetailsButton.getSelection() )
+        {
+            newPasswordPreviewText.setEchoChar( '\0' );
+            newPasswordPreviewValueHexText.setEchoChar( '\0' );
+            newPasswordPreviewSaltHexText.setEchoChar( '\0' );
+        }
+        else
+        {
+            newPasswordPreviewText.setEchoChar( newPasswordPreviewText.getText()
+                .equals( Utils.getNonNullString( null ) ) ? '\0' : '\u2022' );
+            newPasswordPreviewValueHexText.setEchoChar( newPasswordPreviewValueHexText.getText().equals(
+                Utils.getNonNullString( null ) ) ? '\0' : '\u2022' );
+            newPasswordPreviewSaltHexText.setEchoChar( newPasswordPreviewSaltHexText.getText().equals(
+                Utils.getNonNullString( null ) ) ? '\0' : '\u2022' );
         }
     }
 
 
+    /**
+     * Updates the tab folder and the tabs.
+     */
     private void updateTabFolder()
     {
         if ( testPasswordText != null && newPasswordText != null )
@@ -470,14 +570,14 @@ public class PasswordDialog extends Dialog
 
 
     /**
+     * Gets the new password.
      * 
-     * 
-     * @return Returns the password, either encypted by the selected
+     * @return the password, either encypted by the selected
      *         algorithm or as plain text.
      */
     public byte[] getNewPassword()
     {
-        return this.returnPassword;
+        return returnPassword;
     }
 
 }
