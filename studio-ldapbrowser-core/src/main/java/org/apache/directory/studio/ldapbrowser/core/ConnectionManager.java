@@ -562,20 +562,26 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
         XMLEncoder encoder = null;
         try
         {
+            // to avoid a corrupt file, save object to a temp file first 
+            String tempFilename = filename + "-temp";
             Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
-            encoder = new XMLEncoder( new BufferedOutputStream( new FileOutputStream( filename ) ) );
-
+            encoder = new XMLEncoder( new BufferedOutputStream( new FileOutputStream( tempFilename ) ) );
             encoder.setExceptionListener( new ExceptionListener()
             {
-
                 public void exceptionThrown( Exception e )
                 {
                     e.printStackTrace();
                 }
-
             } );
-
             encoder.writeObject( object );
+            
+            // move temp file to good file
+            File file = new File( filename );
+            File tempFile = new File( tempFilename );
+            if( file.exists() ) {
+                file.delete();
+            }
+            tempFile.renameTo( file );
         }
         catch ( Exception e )
         {
