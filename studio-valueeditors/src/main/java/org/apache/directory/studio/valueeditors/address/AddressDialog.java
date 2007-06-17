@@ -34,45 +34,54 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * The AddressDialog is used from the address value editor to edit an address.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AddressDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "Address Editor";
+    /** The initial address. */
+    private String initialAddress;
 
-    public static final double MAX_WIDTH = 250.0;
+    /** The return address. */
+    private String returnAddress;
 
-    public static final double MAX_HEIGHT = 250.0;
-
-    private String initialValue;
-
-    private String returnValue;
-
+    /** The text widget. */
     private Text text;
 
 
-    public AddressDialog( Shell parentShell, String initialValue )
+    /**
+     * Creates a new instance of AddressDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param initialAddress the initial address
+     */
+    public AddressDialog( Shell parentShell, String initialAddress )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        this.initialValue = initialValue;
-        this.returnValue = null;
+        this.initialAddress = initialAddress;
+        this.returnAddress = null;
     }
 
 
-    public boolean close()
-    {
-        return super.close();
-    }
-
-
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( "Address Editor" );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_ADDRESSEDITOR ) );
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -80,16 +89,22 @@ public class AddressDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.returnValue = this.text.getText();
-        this.returnValue = this.returnValue.replaceAll( "\n", "\\$" );
-        this.returnValue = this.returnValue.replaceAll( "\r", "\\$" );
-        this.returnValue = this.returnValue.replaceAll( "\\$\\$", "\\$" );
+        returnAddress = text.getText();
+        returnAddress = returnAddress.replaceAll( "\n", "\\$" );
+        returnAddress = returnAddress.replaceAll( "\r", "\\$" );
+        returnAddress = returnAddress.replaceAll( "\\$\\$", "\\$" );
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
         // create composite
@@ -99,7 +114,7 @@ public class AddressDialog extends Dialog
 
         // text widget
         text = new Text( composite, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
-        text.setText( this.initialValue.replaceAll( "\\$", BrowserCoreConstants.LINE_SEPARATOR ) );
+        text.setText( initialAddress.replaceAll( "\\$", BrowserCoreConstants.LINE_SEPARATOR ) );
         // GridData gd = new GridData(GridData.GRAB_HORIZONTAL |
         // GridData.HORIZONTAL_ALIGN_FILL);
         gd = new GridData( GridData.FILL_BOTH );
@@ -112,9 +127,14 @@ public class AddressDialog extends Dialog
     }
 
 
-    public String getText()
+    /**
+     * Gets the address.
+     * 
+     * @return the address
+     */
+    public String getAddress()
     {
-        return this.returnValue;
+        return returnAddress;
     }
 
 }

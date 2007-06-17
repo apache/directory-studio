@@ -58,23 +58,25 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
-
+/**
+ * The ImageDialog is used from the image value editor to view the current image
+ * and to select a new image.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ImageDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "Image Editor";
+    private static final int MAX_WIDTH = 250;
 
-    // public static final String[] IMAGE_FILE_EXTENSIONS = {"*.jpg; *.jpeg;
-    // *.gif; *.bmp; *.png"};
-    public static final int MAX_WIDTH = 250;
+    private static final int MAX_HEIGHT = 250;
 
-    public static final int MAX_HEIGHT = 250;
+    private static final int CURRENT_TAB = 0;
 
-    public static final int CURRENT_TAB = 0;
+    private static final int NEW_TAB = 1;
 
-    public static final int NEW_TAB = 1;
-
-    public static final String SELECTED_TAB_DIALOGSETTINGS_KEY = ImageDialog.class.getName() + ".tab";
+    private static final String SELECTED_TAB_DIALOGSETTINGS_KEY = ImageDialog.class.getName() + ".tab";
 
     private TabFolder tabFolder;
 
@@ -127,6 +129,13 @@ public class ImageDialog extends Dialog
     private Button okButton;
 
 
+    /**
+     * Creates a new instance of ImageDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param currentImageRawData the current image raw data
+     * @param requiredImageType the required image type
+     */
     public ImageDialog( Shell parentShell, byte[] currentImageRawData, int requiredImageType )
     {
         super( parentShell );
@@ -138,72 +147,83 @@ public class ImageDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
     public boolean close()
     {
-        if ( this.currentImage != null && !this.currentImage.isDisposed() )
+        if ( currentImage != null && !currentImage.isDisposed() )
         {
-            this.currentImage.dispose();
+            currentImage.dispose();
         }
-        if ( this.newImage != null && !this.newImage.isDisposed() )
+        if ( newImage != null && !newImage.isDisposed() )
         {
-            this.newImage.dispose();
+            newImage.dispose();
         }
 
         // save selected tab to dialog settings
         ValueEditorsActivator.getDefault().getDialogSettings().put( SELECTED_TAB_DIALOGSETTINGS_KEY,
-            this.tabFolder.getSelectionIndex() );
+            tabFolder.getSelectionIndex() );
 
         return super.close();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
+     */
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
         {
-            if ( this.newImageRawData != null )
+            if ( newImageRawData != null )
             {
                 try
                 {
-                    ImageData imageData = new ImageData( new ByteArrayInputStream( this.newImageRawData ) );
-                    if ( imageData.type != this.requiredImageType )
+                    ImageData imageData = new ImageData( new ByteArrayInputStream( newImageRawData ) );
+                    if ( imageData.type != requiredImageType )
                     {
                         ImageLoader imageLoader = new ImageLoader();
                         imageLoader.data = new ImageData[]
                             { imageData };
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        imageLoader.save( baos, this.requiredImageType );
-                        this.newImageRawDataInRequiredFormat = baos.toByteArray();
+                        imageLoader.save( baos, requiredImageType );
+                        newImageRawDataInRequiredFormat = baos.toByteArray();
                     }
                     else
                     {
-                        this.newImageRawDataInRequiredFormat = this.newImageRawData;
+                        newImageRawDataInRequiredFormat = newImageRawData;
                     }
                 }
                 catch ( SWTException swte )
                 {
-                    this.newImageRawDataInRequiredFormat = null;
+                    newImageRawDataInRequiredFormat = null;
                 }
             }
-
         }
         else
         {
-            this.newImageRawDataInRequiredFormat = null;
+            newImageRawDataInRequiredFormat = null;
         }
 
         super.buttonPressed( buttonId );
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( "Image Editor" );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_IMAGEEDITOR ) );
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -213,7 +233,7 @@ public class ImageDialog extends Dialog
         try
         {
             int tabIndex = ValueEditorsActivator.getDefault().getDialogSettings().getInt( SELECTED_TAB_DIALOGSETTINGS_KEY );
-            this.tabFolder.setSelection( tabIndex );
+            tabFolder.setSelection( tabIndex );
         }
         catch ( Exception e )
         {
@@ -224,22 +244,24 @@ public class ImageDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd1 = new GridData( GridData.FILL_BOTH );
         gd1.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         gd1.heightHint = convertVerticalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         composite.setLayoutData( gd1 );
 
-        this.tabFolder = new TabFolder( composite, SWT.TOP );
+        tabFolder = new TabFolder( composite, SWT.TOP );
         GridLayout mainLayout = new GridLayout();
         mainLayout.marginWidth = 0;
         mainLayout.marginHeight = 0;
-        this.tabFolder.setLayout( mainLayout );
-        this.tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        this.tabFolder.addSelectionListener( new SelectionAdapter()
+        tabFolder.setLayout( mainLayout );
+        tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        tabFolder.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -248,9 +270,9 @@ public class ImageDialog extends Dialog
         } );
 
         // current image
-        if ( this.currentImageRawData != null && this.currentImageRawData.length > 0 )
+        if ( currentImageRawData != null && currentImageRawData.length > 0 )
         {
-            currentImageContainer = new Composite( this.tabFolder, SWT.NONE );
+            currentImageContainer = new Composite( tabFolder, SWT.NONE );
             GridLayout currentLayout = new GridLayout( 1, false );
             currentLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
             currentLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
@@ -310,13 +332,13 @@ public class ImageDialog extends Dialog
                 }
             } );
 
-            this.currentTab = new TabItem( this.tabFolder, SWT.NONE );
-            this.currentTab.setText( "Current Image" );
-            this.currentTab.setControl( currentImageContainer );
+            currentTab = new TabItem( tabFolder, SWT.NONE );
+            currentTab.setText( "Current Image" );
+            currentTab.setControl( currentImageContainer );
         }
 
         // new image
-        newImageContainer = new Composite( this.tabFolder, SWT.NONE );
+        newImageContainer = new Composite( tabFolder, SWT.NONE );
         GridLayout newLayout = new GridLayout( 1, false );
         newLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
         newLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
@@ -362,21 +384,22 @@ public class ImageDialog extends Dialog
             }
         } );
 
-        this.newTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.newTab.setText( "New Image" );
-        this.newTab.setControl( newImageContainer );
+        newTab = new TabItem( tabFolder, SWT.NONE );
+        newTab.setText( "New Image" );
+        newTab.setControl( newImageContainer );
 
         applyDialogFont( composite );
         return composite;
     }
 
 
+    /**
+     * Update current image tab.
+     */
     private void updateCurrentImageGroup()
     {
-
         if ( currentTab != null )
         {
-
             if ( currentImage != null && !currentImage.isDisposed() )
             {
                 currentImage.dispose();
@@ -405,7 +428,6 @@ public class ImageDialog extends Dialog
                     currentImageWidthText.setText( "-" );
                     currentImageHeightText.setText( "-" );
                 }
-                // currentImageGroup.setVisible(true);
             }
             else
             {
@@ -418,15 +440,15 @@ public class ImageDialog extends Dialog
             }
 
             currentImageSaveButton.setEnabled( currentImageRawData != null && currentImageRawData.length > 0 );
-
-            // super.initializeBounds();
         }
     }
 
 
+    /**
+     * Update new image tab.
+     */
     private void updateNewImageGroup()
     {
-
         if ( newImage != null && !newImage.isDisposed() )
         {
             newImage.dispose();
@@ -446,7 +468,7 @@ public class ImageDialog extends Dialog
                 {
                     out.write( buf, 0, len );
                 }
-                this.newImageRawData = out.toByteArray();
+                newImageRawData = out.toByteArray();
                 out.close();
                 in.close();
             }
@@ -493,7 +515,7 @@ public class ImageDialog extends Dialog
                 if ( imageData.type != requiredImageType )
                 {
                     newImageTypeText.setText( newImageTypeText.getText() + " (will be converted to "
-                        + getImageType( this.requiredImageType ) + ")" );
+                        + getImageType( requiredImageType ) + ")" );
                 }
                 newImageSizeText.setText( getSizeString( newImageRawData.length ) );
                 newImageWidthText.setText( imageData.width + " Pixel" );
@@ -517,12 +539,12 @@ public class ImageDialog extends Dialog
 
         newImageLabel.getParent().layout();
         newImageTypeText.getParent().layout();
-        // newImageGroup.layout();
-        // super.initializeBounds();
-
     }
 
 
+    /**
+     * Update tab folder and the tabs.
+     */
     private void updateTabFolder()
     {
         if ( currentImageSaveButton != null )
@@ -545,6 +567,13 @@ public class ImageDialog extends Dialog
     }
 
 
+    /**
+     * Resizes the image.
+     * 
+     * @param imageData the image data to resize
+     * 
+     * @return the resized image data
+     */
     private ImageData resizeImage( ImageData imageData )
     {
         double widthScaleFactor = 1.0;
@@ -575,6 +604,13 @@ public class ImageDialog extends Dialog
     }
 
 
+    /**
+     * Creates the image label.
+     * 
+     * @param parent the parent
+     * 
+     * @return the image label
+     */
     private Label createImageLabel( Composite parent )
     {
         Composite labelComposite = new Composite( parent, SWT.BORDER );
@@ -593,6 +629,13 @@ public class ImageDialog extends Dialog
     }
 
 
+    /**
+     * Creates the image info container.
+     * 
+     * @param parent the parent
+     * 
+     * @return the image info container
+     */
     private Composite createImageInfoContainer( Composite parent )
     {
         Composite imageInfoContainer = new Composite( parent, SWT.NONE );
@@ -604,6 +647,14 @@ public class ImageDialog extends Dialog
     }
 
 
+    /**
+     * Creates the image info.
+     * 
+     * @param label the label
+     * @param parent the parent
+     * 
+     * @return the image info
+     */
     private Text createImageInfo( Composite parent, String label )
     {
         BaseWidgetUtils.createLabel( parent, label, 1 );
@@ -612,6 +663,14 @@ public class ImageDialog extends Dialog
     }
 
 
+    /**
+     * Creates the button.
+     * 
+     * @param label the label
+     * @param parent the parent
+     * 
+     * @return the button
+     */
     private Button createButton( Composite parent, String label )
     {
         Button button = BaseWidgetUtils.createButton( parent, label, 1 );
@@ -619,17 +678,37 @@ public class ImageDialog extends Dialog
     }
 
 
-    public static String getSizeString( int length )
+    /**
+     * Gets the size string.
+     * 
+     * @param length the length
+     * 
+     * @return the size string
+     */
+    private static String getSizeString( int length )
     {
         if ( length > 1000000 )
+        {
             return ( length / 1000000 ) + " MB (" + length + " bytes)";
+        }
         else if ( length > 1000 )
+        {
             return ( length / 1000 ) + " KB (" + length + " bytes)";
+        }
         else
+        {
             return length + " bytes";
+        }
     }
 
 
+    /**
+     * Gets the image info.
+     * 
+     * @param imageRawData the image raw data
+     * 
+     * @return the image info
+     */
     public static String getImageInfo( byte[] imageRawData )
     {
 
@@ -659,28 +738,45 @@ public class ImageDialog extends Dialog
     }
 
 
-    public static String getImageType( int swtCode )
+    /**
+     * Gets the image type.
+     * 
+     * @param swtCode the swt code
+     * 
+     * @return the image type
+     */
+    private static String getImageType( int swtCode )
     {
         String type = "";
+        
         if ( swtCode == SWT.IMAGE_JPEG )
+        {
             type = "JPEG";
+        }
         else if ( swtCode == SWT.IMAGE_GIF )
+        {
             type = "GIF";
+        }
         else if ( swtCode == SWT.IMAGE_PNG )
+        {
             type = "PNG";
+        }
         else if ( swtCode == SWT.IMAGE_BMP || swtCode == SWT.IMAGE_BMP_RLE )
+        {
             type = "BMP";
+        }
+        
         return type;
     }
 
 
     /**
-     * 
+     * Gets the iimage data in required format.
      * 
      * @return Returns the image data in required format or null.
      */
     public byte[] getNewImageRawData()
     {
-        return this.newImageRawDataInRequiredFormat;
+        return newImageRawDataInRequiredFormat;
     }
 }

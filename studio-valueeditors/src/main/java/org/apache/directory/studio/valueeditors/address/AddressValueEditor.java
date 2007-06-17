@@ -50,9 +50,9 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof String )
         {
             AddressDialog dialog = new AddressDialog( shell, ( String ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getText() ) )
+            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAddress() ) )
             {
-                setValue( dialog.getText() );
+                setValue( dialog.getAddress() );
                 return true;
             }
         }

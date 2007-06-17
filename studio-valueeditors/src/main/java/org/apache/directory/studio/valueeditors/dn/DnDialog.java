@@ -38,18 +38,33 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
-public class DnDialog extends Dialog implements WidgetModifyListener
+/**
+ * The DnDialog is used from the DN value editor to edit and select a DN.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+
+public class DnDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "DN Editor";
-
+    /** The entry widget. */
     private EntryWidget entryWidget;
 
+    /** The connection. */
     private IConnection connection;
 
+    /** The dn. */
     private DN dn;
 
 
+    /**
+     * Creates a new instance of DnDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param connection the connection
+     * @param dn the dn
+     */
     public DnDialog( Shell parentShell, IConnection connection, DN dn )
     {
         super( parentShell );
@@ -59,37 +74,42 @@ public class DnDialog extends Dialog implements WidgetModifyListener
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( "DN Editor" );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_DNEDITOR ) );
     }
 
 
-    public boolean close()
-    {
-        this.entryWidget.removeWidgetModifyListener( this );
-        return super.close();
-    }
-
-
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.dn = this.entryWidget.getDn();
-        this.entryWidget.saveDialogSettings();
+        dn = entryWidget.getDn();
+        entryWidget.saveDialogSettings();
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createButtonBar( Composite parent )
     {
         Control control = super.createButtonBar( parent );
-        widgetModified( null );
+        updateWidgets();
         return control;
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
 
@@ -99,28 +119,42 @@ public class DnDialog extends Dialog implements WidgetModifyListener
         composite.setLayoutData( gd );
 
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        this.entryWidget = new EntryWidget( connection, dn );
-        this.entryWidget.addWidgetModifyListener( this );
-        this.entryWidget.createWidget( innerComposite );
+        entryWidget = new EntryWidget( connection, dn );
+        entryWidget.addWidgetModifyListener( new WidgetModifyListener()
+        {
+            public void widgetModified( WidgetModifyEvent event )
+            {
+                updateWidgets();
+            }
+        } );
+        entryWidget.createWidget( innerComposite );
 
         applyDialogFont( composite );
         return composite;
     }
 
 
-    public void widgetModified( WidgetModifyEvent event )
+    /**
+     * Updates the widgets.
+     */
+    private void updateWidgets()
     {
         if ( getButton( IDialogConstants.OK_ID ) != null )
         {
             getButton( IDialogConstants.OK_ID ).setEnabled(
-                this.entryWidget.getDn() != null && !"".equals( this.entryWidget.getDn().toString() ) );
+                entryWidget.getDn() != null && !"".equals( entryWidget.getDn().toString() ) );
         }
     }
 
 
+    /**
+     * Gets the dn.
+     * 
+     * @return the dn
+     */
     public DN getDn()
     {
-        return this.dn;
+        return dn;
     }
 
 }
