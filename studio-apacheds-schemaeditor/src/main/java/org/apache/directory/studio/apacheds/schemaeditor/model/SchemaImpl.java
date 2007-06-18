@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.model;
+package org.apache.directory.studio.apacheds.schemaeditor.model;
 
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#addAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
      */
     public boolean addAttributeType( AttributeType at )
     {
@@ -63,7 +63,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#addMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
      */
     public boolean addMatchingRule( MatchingRule mr )
     {
@@ -72,7 +72,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#addObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
      */
     public boolean addObjectClass( ObjectClass oc )
     {
@@ -81,7 +81,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#addSyntax(org.apache.directory.shared.ldap.schema.Syntax)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addSyntax(org.apache.directory.shared.ldap.schema.Syntax)
      */
     public boolean addSyntax( Syntax syntax )
     {
@@ -90,7 +90,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getAttributeType(java.lang.String)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getAttributeType(java.lang.String)
      */
     public AttributeType getAttributeType( String id )
     {
@@ -100,7 +100,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getAttributeTypes()
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getAttributeTypes()
      */
     public List<AttributeType> getAttributeTypes()
     {
@@ -109,7 +109,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getMatchingRule(java.lang.String)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getMatchingRule(java.lang.String)
      */
     public MatchingRule getMatchingRule( String id )
     {
@@ -119,7 +119,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getMatchingRules()
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getMatchingRules()
      */
     public List<MatchingRule> getMatchingRules()
     {
@@ -128,7 +128,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getName()
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getName()
      */
     public String getName()
     {
@@ -137,7 +137,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getObjectClass(java.lang.String)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getObjectClass(java.lang.String)
      */
     public ObjectClass getObjectClass( String id )
     {
@@ -147,7 +147,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getObjectClasses()
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getObjectClasses()
      */
     public List<ObjectClass> getObjectClasses()
     {
@@ -156,7 +156,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getSyntax(java.lang.String)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getSyntax(java.lang.String)
      */
     public MatchingRule getSyntax( String id )
     {
@@ -166,7 +166,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#getSyntaxes()
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getSyntaxes()
      */
     public List<Syntax> getSyntaxes()
     {
@@ -175,7 +175,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#removeAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
      */
     public boolean removeAttributeType( AttributeType at )
     {
@@ -184,7 +184,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#removeMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
      */
     public boolean removeMatchingRule( MatchingRule mr )
     {
@@ -193,7 +193,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#removeObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
      */
     public boolean removeObjectClass( ObjectClass oc )
     {
@@ -202,7 +202,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#removeSyntax(org.apache.directory.shared.ldap.schema.Syntax)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeSyntax(org.apache.directory.shared.ldap.schema.Syntax)
      */
     public boolean removeSyntax( Syntax syntax )
     {
@@ -211,7 +211,7 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.studio.model.Schema#setName(java.lang.String)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#setName(java.lang.String)
      */
     public void setName( String name )
     {

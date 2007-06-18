@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio;
+package org.apache.directory.studio.apacheds.schemaeditor;
 
 
 import java.util.ArrayList;
@@ -39,12 +39,12 @@ import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.Syntax;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
-import org.apache.directory.studio.model.AttributeTypeImpl;
-import org.apache.directory.studio.model.MatchingRuleImpl;
-import org.apache.directory.studio.model.ObjectClassImpl;
-import org.apache.directory.studio.model.Schema;
-import org.apache.directory.studio.model.SchemaImpl;
-import org.apache.directory.studio.model.SyntaxImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.SchemaImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
 
 
 /**
@@ -115,9 +115,11 @@ public class SchemaImporter
      * 		the context
      * @throws NamingException 
      */
-    public void getServerSchema() throws NamingException
+    public List<Schema> getServerSchema() throws NamingException
     {
         DirContext context = createContext( "localhost", "10389", SCHEMA_DN, "uid=admin,ou=system", "secret" );
+
+        List<Schema> schemas = new ArrayList<Schema>();
 
         // Looking for all the defined schemas
         SearchControls constraintSearch = new SearchControls();
@@ -134,9 +136,11 @@ public class SchemaImporter
             while ( ne.hasMoreElements() )
             {
                 String value = ( String ) ne.nextElement();
-                getSchema( context, value );
+                schemas.add( getSchema( context, value ) );
             }
         }
+        
+        return schemas;
     }
 
 
@@ -158,27 +162,22 @@ public class SchemaImporter
                     AttributeType at = createAttributeType( searchResult );
                     at.setSchema( name );
                     schema.addAttributeType( at );
-                    System.err.println( at );
                     break;
                 case OBJECT_CLASS:
                     ObjectClass oc = createObjectClass( searchResult );
                     oc.setSchema( name );
                     schema.addObjectClass( oc );
-                    System.err.println( oc );
                     break;
                 case MATCHING_RULE:
                     MatchingRule mr = createMatchingRule( searchResult );
                     mr.setSchema( name );
                     schema.addMatchingRule( mr );
-                    System.err.println( mr );
                     break;
                 case SYNTAX:
                     Syntax syntax = createSyntax( searchResult );
                     syntax.setSchema( name );
                     schema.addSyntax( syntax );
-                    System.err.println( syntax );
                     break;
-
                 default:
                     break;
             }
