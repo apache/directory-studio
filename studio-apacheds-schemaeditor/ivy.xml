@@ -18,4 +18,7 @@
 -->
 <ivy-module version="1.0">
 	<info organisation="org.apache.directory.studio" module="studio-apacheds-schemaeditor"/>
+	<dependencies>
+		<dependency org="junit" name="junit" rev="3.8.2"/>
+    </dependencies>
 </ivy-module>
