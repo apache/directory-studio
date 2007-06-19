@@ -21,71 +21,41 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.difference;
 
 
 /**
- * This abstract class extends AbstractDifference and implements AddDifference
+ * This class represents the difference of a modified ordering.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class AbstractAddDifference extends AbstractDifference implements AddDifference
+public class ModifyOrderingDifference extends AbstractModifyDifference
 {
-    /** The value */
-    private Object value;
-
-
     /**
-     * Creates a new instance of AbstractAddDifference.
+     * Creates a new instance of ModifyOrderingDifference.
      *
      * @param source
      *      the source Object
      * @param destination
      *      the destination Object
      */
-    public AbstractAddDifference( Object source, Object destination )
+    public ModifyOrderingDifference( Object source, Object destination )
     {
         super( source, destination );
     }
 
 
     /**
-     * Creates a new instance of AbstractAddDifference.
+     * Creates a new instance of ModifyOrderingDifference.
      *
      * @param source
      *      the source Object
      * @param destination
      *      the destination Object
-     * @param value
-     *      the value
+     * @param oldValue
+     *      the old value
+     * @param newValue
+     *      the new value
      */
-    public AbstractAddDifference( Object source, Object destination, Object value )
+    public ModifyOrderingDifference( Object source, Object destination, Object oldValue, Object newValue )
     {
-        super( source, destination );
-        this.value = value;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddDifference#getValue()
-     */
-    public Object getValue()
-    {
-        return value;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddDifference#setValue(java.lang.Object)
-     */
-    public void setValue( Object value )
-    {
-        this.value = value;
-    }
-    
-    
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString()
-    {
-        return this.getClass().getSimpleName() + " - value:" + value ;
+        super( source, destination, oldValue, newValue );
     }
 }

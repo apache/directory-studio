@@ -103,4 +103,13 @@ public abstract class AbstractModifyDifference extends AbstractDifference implem
     {
         this.oldValue = oldValue;
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return this.getClass().getSimpleName() + " - old value:" + oldValue + " - new value:" + newValue;
+    }
 }

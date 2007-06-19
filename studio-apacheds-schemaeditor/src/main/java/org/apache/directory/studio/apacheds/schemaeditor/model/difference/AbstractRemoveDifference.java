@@ -78,4 +78,13 @@ public abstract class AbstractRemoveDifference extends AbstractDifference implem
     {
         this.value = value;
     }
+    
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return this.getClass().getSimpleName() + " - value:" + value ;
+    }
 }
