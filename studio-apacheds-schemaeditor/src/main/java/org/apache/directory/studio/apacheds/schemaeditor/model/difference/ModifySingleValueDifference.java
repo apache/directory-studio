@@ -26,24 +26,24 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.difference;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ModifySingleValue extends AbstractModifyDifference
+public class ModifySingleValueDifference extends AbstractModifyDifference
 {
     /**
-     * Creates a new instance of ModifySingleValue.
+     * Creates a new instance of ModifySingleValueDifference.
      *
      * @param source
      *      the source Object
      * @param destination
      *      the destination Object
      */
-    public ModifySingleValue( Object source, Object destination )
+    public ModifySingleValueDifference( Object source, Object destination )
     {
         super( source, destination );
     }
 
 
     /**
-     * Creates a new instance of ModifySingleValue.
+     * Creates a new instance of ModifySingleValueDifference.
      *
      * @param source
      *      the source Object
@@ -54,7 +54,7 @@ public class ModifySingleValue extends AbstractModifyDifference
      * @param newValue
      *      the new value
      */
-    public ModifySingleValue( Object source, Object destination, Object oldValue, Object newValue )
+    public ModifySingleValueDifference( Object source, Object destination, Object oldValue, Object newValue )
     {
         super( source, destination, oldValue, newValue );
     }
