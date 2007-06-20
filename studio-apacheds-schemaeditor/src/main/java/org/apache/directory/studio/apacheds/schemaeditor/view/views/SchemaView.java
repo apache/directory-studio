@@ -20,8 +20,16 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaViewController;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddAliasDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyCollectiveDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveAliasDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.view.widget.DifferencesWidget;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaViewRoot;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -62,6 +70,15 @@ public class SchemaView extends ViewPart
 
         // Adding the controller
         new SchemaViewController( this );
+        
+        DifferencesWidget differencesWidget = new DifferencesWidget();
+        differencesWidget.createWidget( parent );
+        
+        List<Difference> differences = new ArrayList<Difference>();
+        differences.add( new AddAliasDifference(null, null, "toto") );
+        differences.add( new ModifyCollectiveDifference(null, null, false, true) );
+        differences.add( new RemoveAliasDifference(null, null, "tata") );
+        differencesWidget.setInput( differences );
     }
 
 
