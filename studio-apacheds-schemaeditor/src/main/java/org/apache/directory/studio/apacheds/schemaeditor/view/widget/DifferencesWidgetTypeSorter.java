@@ -22,45 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.widget;
 
 import java.util.Comparator;
 
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AbstractAddDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AbstractModifyDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AbstractRemoveDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddAliasDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddDescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddEqualityDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddMandatoryATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddOptionalATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddOrderingDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSubstringDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSuperiorATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSuperiorOCDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSyntaxDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSyntaxLengthDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyClassTypeDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyCollectiveDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyDescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyEqualityDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyNoUserModificationDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyObsoleteDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyOrderingDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySingleValueDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySubstringDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySuperiorATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySyntaxDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySyntaxLengthDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyUsageDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveAliasDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveDescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveEqualityDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveMandatoryATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveOptionalATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveOrderingDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSubstringDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSuperiorATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSuperiorOCDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSyntaxDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSyntaxLengthDifference;
 
 
 /**
@@ -76,171 +38,53 @@ public class DifferencesWidgetTypeSorter implements Comparator<Difference>
      */
     public int compare( Difference diff1, Difference diff2 )
     {
-        return getWeight( diff1 ) - getWeight( diff2 );
+        return DifferencesWidgetTypeSorterEnum.valueOf( diff1.getClass().getSimpleName() ).getWeight()
+            - DifferencesWidgetTypeSorterEnum.valueOf( diff2.getClass().getSimpleName() ).getWeight();
     }
 
-
     /**
-     * Gets the weight of the Difference.
+     * This enum is used to get the weight of each Difference.
      *
-     * @param o
-     *      the difference
-     * @return
-     *      the wright of the Difference
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
      */
-    private int getWeight( Difference o )
+    private enum DifferencesWidgetTypeSorterEnum
     {
-        if ( o instanceof AbstractAddDifference )
+        AddAliasDifference(1), AddDescriptionDifference(2), AddSuperiorATDifference(3), AddSuperiorOCDifference(4), AddSyntaxDifference(
+            5), AddSyntaxLengthDifference(6), AddEqualityDifference(7), AddOrderingDifference(8), AddSubstringDifference(
+            9), AddMandatoryATDifference(10), AddOptionalATDifference(11), ModifyDescriptionDifference(12), ModifySuperiorATDifference(
+            13), ModifyUsageDifference(14), ModifySyntaxDifference(15), ModifySyntaxLengthDifference(16), ModifyClassTypeDifference(
+            17), ModifyObsoleteDifference(18), ModifySingleValueDifference(19), ModifyCollectiveDifference(20), ModifyNoUserModificationDifference(
+            21), ModifyEqualityDifference(22), ModifyOrderingDifference(23), ModifySubstringDifference(24), RemoveAliasDifference(
+            25), RemoveDescriptionDifference(26), RemoveSuperiorATDifference(27), RemoveSuperiorOCDifference(28), RemoveSyntaxDifference(
+            29), RemoveSyntaxLengthDifference(30), RemoveEqualityDifference(31), RemoveSubstringDifference(33), RemoveOrderingDifference(
+            32), RemoveMandatoryATDifference(34), RemoveOptionalATDifference(35);
+
+        /** The weight */
+        private int weight;
+
+
+        /**
+         * Creates a new instance of DifferencesWidgetTypeSorterEnum.
+         *
+         * @param weight
+         *      the weight
+         */
+        private DifferencesWidgetTypeSorterEnum( int weight )
         {
-            if ( o instanceof AddAliasDifference )
-            {
-                return 1;
-            }
-            else if ( o instanceof AddDescriptionDifference )
-            {
-                return 2;
-            }
-            else if ( o instanceof AddEqualityDifference )
-            {
-                return 7;
-            }
-            else if ( o instanceof AddMandatoryATDifference )
-            {
-                return 10;
-            }
-            else if ( o instanceof AddOptionalATDifference )
-            {
-                return 11;
-            }
-            else if ( o instanceof AddOrderingDifference )
-            {
-                return 8;
-            }
-            else if ( o instanceof AddSubstringDifference )
-            {
-                return 9;
-            }
-            else if ( o instanceof AddSuperiorATDifference )
-            {
-                return 3;
-            }
-            else if ( o instanceof AddSuperiorOCDifference )
-            {
-                return 4;
-            }
-            else if ( o instanceof AddSyntaxDifference )
-            {
-                return 5;
-            }
-            else if ( o instanceof AddSyntaxLengthDifference )
-            {
-                return 6;
-            }
-        }
-        else if ( o instanceof AbstractModifyDifference )
-        {
-            if ( o instanceof ModifyClassTypeDifference )
-            {
-                return 17;
-            }
-            else if ( o instanceof ModifyCollectiveDifference )
-            {
-                return 20;
-            }
-            else if ( o instanceof ModifyDescriptionDifference )
-            {
-                return 12;
-            }
-            else if ( o instanceof ModifyEqualityDifference )
-            {
-                return 22;
-            }
-            else if ( o instanceof ModifyNoUserModificationDifference )
-            {
-                return 21;
-            }
-            else if ( o instanceof ModifyObsoleteDifference )
-            {
-                return 18;
-            }
-            else if ( o instanceof ModifyOrderingDifference )
-            {
-                return 23;
-            }
-            else if ( o instanceof ModifySingleValueDifference )
-            {
-                return 19;
-            }
-            else if ( o instanceof ModifySubstringDifference )
-            {
-                return 24;
-            }
-            else if ( o instanceof ModifySuperiorATDifference )
-            {
-                return 13;
-            }
-            else if ( o instanceof ModifySyntaxDifference )
-            {
-                return 15;
-            }
-            else if ( o instanceof ModifySyntaxLengthDifference )
-            {
-                return 16;
-            }
-            else if ( o instanceof ModifyUsageDifference )
-            {
-                return 14;
-            }
-        }
-        else if ( o instanceof AbstractRemoveDifference )
-        {
-            if ( o instanceof RemoveAliasDifference )
-            {
-                return 25;
-            }
-            else if ( o instanceof RemoveDescriptionDifference )
-            {
-                return 26;
-            }
-            else if ( o instanceof RemoveEqualityDifference )
-            {
-                return 31;
-            }
-            else if ( o instanceof RemoveMandatoryATDifference )
-            {
-                return 34;
-            }
-            else if ( o instanceof RemoveOptionalATDifference )
-            {
-                return 35;
-            }
-            else if ( o instanceof RemoveOrderingDifference )
-            {
-                return 32;
-            }
-            else if ( o instanceof RemoveSubstringDifference )
-            {
-                return 33;
-            }
-            else if ( o instanceof RemoveSuperiorATDifference )
-            {
-                return 27;
-            }
-            else if ( o instanceof RemoveSuperiorOCDifference )
-            {
-                return 28;
-            }
-            else if ( o instanceof RemoveSyntaxDifference )
-            {
-                return 29;
-            }
-            else if ( o instanceof RemoveSyntaxLengthDifference )
-            {
-                return 30;
-            }
+            this.weight = weight;
         }
 
-        // Default
-        return 0;
+
+        /**
+         * Gets the weight.
+         *
+         * @return
+         *      the weight
+         */
+        public int getWeight()
+        {
+            return weight;
+        }
     }
 }
