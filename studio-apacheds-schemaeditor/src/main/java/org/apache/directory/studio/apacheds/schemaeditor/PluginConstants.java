@@ -41,8 +41,17 @@ public interface PluginConstants
     public static final String IMG_OBJECT_CLASS = "resources/icons/object_class.gif";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
-    
+
     // Commands
-    public static final String CMD_CONNECT= Activator.PLUGIN_ID +".connect";
-    
+    public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".connect";
+
+    // Preferences
+    /** The preferences ID for DifferencesWidget Grouping */
+    public static final String PREFS_DIFFERENCES_WIDGET_GROUPING = Activator.PLUGIN_ID
+        + ".prefs.DifferencesWidget.grouping";
+    /** The preference value for DifferencesWidget Grouping 'Property' */
+    public static final int PREFS_DIFFERENCES_WIDGET_GROUPING_PROPERTY = 0;
+    /** The preference value for DifferencesWidget Grouping 'Property' */
+    public static final int PREFS_DIFFERENCES_WIDGET_GROUPING_TYPE = 1;
+
 }

@@ -32,4 +32,8 @@
             id="org.apache.directory.studio.apacheds.schemaeditor.view.SchemaView"
             name="Apache DS Schema"/>
    </extension>
+ <extension
+       point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.apache.directory.studio.apacheds.schemaeditor.PreferenceInitializer"/>
+ </extension>
 </plugin>

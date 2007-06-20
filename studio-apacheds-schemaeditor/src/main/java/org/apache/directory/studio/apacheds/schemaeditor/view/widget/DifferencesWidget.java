@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
-import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -56,6 +56,23 @@ public class DifferencesWidget
 {
     /** The TableViewer */
     private TableViewer viewer;
+
+    /** The PreferenceStore*/
+    private IPreferenceStore store;
+
+    // The MenuItems
+    private MenuItem groupByType;
+    private MenuItem groupByProperty;
+
+
+    /**
+     * Creates a new instance of DifferencesWidget.
+     *
+     */
+    public DifferencesWidget()
+    {
+        store = Activator.getDefault().getPreferenceStore();
+    }
 
 
     /**
@@ -100,13 +117,26 @@ public class DifferencesWidget
             }
         } );
         // Adding the 'Group By Property' MenuItem
-        MenuItem groupByPropertyItem = new MenuItem( menu, SWT.CHECK );
-        groupByPropertyItem.setText( "Sort By Property" );
-        groupByPropertyItem.setSelection( true );
+        groupByProperty = new MenuItem( menu, SWT.CHECK );
+        groupByProperty.setText( "Group By Property" );
+        groupByProperty.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                changeGrouping( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING_PROPERTY );
+            }
+        } );
         // Adding the 'Group By Type' MenuItem
-        MenuItem groupByType = new MenuItem( menu, SWT.CHECK );
-        groupByType.setText( "Sort By Type" );
-        groupByType.setSelection( false );
+        groupByType = new MenuItem( menu, SWT.CHECK );
+        groupByType.setText( "Group By Type" );
+        groupByType.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                changeGrouping( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING_TYPE );
+            }
+        } );
+        updateMenuItemsCheckStatus();
 
         // Table
         Table table = new Table( composite, SWT.BORDER );
@@ -114,7 +144,7 @@ public class DifferencesWidget
 
         // TableViewer
         viewer = new TableViewer( table );
-        viewer.setContentProvider( new ArrayContentProvider() );
+        viewer.setContentProvider( new DifferencesWidgetContentProvider() );
         viewer.setLabelProvider( new DifferencesWidgetLabelProvider() );
     }
 
@@ -140,5 +170,43 @@ public class DifferencesWidget
     public TableViewer getViewer()
     {
         return viewer;
+    }
+
+
+    /**
+     * Changes the Grouping option.
+     *
+     * @param value
+     *      the value to store in the PreferenceStore
+     */
+    private void changeGrouping( int value )
+    {
+        store.setValue( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING, value );
+        updateMenuItemsCheckStatus();
+        viewer.refresh();
+    }
+
+
+    /**
+     * Updates the MenuItmes 'check' state according to the value from the PreferenceStore.
+     */
+    private void updateMenuItemsCheckStatus()
+    {
+        int prefValue = store.getInt( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING );
+        if ( prefValue == PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING_PROPERTY )
+        {
+            groupByProperty.setSelection( true );
+            groupByType.setSelection( false );
+        }
+        else if ( prefValue == PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING_TYPE )
+        {
+            groupByProperty.setSelection( false );
+            groupByType.setSelection( true );
+        }
+        else
+        {
+            groupByProperty.setSelection( false );
+            groupByType.setSelection( false );
+        }
     }
 }
