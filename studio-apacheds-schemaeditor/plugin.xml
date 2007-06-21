@@ -36,4 +36,18 @@
        point="org.eclipse.core.runtime.preferences">
     <initializer class="org.apache.directory.studio.apacheds.schemaeditor.PreferenceInitializer"/>
  </extension>
+ <extension
+       point="org.eclipse.ui.newWizards">
+    <category
+          id="org.apache.directory.studio.apacheds.schemaeditor.newWizardCategory"
+          name="Apache DS Schema Editor"/>
+    <wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.newWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewAttributeTypeWizard"
+          hasPages="true"
+          icon="resources/icons/attribute_type_new.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.NewAttributeTypeWizard"
+          name="New Attribute Type"
+          project="false"/>
+ </extension>
 </plugin>

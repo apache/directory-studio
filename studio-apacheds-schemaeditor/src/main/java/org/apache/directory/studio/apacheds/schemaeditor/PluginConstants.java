@@ -30,6 +30,8 @@ public interface PluginConstants
 {
     // Images
     public static final String IMG_ATTRIBUTE_TYPE = "resources/icons/attribute_type.gif";
+    public static final String IMG_ATTRIBUTE_TYPE_NEW = "resources/icons/attribute_type_new.gif";
+    public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "resources/icons/attribute_type_new_wizard.png";
     public static final String IMG_CONNECT = "resources/icons/connect.gif";
     public static final String IMG_DISCONNECT = "resources/icons/disconnect.gif";
     public static final String IMG_DIFFERENCE_ADD = "resources/icons/difference_add.png";
