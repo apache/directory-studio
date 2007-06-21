@@ -48,12 +48,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewAttributeTypeContentPage extends WizardPage
+public class NewAttributeTypeContentWizardPage extends WizardPage
 {
     /**
-     * Creates a new instance of NewAttributeTypeContentPage.
+     * Creates a new instance of NewAttributeTypeContentWizardPage.
      */
-    protected NewAttributeTypeContentPage()
+    protected NewAttributeTypeContentWizardPage()
     {
         super( "Options" );
         setTitle( "Attribute Type Content" );

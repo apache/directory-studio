@@ -42,12 +42,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewAttributeTypeMatchingRulesPage extends WizardPage
+public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 {
     /**
-     * Creates a new instance of NewAttributeTypeMatchingRulesPage.
+     * Creates a new instance of NewAttributeTypeMatchingRulesWizardPage.
      */
-    public NewAttributeTypeMatchingRulesPage()
+    public NewAttributeTypeMatchingRulesWizardPage()
     {
         super( "MatchingRules" );
         setTitle( "Matching Rules" );

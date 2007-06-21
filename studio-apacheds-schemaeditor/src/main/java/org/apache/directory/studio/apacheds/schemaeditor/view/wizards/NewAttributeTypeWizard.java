@@ -37,7 +37,7 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
 {
     // The pages of the wizards
     private WizardPage generalPage;
-    private WizardPage optionsPage;
+    private WizardPage contentPage;
     private WizardPage matchingRulesPage;
 
 
@@ -47,13 +47,13 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
     public void addPages()
     {
         // Creating pages
-        generalPage = new NewAttributeTypeGeneralPageWizardPage();
-        optionsPage = new NewAttributeTypeContentPage();
-        matchingRulesPage = new NewAttributeTypeMatchingRulesPage();
+        generalPage = new NewAttributeTypeGeneralWizardPage();
+        contentPage = new NewAttributeTypeContentWizardPage();
+        matchingRulesPage = new NewAttributeTypeMatchingRulesWizardPage();
 
         // Adding pages
         addPage( generalPage );
-        addPage( optionsPage );
+        addPage( contentPage );
         addPage( matchingRulesPage );
     }
 

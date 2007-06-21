@@ -47,12 +47,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewAttributeTypeGeneralPageWizardPage extends WizardPage
+public class NewAttributeTypeGeneralWizardPage extends WizardPage
 {
     /**
-     * Creates a new instance of NewAttributeTypeGeneralPageWizardPage.
+     * Creates a new instance of NewAttributeTypeGeneralWizardPage.
      */
-    protected NewAttributeTypeGeneralPageWizardPage()
+    protected NewAttributeTypeGeneralWizardPage()
     {
         super( "General" );
         setTitle( "Attribute Type" );
