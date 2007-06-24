@@ -35,6 +35,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.SelectAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ShowRawValuesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
 import org.apache.directory.studio.valueeditors.IValueEditor;
@@ -58,7 +59,7 @@ import org.eclipse.ui.commands.ICommandService;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryEditorWidgetActionGroup
+public class EntryEditorWidgetActionGroup implements ActionHandlerManager
 {
 
     /** The open sort dialog action. */
@@ -127,28 +128,30 @@ public class EntryEditorWidgetActionGroup
         showRawValuesAction = new ShowRawValuesAction();
         showQuickFilterAction = new ShowQuickFilterAction( mainWidget.getQuickFilterWidget() );
 
-        openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenBestEditorAction( viewer, this,
+        openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, this, new OpenBestEditorAction( viewer,
             configuration.getValueEditorManager( viewer ) ) );
-        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
-            openBestValueEditorActionProxy, false ) );
+        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, this, new OpenDefaultEditorAction(
+            viewer, openBestValueEditorActionProxy, false ) );
         IValueEditor[] valueEditors = configuration.getValueEditorManager( viewer ).getAllValueEditors();
         openValueEditorActionProxies = new EntryEditorActionProxy[valueEditors.length];
         for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
-            openValueEditorActionProxies[i] = new EntryEditorActionProxy( viewer, new OpenEditorAction( viewer, this,
+            openValueEditorActionProxies[i] = new EntryEditorActionProxy( viewer, this, new OpenEditorAction( viewer,
                 configuration.getValueEditorManager( viewer ), valueEditors[i] ) );
         }
         openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
-        entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
+        entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, this, new NewValueAction() ) );
 
-        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new PasteAction() ) );
-        entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
+        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, this, new PasteAction() ) );
+        entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, this, new CopyAction(
             ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ) ) ) );
-        entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );
-        entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer, new SelectAllAction( viewer ) ) );
+        entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, this, new DeleteAction() ) );
+        entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer, this, new SelectAllAction(
+            viewer ) ) );
 
-        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer, new PropertiesAction() ) );
+        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer, this,
+            new PropertiesAction() ) );
     }
 
 
@@ -211,14 +214,12 @@ public class EntryEditorWidgetActionGroup
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-
         toolBarManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( showQuickFilterAction );
         toolBarManager.update( true );
-
     }
 
 
@@ -322,7 +323,6 @@ public class EntryEditorWidgetActionGroup
      */
     public void activateGlobalActionHandlers()
     {
-
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
 
@@ -375,7 +375,6 @@ public class EntryEditorWidgetActionGroup
             commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler(
                 new ActionHandler( openDefaultValueEditorActionProxy ) );
         }
-
     }
 
 
@@ -384,7 +383,6 @@ public class EntryEditorWidgetActionGroup
      */
     public void deactivateGlobalActionHandlers()
     {
-
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
 
@@ -425,7 +423,6 @@ public class EntryEditorWidgetActionGroup
             commandService.getCommand( nva.getActionDefinitionId() ).setHandler( null );
             commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler( null );
         }
-
     }
 
 

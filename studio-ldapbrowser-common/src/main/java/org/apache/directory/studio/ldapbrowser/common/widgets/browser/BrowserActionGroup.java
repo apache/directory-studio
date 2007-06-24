@@ -31,6 +31,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RefreshAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.UnfilterChildrenAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.UpAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserViewActionProxy;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.eclipse.jface.action.IAction;
@@ -52,7 +53,7 @@ import org.eclipse.ui.commands.ICommandService;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BrowserActionGroup implements IMenuListener
+public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
 {
 
     /** The open sort dialog action. */
@@ -101,12 +102,13 @@ public class BrowserActionGroup implements IMenuListener
         openSortDialogAction = new OpenSortDialogAction( ( BrowserPreferences ) configuration.getPreferences() );
         collapseAllAction = new CollapseAllAction( viewer );
 
-        browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
-        browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
-        browserActionMap.put( filterChildrenAction, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
-        browserActionMap
-            .put( unfilterChildrenAction, new BrowserViewActionProxy( viewer, new UnfilterChildrenAction() ) );
-        browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, new PropertiesAction() ) );
+        browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, this, new UpAction( viewer ) ) );
+        browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, this, new RefreshAction() ) );
+        browserActionMap.put( filterChildrenAction, new BrowserViewActionProxy( viewer, this,
+            new FilterChildrenAction() ) );
+        browserActionMap.put( unfilterChildrenAction, new BrowserViewActionProxy( viewer, this,
+            new UnfilterChildrenAction() ) );
+        browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, this, new PropertiesAction() ) );
     }
 
 

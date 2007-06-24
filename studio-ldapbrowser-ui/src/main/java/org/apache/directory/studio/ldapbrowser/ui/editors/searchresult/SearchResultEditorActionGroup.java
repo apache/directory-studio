@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RefreshAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ShowRawValuesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyAttributeDescriptionAction;
@@ -48,6 +49,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserActio
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSearchResultAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.SearchResultEditorActionProxy;
 import org.apache.directory.studio.valueeditors.IValueEditor;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -64,7 +66,7 @@ import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.commands.ICommandService;
 
 
-public class SearchResultEditorActionGroup implements IMenuListener
+public class SearchResultEditorActionGroup implements ActionHandlerManager, IMenuListener
 {
 
     private ShowDNAction showDNAction;
@@ -76,12 +78,16 @@ public class SearchResultEditorActionGroup implements IMenuListener
     private OpenSearchResultEditorPreferencePage openSearchResultEditorPreferencePage;
 
     private ShowQuickFilterAction showQuickFilterAction;
+    
+    /** The open default editor action. */
+    private SearchResultEditorActionProxy openDefaultValueEditorActionProxy;
 
-    private OpenDefaultEditorAction openDefaultEditorAction;
+    /** The open best editor action. */
+    private SearchResultEditorActionProxy openBestValueEditorActionProxy;
 
-    private OpenBestEditorAction openBestEditorAction;
-
-    private OpenEditorAction[] openEditorActions;
+    /** The open editor actions. */
+    private SearchResultEditorActionProxy[] openValueEditorActionProxies;
+    
 
     private ValueEditorPreferencesAction openValueEditorPreferencesAction;
 
@@ -155,6 +161,7 @@ public class SearchResultEditorActionGroup implements IMenuListener
 
         TableViewer viewer = searchResultEditor.getMainWidget().getViewer();
         SearchResultEditorCursor cursor = searchResultEditor.getConfiguration().getCursor( viewer );
+        ValueEditorManager valueEditorManager = searchResultEditor.getConfiguration().getValueEditorManager( viewer );
 
         this.showDNAction = new ShowDNAction();
         this.showLinksAction = new ShowLinksAction();
@@ -163,84 +170,83 @@ public class SearchResultEditorActionGroup implements IMenuListener
         this.showQuickFilterAction = new ShowQuickFilterAction( searchResultEditor.getMainWidget()
             .getQuickFilterWidget() );
 
-        this.openBestEditorAction = new OpenBestEditorAction( viewer, searchResultEditor.getConfiguration().getCursor(
-            viewer ), this, searchResultEditor.getConfiguration().getValueEditorManager( viewer ) );
-        this.openDefaultEditorAction = new OpenDefaultEditorAction( this.openBestEditorAction );
+        openBestValueEditorActionProxy = new SearchResultEditorActionProxy( cursor, this, new OpenBestEditorAction(
+            viewer, cursor, valueEditorManager ) );
+        openDefaultValueEditorActionProxy = new SearchResultEditorActionProxy( cursor, this,
+            new OpenDefaultEditorAction( viewer, cursor, valueEditorManager, openBestValueEditorActionProxy ) );
         IValueEditor[] valueEditors = searchResultEditor.getConfiguration().getValueEditorManager( viewer )
             .getAllValueEditors();
-        this.openEditorActions = new OpenEditorAction[valueEditors.length];
-        for ( int i = 0; i < this.openEditorActions.length; i++ )
+        openValueEditorActionProxies = new SearchResultEditorActionProxy[valueEditors.length];
+        for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
-            this.openEditorActions[i] = new OpenEditorAction( viewer, searchResultEditor.getConfiguration().getCursor(
-                viewer ), this, searchResultEditor.getConfiguration().getValueEditorManager( viewer ),
-                valueEditors[i] );
-        }
+            openValueEditorActionProxies[i] = new SearchResultEditorActionProxy( cursor, this, new OpenEditorAction( viewer, cursor,
+                valueEditorManager, valueEditors[i] ) );
+        }        
         this.openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
         this.searchResultEditorActionMap.put( copyTableAction, new SearchResultEditorActionProxy( cursor,
-            new CopyEntryAsCsvAction( CopyEntryAsCsvAction.MODE_TABLE ) ) );
+            this, new CopyEntryAsCsvAction( CopyEntryAsCsvAction.MODE_TABLE ) ) );
         this.searchResultEditorActionMap.put( refreshSearchAction, new SearchResultEditorActionProxy( cursor,
-            new RefreshAction() ) );
+            this, new RefreshAction() ) );
 
         this.searchResultEditorActionMap.put( newValueAction, new SearchResultEditorActionProxy( cursor,
-            new NewValueAction() ) );
+            this, new NewValueAction() ) );
         this.searchResultEditorActionMap.put( newSearchAction, new SearchResultEditorActionProxy( cursor,
-            new NewSearchAction() ) );
+            this, new NewSearchAction() ) );
         this.searchResultEditorActionMap.put( newBatchOperationAction, new SearchResultEditorActionProxy( cursor,
-            new NewBatchOperationAction() ) );
+            this, new NewBatchOperationAction() ) );
 
         this.searchResultEditorActionMap.put( locateDnInDitAction, new SearchResultEditorActionProxy( cursor,
-            new LocateDnInDitAction() ) );
+            this, new LocateDnInDitAction() ) );
         this.searchResultEditorActionMap.put( openSearchResultAction, new SearchResultEditorActionProxy( cursor,
-            new OpenSearchResultAction() ) );
+            this, new OpenSearchResultAction() ) );
 
         this.searchResultEditorActionMap.put( showOcdAction, new SearchResultEditorActionProxy( cursor,
-            new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_OBJECTCLASS ) ) );
+            this, new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_OBJECTCLASS ) ) );
         this.searchResultEditorActionMap.put( showAtdAction, new SearchResultEditorActionProxy( cursor,
-            new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_ATTRIBUTETYPE ) ) );
+            this, new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_ATTRIBUTETYPE ) ) );
         this.searchResultEditorActionMap.put( showEqualityMrdAction, new SearchResultEditorActionProxy( cursor,
-            new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_EQUALITYMATCHINGRULE ) ) );
+            this, new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_EQUALITYMATCHINGRULE ) ) );
         this.searchResultEditorActionMap.put( showSubstringMrdAction, new SearchResultEditorActionProxy( cursor,
-            new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_SUBSTRINGMATCHINGRULE ) ) );
+            this, new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_SUBSTRINGMATCHINGRULE ) ) );
         this.searchResultEditorActionMap.put( showOrderingMrdAction, new SearchResultEditorActionProxy( cursor,
-            new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_ORDERINGMATCHINGRULE ) ) );
+            this, new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_ORDERINGMATCHINGRULE ) ) );
         this.searchResultEditorActionMap.put( showLsdAction, new SearchResultEditorActionProxy( cursor,
-            new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_SYNTAX ) ) );
+            this, new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_SYNTAX ) ) );
 
         this.searchResultEditorActionMap.put( pasteAction, new SearchResultEditorActionProxy( cursor,
-            new SearchResultEditorPasteAction() ) );
-        this.searchResultEditorActionMap.put( copyAction, new SearchResultEditorActionProxy( cursor, new CopyAction(
+            this, new SearchResultEditorPasteAction() ) );
+        this.searchResultEditorActionMap.put( copyAction, new SearchResultEditorActionProxy( cursor, this, new CopyAction(
             ( BrowserActionProxy ) this.searchResultEditorActionMap.get( pasteAction ) ) ) );
         this.searchResultEditorActionMap.put( deleteAction, new SearchResultEditorActionProxy( cursor,
-            new SearchResultDeleteAction() ) );
+            this, new SearchResultDeleteAction() ) );
 
         this.searchResultEditorActionMap.put( copyDnAction, new SearchResultEditorActionProxy( cursor,
-            new CopyDnAction() ) );
+            this, new CopyDnAction() ) );
         this.searchResultEditorActionMap.put( copyUrlAction, new SearchResultEditorActionProxy( cursor,
-            new CopyUrlAction() ) );
+            this, new CopyUrlAction() ) );
         this.searchResultEditorActionMap.put( copyAttriuteDescriptionAction, new SearchResultEditorActionProxy( cursor,
-            new CopyAttributeDescriptionAction() ) );
+            this, new CopyAttributeDescriptionAction() ) );
         this.searchResultEditorActionMap.put( copyValueUtf8Action, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_UTF8 ) ) );
+            this, new CopyValueAction( CopyValueAction.MODE_UTF8 ) ) );
         this.searchResultEditorActionMap.put( copyValueBase64Action, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_BASE64 ) ) );
+            this, new CopyValueAction( CopyValueAction.MODE_BASE64 ) ) );
         this.searchResultEditorActionMap.put( copyValueHexAction, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_HEX ) ) );
+            this, new CopyValueAction( CopyValueAction.MODE_HEX ) ) );
         this.searchResultEditorActionMap.put( copyValueAsLdifAction, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_LDIF ) ) );
+            this, new CopyValueAction( CopyValueAction.MODE_LDIF ) ) );
 
         this.searchResultEditorActionMap.put( copySearchFilterAction, new SearchResultEditorActionProxy( cursor,
-            new CopySearchFilterAction( CopySearchFilterAction.MODE_EQUALS ) ) );
+            this, new CopySearchFilterAction( CopySearchFilterAction.MODE_EQUALS ) ) );
         this.searchResultEditorActionMap.put( copyNotSearchFilterAction, new SearchResultEditorActionProxy( cursor,
-            new CopySearchFilterAction( CopySearchFilterAction.MODE_NOT ) ) );
+            this, new CopySearchFilterAction( CopySearchFilterAction.MODE_NOT ) ) );
         this.searchResultEditorActionMap.put( copyAndSearchFilterAction, new SearchResultEditorActionProxy( cursor,
-            new CopySearchFilterAction( CopySearchFilterAction.MODE_AND ) ) );
+            this, new CopySearchFilterAction( CopySearchFilterAction.MODE_AND ) ) );
         this.searchResultEditorActionMap.put( copyOrSearchFilterAction, new SearchResultEditorActionProxy( cursor,
-            new CopySearchFilterAction( CopySearchFilterAction.MODE_OR ) ) );
+            this, new CopySearchFilterAction( CopySearchFilterAction.MODE_OR ) ) );
 
         this.searchResultEditorActionMap.put( propertyDialogAction, new SearchResultEditorActionProxy( cursor,
-            new PropertiesAction() ) );
-
+            this, new PropertiesAction() ) );
     }
 
 
@@ -257,15 +263,15 @@ public class SearchResultEditorActionGroup implements IMenuListener
             this.openSearchResultEditorPreferencePage = null;
             this.showQuickFilterAction.dispose();
             this.showQuickFilterAction = null;
-
-            this.openDefaultEditorAction.dispose();
-            this.openDefaultEditorAction = null;
-            this.openBestEditorAction.dispose();
-            this.openBestEditorAction = null;
-            for ( int i = 0; i < this.openEditorActions.length; i++ )
+            
+            openDefaultValueEditorActionProxy.dispose();
+            openDefaultValueEditorActionProxy = null;
+            openBestValueEditorActionProxy.dispose();
+            openBestValueEditorActionProxy = null;
+            for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
             {
-                this.openEditorActions[i].dispose();
-                this.openEditorActions[i] = null;
+                openValueEditorActionProxies[i].dispose();
+                openValueEditorActionProxies[i] = null;
             }
             this.openValueEditorPreferencesAction = null;
 
@@ -338,7 +344,6 @@ public class SearchResultEditorActionGroup implements IMenuListener
 
     public void menuAboutToShow( IMenuManager menuManager )
     {
-
         // new
         menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( newValueAction ) );
         menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( newSearchAction ) );
@@ -386,20 +391,20 @@ public class SearchResultEditorActionGroup implements IMenuListener
         menuManager.add( new Separator() );
 
         // edit
-        menuManager.add( this.openDefaultEditorAction );
+        menuManager.add( openDefaultValueEditorActionProxy );
         MenuManager editorMenuManager = new MenuManager( "Edit Value With" );
-        if ( this.openBestEditorAction.isEnabled() )
+        if ( openBestValueEditorActionProxy.isEnabled() )
         {
-            editorMenuManager.add( this.openBestEditorAction );
+            editorMenuManager.add( openBestValueEditorActionProxy );
             editorMenuManager.add( new Separator() );
         }
-        for ( int i = 0; i < this.openEditorActions.length; i++ )
+        for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
-            if ( this.openEditorActions[i].isEnabled()
-                && this.openEditorActions[i].getValueEditor().getClass() != this.openBestEditorAction
-                    .getBestValueEditor().getClass() )
+            if ( openValueEditorActionProxies[i].isEnabled()
+                && ( ( OpenEditorAction ) openValueEditorActionProxies[i].getAction() ).getValueEditor().getClass() != ( ( OpenBestEditorAction ) openBestValueEditorActionProxy
+                    .getAction() ).getBestValueEditor().getClass() )
             {
-                editorMenuManager.add( this.openEditorActions[i] );
+                editorMenuManager.add( openValueEditorActionProxies[i] );
             }
         }
         editorMenuManager.add( new Separator() );
@@ -416,13 +421,11 @@ public class SearchResultEditorActionGroup implements IMenuListener
 
         // / properties
         menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( propertyDialogAction ) );
-
     }
 
 
     public void activateGlobalActionHandlers()
     {
-
         if ( this.actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) this.searchResultEditorActionMap
@@ -449,16 +452,14 @@ public class SearchResultEditorActionGroup implements IMenuListener
             commandService.getCommand( lid.getActionDefinitionId() ).setHandler( new ActionHandler( lid ) );
             IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
             commandService.getCommand( osr.getActionDefinitionId() ).setHandler( new ActionHandler( osr ) );
-            commandService.getCommand( openDefaultEditorAction.getActionDefinitionId() ).setHandler(
-                new ActionHandler( openDefaultEditorAction ) );
+            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler(
+                new ActionHandler( openDefaultValueEditorActionProxy ) );
         }
-
     }
 
 
     public void deactivateGlobalActionHandlers()
     {
-
         if ( this.actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), null );
@@ -480,15 +481,14 @@ public class SearchResultEditorActionGroup implements IMenuListener
             commandService.getCommand( lid.getActionDefinitionId() ).setHandler( null );
             IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
             commandService.getCommand( osr.getActionDefinitionId() ).setHandler( null );
-            commandService.getCommand( openDefaultEditorAction.getActionDefinitionId() ).setHandler( null );
+            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler( null );
         }
-
     }
 
 
     public OpenBestEditorAction getOpenBestEditorAction()
     {
-        return openBestEditorAction;
+        return ( OpenBestEditorAction ) openBestValueEditorActionProxy.getAction();
     }
 
 
@@ -504,17 +504,17 @@ public class SearchResultEditorActionGroup implements IMenuListener
 
     public boolean isEditorActive()
     {
-        if ( this.openDefaultEditorAction.isActive() )
+        if ( ((AbstractOpenEditorAction)openDefaultValueEditorActionProxy.getAction()).isActive() )
         {
             return true;
         }
-        if ( this.openBestEditorAction.isActive() )
+        if ( ((AbstractOpenEditorAction)openBestValueEditorActionProxy.getAction()).isActive() )
         {
             return true;
         }
-        for ( int i = 0; i < this.openEditorActions.length; i++ )
+        for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
-            if ( this.openEditorActions[i].isActive() )
+            if ( ((AbstractOpenEditorAction)openValueEditorActionProxies[i].getAction()).isActive() )
             {
                 return true;
             }

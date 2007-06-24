@@ -42,9 +42,6 @@ import org.eclipse.swt.events.KeyListener;
 public abstract class AbstractOpenEditorAction extends BrowserAction implements FocusListener, KeyListener
 {
 
-    /** The action group. */
-    protected EntryEditorWidgetActionGroup actionGroup;
-
     /** The value editor manager. */
     protected ValueEditorManager valueEditorManager;
 
@@ -59,14 +56,11 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
      * Creates a new instance of AbstractOpenEditorAction.
      * 
      * @param viewer the viewer
-     * @param actionGroup the action group
      * @param valueEditorManager the value editor manager
      */
-    protected AbstractOpenEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
-        ValueEditorManager valueEditorManager )
+    protected AbstractOpenEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager )
     {
         this.viewer = viewer;
-        this.actionGroup = actionGroup;
         this.valueEditorManager = valueEditorManager;
     }
 
@@ -77,7 +71,6 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
     public void dispose()
     {
         valueEditorManager = null;
-        actionGroup = null;
         viewer = null;
         cellEditor = null;
         super.dispose();
@@ -127,12 +120,6 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
                 cellEditor.getControl().addKeyListener( this );
             }
 
-            // deactivate global actions
-            if ( actionGroup != null )
-            {
-                actionGroup.deactivateGlobalActionHandlers();
-            }
-
             // start editing
             viewer.editElement( getSelectedValues()[0], EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX );
 
@@ -165,12 +152,6 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
         {
             cellEditor.getControl().removeFocusListener( this );
             cellEditor.getControl().removeKeyListener( this );
-        }
-
-        // activate global actions
-        if ( actionGroup != null )
-        {
-            actionGroup.activateGlobalActionHandlers();
         }
 
         // reset custom value editor and set selection to notify all

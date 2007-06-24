@@ -23,59 +23,96 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
 
 
 public class OpenBestEditorAction extends AbstractOpenEditorAction
 {
 
-    private IValueEditor valueEditor;
+    private IValueEditor bestValueEditor;
 
 
     public OpenBestEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        SearchResultEditorActionGroup actionGroup, ValueEditorManager valueEditorManager )
+        ValueEditorManager valueEditorManager )
     {
-        super( viewer, cursor, actionGroup, valueEditorManager );
+        super( viewer, cursor, valueEditorManager );
     }
 
 
+    /**
+     * Gets the best value editor.
+     * 
+     * @return the best value editor
+     */
     public IValueEditor getBestValueEditor()
     {
-        return this.valueEditor;
+        return this.bestValueEditor;
+    }
+
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#dispose()
+     */
+    public void dispose()
+    {
+        bestValueEditor = null;
+        super.dispose();
     }
 
 
-    protected void updateEnabledState()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
+     */
+    public String getCommandId()
     {
+        return null;
+    }
 
-        if ( viewer.getCellModifier().canModify( this.selectedSearchResult, this.selectedProperty ) )
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
+     */
+    public ImageDescriptor getImageDescriptor()
+    {
+        return isEnabled() ? bestValueEditor.getValueEditorImageDescriptor() : null;
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
+     */
+    public String getText()
+    {
+        return isEnabled() ? bestValueEditor.getValueEditorName() : null;
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
+     */
+    public boolean isEnabled()
+    {
+        if ( getSelectedSearchResults().length == 1 && getSelectedProperties().length == 1
+            && viewer.getCellModifier().canModify( getSelectedSearchResults()[0], getSelectedProperties()[0] ) )
         {
-
-            if ( this.selectedAttributeHierarchie == null )
+            if ( getSelectedAttributeHierarchies().length == 0 )
             {
-                this.valueEditor = this.valueEditorManager.getCurrentValueEditor( this.selectedSearchResult
-                    .getEntry(), this.selectedProperty );
+                bestValueEditor = valueEditorManager.getCurrentValueEditor( getSelectedSearchResults()[0].getEntry(),
+                    getSelectedProperties()[0] );
             }
             else
             {
-                this.valueEditor = this.valueEditorManager
-                    .getCurrentValueEditor( this.selectedAttributeHierarchie );
+                bestValueEditor = valueEditorManager.getCurrentValueEditor( getSelectedAttributeHierarchies()[0] );
             }
 
-            super.cellEditor = this.valueEditor.getCellEditor();
-            this.setEnabled( true );
-            this.setText( "" + this.valueEditor.getValueEditorName() );
-            this.setToolTipText( "" + this.valueEditor.getValueEditorName() );
-            this.setImageDescriptor( this.valueEditor.getValueEditorImageDescriptor() );
-
+            super.cellEditor = bestValueEditor.getCellEditor();
+            return true;
         }
         else
         {
-            this.setEnabled( false );
-            this.cellEditor = null;
-            this.setText( "Best Editor" );
-            this.setToolTipText( "Best Editor" );
-            this.setImageDescriptor( null );
+            super.cellEditor = null;
+            return false;
         }
     }
 

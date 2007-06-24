@@ -28,7 +28,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 
 /**
- * 
  * The OpenBestEditorAction is used to edit a value with the best value editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -45,13 +44,11 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
      * Creates a new instance of OpenBestEditorAction.
      * 
      * @param viewer the viewer
-     * @param actionGroup the action group
      * @param valueEditorManager the value editor manager
      */
-    public OpenBestEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
-        ValueEditorManager valueEditorManager )
+    public OpenBestEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager )
     {
-        super( viewer, actionGroup, valueEditorManager );
+        super( viewer, valueEditorManager );
     }
 
 
@@ -67,7 +64,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.AbstractOpenEditorAction#dispose()
      */
     public void dispose()
     {
@@ -77,9 +74,8 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
      */
-    @Override
     public String getCommandId()
     {
         return null;
@@ -87,9 +83,8 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
      */
-    @Override
     public ImageDescriptor getImageDescriptor()
     {
         return isEnabled() ? bestValueEditor.getValueEditorImageDescriptor() : null;
@@ -97,9 +92,8 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
      */
-    @Override
     public String getText()
     {
         return isEnabled() ? bestValueEditor.getValueEditorName() : null;
@@ -107,9 +101,8 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
      */
-    @Override
     public boolean isEnabled()
     {
         if ( getSelectedValues().length == 1

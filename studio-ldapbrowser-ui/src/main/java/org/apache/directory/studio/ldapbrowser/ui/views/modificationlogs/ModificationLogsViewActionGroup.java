@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.ModificationLogsViewActionProxy;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -40,7 +41,7 @@ import org.eclipse.ui.IActionBars;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ModificationLogsViewActionGroup implements IMenuListener
+public class ModificationLogsViewActionGroup implements ActionHandlerManager, IMenuListener
 {
 
     /** The view. */
@@ -54,7 +55,7 @@ public class ModificationLogsViewActionGroup implements IMenuListener
 
     /** The Constant refreshAction. */
     private static final String refreshAction = "refreshAction";
-    
+
     /** The Constant refreshAction. */
     private static final String clearAction = "clearAction";
 
@@ -73,14 +74,14 @@ public class ModificationLogsViewActionGroup implements IMenuListener
         SourceViewer viewer = this.view.getMainWidget().getSourceViewer();
 
         modificationLogsViewActionMap = new HashMap<String, ModificationLogsViewActionProxy>();
-        modificationLogsViewActionMap.put( olderAction, new ModificationLogsViewActionProxy( viewer, new OlderAction(
-            view ) ) );
-        modificationLogsViewActionMap.put( newerAction, new ModificationLogsViewActionProxy( viewer, new NewerAction(
-            view ) ) );
-        modificationLogsViewActionMap.put( refreshAction, new ModificationLogsViewActionProxy( viewer,
+        modificationLogsViewActionMap.put( olderAction, new ModificationLogsViewActionProxy( viewer, this,
+            new OlderAction( view ) ) );
+        modificationLogsViewActionMap.put( newerAction, new ModificationLogsViewActionProxy( viewer, this,
+            new NewerAction( view ) ) );
+        modificationLogsViewActionMap.put( refreshAction, new ModificationLogsViewActionProxy( viewer, this,
             new RefreshAction( view ) ) );
-        modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, new ClearAction(
-            view ) ) );
+        modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, this,
+            new ClearAction( view ) ) );
     }
 
 
@@ -116,7 +117,7 @@ public class ModificationLogsViewActionGroup implements IMenuListener
     public void fillActionBars( IActionBars actionBars )
     {
         // Tool Bar
-    	actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( clearAction ) );
+        actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( clearAction ) );
         actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( refreshAction ) );
         actionBars.getToolBarManager().add( new Separator() );
         actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( olderAction ) );
@@ -144,6 +145,22 @@ public class ModificationLogsViewActionGroup implements IMenuListener
             ModificationLogsViewActionProxy action = ( ModificationLogsViewActionProxy ) it.next();
             action.inputChanged( input );
         }
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager#activateGlobalActionHandlers()
+     */
+    public void activateGlobalActionHandlers()
+    {
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager#deactivateGlobalActionHandlers()
+     */
+    public void deactivateGlobalActionHandlers()
+    {
     }
 
 }

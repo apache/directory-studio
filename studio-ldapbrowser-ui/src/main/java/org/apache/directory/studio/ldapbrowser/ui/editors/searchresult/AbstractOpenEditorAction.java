@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TableViewer;
@@ -32,11 +33,8 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.TableItem;
 
 
-public abstract class AbstractOpenEditorAction extends AbstractSearchResultListenerAction implements FocusListener,
-    KeyListener
+public abstract class AbstractOpenEditorAction extends BrowserAction implements FocusListener, KeyListener
 {
-
-    protected SearchResultEditorActionGroup actionGroup;
 
     protected ValueEditorManager valueEditorManager;
 
@@ -50,10 +48,8 @@ public abstract class AbstractOpenEditorAction extends AbstractSearchResultListe
 
 
     protected AbstractOpenEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        SearchResultEditorActionGroup actionGroup, ValueEditorManager valueEditorManager )
+        ValueEditorManager valueEditorManager )
     {
-        super( cursor, "Editor", null, null );
-        this.actionGroup = actionGroup;
         this.viewer = viewer;
         this.cursor = cursor;
         this.valueEditorManager = valueEditorManager;
@@ -110,9 +106,6 @@ public abstract class AbstractOpenEditorAction extends AbstractSearchResultListe
             // deactivate cursor
             this.cursor.setVisible( false );
 
-            // deactivate global actions
-            this.actionGroup.deactivateGlobalActionHandlers();
-
             // start editing
             this.isActive = true;
             this.viewer.editElement( element, cursor.getColumn() );
@@ -165,9 +158,6 @@ public abstract class AbstractOpenEditorAction extends AbstractSearchResultListe
             this.cellEditor.getControl().removeFocusListener( this );
             this.cellEditor.getControl().removeKeyListener( this );
         }
-
-        // activate global actions
-        this.actionGroup.activateGlobalActionHandlers();
 
         this.valueEditorManager.setUserSelectedValueEditor( null );
 

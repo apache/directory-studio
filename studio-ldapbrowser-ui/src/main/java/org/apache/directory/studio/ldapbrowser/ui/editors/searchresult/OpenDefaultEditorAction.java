@@ -22,48 +22,89 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.SearchResultEditorActionProxy;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.TableViewer;
 
 
-public class OpenDefaultEditorAction extends AbstractSearchResultListenerAction
+public class OpenDefaultEditorAction extends AbstractOpenEditorAction
 {
 
-    private OpenBestEditorAction proxy;
+    private SearchResultEditorActionProxy bestValueEditorProxy;
 
 
-    public OpenDefaultEditorAction( OpenBestEditorAction proxy )
+    public OpenDefaultEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
+        ValueEditorManager valueEditorManager, SearchResultEditorActionProxy bestValueEditorProxy )
     {
-        super( proxy.selectionProvider, "Edit Value", null, BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
-
-        this.proxy = proxy;
+        super( viewer, cursor, valueEditorManager );
+        this.bestValueEditorProxy = bestValueEditorProxy;
     }
 
 
     public void run()
     {
-        this.proxy.run();
-    }
-
-
-    protected void updateEnabledState()
-    {
-        this.proxy.updateEnabledState();
-        this.setEnabled( this.proxy.isEnabled() );
-
-        this.setImageDescriptor( this.proxy.getImageDescriptor() );
+        this.bestValueEditorProxy.run();
     }
 
 
     public void dispose()
     {
-        this.proxy = null;
+        this.bestValueEditorProxy = null;
 
         super.dispose();
     }
 
-
-    public boolean isActive()
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
+     */
+    public String getCommandId()
     {
-        return this.proxy.isActive();
+        return BrowserCommonConstants.ACTION_ID_EDIT_VALUE;
     }
-
+    
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
+     */
+    public ImageDescriptor getImageDescriptor()
+    {
+        if ( bestValueEditorProxy != null )
+        {
+            return bestValueEditorProxy.getImageDescriptor();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
+     */
+    public String getText()
+    {
+        return "Edit Value";
+    }
+    
+    
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
+     */
+    public boolean isEnabled()
+    {
+        if ( bestValueEditorProxy != null )
+        {
+            return bestValueEditorProxy.isEnabled();
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    
 }

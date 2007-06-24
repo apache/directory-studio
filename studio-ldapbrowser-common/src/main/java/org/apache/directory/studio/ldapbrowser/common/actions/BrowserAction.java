@@ -99,6 +99,9 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
     /** The selected LDIF Parts */
     private LdifPart[] selectedLdifParts;
 
+    /** The selected properties. */
+    protected String[] selectedProperties;
+    
     /** The input */
     private Object input;
 
@@ -164,7 +167,6 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
      * </p>
      *
      * @return the text, or <code>null</code> if none
-     * @see #TEXT
      */
     public abstract String getText();
 
@@ -177,7 +179,6 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
      * </p>
      *
      * @return the image, or <code>null</code> if this action has no image
-     * @see #IMAGE
      */
     public abstract ImageDescriptor getImageDescriptor();
 
@@ -200,7 +201,6 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
      *
      * @return <code>true</code> if enabled, and
      *   <code>false</code> if disabled
-     * @see #ENABLED
      */
     public abstract boolean isEnabled();
 
@@ -234,6 +234,8 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
         this.selectedLdifModel = null;
         this.selectedLdifContainers = new LdifContainer[0];
         this.selectedLdifParts = new LdifPart[0];
+        
+        this.selectedProperties = new String[0];
 
         this.input = null;
     }
@@ -259,6 +261,8 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
         this.selectedLdifModel = null;
         this.selectedLdifContainers = new LdifContainer[0];
         this.selectedLdifParts = new LdifPart[0];
+        
+        this.selectedProperties = new String[0];
 
         this.input = null;
     }
@@ -418,8 +422,8 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
 
     /**
      * Get the selected Entries.
-     *
-     * @return
+     * 
+     * @return the selected entries
      */
     public IEntry[] getSelectedEntries()
     {
@@ -676,5 +680,27 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
     public void setSelectedAttributeHierarchies( AttributeHierarchy[] ahs )
     {
         this.selectedAttributeHierarchies = ahs;
+    }
+
+
+    /**
+     * Gets the selected properties.
+     * 
+     * @return the selected properties
+     */
+    public String[] getSelectedProperties()
+    {
+        return selectedProperties;
+    }
+
+
+    /**
+     * Sets the selected properties.
+     * 
+     * @param selectedProperties the selected properties
+     */
+    public void setSelectedProperties( String[] selectedProperties )
+    {
+        this.selectedProperties = selectedProperties;
     }
 }

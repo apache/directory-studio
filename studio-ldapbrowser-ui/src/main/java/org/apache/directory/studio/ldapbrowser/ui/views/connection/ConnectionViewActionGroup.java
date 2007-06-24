@@ -98,22 +98,22 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         TableViewer viewer = view.getMainWidget().getViewer();
 
         linkWithEditorAction = new LinkWithEditorAction( view );
-        connectionActionMap
-            .put( selectAllAction, new ConnectionViewActionProxy( viewer, new SelectAllAction( viewer ) ) );
-        connectionActionMap.put( importDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( selectAllAction, new ConnectionViewActionProxy( viewer, this, new SelectAllAction(
+            viewer ) ) );
+        connectionActionMap.put( importDsmlAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_DSML ) ) );
-        connectionActionMap.put( exportDsmlAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( exportDsmlAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_DSML ) ) );
-        connectionActionMap.put( importLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( importLdifAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_LDIF ) ) );
-        connectionActionMap.put( exportLdifAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( exportLdifAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_LDIF ) ) );
-        connectionActionMap.put( exportCsvAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
+        connectionActionMap.put( exportCsvAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
-        connectionActionMap.put( exportExcelAction, new ConnectionViewActionProxy( viewer, new ImportExportAction(
-            ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
+        connectionActionMap.put( exportExcelAction, new ConnectionViewActionProxy( viewer, this,
+            new ImportExportAction( ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
 
-        connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer,
+        connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer, this,
             new OpenSchemaBrowserAction() ) );
 
         // DND support

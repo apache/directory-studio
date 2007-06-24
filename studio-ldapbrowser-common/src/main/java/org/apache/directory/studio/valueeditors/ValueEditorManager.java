@@ -412,7 +412,10 @@ public class ValueEditorManager
         {
             return this.getAlternativeValueEditors( ah.getAttribute().getEntry(), ah.getAttribute().getDescription() );
         }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 1 )
+        else if ( ah.size() == 1
+            && ah.getAttribute().getValueSize() == 1
+            && ah.getAttributeDescription().equalsIgnoreCase(
+                ah.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
 
             // special case objectClass and RDN: no alternative to the MV-Editor

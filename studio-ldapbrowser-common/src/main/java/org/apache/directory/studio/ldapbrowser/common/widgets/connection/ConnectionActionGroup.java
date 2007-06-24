@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.OpenConnectionActi
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RenameAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ConnectionViewActionProxy;
 import org.eclipse.jface.action.IAction;
@@ -55,7 +56,7 @@ import org.eclipse.ui.commands.ICommandService;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionActionGroup implements IMenuListener
+public class ConnectionActionGroup implements ActionHandlerManager, IMenuListener
 {
 
     /** The Constant newConnectionAction. */
@@ -104,18 +105,22 @@ public class ConnectionActionGroup implements IMenuListener
         this.connectionActionMap = new HashMap<String, ConnectionViewActionProxy>();
 
         TableViewer viewer = mainWidget.getViewer();
-        connectionActionMap
-            .put( newConnectionAction, new ConnectionViewActionProxy( viewer, new NewConnectionAction() ) );
-        connectionActionMap.put( openConnectionAction, new ConnectionViewActionProxy( viewer,
+        connectionActionMap.put( newConnectionAction, new ConnectionViewActionProxy( viewer, this,
+            new NewConnectionAction() ) );
+        connectionActionMap.put( openConnectionAction, new ConnectionViewActionProxy( viewer, this,
             new OpenConnectionAction() ) );
-        connectionActionMap.put( closeConnectionAction, new ConnectionViewActionProxy( viewer,
+        connectionActionMap.put( closeConnectionAction, new ConnectionViewActionProxy( viewer, this,
             new CloseConnectionAction() ) );
-        connectionActionMap.put( pasteConnectionAction, new ConnectionViewActionProxy( viewer, new PasteAction() ) );
-        connectionActionMap.put( copyConnectionAction, new ConnectionViewActionProxy( viewer, new CopyAction(
+        connectionActionMap
+            .put( pasteConnectionAction, new ConnectionViewActionProxy( viewer, this, new PasteAction() ) );
+        connectionActionMap.put( copyConnectionAction, new ConnectionViewActionProxy( viewer, this, new CopyAction(
             ( BrowserActionProxy ) connectionActionMap.get( pasteConnectionAction ) ) ) );
-        connectionActionMap.put( deleteConnectionAction, new ConnectionViewActionProxy( viewer, new DeleteAction() ) );
-        connectionActionMap.put( renameConnectionAction, new ConnectionViewActionProxy( viewer, new RenameAction() ) );
-        connectionActionMap.put( propertyDialogAction, new ConnectionViewActionProxy( viewer, new PropertiesAction() ) );
+        connectionActionMap.put( deleteConnectionAction, new ConnectionViewActionProxy( viewer, this,
+            new DeleteAction() ) );
+        connectionActionMap.put( renameConnectionAction, new ConnectionViewActionProxy( viewer, this,
+            new RenameAction() ) );
+        connectionActionMap.put( propertyDialogAction, new ConnectionViewActionProxy( viewer, this,
+            new PropertiesAction() ) );
     }
 
 

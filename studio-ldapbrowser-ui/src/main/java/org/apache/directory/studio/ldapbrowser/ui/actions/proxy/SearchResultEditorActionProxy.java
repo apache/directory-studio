@@ -22,22 +22,32 @@ package org.apache.directory.studio.ldapbrowser.ui.actions.proxy;
 
 
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditorCursor;
 
 
+/**
+ * The SearchResultEditorActionProxy is a proxy for a real action.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorActionProxy extends BrowserActionProxy
 {
 
-    public SearchResultEditorActionProxy( SearchResultEditorCursor cursor, BrowserAction action, int style )
+    /**
+     * Creates a new instance of SearchResultEditorActionProxy.
+     * 
+     * @param cursor the cursor
+     * @param actionHandlerManager the action handler manager, 
+     *        used to deactivate and activate the action handlers and key bindings
+     * @param action the real action
+     */
+    public SearchResultEditorActionProxy( SearchResultEditorCursor cursor, ActionHandlerManager actionHandlerManager,
+        BrowserAction action )
     {
-        super( cursor, action, style );
-    }
-
-
-    public SearchResultEditorActionProxy( SearchResultEditorCursor cursor, BrowserAction action )
-    {
-        super( cursor, action );
+        super( cursor, actionHandlerManager, action );
     }
 
 }

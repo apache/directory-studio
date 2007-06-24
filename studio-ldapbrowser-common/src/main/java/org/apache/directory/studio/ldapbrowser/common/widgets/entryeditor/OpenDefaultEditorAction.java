@@ -30,7 +30,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 
 /**
- * 
  * The OpenBestEditorAction is used to edit a value with the default value editor.
  * This is either the best value editor or in case of an RDN attribute the rename
  * action is invoked.
@@ -46,7 +45,7 @@ public class OpenDefaultEditorAction extends BrowserAction
 
     /** The rename proxy. */
     private EntryEditorActionProxy renameProxy;
-    
+
 
     /**
      * Creates a new instance of OpenDefaultEditorAction.
@@ -55,15 +54,16 @@ public class OpenDefaultEditorAction extends BrowserAction
      * @param bestValueEditorProxy the best value editor proxy
      * @param enableRenameAction true to enable rename action
      */
-    public OpenDefaultEditorAction( TreeViewer viewer, EntryEditorActionProxy bestValueEditorProxy, boolean enableRenameAction )
+    public OpenDefaultEditorAction( TreeViewer viewer, EntryEditorActionProxy bestValueEditorProxy,
+        boolean enableRenameAction )
     {
         this.bestValueEditorProxy = bestValueEditorProxy;
-        this.renameProxy = enableRenameAction ? new EntryEditorActionProxy( viewer, new RenameAction() ) : null;
+        this.renameProxy = enableRenameAction ? new EntryEditorActionProxy( viewer, null, new RenameAction() ) : null;
     }
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#dispose()
      */
     public void dispose()
     {
@@ -72,22 +72,20 @@ public class OpenDefaultEditorAction extends BrowserAction
 
         super.dispose();
     }
-    
-    
+
+
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
      */
-    @Override
     public String getCommandId()
     {
         return BrowserCommonConstants.ACTION_ID_EDIT_VALUE;
     }
-    
-    
+
+
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
      */
-    @Override
     public ImageDescriptor getImageDescriptor()
     {
         if ( bestValueEditorProxy != null )
@@ -103,76 +101,54 @@ public class OpenDefaultEditorAction extends BrowserAction
             return null;
         }
     }
-    
-    
+
+
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
      */
-    @Override
     public String getText()
     {
         return "Edit Value";
     }
-    
-    
+
+
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
      */
-    @Override
     public boolean isEnabled()
     {
-//      // update proxy selections
-//      if ( bestValueEditorProxy != null )
-//      {
-//          if ( this.currentSelectionChangedEvent != null )
-//          {
-//              this.valueEditorProxy.selectionChanged( currentSelectionChangedEvent );
-//          }
-//          this.valueEditorProxy.updateEnabledState();
-//      }
-//      if ( this.renameProxy != null )
-//      {
-//          if ( this.currentSelectionChangedEvent != null )
-//          {
-//              this.renameProxy.selectionChanged( currentSelectionChangedEvent );
-//          }
-//          this.renameProxy.updateAction();
-//      }
-
-      if ( bestValueEditorProxy != null && renameProxy != null )
-      {
-          return bestValueEditorProxy.isEnabled() || renameProxy.isEnabled();
-      }
-      else if ( renameProxy != null )
-      {
-          return renameProxy.isEnabled();
-      }
-      else if ( bestValueEditorProxy != null )
-      {
-          return bestValueEditorProxy.isEnabled();
-      }
-      else
-      {
-          return false;
-      }
+        if ( bestValueEditorProxy != null && renameProxy != null )
+        {
+            return bestValueEditorProxy.isEnabled() || renameProxy.isEnabled();
+        }
+        else if ( renameProxy != null )
+        {
+            return renameProxy.isEnabled();
+        }
+        else if ( bestValueEditorProxy != null )
+        {
+            return bestValueEditorProxy.isEnabled();
+        }
+        else
+        {
+            return false;
+        }
     }
-    
-    
+
+
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#run()
      */
-    @Override
     public void run()
     {
-      if ( bestValueEditorProxy != null && bestValueEditorProxy.isEnabled() )
-      {
-          bestValueEditorProxy.run();
-      }
-      else if ( renameProxy != null && renameProxy.isEnabled() )
-      {
-          renameProxy.run();
-      }
-        
+        if ( bestValueEditorProxy != null && bestValueEditorProxy.isEnabled() )
+        {
+            bestValueEditorProxy.run();
+        }
+        else if ( renameProxy != null && renameProxy.isEnabled() )
+        {
+            renameProxy.run();
+        }
     }
 
 }

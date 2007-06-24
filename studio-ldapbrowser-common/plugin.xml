@@ -264,8 +264,8 @@
  <extension
        point="org.eclipse.ui.contexts">
        <context
-		name="Browser context"
-		description="Browser context"
+		name="LDAP Browser"
+		description="LDAP Browser"
 		id="org.apache.directory.studio.ldapbrowser.action.context"
 		parentId="org.eclipse.ui.contexts.window">
 	</context>

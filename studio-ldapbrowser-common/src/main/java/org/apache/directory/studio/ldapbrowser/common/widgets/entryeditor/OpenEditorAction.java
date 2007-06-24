@@ -46,14 +46,12 @@ public class OpenEditorAction extends AbstractOpenEditorAction
      * Creates a new instance of OpenEditorAction.
      * 
      * @param viewer the viewer
-     * @param actionGroup the action group
      * @param valueEditorManager the value editor manager
      * @param valueEditor the specific value editor
      */
-    public OpenEditorAction( TreeViewer viewer, EntryEditorWidgetActionGroup actionGroup,
-        ValueEditorManager valueEditorManager, IValueEditor valueEditor )
+    public OpenEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager, IValueEditor valueEditor )
     {
-        super( viewer, actionGroup, valueEditorManager );
+        super( viewer, valueEditorManager );
         super.cellEditor = valueEditor.getCellEditor();
         this.valueEditor = valueEditor;
     }
@@ -71,7 +69,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.AbstractOpenEditorAction#run()
      */
     public void run()
     {
@@ -83,7 +81,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.AbstractOpenEditorAction#dispose()
      */
     public void dispose()
     {
@@ -93,9 +91,8 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
      */
-    @Override
     public String getCommandId()
     {
         return null;
@@ -103,9 +100,8 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
      */
-    @Override
     public ImageDescriptor getImageDescriptor()
     {
         return valueEditor.getValueEditorImageDescriptor();
@@ -113,9 +109,8 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
      */
-    @Override
     public String getText()
     {
         return valueEditor.getValueEditorName();
@@ -123,9 +118,8 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
      */
-    @Override
     public boolean isEnabled()
     {
         if ( getSelectedValues().length == 1

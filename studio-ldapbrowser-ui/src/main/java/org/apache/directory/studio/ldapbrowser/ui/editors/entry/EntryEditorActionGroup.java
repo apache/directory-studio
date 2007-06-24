@@ -165,63 +165,65 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
         // create OpenDefaultEditorAction with enabled rename action flag
         openDefaultValueEditorActionProxy.dispose();
-        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
-            openBestValueEditorActionProxy, true ) );
+        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, this, new OpenDefaultEditorAction(
+            viewer, openBestValueEditorActionProxy, true ) );
 
         showOperationalAttributesAction = new ShowOperationalAttributesAction();
         openEntryEditorPreferencePage = new OpenEntryEditorPreferencePageAction();
         collapseAllAction = new CollapseAllAction( viewer );
         expandAllAction = new ExpandAllAction( viewer );
 
-        entryEditorActionMap.put( editAttributeDescriptionAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( editAttributeDescriptionAction, new EntryEditorActionProxy( viewer, this,
             new EditAttributeDescriptionAction( viewer ) ) );
 
-        entryEditorActionMap.put( refreshAttributesAction, new EntryEditorActionProxy( viewer, new RefreshAction() ) );
+        entryEditorActionMap.put( refreshAttributesAction, new EntryEditorActionProxy( viewer, this,
+            new RefreshAction() ) );
 
-        entryEditorActionMap.put( newAttributeAction, new EntryEditorActionProxy( viewer, new NewAttributeAction() ) );
-        entryEditorActionMap.put( newSearchAction, new EntryEditorActionProxy( viewer, new NewSearchAction() ) );
-        entryEditorActionMap.put( newBatchOperationAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( newAttributeAction, new EntryEditorActionProxy( viewer, this,
+            new NewAttributeAction() ) );
+        entryEditorActionMap.put( newSearchAction, new EntryEditorActionProxy( viewer, this, new NewSearchAction() ) );
+        entryEditorActionMap.put( newBatchOperationAction, new EntryEditorActionProxy( viewer, this,
             new NewBatchOperationAction() ) );
 
-        entryEditorActionMap.put( locateDnInDitAction, new EntryEditorActionProxy( viewer, new LocateDnInDitAction() ) );
-        entryEditorActionMap.put( showOcdAction, new EntryEditorActionProxy( viewer, new OpenSchemaBrowserAction(
+        entryEditorActionMap.put( locateDnInDitAction, new EntryEditorActionProxy( viewer, this,
+            new LocateDnInDitAction() ) );
+        entryEditorActionMap.put( showOcdAction, new EntryEditorActionProxy( viewer, this, new OpenSchemaBrowserAction(
             OpenSchemaBrowserAction.MODE_OBJECTCLASS ) ) );
-        entryEditorActionMap.put( showAtdAction, new EntryEditorActionProxy( viewer, new OpenSchemaBrowserAction(
+        entryEditorActionMap.put( showAtdAction, new EntryEditorActionProxy( viewer, this, new OpenSchemaBrowserAction(
             OpenSchemaBrowserAction.MODE_ATTRIBUTETYPE ) ) );
-        entryEditorActionMap.put( showEqualityMrdAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( showEqualityMrdAction, new EntryEditorActionProxy( viewer, this,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_EQUALITYMATCHINGRULE ) ) );
-        entryEditorActionMap.put( showSubstringMrdAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( showSubstringMrdAction, new EntryEditorActionProxy( viewer, this,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_SUBSTRINGMATCHINGRULE ) ) );
-        entryEditorActionMap.put( showOrderingMrdAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( showOrderingMrdAction, new EntryEditorActionProxy( viewer, this,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_ORDERINGMATCHINGRULE ) ) );
-        entryEditorActionMap.put( showLsdAction, new EntryEditorActionProxy( viewer, new OpenSchemaBrowserAction(
+        entryEditorActionMap.put( showLsdAction, new EntryEditorActionProxy( viewer, this, new OpenSchemaBrowserAction(
             OpenSchemaBrowserAction.MODE_SYNTAX ) ) );
 
-        entryEditorActionMap.put( copyDnAction, new EntryEditorActionProxy( viewer, new CopyDnAction() ) );
-        entryEditorActionMap.put( copyUrlAction, new EntryEditorActionProxy( viewer, new CopyUrlAction() ) );
-        entryEditorActionMap.put( copyAttriuteDescriptionAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( copyDnAction, new EntryEditorActionProxy( viewer, this, new CopyDnAction() ) );
+        entryEditorActionMap.put( copyUrlAction, new EntryEditorActionProxy( viewer, this, new CopyUrlAction() ) );
+        entryEditorActionMap.put( copyAttriuteDescriptionAction, new EntryEditorActionProxy( viewer, this,
             new CopyAttributeDescriptionAction() ) );
-        entryEditorActionMap.put( copyValueUtf8Action, new EntryEditorActionProxy( viewer, new CopyValueAction(
+        entryEditorActionMap.put( copyValueUtf8Action, new EntryEditorActionProxy( viewer, this, new CopyValueAction(
             CopyValueAction.MODE_UTF8 ) ) );
-        entryEditorActionMap.put( copyValueBase64Action, new EntryEditorActionProxy( viewer, new CopyValueAction(
+        entryEditorActionMap.put( copyValueBase64Action, new EntryEditorActionProxy( viewer, this, new CopyValueAction(
             CopyValueAction.MODE_BASE64 ) ) );
-        entryEditorActionMap.put( copyValueHexAction, new EntryEditorActionProxy( viewer, new CopyValueAction(
+        entryEditorActionMap.put( copyValueHexAction, new EntryEditorActionProxy( viewer, this, new CopyValueAction(
             CopyValueAction.MODE_HEX ) ) );
-        entryEditorActionMap.put( copyValueAsLdifAction, new EntryEditorActionProxy( viewer, new CopyValueAction(
+        entryEditorActionMap.put( copyValueAsLdifAction, new EntryEditorActionProxy( viewer, this, new CopyValueAction(
             CopyValueAction.MODE_LDIF ) ) );
 
-        entryEditorActionMap.put( copySearchFilterAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( copySearchFilterAction, new EntryEditorActionProxy( viewer, this,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_EQUALS ) ) );
-        entryEditorActionMap.put( copyNotSearchFilterAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( copyNotSearchFilterAction, new EntryEditorActionProxy( viewer, this,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_NOT ) ) );
-        entryEditorActionMap.put( copyAndSearchFilterAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( copyAndSearchFilterAction, new EntryEditorActionProxy( viewer, this,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_AND ) ) );
-        entryEditorActionMap.put( copyOrSearchFilterAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( copyOrSearchFilterAction, new EntryEditorActionProxy( viewer, this,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_OR ) ) );
 
-        entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer, this,
             new DeleteAllValuesAction() ) );
-
     }
 
 

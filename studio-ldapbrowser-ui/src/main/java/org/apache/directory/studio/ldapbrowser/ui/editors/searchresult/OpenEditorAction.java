@@ -23,8 +23,10 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import java.util.Arrays;
 
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
 
 
@@ -35,15 +37,12 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     public OpenEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        SearchResultEditorActionGroup actionGroup, ValueEditorManager valueEditorManager,
+        ValueEditorManager valueEditorManager,
         IValueEditor valueEditor )
     {
-        super( viewer, cursor, actionGroup, valueEditorManager );
+        super( viewer, cursor, valueEditorManager );
         super.cellEditor = valueEditor.getCellEditor();
         this.valueEditor = valueEditor;
-        this.setText( "" + this.valueEditor.getValueEditorName() );
-        this.setToolTipText( "" + this.valueEditor.getValueEditorName() );
-        this.setImageDescriptor( this.valueEditor.getValueEditorImageDescriptor() );
     }
 
 
@@ -53,36 +52,75 @@ public class OpenEditorAction extends AbstractOpenEditorAction
     }
 
 
-    protected void updateEnabledState()
-    {
-
-        if ( viewer.getCellModifier().canModify( this.selectedSearchResult, this.selectedProperty ) )
-        {
-
-            IValueEditor[] alternativeVps;
-            if ( this.selectedAttributeHierarchie == null )
-            {
-                this.setEnabled( false );
-            }
-            else
-            {
-                alternativeVps = this.valueEditorManager
-                    .getAlternativeValueEditors( this.selectedAttributeHierarchie );
-                this.setEnabled( Arrays.asList( alternativeVps ).contains( this.valueEditor )
-                    && this.valueEditor.getRawValue( this.selectedAttributeHierarchie ) != null );
-            }
-        }
-        else
-        {
-            this.setEnabled( false );
-        }
-    }
-
-
     public void run()
     {
         this.valueEditorManager.setUserSelectedValueEditor( this.valueEditor );
         super.run();
+    }
+
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#dispose()
+     */
+    public void dispose()
+    {
+        this.valueEditor = null;
+        super.dispose();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
+     */
+    public String getCommandId()
+    {
+        return null;
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
+     */
+    public ImageDescriptor getImageDescriptor()
+    {
+        return valueEditor.getValueEditorImageDescriptor();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
+     */
+    public String getText()
+    {
+        return valueEditor.getValueEditorName();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
+     */
+    public boolean isEnabled()
+    {
+        if ( getSelectedSearchResults().length == 1 && getSelectedProperties().length == 1
+            && viewer.getCellModifier().canModify( getSelectedSearchResults()[0], getSelectedProperties()[0] ) )
+        {
+            IValueEditor[] alternativeVps;
+            if ( getSelectedAttributeHierarchies().length == 0 )
+            {
+                return false;
+            }
+            else
+            {
+                AttributeHierarchy ah = getSelectedAttributeHierarchies()[0];
+                alternativeVps = valueEditorManager.getAlternativeValueEditors( ah );
+                return Arrays.asList( alternativeVps ).contains( this.valueEditor )
+                    && valueEditor.getRawValue( ah ) != null;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
