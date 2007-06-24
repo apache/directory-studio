@@ -79,7 +79,9 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         public void widgetDefaultSelected( SelectionEvent e )
         {
             if ( startEditAction.isEnabled() )
+            {
                 startEditAction.run();
+            }
         }
     };
 
@@ -93,11 +95,6 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
          */
         public void mouseDoubleClick( MouseEvent e )
         {
-            if ( startEditAction.isEnabled() )
-            {
-                startEditAction.run();
-            }
-
             IAttribute[] attributes = SelectionUtils.getAttributes( viewer.getSelection() );
             IValue[] values = SelectionUtils.getValues( viewer.getSelection() );
             if ( attributes.length == 1 && values.length == 0 )
