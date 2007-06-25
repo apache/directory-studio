@@ -49,5 +49,13 @@
           id="org.apache.directory.studio.apacheds.schemaeditor.wizards.NewAttributeTypeWizard"
           name="New Attribute Type"
           project="false"/>
+	<wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.newWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewObjectClassWizard"
+          hasPages="true"
+          icon="resources/icons/object_class_new.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.NewObjectClassWizard"
+          name="New Object Class"
+          project="false"/>
  </extension>
 </plugin>

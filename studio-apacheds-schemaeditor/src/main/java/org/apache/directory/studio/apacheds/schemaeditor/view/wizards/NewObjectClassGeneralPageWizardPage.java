@@ -39,7 +39,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class represents the General WizardPage of the NewAttributeTypeWizard.
+ * This class represents the General WizardPage of the NewObjectClassWizard.
  * <p>
  * It is used to let the user enter general information about the
  * attribute type he wants to create (schema, OID, aliases an description).
@@ -47,18 +47,18 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewAttributeTypeGeneralWizardPage extends WizardPage
+public class NewObjectClassGeneralPageWizardPage extends WizardPage
 {
     /**
-     * Creates a new instance of NewAttributeTypeGeneralWizardPage.
+     * Creates a new instance of NewObjectClassGeneralPageWizardPage.
      */
-    protected NewAttributeTypeGeneralWizardPage()
+    protected NewObjectClassGeneralPageWizardPage()
     {
-        super( "NewAttributeTypeGeneralWizardPage" );
-        setTitle( "Attribute Type" );
-        setDescription( "Create a new attribute type." );
+        super( "NewObjectClassGeneralPageWizardPage" );
+        setTitle( "Object Class" );
+        setDescription( "Create a new object class." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
+            PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
     }
 
 

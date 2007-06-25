@@ -43,7 +43,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * This class represents the Content WizardPage of the NewAttributeTypeWizard.
  * <p>
  * It is used to let the user enter content information about the
- * attribute type he wants to create (superior, usage, syntax an properties).
+ * attribute type he wants to create (superior, usage, syntax and properties).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -55,7 +55,7 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
      */
     protected NewAttributeTypeContentWizardPage()
     {
-        super( "Options" );
+        super( "NewAttributeTypeContentWizardPage" );
         setTitle( "Attribute Type Content" );
         setDescription( "Please enter the superior, usage, syntax and properties for the attribute type." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
@@ -93,7 +93,7 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
         usageComboViewer.setLabelProvider( new LabelProvider() );
         usageComboViewer.setContentProvider( new ArrayContentProvider() );
         usageComboViewer.setInput( new String[]
-            { "Directory Operation", "Distributed Operation", " DSA Operation", "User Applications" } );
+            { "Directory Operation", "Distributed Operation", "DSA Operation", "User Applications" } );
 
         // Syntax Group
         Group syntaxGroup = new Group( composite, SWT.NONE );

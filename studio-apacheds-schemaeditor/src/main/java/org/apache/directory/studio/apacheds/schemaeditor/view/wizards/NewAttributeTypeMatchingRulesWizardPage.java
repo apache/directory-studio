@@ -49,7 +49,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public NewAttributeTypeMatchingRulesWizardPage()
     {
-        super( "MatchingRules" );
+        super( "NewAttributeTypeMatchingRulesWizardPage" );
         setTitle( "Matching Rules" );
         setDescription( "Please specify the matching rules (equality, ordering and substring) to use for the attribute type." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

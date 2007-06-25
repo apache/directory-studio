@@ -41,6 +41,8 @@ public interface PluginConstants
     public static final String IMG_FOLDER_AT = "resources/icons/folder_at.gif";
     public static final String IMG_FOLDER_OC = "resources/icons/folder_oc.gif";
     public static final String IMG_OBJECT_CLASS = "resources/icons/object_class.gif";
+    public static final String IMG_OBJECT_CLASS_NEW = "resources/icons/object_class_new.gif";
+    public static final String IMG_OBJECT_CLASS_NEW_WIZARD = "resources/icons/object_class_new_wizard.png";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
 
