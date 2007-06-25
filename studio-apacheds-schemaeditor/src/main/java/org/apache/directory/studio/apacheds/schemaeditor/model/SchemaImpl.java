@@ -29,6 +29,12 @@ import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.Syntax;
 
 
+/**
+ * This class represents a schema.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SchemaImpl implements Schema
 {
     /** The name */
@@ -46,7 +52,16 @@ public class SchemaImpl implements Schema
     /** The Syntax List */
     private List<Syntax> syntaxes = new ArrayList<Syntax>();
 
+    /** The listeners */
+    private List<SchemaListener> listeners;
 
+
+    /**
+     * Creates a new instance of SchemaImpl.
+     *
+     * @param name
+     *      the name of the schema
+     */
     public SchemaImpl( String name )
     {
         this.name = name;
@@ -216,5 +231,37 @@ public class SchemaImpl implements Schema
     public void setName( String name )
     {
         this.name = name;
+    }
+
+
+    /**
+     * Adds an SchemaListener.
+     *
+     * @param listener
+     *      the SchemaListener
+     */
+    public void addListener( SchemaListener listener )
+    {
+        if ( listeners == null )
+        {
+            listeners = new ArrayList<SchemaListener>();
+        }
+
+        listeners.add( listener );
+    }
+
+
+    /**
+     * Removes an SchemaListener
+     *
+     * @param listener
+     *      the SchemaListener
+     */
+    public void removeListener( SchemaListener listener )
+    {
+        if ( listeners != null )
+        {
+            listeners.remove( listener );
+        }
     }
 }
