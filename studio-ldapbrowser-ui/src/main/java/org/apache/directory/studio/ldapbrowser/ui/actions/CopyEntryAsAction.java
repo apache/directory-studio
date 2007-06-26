@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.ldapbrowser.ui.actions;
@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
@@ -31,7 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -79,7 +79,7 @@ public abstract class CopyEntryAsAction extends BrowserAction
      * @param type
      *      the type of the target
      * @param mode
-     *      the copy Mode 
+     *      the copy Mode
      */
     public CopyEntryAsAction( String type, int mode )
     {
@@ -230,7 +230,7 @@ public abstract class CopyEntryAsAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        boolean showOperational = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
+        boolean showOperational = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
 
         if ( getSelectedSearchResults().length > 0
@@ -256,7 +256,7 @@ public abstract class CopyEntryAsAction extends BrowserAction
 
     /**
      * Copies text to Clipboard
-     * 
+     *
      * @param text
      *      the Text to copy
      */
