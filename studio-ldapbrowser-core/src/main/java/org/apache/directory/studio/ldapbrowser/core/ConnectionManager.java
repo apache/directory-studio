@@ -581,7 +581,8 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             if( file.exists() ) {
                 file.delete();
             }
-            tempFile.renameTo( file );
+            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
+            FileUtils.writeStringToFile( file, content, "UTF-8" );
         }
         catch ( Exception e )
         {
