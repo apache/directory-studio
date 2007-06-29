@@ -17,26 +17,26 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor.model;
+package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
 /**
  * Classes which implement this interface provide methods that deal with the 
- * events that are generated when an event occurs on an object class.
+ * events that are generated when an event occurs on an attribute type.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ObjectClassListener
+public interface AttributeTypeListener
 {
     /**
-     * Sent when the object class is modified.
+     * Sent when the attribute type is modified.
      */
-    public void objectClassModified();
+    public void attributeTypeModified();
 
 
     /**
-     * Sent when the object class is removed.
+     * Sent when the attribute type is removed.
      */
-    public void objectClassRemoved();
+    public void attributeTypeRemoved();
 }

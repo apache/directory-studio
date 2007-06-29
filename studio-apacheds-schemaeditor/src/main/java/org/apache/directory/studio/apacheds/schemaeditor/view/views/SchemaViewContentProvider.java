@@ -22,10 +22,10 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.model.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
@@ -123,14 +123,14 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
                 schemaWrapper.addChild( ocFolder );
 
-                List<AttributeType> attributeTypes = schemaWrapper.getSchema().getAttributeTypes();
-                for ( AttributeType attributeType : attributeTypes )
+                List<AttributeTypeImpl> attributeTypes = schemaWrapper.getSchema().getAttributeTypes();
+                for ( AttributeTypeImpl attributeType : attributeTypes )
                 {
                     atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
                 }
 
-                List<ObjectClass> objectClasses = schemaWrapper.getSchema().getObjectClasses();
-                for ( ObjectClass objectClass : objectClasses )
+                List<ObjectClassImpl> objectClasses = schemaWrapper.getSchema().getObjectClasses();
+                for ( ObjectClassImpl objectClass : objectClasses )
                 {
                     ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
                 }

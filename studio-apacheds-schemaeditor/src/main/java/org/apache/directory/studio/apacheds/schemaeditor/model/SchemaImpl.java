@@ -23,11 +23,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.MatchingRule;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
-import org.apache.directory.shared.ldap.schema.Syntax;
-
 
 /**
  * This class represents a schema.
@@ -41,19 +36,16 @@ public class SchemaImpl implements Schema
     private String name;
 
     /** The AttributeType List */
-    private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
+    private List<AttributeTypeImpl> attributeTypes = new ArrayList<AttributeTypeImpl>();
 
     /** The ObjectClass List */
-    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
+    private List<ObjectClassImpl> objectClasses = new ArrayList<ObjectClassImpl>();
 
     /** The MatchingRule List */
-    private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
+    private List<MatchingRuleImpl> matchingRules = new ArrayList<MatchingRuleImpl>();
 
     /** The Syntax List */
-    private List<Syntax> syntaxes = new ArrayList<Syntax>();
-
-    /** The listeners */
-    private List<SchemaListener> listeners;
+    private List<SyntaxImpl> syntaxes = new ArrayList<SyntaxImpl>();
 
 
     /**
@@ -71,7 +63,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
      */
-    public boolean addAttributeType( AttributeType at )
+    public boolean addAttributeType( AttributeTypeImpl at )
     {
         return attributeTypes.add( at );
     }
@@ -80,7 +72,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
      */
-    public boolean addMatchingRule( MatchingRule mr )
+    public boolean addMatchingRule( MatchingRuleImpl mr )
     {
         return matchingRules.add( mr );
     }
@@ -89,7 +81,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
      */
-    public boolean addObjectClass( ObjectClass oc )
+    public boolean addObjectClass( ObjectClassImpl oc )
     {
         return objectClasses.add( oc );
     }
@@ -98,7 +90,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#addSyntax(org.apache.directory.shared.ldap.schema.Syntax)
      */
-    public boolean addSyntax( Syntax syntax )
+    public boolean addSyntax( SyntaxImpl syntax )
     {
         return syntaxes.add( syntax );
     }
@@ -107,7 +99,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getAttributeType(java.lang.String)
      */
-    public AttributeType getAttributeType( String id )
+    public AttributeTypeImpl getAttributeType( String id )
     {
         // TODO Auto-generated method stub
         return null;
@@ -117,7 +109,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getAttributeTypes()
      */
-    public List<AttributeType> getAttributeTypes()
+    public List<AttributeTypeImpl> getAttributeTypes()
     {
         return attributeTypes;
     }
@@ -126,7 +118,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getMatchingRule(java.lang.String)
      */
-    public MatchingRule getMatchingRule( String id )
+    public MatchingRuleImpl getMatchingRule( String id )
     {
         // TODO Auto-generated method stub
         return null;
@@ -136,7 +128,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getMatchingRules()
      */
-    public List<MatchingRule> getMatchingRules()
+    public List<MatchingRuleImpl> getMatchingRules()
     {
         return matchingRules;
     }
@@ -154,7 +146,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getObjectClass(java.lang.String)
      */
-    public ObjectClass getObjectClass( String id )
+    public ObjectClassImpl getObjectClass( String id )
     {
         // TODO Auto-generated method stub
         return null;
@@ -164,7 +156,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getObjectClasses()
      */
-    public List<ObjectClass> getObjectClasses()
+    public List<ObjectClassImpl> getObjectClasses()
     {
         return objectClasses;
     }
@@ -173,7 +165,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getSyntax(java.lang.String)
      */
-    public MatchingRule getSyntax( String id )
+    public SyntaxImpl getSyntax( String id )
     {
         // TODO Auto-generated method stub
         return null;
@@ -183,7 +175,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#getSyntaxes()
      */
-    public List<Syntax> getSyntaxes()
+    public List<SyntaxImpl> getSyntaxes()
     {
         return syntaxes;
     }
@@ -192,7 +184,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeAttributeType(org.apache.directory.shared.ldap.schema.AttributeType)
      */
-    public boolean removeAttributeType( AttributeType at )
+    public boolean removeAttributeType( AttributeTypeImpl at )
     {
         return attributeTypes.remove( at );
     }
@@ -201,7 +193,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeMatchingRule(org.apache.directory.shared.ldap.schema.MatchingRule)
      */
-    public boolean removeMatchingRule( MatchingRule mr )
+    public boolean removeMatchingRule( MatchingRuleImpl mr )
     {
         return matchingRules.remove( mr );
     }
@@ -210,7 +202,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeObjectClass(org.apache.directory.shared.ldap.schema.ObjectClass)
      */
-    public boolean removeObjectClass( ObjectClass oc )
+    public boolean removeObjectClass( ObjectClassImpl oc )
     {
         return objectClasses.remove( oc );
     }
@@ -219,7 +211,7 @@ public class SchemaImpl implements Schema
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.Schema#removeSyntax(org.apache.directory.shared.ldap.schema.Syntax)
      */
-    public boolean removeSyntax( Syntax syntax )
+    public boolean removeSyntax( SyntaxImpl syntax )
     {
         return syntaxes.remove( syntax );
     }
@@ -231,37 +223,5 @@ public class SchemaImpl implements Schema
     public void setName( String name )
     {
         this.name = name;
-    }
-
-
-    /**
-     * Adds an SchemaListener.
-     *
-     * @param listener
-     *      the SchemaListener
-     */
-    public void addListener( SchemaListener listener )
-    {
-        if ( listeners == null )
-        {
-            listeners = new ArrayList<SchemaListener>();
-        }
-
-        listeners.add( listener );
-    }
-
-
-    /**
-     * Removes an SchemaListener
-     *
-     * @param listener
-     *      the SchemaListener
-     */
-    public void removeListener( SchemaListener listener )
-    {
-        if ( listeners != null )
-        {
-            listeners.remove( listener );
-        }
     }
 }

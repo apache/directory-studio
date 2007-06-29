@@ -20,9 +20,6 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.schema.AbstractAttributeType;
@@ -43,6 +40,9 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
 {
     private static final long serialVersionUID = 1L;
 
+    /** The object OID */
+    private String objectOid;
+    
     /** The name of the superior */
     private String superiorName;
 
@@ -57,9 +57,6 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
 
     /** The name of the substr matching rule */
     private String substrName;
-
-    /** The listeners */
-    private List<AttributeTypeListener> listeners;
 
 
     /**
@@ -80,6 +77,26 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     public void setNames( String[] names )
     {
         super.setNames( names );
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#getOid()
+     */
+    public String getOid()
+    {
+        return objectOid;
+    }
+
+
+    /**
+     * Set the OID.
+     *
+     * @param oid
+     *      the OID value
+     */
+    public void setOid( String oid )
+    {
+        objectOid = oid;
     }
 
 
@@ -308,37 +325,5 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     public MatchingRule getSubstr() throws NamingException
     {
         return null;
-    }
-
-
-    /**
-     * Adds an AttributeTypeListener.
-     *
-     * @param listener
-     *      the AttributeTypeListener
-     */
-    public void addListener( AttributeTypeListener listener )
-    {
-        if ( listeners == null )
-        {
-            listeners = new ArrayList<AttributeTypeListener>();
-        }
-
-        listeners.add( listener );
-    }
-
-
-    /**
-     * Removes an AttributeTypeListener
-     *
-     * @param listener
-     *      the AttributeTypeListener
-     */
-    public void removeListener( AttributeTypeListener listener )
-    {
-        if ( listeners != null )
-        {
-            listeners.remove( listener );
-        }
     }
 }

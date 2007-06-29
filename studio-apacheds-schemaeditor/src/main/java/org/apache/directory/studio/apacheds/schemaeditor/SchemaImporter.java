@@ -33,11 +33,7 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.MatchingRule;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.Syntax;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
@@ -159,22 +155,22 @@ public class SchemaImporter
             switch ( getNodeType( searchResult ) )
             {
                 case ATTRIBUTE_TYPE:
-                    AttributeType at = createAttributeType( searchResult );
+                    AttributeTypeImpl at = createAttributeType( searchResult );
                     at.setSchema( name );
                     schema.addAttributeType( at );
                     break;
                 case OBJECT_CLASS:
-                    ObjectClass oc = createObjectClass( searchResult );
+                    ObjectClassImpl oc = createObjectClass( searchResult );
                     oc.setSchema( name );
                     schema.addObjectClass( oc );
                     break;
                 case MATCHING_RULE:
-                    MatchingRule mr = createMatchingRule( searchResult );
+                    MatchingRuleImpl mr = createMatchingRule( searchResult );
                     mr.setSchema( name );
                     schema.addMatchingRule( mr );
                     break;
                 case SYNTAX:
-                    Syntax syntax = createSyntax( searchResult );
+                    SyntaxImpl syntax = createSyntax( searchResult );
                     syntax.setSchema( name );
                     schema.addSyntax( syntax );
                     break;
@@ -230,16 +226,16 @@ public class SchemaImporter
 
 
     /**
-     * Create the AttributeType associated with the given SearchResult.
+     * Create the AttributeTypeImpl associated with the given SearchResult.
      * 
      * @param sr
      * 		the SearchResult
      * @return
-     * 		the AttributeType associated with the SearchResult, or null if no 
-     * AttributeType could be created
+     * 		the AttributeTypeImpl associated with the SearchResult, or null if no 
+     * AttributeTypeImpl could be created
      * @throws NamingException 
      */
-    private AttributeType createAttributeType( SearchResult sr ) throws NamingException
+    private AttributeTypeImpl createAttributeType( SearchResult sr ) throws NamingException
     {
         AttributeTypeImpl at = new AttributeTypeImpl( getOid( sr ) );
         at.setNames( getNames( sr ) );
@@ -260,16 +256,16 @@ public class SchemaImporter
 
 
     /**
-     * Create the ObjectClass associated with the given SearchResult.
+     * Create the ObjectClassImpl associated with the given SearchResult.
      * 
      * @param sr
      *      the SearchResult
      * @return
-     *      the ObjectClass associated with the SearchResult, or null if no 
-     * ObjectClass could be created
+     *      the ObjectClassImpl associated with the SearchResult, or null if no 
+     * ObjectClassImpl could be created
      * @throws NamingException 
      */
-    private ObjectClass createObjectClass( SearchResult sr ) throws NamingException
+    private ObjectClassImpl createObjectClass( SearchResult sr ) throws NamingException
     {
         ObjectClassImpl oc = new ObjectClassImpl( getOid( sr ) );
         oc.setNames( getNames( sr ) );
@@ -293,7 +289,7 @@ public class SchemaImporter
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private MatchingRule createMatchingRule( SearchResult sr ) throws NamingException
+    private MatchingRuleImpl createMatchingRule( SearchResult sr ) throws NamingException
     {
         MatchingRuleImpl mr = new MatchingRuleImpl( getOid( sr ) );
         mr.setNames( getNames( sr ) );
@@ -314,7 +310,7 @@ public class SchemaImporter
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private Syntax createSyntax( SearchResult sr ) throws NamingException
+    private SyntaxImpl createSyntax( SearchResult sr ) throws NamingException
     {
         SyntaxImpl syntax = new SyntaxImpl( getOid( sr ) );
         syntax.setNames( getNames( sr ) );

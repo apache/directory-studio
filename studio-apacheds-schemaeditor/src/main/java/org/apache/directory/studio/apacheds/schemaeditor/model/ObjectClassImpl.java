@@ -20,9 +20,6 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.schema.AbstractSchemaObject;
@@ -42,6 +39,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 {
     private static final long serialVersionUID = 1L;
 
+    /** The object OID */
+    private String objectOid;
+
     /** The object class type */
     private ObjectClassTypeEnum type;
 
@@ -54,9 +54,6 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     /** The super class names list */
     private String[] superClassesNames;
 
-    /** The listeners */
-    private List<ObjectClassListener> listeners;
-
 
     /**
      * Creates a new instance of ObjectClassImpl.
@@ -67,6 +64,7 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     public ObjectClassImpl( String oid )
     {
         super( oid );
+        objectOid = oid;
     }
 
 
@@ -76,6 +74,27 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     public void setNames( String[] names )
     {
         super.setNames( names );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#getOid()
+     */
+    public String getOid()
+    {
+        return objectOid;
+    }
+
+
+    /**
+     * Set the OID.
+     *
+     * @param oid
+     *      the OID value
+     */
+    public void setOid( String oid )
+    {
+        objectOid = oid;
     }
 
 
@@ -214,37 +233,5 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     public AttributeType[] getMayList() throws NamingException
     {
         return null;
-    }
-
-
-    /**
-     * Adds an ObjectClassListener.
-     *
-     * @param listener
-     *      the ObjectClassListener
-     */
-    public void addListener( ObjectClassListener listener )
-    {
-        if ( listeners == null )
-        {
-            listeners = new ArrayList<ObjectClassListener>();
-        }
-
-        listeners.add( listener );
-    }
-
-
-    /**
-     * Removes an ObjectClassListener
-     *
-     * @param listener
-     *      the ObjectClassListener
-     */
-    public void removeListener( ObjectClassListener listener )
-    {
-        if ( listeners != null )
-        {
-            listeners.remove( listener );
-        }
     }
 }

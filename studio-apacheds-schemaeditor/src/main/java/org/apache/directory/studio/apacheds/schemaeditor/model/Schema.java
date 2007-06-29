@@ -22,11 +22,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.model;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.AttributeType;
-import org.apache.directory.shared.ldap.schema.MatchingRule;
-import org.apache.directory.shared.ldap.schema.ObjectClass;
-import org.apache.directory.shared.ldap.schema.Syntax;
-
 
 /**
  * This interface represents a Schema.
@@ -55,157 +50,157 @@ public interface Schema
 
 
     /**
-     * Gets all the ObjectClass objects contained in the Schema.
+     * Gets all the ObjectClassImpl objects contained in the Schema.
      * 
      * @return
-     * 		all the ObjectClass objects contained in the Schema
+     * 		all the ObjectClassImpl objects contained in the Schema
      */
-    public List<ObjectClass> getObjectClasses();
+    public List<ObjectClassImpl> getObjectClasses();
 
 
     /**
-     * Gets all the AttributeType objects contained in the Schema.
+     * Gets all the AttributeTypeImpl objects contained in the Schema.
      * 
      * @return
-     * 		all the AttributeType objects contained in the Schema
+     * 		all the AttributeTypeImpl objects contained in the Schema
      */
-    public List<AttributeType> getAttributeTypes();
+    public List<AttributeTypeImpl> getAttributeTypes();
 
 
     /**
-     * Gets all the MatchingRule objects contained in the Schema.
+     * Gets all the MatchingRuleImpl objects contained in the Schema.
      * 
      * @return
-     *      all the MatchingRule objects contained in the Schema
+     *      all the MatchingRuleImpl objects contained in the Schema
      */
-    public List<MatchingRule> getMatchingRules();
+    public List<MatchingRuleImpl> getMatchingRules();
 
 
     /**
-     * Gets all the Syntax objects contained in the Schema.
+     * Gets all the SyntaxImpl objects contained in the Schema.
      * 
      * @return
-     *      all the Syntax objects contained in the Schema
+     *      all the SyntaxImpl objects contained in the Schema
      */
-    public List<Syntax> getSyntaxes();
+    public List<SyntaxImpl> getSyntaxes();
 
 
     /**
-     * Gets the ObjectClass identified by the given id.
-     * 
-     * @param id
-     * 		the name or the oid of the ObjectClass
-     * @return
-     * 		the ObjectClass identified by the given id, or null if the 
-     * ObjectClass has not been found
-     */
-    public ObjectClass getObjectClass( String id );
-
-
-    /**
-     * Gets the AttributeType identified by the given id.
+     * Gets the ObjectClassImpl identified by the given id.
      * 
      * @param id
-     * 		the name or the oid of the AttributeType
+     * 		the name or the oid of the ObjectClassImpl
      * @return
-     * 		the AttributeType identified by the given id, or null if the 
-     * AttributeType has not been found
+     * 		the ObjectClassImpl identified by the given id, or null if the 
+     * ObjectClassImpl has not been found
      */
-    public AttributeType getAttributeType( String id );
+    public ObjectClassImpl getObjectClass( String id );
 
 
     /**
-     * Gets the MatchingRule identified by the given id.
+     * Gets the AttributeTypeImpl identified by the given id.
      * 
      * @param id
-     *      the name or the oid of the AttributeType
+     * 		the name or the oid of the AttributeTypeImpl
      * @return
-     *      the MatchingRule identified by the given id, or null if the 
-     * MatchingRule has not been found
+     * 		the AttributeTypeImpl identified by the given id, or null if the 
+     * AttributeTypeImpl has not been found
      */
-    public MatchingRule getMatchingRule( String id );
+    public AttributeTypeImpl getAttributeType( String id );
 
 
     /**
-     * Gets the Syntax identified by the given id.
+     * Gets the MatchingRuleImpl identified by the given id.
      * 
      * @param id
-     *      the name or the oid of the AttributeType
+     *      the name or the oid of the MatchingRuleImpl
      * @return
-     *      the Syntax identified by the given id, or null if the 
-     * Syntax has not been found
+     *      the MatchingRuleImpl identified by the given id, or null if the 
+     * MatchingRuleImpl has not been found
      */
-    public MatchingRule getSyntax( String id );
+    public MatchingRuleImpl getMatchingRule( String id );
 
 
     /**
-     * Adds an ObjectClass to the Schema.
+     * Gets the SyntaxImpl identified by the given id.
+     * 
+     * @param id
+     *      the name or the oid of the SyntaxImpl
+     * @return
+     *      the SyntaxImpl identified by the given id, or null if the 
+     * SyntaxImpl has not been found
+     */
+    public SyntaxImpl getSyntax( String id );
+
+
+    /**
+     * Adds an ObjectClassImpl to the Schema.
      * 
      * @param oc
-     *      the ObjectClass
+     *      the ObjectClassImpl
      */
-    public boolean addObjectClass( ObjectClass oc );
+    public boolean addObjectClass( ObjectClassImpl oc );
 
 
     /**
-     * Adds an AttributeType to the Schema.
+     * Adds an AttributeTypeImpl to the Schema.
      * 
      * @param at
-     *      the AttributeType
+     *      the AttributeTypeImpl
      */
-    public boolean addAttributeType( AttributeType at );
+    public boolean addAttributeType( AttributeTypeImpl at );
 
 
     /**
-     * Adds a MatchingRule from the Schema.
+     * Adds a MatchingRuleImpl from the Schema.
      * 
      * @param mr
-     *      the MatchingRule
+     *      the MatchingRuleImpl
      */
-    public boolean addMatchingRule( MatchingRule mr );
+    public boolean addMatchingRule( MatchingRuleImpl mr );
 
 
     /**
-     * Adds a Syntax from the Schema.
+     * Adds a SyntaxImpl from the Schema.
      * 
      * @param syntax
-     *      the Syntax
+     *      the SyntaxImpl
      */
-    public boolean addSyntax( Syntax syntax );
+    public boolean addSyntax( SyntaxImpl syntax );
 
 
     /**
-     * Removes an ObjectClass from the Schema.
+     * Removes an ObjectClassImpl from the Schema.
      *
      * @param oc
-     *      the ObjectClass
+     *      the ObjectClassImpl
      */
-    public boolean removeObjectClass( ObjectClass oc );
+    public boolean removeObjectClass( ObjectClassImpl oc );
 
 
     /**
-     * Removes an AttributeType from the Schema.
+     * Removes an AttributeTypeImpl from the Schema.
      * 
      * @param at
-     *      the AttributeType
+     *      the AttributeTypeImpl
      */
-    public boolean removeAttributeType( AttributeType at );
+    public boolean removeAttributeType( AttributeTypeImpl at );
 
 
     /**
-     * Removes a MatchingRule from the Schema.
+     * Removes a MatchingRuleImpl from the Schema.
      * 
      * @param mr
-     *      the MatchingRule
+     *      the MatchingRuleImpl
      */
-    public boolean removeMatchingRule( MatchingRule mr );
+    public boolean removeMatchingRule( MatchingRuleImpl mr );
 
 
     /**
-     * Removes a Syntax from the Schema.
+     * Removes a SyntaxImpl from the Schema.
      * 
      * @param syntax
-     *      the Syntax
+     *      the SyntaxImpl
      */
-    public boolean removeSyntax( Syntax syntax );
+    public boolean removeSyntax( SyntaxImpl syntax );
 }

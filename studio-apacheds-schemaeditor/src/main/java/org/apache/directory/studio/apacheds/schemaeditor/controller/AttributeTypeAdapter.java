@@ -17,26 +17,34 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor.model;
+package org.apache.directory.studio.apacheds.schemaeditor.controller;
+
 
 
 /**
- * Classes which implement this interface provide methods that deal with the 
- * events that are generated when an event occurs on an attribute type.
+ * This adapter class provides default implementations for the methods 
+ * described by the AttributeTypeListener interface.
+ * <p>
+ * Classes that wish to deal with attribute type events can extend this class 
+ * and override only the methods which they are interested in. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface AttributeTypeListener
+public abstract class AttributeTypeAdapter implements AttributeTypeListener
 {
-    /**
-     * Sent when the attribute type is modified.
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeListener#attributeTypeModified()
      */
-    public void attributeTypeModified();
+    public void attributeTypeModified()
+    {
+    }
 
 
-    /**
-     * Sent when the attribute type is removed.
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeListener#attributeTypeRemoved()
      */
-    public void attributeTypeRemoved();
+    public void attributeTypeRemoved()
+    {
+    }
 }

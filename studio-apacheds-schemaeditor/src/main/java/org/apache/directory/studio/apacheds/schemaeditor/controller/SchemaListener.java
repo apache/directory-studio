@@ -17,7 +17,12 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor.model;
+package org.apache.directory.studio.apacheds.schemaeditor.controller;
+
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
 
 
 /**
@@ -113,7 +118,7 @@ public interface SchemaListener
     /**
      * Sent when a syntax is added.
      *
-     * @param mr
+     * @param syntax
      *      the added syntax
      */
     public void syntaxAdded( SyntaxImpl syntax );
@@ -122,7 +127,7 @@ public interface SchemaListener
     /**
      * Sent when a syntax is modified.
      *
-     * @param mr
+     * @param syntax
      *      the modified syntax
      */
     public void syntaxModified( SyntaxImpl syntax );
@@ -131,7 +136,7 @@ public interface SchemaListener
     /**
      * Sent when a syntax is removed.
      *
-     * @param mr
+     * @param syntax
      *      the removed syntax
      */
     public void syntaxRemoved( SyntaxImpl syntax );

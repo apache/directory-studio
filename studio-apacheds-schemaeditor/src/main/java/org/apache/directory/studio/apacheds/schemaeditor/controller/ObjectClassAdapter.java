@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor.model;
+package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
 /**

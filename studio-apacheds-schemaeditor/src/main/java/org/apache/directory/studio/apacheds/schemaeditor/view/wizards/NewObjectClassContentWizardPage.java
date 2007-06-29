@@ -61,6 +61,9 @@ public class NewObjectClassContentWizardPage extends WizardPage
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+     */
     public void createControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NULL );

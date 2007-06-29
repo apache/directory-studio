@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.schemaeditor;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -38,6 +39,9 @@ public class Activator extends AbstractUIPlugin
     /** The shared instance */
     private static Activator plugin;
 
+    /** The SchemaHandler */
+    private SchemaHandler schemaHandler;
+
 
     /**
      * Creates a new instance of Activator.
@@ -45,6 +49,7 @@ public class Activator extends AbstractUIPlugin
     public Activator()
     {
         plugin = this;
+        schemaHandler = SchemaHandler.getInstance();
     }
 
 
@@ -55,6 +60,8 @@ public class Activator extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+        
+        FakeLoader.loadSchemas();
     }
 
 
@@ -77,5 +84,17 @@ public class Activator extends AbstractUIPlugin
     public static Activator getDefault()
     {
         return plugin;
+    }
+
+
+    /**
+     * Gets the SchemaHandler
+     *
+     * @return
+     *      the SchemaHandler
+     */
+    public SchemaHandler getSchemaHandler()
+    {
+        return schemaHandler;
     }
 }

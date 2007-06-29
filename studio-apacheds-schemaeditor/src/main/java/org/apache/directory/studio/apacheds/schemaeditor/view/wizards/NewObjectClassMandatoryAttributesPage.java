@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -33,6 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+
 
 /**
  * This class represents the Mandatory Attribute Types WizardPage of the NewObjectClassWizard.
@@ -71,7 +73,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
         mandatoryAttributeTypesGroup.setText( "Mandatory Attribute Types" );
         mandatoryAttributeTypesGroup.setLayout( new GridLayout( 2, false ) );
         mandatoryAttributeTypesGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        
+
         // Mandatory Attribute Types
         Table mandatoryAttributeTypesTable = new Table( mandatoryAttributeTypesGroup, SWT.BORDER );
         GridData mandatoryAttributeTypesTableGridData = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
@@ -86,7 +88,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
         Button mandatoryAttributeTypesRemoveButton = new Button( mandatoryAttributeTypesGroup, SWT.PUSH );
         mandatoryAttributeTypesRemoveButton.setText( "Remove" );
         mandatoryAttributeTypesRemoveButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
-        
+
         setControl( composite );
     }
 }
