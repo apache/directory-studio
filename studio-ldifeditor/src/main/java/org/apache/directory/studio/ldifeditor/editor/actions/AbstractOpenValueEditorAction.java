@@ -21,9 +21,17 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDeloldrdnLine;
@@ -133,18 +141,51 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
     protected Object getValueEditorRawValue()
     {
-        Object rawValue = null;
+        IConnection connection = getConnection();
+        String dn = getDn();
+        String description = getAttributeDescription();
         Object value = getValue();
+
+        Object rawValue = null;
         if ( value != null )
         {
-            IConnection connection = getConnection();
-            rawValue = valueEditor.getRawValue( connection, value );
+            try
+            {
+                DummyEntry dummyEntry = new DummyEntry( new DN( dn ), connection );
+                Attribute dummyAttribute = new Attribute( dummyEntry, description );
+                Value dummyValue = new Value( dummyAttribute, value );
+
+                rawValue = valueEditor.getRawValue( dummyValue );
+            }
+            catch ( NameException e )
+            {
+                e.printStackTrace();
+            }
+            catch ( ModelModificationException e )
+            {
+                e.printStackTrace();
+            }
         }
 
         return rawValue;
     }
 
 
+    protected String getDn()
+    {
+        LdifContainer[] selectedLdifContainers = getSelectedLdifContainers();
+        String dn = null;
+        if ( selectedLdifContainers.length == 1 && selectedLdifContainers[0] instanceof LdifRecord )
+        {
+            LdifRecord record = ( LdifRecord ) selectedLdifContainers[0];
+            LdifDnLine dnLine = record.getDnLine();
+            dn = dnLine.getUnfoldedDn();
+
+        }
+        return dn;
+    }
+    
+    
     protected Object getValue()
     {
         LdifPart[] parts = getSelectedLdifParts();

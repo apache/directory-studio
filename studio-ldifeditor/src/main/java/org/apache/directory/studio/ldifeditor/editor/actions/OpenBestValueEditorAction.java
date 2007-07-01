@@ -38,18 +38,16 @@ public class OpenBestValueEditorAction extends AbstractOpenValueEditorAction
 
     public void update()
     {
-
         super.setEnabled( isEditableLineSelected() );
 
         // determine value editor
         IConnection connection = getConnection();
         String attributeDescription = getAttributeDescription();
-        Object oldValue = getValue();
 
         if ( attributeDescription != null )
         {
             valueEditor = valueEditorManager.getCurrentValueEditor( connection.getSchema(), attributeDescription );
-            Object rawValue = valueEditor.getRawValue( connection, oldValue );
+            Object rawValue = getValueEditorRawValue();
             if ( !( valueEditor instanceof AbstractDialogValueEditor ) || rawValue == null )
             {
                 IValueEditor[] vps = valueEditorManager.getAlternativeValueEditors( connection.getSchema(), attributeDescription );
@@ -57,7 +55,7 @@ public class OpenBestValueEditorAction extends AbstractOpenValueEditorAction
                     && ( !( valueEditor instanceof AbstractDialogValueEditor ) || rawValue == null ); i++ )
                 {
                     valueEditor = vps[i];
-                    rawValue = valueEditor.getRawValue( connection, oldValue );
+                    rawValue = getValueEditorRawValue();
                 }
             }
         }

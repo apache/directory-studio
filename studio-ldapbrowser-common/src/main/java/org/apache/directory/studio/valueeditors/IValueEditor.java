@@ -22,7 +22,6 @@ package org.apache.directory.studio.valueeditors;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
@@ -105,24 +104,6 @@ public interface IValueEditor
      * @return the raw value of the value or null
      */
     public abstract Object getRawValue( IValue value );
-
-
-    /**
-     * Returns the raw value if this value editor can handle the given 
-     * value. The returned value is used as input for the CellEditor 
-     * returned by getCellEditor().
-     * <p>
-     * If this value editor can't handle the given value it must 
-     * return null. 
-     * <p>
-     * This method is called from the LDIF editor. The connection object
-     * could be used for editors handling connection-dependent values. 
-     * 
-     * @param connection the connection
-     * @param stringOrBinaryValue the value either String or byte[]
-     * @return the raw value of the value or null
-     */
-    public abstract Object getRawValue( IConnection connection, Object stringOrBinaryValue );
 
 
     /**
