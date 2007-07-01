@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifeditor.dialogs;
 
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
@@ -44,6 +45,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 
 
 public class LdifEntryEditorDialog extends Dialog
@@ -68,6 +72,9 @@ public class LdifEntryEditorDialog extends Dialog
     private EntryEditorWidget mainWidget;
 
     private EntryEditorWidgetUniversalListener universalListener;
+
+    /** Token used to activate and deactivate shortcuts in the editor */
+    private IContextActivation contextActivation;
 
 
     public LdifEntryEditorDialog( Shell parentShell, IConnection connection, LdifContentRecord ldifRecord )
@@ -161,6 +168,14 @@ public class LdifEntryEditorDialog extends Dialog
             this.actionGroup = null;
             this.configuration.dispose();
             this.configuration = null;
+
+            if ( contextActivation != null )
+            {
+                IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    IContextService.class );
+                contextService.deactivateContext( contextActivation );
+                contextActivation = null;
+            }
         }
     }
 
@@ -183,7 +198,10 @@ public class LdifEntryEditorDialog extends Dialog
         this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
         this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
         this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
-        this.actionGroup.activateGlobalActionHandlers();
+        IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+            IContextService.class );
+        contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_DIALOGS );
+        actionGroup.activateGlobalActionHandlers(); 
 
         // create the listener
         this.universalListener = new EntryEditorWidgetUniversalListener( this.mainWidget.getViewer(), this.actionGroup

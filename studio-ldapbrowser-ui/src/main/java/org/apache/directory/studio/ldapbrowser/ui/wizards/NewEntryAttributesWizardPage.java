@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
@@ -44,6 +45,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 
 
 /**
@@ -70,6 +74,9 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
 
     /** The universal listener. */
     private EntryEditorWidgetUniversalListener universalListener;
+
+    /** Token used to activate and deactivate shortcuts in the editor */
+    private IContextActivation contextActivation;
 
 
     /**
@@ -106,6 +113,14 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
             actionGroup = null;
             configuration.dispose();
             configuration = null;
+
+            if ( contextActivation != null )
+            {
+                IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    IContextService.class );
+                contextService.deactivateContext( contextActivation );
+                contextActivation = null;
+            }
         }
         super.dispose();
     }
@@ -248,6 +263,10 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         actionGroup.fillToolBar( mainWidget.getToolBarManager() );
         actionGroup.fillMenu( mainWidget.getMenuManager() );
         actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
+        IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+            IContextService.class );
+        contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_DIALOGS );
+        actionGroup.activateGlobalActionHandlers();
 
         // create the listener
         universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), actionGroup

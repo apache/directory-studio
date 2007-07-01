@@ -28,6 +28,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
  * @version $Rev$, $Date$
  */
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
@@ -146,7 +147,6 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         {
             if ( partRef.getPart( false ) == editor && contextActivation != null )
             {
-
                 editor.getActionGroup().deactivateGlobalActionHandlers();
 
                 IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
@@ -166,14 +166,10 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         {
             if ( partRef.getPart( false ) == editor )
             {
-
                 IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                     IContextService.class );
                 contextActivation = contextService
-                    .activateContext( "org.apache.directory.studio.ldapbrowser.action.context" );
-                // org.eclipse.ui.contexts.dialogAndWindow
-                // org.eclipse.ui.contexts.window
-                // org.eclipse.ui.text_editor_context
+                    .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
 
                 editor.getActionGroup().activateGlobalActionHandlers();
             }

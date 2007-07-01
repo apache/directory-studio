@@ -123,74 +123,84 @@
        point="org.eclipse.ui.bindings">
     <key
           commandId="org.apache.directory.studio.ldapbrowser.action.addValue"
-          contextId="org.eclipse.ui.contexts.dialogAndWindow"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.window"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="M1++"/>
     <key
           commandId="org.apache.directory.studio.ldapbrowser.action.addAttribute"
-          contextId="org.eclipse.ui.contexts.dialogAndWindow"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.window"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="M1+M2++"/>
     <key
           commandId="org.apache.directory.studio.ldapbrowser.action.editAttributeDescription"
-          contextId="org.apache.directory.studio.ldapbrowser.action.context"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.window"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F6"/>  
     <key
-          commandId="org.apache.directory.studio.ldapbrowser.action.editAttributeDescription"
-          contextId="org.eclipse.ui.contexts.dialog"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F6"/>
-    <key
           commandId="org.apache.directory.studio.ldapbrowser.action.editValue"
-          contextId="org.apache.directory.studio.ldapbrowser.action.context"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.window"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F7"/>  
     <key
-          commandId="org.apache.directory.studio.ldapbrowser.action.editValue"
-          contextId="org.eclipse.ui.contexts.dialog"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F7"/>
-    <key
           commandId="org.apache.directory.studio.ldapbrowser.action.editRecord"
-          contextId="org.apache.directory.studio.ldapbrowser.action.context"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.window"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F8"/>
     <key
-          commandId="org.apache.directory.studio.ldapbrowser.action.delete"
-          contextId="org.eclipse.ui.contexts.dialog"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="DEL"/>
-    <key
-          commandId="org.apache.directory.studio.ldapbrowser.action.copy"
-          contextId="org.eclipse.ui.contexts.dialog"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="CTRL+C"/>
-    <key
-          commandId="org.apache.directory.studio.ldapbrowser.action.paste"
-          contextId="org.eclipse.ui.contexts.dialog"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="CTRL+V"/>
-    <key
-          commandId="org.apache.directory.studio.ldapbrowser.action.find"
-          contextId="org.eclipse.ui.contexts.dialog"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="CTRL+F"/>
-    <key
-          commandId="org.apache.directory.studio.ldapbrowser.action.properties"
-          contextId="org.eclipse.ui.contexts.dialog"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="ALT+RETURN"/>
-    <key
           commandId="org.apache.directory.studio.ldapbrowser.action.locateInDit"
-          contextId="org.apache.directory.studio.ldapbrowser.action.context"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.window"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F3"/>
     <key
           commandId="org.apache.directory.studio.ldapbrowser.action.openSearchResult"
-          contextId="org.apache.directory.studio.ldapbrowser.action.context"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.window"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F4"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.delete"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="DEL"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.copy"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="CTRL+C"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.paste"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="CTRL+V"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.find"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="CTRL+F"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.properties"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="ALT+RETURN"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.addValue"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1++"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.addAttribute"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+M2++"/>
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.editAttributeDescription"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F6"/>  
+    <key
+          commandId="org.apache.directory.studio.ldapbrowser.action.editValue"
+          contextId="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F7"/>            
  </extension>
 
  <extension
@@ -264,11 +274,16 @@
  <extension
        point="org.eclipse.ui.contexts">
        <context
-		name="LDAP Browser"
-		description="LDAP Browser"
-		id="org.apache.directory.studio.ldapbrowser.action.context"
-		parentId="org.eclipse.ui.contexts.window">
+             description="In LDAP Browser Windows"
+             id="org.apache.directory.studio.ldapbrowser.contexts.window"
+             name="In LDAP Browser Windows"
+             parentId="org.eclipse.ui.contexts.window">
 	</context>
+       <context
+             description="In LDAP Browser Dialogs"
+             id="org.apache.directory.studio.ldapbrowser.contexts.dialog"
+             name="In LDAP Browser Dialogs"
+             parentId="org.eclipse.ui.contexts.dialog"/>
  </extension>
  
 </plugin>

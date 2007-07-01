@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -738,7 +739,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         if ( partRef.getPart( false ) == this && contextActivation != null )
         {
-
             this.deactivateGlobalActionHandlers();
 
             IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
@@ -756,11 +756,10 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         if ( partRef.getPart( false ) == this )
         {
-
             IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                 IContextService.class );
             contextActivation = contextService
-                .activateContext( "org.apache.directory.studio.ldapbrowser.action.context" );
+                .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
 
             this.activateGlobalActionHandlers();
         }

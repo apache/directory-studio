@@ -6,7 +6,10 @@ public interface BrowserCommonConstants
 
     public static final int HISTORYSIZE = 20;
 
-    
+
+    public static final String CONTEXT_WINDOWS = "org.apache.directory.studio.ldapbrowser.contexts.window";
+
+    public static final String CONTEXT_DIALOGS = "org.apache.directory.studio.ldapbrowser.contexts.dialog";
     
     public static final String ACTION_ID_EDIT_VALUE = "org.apache.directory.studio.ldapbrowser.action.editValue";
 

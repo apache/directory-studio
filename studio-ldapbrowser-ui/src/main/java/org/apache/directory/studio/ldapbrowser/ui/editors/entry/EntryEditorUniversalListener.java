@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
@@ -132,7 +133,7 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
                 IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                     IContextService.class );
                 contextActivation = contextService
-                    .activateContext( "org.apache.directory.studio.ldapbrowser.action.context" );
+                    .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
                 // org.eclipse.ui.contexts.dialogAndWindow
                 // org.eclipse.ui.contexts.window
                 // org.eclipse.ui.text_editor_context

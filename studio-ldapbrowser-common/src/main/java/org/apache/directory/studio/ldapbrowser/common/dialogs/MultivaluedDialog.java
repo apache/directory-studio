@@ -52,6 +52,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 
 
 public class MultivaluedDialog extends Dialog
@@ -72,6 +75,9 @@ public class MultivaluedDialog extends Dialog
     private EntryEditorWidget mainWidget;
 
     private MultiValuedEntryEditorUniversalListener universalListener;
+
+    /** Token used to activate and deactivate shortcuts in the editor */
+    private IContextActivation contextActivation;
 
 
     public MultivaluedDialog( Shell parentShell, AttributeHierarchy attributeHierarchie )
@@ -144,6 +150,14 @@ public class MultivaluedDialog extends Dialog
             this.actionGroup = null;
             this.configuration.dispose();
             this.configuration = null;
+
+            if ( contextActivation != null )
+            {
+                IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                    IContextService.class );
+                contextService.deactivateContext( contextActivation );
+                contextActivation = null;
+            }
         }
     }
 
@@ -167,7 +181,10 @@ public class MultivaluedDialog extends Dialog
         this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
         this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
         this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
-        this.actionGroup.activateGlobalActionHandlers();
+        IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+            IContextService.class );
+        contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_DIALOGS );
+        actionGroup.activateGlobalActionHandlers();        
 
         // create the listener
         this.universalListener = new MultiValuedEntryEditorUniversalListener( this.mainWidget.getViewer(),
