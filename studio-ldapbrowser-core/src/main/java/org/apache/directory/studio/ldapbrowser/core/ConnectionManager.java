@@ -543,8 +543,23 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
-            return null;
+            // if loading failed, try with temp file
+            String tempFilename = filename + "-temp";
+            try
+            {
+                XMLDecoder decoder = new XMLDecoder( new BufferedInputStream( ( new FileInputStream( tempFilename ) ) ) );
+                Object object = decoder.readObject();
+                decoder.close();
+                return object;
+            }
+            catch ( IOException ioe2 )
+            {
+                return null;
+            }
+            catch ( Exception e2 )
+            {
+                return null;
+            }
         }
     }
 
@@ -574,6 +589,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
                 }
             } );
             encoder.writeObject( object );
+            encoder.close();
             
             // move temp file to good file
             File file = new File( filename );
