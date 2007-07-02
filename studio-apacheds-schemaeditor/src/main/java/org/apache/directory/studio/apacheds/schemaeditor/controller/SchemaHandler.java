@@ -382,7 +382,7 @@ public class SchemaHandler
             attributeTypesList.add( at );
             for ( String name : at.getNames() )
             {
-                attributeTypesMap.put( name, at );
+                attributeTypesMap.put( name.toLowerCase(), at );
             }
             attributeTypesMap.put( at.getOid(), at );
         }
@@ -392,7 +392,7 @@ public class SchemaHandler
             matchingRulesList.add( mr );
             for ( String name : mr.getNames() )
             {
-                matchingRulesMap.put( name, mr );
+                matchingRulesMap.put( name.toLowerCase(), mr );
             }
             matchingRulesMap.put( mr.getOid(), mr );
         }
@@ -402,7 +402,7 @@ public class SchemaHandler
             objectClassesList.add( oc );
             for ( String name : oc.getNames() )
             {
-                objectClassesMap.put( name, oc );
+                objectClassesMap.put( name.toLowerCase(), oc );
             }
             objectClassesMap.put( oc.getOid(), oc );
         }
@@ -412,7 +412,7 @@ public class SchemaHandler
             syntaxesList.add( syntax );
             for ( String name : syntax.getNames() )
             {
-                syntaxesMap.put( name, syntax );
+                syntaxesMap.put( name.toLowerCase(), syntax );
             }
             syntaxesMap.put( syntax.getOid(), syntax );
         }
@@ -473,7 +473,7 @@ public class SchemaHandler
             attributeTypesList.remove( at );
             for ( String name : at.getNames() )
             {
-                attributeTypesMap.remove( name );
+                attributeTypesMap.remove( name.toLowerCase() );
             }
             attributeTypesMap.remove( at.getOid() );
         }
@@ -483,7 +483,7 @@ public class SchemaHandler
             matchingRulesList.remove( mr );
             for ( String name : mr.getNames() )
             {
-                matchingRulesMap.remove( name );
+                matchingRulesMap.remove( name.toLowerCase() );
             }
             matchingRulesMap.remove( mr.getOid() );
         }
@@ -493,7 +493,7 @@ public class SchemaHandler
             objectClassesList.remove( oc );
             for ( String name : oc.getNames() )
             {
-                objectClassesMap.remove( name );
+                objectClassesMap.remove( name.toLowerCase() );
             }
             objectClassesMap.remove( oc.getOid() );
         }
@@ -503,7 +503,7 @@ public class SchemaHandler
             syntaxesList.remove( syntax );
             for ( String name : syntax.getNames() )
             {
-                syntaxesMap.remove( name );
+                syntaxesMap.remove( name.toLowerCase() );
             }
             syntaxesMap.remove( syntax.getOid() );
         }
@@ -891,15 +891,16 @@ public class SchemaHandler
      */
     public boolean isAliasAlreadyTaken( String alias )
     {
-        if ( attributeTypesMap.containsKey( alias ) )
+        String lowerCasedAlias = alias.toLowerCase();
+        if ( attributeTypesMap.containsKey( lowerCasedAlias ) )
         {
             return true;
         }
-        else if ( objectClassesMap.containsKey( alias ) )
+        else if ( objectClassesMap.containsKey( lowerCasedAlias ) )
         {
             return true;
         }
-        
+
         return false;
     }
 }
