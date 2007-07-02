@@ -300,4 +300,6 @@ public interface PluginConstants
     public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.PLUGIN_ID + ".cmd.OpenTypeHierarchy"; //$NON-NLS-1$
     public static final String CMD_HIERARCHY_VIEW_PREFERENCES = Activator.PLUGIN_ID
         + ".cmd.OpenHierarchyViewPreferences"; //$NON-NLS-1$
+
+    public static final String CONTEXT_WINDOWS = Activator.PLUGIN_ID + ".contexts.window"; //$NON-NLS-1$
 }

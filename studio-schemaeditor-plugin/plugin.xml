@@ -127,11 +127,13 @@
          point="org.eclipse.ui.bindings">
       <key
             commandId="org.apache.directory.studio.schemas.cmd.OpenLocal"
+            contextId="org.apache.directory.studio.schemas.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+O">
       </key>
       <key
             commandId="org.apache.directory.studio.schemas.cmd.OpenTypeHierarchy"
+            contextId="org.apache.directory.studio.schemas.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F4"/>
    </extension>
@@ -241,5 +243,14 @@
             label="Schemas Search"
             showScopeSection="false"
             sizeHint="450,300"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="In Schema Editor Windows"
+            id="org.apache.directory.studio.schemas.contexts.window"
+            name="In Schema Editor Windows"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
    </extension>
 </plugin>

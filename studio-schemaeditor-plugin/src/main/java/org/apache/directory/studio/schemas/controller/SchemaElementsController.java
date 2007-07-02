@@ -47,6 +47,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -55,10 +56,15 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 
 
 /**
@@ -73,13 +79,16 @@ public class SchemaElementsController
     private static Logger logger = Logger.getLogger( SchemaElementsController.class );
 
     /** The authorized Preferences keys*/
-    List<String> authorizedPrefs;
+    private List<String> authorizedPrefs;
 
     /** The associated view */
     private SchemaElementsView view;
 
     /** The Context Menu */
     private MenuManager contextMenu;
+
+    /** Token used to activate and deactivate shortcuts in the view */
+    private IContextActivation contextActivation;
 
     // The Actions
     private Action hideObjectClasses;
@@ -104,6 +113,94 @@ public class SchemaElementsController
         initContextMenu();
         initDoubleClickListener();
         initPreferencesListener();
+        initPartListener();
+    }
+
+
+    /**
+     * Initializes the part listener. It is used to activate and deactivate the 
+     * shortcuts (key bindins) when the view is activated and deactivated.
+     */
+    private void initPartListener()
+    {
+
+        view.getSite().getPage().addPartListener( new IPartListener2()
+        {
+            /**
+             * This implementation deactivates the shortcuts when the part is deactivated.
+             */
+            public void partDeactivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == view && contextActivation != null )
+                {
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( openTypeHierarchy.getActionDefinitionId() ).setHandler( null );
+                    }
+
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextService.deactivateContext( contextActivation );
+                    contextActivation = null;
+                }
+            }
+
+
+            /**
+             * This implementation activates the shortcuts when the part is activated.
+             */
+            public void partActivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == view )
+                {
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextActivation = contextService.activateContext( PluginConstants.CONTEXT_WINDOWS );
+
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( openTypeHierarchy.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( openTypeHierarchy ) );
+                    }
+                }
+            }
+
+
+            public void partBroughtToTop( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partClosed( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partHidden( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partInputChanged( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partOpened( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partVisible( IWorkbenchPartReference partRef )
+            {
+            }
+
+        } );
+
     }
 
 
