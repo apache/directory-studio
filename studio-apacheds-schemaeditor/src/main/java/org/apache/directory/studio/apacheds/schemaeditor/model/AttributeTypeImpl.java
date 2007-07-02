@@ -68,6 +68,7 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     public AttributeTypeImpl( String oid )
     {
         super( oid );
+        objectOid = oid;
     }
 
 
