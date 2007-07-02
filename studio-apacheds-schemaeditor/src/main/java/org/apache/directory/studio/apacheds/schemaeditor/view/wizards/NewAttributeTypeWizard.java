@@ -20,9 +20,10 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -36,9 +37,9 @@ import org.eclipse.ui.IWorkbench;
 public class NewAttributeTypeWizard extends Wizard implements INewWizard
 {
     // The pages of the wizards
-    private WizardPage generalPage;
-    private WizardPage contentPage;
-    private WizardPage matchingRulesPage;
+    private NewAttributeTypeGeneralWizardPage generalPage;
+    private NewAttributeTypeContentWizardPage contentPage;
+    private NewAttributeTypeMatchingRulesWizardPage matchingRulesPage;
 
 
     /* (non-Javadoc)
@@ -63,10 +64,27 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        // TODO Auto-generated method stub
-        return false;
+        AttributeTypeImpl newAT = new AttributeTypeImpl( generalPage.getOidValue() );
+        newAT.setSchema( generalPage.getSchemaValue() );
+        newAT.setNames( generalPage.getAliasesValue() );
+        newAT.setDescription( generalPage.getDescriptionValue() );
+        newAT.setSuperiorName( contentPage.getSuperiorValue() );
+        newAT.setUsage( contentPage.getUsageValue() );
+        newAT.setSyntaxOid( contentPage.getSyntax() );
+        newAT.setLength( contentPage.getSyntaxLengthValue() );
+        newAT.setObsolete( contentPage.getObsoleteValue() );
+        newAT.setSingleValue( contentPage.getSingleValueValue() );
+        newAT.setCollective( contentPage.getCollectiveValue() );
+        newAT.setCanUserModify( contentPage.getNoUserModificationValue() );
+        newAT.setEqualityName( matchingRulesPage.getEqualityMatchingRuleValue() );
+        newAT.setOrderingName( matchingRulesPage.getOrderingMatchingRuleValue() );
+        newAT.setSubstrName( matchingRulesPage.getSubstringMatchingRuleValue() );
+        
+        Activator.getDefault().getSchemaHandler().addAttributeType( newAT );
+        
+        return true;
     }
-
+    
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)

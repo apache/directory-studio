@@ -22,6 +22,9 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -44,6 +47,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 {
+    // UI fields
+    private ComboViewer equalityComboViewer;
+    private ComboViewer orderingComboViewer;
+    private ComboViewer substringComboViewer;
+
+
     /**
      * Creates a new instance of NewAttributeTypeMatchingRulesWizardPage.
      */
@@ -74,22 +83,67 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 
         // Equality
         Label equalityLabel = new Label( matchingRulesGroup, SWT.NONE );
-        equalityLabel.setText( "Equality" );
+        equalityLabel.setText( "Equality:" );
         Combo equalityCombo = new Combo( matchingRulesGroup, SWT.NONE );
         equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        equalityComboViewer = new ComboViewer( equalityCombo );
+        equalityComboViewer.setContentProvider( new ArrayContentProvider() );
+        equalityComboViewer.setLabelProvider( new LabelProvider() );
 
         // Ordering
         Label orderingLabel = new Label( matchingRulesGroup, SWT.NONE );
-        orderingLabel.setText( "Ordering" );
+        orderingLabel.setText( "Ordering:" );
         Combo orderingCombo = new Combo( matchingRulesGroup, SWT.NONE );
         orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        orderingComboViewer = new ComboViewer( orderingCombo );
+        orderingComboViewer.setContentProvider( new ArrayContentProvider() );
+        orderingComboViewer.setLabelProvider( new LabelProvider() );
 
         // Substring
         Label substringLabel = new Label( matchingRulesGroup, SWT.NONE );
-        substringLabel.setText( "Substring" );
+        substringLabel.setText( "Substring:" );
         Combo substringCombo = new Combo( matchingRulesGroup, SWT.NONE );
         substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        substringComboViewer = new ComboViewer( substringCombo );
+        substringComboViewer.setContentProvider( new ArrayContentProvider() );
+        substringComboViewer.setLabelProvider( new LabelProvider() );
 
         setControl( composite );
+    }
+
+
+    /**
+     * Gets the value of the equality matching rule.
+     *
+     * @return
+     *      the value of the equality matching rule
+     */
+    public String getEqualityMatchingRuleValue()
+    {
+        return null; // TODO: implement
+    }
+
+
+    /**
+     * Gets the value of the ordering matching rule.
+     *
+     * @return
+     *      the value of the ordering matching rule
+     */
+    public String getOrderingMatchingRuleValue()
+    {
+        return null; // TODO: implement
+    }
+
+
+    /**
+     * Gets the value of the substring matching rule.
+     *
+     * @return
+     *      the value of the substring matching rule
+     */
+    public String getSubstringMatchingRuleValue()
+    {
+        return null; // TODO: implement
     }
 }

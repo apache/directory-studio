@@ -879,4 +879,27 @@ public class SchemaHandler
             listener.syntaxRemoved( syntax );
         }
     }
+
+
+    /**
+     * Verifies if the Alias is already taken by a schema object
+     *
+     * @param alias
+     *      the alias
+     * @return
+     *      true if the the alias is already taken
+     */
+    public boolean isAliasAlreadyTaken( String alias )
+    {
+        if ( attributeTypesMap.containsKey( alias ) )
+        {
+            return true;
+        }
+        else if ( objectClassesMap.containsKey( alias ) )
+        {
+            return true;
+        }
+        
+        return false;
+    }
 }
