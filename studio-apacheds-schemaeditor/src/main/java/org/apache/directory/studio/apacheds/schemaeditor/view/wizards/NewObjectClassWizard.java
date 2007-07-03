@@ -20,9 +20,10 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -36,10 +37,10 @@ import org.eclipse.ui.IWorkbench;
 public class NewObjectClassWizard extends Wizard implements INewWizard
 {
     // The pages of the wizards
-    private WizardPage generalPage;
-    private WizardPage contentPage;
-    private WizardPage mandatoryAttributesPage;
-    private WizardPage optionalAttributesPage;
+    private NewObjectClassGeneralPageWizardPage generalPage;
+    private NewObjectClassContentWizardPage contentPage;
+    private NewObjectClassMandatoryAttributesPage mandatoryAttributesPage;
+    private NewObjectClassOptionalAttributesPage optionalAttributesPage;
 
 
     /* (non-Javadoc)
@@ -66,7 +67,18 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        // TODO Auto-generated method stub
+        ObjectClassImpl newOC = new ObjectClassImpl( generalPage.getOidValue() );
+        newOC.setSchema( generalPage.getSchemaValue() );
+        newOC.setNames( generalPage.getAliasesValue() );
+        newOC.setDescription( generalPage.getDescriptionValue() );
+        newOC.setSuperClassesNames( contentPage.getSuperiorsNameValue() );
+        newOC.setType( contentPage.getClassTypeValue() );
+        newOC.setObsolete( contentPage.getObsoleteValue() );
+        newOC.setMustNamesList( mandatoryAttributesPage.getMandatoryAttributeTypesNames() );
+        newOC.setMustNamesList( optionalAttributesPage.getOptionalAttributeTypesNames() );
+
+        Activator.getDefault().getSchemaHandler().addObjectClass( newOC );
+
         return true;
     }
 
@@ -77,5 +89,29 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         // Nothing to do.
+    }
+
+
+    /**
+     * Gets the mandatory attributes page.
+     *
+     * @return
+     *      the mandatory attributes page
+     */
+    public NewObjectClassMandatoryAttributesPage getMandatoryAttributesPage()
+    {
+        return mandatoryAttributesPage;
+    }
+
+
+    /**
+     * Gets the optional attributes page.
+     *
+     * @return
+     *      the optional attributes page
+     */
+    public NewObjectClassOptionalAttributesPage getOptionalAttributesPage()
+    {
+        return optionalAttributesPage;
     }
 }

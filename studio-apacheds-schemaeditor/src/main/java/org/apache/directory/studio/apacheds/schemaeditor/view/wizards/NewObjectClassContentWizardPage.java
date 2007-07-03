@@ -20,13 +20,25 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.ObjectClassSelectionDialog;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,6 +60,22 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class NewObjectClassContentWizardPage extends WizardPage
 {
+    /** The superiors object classes */
+    private List<ObjectClassImpl> superiorsList;
+
+    /** The type of the object class */
+    private ObjectClassTypeEnum type = ObjectClassTypeEnum.STRUCTURAL;
+
+    // UI Fields
+    private TableViewer superiorsTableViewer;
+    private Button superiorsAddButton;
+    private Button superiorsRemoveButton;
+    private Button structuralRadio;
+    private Button abstractRadio;
+    private Button auxiliaryRadio;
+    private Button obsoleteCheckbox;
+
+
     /**
      * Creates a new instance of NewAttributeTypeContentWizardPage.
      */
@@ -58,6 +86,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
         setDescription( "Please enter the superiors, class type  and properties for the object class." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
+        superiorsList = new ArrayList<ObjectClassImpl>();
     }
 
 
@@ -81,15 +110,38 @@ public class NewObjectClassContentWizardPage extends WizardPage
         GridData superiorsTableGridData = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         superiorsTableGridData.heightHint = 100;
         superiorsTable.setLayoutData( superiorsTableGridData );
-        TableViewer superiorsTableViewer = new TableViewer( superiorsTable );
+        superiorsTableViewer = new TableViewer( superiorsTable );
         superiorsTableViewer.setLabelProvider( new LabelProvider() );
         superiorsTableViewer.setContentProvider( new ArrayContentProvider() );
-        Button superiorsAddButton = new Button( superiorsGroup, SWT.PUSH );
+        superiorsTableViewer.setInput( superiorsList );
+        superiorsTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                superiorsRemoveButton.setEnabled( !event.getSelection().isEmpty() );
+            }
+        } );
+        superiorsAddButton = new Button( superiorsGroup, SWT.PUSH );
         superiorsAddButton.setText( "Add..." );
         superiorsAddButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
-        Button superiorsRemoveButton = new Button( superiorsGroup, SWT.PUSH );
+        superiorsAddButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                addSuperiorObjectClass();
+            }
+        } );
+        superiorsRemoveButton = new Button( superiorsGroup, SWT.PUSH );
         superiorsRemoveButton.setText( "Remove" );
         superiorsRemoveButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
+        superiorsRemoveButton.setEnabled( false );
+        superiorsRemoveButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                removeSuperiorObjectClass();
+            }
+        } );
 
         // Class Type Group
         Group classTypeGroup = new Group( composite, SWT.NONE );
@@ -101,21 +153,43 @@ public class NewObjectClassContentWizardPage extends WizardPage
         Label classTypeLable = new Label( classTypeGroup, SWT.NONE );
         classTypeLable.setText( "Class Type:" );
         new Label( classTypeGroup, SWT.NONE ).setText( "          " );
-        Button structuralRadio = new Button( classTypeGroup, SWT.RADIO );
+        structuralRadio = new Button( classTypeGroup, SWT.RADIO );
         structuralRadio.setText( "Structural" );
         GridData structuralRadioGridData = new GridData( SWT.LEFT, SWT.NONE, false, false );
         structuralRadioGridData.widthHint = 115;
         structuralRadio.setLayoutData( structuralRadioGridData );
-        Button abstractRadio = new Button( classTypeGroup, SWT.RADIO );
+        structuralRadio.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                type = ObjectClassTypeEnum.STRUCTURAL;
+            }
+        } );
+        structuralRadio.setSelection( true );
+        abstractRadio = new Button( classTypeGroup, SWT.RADIO );
         abstractRadio.setText( "Abstract" );
         GridData abstractRadioGridData = new GridData( SWT.LEFT, SWT.NONE, false, false );
         abstractRadioGridData.widthHint = 115;
         abstractRadio.setLayoutData( structuralRadioGridData );
-        Button auxiliaryRadio = new Button( classTypeGroup, SWT.RADIO );
+        abstractRadio.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                type = ObjectClassTypeEnum.ABSTRACT;
+            }
+        } );
+        auxiliaryRadio = new Button( classTypeGroup, SWT.RADIO );
         auxiliaryRadio.setText( "Auxiliary" );
         GridData auxiliaryRadioGridData = new GridData( SWT.LEFT, SWT.NONE, false, false );
         auxiliaryRadioGridData.widthHint = 115;
         auxiliaryRadio.setLayoutData( structuralRadioGridData );
+        auxiliaryRadio.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                type = ObjectClassTypeEnum.AUXILIARY;
+            }
+        } );
 
         // Properties Group
         Group propertiesGroup = new Group( composite, SWT.NONE );
@@ -124,10 +198,91 @@ public class NewObjectClassContentWizardPage extends WizardPage
         propertiesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Obsolete
-        new Label( composite, SWT.NONE );
-        Button obsoleteCheckbox = new Button( propertiesGroup, SWT.CHECK );
+        obsoleteCheckbox = new Button( propertiesGroup, SWT.CHECK );
         obsoleteCheckbox.setText( "Obsolete" );
 
         setControl( composite );
+    }
+
+
+    /**
+     * This method is called when the "Add" button of the superiors 
+     * table is selected.
+     */
+    private void addSuperiorObjectClass()
+    {
+        ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
+        dialog.setHiddenObjectClasses( superiorsList );
+        if ( dialog.open() == Dialog.OK )
+        {
+            superiorsList.add( dialog.getSelectedObjectClass() );
+            updateSuperiorsTable();
+        }
+    }
+
+
+    /**
+     * This method is called when the "Remove" button of the superiors 
+     * table is selected.
+     */
+    private void removeSuperiorObjectClass()
+    {
+        StructuredSelection selection = ( StructuredSelection ) superiorsTableViewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            superiorsList.remove( selection.getFirstElement() );
+            updateSuperiorsTable();
+        }
+    }
+
+
+    /**
+     * Updates the superiors table
+     */
+    private void updateSuperiorsTable()
+    {
+        superiorsTableViewer.refresh();
+    }
+
+
+    /**
+     * Gets the value of the superiors.
+     *
+     * @return
+     *      the value of the superiors
+     */
+    public String[] getSuperiorsNameValue()
+    {
+        List<String> names = new ArrayList<String>();
+        for ( ObjectClassImpl oc : superiorsList )
+        {
+            names.add( oc.getName() );
+        }
+
+        return names.toArray( new String[0] );
+    }
+
+
+    /**
+     * Gets the class type value.
+     *
+     * @return
+     *      the class type value
+     */
+    public ObjectClassTypeEnum getClassTypeValue()
+    {
+        return type;
+    }
+
+
+    /**
+     * Gets the 'Obsolete' value.
+     *
+     * @return
+     *      the 'Obsolete' value
+     */
+    public boolean getObsoleteValue()
+    {
+        return obsoleteCheckbox.getSelection();
     }
 }

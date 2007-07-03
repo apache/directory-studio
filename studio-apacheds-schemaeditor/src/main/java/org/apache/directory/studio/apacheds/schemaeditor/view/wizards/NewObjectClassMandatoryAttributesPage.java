@@ -20,13 +20,24 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -46,6 +57,15 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class NewObjectClassMandatoryAttributesPage extends WizardPage
 {
+    /** The mandatory attribute types list */
+    private List<AttributeTypeImpl> mandatoryAttributeTypesList;
+
+    // UI Fields
+    private TableViewer mandatoryAttributeTypesTableViewer;
+    private Button mandatoryAttributeTypesAddButton;
+    private Button mandatoryAttributeTypesRemoveButton;
+
+
     /**
      * Creates a new instance of NewObjectClassMandatoryAttributesPage.
      */
@@ -56,6 +76,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
         setDescription( "Please specify the mandatory attribute types for the object class." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
+        mandatoryAttributeTypesList = new ArrayList<AttributeTypeImpl>();
     }
 
 
@@ -79,16 +100,113 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
         GridData mandatoryAttributeTypesTableGridData = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         mandatoryAttributeTypesTableGridData.heightHint = 100;
         mandatoryAttributeTypesTable.setLayoutData( mandatoryAttributeTypesTableGridData );
-        TableViewer mandatoryAttributeTypesTableViewer = new TableViewer( mandatoryAttributeTypesTable );
-        mandatoryAttributeTypesTableViewer.setLabelProvider( new LabelProvider() );
+        mandatoryAttributeTypesTableViewer = new TableViewer( mandatoryAttributeTypesTable );
         mandatoryAttributeTypesTableViewer.setContentProvider( new ArrayContentProvider() );
-        Button mandatoryAttributeTypesAddButton = new Button( mandatoryAttributeTypesGroup, SWT.PUSH );
+        mandatoryAttributeTypesTableViewer.setLabelProvider( new LabelProvider() );
+        mandatoryAttributeTypesTableViewer.setInput( mandatoryAttributeTypesList );
+        mandatoryAttributeTypesTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                mandatoryAttributeTypesRemoveButton.setEnabled( !event.getSelection().isEmpty() );
+            }
+        } );
+        mandatoryAttributeTypesAddButton = new Button( mandatoryAttributeTypesGroup, SWT.PUSH );
         mandatoryAttributeTypesAddButton.setText( "Add..." );
         mandatoryAttributeTypesAddButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
-        Button mandatoryAttributeTypesRemoveButton = new Button( mandatoryAttributeTypesGroup, SWT.PUSH );
+        mandatoryAttributeTypesAddButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                addMandatoryAttributeType();
+            }
+        } );
+        mandatoryAttributeTypesRemoveButton = new Button( mandatoryAttributeTypesGroup, SWT.PUSH );
         mandatoryAttributeTypesRemoveButton.setText( "Remove" );
         mandatoryAttributeTypesRemoveButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
+        mandatoryAttributeTypesRemoveButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                removeMandatoryAttributeType();
+            }
+        } );
+        mandatoryAttributeTypesRemoveButton.setEnabled( false );
 
         setControl( composite );
+    }
+
+
+    /**
+     * This method is called when the "Add" button of the mandatory 
+     * attribute types table is selected.
+     */
+    private void addMandatoryAttributeType()
+    {
+        AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
+        List<AttributeTypeImpl> hiddenAttributes = new ArrayList<AttributeTypeImpl>();
+        List<AttributeTypeImpl> optionalAttributes = ( ( NewObjectClassWizard ) getWizard() )
+            .getOptionalAttributesPage().getOptionalAttributeTypes();
+        hiddenAttributes.addAll( optionalAttributes );
+        hiddenAttributes.addAll( mandatoryAttributeTypesList );
+        dialog.setHiddenAttributeTypes( hiddenAttributes );
+        if ( dialog.open() == Dialog.OK )
+        {
+            mandatoryAttributeTypesList.add( dialog.getSelectedAttributeType() );
+            updateMandatoryAttributeTypesTableTable();
+        }
+    }
+
+
+    /**
+     * This method is called when the "Remove" button of the mandatory 
+     * attribute types table is selected.
+     */
+    private void removeMandatoryAttributeType()
+    {
+        StructuredSelection selection = ( StructuredSelection ) mandatoryAttributeTypesTableViewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            mandatoryAttributeTypesList.remove( selection.getFirstElement() );
+            updateMandatoryAttributeTypesTableTable();
+        }
+    }
+
+
+    /**
+     * Updates the mandatory attribute types table.
+     */
+    private void updateMandatoryAttributeTypesTableTable()
+    {
+        mandatoryAttributeTypesTableViewer.refresh();
+    }
+
+
+    /**
+     * Gets the mandatory attribute types.
+     *
+     * @return
+     *      the mandatory attributes types
+     */
+    public List<AttributeTypeImpl> getMandatoryAttributeTypes()
+    {
+        return mandatoryAttributeTypesList;
+    }
+
+
+    /**
+     * Gets the names of the mandatory attribute types.
+     *
+     * @return
+     *      the names of the mandatory attributes types
+     */
+    public String[] getMandatoryAttributeTypesNames()
+    {
+        List<String> names = new ArrayList<String>();
+        for ( AttributeTypeImpl at : mandatoryAttributeTypesList )
+        {
+            names.add( at.getName() );
+        }
+        return names.toArray( new String[0] );
     }
 }
