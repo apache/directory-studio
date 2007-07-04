@@ -260,10 +260,8 @@ public class SchemaHandler
 
 
     /**
-     * Adds a SchemaListener to the given schema.
+     * Adds a SchemaHandlerListener.
      *
-     * @param schema
-     *      the schema
      * @param listener
      *      the listener
      */
@@ -273,6 +271,18 @@ public class SchemaHandler
         {
             schemaHandlerListeners.add( listener );
         }
+    }
+
+
+    /**
+     * Removes a SchemaHandlerListener.
+     *
+     * @param listener
+     *      the listener
+     */
+    public void removeListener( SchemaHandlerListener listener )
+    {
+        schemaHandlerListeners.remove( listener );
     }
 
 
@@ -294,7 +304,21 @@ public class SchemaHandler
 
 
     /**
-     * Adds a AttributeTypeListener to the given attribute type.
+     * Removes a SchemaListener to the given schema.
+     *
+     * @param schema
+     *      the schema
+     * @param listener
+     *      the listener
+     */
+    public void removeListener( Schema schema, SchemaListener listener )
+    {
+        schemaListeners.remove( schema, listener );
+    }
+
+
+    /**
+     * Adds an AttributeTypeListener to the given attribute type.
      *
      * @param at
      *      the attribute type
@@ -311,7 +335,21 @@ public class SchemaHandler
 
 
     /**
-     * Adds a AttributeTypeListener to the given object class.
+     * Removes an AttributeTypeListener to the given attribute type.
+     *
+     * @param at
+     *      the attribute type
+     * @param listener
+     *      the listener
+     */
+    public void removeListener( AttributeTypeImpl at, AttributeTypeListener listener )
+    {
+        attributeTypeListeners.remove( at, listener );
+    }
+
+
+    /**
+     * Adds an ObjectClassListener to the given object class.
      *
      * @param oc
      *      the object class
@@ -324,6 +362,20 @@ public class SchemaHandler
         {
             objectClassListeners.put( oc, listener );
         }
+    }
+
+
+    /**
+     * Removes an ObjectClassListener to the given object class.
+     *
+     * @param oc
+     *      the object class
+     * @param listener
+     *      the listener
+     */
+    public void removeListener( ObjectClassImpl oc, ObjectClassListener listener )
+    {
+        objectClassListeners.remove( oc, listener );
     }
 
 
@@ -882,21 +934,29 @@ public class SchemaHandler
 
 
     /**
-     * Verifies if the Alias is already taken by a schema object
+     * Verifies if the given alias or oid is already taken by a schema object
      *
-     * @param alias
-     *      the alias
+     * @param id
+     *      the alias or oid
      * @return
-     *      true if the the alias is already taken
+     *      true if the the alias or oid is already taken
      */
-    public boolean isAliasAlreadyTaken( String alias )
+    public boolean isAliasOrOidAlreadyTaken( String id )
     {
-        String lowerCasedAlias = alias.toLowerCase();
-        if ( attributeTypesMap.containsKey( lowerCasedAlias ) )
+        String lowerCasedId = id.toLowerCase();
+        if ( attributeTypesMap.containsKey( lowerCasedId ) )
         {
             return true;
         }
-        else if ( objectClassesMap.containsKey( lowerCasedAlias ) )
+        else if ( objectClassesMap.containsKey( lowerCasedId ) )
+        {
+            return true;
+        }
+        else if ( matchingRulesMap.containsKey( lowerCasedId ) )
+        {
+            return true;
+        }
+        else if ( syntaxesMap.containsKey( lowerCasedId ) )
         {
             return true;
         }

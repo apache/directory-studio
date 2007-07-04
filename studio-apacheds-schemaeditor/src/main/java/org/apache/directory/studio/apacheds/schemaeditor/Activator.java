@@ -21,6 +21,9 @@ package org.apache.directory.studio.apacheds.schemaeditor;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
+import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
+import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -38,6 +41,12 @@ public class Activator extends AbstractUIPlugin
 
     /** The shared instance */
     private static Activator plugin;
+
+    /** the Schema Code Scanner */
+    private static ITokenScanner schemaCodeScanner;
+
+    /** The Schema Text Attribute Provider */
+    private static SchemaTextAttributeProvider schemaTextAttributeProvider;
 
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
@@ -60,7 +69,7 @@ public class Activator extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
-        
+
         FakeLoader.loadSchemas();
     }
 
@@ -96,5 +105,39 @@ public class Activator extends AbstractUIPlugin
     public SchemaHandler getSchemaHandler()
     {
         return schemaHandler;
+    }
+
+
+    /**
+     * Returns the Schema Code Scanner.
+     *
+     * @return
+     *      the Schema Code Scanner
+     */
+    public static ITokenScanner getSchemaCodeScanner()
+    {
+        if ( schemaCodeScanner == null )
+        {
+            schemaCodeScanner = new SchemaCodeScanner( getSchemaTextAttributeProvider() );
+        }
+
+        return schemaCodeScanner;
+    }
+
+
+    /**
+     * Returns the Schema Text Attribute Provider.
+     *
+     * @return
+     *     the Schema Text Attribute Provider 
+     */
+    private static SchemaTextAttributeProvider getSchemaTextAttributeProvider()
+    {
+        if ( schemaTextAttributeProvider == null )
+        {
+            schemaTextAttributeProvider = new SchemaTextAttributeProvider();
+        }
+
+        return schemaTextAttributeProvider;
     }
 }

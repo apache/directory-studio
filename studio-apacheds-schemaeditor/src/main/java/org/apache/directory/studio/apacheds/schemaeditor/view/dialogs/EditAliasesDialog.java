@@ -241,7 +241,7 @@ public class EditAliasesDialog extends Dialog
                     String text = newAliasText.getText();
 
                     if ( ( !"".equals( text ) ) && ( !aliasesLowerCased.contains( text.toLowerCase() ) ) //$NON-NLS-1$
-                        && ( !Activator.getDefault().getSchemaHandler().isAliasAlreadyTaken( text ) ) )
+                        && ( !Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( text ) ) )
                     {
                         addANewAlias();
                     }
@@ -267,7 +267,7 @@ public class EditAliasesDialog extends Dialog
                     errorLabel.setText( "This alias already exists in the list." );
                     newAliasAddButton.setEnabled( false );
                 }
-                else if ( Activator.getDefault().getSchemaHandler().isAliasAlreadyTaken( text ) )
+                else if ( Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( text ) )
                 {
                     errorComposite.setVisible( true );
                     errorLabel.setText( "An element with the same alias already exists." );

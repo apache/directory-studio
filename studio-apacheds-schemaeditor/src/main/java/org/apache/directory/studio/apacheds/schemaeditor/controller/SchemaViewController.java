@@ -21,6 +21,10 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ConnectAction;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
@@ -34,6 +38,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -47,7 +52,7 @@ public class SchemaViewController
 {
     /** The associated view */
     private SchemaView view;
-    
+
     // The Actions
     private Action connect;
 
@@ -61,12 +66,13 @@ public class SchemaViewController
     public SchemaViewController( SchemaView view )
     {
         this.view = view;
-        
+
         initActions();
         initToolbar();
         initDoubleClickListener();
     }
-    
+
+
     /**
      * Initializes the Actions.
      */
@@ -74,7 +80,8 @@ public class SchemaViewController
     {
         connect = new ConnectAction( view );
     }
-    
+
+
     /**
      * Initializes the Toolbar.
      */
@@ -109,34 +116,34 @@ public class SchemaViewController
                 // Selecting the right editor and input
                 if ( objectSelection instanceof AttributeTypeWrapper )
                 {
-//                    input = new AttributeTypeEditorInput( ( ( AttributeTypeWrapper ) objectSelection )
-//                        .getMyAttributeType() );
-//                    editorId = AttributeTypeEditor.ID;
+                    input = new AttributeTypeEditorInput( ( ( AttributeTypeWrapper ) objectSelection )
+                        .getAttributeType() );
+                    editorId = AttributeTypeEditor.ID;
                 }
                 else if ( objectSelection instanceof ObjectClassWrapper )
                 {
-//                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getMyObjectClass() );
-//                    editorId = ObjectClassEditor.ID;
+                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getObjectClass() );
+                    editorId = ObjectClassEditor.ID;
                 }
-                else if ( ( objectSelection instanceof Folder )
-                    || ( objectSelection instanceof SchemaWrapper ) )
+                else if ( ( objectSelection instanceof Folder ) || ( objectSelection instanceof SchemaWrapper ) )
                 {
                     // Here we don't open an editor, we just expand the node.
                     viewer.setExpandedState( objectSelection, !viewer.getExpandedState( objectSelection ) );
                 }
 
                 // Let's open the editor
-//                if ( input != null )
-//                {
-//                    try
-//                    {
-//                        page.openEditor( input, editorId );
-//                    }
-//                    catch ( PartInitException e )
-//                    {
-////                        logger.debug( "error when opening the editor" ); //$NON-NLS-1$
-//                    }
-//                }
+                if ( input != null )
+                {
+                    try
+                    {
+                        page.openEditor( input, editorId );
+                    }
+                    catch ( PartInitException e )
+                    {
+//                        logger.debug( "error when opening the editor" ); //$NON-NLS-1$
+                    e.printStackTrace();
+                    }
+                }
             }
         } );
     }

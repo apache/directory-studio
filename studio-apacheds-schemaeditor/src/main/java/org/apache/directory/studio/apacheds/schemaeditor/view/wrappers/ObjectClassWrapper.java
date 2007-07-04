@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wrappers;
 
 
 import org.apache.directory.shared.ldap.schema.ObjectClass;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 
 
 /**
@@ -32,7 +33,7 @@ import org.apache.directory.shared.ldap.schema.ObjectClass;
 public class ObjectClassWrapper extends AbstractTreeNode
 {
     /** The wrapped ObjectClass */
-    private ObjectClass objectClass;
+    private ObjectClassImpl objectClass;
 
 
     /**
@@ -41,7 +42,7 @@ public class ObjectClassWrapper extends AbstractTreeNode
      * @param oc
      *      the wrapped ObjectClass
      */
-    public ObjectClassWrapper( ObjectClass oc )
+    public ObjectClassWrapper( ObjectClassImpl oc )
     {
         super( null );
         objectClass = oc;
@@ -56,7 +57,7 @@ public class ObjectClassWrapper extends AbstractTreeNode
      * @param parent
      *      the parent TreeNode
      */
-    public ObjectClassWrapper( ObjectClass oc, TreeNode parent )
+    public ObjectClassWrapper( ObjectClassImpl oc, TreeNode parent )
     {
         super( parent );
         objectClass = oc;
@@ -69,7 +70,7 @@ public class ObjectClassWrapper extends AbstractTreeNode
      * @return
      *      the wrapped ObjectClass
      */
-    public ObjectClass getObjectClass()
+    public ObjectClassImpl getObjectClass()
     {
         return objectClass;
     }

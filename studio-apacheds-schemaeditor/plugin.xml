@@ -58,4 +58,25 @@
           name="New Object Class"
           project="false"/>
  </extension>
+ <extension
+		point="org.eclipse.ui.editors">
+	<editor
+		class="org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor"
+		default="false"
+		icon="resources/icons/object_class.gif"
+		id="org.apache.directory.studio.apacheds.schemaeditor.view.objectClassEditor"
+		name="Object Class Editor"/>
+      <editor
+ 		class="org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor"
+		default="false"
+		icon="resources/icons/attribute_type.gif"
+		id="org.apache.directory.studio.apacheds.schemaeditor.view.attributeTypeEditor"
+		name="Attribute Type Editor"/>
+      <editor
+		class="org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema.SchemaEditor"
+		default="false"
+		icon="resources/icons/schema.gif"
+		id="org.apache.directory.studio.apacheds.schemaeditor.view.schemaformeditor"
+		name="Schema Editor"/>
+</extension>
 </plugin>

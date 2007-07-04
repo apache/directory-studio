@@ -8,6 +8,9 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.apache.directory.studio.jars,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.ui.forms,
+ org.eclipse.jface.text
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar
