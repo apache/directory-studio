@@ -100,5 +100,11 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
             return new String[0];
         }
     }
+    
+    
+    public boolean isSubentry()
+    {
+        return false;
+    }
 
 }
