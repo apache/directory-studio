@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.ldapbrowser.core.jobs;
@@ -117,32 +117,28 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
     public static void initializeChildren( IEntry parent, ExtendedProgressMonitor monitor )
     {
 
-        monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
-            new String[]
-                { parent.getDn().toString() } ) );
-
-        // clear old children
-        IEntry[] oldChildren = parent.getChildren();
-        for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
-        {
-            if ( oldChildren[i] != null )
-            {
-                parent.deleteChild( oldChildren[i] );
-            }
-        }
-        parent.setChildrenInitialized( false );
-
         if ( parent instanceof IRootDSE )
         {
-            // special handling for Root DSE 
-            //parent.setChildrenInitialized( true );
-            //return;
-            parent.getConnection().fetchRootDSE( monitor );
-            parent.setChildrenInitialized( true );
+            // special handling for Root DSE
             return;
         }
         else
         {
+            monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
+                new String[]
+                    { parent.getDn().toString() } ) );
+
+            // clear old children
+            IEntry[] oldChildren = parent.getChildren();
+            for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
+            {
+                if ( oldChildren[i] != null )
+                {
+                    parent.deleteChild( oldChildren[i] );
+                }
+            }
+            parent.setChildrenInitialized( false );
+            
             // determine alias and referral handling
             int scope = ISearch.SCOPE_ONELEVEL;
             int derefAliasMethod = parent.getConnection().getAliasesDereferencingMethod();
@@ -156,7 +152,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                 handleReferralsMethod = parent.isReferral() ? IConnection.HANDLE_REFERRALS_FOLLOW
                     : IConnection.HANDLE_REFERRALS_IGNORE;
             }
-    
+
             // get children,
             ISearch search = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter(),
                 ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
@@ -173,7 +169,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             // fill children in search result
             if ( srs != null && srs.length > 0 )
             {
-    
+
                 /*
                  * clearing old children before filling new subenties is
                  * necessary to handle aliases and referrals.
@@ -187,7 +183,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                     }
                 }
                 parent.setChildrenInitialized( false );
-    
+
                 for ( int i = 0; srs != null && i < srs.length; i++ )
                 {
                     if ( parent.isReferral() )
@@ -216,9 +212,9 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             {
                 parent.setHasChildrenHint( false );
             }
-    
+
             // get subentries
-            ISearch subSearch = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter(),
+            ISearch subSearch = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter()!=null?parent.getChildrenFilter():ISearch.FILTER_SUBENTRY,
                 ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
                 parent.getConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
                     .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
@@ -237,22 +233,21 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                 // fill children in search result
                 if ( subSrs != null && subSrs.length > 0 )
                 {
-    
+
                     for ( int i = 0; subSrs != null && i < subSrs.length; i++ )
                     {
                         parent.addChild( subSrs[i].getEntry() );
                     }
                 }
             }
-            
+
             // check exceeded limits / canceled
             parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
                 || monitor.isCanceled() );
+            
+            // set initialized state
+            parent.setChildrenInitialized( true );
         }
-
-        // set initialized state
-        parent.setChildrenInitialized( true );
-
     }
 
 }

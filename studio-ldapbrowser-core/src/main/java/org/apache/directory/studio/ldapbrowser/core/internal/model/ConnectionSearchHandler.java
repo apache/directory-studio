@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.ldapbrowser.core.internal.model;
@@ -167,7 +167,7 @@ public class ConnectionSearchHandler
                             initFlags( entry, record, searchParameter );
 
                             // fill the attributes
-                            fillAttributes( entry, record, searchParameter );
+                            fillAttributes( entry, record, search.getSearchParameter() );
 
                             searchResultList
                                 .add( new org.apache.directory.studio.ldapbrowser.core.internal.model.SearchResult(
@@ -338,8 +338,9 @@ public class ConnectionSearchHandler
 
         }
 
-        if ( search.getControls() != null
+        if ( ( search.getControls() != null
             && Arrays.asList( search.getControls() ).contains( Control.SUBENTRIES_CONTROL ) )
+            || ISearch.FILTER_SUBENTRY.equalsIgnoreCase( search.getFilter() ) )
         {
             entry.setSubentry( true );
             entry.setHasChildrenHint( false );
@@ -464,7 +465,7 @@ public class ConnectionSearchHandler
             if ( search.getReturningAttributes() != null )
             {
                 String[] ras = search.getReturningAttributes();
-                
+
                 // special case *
                 if( Arrays.asList( ras ).contains( ISearch.ALL_USER_ATTRIBUTES ) )
                 {
@@ -484,7 +485,7 @@ public class ConnectionSearchHandler
                         }
                     }
                 }
-                
+
                 // special case +
                 if( Arrays.asList( ras ).contains( ISearch.ALL_OPERATIONAL_ATTRIBUTES ) )
                 {
@@ -504,8 +505,8 @@ public class ConnectionSearchHandler
                         }
                     }
                 }
-                
-                
+
+
                 for ( int r = 0; r < ras.length; r++ )
                 {
                     // clear attributes requested from server, also include subtypes

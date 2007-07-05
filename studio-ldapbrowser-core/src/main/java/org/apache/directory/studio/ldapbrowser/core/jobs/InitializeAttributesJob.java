@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.ldapbrowser.core.jobs;
@@ -34,6 +34,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -153,14 +154,34 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
 
         // entry.setAttributesInitialized(false, entry.getConnection());
 
-        // search
-        ISearch search = new Search( null, entry.getConnection(), entry.getDn(), ISearch.FILTER_TRUE, attributes,
-            ISearch.SCOPE_OBJECT, 0, 0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE,
-            false, false, null );
-        entry.getConnection().search( search, monitor );
-
-        // set initialized state
-        entry.setAttributesInitialized( true );
+        if ( entry instanceof IRootDSE )
+        {
+            IEntry[] oldChildren = entry.getChildren();
+            for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
+            {
+                if ( oldChildren[i] != null )
+                {
+                    entry.deleteChild( oldChildren[i] );
+                }
+            }
+            entry.setChildrenInitialized( false );
+            
+            // special handling for Root DSE
+        	entry.getConnection().fetchRootDSE( monitor );
+        	entry.setAttributesInitialized( true );
+        	entry.setChildrenInitialized( true );
+        }
+        else
+        {
+	        // search
+	        ISearch search = new Search( null, entry.getConnection(), entry.getDn(), entry.isSubentry()?ISearch.FILTER_SUBENTRY:ISearch.FILTER_TRUE, attributes,
+	            ISearch.SCOPE_OBJECT, 0, 0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE,
+	            false, false, null );
+	        entry.getConnection().search( search, monitor );
+	
+	        // set initialized state
+	        entry.setAttributesInitialized( true );
+        }
     }
 
 }

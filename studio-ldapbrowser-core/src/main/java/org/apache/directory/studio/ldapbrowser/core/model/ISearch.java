@@ -56,6 +56,9 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
     /** False filter (!(objectClass=*)) */
     public static final String FILTER_FALSE = "(!(objectClass=*))"; //$NON-NLS-1$
 
+    /** Filter for fetching subentries (|(objectClass=subentry)(objectClass=ldapSubentry)) */
+    public static final String FILTER_SUBENTRY = "(|(objectClass=subentry)(objectClass=ldapSubentry))"; //$NON-NLS-1$
+
     /** Search scope object */
     public static final int SCOPE_OBJECT = 0;
 

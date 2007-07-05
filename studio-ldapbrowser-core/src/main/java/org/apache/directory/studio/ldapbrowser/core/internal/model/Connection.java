@@ -404,6 +404,9 @@ public class Connection implements IConnection, Serializable
             modifyHandler.connectionClosed();
             searchHandler.connectionClosed();
 
+            this.rootDSE = null;
+            this.schema = Schema.DEFAULT_SCHEMA;
+
             EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
                 ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED ), this );
             System.gc();
