@@ -74,7 +74,6 @@
 	<echo>          o -Dldapstudio-rcp.os.arch=i386 for i386 architecture (Linux and Mac OS X)</echo>
 	<echo>          o -Dldapstudio-rcp.os.arch=x86 for x86 architecture (Windows only)</echo>
 	<echo>          o -Dldapstudio-rcp.os.arch=ppc for PowerPC architecture</echo>
-	<echo>          o -Dldapstudio-rcp.os.arch=amd64 for AMD64 architecture</echo>
         <echo>  clean - Delete any generated file (javadoc, classes, jars, distribution)</echo>
         <echo>  javadoc - Generate Javadoc files</echo>
         <echo>  userguides - Generate HTML and PDF user guides</echo>
@@ -220,7 +219,7 @@
         <!-- Copy of the LDAP Studio RCP Feature in the "features" folder -->
 		<property name="ldapstudio-rcp-feature.project" value="${basedir}/ldapstudio-rcp-feature" />
 		<property name="ldapstudio-rcp-feature.name" value="org.apache.directory.ldapstudio.rcp.feature" />
-		<property name="ldapstudio-rcp-feature.version" value="0.7.1" />
+		<property name="ldapstudio-rcp-feature.version" value="0.7.0" />
         <mkdir dir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}" />
 		<copy todir="${project.features}/${ldapstudio-rcp-feature.name}_${ldapstudio-rcp-feature.version}">
 			<fileset dir="${ldapstudio-rcp-feature.project}">
@@ -233,7 +232,7 @@
         <!-- Copy of the Schemas Editor Feature in the "features" folder -->
 		<property name="ldapstudio-schemas-feature.project" value="${basedir}/ldapstudio-schemas-feature" />
 		<property name="ldapstudio-schemas-feature.name" value="org.apache.directory.ldapstudio.schemas.feature" />
-		<property name="ldapstudio-schemas-feature.version" value="0.8.1" />
+		<property name="ldapstudio-schemas-feature.version" value="0.8.0" />
 		<mkdir dir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}" />
 		<copy todir="${project.features}/${ldapstudio-schemas-feature.name}_${ldapstudio-schemas-feature.version}">
 			<fileset dir="${ldapstudio-schemas-feature.project}">
@@ -246,7 +245,7 @@
 	    <!-- Copy of the Browser Feature in the "features" folder -->
 		<property name="ldapstudio-browser-feature.project" value="${basedir}/ldapstudio-browser-feature" />
 		<property name="ldapstudio-browser-feature.name" value="org.apache.directory.ldapstudio.browser.feature" />
-		<property name="ldapstudio-browser-feature.version" value="0.8.1" />
+		<property name="ldapstudio-browser-feature.version" value="0.8.0" />
 		<mkdir dir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}" />
 		<copy todir="${project.features}/${ldapstudio-browser-feature.name}_${ldapstudio-browser-feature.version}">
 			<fileset dir="${ldapstudio-browser-feature.project}">
@@ -259,7 +258,7 @@
         <!-- Copy of the Apache DS Configuration Feature in the "features" folder -->
 		<property name="ldapstudio-apacheds-configuration-feature.project" value="${basedir}/ldapstudio-apacheds-configuration-feature" />
 		<property name="ldapstudio-apacheds-configuration-feature.name" value="org.apache.directory.ldapstudio.apacheds.configuration.feature" />
-		<property name="ldapstudio-apacheds-configuration-feature.version" value="0.8.1" />
+		<property name="ldapstudio-apacheds-configuration-feature.version" value="0.8.0" />
 		<mkdir dir="${project.features}/${ldapstudio-apacheds-configuration-feature.name}_${ldapstudio-apacheds-configuration-feature.version}" />
 		<copy todir="${project.features}/${ldapstudio-apacheds-configuration-feature.name}_${ldapstudio-apacheds-configuration-feature.version}">
 			<fileset dir="${ldapstudio-apacheds-configuration-feature.project}">
@@ -428,7 +427,6 @@
         <property name="packages-folder.windows" value="${packages-folder}/Windows" />
         <property name="packages-folder.linux-i386" value="${packages-folder}/Linuxi386" />
         <property name="packages-folder.linux-ppc" value="${packages-folder}/LinuxPPC" />
-        <property name="packages-folder.linux-amd64" value="${packages-folder}/LinuxAMD64" />
         <property name="packages-folder.updatesite" value="${packages-folder}/updatesite" />
 
         <!-- Cleaning the 'packages' folder (just in case) -->
@@ -485,25 +483,6 @@
         </antcall>
 		<mkdir dir="${packages-folder.linux-ppc}" />
         <tar compression="gzip" destfile="${packages-folder.linux-ppc}/LDAP_Studio_Linux_PPC.tar.gz">
-            <tarfileset dir="${ldapstudio-complete.output}" mode="755">
-				<include name="ldapstudio/ldapstudio" />
-			</tarfileset>
-            <tarfileset dir="${ldapstudio-complete.output}">
-				<include name="**" />
-				<exclude name="ldapstudio/ldapstudio" />
-			</tarfileset>
-        </tar>
-        
-        <!-- Cleaning latest build-->
-        <antcall target="clean" inheritall="false"/>
-        <!-- Generating LDAP Studio for Linux AMD64 -->
-        <antcall target="bundle" inheritall="false">
-            <param name="ldapstudio-rcp.os.name" value="linux"/>
-            <param name="ldapstudio-rcp.os.arch" value="amd64"/>
-            <param name="ldapstudio-rcp.os.extension" value=""/>
-        </antcall>
-		<mkdir dir="${packages-folder.linux-amd64}" />
-        <tar compression="gzip" destfile="${packages-folder.linux-amd64}/LDAP_Studio_Linux_AMD64.tar.gz">
             <tarfileset dir="${ldapstudio-complete.output}" mode="755">
 				<include name="ldapstudio/ldapstudio" />
 			</tarfileset>

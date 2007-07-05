@@ -2,8 +2,11 @@
 <feature
       id="org.apache.directory.ldapstudio.browser.feature"
       label="LDAP Studio Browser"
-      version="0.8.1"
+      version="0.8.0"
       provider-name="Apache Software Foundation"
+      os="linux,macosx,win32"
+      ws="carbon,gtk,win32"
+      arch="ppc,x86"
       image="ldapstudio.png">
 
    <description>
