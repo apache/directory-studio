@@ -74,6 +74,7 @@
 	<echo>          o -Dldapstudio-rcp.os.arch=i386 for i386 architecture (Linux and Mac OS X)</echo>
 	<echo>          o -Dldapstudio-rcp.os.arch=x86 for x86 architecture (Windows only)</echo>
 	<echo>          o -Dldapstudio-rcp.os.arch=ppc for PowerPC architecture</echo>
+	<echo>          o -Dldapstudio-rcp.os.arch=amd64 for AMD64 architecture</echo>
         <echo>  clean - Delete any generated file (javadoc, classes, jars, distribution)</echo>
         <echo>  javadoc - Generate Javadoc files</echo>
         <echo>  userguides - Generate HTML and PDF user guides</echo>
