@@ -199,7 +199,7 @@ public class SchemaHandler
      */
     public AttributeTypeImpl getAttributeType( String id )
     {
-        return attributeTypesMap.get( id );
+        return attributeTypesMap.get( id.toLowerCase() );
     }
 
 
@@ -213,7 +213,7 @@ public class SchemaHandler
      */
     public MatchingRuleImpl getMatchingRule( String id )
     {
-        return matchingRulesMap.get( id );
+        return matchingRulesMap.get( id.toLowerCase() );
     }
 
 
@@ -227,7 +227,7 @@ public class SchemaHandler
      */
     public ObjectClassImpl getObjectClass( String id )
     {
-        return objectClassesMap.get( id );
+        return objectClassesMap.get( id.toLowerCase() );
     }
 
 
@@ -241,7 +241,7 @@ public class SchemaHandler
      */
     public Schema getSchema( String name )
     {
-        return schemasMap.get( name );
+        return schemasMap.get( name.toLowerCase() );
     }
 
 
@@ -255,7 +255,7 @@ public class SchemaHandler
      */
     public SyntaxImpl getSyntax( String id )
     {
-        return syntaxesMap.get( id );
+        return syntaxesMap.get( id.toLowerCase() );
     }
 
 
@@ -389,7 +389,7 @@ public class SchemaHandler
     {
         // Adding the schema
         schemasList.add( schema );
-        schemasMap.put( schema.getName(), schema );
+        schemasMap.put( schema.getName().toLowerCase(), schema );
 
         // Adding its attribute types
         for ( AttributeTypeImpl at : schema.getAttributeTypes() )
@@ -481,7 +481,7 @@ public class SchemaHandler
     {
         // Removing the schema
         schemasList.remove( schema );
-        schemasMap.remove( schema.getName() );
+        schemasMap.remove( schema.getName().toLowerCase() );
 
         // Removing its attribute types
         for ( AttributeTypeImpl at : schema.getAttributeTypes() )
