@@ -57,7 +57,7 @@ public class SchemaImporter
     /** The name of the metaAttributeType object class */
     private static final String META_ATTRIBUTE_TYPE = "metaAttributeType";
     /** The name of the metaObjectClass object class */
-    private static final String META_OBJECT_CLASS = "metaObjectclass";
+    private static final String META_OBJECT_CLASS = "metaObjectClass";
     /** The name of the metaMatchingRule object class */
     private static final String META_MATCHING_RULE = "metaMatchingRule";
     /** The name of the metaSyntax object class */
