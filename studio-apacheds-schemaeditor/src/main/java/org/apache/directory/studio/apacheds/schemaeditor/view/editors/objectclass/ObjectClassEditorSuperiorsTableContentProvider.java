@@ -19,7 +19,6 @@
  */
 package org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,101 +31,96 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.editors.NonExistin
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-
 /**
- * This class is the Content Provider for the Superiors Table of the Object Class Editor.
- *
+ * This class is the Content Provider for the Superiors Table of the Object
+ * Class Editor.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ObjectClassEditorSuperiorsTableContentProvider implements IStructuredContentProvider
-{
-    /** The SchemaHandler */
-    private SchemaHandler schemaHandler;
+public class ObjectClassEditorSuperiorsTableContentProvider implements
+		IStructuredContentProvider {
+	/** The SchemaHandler */
+	private SchemaHandler schemaHandler;
 
+	/**
+	 * Creates a new instance of
+	 * ObjectClassFormEditorSuperiorsTableContentProvider.
+	 */
+	public ObjectClassEditorSuperiorsTableContentProvider() {
+		schemaHandler = Activator.getDefault().getSchemaHandler();
+	}
 
-    /**
-     * Creates a new instance of ObjectClassFormEditorSuperiorsTableContentProvider.
-     */
-    public ObjectClassEditorSuperiorsTableContentProvider()
-    {
-        schemaHandler = Activator.getDefault().getSchemaHandler();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+	 */
+	public Object[] getElements(Object inputElement) {
+		if (inputElement instanceof String[]) {
+			List<Object> results = new ArrayList<Object>();
 
+			String[] superiors = (String[]) inputElement;
+			for (String superior : superiors) {
+				ObjectClassImpl oc = schemaHandler.getObjectClass(superior);
+				if (oc != null) {
+					results.add(oc);
+				} else {
+					results.add(new NonExistingObjectClass(superior));
+				}
+			}
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-     */
-    public Object[] getElements( Object inputElement )
-    {
-        if ( inputElement instanceof String[] )
-        {
-            List<Object> results = new ArrayList<Object>();
+			// Sorting Elements
+			Collections.sort(results, new Comparator<Object>() {
+				public int compare(Object o1, Object o2) {
+					if (o1 instanceof ObjectClassImpl
+							&& o2 instanceof ObjectClassImpl) {
+						return ((ObjectClassImpl) o1).getNames()[0]
+								.compareToIgnoreCase(((ObjectClassImpl) o2)
+										.getNames()[0]);
+					} else if (o1 instanceof ObjectClassImpl
+							&& o2 instanceof NonExistingObjectClass) {
+						return ((ObjectClassImpl) o1).getNames()[0]
+								.compareToIgnoreCase(((NonExistingObjectClass) o2)
+										.getName());
+					} else if (o1 instanceof NonExistingObjectClass
+							&& o2 instanceof ObjectClassImpl) {
+						return ((NonExistingObjectClass) o1).getName()
+								.compareToIgnoreCase(
+										((ObjectClassImpl) o2).getNames()[0]);
+					} else if (o1 instanceof NonExistingObjectClass
+							&& o2 instanceof NonExistingObjectClass) {
+						return ((NonExistingObjectClass) o1)
+								.getName()
+								.compareToIgnoreCase(
+										((NonExistingObjectClass) o2).getName());
+					}
 
-            String[] superiors = ( String[] ) inputElement;
-            for ( String superior : superiors )
-            {
-                ObjectClassImpl oc = schemaHandler.getObjectClass( superior );
-                if ( oc != null )
-                {
-                    results.add( oc );
-                }
-                else
-                {
-                    results.add( new NonExistingObjectClass( superior ) );
-                }
-            }
+					return 0;
+				}
+			});
 
-            // Sorting Elements
-            Collections.sort( results, new Comparator<Object>()
-            {
-                public int compare( Object o1, Object o2 )
-                {
-                    if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
-                    {
-                        return ( ( ObjectClassImpl ) o1 ).getNames()[0].compareToIgnoreCase( ( ( ObjectClassImpl ) o2 )
-                            .getNames()[0] );
-                    }
-                    else if ( o1 instanceof ObjectClassImpl && o2 instanceof NonExistingObjectClass )
-                    {
-                        return ( ( ObjectClassImpl ) o1 ).getNames()[0]
-                            .compareToIgnoreCase( ( ( NonExistingObjectClass ) o2 ).getName() );
-                    }
-                    else if ( o1 instanceof NonExistingObjectClass && o2 instanceof ObjectClassImpl )
-                    {
-                        return ( ( NonExistingObjectClass ) o1 ).getName().compareToIgnoreCase(
-                            ( ( ObjectClassImpl ) o2 ).getNames()[0] );
-                    }
-                    else if ( o1 instanceof NonExistingObjectClass && o2 instanceof NonExistingObjectClass )
-                    {
-                        return ( ( NonExistingObjectClass ) o1 ).getName().compareToIgnoreCase(
-                            ( ( NonExistingObjectClass ) o2 ).getName() );
-                    }
+			return results.toArray();
+		}
 
-                    return 0;
-                }
-            } );
+		// Default
+		return null;
+	}
 
-            return results.toArray();
-        }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+	 */
+	public void dispose() {
+	}
 
-        // Default
-        return null;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-     */
-    public void dispose()
-    {
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-     */
-    public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
-    {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
+	 *      java.lang.Object, java.lang.Object)
+	 */
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+	}
 }

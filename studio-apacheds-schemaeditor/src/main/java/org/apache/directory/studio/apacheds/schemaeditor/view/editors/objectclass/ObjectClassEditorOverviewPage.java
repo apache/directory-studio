@@ -28,8 +28,12 @@ import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
 import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.EditAliasesDialog;
@@ -95,6 +99,135 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
+
+    /** The SchemaHandler Listener */
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerListener()
+    {
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
+        public void attributeTypeAdded( AttributeTypeImpl at )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
+        public void attributeTypeModified( AttributeTypeImpl at )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
+        public void attributeTypeRemoved( AttributeTypeImpl at )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#matchingRuleAdded(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
+         */
+        public void matchingRuleAdded( MatchingRuleImpl mr )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#matchingRuleModified(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
+         */
+        public void matchingRuleModified( MatchingRuleImpl mr )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#matchingRuleRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
+         */
+        public void matchingRuleRemoved( MatchingRuleImpl mr )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
+        public void objectClassAdded( ObjectClassImpl oc )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
+        public void objectClassModified( ObjectClassImpl oc )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
+        public void objectClassRemoved( ObjectClassImpl oc )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#schemaAdded(org.apache.directory.studio.apacheds.schemaeditor.model.Schema)
+         */
+        public void schemaAdded( Schema schema )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#schemaRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.Schema)
+         */
+        public void schemaRemoved( Schema schema )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#syntaxAdded(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
+         */
+        public void syntaxAdded( SyntaxImpl syntax )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#syntaxModified(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
+         */
+        public void syntaxModified( SyntaxImpl syntax )
+        {
+            refreshUI();
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#syntaxRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
+         */
+        public void syntaxRemoved( SyntaxImpl syntax )
+        {
+            refreshUI();
+        }
+    };
 
     // UI fields
     private Label aliasesLabel;
@@ -301,20 +434,28 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeTypeImpl> hiddenATs = new ArrayList<AttributeTypeImpl>();
-            for ( String must : modifiedObjectClass.getMustNamesList() )
+            String[] mustsHidden = modifiedObjectClass.getMustNamesList();
+            if ( mustsHidden != null )
             {
-                AttributeTypeImpl at = schemaHandler.getAttributeType( must );
-                if ( at != null )
+                for ( String must : mustsHidden )
                 {
-                    hiddenATs.add( at );
+                    AttributeTypeImpl at = schemaHandler.getAttributeType( must );
+                    if ( at != null )
+                    {
+                        hiddenATs.add( at );
+                    }
                 }
             }
-            for ( String may : modifiedObjectClass.getMayNamesList() )
+            String[] maysHidden = modifiedObjectClass.getMayNamesList();
+            if ( maysHidden != null )
             {
-                AttributeTypeImpl at = schemaHandler.getAttributeType( may );
-                if ( at != null )
+                for ( String may : maysHidden )
                 {
-                    hiddenATs.add( at );
+                    AttributeTypeImpl at = schemaHandler.getAttributeType( may );
+                    if ( at != null )
+                    {
+                        hiddenATs.add( at );
+                    }
                 }
             }
             dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeTypeImpl[0] ) );
@@ -332,9 +473,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
             List<String> newMusts = new ArrayList<String>();
             String[] musts = modifiedObjectClass.getMustNamesList();
-            for ( String must : musts )
+            if ( musts != null )
             {
-                newMusts.add( must );
+                for ( String must : musts )
+                {
+                    newMusts.add( must );
+                }
             }
             newMusts.add( at.getNames()[0] );
             modifiedObjectClass.setMustNamesList( newMusts.toArray( new String[0] ) );
@@ -431,20 +575,28 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeTypeImpl> hiddenATs = new ArrayList<AttributeTypeImpl>();
-            for ( String must : modifiedObjectClass.getMustNamesList() )
+            String[] mustsHidden = modifiedObjectClass.getMustNamesList();
+            if ( mustsHidden != null )
             {
-                AttributeTypeImpl at = schemaHandler.getAttributeType( must );
-                if ( at != null )
+                for ( String must : mustsHidden )
                 {
-                    hiddenATs.add( at );
+                    AttributeTypeImpl at = schemaHandler.getAttributeType( must );
+                    if ( at != null )
+                    {
+                        hiddenATs.add( at );
+                    }
                 }
             }
-            for ( String may : modifiedObjectClass.getMayNamesList() )
+            String[] maysHidden = modifiedObjectClass.getMayNamesList();
+            if ( maysHidden != null )
             {
-                AttributeTypeImpl at = schemaHandler.getAttributeType( may );
-                if ( at != null )
+                for ( String may : maysHidden )
                 {
-                    hiddenATs.add( at );
+                    AttributeTypeImpl at = schemaHandler.getAttributeType( may );
+                    if ( at != null )
+                    {
+                        hiddenATs.add( at );
+                    }
                 }
             }
             dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeTypeImpl[0] ) );
@@ -462,9 +614,12 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
             List<String> newMays = new ArrayList<String>();
             String[] mays = modifiedObjectClass.getMayNamesList();
-            for ( String may : mays )
+            if ( mays != null )
             {
-                newMays.add( may );
+                for ( String may : mays )
+                {
+                    newMays.add( may );
+                }
             }
             newMays.add( at.getNames()[0] );
             modifiedObjectClass.setMayNamesList( newMays.toArray( new String[0] ) );
@@ -650,7 +805,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         super( editor, ID, TITLE );
         schemaHandler = Activator.getDefault().getSchemaHandler();
-        //        schemaHandler.addListener( this ); // TODO
+        schemaHandler.addListener( schemaHandlerListener );
     }
 
 
@@ -963,34 +1118,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
     }
 
 
-    //    /**
-    //     * Enalbes/Disables the UI fields
-    //     */
-    //    private void setFieldsEditableState()
-    //    {
-    //        if ( modifiedObjectClass.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-    //        {
-    //            // If the object class is in a core-schema file, we disable editing
-    //            aliasesButton.setEnabled( false );
-    //            oidText.setEditable( false );
-    //            descriptionText.setEditable( false );
-    //            addButtonSuperiorsTable.setEnabled( false );
-    //            removeButtonSuperiorsTable.setEnabled( false );
-    //            classTypeCombo.setEnabled( false );
-    //            obsoleteCheckbox.setEnabled( false );
-    //            addButtonMandatoryTable.setEnabled( false );
-    //            removeButtonMandatoryTable.setEnabled( false );
-    //            addButtonOptionalTable.setEnabled( false );
-    //            removeButtonOptionalTable.setEnabled( false );
-    //        }
-    //        else
-    //        {
-    //            removeButtonSuperiorsTable.setEnabled( superiorsTable.getSelectionIndex() != -1 );
-    //            removeButtonMandatoryTable.setEnabled( mandatoryAttributesTable.getSelectionIndex() != -1 );
-    //            removeButtonOptionalTable.setEnabled( optionalAttributesTable.getSelectionIndex() != -1 );
-    //        }
-    //    }
-
     /**
      * Adds listeners to UI fields
      */
@@ -1056,22 +1183,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         removeListeners();
         fillInUiFields();
         addListeners();
-//        setFieldsEditableState();
     }
-
-
-//    /* (non-Javadoc)
-//     * @see org.apache.directory.studio.schemas.model.PoolListener#poolChanged(org.apache.directory.studio.schemas.model.SchemaPool, org.apache.directory.studio.schemas.model.LDAPModelEvent)
-//     */
-//    public void poolChanged( SchemaPool p, LDAPModelEvent e )
-//    {
-//        removeListeners();
-//        fillInSuperiorsTable();
-//        fillInMandatoryAttributesTable();
-//        fillInOptionalAttributesTable();
-//        addListeners();
-//        setFieldsEditableState();
-//    }
 
 
     /* (non-Javadoc)
@@ -1079,7 +1191,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     public void dispose()
     {
-//        schemaPool.removeListener( this );
+        schemaHandler.removeListener( schemaHandlerListener );
         removeListeners();
 
         super.dispose();
