@@ -56,7 +56,7 @@ public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSch
     }
 
 
-    public Comparator getComparator() throws NamingException
+    public Comparator<?> getComparator() throws NamingException
     {
         // TODO Auto-generated method stub
         return null;
