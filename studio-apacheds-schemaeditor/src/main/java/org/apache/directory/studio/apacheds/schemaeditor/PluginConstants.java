@@ -43,6 +43,9 @@ public interface PluginConstants
     public static final String IMG_OBJECT_CLASS = "resources/icons/object_class.gif";
     public static final String IMG_OBJECT_CLASS_NEW = "resources/icons/object_class_new.gif";
     public static final String IMG_OBJECT_CLASS_NEW_WIZARD = "resources/icons/object_class_new_wizard.png";
+    public static final String IMG_PROBLEMS_ERROR = "resources/icons/problems_error.gif";
+    public static final String IMG_PROBLEMS_GROUP = "resources/icons/problems_group.gif";
+    public static final String IMG_PROBLEMS_WARNING = "resources/icons/problems_warning.gif";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
 
