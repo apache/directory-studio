@@ -42,7 +42,7 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
 
     /** The object OID */
     private String objectOid;
-    
+
     /** The name of the superior */
     private String superiorName;
 
@@ -79,7 +79,8 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     {
         super.setNames( names );
     }
-    
+
+
     /* (non-Javadoc)
      * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#getOid()
      */
@@ -326,5 +327,207 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     public MatchingRule getSubstr() throws NamingException
     {
         return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof AttributeTypeImpl )
+        {
+            AttributeTypeImpl at = ( AttributeTypeImpl ) obj;
+
+            // OID
+            if ( ( getOid() == null ) && ( at.getOid() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getOid() != null ) && ( at.getOid() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getOid() != null ) && ( at.getOid() != null ) )
+            {
+                if ( !getOid().equals( at.getOid() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Aliases
+            if ( ( getNames() == null ) && ( at.getNames() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getNames() != null ) && ( at.getNames() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getNames() != null ) && ( at.getNames() != null ) )
+            {
+                if ( !getNames().equals( at.getNames() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Description
+            if ( ( getDescription() == null ) && ( at.getDescription() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getDescription() != null ) && ( at.getDescription() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getDescription() != null ) && ( at.getDescription() != null ) )
+            {
+                if ( !getDescription().equals( at.getDescription() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Superior
+            if ( ( getSuperiorName() == null ) && ( at.getSuperiorName() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getSuperiorName() != null ) && ( at.getSuperiorName() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getSuperiorName() != null ) && ( at.getSuperiorName() != null ) )
+            {
+                if ( !getSuperiorName().equals( at.getSuperiorName() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Usage
+            if ( ( getUsage() == null ) && ( at.getUsage() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getUsage() != null ) && ( at.getUsage() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getUsage() != null ) && ( at.getUsage() != null ) )
+            {
+                if ( !getUsage().equals( at.getUsage() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Syntax
+            if ( ( getSyntaxOid() == null ) && ( at.getSyntaxOid() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getSyntaxOid() != null ) && ( at.getSyntaxOid() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getSyntaxOid() != null ) && ( at.getSyntaxOid() != null ) )
+            {
+                if ( !getSyntaxOid().equals( at.getSyntaxOid() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Syntax length
+            if ( getLength() != at.getLength() )
+            {
+                return false;
+            }
+
+            // Obsolete
+            if ( isObsolete() != at.isObsolete() )
+            {
+                return false;
+            }
+
+            // Single value
+            if ( isSingleValue() != at.isSingleValue() )
+            {
+                return false;
+            }
+
+            // Collective
+            if ( isCollective() != at.isCollective() )
+            {
+                return false;
+            }
+
+            // No User Modification
+            if ( isCanUserModify() != at.isCanUserModify() )
+            {
+                return false;
+            }
+
+            // Equality matching rule
+            if ( ( getEqualityName() == null ) && ( at.getEqualityName() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getEqualityName() != null ) && ( at.getEqualityName() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getEqualityName() != null ) && ( at.getEqualityName() != null ) )
+            {
+                if ( !getEqualityName().equals( at.getEqualityName() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Ordering matching rule
+            if ( ( getOrderingName() == null ) && ( at.getOrderingName() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getOrderingName() != null ) && ( at.getOrderingName() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getOrderingName() != null ) && ( at.getOrderingName() != null ) )
+            {
+                if ( !getOrderingName().equals( at.getOrderingName() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Substring matching rule
+            if ( ( getSubstrName() == null ) && ( at.getSubstrName() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getSubstrName() != null ) && ( at.getSubstrName() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getSubstrName() != null ) && ( at.getSubstrName() != null ) )
+            {
+                if ( !getSubstrName().equals( at.getSubstrName() ) )
+                {
+                    return false;
+                }
+            }
+
+            // If we've reached here, the two objects are equal.
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

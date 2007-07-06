@@ -234,4 +234,137 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     {
         return null;
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ObjectClassImpl )
+        {
+            ObjectClassImpl oc = ( ObjectClassImpl ) obj;
+
+            // OID
+            if ( ( getOid() == null ) && ( oc.getOid() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getOid() != null ) && ( oc.getOid() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getOid() != null ) && ( oc.getOid() != null ) )
+            {
+                if ( !getOid().equals( oc.getOid() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Aliases
+            if ( ( getNames() == null ) && ( oc.getNames() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getNames() != null ) && ( oc.getNames() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getNames() != null ) && ( oc.getNames() != null ) )
+            {
+                if ( !getNames().equals( oc.getNames() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Description
+            if ( ( getDescription() == null ) && ( oc.getDescription() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getDescription() != null ) && ( oc.getDescription() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getDescription() != null ) && ( oc.getDescription() != null ) )
+            {
+                if ( !getDescription().equals( oc.getDescription() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Superiors
+            if ( ( getSuperClassesNames() == null ) && ( oc.getSuperClassesNames() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getSuperClassesNames() != null ) && ( oc.getSuperClassesNames() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getSuperClassesNames() != null ) && ( oc.getSuperClassesNames() != null ) )
+            {
+                if ( !getSuperClassesNames().equals( oc.getSuperClassesNames() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Type
+            if ( getType() != oc.getType() )
+            {
+                return false;
+            }
+
+            // Obsolete
+            if ( isObsolete() != oc.isObsolete() )
+            {
+                return false;
+            }
+
+            // Mandatory attributes
+            if ( ( getMustNamesList() == null ) && ( oc.getMustNamesList() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getMustNamesList() != null ) && ( oc.getMustNamesList() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getMustNamesList() != null ) && ( oc.getMustNamesList() != null ) )
+            {
+                if ( !getMustNamesList().equals( oc.getMustNamesList() ) )
+                {
+                    return false;
+                }
+            }
+
+            // Optional attributes
+            if ( ( getMayNamesList() == null ) && ( oc.getMayNamesList() != null ) )
+            {
+                return false;
+            }
+            else if ( ( getMayNamesList() != null ) && ( oc.getMayNamesList() == null ) )
+            {
+                return false;
+            }
+            else if ( ( getMayNamesList() != null ) && ( oc.getMayNamesList() != null ) )
+            {
+                if ( !getMayNamesList().equals( oc.getMayNamesList() ) )
+                {
+                    return false;
+                }
+            }
+
+            // If we've reached here, the two objects are equal.
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
