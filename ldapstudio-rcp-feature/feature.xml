@@ -4,6 +4,9 @@
       label="LDAP Studio RCP"
       version="0.7.1"
       provider-name="Apache Software Foundation"
+      os="linux,macosx,win32"
+      ws="carbon,gtk,win32"
+      arch="ppc,x86,x86_64"
       image="ldapstudio.png">
 
    <description>
@@ -226,8 +229,8 @@ of your accepting any such warranty or additional liability.
          install-size="0"
          version="0.7.0"
          unpack="false"/>
-         
-	<plugin
+
+   <plugin
          id="org.apache.directory.ldapstudio.help"
          download-size="0"
          install-size="0"
