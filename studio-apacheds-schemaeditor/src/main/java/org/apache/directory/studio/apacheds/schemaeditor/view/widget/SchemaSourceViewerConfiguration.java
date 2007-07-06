@@ -46,7 +46,7 @@ public class SchemaSourceViewerConfiguration extends SourceViewerConfiguration
         reconciler.setDocumentPartitioning( getConfiguredDocumentPartitioning( sourceViewer ) );
 
         // Creating the damager/repairer for code
-        DefaultDamagerRepairer dr = new DefaultDamagerRepairer( Activator.getSchemaCodeScanner() );
+        DefaultDamagerRepairer dr = new DefaultDamagerRepairer( Activator.getDefault().getSchemaCodeScanner() );
         reconciler.setDamager( dr, IDocument.DEFAULT_CONTENT_TYPE );
         reconciler.setRepairer( dr, IDocument.DEFAULT_CONTENT_TYPE );
 

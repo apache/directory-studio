@@ -38,7 +38,7 @@ public class FakeLoader
         at1.setSchema( schema1.getName() );
         schema1.addAttributeType( at1 );
         
-        AttributeTypeImpl at2 = new AttributeTypeImpl("1.2.3.4.2");
+        AttributeTypeImpl at2 = new AttributeTypeImpl("1.2.3.4.1");
         at2.setNames( new String[] { "at2", "attributeType2" } );
         at2.setSchema( schema1.getName() );
         schema1.addAttributeType( at2 );

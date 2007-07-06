@@ -21,10 +21,9 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
@@ -63,18 +62,18 @@ public class SchemaHandler
     private List<SyntaxImpl> syntaxesList;
 
     //
-    // The Maps (for fast searching)
+    // The MultiMap (for fast searching)
     //
-    /** The schemas Map */
-    private Map<String, Schema> schemasMap;
-    /** The attribute types Map */
-    private Map<String, AttributeTypeImpl> attributeTypesMap;
-    /** The matching rules Map */
-    private Map<String, MatchingRuleImpl> matchingRulesMap;
-    /** The object classes Map */
-    private Map<String, ObjectClassImpl> objectClassesMap;
-    /** The syntaxes Map */
-    private Map<String, SyntaxImpl> syntaxesMap;
+    /** The schemas MultiMap */
+    private MultiMap schemasMap;
+    /** The attribute types MultiMap */
+    private MultiMap attributeTypesMap;
+    /** The matching rules MultiMap */
+    private MultiMap matchingRulesMap;
+    /** The object classes MultiMap */
+    private MultiMap objectClassesMap;
+    /** The syntaxes MultiMap */
+    private MultiMap syntaxesMap;
 
     //
     // The Listeners Lists
@@ -98,11 +97,11 @@ public class SchemaHandler
         syntaxesList = new ArrayList<SyntaxImpl>();
 
         // Maps
-        schemasMap = new HashMap<String, Schema>();
-        attributeTypesMap = new HashMap<String, AttributeTypeImpl>();
-        matchingRulesMap = new HashMap<String, MatchingRuleImpl>();
-        objectClassesMap = new HashMap<String, ObjectClassImpl>();
-        syntaxesMap = new HashMap<String, SyntaxImpl>();
+        schemasMap = new MultiValueMap();
+        attributeTypesMap = new MultiValueMap();
+        matchingRulesMap = new MultiValueMap();
+        objectClassesMap = new MultiValueMap();
+        syntaxesMap = new MultiValueMap();
 
         // Listeners
         schemaHandlerListeners = new ArrayList<SchemaHandlerListener>();
@@ -199,7 +198,30 @@ public class SchemaHandler
      */
     public AttributeTypeImpl getAttributeType( String id )
     {
-        return attributeTypesMap.get( id.toLowerCase() );
+        List<?> list = getAttributeTypeList( id.toLowerCase() );
+
+        if ( ( list != null ) && ( list.size() >= 1 ) )
+        {
+            return ( AttributeTypeImpl ) list.get( 0 );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Get the attribute type(s) List identified by an OID, or an alias.
+     *
+     * @param id
+     *      an OID or an alias
+     * @return
+     *      the corresponding attribute type(s) List or null if no one is found
+     */
+    public List<?> getAttributeTypeList( String id )
+    {
+        return ( List<?> ) attributeTypesMap.get( id.toLowerCase() );
     }
 
 
@@ -213,7 +235,30 @@ public class SchemaHandler
      */
     public MatchingRuleImpl getMatchingRule( String id )
     {
-        return matchingRulesMap.get( id.toLowerCase() );
+        List<?> list = getMatchingRuleList( id.toLowerCase() );
+
+        if ( ( list != null ) && ( list.size() >= 1 ) )
+        {
+            return ( MatchingRuleImpl ) list.get( 0 );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Gets a matching rule(s) List identified by an OID, or an alias.
+     *
+     * @param id
+     *      an OID or an alias
+     * @return
+     *      the corresponding matching rule(s) List, or null if no one is found
+     */
+    public List<?> getMatchingRuleList( String id )
+    {
+        return ( List<?> ) matchingRulesMap.get( id.toLowerCase() );
     }
 
 
@@ -227,7 +272,30 @@ public class SchemaHandler
      */
     public ObjectClassImpl getObjectClass( String id )
     {
-        return objectClassesMap.get( id.toLowerCase() );
+        List<?> list = getObjectClassList( id.toLowerCase() );
+
+        if ( ( list != null ) && ( list.size() >= 1 ) )
+        {
+            return ( ObjectClassImpl ) list.get( 0 );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Gets an object class(es) List identified by an OID, or an alias.
+     *
+     * @param id
+     *      an OID or an alias
+     * @return
+     *      the corresponding object class(es) List, or null if no one is found
+     */
+    public List<?> getObjectClassList( String id )
+    {
+        return ( List<?> ) objectClassesMap.get( id.toLowerCase() );
     }
 
 
@@ -241,7 +309,30 @@ public class SchemaHandler
      */
     public Schema getSchema( String name )
     {
-        return schemasMap.get( name.toLowerCase() );
+        List<?> list = getSchemaList( name.toLowerCase() );
+
+        if ( ( list != null ) && ( list.size() >= 1 ) )
+        {
+            return ( Schema ) list.get( 0 );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Gets a schema(s) List identified by a name.
+     *
+     * @param name
+     *      a name
+     * @return
+     *      the corresponding schema(s) List, or null if no one is found
+     */
+    public List<?> getSchemaList( String name )
+    {
+        return ( List<?> ) schemasMap.get( name.toLowerCase() );
     }
 
 
@@ -255,7 +346,30 @@ public class SchemaHandler
      */
     public SyntaxImpl getSyntax( String id )
     {
-        return syntaxesMap.get( id.toLowerCase() );
+        List<?> list = getSyntaxList( id.toLowerCase() );
+
+        if ( ( list != null ) && ( list.size() >= 1 ) )
+        {
+            return ( SyntaxImpl ) list.get( 0 );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Gets a syntax(es) List identified by an OID, or an alias.
+     *
+     * @param id
+     *      an OID or an alias
+     * @return
+     *      the corresponding syntax(es) List, or null if no one is found
+     */
+    public List<?> getSyntaxList( String id )
+    {
+        return ( List<?> ) syntaxesMap.get( id.toLowerCase() );
     }
 
 

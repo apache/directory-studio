@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.schemaeditor;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
 import org.eclipse.jface.text.rules.ITokenScanner;
@@ -43,13 +44,16 @@ public class Activator extends AbstractUIPlugin
     private static Activator plugin;
 
     /** the Schema Code Scanner */
-    private static ITokenScanner schemaCodeScanner;
+    private ITokenScanner schemaCodeScanner;
 
     /** The Schema Text Attribute Provider */
-    private static SchemaTextAttributeProvider schemaTextAttributeProvider;
+    private SchemaTextAttributeProvider schemaTextAttributeProvider;
 
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
+
+    /** The SchemaCheker */
+    private SchemaChecker schemaChecker;
 
 
     /**
@@ -59,6 +63,7 @@ public class Activator extends AbstractUIPlugin
     {
         plugin = this;
         schemaHandler = SchemaHandler.getInstance();
+        schemaChecker = new SchemaChecker();
     }
 
 
@@ -70,7 +75,9 @@ public class Activator extends AbstractUIPlugin
     {
         super.start( context );
 
-        FakeLoader.loadSchemas();
+        FakeLoader.loadSchemas(); // TODO Remove after testing
+
+        schemaChecker.enableModificationsListening();
     }
 
 
@@ -109,12 +116,24 @@ public class Activator extends AbstractUIPlugin
 
 
     /**
+     * Gets the SchemaChecker
+     *
+     * @return
+     *      the SchemaChecker
+     */
+    public SchemaChecker getSchemaChecker()
+    {
+        return schemaChecker;
+    }
+
+
+    /**
      * Returns the Schema Code Scanner.
      *
      * @return
      *      the Schema Code Scanner
      */
-    public static ITokenScanner getSchemaCodeScanner()
+    public ITokenScanner getSchemaCodeScanner()
     {
         if ( schemaCodeScanner == null )
         {
@@ -131,7 +150,7 @@ public class Activator extends AbstractUIPlugin
      * @return
      *     the Schema Text Attribute Provider 
      */
-    private static SchemaTextAttributeProvider getSchemaTextAttributeProvider()
+    private SchemaTextAttributeProvider getSchemaTextAttributeProvider()
     {
         if ( schemaTextAttributeProvider == null )
         {
