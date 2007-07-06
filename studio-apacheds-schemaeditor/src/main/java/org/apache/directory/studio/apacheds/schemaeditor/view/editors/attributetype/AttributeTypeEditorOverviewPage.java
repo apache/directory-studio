@@ -93,104 +93,130 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     /** The SchemaHandler Listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerListener()
     {
-
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
         public void attributeTypeAdded( AttributeTypeImpl at )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
         public void attributeTypeModified( AttributeTypeImpl at )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
         public void attributeTypeRemoved( AttributeTypeImpl at )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#matchingRuleAdded(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
+         */
         public void matchingRuleAdded( MatchingRuleImpl mr )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#matchingRuleModified(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
+         */
         public void matchingRuleModified( MatchingRuleImpl mr )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#matchingRuleRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
+         */
         public void matchingRuleRemoved( MatchingRuleImpl mr )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
         public void objectClassAdded( ObjectClassImpl oc )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
         public void objectClassModified( ObjectClassImpl oc )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
         public void objectClassRemoved( ObjectClassImpl oc )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#schemaAdded(org.apache.directory.studio.apacheds.schemaeditor.model.Schema)
+         */
         public void schemaAdded( Schema schema )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#schemaRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.Schema)
+         */
         public void schemaRemoved( Schema schema )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#syntaxAdded(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
+         */
         public void syntaxAdded( SyntaxImpl syntax )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#syntaxModified(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
+         */
         public void syntaxModified( SyntaxImpl syntax )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
 
 
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#syntaxRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
+         */
         public void syntaxRemoved( SyntaxImpl syntax )
         {
-            // TODO Auto-generated method stub
-
+            refreshUI();
         }
-
     };
 
     // UI Fields
@@ -491,7 +517,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            modifiedAttributeType.setCanUserModify( noUserModificationCheckbox.getSelection() ); // TODO
+            modifiedAttributeType.setCanUserModify( !noUserModificationCheckbox.getSelection() );
             setEditorDirty();
         }
     };
@@ -591,7 +617,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         super( editor, ID, TITLE );
         schemaHandler = Activator.getDefault().getSchemaHandler();
-        //        schemaHandler.addListener( this ); // TODO
+        schemaHandler.addListener( schemaHandlerListener );
     }
 
 
@@ -844,7 +870,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         collectiveCheckbox.setSelection( modifiedAttributeType.isCollective() );
 
         // NO-USER-MODIFICATION Checkbox
-        noUserModificationCheckbox.setSelection( modifiedAttributeType.isCanUserModify() );
+        noUserModificationCheckbox.setSelection( !modifiedAttributeType.isCanUserModify() );
 
         // EQUALITY Combo
         fillEqualityCombo();
@@ -1160,7 +1186,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     public void dispose()
     {
-        //        schemaHandler.removeListener( this ); //TODO
+        schemaHandler.removeListener( schemaHandlerListener );
         removeListeners();
         super.dispose();
     }

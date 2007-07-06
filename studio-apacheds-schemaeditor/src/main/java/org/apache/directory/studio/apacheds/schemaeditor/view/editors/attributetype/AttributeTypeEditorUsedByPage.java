@@ -338,8 +338,14 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     public void refreshTableViewers()
     {
-        mandatoryAttributeTableViewer.refresh();
-        optionalAttibuteTableViewer.refresh();
+        if ( mandatoryAttributeTableViewer != null )
+        {
+            mandatoryAttributeTableViewer.refresh();
+        }
+        if ( optionalAttibuteTableViewer != null )
+        {
+            optionalAttibuteTableViewer.refresh();
+        }
     }
 
 

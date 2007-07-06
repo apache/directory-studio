@@ -62,7 +62,6 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public ImageDescriptor getImageDescriptor()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
