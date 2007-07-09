@@ -19,23 +19,17 @@
  */
 package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
 
-
-import org.apache.directory.shared.ldap.schema.SchemaObject;
-
-
 /**
- * Common interface for all the schema warnings.
+ * Classes which implement this interface provide methods that deal with the 
+ * events that are generated when an event occurrs on the SchemaChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface SchemaWarning
+public interface SchemaCheckerListener
 {
     /**
-     * Gets the source object.
-     * 
-     * @return
-     *      the source object
+     * This methods is called when the SchemaChecker is updated.
      */
-    public SchemaObject getSource();
+    public void schemaCheckerUpdated();
 }

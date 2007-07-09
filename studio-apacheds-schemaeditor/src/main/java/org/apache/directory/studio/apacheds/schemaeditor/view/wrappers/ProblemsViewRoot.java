@@ -17,25 +17,22 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
-
-
-import org.apache.directory.shared.ldap.schema.SchemaObject;
+package org.apache.directory.studio.apacheds.schemaeditor.view.wrappers;
 
 
 /**
- * Common interface for all the schema warnings.
+ * This wrapper is used as root in the Problems View.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface SchemaWarning
+public class ProblemsViewRoot extends AbstractTreeNode
 {
     /**
-     * Gets the source object.
-     * 
-     * @return
-     *      the source object
+     * Creates a new instance of ProblemsViewRoot.
      */
-    public SchemaObject getSource();
+    public ProblemsViewRoot()
+    {
+        super( null );
+    }
 }

@@ -24,38 +24,32 @@ import org.apache.directory.shared.ldap.schema.SchemaObject;
 
 
 /**
- * This class represents the DuplicateOidError.
+ * This class represents the NonExistingMandatoryATError.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DuplicateOidError implements SchemaError
+public class NonExistingMandatoryATError implements SchemaError
 {
     /** The source object */
     private SchemaObject source;
 
-    /** The duplicated OID */
-    private String oid;
-
-    /** The duplicate */
-    private SchemaObject duplicate;
+    /** The mandatory attribute type's alias */
+    private String alias;
 
 
     /**
-     * Creates a new instance of DuplicateAliasError.
+     * Creates a new instance of NonExistingMandatoryATError.
      *
      * @param source
      *      the source object
-     * @param oid
-     *      the duplicated alias
-     * @param duplicate
-     *      the duplicate object
+     * @param alias
+     *      the mandatory attribute type's alias
      */
-    public DuplicateOidError( SchemaObject source, String oid, SchemaObject duplicate )
+    public NonExistingMandatoryATError( SchemaObject source, String alias )
     {
         this.source = source;
-        this.oid = oid;
-        this.duplicate = duplicate;
+        this.alias = alias;
     }
 
 
@@ -69,26 +63,14 @@ public class DuplicateOidError implements SchemaError
 
 
     /**
-     * Gets the duplicated OID.
+     * Gets the mandatory attribute type's alias.
      * 
      * @return
-     *      the duplicated OID
+     *      the mandatory attribute type's alias
      */
-    public String getOid()
+    public String getAlias()
     {
-        return oid;
-    }
-
-
-    /**
-     * Gets the duplicate object.
-     *
-     * @return
-     *      the duplicate object
-     */
-    public SchemaObject getDuplicate()
-    {
-        return duplicate;
+        return alias;
     }
 
 
@@ -97,7 +79,6 @@ public class DuplicateOidError implements SchemaError
      */
     public String toString()
     {
-        return "[DuplicateOidError - Source: " + getSource() + " - OID: " + getOid() + " - Duplicate: "
-            + getDuplicate() + "]";
+        return "[NonExistingMandatoryATError - Source: " + getSource() + " - alias: " + getAlias() + "]";
     }
 }

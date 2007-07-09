@@ -20,6 +20,9 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
 
 
+import org.apache.directory.shared.ldap.schema.SchemaObject;
+
+
 /**
  * Common interface for the all the schema errors.
  *
@@ -28,4 +31,11 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
  */
 public interface SchemaError
 {
+    /**
+     * Gets the source object.
+     * 
+     * @return
+     *      the source object
+     */
+    public SchemaObject getSource();
 }

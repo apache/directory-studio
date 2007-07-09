@@ -29,12 +29,11 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingMatchingRuleError.NonExistingMatchingRuleErrorEnum;
 
 
@@ -66,107 +65,78 @@ public class SchemaChecker
     /** The 'listening to modifications' flag*/
     private boolean listeningToModifications = false;
 
+    /** The listeners List */
+    private List<SchemaCheckerListener> listeners;
+
     /** The SchemaHandlerListener */
-    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerListener()
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
         public void attributeTypeAdded( AttributeTypeImpl at )
         {
-            // TODO Auto-generated method stub
-            System.out.println( "AT Added" );
             checkAttributeType( at );
         }
 
 
         public void attributeTypeModified( AttributeTypeImpl at )
         {
-            // TODO Auto-generated method stub
-
+            checkAttributeType( at );
         }
 
 
         public void attributeTypeRemoved( AttributeTypeImpl at )
         {
-            // TODO Auto-generated method stub
-
-        }
-
-
-        public void matchingRuleAdded( MatchingRuleImpl mr )
-        {
-            // TODO Auto-generated method stub
-
-        }
-
-
-        public void matchingRuleModified( MatchingRuleImpl mr )
-        {
-            // TODO Auto-generated method stub
-
-        }
-
-
-        public void matchingRuleRemoved( MatchingRuleImpl mr )
-        {
-            // TODO Auto-generated method stub
-
+            removeSchemaObject( at );
         }
 
 
         public void objectClassAdded( ObjectClassImpl oc )
         {
-            // TODO Auto-generated method stub
-
+            checkObjectClass( oc );
         }
 
 
         public void objectClassModified( ObjectClassImpl oc )
         {
-            // TODO Auto-generated method stub
-
+            checkObjectClass( oc );
         }
 
 
         public void objectClassRemoved( ObjectClassImpl oc )
         {
-            // TODO Auto-generated method stub
-
+            removeSchemaObject( oc );
         }
 
 
         public void schemaAdded( Schema schema )
         {
-            // TODO Auto-generated method stub
+            List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+            for ( AttributeTypeImpl at : ats )
+            {
+                checkAttributeType( at );
+            }
 
+            List<ObjectClassImpl> ocs = schema.getObjectClasses();
+            for ( ObjectClassImpl oc : ocs )
+            {
+                checkObjectClass( oc );
+            }
         }
 
 
         public void schemaRemoved( Schema schema )
         {
-            // TODO Auto-generated method stub
+            List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+            for ( AttributeTypeImpl at : ats )
+            {
+                removeSchemaObject( at );
+            }
 
+            List<ObjectClassImpl> ocs = schema.getObjectClasses();
+            for ( ObjectClassImpl oc : ocs )
+            {
+                removeSchemaObject( oc );
+            }
         }
-
-
-        public void syntaxAdded( SyntaxImpl syntax )
-        {
-            // TODO Auto-generated method stub
-
-        }
-
-
-        public void syntaxModified( SyntaxImpl syntax )
-        {
-            // TODO Auto-generated method stub
-
-        }
-
-
-        public void syntaxRemoved( SyntaxImpl syntax )
-        {
-            // TODO Auto-generated method stub
-
-        }
-
     };
 
 
@@ -180,6 +150,7 @@ public class SchemaChecker
         errorsMap = new MultiValueMap();
         warningsList = new ArrayList<SchemaWarning>();
         warningsMap = new MultiValueMap();
+        listeners = new ArrayList<SchemaCheckerListener>();
     }
 
 
@@ -268,7 +239,7 @@ public class SchemaChecker
      */
     private void checkAttributeType( AttributeTypeImpl at )
     {
-        removeSchemaObject( at );
+        removeSchemaObject( at, false );
 
         // Checking OID
         String oid = at.getOid();
@@ -292,7 +263,13 @@ public class SchemaChecker
 
         // Checking aliases
         String[] aliases = at.getNames();
-        if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        if ( ( aliases == null ) || ( aliases.length == 0 ) )
+        {
+            SchemaWarning warning = new NoAliasWarning( at );
+            warningsList.add( warning );
+            warningsMap.put( at, warning );
+        }
+        else if ( ( aliases != null ) && ( aliases.length >= 1 ) )
         {
             for ( String alias : aliases )
             {
@@ -375,6 +352,8 @@ public class SchemaChecker
                 errorsMap.put( at, error );
             }
         }
+
+        notifyListeners();
     }
 
 
@@ -386,7 +365,7 @@ public class SchemaChecker
      */
     private void checkObjectClass( ObjectClassImpl oc )
     {
-        removeSchemaObject( oc );
+        removeSchemaObject( oc, false );
 
         // Checking OID
         String oid = oc.getOid();
@@ -410,7 +389,13 @@ public class SchemaChecker
 
         // Checking aliases
         String[] aliases = oc.getNames();
-        if ( ( aliases != null ) && ( aliases.length >= 1 ) )
+        if ( ( aliases == null ) || ( aliases.length == 0 ) )
+        {
+            SchemaWarning warning = new NoAliasWarning( oc );
+            warningsList.add( warning );
+            warningsMap.put( oc, warning );
+        }
+        else if ( ( aliases != null ) && ( aliases.length >= 1 ) )
         {
             for ( String alias : aliases )
             {
@@ -462,9 +447,27 @@ public class SchemaChecker
                     errorsList.add( error );
                     errorsMap.put( oc, error );
                 }
+
+                if ( schemaHandler.getAttributeType( mandatoryAT ) == null )
+                {
+                    SchemaError error = new NonExistingMandatoryATError( oc, mandatoryAT );
+                    errorsList.add( error );
+                    errorsMap.put( oc, error );
+                }
             }
 
+            for ( String optionalAT : optionalATsList )
+            {
+                if ( schemaHandler.getAttributeType( optionalAT ) == null )
+                {
+                    SchemaError error = new NonExistingOptionalATError( oc, optionalAT );
+                    errorsList.add( error );
+                    errorsMap.put( oc, error );
+                }
+            }
         }
+
+        notifyListeners();
     }
 
 
@@ -475,6 +478,20 @@ public class SchemaChecker
      *      a schema element
      */
     private void removeSchemaObject( SchemaObject element )
+    {
+        removeSchemaObject( element, true );
+    }
+
+
+    /**
+     * Remove the errors and warnings for the given schema element.
+     *
+     * @param element
+     *      a schema element
+     * @param notify
+     *      true if the listeners needs to be notified
+     */
+    private void removeSchemaObject( SchemaObject element, boolean notify )
     {
         // Removing old errors and warnings
         List<?> errors = ( List<?> ) errorsMap.get( element );
@@ -556,5 +573,44 @@ public class SchemaChecker
     public List<SchemaWarning> getWarnings()
     {
         return warningsList;
+    }
+
+
+    /**
+     * Adds a SchemaCheckerListener.
+     *
+     * @param listener
+     *      the listener
+     */
+    public void addListener( SchemaCheckerListener listener )
+    {
+        if ( !listeners.contains( listener ) )
+        {
+            listeners.add( listener );
+        }
+    }
+
+
+    /**
+     * Removes a SchemaCheckerListener.
+     *
+     * @param listener
+     *      the listener
+     */
+    public void removeListener( SchemaCheckerListener listener )
+    {
+        listeners.remove( listener );
+    }
+
+
+    /**
+     * Notifies the listeners.
+     */
+    private void notifyListeners()
+    {
+        for ( SchemaCheckerListener listener : listeners )
+        {
+            listener.schemaCheckerUpdated();
+        }
     }
 }

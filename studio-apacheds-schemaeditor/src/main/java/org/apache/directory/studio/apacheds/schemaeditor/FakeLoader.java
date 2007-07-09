@@ -47,6 +47,8 @@ public class FakeLoader
         oc1.setNames(new String[] { "oc1", "objectClass1" } );
         oc1.setSchema( schema1.getName() );
         schema1.addObjectClass( oc1 );
+        oc1.setMayNamesList( new String[] { "nonexistingAT", "at1" } );
+        oc1.setMustNamesList( new String[] { "at1" } );
         
         schemaHandler.addSchema( schema1 );
         schemaHandler.addListener( new SchemaHandlerAdapter(){

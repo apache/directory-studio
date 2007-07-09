@@ -17,7 +17,7 @@ public class Folder extends AbstractTreeNode
      */
     public enum FolderType
     {
-        NONE, ATTRIBUTE_TYPE, OBJECT_CLASS
+        NONE, ATTRIBUTE_TYPE, OBJECT_CLASS, ERROR, WARNING
     }
 
     /** The type of the Folder */
@@ -25,9 +25,11 @@ public class Folder extends AbstractTreeNode
 
     /** The name of the Folder */
     private String name = "";
-    
+
     private static final String NAME_AT = "Attribute Types";
     private static final String NAME_OC = "Object Classes";
+    private static final String NAME_ERROR = "Errors";
+    private static final String NAME_WARNING = "Warnings";
 
 
     /**
@@ -42,7 +44,7 @@ public class Folder extends AbstractTreeNode
     {
         super( parent );
         this.type = type;
-        
+
         switch ( type )
         {
             case ATTRIBUTE_TYPE:
@@ -50,6 +52,12 @@ public class Folder extends AbstractTreeNode
                 break;
             case OBJECT_CLASS:
                 name = NAME_OC;
+                break;
+            case ERROR:
+                name = NAME_ERROR;
+                break;
+            case WARNING:
+                name = NAME_WARNING;
                 break;
         }
     }

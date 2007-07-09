@@ -68,11 +68,8 @@ public class NonExistingMatchingRuleError implements SchemaError
     }
 
 
-    /**
-     * Gets the source object.
-     * 
-     * @return
-     *      the source object
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaError#getSource()
      */
     public SchemaObject getSource()
     {

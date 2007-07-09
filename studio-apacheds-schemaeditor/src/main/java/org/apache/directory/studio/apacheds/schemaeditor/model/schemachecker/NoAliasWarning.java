@@ -22,20 +22,35 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
 
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 
-
 /**
- * Common interface for all the schema warnings.
+ * This class represents the NoAliasWarning.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface SchemaWarning
+public class NoAliasWarning implements SchemaWarning
 {
+    /** The source object */
+    private SchemaObject source;
+
+
     /**
-     * Gets the source object.
-     * 
-     * @return
+     * Creates a new instance of NoAliasWarning.
+     *
+     * @param source
      *      the source object
      */
-    public SchemaObject getSource();
+    public NoAliasWarning( SchemaObject source )
+    {
+        this.source = source;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaWarning#getSource()
+     */
+    public SchemaObject getSource()
+    {
+        return source;
+    }
 }

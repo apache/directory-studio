@@ -59,11 +59,8 @@ public class DuplicateAliasError implements SchemaError
     }
 
 
-    /**
-     * Gets the source object.
-     * 
-     * @return
-     *      the source object
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaError#getSource()
      */
     public SchemaObject getSource()
     {

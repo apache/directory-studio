@@ -20,6 +20,14 @@
 -->
 <plugin>
 	<extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.Perspective"
+            icon="resources/icons/schemaeditor_perspective.gif"
+            id="org.apache.directory.studio.apacheds.schemaeditor.perspective"
+            name="Schema Editor"/>
+   </extension>
+	<extension
          point="org.eclipse.ui.views">
       <category
             id="org.apache.directory.studio.apacheds.schemaeditor.view.category"
@@ -30,7 +38,14 @@
             class="org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView"
             icon="resources/icons/schemas_view.png"
             id="org.apache.directory.studio.apacheds.schemaeditor.view.SchemaView"
-            name="Apache DS Schema"/>
+            name="Schema"/>
+	  <view
+            allowMultiple="false"
+            category="org.apache.directory.studio.apacheds.schemaeditor.view.category"
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView"
+            icon="resources/icons/problems_view.gif"
+            id="org.apache.directory.studio.apacheds.schemaeditor.view.ProblemsView"
+            name="Problems"/>
    </extension>
  <extension
        point="org.eclipse.core.runtime.preferences">
