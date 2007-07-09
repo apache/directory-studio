@@ -20,14 +20,15 @@
 
 package org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype;
 
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;
-import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.openldapfile.SchemaExporter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -44,142 +45,162 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
+
 /**
  * This class is the Source Code Page of the Attribute Type Editor
  */
-public class AttributeTypeEditorSourceCodePage extends FormPage {
-	/** The page ID */
-	public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
+public class AttributeTypeEditorSourceCodePage extends FormPage
+{
+    /** The page ID */
+    public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
-	/** The page title */
-	public static String TITLE = "Source Code";
+    /** The page title */
+    public static String TITLE = "Source Code";
 
-	/** The modified attribute type */
-	private AttributeTypeImpl modifiedAttributeType;
+    /** The modified attribute type */
+    private AttributeTypeImpl modifiedAttributeType;
 
-	/** The Schema Source Viewer */
-	private SchemaSourceViewer schemaSourceViewer;
+    /** The Schema Source Viewer */
+    private SchemaSourceViewer schemaSourceViewer;
 
-	/** The flag to indicate if the user can leave the Source Code page */
-	private boolean canLeaveThePage = true;
+    /** The flag to indicate if the user can leave the Source Code page */
+    private boolean canLeaveThePage = true;
 
-	/** The listener of the Schema Source Editor Widget */
-	private ModifyListener schemaSourceViewerListener = new ModifyListener() {
-		public void modifyText(ModifyEvent e) {
-			canLeaveThePage = true;
-			try {
-				((AttributeTypeEditor) getEditor()).setDirty(true);
-				OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
-				parser.parse(schemaSourceViewer.getTextWidget().getText());
-				List attributeTypes = parser.getAttributeTypes();
-				if (attributeTypes.size() != 1) {
-					// Throw an exception and return
-				} else {
-					updateAttributeType((AttributeTypeLiteral) attributeTypes
-							.get(0));
-				}
-			} catch (IOException e1) {
-				canLeaveThePage = false;
-			} catch (ParseException exception) {
-				canLeaveThePage = false;
-			}
-		}
-	};
+    /** The listener of the Schema Source Editor Widget */
+    private ModifyListener schemaSourceViewerListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            canLeaveThePage = true;
+            try
+            {
+                ( ( AttributeTypeEditor ) getEditor() ).setDirty( true );
+                OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
+                parser.parse( schemaSourceViewer.getTextWidget().getText() );
+                List attributeTypes = parser.getAttributeTypes();
+                if ( attributeTypes.size() != 1 )
+                {
+                    // Throw an exception and return
+                }
+                else
+                {
+                    updateAttributeType( ( AttributeTypeLiteral ) attributeTypes.get( 0 ) );
+                }
+            }
+            catch ( IOException e1 )
+            {
+                canLeaveThePage = false;
+            }
+            catch ( ParseException exception )
+            {
+                canLeaveThePage = false;
+            }
+        }
+    };
 
-	/**
-	 * Default constructor
-	 * 
-	 * @param editor
-	 *            the associated editor
-	 */
-	public AttributeTypeEditorSourceCodePage(FormEditor editor) {
-		super(editor, ID, TITLE);
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
-	 */
-	protected void createFormContent(IManagedForm managedForm) {
-		ScrolledForm form = managedForm.getForm();
-		FormToolkit toolkit = managedForm.getToolkit();
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		form.getBody().setLayout(layout);
-		toolkit.paintBordersFor(form.getBody());
+    /**
+     * Default constructor
+     * 
+     * @param editor
+     *            the associated editor
+     */
+    public AttributeTypeEditorSourceCodePage( FormEditor editor )
+    {
+        super( editor, ID, TITLE );
+    }
 
-		modifiedAttributeType = ((AttributeTypeEditor) getEditor())
-				.getModifiedAttributeType();
 
-		// SOURCE CODE Field
-		schemaSourceViewer = new SchemaSourceViewer(form.getBody(), null, null,
-				false, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.heightHint = 10;
-		schemaSourceViewer.getTextWidget().setLayoutData(gd);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void createFormContent( IManagedForm managedForm )
+    {
+        ScrolledForm form = managedForm.getForm();
+        FormToolkit toolkit = managedForm.getToolkit();
+        GridLayout layout = new GridLayout();
+        layout.marginWidth = 0;
+        layout.marginHeight = 0;
+        form.getBody().setLayout( layout );
+        toolkit.paintBordersFor( form.getBody() );
 
-		// set text font
-		Font font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
-		schemaSourceViewer.getTextWidget().setFont(font);
+        modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
 
-		IDocument document = new Document();
-		schemaSourceViewer.setDocument(document);
+        // SOURCE CODE Field
+        schemaSourceViewer = new SchemaSourceViewer( form.getBody(), null, null, false, SWT.BORDER | SWT.H_SCROLL
+            | SWT.V_SCROLL );
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
+        gd.heightHint = 10;
+        schemaSourceViewer.getTextWidget().setLayoutData( gd );
 
-		// Initialization from the "input" attribute type
-		fillInUiFields();
+        // set text font
+        Font font = JFaceResources.getFont( JFaceResources.TEXT_FONT );
+        schemaSourceViewer.getTextWidget().setFont( font );
 
-		schemaSourceViewer.getTextWidget().addModifyListener(
-				schemaSourceViewerListener);
-	}
+        IDocument document = new Document();
+        schemaSourceViewer.setDocument( document );
 
-	/**
-	 * Fills in the User Interface.
-	 */
-	private void fillInUiFields() {
-		// SOURCE CODE Field
-		schemaSourceViewer.getDocument().set(
-				PluginUtils.toSourceCode(modifiedAttributeType));
-	}
+        // Initialization from the "input" attribute type
+        fillInUiFields();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.forms.editor.FormPage#canLeaveThePage()
-	 */
-	public boolean canLeaveThePage() {
-		return canLeaveThePage;
-	}
+        schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+    }
 
-	/**
-	 * Updates the Modified Attribute Type from the given Attribute Type
-	 * Literal.
-	 * 
-	 * @param atl
-	 *            the Attribute Type Literal
-	 */
-	private void updateAttributeType(AttributeTypeLiteral atl) {
-		modifiedAttributeType.setCanUserModify(!atl.isNoUserModification());
-		modifiedAttributeType.setCollective(atl.isCollective());
-		modifiedAttributeType.setDescription(atl.getDescription());
-		modifiedAttributeType.setEqualityName(atl.getEquality());
-		modifiedAttributeType.setLength(atl.getLength());
-		modifiedAttributeType.setNames(atl.getNames());
-		modifiedAttributeType.setObsolete(atl.isObsolete());
-		modifiedAttributeType.setOid(atl.getOid());
-		modifiedAttributeType.setOrderingName(atl.getOrdering());
-		modifiedAttributeType.setSingleValue(atl.isSingleValue());
-		modifiedAttributeType.setSubstrName(atl.getSubstr());
-		modifiedAttributeType.setSuperiorName(atl.getSuperior());
-		modifiedAttributeType.setSyntaxOid(atl.getOid());
-		modifiedAttributeType.setUsage(atl.getUsage());
-	}
 
-	/**
-	 * Refreshes the UI.
-	 */
-	public void refreshUI() {
-		fillInUiFields();
-	}
+    /**
+     * Fills in the User Interface.
+     */
+    private void fillInUiFields()
+    {
+        // SOURCE CODE Field
+        schemaSourceViewer.getDocument().set( SchemaExporter.toSourceCode( modifiedAttributeType ) );
+    }
+
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.forms.editor.FormPage#canLeaveThePage()
+     */
+    public boolean canLeaveThePage()
+    {
+        return canLeaveThePage;
+    }
+
+
+    /**
+     * Updates the Modified Attribute Type from the given Attribute Type
+     * Literal.
+     * 
+     * @param atl
+     *            the Attribute Type Literal
+     */
+    private void updateAttributeType( AttributeTypeLiteral atl )
+    {
+        modifiedAttributeType.setCanUserModify( !atl.isNoUserModification() );
+        modifiedAttributeType.setCollective( atl.isCollective() );
+        modifiedAttributeType.setDescription( atl.getDescription() );
+        modifiedAttributeType.setEqualityName( atl.getEquality() );
+        modifiedAttributeType.setLength( atl.getLength() );
+        modifiedAttributeType.setNames( atl.getNames() );
+        modifiedAttributeType.setObsolete( atl.isObsolete() );
+        modifiedAttributeType.setOid( atl.getOid() );
+        modifiedAttributeType.setOrderingName( atl.getOrdering() );
+        modifiedAttributeType.setSingleValue( atl.isSingleValue() );
+        modifiedAttributeType.setSubstrName( atl.getSubstr() );
+        modifiedAttributeType.setSuperiorName( atl.getSuperior() );
+        modifiedAttributeType.setSyntaxOid( atl.getOid() );
+        modifiedAttributeType.setUsage( atl.getUsage() );
+    }
+
+
+    /**
+     * Refreshes the UI.
+     */
+    public void refreshUI()
+    {
+        fillInUiFields();
+    }
 }

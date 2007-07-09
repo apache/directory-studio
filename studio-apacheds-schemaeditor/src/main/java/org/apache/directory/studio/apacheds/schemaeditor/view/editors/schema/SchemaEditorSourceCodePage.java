@@ -29,6 +29,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.openldapfile.SchemaExporter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -75,6 +76,7 @@ public class SchemaEditorSourceCodePage extends FormPage
             fillInUiFields();
         }
 
+
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#attributeTypeModified(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
          */
@@ -82,6 +84,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         {
             fillInUiFields();
         }
+
 
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#attributeTypeRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
@@ -91,6 +94,7 @@ public class SchemaEditorSourceCodePage extends FormPage
             fillInUiFields();
         }
 
+
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#matchingRuleAdded(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
          */
@@ -99,13 +103,15 @@ public class SchemaEditorSourceCodePage extends FormPage
             fillInUiFields();
         }
 
+
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#matchingRuleModified(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
          */
         public void matchingRuleModified( MatchingRuleImpl mr )
         {
-            fillInUiFields(); 
+            fillInUiFields();
         }
+
 
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#matchingRuleRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
@@ -115,6 +121,7 @@ public class SchemaEditorSourceCodePage extends FormPage
             fillInUiFields();
         }
 
+
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#objectClassAdded(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
          */
@@ -122,6 +129,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         {
             fillInUiFields();
         }
+
 
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#objectClassModified(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
@@ -131,6 +139,7 @@ public class SchemaEditorSourceCodePage extends FormPage
             fillInUiFields();
         }
 
+
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#objectClassRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
          */
@@ -138,6 +147,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         {
             fillInUiFields();
         }
+
 
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#syntaxAdded(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
@@ -147,6 +157,7 @@ public class SchemaEditorSourceCodePage extends FormPage
             fillInUiFields();
         }
 
+
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#syntaxModified(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
          */
@@ -154,6 +165,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         {
             fillInUiFields();
         }
+
 
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#syntaxRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
@@ -216,20 +228,6 @@ public class SchemaEditorSourceCodePage extends FormPage
      */
     private void fillInUiFields()
     {
-        StringBuffer sb = new StringBuffer();
-
-        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
-        {
-            sb.append( PluginUtils.toSourceCode( at ) );
-            sb.append( "\n" ); //$NON-NLS-1$
-        }
-
-        for ( ObjectClassImpl oc : schema.getObjectClasses() )
-        {
-            sb.append( PluginUtils.toSourceCode( oc ) );
-            sb.append( "\n" ); //$NON-NLS-1$
-        }
-
-        schemaSourceViewer.getDocument().set( sb.toString() );
+        schemaSourceViewer.getDocument().set( SchemaExporter.toSourceCode( schema ) );
     }
 }
