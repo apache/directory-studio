@@ -39,6 +39,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ProblemsViewLabelProvider extends LabelProvider implements ITableLabelProvider
 {
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
+     */
     public Image getColumnImage( Object element, int columnIndex )
     {
         if ( columnIndex == 0 )
@@ -65,6 +68,9 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
     }
 
 
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
+     */
     public String getColumnText( Object element, int columnIndex )
     {
         if ( element instanceof SchemaErrorWrapper )
