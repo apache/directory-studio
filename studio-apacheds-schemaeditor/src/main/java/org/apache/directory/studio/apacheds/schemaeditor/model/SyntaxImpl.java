@@ -26,54 +26,70 @@ import org.apache.directory.shared.ldap.schema.AbstractSyntax;
 import org.apache.directory.shared.ldap.schema.syntax.SyntaxChecker;
 
 
+/**
+ * This class represents a syntax.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SyntaxImpl extends AbstractSyntax
 {
     private static final long serialVersionUID = 1L;
 
 
+    /**
+     * Creates a new instance of SyntaxImpl.
+     *
+     * @param oid
+     *      the OID
+     */
     public SyntaxImpl( String oid )
     {
         super( oid );
-        // TODO Auto-generated constructor stub
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSyntax#setHumanReadible(boolean)
+     */
     public void setHumanReadible( boolean isHumanReadible )
     {
-        // TODO Auto-generated method stub
         super.setHumanReadible( isHumanReadible );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setDescription(java.lang.String)
+     */
     public void setDescription( String description )
     {
-        // TODO Auto-generated method stub
         super.setDescription( description );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setNames(java.lang.String[])
+     */
     public void setNames( String[] names )
     {
-        // TODO Auto-generated method stub
         super.setNames( names );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setObsolete(boolean)
+     */
     public void setObsolete( boolean obsolete )
     {
-        // TODO Auto-generated method stub
         super.setObsolete( obsolete );
     }
 
 
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.Syntax#getSyntaxChecker()
+     */
     public SyntaxChecker getSyntaxChecker() throws NamingException
     {
-        // TODO Auto-generated method stub
         return null;
     }
-
 }

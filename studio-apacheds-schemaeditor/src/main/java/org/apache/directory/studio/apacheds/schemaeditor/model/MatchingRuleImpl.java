@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.schema.Normalizer;
 import org.apache.directory.shared.ldap.schema.Syntax;
 
+
 /**
  * This class represents a matching rule.
  *
