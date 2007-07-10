@@ -29,74 +29,106 @@ import org.apache.directory.shared.ldap.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.schema.Normalizer;
 import org.apache.directory.shared.ldap.schema.Syntax;
 
-
+/**
+ * This class represents a matching rule.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
     
     /** The OID of the syntax */
-    private String syntaxtOid;
+    private String syntaxOid;
 
 
-    public String getSyntaxtOid()
+    /**
+     * Gets the OID of the syntax.
+     *
+     * @return
+     *      the OID of the syntax
+     */
+    public String getSyntaxOid()
     {
-        return syntaxtOid;
+        return syntaxOid;
     }
 
 
-    public void setSyntaxtOid( String syntaxtOid )
+    /**
+     * Sets the OID of the syntax.
+     *
+     * @param syntaxOid
+     *      the OID of the syntax
+     */
+    public void setSyntaxOid( String syntaxOid )
     {
-        this.syntaxtOid = syntaxtOid;
+        this.syntaxOid = syntaxOid;
     }
 
 
+    /**
+     * Creates a new instance of MatchingRuleImpl.
+     *
+     * @param oid
+     *      the OID
+     */
     public MatchingRuleImpl( String oid )
     {
         super( oid );
     }
 
 
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.MatchingRule#getComparator()
+     */
     public Comparator<?> getComparator() throws NamingException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.MatchingRule#getNormalizer()
+     */
     public Normalizer getNormalizer() throws NamingException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.MatchingRule#getSyntax()
+     */
     public Syntax getSyntax() throws NamingException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setDescription(java.lang.String)
+     */
     public void setDescription( String description )
     {
-        // TODO Auto-generated method stub
         super.setDescription( description );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setNames(java.lang.String[])
+     */
     public void setNames( String[] names )
     {
-        // TODO Auto-generated method stub
         super.setNames( names );
     }
 
 
-    @Override
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setObsolete(boolean)
+     */
     public void setObsolete( boolean obsolete )
     {
-        // TODO Auto-generated method stub
         super.setObsolete( obsolete );
     }
 }

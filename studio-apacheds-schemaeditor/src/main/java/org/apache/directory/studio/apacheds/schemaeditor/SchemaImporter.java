@@ -295,7 +295,7 @@ public class SchemaImporter
         mr.setNames( getNames( sr ) );
         mr.setDescription( getDescription( sr ) );
         mr.setObsolete( isObsolete( sr ) );
-        mr.setSyntaxtOid( getSyntax( sr ) );
+        mr.setSyntaxOid( getSyntax( sr ) );
         return mr;
     }
 
