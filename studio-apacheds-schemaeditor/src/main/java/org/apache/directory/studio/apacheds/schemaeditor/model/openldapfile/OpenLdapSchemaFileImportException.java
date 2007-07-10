@@ -21,23 +21,23 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.openldapfile;
 
 
 /**
- * This class represents the SchemaFileImportException.
+ * This class represents the OpenLdapSchemaFileImportException.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaFileImportException extends Exception
+public class OpenLdapSchemaFileImportException extends Exception
 {
     private static final long serialVersionUID = 1L;
 
 
     /**
-     * Creates a new instance of SchemaFileImportException.
+     * Creates a new instance of OpenLdapSchemaFileImportException.
      *
      * @param message
      *      the message
      */
-    public SchemaFileImportException( String message )
+    public OpenLdapSchemaFileImportException( String message )
     {
         super( message );
     }

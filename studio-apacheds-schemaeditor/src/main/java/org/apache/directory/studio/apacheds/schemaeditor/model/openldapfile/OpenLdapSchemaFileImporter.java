@@ -42,20 +42,30 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.SchemaImpl;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaFileImporter
+public class OpenLdapSchemaFileImporter
 {
-    public static Schema getSchema( String path ) throws SchemaFileImportException
+    /**
+     * Extracts the Schema from the given path.
+     *
+     * @param path
+     *      the path of the file.
+     * @return
+     *      the corresponding schema
+     * @throws OpenLdapSchemaFileImportException
+     *      if an error occurrs when importing the schema
+     */
+    public static Schema getSchema( String path ) throws OpenLdapSchemaFileImportException
     {
         File file = new File( path );
 
         // Checking the file properties
         if ( !file.exists() )
         {
-            throw new SchemaFileImportException( "The file '" + path + "' does not exist." );
+            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' does not exist." );
         }
         else if ( !file.canRead() )
         {
-            throw new SchemaFileImportException( "The file '" + path + "' can not be read." );
+            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read." );
         }
 
         InputStream in = null;
@@ -65,11 +75,11 @@ public class SchemaFileImporter
         }
         catch ( MalformedURLException e )
         {
-            throw new SchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
         }
         catch ( IOException e )
         {
-            throw new SchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
         }
 
         OpenLdapSchemaParser parser = null;
@@ -79,7 +89,7 @@ public class SchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new SchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
         }
 
         try
@@ -88,11 +98,11 @@ public class SchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new SchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
         }
         catch ( ParseException e )
         {
-            throw new SchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
         }
 
         String schemaName = getNameFromPath( path );

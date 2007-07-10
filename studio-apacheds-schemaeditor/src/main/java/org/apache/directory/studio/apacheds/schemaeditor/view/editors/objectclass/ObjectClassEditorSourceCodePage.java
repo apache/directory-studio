@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.openldapfile.SchemaExporter;
+import org.apache.directory.studio.apacheds.schemaeditor.model.openldapfile.OpenLdapSchemaExporter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -153,7 +153,7 @@ public class ObjectClassEditorSourceCodePage extends FormPage
     private void fillInUiFields()
     {
         // SOURCE CODE Field
-        schemaSourceViewer.getDocument().set( SchemaExporter.toSourceCode( modifiedObjectClass ) );
+        schemaSourceViewer.getDocument().set( OpenLdapSchemaExporter.toSourceCode( modifiedObjectClass ) );
     }
 
 
