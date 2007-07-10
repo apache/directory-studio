@@ -56,7 +56,7 @@ public class XMLSchemaFileExporter
     private static final String ALIASES_TAG = "aliases";
     private static final String ATTRIBUTE_TYPE_TAG = "attributetype";
     private static final String ATTRIBUTE_TYPES_TAG = "attributetypes";
-    private static final String BOOLEAN_FALSE = "true";
+    private static final String BOOLEAN_FALSE = "false";
     private static final String BOOLEAN_TRUE = "true";
     private static final String COLLECTIVE_TAG = "collective";
     private static final String DESCRIPTION_TAG = "description";
@@ -182,7 +182,7 @@ public class XMLSchemaFileExporter
             Element aliasesNode = atNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
             {
-                aliasesNode.addElement( ALIAS_TAG, alias );
+                aliasesNode.addElement( ALIAS_TAG ).setText( alias );
             }
         }
 
@@ -190,35 +190,35 @@ public class XMLSchemaFileExporter
         String description = at.getDescription();
         if ( ( description != null ) && ( !description.equals( "" ) ) )
         {
-            atNode.addElement( DESCRIPTION_TAG, description );
+            atNode.addElement( DESCRIPTION_TAG ).setText( description );
         }
 
         // Superior
         String superior = at.getSuperiorName();
         if ( ( superior != null ) && ( !superior.equals( "" ) ) )
         {
-            atNode.addElement( SUPERIOR_TAG, superior );
+            atNode.addElement( SUPERIOR_TAG ).setText( superior );
         }
 
         // Usage
         UsageEnum usage = at.getUsage();
         if ( usage != null )
         {
-            atNode.addElement( USAGE_TAG, usage.toString() );
+            atNode.addElement( USAGE_TAG ).setText( usage.toString() );
         }
 
         // Syntax
         String syntax = at.getSyntaxOid();
         if ( ( syntax != null ) && ( !syntax.equals( "" ) ) )
         {
-            atNode.addElement( SYNTAX_TAG, syntax );
+            atNode.addElement( SYNTAX_TAG ).setText( syntax );
         }
 
         // Syntax Length
         int syntaxLength = at.getLength();
-        if ( syntaxLength != 0 )
+        if ( syntaxLength != -1 )
         {
-            atNode.addElement( SYNTAX_LENGTH_TAG, "" + syntaxLength );
+            atNode.addElement( SYNTAX_LENGTH_TAG ).setText( "" + syntaxLength );
         }
 
         // Obsolete
@@ -265,21 +265,21 @@ public class XMLSchemaFileExporter
         String equality = at.getEqualityName();
         if ( ( equality != null ) && ( !equality.equals( "" ) ) )
         {
-            atNode.addElement( EQUALITY_TAG, equality );
+            atNode.addElement( EQUALITY_TAG ).setText( equality );
         }
 
         // Ordering
         String ordering = at.getOrderingName();
         if ( ( ordering != null ) && ( !ordering.equals( "" ) ) )
         {
-            atNode.addElement( ORDERING_TAG, ordering );
+            atNode.addElement( ORDERING_TAG ).setText( ordering );
         }
 
         // Substring
         String substring = at.getSubstrName();
         if ( ( substring != null ) && ( !substring.equals( "" ) ) )
         {
-            atNode.addElement( SUBSTRING_TAG, substring );
+            atNode.addElement( SUBSTRING_TAG ).setText( substring );
         }
     }
 
@@ -310,7 +310,7 @@ public class XMLSchemaFileExporter
             Element aliasesNode = ocNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
             {
-                aliasesNode.addElement( ALIAS_TAG, alias );
+                aliasesNode.addElement( ALIAS_TAG ).setText( alias );
             }
         }
 
@@ -318,7 +318,7 @@ public class XMLSchemaFileExporter
         String description = oc.getDescription();
         if ( ( description != null ) && ( !description.equals( "" ) ) )
         {
-            ocNode.addElement( DESCRIPTION_TAG, description );
+            ocNode.addElement( DESCRIPTION_TAG ).setText(  description );
         }
 
         // Superiors
@@ -328,7 +328,7 @@ public class XMLSchemaFileExporter
             Element superiorsNode = ocNode.addElement( SUPERIORS_TAG );
             for ( String superior : superiors )
             {
-                superiorsNode.addElement( SUPERIOR_TAG, superior );
+                superiorsNode.addElement( SUPERIOR_TAG ).setText(  superior );
             }
         }
 
@@ -336,7 +336,7 @@ public class XMLSchemaFileExporter
         ObjectClassTypeEnum type = oc.getType();
         if ( type != null )
         {
-            ocNode.addElement( TYPE_TAG, type.toString() );
+            ocNode.addElement( TYPE_TAG ).setText(  type.toString() );
         }
 
         // Obsolete
@@ -356,7 +356,7 @@ public class XMLSchemaFileExporter
             Element mandatoryNode = ocNode.addElement( MANDATORY_TAG );
             for ( String mandatoryAT : mandatoryATs )
             {
-                mandatoryNode.addElement( ATTRIBUTE_TYPE_TAG, mandatoryAT );
+                mandatoryNode.addElement( ATTRIBUTE_TYPE_TAG ).setText(  mandatoryAT );
             }
         }
 
@@ -367,7 +367,7 @@ public class XMLSchemaFileExporter
             Element optionalNode = ocNode.addElement( OPTIONAL_TAG );
             for ( String optionalAT : optionalATs )
             {
-                optionalNode.addElement( ATTRIBUTE_TYPE_TAG, optionalAT );
+                optionalNode.addElement( ATTRIBUTE_TYPE_TAG ).setText(  optionalAT );
             }
         }
     }
@@ -399,7 +399,7 @@ public class XMLSchemaFileExporter
             Element aliasesNode = mrNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
             {
-                aliasesNode.addElement( ALIAS_TAG, alias );
+                aliasesNode.addElement( ALIAS_TAG ).setText(  alias );
             }
         }
 
@@ -407,7 +407,7 @@ public class XMLSchemaFileExporter
         String description = mr.getDescription();
         if ( ( description != null ) && ( !description.equals( "" ) ) )
         {
-            mrNode.addElement( DESCRIPTION_TAG, description );
+            mrNode.addElement( DESCRIPTION_TAG ).setText(  description );
         }
 
         // Obsolete
@@ -424,7 +424,7 @@ public class XMLSchemaFileExporter
         String syntaxOid = mr.getSyntaxOid();
         if ( ( syntaxOid != null ) && ( !syntaxOid.equals( "" ) ) )
         {
-            mrNode.addElement( SYNTAX_OID_TAG, syntaxOid );
+            mrNode.addElement( SYNTAX_OID_TAG ).setText(  syntaxOid );
         }
     }
 
@@ -458,7 +458,7 @@ public class XMLSchemaFileExporter
             Element aliasesNode = syntaxNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
             {
-                aliasesNode.addElement( ALIAS_TAG, alias );
+                aliasesNode.addElement( ALIAS_TAG ).setText(  alias );
             }
         }
 
@@ -466,7 +466,7 @@ public class XMLSchemaFileExporter
         String description = syntax.getDescription();
         if ( ( description != null ) && ( !description.equals( "" ) ) )
         {
-            syntaxNode.addElement( DESCRIPTION_TAG, description );
+            syntaxNode.addElement( DESCRIPTION_TAG ).setText(  description );
         }
 
         // Obsolete

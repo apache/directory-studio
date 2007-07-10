@@ -53,7 +53,7 @@ public class XMLSchemaFileImporter
     private static final String ALIASES_TAG = "aliases";
     private static final String ATTRIBUTE_TYPE_TAG = "attributetype";
     private static final String ATTRIBUTE_TYPES_TAG = "attributetypes";
-    private static final String BOOLEAN_FALSE = "true";
+    private static final String BOOLEAN_FALSE = "false";
     private static final String BOOLEAN_TRUE = "true";
     private static final String COLLECTIVE_TAG = "collective";
     private static final String DESCRIPTION_TAG = "description";
