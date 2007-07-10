@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor.model.openldapfile;
+package org.apache.directory.studio.apacheds.schemaeditor.model.io;
 
 
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
