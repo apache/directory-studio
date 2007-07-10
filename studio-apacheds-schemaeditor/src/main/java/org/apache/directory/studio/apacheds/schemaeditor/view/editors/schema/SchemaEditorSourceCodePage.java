@@ -29,7 +29,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaExporter;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -228,6 +228,6 @@ public class SchemaEditorSourceCodePage extends FormPage
      */
     private void fillInUiFields()
     {
-        schemaSourceViewer.getDocument().set( OpenLdapSchemaExporter.toSourceCode( schema ) );
+        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( schema ) );
     }
 }

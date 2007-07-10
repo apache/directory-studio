@@ -33,7 +33,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenLdapSchemaExporter
+public class OpenLdapSchemaFileExporter
 {
     /**
      * Converts the given schema to its source code representation

@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaExporter;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaSourceViewer;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -155,7 +155,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     private void fillInUiFields()
     {
         // SOURCE CODE Field
-        schemaSourceViewer.getDocument().set( OpenLdapSchemaExporter.toSourceCode( modifiedAttributeType ) );
+        schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( modifiedAttributeType ) );
     }
 
 
