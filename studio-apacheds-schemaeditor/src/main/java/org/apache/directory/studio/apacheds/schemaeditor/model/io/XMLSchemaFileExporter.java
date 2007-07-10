@@ -73,6 +73,7 @@ public class XMLSchemaFileExporter
     private static final String OID_TAG = "oid";
     private static final String OPTIONAL_TAG = "optional";
     private static final String ORDERING_TAG = "ordering";
+    private static final String SCHEMA_TAG = "schema";
     private static final String SINGLE_VALUE_TAG = "singlevalue";
     private static final String SUBSTRING_TAG = "substring";
     private static final String SUPERIOR_TAG = "superior";
@@ -98,7 +99,7 @@ public class XMLSchemaFileExporter
     {
         // Creating the Document and the 'root' Element
         Document document = DocumentHelper.createDocument();
-        Element element = document.addElement( "schema" );
+        Element element = document.addElement( SCHEMA_TAG );
 
         // Name 
         String name = schema.getName();
