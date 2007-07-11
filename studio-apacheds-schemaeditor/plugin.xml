@@ -105,7 +105,14 @@
           class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportSchemasAsXmlWizard"
           icon="resources/icons/schemas_export.gif"
           id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ExportSchemasAsXmlWizard"
-          name="Export schemas as XML">
+          name="Export schemas as XML file(s)">
+    </wizard>
+    <wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.exportWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard"
+          icon="resources/icons/schemas_export.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ExportSchemasAsOpenLdapWizard"
+          name="Export schemas as OpenLdap files">
     </wizard>
  </extension>
 </plugin>
