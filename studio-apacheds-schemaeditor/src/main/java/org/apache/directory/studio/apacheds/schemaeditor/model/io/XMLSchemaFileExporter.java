@@ -99,9 +99,10 @@ public class XMLSchemaFileExporter
      */
     public static String toSourceCode( Schema schema )
     {
-        // Creating the Document and the 'root' Element
+        // Creating the Document
         Document document = DocumentHelper.createDocument();
 
+        // Adding the schema
         addSchema( schema, document );
 
         return styleDocument( document ).asXML();
