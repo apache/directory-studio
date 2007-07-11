@@ -29,6 +29,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.SchemaImporter;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -48,7 +49,8 @@ public class ConnectAction extends Action implements IWorkbenchWindowActionDeleg
 {
     /** The associated View */
     private SchemaView view;
-    
+
+
     /**
      * Creates a new instance of ConnectAction.
      *
@@ -101,13 +103,16 @@ public class ConnectAction extends Action implements IWorkbenchWindowActionDeleg
     {
         try
         {
-            SchemaHandler schemaHandler = SchemaHandler.getInstance();
+            SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+            SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
             SchemaImporter schemaImporter = new SchemaImporter();
+            schemaChecker.disableModificationsListening();
             List<Schema> schemas = schemaImporter.getServerSchema();
             for ( Schema schema : schemas )
             {
                 schemaHandler.addSchema( schema );
             }
+            schemaChecker.enableModificationsListening();
             view.reloadViewer();
         }
         catch ( NamingException e )

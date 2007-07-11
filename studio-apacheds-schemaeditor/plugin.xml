@@ -94,4 +94,18 @@
 		id="org.apache.directory.studio.apacheds.schemaeditor.view.schemaformeditor"
 		name="Schema Editor"/>
 </extension>
+ <extension
+       point="org.eclipse.ui.exportWizards">
+    <category
+          id="org.apache.directory.studio.apacheds.schemaeditor.exportWizardCategory"
+          name="Apache DS Schema Editor">
+    </category>
+    <wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.exportWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportSchemasAsXmlWizard"
+          icon="resources/icons/schemas_export.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ExportSchemasAsXmlWizard"
+          name="Export schemas as XML">
+    </wizard>
+ </extension>
 </plugin>
