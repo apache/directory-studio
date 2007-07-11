@@ -347,7 +347,7 @@ public class ExportSchemasAsXmlWizardPage extends WizardPage
      */
     private void chooseExportFile()
     {
-        FileDialog dialog = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
+        FileDialog dialog = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE );
         dialog.setText( "Select File" );
         dialog.setFilterExtensions( new String[]
             { "*.xml", "*" } );

@@ -111,7 +111,38 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
         }
         else if ( exportType == ExportSchemasAsXmlWizardPage.EXPORT_SINGLE_FILE )
         {
-
+            final String exportFile = page.getExportFile();
+            try
+            {
+                getContainer().run( true, true, new IRunnableWithProgress()
+                {
+                    public void run( IProgressMonitor monitor )
+                    {
+                        monitor.beginTask( "Exporting schemas ", 1 );
+                        try
+                        {
+                            BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportFile ) );
+                            buffWriter.write( XMLSchemaFileExporter.toSourceCode( selectedSchemas ) );
+                            buffWriter.close();
+                        }
+                        catch ( IOException e )
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        monitor.worked( 1 );
+                        monitor.done();
+                    }
+                } );
+            }
+            catch ( InvocationTargetException e )
+            {
+                // Nothing to do (it will never occur)
+            }
+            catch ( InterruptedException e )
+            {
+                // Nothing to do.
+            }
         }
 
         return true;

@@ -36,6 +36,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
+import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -74,6 +75,7 @@ public class XMLSchemaFileExporter
     private static final String OPTIONAL_TAG = "optional";
     private static final String ORDERING_TAG = "ordering";
     private static final String SCHEMA_TAG = "schema";
+    private static final String SCHEMAS_TAG = "schemas";
     private static final String SINGLE_VALUE_TAG = "singlevalue";
     private static final String SUBSTRING_TAG = "substring";
     private static final String SUPERIOR_TAG = "superior";
@@ -99,60 +101,105 @@ public class XMLSchemaFileExporter
     {
         // Creating the Document and the 'root' Element
         Document document = DocumentHelper.createDocument();
-        Element element = document.addElement( SCHEMA_TAG );
 
-        // Name 
-        String name = schema.getName();
-        if ( ( name != null ) && ( !name.equals( "" ) ) )
-        {
-            element.addAttribute( NAME_TAG, name );
-        }
+        addSchema( schema, document );
 
-        // Attribute Types
-        List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-        if ( ( ats != null ) && ( ats.size() >= 1 ) )
+        return styleDocument( document ).asXML();
+    }
+
+
+    /**
+     * Converts the given schemas to their source code representation
+     * in one XML file format.
+     *
+     * @param schemas
+     *      the array of schemas to convert
+     * @return
+     *      the corresponding source code representation
+     */
+    public static String toSourceCode( Schema[] schemas )
+    {
+        // Creating the Document and the 'root' Element
+        Document document = DocumentHelper.createDocument();
+        Element root = document.addElement( SCHEMAS_TAG );
+
+        if ( schemas != null )
         {
-            Element attributeTypesNode = element.addElement( ATTRIBUTE_TYPES_TAG );
-            for ( AttributeTypeImpl at : ats )
+            for ( Schema schema : schemas )
             {
-                toSourceCode( at, attributeTypesNode );
-            }
-        }
-
-        // Object Classes
-        List<ObjectClassImpl> ocs = schema.getObjectClasses();
-        if ( ( ocs != null ) && ( ocs.size() >= 1 ) )
-        {
-            Element objectClassesNode = element.addElement( OBJECT_CLASSES_TAG );
-            for ( ObjectClassImpl oc : ocs )
-            {
-                toSourceCode( oc, objectClassesNode );
-            }
-        }
-
-        // Matching Rules
-        List<MatchingRuleImpl> mrs = schema.getMatchingRules();
-        if ( ( mrs != null ) && ( mrs.size() >= 1 ) )
-        {
-            Element matchingRulesNode = element.addElement( MATCHING_RULES_TAG );
-            for ( MatchingRuleImpl mr : mrs )
-            {
-                toSourceCode( mr, matchingRulesNode );
-            }
-        }
-
-        // Syntaxes
-        List<SyntaxImpl> syntaxes = schema.getSyntaxes();
-        if ( ( syntaxes != null ) && ( syntaxes.size() >= 1 ) )
-        {
-            Element syntaxesNode = element.addElement( SYNTAXES_TAG );
-            for ( SyntaxImpl syntax : syntaxes )
-            {
-                toSourceCode( syntax, syntaxesNode );
+                addSchema( schema, root );
             }
         }
 
         return styleDocument( document ).asXML();
+    }
+
+
+    /**
+     * Add the XML representation of the given schema
+     * to the given branch
+     *
+     * @param schema
+     *      the schema
+     * @param branch
+     *      the branch
+     */
+    public static void addSchema( Schema schema, Branch branch )
+    {
+        Element element = branch.addElement( SCHEMA_TAG );
+        if ( schema != null )
+        {
+            // Name 
+            String name = schema.getName();
+            if ( ( name != null ) && ( !name.equals( "" ) ) )
+            {
+                element.addAttribute( NAME_TAG, name );
+            }
+
+            // Attribute Types
+            List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+            if ( ( ats != null ) && ( ats.size() >= 1 ) )
+            {
+                Element attributeTypesNode = element.addElement( ATTRIBUTE_TYPES_TAG );
+                for ( AttributeTypeImpl at : ats )
+                {
+                    toSourceCode( at, attributeTypesNode );
+                }
+            }
+
+            // Object Classes
+            List<ObjectClassImpl> ocs = schema.getObjectClasses();
+            if ( ( ocs != null ) && ( ocs.size() >= 1 ) )
+            {
+                Element objectClassesNode = element.addElement( OBJECT_CLASSES_TAG );
+                for ( ObjectClassImpl oc : ocs )
+                {
+                    toSourceCode( oc, objectClassesNode );
+                }
+            }
+
+            // Matching Rules
+            List<MatchingRuleImpl> mrs = schema.getMatchingRules();
+            if ( ( mrs != null ) && ( mrs.size() >= 1 ) )
+            {
+                Element matchingRulesNode = element.addElement( MATCHING_RULES_TAG );
+                for ( MatchingRuleImpl mr : mrs )
+                {
+                    toSourceCode( mr, matchingRulesNode );
+                }
+            }
+
+            // Syntaxes
+            List<SyntaxImpl> syntaxes = schema.getSyntaxes();
+            if ( ( syntaxes != null ) && ( syntaxes.size() >= 1 ) )
+            {
+                Element syntaxesNode = element.addElement( SYNTAXES_TAG );
+                for ( SyntaxImpl syntax : syntaxes )
+                {
+                    toSourceCode( syntax, syntaxesNode );
+                }
+            }
+        }
     }
 
 
@@ -318,7 +365,7 @@ public class XMLSchemaFileExporter
         String description = oc.getDescription();
         if ( ( description != null ) && ( !description.equals( "" ) ) )
         {
-            ocNode.addElement( DESCRIPTION_TAG ).setText(  description );
+            ocNode.addElement( DESCRIPTION_TAG ).setText( description );
         }
 
         // Superiors
@@ -328,7 +375,7 @@ public class XMLSchemaFileExporter
             Element superiorsNode = ocNode.addElement( SUPERIORS_TAG );
             for ( String superior : superiors )
             {
-                superiorsNode.addElement( SUPERIOR_TAG ).setText(  superior );
+                superiorsNode.addElement( SUPERIOR_TAG ).setText( superior );
             }
         }
 
@@ -336,7 +383,7 @@ public class XMLSchemaFileExporter
         ObjectClassTypeEnum type = oc.getType();
         if ( type != null )
         {
-            ocNode.addElement( TYPE_TAG ).setText(  type.toString() );
+            ocNode.addElement( TYPE_TAG ).setText( type.toString() );
         }
 
         // Obsolete
@@ -356,7 +403,7 @@ public class XMLSchemaFileExporter
             Element mandatoryNode = ocNode.addElement( MANDATORY_TAG );
             for ( String mandatoryAT : mandatoryATs )
             {
-                mandatoryNode.addElement( ATTRIBUTE_TYPE_TAG ).setText(  mandatoryAT );
+                mandatoryNode.addElement( ATTRIBUTE_TYPE_TAG ).setText( mandatoryAT );
             }
         }
 
@@ -367,7 +414,7 @@ public class XMLSchemaFileExporter
             Element optionalNode = ocNode.addElement( OPTIONAL_TAG );
             for ( String optionalAT : optionalATs )
             {
-                optionalNode.addElement( ATTRIBUTE_TYPE_TAG ).setText(  optionalAT );
+                optionalNode.addElement( ATTRIBUTE_TYPE_TAG ).setText( optionalAT );
             }
         }
     }
@@ -399,7 +446,7 @@ public class XMLSchemaFileExporter
             Element aliasesNode = mrNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
             {
-                aliasesNode.addElement( ALIAS_TAG ).setText(  alias );
+                aliasesNode.addElement( ALIAS_TAG ).setText( alias );
             }
         }
 
@@ -407,7 +454,7 @@ public class XMLSchemaFileExporter
         String description = mr.getDescription();
         if ( ( description != null ) && ( !description.equals( "" ) ) )
         {
-            mrNode.addElement( DESCRIPTION_TAG ).setText(  description );
+            mrNode.addElement( DESCRIPTION_TAG ).setText( description );
         }
 
         // Obsolete
@@ -424,7 +471,7 @@ public class XMLSchemaFileExporter
         String syntaxOid = mr.getSyntaxOid();
         if ( ( syntaxOid != null ) && ( !syntaxOid.equals( "" ) ) )
         {
-            mrNode.addElement( SYNTAX_OID_TAG ).setText(  syntaxOid );
+            mrNode.addElement( SYNTAX_OID_TAG ).setText( syntaxOid );
         }
     }
 
@@ -458,7 +505,7 @@ public class XMLSchemaFileExporter
             Element aliasesNode = syntaxNode.addElement( ALIASES_TAG );
             for ( String alias : aliases )
             {
-                aliasesNode.addElement( ALIAS_TAG ).setText(  alias );
+                aliasesNode.addElement( ALIAS_TAG ).setText( alias );
             }
         }
 
@@ -466,7 +513,7 @@ public class XMLSchemaFileExporter
         String description = syntax.getDescription();
         if ( ( description != null ) && ( !description.equals( "" ) ) )
         {
-            syntaxNode.addElement( DESCRIPTION_TAG ).setText(  description );
+            syntaxNode.addElement( DESCRIPTION_TAG ).setText( description );
         }
 
         // Obsolete
