@@ -23,9 +23,12 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileExporter;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
@@ -62,27 +65,48 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
      */
     public boolean performFinish()
     {
-        Schema[] selectedSchemas = page.getSelectedSchemas();
+        final Schema[] selectedSchemas = page.getSelectedSchemas();
 
         int exportType = page.getExportType();
         if ( exportType == ExportSchemasAsXmlWizardPage.EXPORT_MULTIPLE_FILES )
         {
-            String exportDirectory = page.getExportDirectory();
-
-            for ( Schema schema : selectedSchemas )
+            final String exportDirectory = page.getExportDirectory();
+            try
             {
-                try
+                getContainer().run( true, true, new IRunnableWithProgress()
                 {
-                    BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/"
-                        + schema.getName() + ".xml" ) );
-                    buffWriter.write( XMLSchemaFileExporter.toSourceCode( schema ) );
-                    buffWriter.close();
-                }
-                catch ( IOException e )
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                    public void run( IProgressMonitor monitor )
+                    {
+                        monitor.beginTask( "Exporting schemas: ", selectedSchemas.length );
+                        for ( Schema schema : selectedSchemas )
+                        {
+                            monitor.subTask( schema.getName() );
+
+                            try
+                            {
+                                BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/"
+                                    + schema.getName() + ".xml" ) );
+                                buffWriter.write( XMLSchemaFileExporter.toSourceCode( schema ) );
+                                buffWriter.close();
+                            }
+                            catch ( IOException e )
+                            {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            monitor.worked( 1 );
+                        }
+                        monitor.done();
+                    }
+                } );
+            }
+            catch ( InvocationTargetException e )
+            {
+                // Nothing to do (it will never occur)
+            }
+            catch ( InterruptedException e )
+            {
+                // Nothing to do.
             }
         }
         else if ( exportType == ExportSchemasAsXmlWizardPage.EXPORT_SINGLE_FILE )
@@ -99,6 +123,6 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-        // Nothing to do
+        setNeedsProgressMonitor( true );
     }
 }
