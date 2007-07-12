@@ -137,18 +137,15 @@ public class OpenLdapSchemaFileImporter
      */
     private static final String getNameFromPath( String path )
     {
-        String separator = File.separator;
-
-        String[] splFileName = path.split( separator );
-        String fileNoPath = splFileName[splFileName.length - 1];
-
-        if ( fileNoPath.endsWith( ".schema" ) ) //$NON-NLS-1$
+        File file = new File( path );
+        String fileName = file.getName();
+        if ( fileName.endsWith( ".schema" ) ) //$NON-NLS-1$
         {
-            String[] fileName = fileNoPath.split( "\\." ); //$NON-NLS-1$
-            return fileName[0];
+            String[] fileNameSplitted = fileName.split( "\\." ); //$NON-NLS-1$
+            return fileNameSplitted[0];
         }
 
-        return fileNoPath;
+        return fileName;
     }
 
 
