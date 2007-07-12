@@ -117,7 +117,7 @@ public class OpenLdapSchemaFileImporter
         }
 
         List<?> ocs = parser.getObjectClassTypes();
-        for ( int i = 0; i < ats.size(); i++ )
+        for ( int i = 0; i < ocs.size(); i++ )
         {
             ObjectClassImpl oc = convertObjectClass( ( ObjectClassLiteral ) ocs.get( i ) );
             oc.setSchema( schemaName );
