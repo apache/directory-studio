@@ -35,6 +35,10 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingMatchingRuleError.NonExistingMatchingRuleErrorEnum;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 
 
 /**
@@ -213,21 +217,37 @@ public class SchemaChecker
      */
     private void checkWholeSchema()
     {
-        List<Schema> schemas = schemaHandler.getSchemas();
-        for ( Schema schema : schemas )
+        Job job = new Job( "Checking the Schema" )
         {
-            List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-            for ( AttributeTypeImpl at : ats )
+            protected IStatus run( IProgressMonitor monitor )
             {
-                checkAttributeType( at );
-            }
+                List<Schema> schemas = schemaHandler.getSchemas();
+                monitor.beginTask( "Checking schemas: ", schemas.size() );
+                for ( Schema schema : schemas )
+                {
+                    monitor.subTask( schema.getName() );
+                    List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+                    for ( AttributeTypeImpl at : ats )
+                    {
+                        checkAttributeType( at );
+                    }
 
-            List<ObjectClassImpl> ocs = schema.getObjectClasses();
-            for ( ObjectClassImpl oc : ocs )
-            {
-                checkObjectClass( oc );
+                    List<ObjectClassImpl> ocs = schema.getObjectClasses();
+                    for ( ObjectClassImpl oc : ocs )
+                    {
+                        checkObjectClass( oc );
+                    }
+                    monitor.worked( 1 );
+                }
+                monitor.done();
+
+                return Status.OK_STATUS;
             }
-        }
+        };
+
+        job.setUser( true );
+        //        job.setPriority( Job.SHORT );
+        job.schedule();
     }
 
 

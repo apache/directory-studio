@@ -48,6 +48,7 @@ public interface PluginConstants
     public static final String IMG_PROBLEMS_WARNING = "resources/icons/problems_warning.gif";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
     public static final String IMG_SCHEMAS_EXPORT_WIZARD = "resources/icons/schemas_export_wizard.png";
+    public static final String IMG_SCHEMAS_IMPORT_WIZARD = "resources/icons/schemas_import_wizard.png";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
 
     // Commands

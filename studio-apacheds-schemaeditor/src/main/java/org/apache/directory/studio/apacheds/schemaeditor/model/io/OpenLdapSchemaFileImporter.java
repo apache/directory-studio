@@ -114,6 +114,7 @@ public class OpenLdapSchemaFileImporter
         {
             AttributeTypeImpl at = convertAttributeType( ( AttributeTypeLiteral ) ats.get( i ) );
             at.setSchema( schemaName );
+            schema.addAttributeType( at );
         }
 
         List<?> ocs = parser.getObjectClassTypes();
@@ -121,6 +122,7 @@ public class OpenLdapSchemaFileImporter
         {
             ObjectClassImpl oc = convertObjectClass( ( ObjectClassLiteral ) ocs.get( i ) );
             oc.setSchema( schemaName );
+            schema.addObjectClass( oc );
         }
 
         return schema;

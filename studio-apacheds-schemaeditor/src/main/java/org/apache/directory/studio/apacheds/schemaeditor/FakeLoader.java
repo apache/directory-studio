@@ -51,13 +51,5 @@ public class FakeLoader
         oc1.setMustNamesList( new String[] { "at1" } );
         
         schemaHandler.addSchema( schema1 );
-        schemaHandler.addListener( new SchemaHandlerAdapter(){
-
-            public void schemaAdded( Schema schema )
-            {
-                System.out.println("schemaAdded");
-            }
-            
-        });
     }
 }

@@ -71,6 +71,7 @@ public class XMLSchemaFileImporter
     private static final String OPTIONAL_TAG = "optional";
     private static final String ORDERING_TAG = "ordering";
     private static final String SCHEMA_TAG = "schema";
+    private static final String SCHEMAS_TAG = "schemas";
     private static final String SINGLE_VALUE_TAG = "singlevalue";
     private static final String SUBSTRING_TAG = "substring";
     private static final String SUPERIOR_TAG = "superior";
@@ -81,6 +82,49 @@ public class XMLSchemaFileImporter
     private static final String SYNTAXES_TAG = "syntaxes";
     private static final String TYPE_TAG = "type";
     private static final String USAGE_TAG = "usage";
+
+
+    /**
+     * Extracts the Schemas from the given path.
+     *
+     * @param path
+     *      the path of the file.
+     * @return
+     *      the corresponding schema
+     * @throws XMLSchemaFileImportException
+     *      if an error occurs when importing the schema
+     */
+    public static Schema[] getSchemas( String path ) throws XMLSchemaFileImportException
+    {
+        List<Schema> schemas = new ArrayList<Schema>();
+
+        SAXReader reader = new SAXReader();
+        Document document = null;
+        try
+        {
+            document = reader.read( path );
+        }
+        catch ( DocumentException e )
+        {
+            throw new XMLSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+        }
+
+        Element rootElement = document.getRootElement();
+        if ( !rootElement.getName().equals( SCHEMAS_TAG ) )
+        {
+            throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
+        }
+        
+        for ( Iterator<?> i = rootElement.elementIterator( SCHEMA_TAG ); i.hasNext(); )
+        {
+            Element schemaElement = ( Element ) i.next();
+            Schema schema = new SchemaImpl( null );
+            readSchema( schemaElement, schema, path );
+            schemas.add( schema );
+        }
+        
+        return schemas.toArray( new Schema[0] );
+    }
 
 
     /**
@@ -109,30 +153,54 @@ public class XMLSchemaFileImporter
             throw new XMLSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
         }
 
-        // Name
-        schema.setName( getSchemaName( document, path ) );
+        Element rootElement = document.getRootElement();
+        if ( !rootElement.getName().equals( SCHEMA_TAG ) )
+        {
+            throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
+        }
 
-        // Attribute Types
-        readAttributeTypes( document, schema );
-
-        // Object Classes
-        readObjectClasses( document, schema );
-
-        // Matching Rules
-        readMatchingRules( document, schema );
-
-        // Syntaxes
-        readSyntaxes( document, schema );
+        readSchema( document.getRootElement(), schema, path );
 
         return schema;
     }
 
 
     /**
+     * Reads a schema.
+     *
+     * @param element
+     *      the element
+     * @param schema
+     *      the schema
+     * @param path
+     *      the path of the file
+     * @throws XMLSchemaFileImportException
+     *      if an error occurs when importing the schema
+     */
+    private static void readSchema( Element element, Schema schema, String path ) throws XMLSchemaFileImportException
+    {
+        // Name
+        schema.setName( getSchemaName( element, path ) );
+
+        // Attribute Types
+        readAttributeTypes( element, schema );
+
+        // Object Classes
+        readObjectClasses( element, schema );
+
+        // Matching Rules
+        readMatchingRules( element, schema );
+
+        // Syntaxes
+        readSyntaxes( element, schema );
+    }
+
+
+    /**
      * Gets the name of the schema.
      *
-     * @param document
-     *      the Document
+     * @param element
+     *      the element
      * @param path
      *      the path
      * @return
@@ -140,15 +208,14 @@ public class XMLSchemaFileImporter
      * @throws XMLSchemaFileImportException
      *      if an error occurs when reading the file
      */
-    private static String getSchemaName( Document document, String path ) throws XMLSchemaFileImportException
+    private static String getSchemaName( Element element, String path ) throws XMLSchemaFileImportException
     {
-        Element schemaElement = document.getRootElement();
-        if ( !schemaElement.getName().equals( SCHEMA_TAG ) )
+        if ( !element.getName().equals( SCHEMA_TAG ) )
         {
             throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
         }
 
-        Attribute nameAttribute = schemaElement.attribute( NAME_TAG );
+        Attribute nameAttribute = element.attribute( NAME_TAG );
         if ( ( nameAttribute != null ) && ( !nameAttribute.getValue().equals( "" ) ) )
         {
             return nameAttribute.getValue();
@@ -185,15 +252,15 @@ public class XMLSchemaFileImporter
     /**
      * Reads the attribute types.
      *
-     * @param document
-     *      the document
+     * @param element
+     *      the element
      * @param schema
      *      the schema
      * @throws XMLSchemaFileImportException 
      */
-    private static void readAttributeTypes( Document document, Schema schema ) throws XMLSchemaFileImportException
+    private static void readAttributeTypes( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        for ( Iterator<?> i = document.getRootElement().elementIterator( ATTRIBUTE_TYPES_TAG ); i.hasNext(); )
+        for ( Iterator<?> i = element.elementIterator( ATTRIBUTE_TYPES_TAG ); i.hasNext(); )
         {
             Element attributesTypesElement = ( Element ) i.next();
             for ( Iterator<?> i2 = attributesTypesElement.elementIterator( ATTRIBUTE_TYPE_TAG ); i2.hasNext(); )
@@ -355,15 +422,15 @@ public class XMLSchemaFileImporter
     /**
      * Reads the object classes
      *
-     * @param document
-     *      the document
+     * @param element
+     *      the element
      * @param schema
      *      the schema
      * @throws XMLSchemaFileImportException 
      */
-    private static void readObjectClasses( Document document, Schema schema ) throws XMLSchemaFileImportException
+    private static void readObjectClasses( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        for ( Iterator<?> i = document.getRootElement().elementIterator( OBJECT_CLASSES_TAG ); i.hasNext(); )
+        for ( Iterator<?> i = element.elementIterator( OBJECT_CLASSES_TAG ); i.hasNext(); )
         {
             Element objectClassesElement = ( Element ) i.next();
             for ( Iterator<?> i2 = objectClassesElement.elementIterator( OBJECT_CLASS_TAG ); i2.hasNext(); )
@@ -502,15 +569,15 @@ public class XMLSchemaFileImporter
     /**
      * Reads the matching rules.
      *
-     * @param document
-     *      the document
+     * @param element
+     *      the element
      * @param schema
      *      the schema
      * @throws XMLSchemaFileImportException 
      */
-    private static void readMatchingRules( Document document, Schema schema ) throws XMLSchemaFileImportException
+    private static void readMatchingRules( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        for ( Iterator<?> i = document.getRootElement().elementIterator( MATCHING_RULES_TAG ); i.hasNext(); )
+        for ( Iterator<?> i = element.elementIterator( MATCHING_RULES_TAG ); i.hasNext(); )
         {
             Element matchingRulesElement = ( Element ) i.next();
             for ( Iterator<?> i2 = matchingRulesElement.elementIterator( MATCHING_RULE_TAG ); i2.hasNext(); )
@@ -593,15 +660,15 @@ public class XMLSchemaFileImporter
     /**
      * Reads the syntaxes
      *
-     * @param document
-     *      the document
+     * @param element
+     *      the element
      * @param schema
      *      the schema
      * @throws XMLSchemaFileImportException
      */
-    private static void readSyntaxes( Document document, Schema schema ) throws XMLSchemaFileImportException
+    private static void readSyntaxes( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        for ( Iterator<?> i = document.getRootElement().elementIterator( SYNTAXES_TAG ); i.hasNext(); )
+        for ( Iterator<?> i = element.elementIterator( SYNTAXES_TAG ); i.hasNext(); )
         {
             Element syntaxElement = ( Element ) i.next();
             for ( Iterator<?> i2 = syntaxElement.elementIterator( SYNTAX_TAG ); i2.hasNext(); )
@@ -704,6 +771,55 @@ public class XMLSchemaFileImporter
         else
         {
             throw new XMLSchemaFileImportException( "The parser was not able to convert a boolean value." );
+        }
+    }
+
+    /**
+     * This enum represents the different types of schema files.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public enum SchemaFileType
+    {
+        SINGLE, MULTIPLE
+    };
+
+
+    /**
+     * Gets the type of file.
+     *
+     * @param path
+     *      the path of the file
+     * @return
+     *      the type of the file
+     * @throws XMLSchemaFileImportException
+     */
+    public static SchemaFileType getSchemaFileType( String path ) throws XMLSchemaFileImportException
+    {
+        SAXReader reader = new SAXReader();
+        Document document = null;
+        try
+        {
+            document = reader.read( path );
+        }
+        catch ( DocumentException e )
+        {
+            throw new XMLSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+        }
+
+        Element rootElement = document.getRootElement();
+        if ( rootElement.getName().equals( SCHEMA_TAG ) )
+        {
+            return SchemaFileType.SINGLE;
+        }
+        else if ( rootElement.getName().equals( SCHEMAS_TAG ) )
+        {
+            return SchemaFileType.MULTIPLE;
+        }
+        else
+        {
+            throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
         }
     }
 }

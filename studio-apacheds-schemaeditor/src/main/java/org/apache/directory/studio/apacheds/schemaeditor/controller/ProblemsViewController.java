@@ -40,6 +40,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -181,7 +182,13 @@ public class ProblemsViewController
              */
             public void schemaCheckerUpdated()
             {
-                view.reloadViewer();
+                Display.getDefault().asyncExec( new Runnable()
+                {
+                    public void run()
+                    {
+                        view.reloadViewer();
+                    }
+                } );
             }
         } );
     }

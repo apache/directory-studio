@@ -115,4 +115,25 @@
           name="Export schemas as OpenLdap files">
     </wizard>
  </extension>
+ <extension
+       point="org.eclipse.ui.importWizards">
+    <category
+          id="org.apache.directory.studio.apacheds.schemaeditor.importWizardCategory"
+          name="Apache DS Schema Editor">
+    </category>
+    <wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.importWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ImportSchemasFromXmlWizard"
+          icon="resources/icons/schemas_import.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ImportSchemasFromXmlWizard"
+          name="Import schemas from XML file(s)">
+    </wizard>
+    <wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.importWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ImportSchemasFromOpenLdapWizard"
+          icon="resources/icons/schemas_import.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ImportSchemasFromOpenLdapWizard"
+          name="Import schemas from OpenLdap files">
+    </wizard>
+ </extension>
 </plugin>
