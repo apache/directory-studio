@@ -218,7 +218,7 @@ public class ImportSchemasFromXmlWizardPage extends WizardPage
     {
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         dialog.setText( "Choose Folder" );
-        dialog.setMessage( "Select the folder in which export the files." );
+        dialog.setMessage( "Select the folder from which import the files." );
 
         String selectedDirectory = dialog.open();
         if ( selectedDirectory != null )
