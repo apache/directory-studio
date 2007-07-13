@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
-import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
