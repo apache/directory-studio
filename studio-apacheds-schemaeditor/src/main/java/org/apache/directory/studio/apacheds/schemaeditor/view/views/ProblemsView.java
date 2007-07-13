@@ -53,6 +53,9 @@ public class ProblemsView extends ViewPart
     /** The content provider of the viewer */
     private ProblemsViewContentProvider contentProvider;
 
+    /** The overview label */
+    private Label overviewLabel;
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -70,8 +73,8 @@ public class ProblemsView extends ViewPart
         gridLayout.verticalSpacing = 0;
         parent.setLayout( gridLayout );
 
-        Label overviewLabel = new Label( parent, SWT.NULL );
-        overviewLabel.setText( "X error(s), X warning(s)" );
+        overviewLabel = new Label( parent, SWT.NULL );
+        overviewLabel.setText( "0 error, 0 warning" );
         overviewLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         initViewer( parent );
@@ -133,5 +136,19 @@ public class ProblemsView extends ViewPart
     {
         treeViewer.setInput( new ProblemsViewRoot() );
         treeViewer.expandAll();
+    }
+
+
+    /**
+     * Refresh the overview label with the number of errors and warnings
+     *
+     * @param errors
+     *      the number of errors
+     * @param warnings
+     *      the number of warnings
+     */
+    public void setErrorsAndWarningsCount( int errors, int warnings )
+    {
+        overviewLabel.setText( String.format( "%d error(s), %d warning(s)", errors, warnings ) );
     }
 }

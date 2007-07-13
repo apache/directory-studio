@@ -24,6 +24,7 @@ import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaCheckerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
@@ -33,7 +34,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaErrorWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWarningWrapper;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -89,7 +89,7 @@ public class ProblemsViewController
      */
     private void initToolbar()
     {
-        IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
+//        IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
     }
 
 
@@ -184,6 +184,11 @@ public class ProblemsViewController
                 {
                     public void run()
                     {
+                        SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
+                        int errors = schemaChecker.getErrors().size();
+                        int warnings = schemaChecker.getWarnings().size();
+                        
+                        view.setErrorsAndWarningsCount( errors, warnings );
                         view.reloadViewer();
                     }
                 } );
