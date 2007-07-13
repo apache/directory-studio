@@ -20,7 +20,6 @@
 package org.apache.directory.studio.apacheds.schemaeditor;
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;

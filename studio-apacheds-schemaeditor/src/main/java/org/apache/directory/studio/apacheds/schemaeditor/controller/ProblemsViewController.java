@@ -20,8 +20,6 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
-import java.rmi.activation.Activatable;
-
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
