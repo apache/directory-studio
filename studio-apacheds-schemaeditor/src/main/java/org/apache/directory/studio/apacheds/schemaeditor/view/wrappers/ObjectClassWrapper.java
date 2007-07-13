@@ -20,7 +20,6 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wrappers;
 
 
-import org.apache.directory.shared.ldap.schema.ObjectClass;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 
 
