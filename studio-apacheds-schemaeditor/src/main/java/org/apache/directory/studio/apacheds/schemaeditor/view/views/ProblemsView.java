@@ -23,7 +23,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProblemsViewController;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProblemsViewRoot;
-import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

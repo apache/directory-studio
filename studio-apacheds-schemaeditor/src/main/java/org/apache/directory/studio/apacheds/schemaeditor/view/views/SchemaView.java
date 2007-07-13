@@ -20,15 +20,8 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaViewController;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.*;
-import org.apache.directory.studio.apacheds.schemaeditor.view.widget.DifferencesWidget;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaViewRoot;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
