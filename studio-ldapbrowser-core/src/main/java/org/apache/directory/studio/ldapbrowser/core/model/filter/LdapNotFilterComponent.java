@@ -24,15 +24,29 @@ package org.apache.directory.studio.ldapbrowser.core.model.filter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 
 
+/**
+ * The LdapNotFilterComponent represents an NOT filter branch.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdapNotFilterComponent extends LdapFilterComponent
 {
 
+    /**
+     * Creates a new instance of LdapNotFilterComponent.
+     * 
+     * @param parent the parent filter
+     */
     public LdapNotFilterComponent( LdapFilter parent )
     {
         super( parent );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#setStartToken(org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken)
+     */
     public boolean setStartToken( LdapFilterToken notToken )
     {
         if ( notToken != null && notToken.getType() == LdapFilterToken.NOT )
@@ -47,13 +61,11 @@ public class LdapNotFilterComponent extends LdapFilterComponent
 
 
     /**
-     * Checks additionally if the the filter wasn't set before.
-     * 
-     * @see LdapFilterComponent#addFilter(LdapFilter)
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#addFilter(org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter)
      */
     public boolean addFilter( LdapFilter filter )
     {
-        if ( this.filterList.isEmpty() )
+        if ( filterList.isEmpty() )
         {
             return super.addFilter( filter );
         }
@@ -66,13 +78,16 @@ public class LdapNotFilterComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#getInvalidCause()
+     */
     public String getInvalidCause()
     {
-        if ( this.startToken == null )
+        if ( startToken == null )
         {
             return "Missing NOT character '!'";
         }
-        else if ( this.filterList == null || this.filterList.isEmpty() )
+        else if ( filterList == null || filterList.isEmpty() )
         {
             return "Missing filter expression";
         }
@@ -83,10 +98,12 @@ public class LdapNotFilterComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString()
     {
-        return ( this.startToken != null ? "!" : "" )
-            + ( !this.filterList.isEmpty() ? this.filterList.get( 0 ).toString() : "" );
+        return ( startToken != null ? "!" : "" ) + ( !filterList.isEmpty() ? filterList.get( 0 ).toString() : "" );
     }
 
 }

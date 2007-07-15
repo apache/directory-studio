@@ -29,30 +29,40 @@ import java.util.List;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 
 
+/**
+ * The LdapFilterComponent is the base class for all filter components.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class LdapFilterComponent
 {
 
+    /** The parent filter. */
     protected final LdapFilter parent;
 
+    /** The start token. */
     protected LdapFilterToken startToken;
 
-    protected List filterList;
+    /** The filter list. */
+    protected List<LdapFilter> filterList;
 
 
     /**
+     * The Constructor.
      * 
-     * 
-     * @param parent
-     *                the parent filter of this filter component, not null.
+     * @param parent the parent filter, not null
      */
-    public LdapFilterComponent( LdapFilter parent )
+    protected LdapFilterComponent( LdapFilter parent )
     {
         if ( parent == null )
+        {
             throw new IllegalArgumentException( "parent is null" );
+        }
 
         this.parent = parent;
         this.startToken = null;
-        this.filterList = new ArrayList( 2 );
+        this.filterList = new ArrayList<LdapFilter>( 2 );
     }
 
 
@@ -63,7 +73,7 @@ public abstract class LdapFilterComponent
      */
     public final LdapFilter getParent()
     {
-        return this.parent;
+        return parent;
     }
 
 
@@ -72,6 +82,7 @@ public abstract class LdapFilterComponent
      * isn't set yet and if the given start token isn't null.
      * 
      * @param startToken
+     * 
      * @return true if setting the start token was successful, false
      *         otherwise.
      */
@@ -96,7 +107,7 @@ public abstract class LdapFilterComponent
      */
     public final LdapFilterToken getStartToken()
     {
-        return this.startToken;
+        return startToken;
     }
 
 
@@ -105,13 +116,14 @@ public abstract class LdapFilterComponent
      * was set before and if the filter isn't null.
      * 
      * @param filter
+     * 
      * @return true if adding the filter was successful, false otherwise.
      */
     public boolean addFilter( LdapFilter filter )
     {
-        if ( this.startToken != null && filter != null )
+        if ( startToken != null && filter != null )
         {
-            this.filterList.add( filter );
+            filterList.add( filter );
             return true;
         }
         else
@@ -128,8 +140,8 @@ public abstract class LdapFilterComponent
      */
     public LdapFilter[] getFilters()
     {
-        LdapFilter[] filters = new LdapFilter[this.filterList.size()];
-        this.filterList.toArray( filters );
+        LdapFilter[] filters = new LdapFilter[filterList.size()];
+        filterList.toArray( filters );
         return filters;
     }
 
@@ -141,19 +153,19 @@ public abstract class LdapFilterComponent
      */
     public boolean isValid()
     {
-        if ( this.startToken == null )
+        if ( startToken == null )
         {
             return false;
         }
 
-        if ( this.filterList.isEmpty() )
+        if ( filterList.isEmpty() )
         {
             return false;
         }
 
-        for ( Iterator it = filterList.iterator(); it.hasNext(); )
+        for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
         {
-            LdapFilter filter = ( LdapFilter ) it.next();
+            LdapFilter filter = it.next();
             if ( filter == null || !filter.isValid() )
             {
                 return false;
@@ -167,7 +179,7 @@ public abstract class LdapFilterComponent
     /**
      * Returns the invalid cause.
      * 
-     * @return the invalid cause.
+     * @return the invalid cause, or null if this filter is valid.
      */
     public abstract String getInvalidCause();
 
@@ -181,23 +193,23 @@ public abstract class LdapFilterComponent
      */
     public LdapFilter[] getInvalidFilters()
     {
-        if ( this.startToken == null || this.filterList.isEmpty() )
+        if ( startToken == null || filterList.isEmpty() )
         {
             return new LdapFilter[]
-                { this.parent };
+                { parent };
         }
         else
         {
-            List invalidFilterList = new ArrayList();
-            for ( Iterator it = this.filterList.iterator(); it.hasNext(); )
+            List<LdapFilter> invalidFilterList = new ArrayList<LdapFilter>();
+            for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
             {
-                LdapFilter filter = ( LdapFilter ) it.next();
+                LdapFilter filter = it.next();
                 if ( filter != null )
                 {
                     invalidFilterList.addAll( Arrays.asList( filter.getInvalidFilters() ) );
                 }
             }
-            return ( LdapFilter[] ) invalidFilterList.toArray( new LdapFilter[invalidFilterList.size()] );
+            return invalidFilterList.toArray( new LdapFilter[invalidFilterList.size()] );
         }
     }
 
@@ -210,14 +222,14 @@ public abstract class LdapFilterComponent
     public LdapFilterToken[] getTokens()
     {
         // collect tokens
-        List tokenList = new ArrayList();
-        if ( this.startToken != null )
+        List<LdapFilterToken> tokenList = new ArrayList<LdapFilterToken>();
+        if ( startToken != null )
         {
-            tokenList.add( this.startToken );
+            tokenList.add( startToken );
         }
-        for ( Iterator it = this.filterList.iterator(); it.hasNext(); )
+        for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
         {
-            LdapFilter filter = ( LdapFilter ) it.next();
+            LdapFilter filter = it.next();
             if ( filter != null )
             {
                 tokenList.addAll( Arrays.asList( filter.getTokens() ) );
@@ -225,7 +237,7 @@ public abstract class LdapFilterComponent
         }
 
         // sort tokens
-        LdapFilterToken[] tokens = ( LdapFilterToken[] ) tokenList.toArray( new LdapFilterToken[tokenList.size()] );
+        LdapFilterToken[] tokens = tokenList.toArray( new LdapFilterToken[tokenList.size()] );
         Arrays.sort( tokens );
 
         // return
@@ -237,21 +249,22 @@ public abstract class LdapFilterComponent
      * Returns the filter at the given offset. This may be the whole parent
      * filter or one of the subfilters.
      * 
-     * @param offset
+     * @param offset the offset
+     * 
      * @return the filter at the given offset or null is offset is out of
      *         range.
      */
     public LdapFilter getFilter( int offset )
     {
-        if ( this.startToken != null && this.startToken.getOffset() == offset )
+        if ( startToken != null && startToken.getOffset() == offset )
         {
-            return this.parent;
+            return parent;
         }
-        else if ( this.filterList != null || !this.filterList.isEmpty() )
+        else if ( filterList != null || !filterList.isEmpty() )
         {
-            for ( Iterator it = this.filterList.iterator(); it.hasNext(); )
+            for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
             {
-                LdapFilter filter = ( LdapFilter ) it.next();
+                LdapFilter filter = it.next();
                 if ( filter != null && filter.getFilter( offset ) != null )
                 {
                     return filter.getFilter( offset );

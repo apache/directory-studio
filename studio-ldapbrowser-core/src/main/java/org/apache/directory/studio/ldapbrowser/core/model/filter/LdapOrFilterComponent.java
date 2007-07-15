@@ -26,15 +26,29 @@ import java.util.Iterator;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 
 
+/**
+ * The LdapOrFilterComponent represents an OR filter branch.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdapOrFilterComponent extends LdapFilterComponent
 {
 
+    /**
+     * Creates a new instance of LdapOrFilterComponent.
+     * 
+     * @param parent the parent filter
+     */
     public LdapOrFilterComponent( LdapFilter parent )
     {
         super( parent );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#setStartToken(org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken)
+     */
     public boolean setStartToken( LdapFilterToken orToken )
     {
         if ( orToken != null && orToken.getType() == LdapFilterToken.OR )
@@ -48,13 +62,16 @@ public class LdapOrFilterComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#getInvalidCause()
+     */
     public String getInvalidCause()
     {
-        if ( this.startToken == null )
+        if ( startToken == null )
         {
             return "Missing OR character '|'";
         }
-        else if ( this.filterList == null || this.filterList.isEmpty() )
+        else if ( filterList == null || filterList.isEmpty() )
         {
             return "Missing filters";
         }
@@ -65,9 +82,12 @@ public class LdapOrFilterComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString()
     {
-        String s = this.startToken != null ? "|" : "";
+        String s = startToken != null ? "|" : "";
         for ( Iterator it = filterList.iterator(); it.hasNext(); )
         {
             LdapFilter filter = ( LdapFilter ) it.next();

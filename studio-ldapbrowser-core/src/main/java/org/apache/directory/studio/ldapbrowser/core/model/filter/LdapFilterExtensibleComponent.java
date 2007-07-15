@@ -29,7 +29,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilt
 
 
 /**
- * The LdapFilterExtensibleComponent represents a extensible filter.
+ * The LdapFilterExtensibleComponent represents an extensible filter.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -66,7 +66,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param attributeToken the attribute token
      * 
-     * @return true, if set attribute token
+     * @return true, if setting the attribute token was successful,false otherwise.
      */
     public boolean setAttributeToken( LdapFilterToken attributeToken )
     {
@@ -90,7 +90,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the attribute token.
      * 
-     * @return the attribute token
+     * @return the attribute token, or null if not set
      */
     public LdapFilterToken getAttributeToken()
     {
@@ -103,7 +103,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param dnAttrColonToken the dn attr colon token
      * 
-     * @return true, if set dn attr colon token
+     * @return true, if setting the dn attr colon token was sucessful, false otherwise
      */
     public boolean setDnAttrColonToken( LdapFilterToken dnAttrColonToken )
     {
@@ -127,7 +127,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the dn attr colon token.
      * 
-     * @return the dn attr colon token
+     * @return the dn attr colon token, or null if not set
      */
     public LdapFilterToken getDnAttrColonToken()
     {
@@ -140,7 +140,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param dnAttrToken the dn attr token
      * 
-     * @return true, if set dn attr token
+     * @return true, if setting the dn attr token was successful, false otherwise
      */
     public boolean setDnAttrToken( LdapFilterToken dnAttrToken )
     {
@@ -160,7 +160,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the dn attr token.
      * 
-     * @return the dn attr token
+     * @return the dn attr token, or null if not set
      */
     public LdapFilterToken getDnAttrToken()
     {
@@ -173,7 +173,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param matchingRuleColonToken the matching rule colon token
      * 
-     * @return true, if set matching rule colon token
+     * @return true, if setting the matching rule colon token was successful, false otherwise
      */
     public boolean setMatchingRuleColonToken( LdapFilterToken matchingRuleColonToken )
     {
@@ -197,7 +197,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the matching rule colon token.
      * 
-     * @return the matching rule colon token
+     * @return the matching rule colon token, or null if not set
      */
     public LdapFilterToken getMatchingRuleColonToken()
     {
@@ -210,7 +210,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param matchingRuleToken the matching rule token
      * 
-     * @return true, if set matching rule token
+     * @return true, if setting the matching rule token was successful, false otherwise
      */
     public boolean setMatchingRuleToken( LdapFilterToken matchingRuleToken )
     {
@@ -230,7 +230,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the matching rule token.
      * 
-     * @return the matching rule token
+     * @return the matching rule token, or null if not set
      */
     public LdapFilterToken getMatchingRuleToken()
     {
@@ -243,7 +243,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param equalsColonToken the equals colon token
      * 
-     * @return true, if set equals colon token
+     * @return true, if setting the equals colon token was sucessful, false otherwise
      */
     public boolean setEqualsColonToken( LdapFilterToken equalsColonToken )
     {
@@ -263,7 +263,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the equals colon token.
      * 
-     * @return the equals colon token
+     * @return the equals colon token, or null if not set
      */
     public LdapFilterToken getEqualsColonToken()
     {
@@ -276,7 +276,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param equalsToken the equals token
      * 
-     * @return true, if set equals token
+     * @return true, if setting the equals token was successful, false otherwise
      */
     public boolean setEqualsToken( LdapFilterToken equalsToken )
     {
@@ -295,7 +295,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the equals token.
      * 
-     * @return the equals token
+     * @return the equals token, or null if not set
      */
     public LdapFilterToken getEqualsToken()
     {
@@ -308,7 +308,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
      * 
      * @param valueToken the value token
      * 
-     * @return true, if set value token
+     * @return true, if setting the value token was successful, false otherwise
      */
     public boolean setValueToken( LdapFilterToken valueToken )
     {
@@ -327,7 +327,7 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     /**
      * Gets the value token.
      * 
-     * @return the value token
+     * @return the value token, or null if not set
      */
     public LdapFilterToken getValueToken()
     {
@@ -360,37 +360,37 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     {
         // collect tokens
         List<LdapFilterToken> tokenList = new ArrayList<LdapFilterToken>();
-        if ( this.attributeToken != null )
+        if ( attributeToken != null )
         {
-            tokenList.add( this.attributeToken );
+            tokenList.add( attributeToken );
         }
-        if ( this.dnAttrColonToken != null )
+        if ( dnAttrColonToken != null )
         {
-            tokenList.add( this.dnAttrColonToken );
+            tokenList.add( dnAttrColonToken );
         }
-        if ( this.dnAttrToken != null )
+        if ( dnAttrToken != null )
         {
-            tokenList.add( this.dnAttrToken );
+            tokenList.add( dnAttrToken );
         }
-        if ( this.matchingRuleColonToken != null )
+        if ( matchingRuleColonToken != null )
         {
-            tokenList.add( this.matchingRuleColonToken );
+            tokenList.add( matchingRuleColonToken );
         }
-        if ( this.matchingRuleToken != null )
+        if ( matchingRuleToken != null )
         {
-            tokenList.add( this.matchingRuleToken );
+            tokenList.add( matchingRuleToken );
         }
-        if ( this.equalsColonToken != null )
+        if ( equalsColonToken != null )
         {
-            tokenList.add( this.equalsColonToken );
+            tokenList.add( equalsColonToken );
         }
-        if ( this.equalsToken != null )
+        if ( equalsToken != null )
         {
-            tokenList.add( this.equalsToken );
+            tokenList.add( equalsToken );
         }
-        if ( this.valueToken != null )
+        if ( valueToken != null )
         {
-            tokenList.add( this.valueToken );
+            tokenList.add( valueToken );
         }
 
         // sort tokens

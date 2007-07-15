@@ -29,6 +29,12 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 
 
+/**
+ * The LdapFilter class represents an LDAP filter.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdapFilter
 {
 
@@ -38,18 +44,28 @@ public class LdapFilter
 
     private LdapFilterToken stopToken;
 
-    private List otherTokens;
+    private List<LdapFilterToken> otherTokens;
 
 
+    /**
+     * Creates a new instance of LdapFilter.
+     */
     public LdapFilter()
     {
         this.startToken = null;
         this.filterComponent = null;
         this.stopToken = null;
-        this.otherTokens = new ArrayList( 2 );
+        this.otherTokens = new ArrayList<LdapFilterToken>( 2 );
     }
 
 
+    /**
+     * Sets the start token.
+     * 
+     * @param startToken the start token
+     * 
+     * @return true, if setting the start token was successful, false otherwise
+     */
     public boolean setStartToken( LdapFilterToken startToken )
     {
         if ( this.startToken == null && startToken != null && startToken.getType() == LdapFilterToken.LPAR )
@@ -64,6 +80,13 @@ public class LdapFilter
     }
 
 
+    /**
+     * Sets the filter component.
+     * 
+     * @param filterComponent the filter component
+     * 
+     * @return true, if setting the filter component was successful, false otherwise
+     */
     public boolean setFilterComponent( LdapFilterComponent filterComponent )
     {
         if ( this.startToken != null && this.filterComponent == null && filterComponent != null )
@@ -78,6 +101,13 @@ public class LdapFilter
     }
 
 
+    /**
+     * Sets the stop token.
+     * 
+     * @param stopToken the stop token
+     * 
+     * @return true, if setting the stop token was successful, false otherwise
+     */
     public boolean setStopToken( LdapFilterToken stopToken )
     {
         if ( this.startToken != null && this.stopToken == null && stopToken != null
@@ -93,51 +123,75 @@ public class LdapFilter
     }
 
 
+    /**
+     * Adds another token.
+     * 
+     * @param otherToken the other token
+     */
     public void addOtherToken( LdapFilterToken otherToken )
     {
-        this.otherTokens.add( otherToken );
+        otherTokens.add( otherToken );
     }
 
 
+    /**
+     * Gets the start token.
+     * 
+     * @return the start token, or null if not set
+     */
     public LdapFilterToken getStartToken()
     {
-        return this.startToken;
+        return startToken;
     }
 
 
+    /**
+     * Gets the filter component.
+     * 
+     * @return the filter component, or null if not set
+     */
     public LdapFilterComponent getFilterComponent()
     {
-        return this.filterComponent;
+        return filterComponent;
     }
 
 
+    /**
+     * Gets the stop token.
+     * 
+     * @return the stop token or null if not set
+     */
     public LdapFilterToken getStopToken()
     {
-        return this.stopToken;
+        return stopToken;
     }
 
 
+    /**
+     * Gets all the tokens.
+     * 
+     * @return the tokens
+     */
     public LdapFilterToken[] getTokens()
     {
-
         // collect tokens
-        List tokenList = new ArrayList();
-        if ( this.startToken != null )
+        List<LdapFilterToken> tokenList = new ArrayList<LdapFilterToken>();
+        if ( startToken != null )
         {
-            tokenList.add( this.startToken );
+            tokenList.add( startToken );
         }
-        if ( this.stopToken != null )
+        if ( stopToken != null )
         {
-            tokenList.add( this.stopToken );
+            tokenList.add( stopToken );
         }
-        if ( this.filterComponent != null )
+        if ( filterComponent != null )
         {
-            tokenList.addAll( Arrays.asList( this.filterComponent.getTokens() ) );
+            tokenList.addAll( Arrays.asList( filterComponent.getTokens() ) );
         }
-        tokenList.addAll( this.otherTokens );
+        tokenList.addAll( otherTokens );
 
         // sort tokens
-        LdapFilterToken[] tokens = ( LdapFilterToken[] ) tokenList.toArray( new LdapFilterToken[tokenList.size()] );
+        LdapFilterToken[] tokens = tokenList.toArray( new LdapFilterToken[tokenList.size()] );
         Arrays.sort( tokens );
 
         // return
@@ -145,43 +199,62 @@ public class LdapFilter
     }
 
 
+    /**
+     * Checks if this filter and all its subfilters are valid.
+     * 
+     * @return true, if this filter and all its subfilters is valid
+     */
     public boolean isValid()
     {
-        return this.startToken != null && this.filterComponent != null && this.filterComponent.isValid()
-            && this.stopToken != null;
+        return startToken != null && filterComponent != null && filterComponent.isValid() && stopToken != null;
     }
 
 
+    /**
+     * Gets the invalid filters. This may be this filter itself or any of the subfilters.
+     * 
+     * @return an array of invalid filters or an empty array if all subfilters
+     *         are valid.
+     */
     public LdapFilter[] getInvalidFilters()
     {
-        if ( this.startToken == null || this.filterComponent == null || this.stopToken == null )
+        if ( startToken == null || filterComponent == null || stopToken == null )
         {
             return new LdapFilter[]
                 { this };
         }
         else
         {
-            return this.filterComponent.getInvalidFilters();
+            return filterComponent.getInvalidFilters();
         }
     }
 
 
+    /**
+     * Gets the filter at the given offset. This may be this filter
+     * or one of the subfilters.
+     * 
+     * @param offset the offset
+     * 
+     * @return the filter at the given offset or null is offset is out of
+     *         range.
+     */
     public LdapFilter getFilter( int offset )
     {
-        if ( this.startToken != null && this.startToken.getOffset() == offset )
+        if ( startToken != null && startToken.getOffset() == offset )
         {
             return this;
         }
-        else if ( this.stopToken != null && this.stopToken.getOffset() == offset )
+        else if ( stopToken != null && stopToken.getOffset() == offset )
         {
             return this;
         }
 
-        if ( this.otherTokens != null && this.otherTokens.size() > 0 )
+        if ( otherTokens != null && otherTokens.size() > 0 )
         {
-            for ( int i = 0; i < this.otherTokens.size(); i++ )
+            for ( int i = 0; i < otherTokens.size(); i++ )
             {
-                LdapFilterToken otherToken = ( LdapFilterToken ) this.otherTokens.get( i );
+                LdapFilterToken otherToken = otherTokens.get( i );
                 if ( otherToken != null && otherToken.getOffset() <= offset
                     && offset < otherToken.getOffset() + otherToken.getLength() )
                 {
@@ -190,35 +263,43 @@ public class LdapFilter
             }
         }
 
-        if ( this.filterComponent != null )
+        if ( filterComponent != null )
         {
-            return this.filterComponent.getFilter( offset );
+            return filterComponent.getFilter( offset );
         }
 
         return this;
     }
 
 
+    /**
+     * Gets the invalid cause.
+     * 
+     * @return the invalid cause, or null if this filter is valid.
+     */
     public String getInvalidCause()
     {
-        if ( this.stopToken == null )
+        if ( stopToken == null )
         {
             return BrowserCoreMessages.model_filter_missing_closing_parenthesis;
         }
-        else if ( this.filterComponent == null )
+        else if ( filterComponent == null )
         {
             return BrowserCoreMessages.model_filter_missing_filter_expression;
         }
         else
         {
-            return this.filterComponent.getInvalidCause();
+            return filterComponent.getInvalidCause();
         }
     }
 
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString()
     {
-        return ( this.startToken != null ? "(" : "" ) + ( filterComponent != null ? filterComponent.toString() : "" ) + ( this.stopToken != null ? ")" : "" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        return ( startToken != null ? "(" : "" ) + ( filterComponent != null ? filterComponent.toString() : "" ) + ( stopToken != null ? ")" : "" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
 
 }

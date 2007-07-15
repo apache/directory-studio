@@ -28,14 +28,28 @@ import java.util.List;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 
 
+/**
+ * The LdapFilterExtensibleComponent represents an simple filter.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+
 public class LdapFilterItemComponent extends LdapFilterComponent
 {
 
+    /** The filtertype token. */
     private LdapFilterToken filtertypeToken;
 
+    /** The value token. */
     private LdapFilterToken valueToken;
 
 
+    /**
+     * Creates a new instance of LdapFilterItemComponent.
+     * 
+     * @param parent the parent filter
+     */
     public LdapFilterItemComponent( LdapFilter parent )
     {
         super( parent );
@@ -44,6 +58,9 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#setStartToken(org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken)
+     */
     public boolean setStartToken( LdapFilterToken attributeToken )
     {
         if ( attributeToken != null && attributeToken.getType() == LdapFilterToken.ATTRIBUTE )
@@ -58,18 +75,37 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * Sets the attribute token.
+     * 
+     * @param attributeToken the attribute token
+     * 
+     * @return true, if setting the attribute token was successful, false otherwise
+     */
     public boolean setAttributeToken( LdapFilterToken attributeToken )
     {
         return this.setStartToken( attributeToken );
     }
 
 
+    /**
+     * Gets the attribute token.
+     * 
+     * @return the attribute token, null if not set
+     */
     public LdapFilterToken getAttributeToken()
     {
-        return this.getStartToken();
+        return getStartToken();
     }
 
 
+    /**
+     * Sets the filtertype token.
+     * 
+     * @param filtertypeToken the filtertype token
+     * 
+     * @return true, if setting the filtertype token was successful, false otherwise
+     */
     public boolean setFiltertypeToken( LdapFilterToken filtertypeToken )
     {
         if ( this.filtertypeToken == null
@@ -89,12 +125,24 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * Gets the filter token.
+     * 
+     * @return the filter token, null if not set
+     */
     public LdapFilterToken getFilterToken()
     {
-        return this.filtertypeToken;
+        return filtertypeToken;
     }
 
 
+    /**
+     * Sets the value token.
+     * 
+     * @param valueToken the value token
+     * 
+     * @return true, if setting the value token was successful, false otherwise
+     */
     public boolean setValueToken( LdapFilterToken valueToken )
     {
         if ( this.valueToken == null && valueToken != null && valueToken.getType() == LdapFilterToken.VALUE )
@@ -109,12 +157,20 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * Gets the value token.
+     * 
+     * @return the value token, null if not set
+     */
     public LdapFilterToken getValueToken()
     {
-        return this.valueToken;
+        return valueToken;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#isValid()
+     */
     public boolean isValid()
     {
         return startToken != null && filtertypeToken != null
@@ -122,25 +178,28 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#getTokens()
+     */
     public LdapFilterToken[] getTokens()
     {
         // collect tokens
-        List tokenList = new ArrayList();
-        if ( this.startToken != null )
+        List<LdapFilterToken> tokenList = new ArrayList<LdapFilterToken>();
+        if ( startToken != null )
         {
-            tokenList.add( this.startToken );
+            tokenList.add( startToken );
         }
-        if ( this.filtertypeToken != null )
+        if ( filtertypeToken != null )
         {
-            tokenList.add( this.filtertypeToken );
+            tokenList.add( filtertypeToken );
         }
-        if ( this.valueToken != null )
+        if ( valueToken != null )
         {
-            tokenList.add( this.valueToken );
+            tokenList.add( valueToken );
         }
 
         // sort tokens
-        LdapFilterToken[] tokens = ( LdapFilterToken[] ) tokenList.toArray( new LdapFilterToken[tokenList.size()] );
+        LdapFilterToken[] tokens = tokenList.toArray( new LdapFilterToken[tokenList.size()] );
         Arrays.sort( tokens );
 
         // return
@@ -148,6 +207,9 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString()
     {
         return ( startToken != null ? startToken.getValue() : "" )
@@ -156,15 +218,23 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * This implementation does nothing and returns always false.
+     * 
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#addFilter(org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter)
+     */
     public boolean addFilter( LdapFilter filter )
     {
         return false;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#getInvalidFilters()
+     */
     public LdapFilter[] getInvalidFilters()
     {
-        if ( this.isValid() )
+        if ( isValid() )
         {
             return new LdapFilter[0];
         }
@@ -176,22 +246,25 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#getFilter(int)
+     */
     public LdapFilter getFilter( int offset )
     {
-        if ( this.startToken != null && this.startToken.getOffset() <= offset
-            && offset < this.startToken.getOffset() + this.startToken.getLength() )
+        if ( startToken != null && startToken.getOffset() <= offset
+            && offset < startToken.getOffset() + startToken.getLength() )
         {
-            return this.parent;
+            return parent;
         }
-        else if ( this.filtertypeToken != null && this.filtertypeToken.getOffset() <= offset
-            && offset < this.filtertypeToken.getOffset() + this.filtertypeToken.getLength() )
+        else if ( filtertypeToken != null && filtertypeToken.getOffset() <= offset
+            && offset < filtertypeToken.getOffset() + filtertypeToken.getLength() )
         {
-            return this.parent;
+            return parent;
         }
-        else if ( this.valueToken != null && this.valueToken.getOffset() <= offset
-            && offset < this.valueToken.getOffset() + this.valueToken.getLength() )
+        else if ( valueToken != null && valueToken.getOffset() <= offset
+            && offset < valueToken.getOffset() + valueToken.getLength() )
         {
-            return this.parent;
+            return parent;
         }
         else
         {
@@ -200,17 +273,20 @@ public class LdapFilterItemComponent extends LdapFilterComponent
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent#getInvalidCause()
+     */
     public String getInvalidCause()
     {
-        if ( this.startToken == null )
+        if ( startToken == null )
         {
             return "Missing attribute name";
         }
-        else if ( this.filtertypeToken == null )
+        else if ( filtertypeToken == null )
         {
             return "Missing filter type, select one of '=', '>=', '<=','~='";
         }
-        else if ( this.valueToken == null )
+        else if ( valueToken == null )
         {
             return "Missing value";
         }
