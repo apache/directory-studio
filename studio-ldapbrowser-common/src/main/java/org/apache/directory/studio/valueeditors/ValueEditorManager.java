@@ -32,12 +32,21 @@ import java.util.Set;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ModifyValueJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -188,7 +197,8 @@ public class ValueEditorManager
 
         // check attribute preferences
         AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeType );
-        Map attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences().getAttributeValueEditorMap();
+        Map attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
+            .getAttributeValueEditorMap();
         if ( atd.getNumericOID() != null && attributeValueEditorMap.containsKey( atd.getNumericOID().toLowerCase() ) )
         {
             return ( IValueEditor ) this.class2ValueEditors.get( attributeValueEditorMap.get( atd.getNumericOID()
@@ -206,7 +216,8 @@ public class ValueEditorManager
 
         // check syntax preferences
         LdapSyntaxDescription lsd = atd.getSyntaxDescription();
-        Map syntaxValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences().getSyntaxValueEditorMap();
+        Map syntaxValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
+            .getSyntaxValueEditorMap();
         if ( lsd.getNumericOID() != null && syntaxValueEditorMap.containsKey( lsd.getNumericOID().toLowerCase() ) )
         {
             return ( IValueEditor ) this.class2ValueEditors.get( syntaxValueEditorMap.get( lsd.getNumericOID()
@@ -359,7 +370,8 @@ public class ValueEditorManager
 
         alternativeList.remove( getCurrentValueEditor( schema, attributeName ) );
 
-        return (org.apache.directory.studio.valueeditors.IValueEditor[] ) alternativeList.toArray( new IValueEditor[alternativeList.size()] );
+        return ( org.apache.directory.studio.valueeditors.IValueEditor[] ) alternativeList
+            .toArray( new IValueEditor[alternativeList.size()] );
     }
 
 
@@ -391,7 +403,8 @@ public class ValueEditorManager
 
         alternativeList.remove( getCurrentValueEditor( value ) );
 
-        return (org.apache.directory.studio.valueeditors.IValueEditor[] ) alternativeList.toArray( new IValueEditor[alternativeList.size()] );
+        return ( org.apache.directory.studio.valueeditors.IValueEditor[] ) alternativeList
+            .toArray( new IValueEditor[alternativeList.size()] );
     }
 
 
@@ -494,6 +507,140 @@ public class ValueEditorManager
 
 
     /**
+     * Creates the attribute with the given value at the entry.
+     * 
+     * It is called from a ICellModifier if no attribute of value exists and
+     * the raw value returned by the CellEditor isn't null.
+     * 
+     * @param newRawValue the new raw value
+     * @param entry the entry
+     * @param attributeDescription the attribute description
+     * 
+     * @throws ModelModificationException the model modification exception
+     */
+    public void createValue( IEntry entry, String attributeDescription, Object newRawValue )
+        throws ModelModificationException
+    {
+        if ( entry != null && attributeDescription != null && newRawValue != null
+            && ( newRawValue instanceof byte[] || newRawValue instanceof String ) )
+        {
+            if ( entry.getAttribute( attributeDescription ) != null )
+            {
+                IAttribute attribute = entry.getAttribute( attributeDescription );
+                if ( attribute != null )
+                {
+                    if ( attribute.getValueSize() == 0 )
+                    {
+                        new CreateValuesJob( attribute, newRawValue ).execute();
+                    }
+                    else if ( attribute.getValueSize() == 1 )
+                    {
+                        this.modifyValue( attribute.getValues()[0], newRawValue );
+                    }
+                }
+            }
+            else
+            {
+                EventRegistry.suspendEventFireingInCurrentThread();
+                IAttribute attribute = new Attribute( entry, attributeDescription );
+                entry.addAttribute( attribute );
+                EventRegistry.resumeEventFireingInCurrentThread();
+
+                Object newValue;
+                if ( entry.getConnection().getSchema().getAttributeTypeDescription( attributeDescription )
+                    .getSyntaxDescription().isString() )
+                {
+                    if ( newRawValue instanceof String )
+                    {
+                        newValue = ( String ) newRawValue;
+                    }
+                    else
+                    {
+                        newValue = LdifUtils.utf8decode( ( byte[] ) newRawValue );
+                    }
+                }
+                else
+                {
+                    if ( newRawValue instanceof String )
+                    {
+                        newValue = LdifUtils.utf8encode( ( String ) newRawValue );
+                    }
+                    else
+                    {
+                        newValue = ( byte[] ) newRawValue;
+                    }
+                }
+
+                new CreateValuesJob( attribute, newValue ).execute();
+            }
+        }
+    }
+
+
+    /**
+     * Modifies the value and sets the given raw value
+     * 
+     * It is called from a ICellModfier if the value exists and the raw
+     * value returned by the CellEditor isn't null.
+     * 
+     * @param oldValue the old value
+     * @param newRawValue the new raw value
+     */
+    public void modifyValue( IValue oldValue, Object newRawValue )
+    {
+        IAttribute attribute = oldValue.getAttribute();
+
+        boolean modify = false;
+        if ( oldValue != null && newRawValue != null && newRawValue instanceof byte[] )
+        {
+            byte[] newValue = ( byte[] ) newRawValue;
+            if ( !Utils.equals( oldValue.getBinaryValue(), newValue ) )
+            {
+                modify = true;
+            }
+        }
+        else if ( oldValue != null && newRawValue != null && newRawValue instanceof String )
+        {
+
+            String newValue = ( String ) newRawValue;
+            if ( !oldValue.getStringValue().equals( newValue ) )
+            {
+                modify = true;
+            }
+        }
+
+        if ( modify )
+        {
+            if ( oldValue.isEmpty() )
+            {
+                EventRegistry.suspendEventFireingInCurrentThread();
+                attribute.deleteEmptyValue();
+                EventRegistry.resumeEventFireingInCurrentThread();
+                new CreateValuesJob( attribute, newRawValue ).execute();
+            }
+            else
+            {
+                new ModifyValueJob( attribute, oldValue, newRawValue ).execute();
+            }
+        }
+    }
+
+
+    /**
+     * Deletes the attributes.
+     * 
+     * It is called from a ICellModfier if the attribute exists and the raw
+     * value returned by the CellEditor is null.
+     * 
+     * @param ah the attribute hierarchy
+     */
+    public void deleteAttribute( AttributeHierarchy ah )
+    {
+        new DeleteAttributesValueJob( ah ).execute();
+    }
+
+
+    /**
      * Creates and returns the value editors specified by value editors extensions.
      *
      * @param parent the parent composite
@@ -588,19 +735,19 @@ public class ValueEditorManager
      */
     public static class ValueEditorExtension
     {
-        
+
         /** The name. */
         public String name = null;
-        
+
         /** The icon. */
         public ImageDescriptor icon = null;
-        
+
         /** The class name. */
         public String className = null;
-        
+
         /** The syntax oids. */
         public Collection<String> syntaxOids = new ArrayList<String>( 3 );
-        
+
         /** The attribute types. */
         public Collection<String> attributeTypes = new ArrayList<String>( 3 );
 

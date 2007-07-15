@@ -100,12 +100,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
     }
 
 
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns an MaxValueCountValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IConnection connection, Object value )
     {
         Schema schema = null;
         if ( connection != null )

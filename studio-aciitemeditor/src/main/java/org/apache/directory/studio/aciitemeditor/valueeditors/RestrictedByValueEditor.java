@@ -99,12 +99,7 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
     }
 
 
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns an RestrictedByValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IConnection connection, Object value )
     {
         Schema schema = null;
         if ( connection != null )

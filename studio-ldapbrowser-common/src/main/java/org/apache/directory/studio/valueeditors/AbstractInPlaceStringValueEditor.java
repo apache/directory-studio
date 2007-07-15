@@ -30,11 +30,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -51,12 +47,6 @@ import org.eclipse.jface.viewers.TextCellEditor;
 public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor implements IValueEditor
 {
 
-    /** 
-     * @deprecated will be removed soon. Just used to delegate
-     *             createValue(), deleteValue() and modifyValue().
-     */
-    private TextValueEditor delegate;
-
     /** The name of this value editor */
     private String name;
 
@@ -70,7 +60,6 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     protected AbstractInPlaceStringValueEditor()
     {
         super();
-        this.delegate = new TextValueEditor();
     }
 
 
@@ -219,42 +208,6 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      * 
-     * This implementation returns the value itself if it is
-     * of type byte[] or a byte[] with the UTF-8 encoded string
-     * value if it is of type String.  
-     */
-    public Object getRawValue( IConnection connection, Object value )
-    {
-        if ( value == null )
-        {
-            return null;
-        }
-        else if ( value instanceof String )
-        {
-            return value;
-        }
-        else if ( value instanceof byte[] )
-        {
-            String s = LdifUtils.utf8decode( ( byte[] ) value );
-            for ( int i = 0; i < s.length(); i++ )
-            {
-                if ( Character.isISOControl( s.charAt( i ) ) && s.charAt( i ) != '\n' && s.charAt( i ) != '\r' )
-                {
-                    return null;
-                }
-            }
-            return s;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
      * This implementation always return the string value
      * as String.
      */
@@ -341,41 +294,5 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
         return imageDescriptor;
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    public final void createValue( IEntry entry, String attributeDescription, Object newRawValue )
-        throws ModelModificationException
-    {
-        delegate.createValue( entry, attributeDescription, newRawValue );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public final void deleteAttribute( AttributeHierarchy ah ) throws ModelModificationException
-    {
-        delegate.deleteAttribute( ah );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public final void deleteValue( IValue oldValue ) throws ModelModificationException
-    {
-        delegate.deleteValue( oldValue );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public final void modifyValue( IValue oldValue, Object newRawValue ) throws ModelModificationException
-    {
-        delegate.modifyValue( oldValue, newRawValue );
-    }
 
 }

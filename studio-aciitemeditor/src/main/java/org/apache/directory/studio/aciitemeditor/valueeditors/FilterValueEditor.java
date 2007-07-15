@@ -77,12 +77,7 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
     }
 
 
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns a FilterValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IConnection connection, Object value )
     {
         if ( connection == null || value == null || !( value instanceof String ) )
         {

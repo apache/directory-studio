@@ -133,48 +133,4 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         return null;
     }
 
-
-    /**
-     * Returns a ACIItemValueContext with the given
-     * connection, value and null entry.
-     * 
-     * @param value the value
-     * @param connection the connection
-     * 
-     * @return the raw value
-     */
-    public Object getRawValue( IConnection connection, Object value )
-    {
-        Object o = super.getRawValue( connection, value );
-        if ( o != null && o instanceof String )
-        {
-            String v = (String) o;
-            return new ACIItemValueWithContext( connection, null, v );
-        }
-
-        return null;
-    }
-
-//
-//    /**
-//     * Returns always the string value.
-//     * 
-//     * Reimplementation, because getRawValue() returns a
-//     * DnValueEditorRawValueWrapper.
-//     * 
-//     * @param value the value
-//     * 
-//     * @return the display value
-//     */
-//    public String getDisplayValue( IValue value )
-//    {
-//        if ( value == null )
-//        {
-//            return "NULL";
-//        }
-//
-//        String displayValue = value.getStringValue();
-//        return displayValue;
-//    }
-    
 }

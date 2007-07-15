@@ -22,12 +22,9 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ICellModifier;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Item;
 
 
@@ -129,8 +126,6 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
 
     /**
      * {@inheritDoc}
-     * 
-     * TODO: Remove value modification from value editors 
      */
     public void modify( Object element, String property, Object newRawValue )
     {
@@ -141,20 +136,11 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
 
         if ( element != null && element instanceof IValue && valueEditorManager != null )
         {
-            IValue attributeValue = ( IValue ) element;
+            IValue oldValue = ( IValue ) element;
 
             if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
-                try
-                {
-                    this.valueEditorManager.getCurrentValueEditor( attributeValue ).modifyValue( attributeValue,
-                        newRawValue );
-                }
-                catch ( ModelModificationException mme )
-                {
-                    MessageDialog.openError( Display.getDefault().getActiveShell(), "Error While Modifying Value", mme
-                        .getMessage() );
-                }
+                valueEditorManager.modifyValue( oldValue, newRawValue );
             }
         }
     }

@@ -77,12 +77,7 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
     }
 
 
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns an AttributeTypeAndValueValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IConnection connection, Object value )
     {
         Schema schema = null;
         if ( connection != null )

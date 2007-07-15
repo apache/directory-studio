@@ -126,23 +126,6 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
-     * {@inheritDoc}
-     *
-     * Returns a DnValueEditorRawValueWrapper with the given
-     * connection and a DN build from the given value.
-     */
-    public Object getRawValue( IConnection connection, Object value )
-    {
-        Object o = super.getRawValue( connection, value );
-        if ( o != null && o instanceof String )
-        {
-            return new DnValueEditorRawValueWrapper( connection, ( String ) o );
-        }
-
-        return null;
-    }
-
-    /**
      * The DnValueEditorRawValueWrapper is used to pass contextual
      * information to the opened DnDialog.
      *

@@ -23,7 +23,6 @@ package org.apache.directory.studio.valueeditors.password;
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogBinaryValueEditor;
@@ -136,18 +135,6 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
         return new PasswordValueEditorRawValueWrapper( password, value.getAttribute().getEntry() );
     }
 
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns a PasswordValueEditorRawValueWrapper with 
-     * null entry.
-     */
-    public Object getRawValue( IConnection connection, Object value )
-    {
-        Object password = super.getRawValue( connection, value );
-        return new PasswordValueEditorRawValueWrapper( password, null );
-    }
 
     /**
      * The PasswordValueEditorRawValueWrapper is used to pass contextual 

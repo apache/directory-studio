@@ -22,9 +22,7 @@ package org.apache.directory.studio.valueeditors;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -160,62 +158,6 @@ public interface IValueEditor
      * @param imageDescriptor the editors image
      */
     public abstract void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor );
-
-
-    /**
-     * Creates the attribute with the given value at the entry.
-     * 
-     * It is called from a ICellModifier if no attribute of value exists and
-     * the raw value returned by the CellEditor isn't null.
-     * 
-     * @param entry
-     * @param attributeDescription
-     * @param newRawValue
-     * @throws ModelModificationException
-     * @deprecated This functionality will be removed from IValueEditor soon.
-     */
-    public abstract void createValue( IEntry entry, String attributeDescription, Object newRawValue )
-        throws ModelModificationException;
-
-
-    /**
-     * Modifies the value and sets the given raw value
-     * 
-     * It is called from a ICellModfier if the value exists and the raw
-     * value returned by the CellEditor isn't null.
-     * 
-     * @param value
-     * @param newRawValue
-     * @throws ModelModificationException
-     * @deprecated This functionality will be removed from IValueEditor soon.
-     */
-    public abstract void modifyValue( IValue value, Object newRawValue ) throws ModelModificationException;
-
-
-    /**
-     * Deletes the attributes
-     * 
-     * It is called from a ICellModfier if the attribute exists and the raw
-     * value returned by the CellEditor is null.
-     * 
-     * @param attributeHierarchy the attribute hierarchy
-     * @throws ModelModificationException
-     * @deprecated This functionality will be removed from IValueEditor soon.
-     */
-    public abstract void deleteAttribute( AttributeHierarchy attributeHierarchy ) throws ModelModificationException;
-
-
-    /**
-     * Deletes the value
-     * 
-     * It is called from a ICellModfier if the value exists and the raw
-     * value returned by the CellEditor is null.
-     * 
-     * @param oldValue
-     * @throws ModelModificationException
-     * @deprecated This functionality will be removed from IValueEditor soon.
-     */
-    public abstract void deleteValue( IValue oldValue ) throws ModelModificationException;
 
 
     /**

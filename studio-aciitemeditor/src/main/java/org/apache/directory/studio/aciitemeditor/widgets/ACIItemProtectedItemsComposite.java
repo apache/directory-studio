@@ -32,6 +32,11 @@ import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.dialogs.MultiValuedDialog;
 import org.apache.directory.studio.aciitemeditor.model.ProtectedItemWrapper;
 import org.apache.directory.studio.aciitemeditor.model.ProtectedItemWrapperFactory;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
@@ -501,20 +506,29 @@ public class ACIItemProtectedItemsComposite extends Composite
                 {
                     oldValue = ""; //$NON-NLS-1$
                 }
-                Object oldRawValue = valueEditor.getRawValue( context.getConnection(), oldValue );
-
-                CellEditor cellEditor = valueEditor.getCellEditor();
-                cellEditor.setValue( oldRawValue );
-                cellEditor.activate();
-                Object newRawValue = cellEditor.getValue();
-
-                if ( newRawValue != null )
+                
+                try
                 {
-                    String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
+                    IAttribute attribute = new Attribute( context.getEntry(), "" ); //$NON-NLS-1$
+                    IValue value = new Value( attribute, oldValue ); //$NON-NLS-1$
+                    Object oldRawValue = valueEditor.getRawValue( value ); //$NON-NLS-1$
 
-                    values.clear();
-                    values.add( newValue );
-                    tableViewer.refresh();
+                    CellEditor cellEditor = valueEditor.getCellEditor();
+                    cellEditor.setValue( oldRawValue );
+                    cellEditor.activate();
+                    Object newRawValue = cellEditor.getValue();
+
+                    if ( newRawValue != null )
+                    {
+                        String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
+
+                        values.clear();
+                        values.add( newValue );
+                        tableViewer.refresh();
+                    }
+                }
+                catch ( ModelModificationException e )
+                {
                 }
             }
         }

@@ -103,20 +103,6 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
-     * @see org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor#getRawValue(org.apache.directory.studio.ldapbrowser.core.model.IConnection, java.lang.Object)
-     */
-    public Object getRawValue( IConnection connection, Object value )
-    {
-        Object o = super.getRawValue( connection, value );
-        if ( o != null && o instanceof String )
-        {
-            return new SubtreeSpecificationValueWrapper( connection, null, ( String ) o );
-        }
-
-        return null;
-    }
-
-    /**
      * The SubtreeSpecificationValueWrapper is used to pass contextual
      * information to the opened SubtreeSpecificationDialog.
      *

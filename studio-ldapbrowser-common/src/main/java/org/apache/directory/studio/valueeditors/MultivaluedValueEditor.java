@@ -29,10 +29,7 @@ import java.util.List;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.MultivaluedDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -218,58 +215,6 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
     public Object getRawValue( IValue value )
     {
         return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * It doesn't make sense to use the MultivaluedValueEditor with a single value.
-     * Returns null.
-     */
-    public Object getRawValue( IConnection connection, Object value )
-    {
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Modification is performed in the concrete single-ValueEditors.
-     */
-    public void modifyValue( IValue oldValue, Object newRawValue ) throws ModelModificationException
-    {
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Creationg is performed in the concrete single-ValueEditors.
-     */
-    public void createValue( IEntry entry, String attributeName, Object newRawValue ) throws ModelModificationException
-    {
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Deletion is performed in the concrete single-ValueEditors.
-     */
-    public void deleteAttribute( AttributeHierarchy ah ) throws ModelModificationException
-    {
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Deletion is performed in the concrete single-ValueEditors.
-     */
-    public void deleteValue( IValue oldValue ) throws ModelModificationException
-    {
     }
 
 

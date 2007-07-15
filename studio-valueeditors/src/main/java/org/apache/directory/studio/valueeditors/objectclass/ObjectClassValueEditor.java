@@ -133,12 +133,7 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     }
 
 
-    /**
-     * {@inheritDoc}
-     * 
-     * Returns a ObjectClassValueEditorRawValueWrapper.
-     */
-    public Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IConnection connection, Object value )
     {
         Schema schema = null;
         if ( connection != null )

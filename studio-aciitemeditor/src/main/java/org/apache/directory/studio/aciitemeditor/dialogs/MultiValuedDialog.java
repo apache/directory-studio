@@ -282,31 +282,27 @@ public class MultiValuedDialog extends Dialog
      */
     private void addValue()
     {
-        
-        Object oldRawValue;
         try
         {
             IAttribute attribute = new Attribute( context.getEntry(), "" ); //$NON-NLS-1$
             IValue value = new Value( attribute, "" ); //$NON-NLS-1$
-            oldRawValue = valueEditor.getRawValue( value ); //$NON-NLS-1$
+            Object oldRawValue = valueEditor.getRawValue( value ); //$NON-NLS-1$
+            
+            CellEditor cellEditor = valueEditor.getCellEditor();
+            cellEditor.setValue( oldRawValue );
+            cellEditor.activate();
+            Object newRawValue = cellEditor.getValue();
+            
+            if ( newRawValue != null )
+            {
+                String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
+                
+                values.add( newValue );
+                tableViewer.refresh();
+            }
         }
         catch ( ModelModificationException e )
         {
-            oldRawValue = valueEditor.getRawValue( context.getConnection(), "" ); //$NON-NLS-1$
-        }
-        
-
-        CellEditor cellEditor = valueEditor.getCellEditor();
-        cellEditor.setValue( oldRawValue );
-        cellEditor.activate();
-        Object newRawValue = cellEditor.getValue();
-
-        if ( newRawValue != null )
-        {
-            String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
-
-            values.add( newValue );
-            tableViewer.refresh();
         }
     }
 
@@ -320,30 +316,28 @@ public class MultiValuedDialog extends Dialog
         String oldValue = getSelectedValue();
         if ( oldValue != null )
         {
-            Object oldRawValue;
             try
             {
                 IAttribute attribute = new Attribute( context.getEntry(), "" ); //$NON-NLS-1$
                 IValue value = new Value( attribute, oldValue ); //$NON-NLS-1$
-                oldRawValue = valueEditor.getRawValue( value ); //$NON-NLS-1$
+                Object oldRawValue = valueEditor.getRawValue( value ); //$NON-NLS-1$
+                
+                CellEditor cellEditor = valueEditor.getCellEditor();
+                cellEditor.setValue( oldRawValue );
+                cellEditor.activate();
+                Object newRawValue = cellEditor.getValue();
+                
+                if ( newRawValue != null )
+                {
+                    String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
+                    
+                    values.remove( oldValue );
+                    values.add( newValue );
+                    tableViewer.refresh();
+                }
             }
             catch ( ModelModificationException e )
             {
-                oldRawValue = valueEditor.getRawValue( context.getConnection(), oldValue );
-            }
-
-            CellEditor cellEditor = valueEditor.getCellEditor();
-            cellEditor.setValue( oldRawValue );
-            cellEditor.activate();
-            Object newRawValue = cellEditor.getValue();
-
-            if ( newRawValue != null )
-            {
-                String newValue = ( String ) valueEditor.getStringOrBinaryValue( newRawValue );
-
-                values.remove( oldValue );
-                values.add( newValue );
-                tableViewer.refresh();
             }
         }
     }

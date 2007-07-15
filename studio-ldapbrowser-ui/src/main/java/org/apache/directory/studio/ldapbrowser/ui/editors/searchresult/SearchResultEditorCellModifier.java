@@ -168,7 +168,6 @@ public class SearchResultEditorCellModifier implements ICellModifier
 
     public void modify( Object element, String property, Object newRawValue )
     {
-
         if ( element != null && element instanceof Item )
         {
             element = ( ( Item ) element ).getData();
@@ -176,25 +175,23 @@ public class SearchResultEditorCellModifier implements ICellModifier
 
         if ( element != null && element instanceof ISearchResult && property != null )
         {
-            ISearchResult result = ( ISearchResult ) element;
-            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
-
             try
             {
+                ISearchResult result = ( ISearchResult ) element;
+                AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
+
                 // switch operation:
                 if ( ah == null && newRawValue != null )
                 {
-                    this.valueEditorManager.getCurrentValueEditor( result.getEntry(), property ).createValue(
-                        result.getEntry(), property, newRawValue );
+                    this.valueEditorManager.createValue( result.getEntry(), property, newRawValue );
                 }
                 else if ( ah != null && newRawValue == null )
                 {
-                    this.valueEditorManager.getCurrentValueEditor( ah ).deleteAttribute( ah );
+                    this.valueEditorManager.deleteAttribute( ah );
                 }
                 else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
                 {
-                    this.valueEditorManager.getCurrentValueEditor( ah ).modifyValue( ah.getAttribute().getValues()[0],
-                        newRawValue );
+                    this.valueEditorManager.modifyValue( ah.getAttribute().getValues()[0], newRawValue );
                 }
             }
             catch ( ModelModificationException mme )
