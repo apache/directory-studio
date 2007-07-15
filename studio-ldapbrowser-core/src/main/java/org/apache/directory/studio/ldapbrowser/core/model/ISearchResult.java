@@ -28,6 +28,12 @@ import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryP
 import org.eclipse.core.runtime.IAdaptable;
 
 
+/**
+ * The ISearchResult represents a single search result.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider
 {
@@ -84,6 +90,11 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
     public ISearch getSearch();
 
 
+    /**
+     * Sets the search.
+     * 
+     * @param search the search
+     */
     public void setSearch( ISearch search );
 
 }

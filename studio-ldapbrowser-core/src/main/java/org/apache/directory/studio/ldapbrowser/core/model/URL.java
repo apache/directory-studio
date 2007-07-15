@@ -191,6 +191,8 @@ public class URL
 
     /**
      * Returns the string representation of this LDAP URL.
+     * 
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {

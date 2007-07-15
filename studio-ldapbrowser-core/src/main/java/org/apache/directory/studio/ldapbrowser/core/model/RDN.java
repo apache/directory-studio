@@ -281,6 +281,8 @@ public class RDN implements Serializable
     /**
      * Returns the string representation of this RDN, 
      * for example &lt;type&gt;=&lt;value&gt;
+     * 
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {

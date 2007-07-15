@@ -270,7 +270,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param name the name
      */
-    public abstract void setName( String searchName );
+    public abstract void setName( String name );
 
 
     /**

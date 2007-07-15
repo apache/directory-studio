@@ -246,6 +246,8 @@ public class RDNPart implements Serializable
     /**
      * Returns the string representation of this RDNPart, namely
      * &lt;type&gt;=&lt;value&gt;
+     * 
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {

@@ -268,6 +268,8 @@ public class DN implements Serializable
 
     /**
      * Returns the string representation of this DN.
+     * 
+     * @see java.lang.Object#toString()
      */
     public String toString()
     {

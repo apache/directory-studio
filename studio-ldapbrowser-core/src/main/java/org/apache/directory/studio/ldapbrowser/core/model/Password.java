@@ -30,41 +30,78 @@ import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.UnixCrypt;
 
 
+/**
+ * The Password class is used to represent a hashed or plain text password.
+ * It provides methods to retrieve information about the used hash method. 
+ * And it provides a verify method to check if the hashed password is equal to 
+ * a given plain text password.  
+ * 
+ * The following hash methods are supported:
+ * <ul>
+ *   <li>SHA</li>
+ *   <li>SSHA</li>
+ *   <li>MD5</li>
+ *   <li>SMD5</li>
+ *   <li>CRYPT</li>
+ * </ul>
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Password
 {
-
+    /** The constant used for the SHA hash, value <code>SHA</code> */
     public static final String HASH_METHOD_SHA = "SHA"; //$NON-NLS-1$
 
+    /** The constant used for the salted SHA hash, value <code>SSHA</code> */
     public static final String HASH_METHOD_SSHA = "SSHA"; //$NON-NLS-1$
 
+    /** The constant used for the MD5 hash, value <code>MD5</code> */
     public static final String HASH_METHOD_MD5 = "MD5"; //$NON-NLS-1$
 
+    /** The constant used for the salted MD5 hash, value <code>SMD5</code> */
     public static final String HASH_METHOD_SMD5 = "SMD5"; //$NON-NLS-1$
 
+    /** The constant used for the crypt hash, value <code>CRYPT</code> */
     public static final String HASH_METHOD_CRYPT = "CRYPT"; //$NON-NLS-1$
 
+    /** The constant used for plain text passwords */
     public static final String HASH_METHOD_NO = BrowserCoreMessages.model__no_hash;
 
+    /** The constant used for unsupported hash methods */
     public static final String HASH_METHOD_UNSUPPORTED = BrowserCoreMessages.model__unsupported_hash;
 
-    String hashMethod;
+    /** The hash method. */
+    private String hashMethod;
 
-    byte[] hashedPassword;
+    /** The hashed password. */
+    private byte[] hashedPassword;
 
-    byte[] salt;
+    /** The salt. */
+    private byte[] salt;
 
-    String trash;
+    /** The trash, used for unknown hash methods. */
+    private String trash;
 
 
+    /**
+     * Creates a new instance of Password.
+     *
+     * @param password the password, either hashed or plain text
+     */
     public Password( byte[] password )
     {
         this( LdifUtils.utf8decode( password ) );
     }
 
 
+    /**
+     * Creates a new instance of Password.
+     *
+     * @param password the password, either hashed or plain text
+     */
     public Password( String password )
     {
-
         if ( password == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_password );
@@ -120,9 +157,17 @@ public class Password
     }
 
 
+    /**
+     * Creates a new instance of Password and calculates the hashed password.
+     *
+     * @param hashMethod the hash method to use
+     * @param passwordAsPlaintext the plain text password
+     * 
+     * @throws IllegalArgumentException if the given hash method is not
+     *         supported of if the given password is null
+     */
     public Password( String hashMethod, String passwordAsPlaintext )
     {
-
         if ( !( hashMethod == null || HASH_METHOD_NO.equals( hashMethod ) || HASH_METHOD_SHA.equals( hashMethod )
             || HASH_METHOD_SSHA.equals( hashMethod ) || HASH_METHOD_MD5.equals( hashMethod )
             || HASH_METHOD_SMD5.equals( hashMethod ) || HASH_METHOD_CRYPT.equals( hashMethod ) ) )
@@ -181,9 +226,15 @@ public class Password
     }
 
 
+    /**
+     * Verifies if this password is equal to the given test password.
+     * 
+     * @param testPasswordAsPlaintext the test password as plaintext
+     * 
+     * @return true, if equal
+     */
     public boolean verify( String testPasswordAsPlaintext )
     {
-
         if ( testPasswordAsPlaintext == null )
         {
             return false;
@@ -196,60 +247,93 @@ public class Password
         }
         else if ( HASH_METHOD_SHA.equals( hashMethod ) || HASH_METHOD_SSHA.equals( hashMethod ) )
         {
-            byte[] hash = digest( HASH_METHOD_SHA, testPasswordAsPlaintext, this.salt );
-            verified = equals( hash, this.hashedPassword );
+            byte[] hash = digest( HASH_METHOD_SHA, testPasswordAsPlaintext, salt );
+            verified = equals( hash, hashedPassword );
         }
         else if ( HASH_METHOD_MD5.equals( hashMethod ) || HASH_METHOD_SMD5.equals( hashMethod ) )
         {
-            byte[] hash = digest( HASH_METHOD_MD5, testPasswordAsPlaintext, this.salt );
-            verified = equals( hash, this.hashedPassword );
+            byte[] hash = digest( HASH_METHOD_MD5, testPasswordAsPlaintext, salt );
+            verified = equals( hash, hashedPassword );
         }
         else if ( HASH_METHOD_CRYPT.equals( hashMethod ) )
         {
-            byte[] crypted = crypt( testPasswordAsPlaintext, this.salt );
-            verified = equals( crypted, this.hashedPassword );
+            byte[] crypted = crypt( testPasswordAsPlaintext, salt );
+            verified = equals( crypted, hashedPassword );
         }
 
         return verified;
     }
 
 
+    /**
+     * Gets the hash method.
+     * 
+     * @return the hash method
+     */
     public String getHashMethod()
     {
-        return this.hashMethod;
+        return hashMethod;
     }
 
 
+    /**
+     * Gets the hashed password.
+     * 
+     * @return the hashed password
+     */
     public byte[] getHashedPassword()
     {
         return hashedPassword;
     }
 
 
+    /**
+     * Gets the hashed password as hex string.
+     * 
+     * @return the hashed password as hex string
+     */
     public String getHashedPasswordAsHexString()
     {
         return LdifUtils.hexEncode( hashedPassword );
     }
 
 
+    /**
+     * Gets the salt.
+     * 
+     * @return the salt
+     */
     public byte[] getSalt()
     {
         return salt;
     }
 
 
+    /**
+     * Gets the salt as hex string.
+     * 
+     * @return the salt as hex string
+     */
     public String getSaltAsHexString()
     {
         return LdifUtils.hexEncode( salt );
     }
 
 
+    /**
+     * Gets the 
+     * 
+     * @return the byte[]
+     */
     public byte[] toBytes()
     {
         return LdifUtils.utf8encode( toString() );
     }
 
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
@@ -304,15 +388,23 @@ public class Password
     private static boolean equals( byte[] data1, byte[] data2 )
     {
         if ( data1 == data2 )
+        {
             return true;
+        }
         if ( data1 == null || data2 == null )
+        {
             return false;
+        }
         if ( data1.length != data2.length )
+        {
             return false;
+        }
         for ( int i = 0; i < data1.length; i++ )
         {
             if ( data1[i] != data2[i] )
+            {
                 return false;
+            }
         }
         return true;
     }
