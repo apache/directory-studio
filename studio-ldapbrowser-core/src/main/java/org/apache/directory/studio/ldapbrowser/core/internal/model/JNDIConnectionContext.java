@@ -40,6 +40,7 @@ import javax.naming.ldap.StartTlsResponse;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
 
@@ -218,7 +219,7 @@ public class JNDIConnectionContext
 
                     try
                     {
-                        this.namingEnumeration = searchCtx.search( searchBase, filter, controls );
+                        this.namingEnumeration = searchCtx.search( new LdapDN( searchBase ), filter, controls );
                     }
                     catch ( NamingException ne )
                     {
@@ -286,7 +287,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    modCtx.modifyAttributes( dn, modificationItems );
+                    modCtx.modifyAttributes( new LdapDN( dn ), modificationItems );
                 }
                 catch ( NamingException ne )
                 {
@@ -337,7 +338,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    modCtx.rename( oldDn, newDn );
+                    modCtx.rename( new LdapDN( oldDn ), new LdapDN( newDn ) );
 
                 }
                 catch ( NamingException ne )
@@ -389,7 +390,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    modCtx.createSubcontext( dn, attributes );
+                    modCtx.createSubcontext( new LdapDN( dn ), attributes );
                 }
                 catch ( NamingException ne )
                 {
@@ -440,7 +441,7 @@ public class JNDIConnectionContext
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
 
-                    modCtx.destroySubcontext( dn );
+                    modCtx.destroySubcontext( new LdapDN( dn ) );
                 }
                 catch ( NamingException ne )
                 {
