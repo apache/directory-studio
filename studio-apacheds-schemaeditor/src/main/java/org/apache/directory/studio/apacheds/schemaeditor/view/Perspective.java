@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -60,10 +61,12 @@ public class Perspective implements IPerspectiveFactory
 
         // Adding Views
         topLeftFolder.addView( SchemaView.ID );
+        layout.addStandaloneView( ProjectsView.ID, true, IPageLayout.BOTTOM, 0.7f, topLeftFolderId );
         layout.addStandaloneView( ProblemsView.ID, true, IPageLayout.BOTTOM, 0.7f, editorAreaId );
 
         // Setting up non-closeable views
         layout.getViewLayout( SchemaView.ID ).setCloseable( false );
+        layout.getViewLayout( ProjectsView.ID ).setCloseable( false );
 
         // Adding Perspective shortcuts
         layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
@@ -71,6 +74,7 @@ public class Perspective implements IPerspectiveFactory
 
         // Adding View shortcuts
         layout.addShowViewShortcut( SchemaView.ID );
+        layout.addShowViewShortcut( ProjectsView.ID );
         layout.addShowViewShortcut( ProblemsView.ID );
     }
 }

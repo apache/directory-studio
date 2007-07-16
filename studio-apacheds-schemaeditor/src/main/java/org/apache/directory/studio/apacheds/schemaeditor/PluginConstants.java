@@ -33,6 +33,7 @@ public interface PluginConstants
     public static final String IMG_ATTRIBUTE_TYPE_NEW = "resources/icons/attribute_type_new.gif";
     public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "resources/icons/attribute_type_new_wizard.png";
     public static final String IMG_CONNECT = "resources/icons/connect.gif";
+    public static final String IMG_DELETE = "resources/icons/delete.gif";
     public static final String IMG_DISCONNECT = "resources/icons/disconnect.gif";
     public static final String IMG_DIFFERENCE_ADD = "resources/icons/difference_add.png";
     public static final String IMG_DIFFERENCE_MODIFY = "resources/icons/difference_modify.png";
@@ -46,13 +47,31 @@ public interface PluginConstants
     public static final String IMG_PROBLEMS_ERROR = "resources/icons/problems_error.gif";
     public static final String IMG_PROBLEMS_GROUP = "resources/icons/problems_group.gif";
     public static final String IMG_PROBLEMS_WARNING = "resources/icons/problems_warning.gif";
+    public static final String IMG_PROJECT_ADS = "resources/icons/project_ads.gif";
+    public static final String IMG_PROJECT_ADS_CLOSED = "resources/icons/project_ads_closed.gif";
+    public static final String IMG_PROJECT_EXPORT = "resources/icons/project_export.gif";
+    public static final String IMG_PROJECT_EXPORT_WIZARD = "resources/icons/project_export_wizard.png";
+    public static final String IMG_PROJECT_IMPORT = "resources/icons/project_import.gif";
+    public static final String IMG_PROJECT_IMPORT_WIZARD = "resources/icons/project_import_wizard.png";
+    public static final String IMG_PROJECT_NEW = "resources/icons/project_new.gif";
+    public static final String IMG_PROJECT_NEW_WIZARD = "resources/icons/project_new_wizard.png";
+    public static final String IMG_PROJECT_OFFLINE = "resources/icons/project_offline.gif";
+    public static final String IMG_PROJECT_OFFLINE_CLOSED = "resources/icons/project_offline_closed.gif";
+    public static final String IMG_RENAME = "resources/icons/rename.gif";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
+    public static final String IMG_SCHEMAS_EXPORT = "resources/icons/schemas_export.gif";
     public static final String IMG_SCHEMAS_EXPORT_WIZARD = "resources/icons/schemas_export_wizard.png";
+    public static final String IMG_SCHEMAS_IMPORT = "resources/icons/schemas_import.gif";
     public static final String IMG_SCHEMAS_IMPORT_WIZARD = "resources/icons/schemas_import_wizard.png";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
 
     // Commands
-    public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".connect";
+    public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".commands.connect";
+    public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
+    public static final String CMD_DELETE_PROJECT = Activator.PLUGIN_ID + ".commands.deleteProject";
+    public static final String CMD_EXPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.exportProjects";
+    public static final String CMD_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.importProjects";
+    public static final String CMD_RENAME_PROJECT = Activator.PLUGIN_ID + ".commands.renameProject";
 
     // Preferences
     /** The preferences ID for DifferencesWidget Grouping */
