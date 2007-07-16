@@ -159,7 +159,7 @@ public class XMLSchemaFileImporter
             throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
         }
 
-        readSchema( document.getRootElement(), schema, path );
+        readSchema( rootElement, schema, path );
 
         return schema;
     }

@@ -119,6 +119,18 @@ public class Project
 
 
     /**
+     * Sets the type of the project.
+     *
+     * @param type
+     *      the type of the project
+     */
+    public void setType( ProjectType type )
+    {
+        this.type = type;
+    }
+
+
+    /**
      * Gets the name of the project.
      *
      * @return
