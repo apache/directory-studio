@@ -151,8 +151,8 @@ public class ImportProjectsWizardPage extends WizardPage
             {
                 if ( element instanceof File )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
-                        .createImage();
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_PROJECT_FILE ).createImage();
                 }
 
                 // Default

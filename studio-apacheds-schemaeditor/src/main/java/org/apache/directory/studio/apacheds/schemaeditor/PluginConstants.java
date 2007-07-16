@@ -51,6 +51,7 @@ public interface PluginConstants
     public static final String IMG_PROJECT_ADS_CLOSED = "resources/icons/project_ads_closed.gif";
     public static final String IMG_PROJECT_EXPORT = "resources/icons/project_export.gif";
     public static final String IMG_PROJECT_EXPORT_WIZARD = "resources/icons/project_export_wizard.png";
+    public static final String IMG_PROJECT_FILE = "resources/icons/project_file.gif";
     public static final String IMG_PROJECT_IMPORT = "resources/icons/project_import.gif";
     public static final String IMG_PROJECT_IMPORT_WIZARD = "resources/icons/project_import_wizard.png";
     public static final String IMG_PROJECT_NEW = "resources/icons/project_new.gif";
