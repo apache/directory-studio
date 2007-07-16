@@ -27,7 +27,7 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -115,9 +115,9 @@ public class ExportProjectsWizardPage extends WizardPage
         {
             public String getText( Object element )
             {
-                if ( element instanceof Schema )
+                if ( element instanceof Project )
                 {
-                    return ( ( Schema ) element ).getName();
+                    return ( ( Project ) element ).getName();
                 }
 
                 // Default
@@ -127,10 +127,18 @@ public class ExportProjectsWizardPage extends WizardPage
 
             public Image getImage( Object element )
             {
-                if ( element instanceof Schema )
+                if ( element instanceof Project )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
+                    ProjectType type = ( ( Project ) element ).getType();
+                    switch ( type )
+                    {
+                        case OFFLINE:
+                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                                PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
+                        case APACHE_DIRECTORY_SERVER:
+                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                                PluginConstants.IMG_PROJECT_ADS_CLOSED ).createImage();
+                    }
                 }
 
                 // Default
@@ -213,7 +221,7 @@ public class ExportProjectsWizardPage extends WizardPage
     private void initFields()
     {
         // Filling the Schemas table
-//        schemaProjectsTableViewer.setInput( schemaHandler.getSchemas() );
+        projectsTableViewer.setInput( Activator.getDefault().getProjectsHandler().getProjects() );
 
         displayErrorMessage( null );
         setPageComplete( false );

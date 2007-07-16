@@ -20,6 +20,16 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImportException;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImporter;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
@@ -36,6 +46,9 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
 {
     // The pages of the wizard
     private ImportProjectsWizardPage page;
+
+    /** The ProjectsHandler */
+    private ProjectsHandler projectsHandler;
 
 
     /* (non-Javadoc)
@@ -56,7 +69,45 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
      */
     public boolean performFinish()
     {
-        
+        final File[] selectedProjectFiles = page.getSelectedProjectFiles();
+
+        try
+        {
+            getContainer().run( true, false, new IRunnableWithProgress()
+            {
+                public void run( IProgressMonitor monitor )
+                {
+                    monitor.beginTask( "Importing projects: ", selectedProjectFiles.length );
+
+                    for ( File projectFile : selectedProjectFiles )
+                    {
+                        monitor.subTask( projectFile.getName() );
+                        try
+                        {
+                            Project project = ProjectsImporter.getProject( projectFile.getAbsolutePath() );
+                            projectsHandler.addProject( project );
+                        }
+                        catch ( ProjectsImportException e )
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        monitor.worked( 1 );
+                    }
+
+                    monitor.done();
+                }
+            } );
+        }
+        catch ( InvocationTargetException e )
+        {
+            // Nothing to do (it will never occur)
+            e.printStackTrace();
+        }
+        catch ( InterruptedException e )
+        {
+            // Nothing to do.
+        }
 
         return true;
     }
@@ -67,5 +118,8 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
+        setNeedsProgressMonitor( true );
+
+        projectsHandler = Activator.getDefault().getProjectsHandler();
     }
 }

@@ -44,6 +44,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 
@@ -181,17 +182,32 @@ public class ProjectsViewController
         {
             public void projectAdded( Project project )
             {
-                view.getViewer().refresh();
+                refreshProjectsViewer();
             }
 
 
             public void projectRemoved( Project project )
             {
-                view.getViewer().refresh();
+                refreshProjectsViewer();
             }
 
 
             public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                refreshProjectsViewer();
+            }
+        } );
+    }
+
+
+    /**
+     * Refreshes the Projects Viewer
+     */
+    public void refreshProjectsViewer()
+    {
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
             {
                 view.getViewer().refresh();
             }

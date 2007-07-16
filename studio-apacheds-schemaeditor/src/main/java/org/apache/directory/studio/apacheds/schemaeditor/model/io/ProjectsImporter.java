@@ -58,7 +58,7 @@ public class ProjectsImporter
      * @throws ProjectsImportException 
      *      if an error occurs when importing the project
      */
-    public Project getProject( String path ) throws ProjectsImportException
+    public static Project getProject( String path ) throws ProjectsImportException
     {
         Project project = new Project();
 
@@ -95,7 +95,7 @@ public class ProjectsImporter
      * @throws ProjectsImportException 
      *      if an error occurs when importing the project
      */
-    public Project[] getProjects( String path ) throws ProjectsImportException
+    public static Project[] getProjects( String path ) throws ProjectsImportException
     {
         List<Project> projects = new ArrayList<Project>();
 
@@ -139,13 +139,13 @@ public class ProjectsImporter
      * @throws ProjectsImportException 
      *      if an error occurs when importing the project
      */
-    private void readProject( Element element, Project project, String path ) throws ProjectsImportException
+    private static void readProject( Element element, Project project, String path ) throws ProjectsImportException
     {
         // Name
         Attribute nameAttribute = element.attribute( NAME_TAG );
         if ( ( nameAttribute != null ) && ( !nameAttribute.getValue().equals( "" ) ) )
         {
-            project.setName( nameAttribute.getName() );
+            project.setName( nameAttribute.getValue() );
         }
 
         // Type

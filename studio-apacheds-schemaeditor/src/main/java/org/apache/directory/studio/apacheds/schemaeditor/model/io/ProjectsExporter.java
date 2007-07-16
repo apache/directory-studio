@@ -61,7 +61,7 @@ public class ProjectsExporter
      * @return
      *      the corresponding code representation
      */
-    public static String toSourceCode( Project project )
+    public static String toXml( Project project )
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -82,7 +82,7 @@ public class ProjectsExporter
      * @return
      *      the corresponding code representation
      */
-    public static String toSourceCode( Project[] projects )
+    public static String toXml( Project[] projects )
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();

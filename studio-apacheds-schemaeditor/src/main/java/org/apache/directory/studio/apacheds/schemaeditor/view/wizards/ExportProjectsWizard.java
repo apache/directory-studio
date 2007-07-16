@@ -20,6 +20,15 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsExporter;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
@@ -56,6 +65,46 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
      */
     public boolean performFinish()
     {
+        final Project[] selectedProjects = page.getSelectedProjects();
+
+        final String exportDirectory = page.getExportDirectory();
+        try
+        {
+            getContainer().run( true, true, new IRunnableWithProgress()
+            {
+                public void run( IProgressMonitor monitor )
+                {
+                    monitor.beginTask( "Exporting project: ", selectedProjects.length );
+                    for ( Project project : selectedProjects )
+                    {
+                        monitor.subTask( project.getName() );
+
+                        try
+                        {
+                            BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/"
+                                + project.getName() + ".schemaproject" ) );
+                            buffWriter.write( ProjectsExporter.toXml( project ) );
+                            buffWriter.close();
+                        }
+                        catch ( IOException e )
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        monitor.worked( 1 );
+                    }
+                    monitor.done();
+                }
+            } );
+        }
+        catch ( InvocationTargetException e )
+        {
+            // Nothing to do (it will never occur)
+        }
+        catch ( InterruptedException e )
+        {
+            // Nothing to do.
+        }
 
         return true;
     }
