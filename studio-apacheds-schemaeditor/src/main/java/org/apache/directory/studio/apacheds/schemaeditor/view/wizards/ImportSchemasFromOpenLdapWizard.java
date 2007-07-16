@@ -83,7 +83,6 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    schemaChecker.disableModificationsListening();
                     monitor.beginTask( "Importing schemas: ", selectedSchemasFiles.length );
 
                     for ( File schemaFile : selectedSchemasFiles )
