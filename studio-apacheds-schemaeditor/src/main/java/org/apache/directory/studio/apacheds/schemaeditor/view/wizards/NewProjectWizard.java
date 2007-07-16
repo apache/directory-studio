@@ -20,6 +20,8 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -56,6 +58,8 @@ public class NewProjectWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
+        Project project = new Project( page.getProjectType(), page.getProjectName() );
+        Activator.getDefault().getProjectsHandler().addProject( project );
 
         return true;
     }

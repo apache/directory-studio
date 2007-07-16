@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsViewController;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectsViewRoot;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -45,9 +44,6 @@ public class ProjectsView extends ViewPart
     /** The viewer */
     private TableViewer tableViewer;
 
-    /** The content provider of the viewer */
-    private ProjectsViewContentProvider contentProvider;
-
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -67,11 +63,9 @@ public class ProjectsView extends ViewPart
     private void initViewer( Composite parent )
     {
         tableViewer = new TableViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new ProjectsViewContentProvider( tableViewer );
-        tableViewer.setContentProvider( contentProvider );
+        tableViewer.setContentProvider( new ProjectsViewContentProvider( tableViewer ) );
         tableViewer.setLabelProvider( new DecoratingLabelProvider( new ProjectsViewLabelProvider(), Activator
             .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );
-        tableViewer.setInput( new ProjectsViewRoot() );
     }
 
 

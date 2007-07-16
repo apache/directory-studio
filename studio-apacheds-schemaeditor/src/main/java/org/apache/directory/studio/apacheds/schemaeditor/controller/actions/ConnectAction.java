@@ -59,7 +59,7 @@ public class ConnectAction extends Action implements IWorkbenchWindowActionDeleg
      */
     public ConnectAction( SchemaView view )
     {
-        super( "Connect" ); //$NON-NLS-1$
+        super( "Connect" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_CONNECT );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.schemaeditor;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
@@ -55,6 +56,9 @@ public class Activator extends AbstractUIPlugin
     /** The SchemaCheker */
     private SchemaChecker schemaChecker;
 
+    /** The ProjectsHandler */
+    private ProjectsHandler projectsHandler;
+
 
     /**
      * Creates a new instance of Activator.
@@ -62,6 +66,8 @@ public class Activator extends AbstractUIPlugin
     public Activator()
     {
         plugin = this;
+        projectsHandler = ProjectsHandler.getInstance();
+
         schemaHandler = SchemaHandler.getInstance();
         schemaChecker = new SchemaChecker();
     }
@@ -124,6 +130,18 @@ public class Activator extends AbstractUIPlugin
     public SchemaChecker getSchemaChecker()
     {
         return schemaChecker;
+    }
+
+
+    /**
+     * Gets the ProjectsHandler
+     *
+     * @return
+     *      the ProjectsHandler
+     */
+    public ProjectsHandler getProjectsHandler()
+    {
+        return projectsHandler;
     }
 
 

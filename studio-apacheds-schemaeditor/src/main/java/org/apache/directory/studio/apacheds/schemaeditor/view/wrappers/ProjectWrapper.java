@@ -20,7 +20,10 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wrappers;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.eclipse.jface.viewers.TableViewer;
 
 
 /**
@@ -34,6 +37,9 @@ public class ProjectWrapper extends AbstractTreeNode
     /** The wrapped Project */
     private Project project;
 
+    /** The TableViewer */
+    private TableViewer viewer;
+
 
     /**
      * Creates a new instance of ProjectWrapper.
@@ -41,25 +47,19 @@ public class ProjectWrapper extends AbstractTreeNode
      * @param project
      *      the wrapped Project
      */
-    public ProjectWrapper( Project project )
+    public ProjectWrapper( Project project, final TableViewer tableViewer )
     {
         super( null );
         this.project = project;
-    }
+        this.viewer = tableViewer;
 
-
-    /**
-     * Creates a new instance of ProjectWrapper.
-     * 
-     * @param project
-     *      the wrapped Project
-     * @param parent
-     *      the parent TreeNode
-     */
-    public ProjectWrapper( Project project, TreeNode parent )
-    {
-        super( parent );
-        this.project = project;
+        Activator.getDefault().getProjectsHandler().addListener( project, new ProjectListener()
+        {
+            public void projectRenamed()
+            {
+                viewer.refresh();
+            }
+        } );
     }
 
 

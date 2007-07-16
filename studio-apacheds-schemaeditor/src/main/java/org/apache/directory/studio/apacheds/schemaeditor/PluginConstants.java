@@ -67,10 +67,12 @@ public interface PluginConstants
 
     // Commands
     public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".commands.connect";
-    public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
+    public static final String CMD_CLOSE_PROJECT = Activator.PLUGIN_ID + ".commands.closeProject";
     public static final String CMD_DELETE_PROJECT = Activator.PLUGIN_ID + ".commands.deleteProject";
     public static final String CMD_EXPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.exportProjects";
     public static final String CMD_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.importProjects";
+    public static final String CMD_OPEN_PROJECT = Activator.PLUGIN_ID + ".commands.openProject";
+    public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
     public static final String CMD_RENAME_PROJECT = Activator.PLUGIN_ID + ".commands.renameProject";
 
     // Preferences

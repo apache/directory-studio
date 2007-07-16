@@ -22,37 +22,65 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportProjectsWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This action launches the ExportProjectsWizard.
+ * This action opens a Project.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ExportProjectsAction extends Action implements IWorkbenchWindowActionDelegate
+public class OpenProjectAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    /** The associated view */
+    private ProjectsView view;
+
+    /** The ProjectsHandler */
+    private ProjectsHandler projectsHandler;
+
+
     /**
-     * Creates a new instance of NewProjectAction.
+     * Creates a new instance of RenameProjectAction.
+     *
+     * @param view
+     *      the associate view
      */
-    public ExportProjectsAction()
+    public OpenProjectAction( ProjectsView view )
     {
-        super( "Export Schema Projects" );
+        super( "Open Project" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_EXPORT_PROJECTS );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_EXPORT ) );
-        setEnabled( true );
+        setId( PluginConstants.CMD_OPEN_PROJECT );
+        setEnabled( false );
+        this.view = view;
+        this.view.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+                if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+                {
+                    setEnabled( ( ( ProjectWrapper ) selection.getFirstElement() ).getProject().getState().equals(
+                        ProjectState.CLOSED ) );
+                }
+                else
+                {
+                    setEnabled( false );
+                }
+            }
+        } );
+        projectsHandler = Activator.getDefault().getProjectsHandler();
     }
 
 
@@ -61,13 +89,12 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
      */
     public void run()
     {
-        // Instantiates and initializes the wizard
-        ExportProjectsWizard wizard = new ExportProjectsWizard();
-        wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
-        // Instantiates the wizard container with the wizard and opens it
-        WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
-        dialog.create();
-        dialog.open();
+        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+        {
+            projectsHandler.openProject( ( ( ProjectWrapper ) selection.getFirstElement() ).getProject() );
+        }
+
     }
 
 

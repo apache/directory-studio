@@ -20,18 +20,30 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CloseProjectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteProjectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportProjectsAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportProjectsAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewProjectAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenProjectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.RenameProjectAction;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 
@@ -49,8 +61,13 @@ public class ProjectsViewController
     /** The Context Menu */
     private MenuManager contextMenu;
 
+    /** The ProjectsHandler */
+    private ProjectsHandler projectsHandler;
+
     // The Actions
     private NewProjectAction newProject;
+    private OpenProjectAction openProject;
+    private CloseProjectAction closeProject;
     private RenameProjectAction renameProject;
     private DeleteProjectAction deleteProject;
     private ImportProjectsAction importProjects;
@@ -67,9 +84,12 @@ public class ProjectsViewController
     {
         this.view = view;
 
+        projectsHandler = Activator.getDefault().getProjectsHandler();
+
         initActions();
         initToolbar();
         initContextMenu();
+        initViewer();
         initDoubleClickListener();
     }
 
@@ -80,6 +100,8 @@ public class ProjectsViewController
     private void initActions()
     {
         newProject = new NewProjectAction();
+        openProject = new OpenProjectAction( view );
+        closeProject = new CloseProjectAction( view );
         renameProject = new RenameProjectAction( view );
         deleteProject = new DeleteProjectAction( view );
         importProjects = new ImportProjectsAction();
@@ -112,6 +134,9 @@ public class ProjectsViewController
                 MenuManager exportManager = new MenuManager( "Export..." );
                 manager.add( newProject );
                 manager.add( new Separator() );
+                manager.add( openProject );
+                manager.add( closeProject );
+                manager.add( new Separator() );
                 manager.add( renameProject );
                 manager.add( new Separator() );
                 manager.add( deleteProject );
@@ -136,9 +161,64 @@ public class ProjectsViewController
 
 
     /**
+     * Initializes the Viewer.
+     */
+    private void initViewer()
+    {
+        view.getViewer().setInput( projectsHandler.getProjects() );
+        view.getViewer().getTable().addKeyListener( new KeyAdapter()
+        {
+            public void keyReleased( KeyEvent e )
+            {
+                if ( ( e.keyCode == Action.findKeyCode( "BACKSPACE" ) )
+                    || ( e.keyCode == Action.findKeyCode( "DELETE" ) ) )
+                {
+                    deleteProject.run();
+                }
+            }
+        } );
+        projectsHandler.addListener( new ProjectsHandlerListener()
+        {
+            public void projectAdded( Project project )
+            {
+                view.getViewer().refresh();
+            }
+
+
+            public void projectRemoved( Project project )
+            {
+                view.getViewer().refresh();
+            }
+
+
+            public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                view.getViewer().refresh();
+            }
+        } );
+    }
+
+
+    /**
      * Initializes the DoubleClickListener.
      */
     private void initDoubleClickListener()
     {
+        view.getViewer().addDoubleClickListener( new IDoubleClickListener()
+        {
+            public void doubleClick( DoubleClickEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+
+                if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+                {
+                    Project project = ( ( ProjectWrapper ) selection.getFirstElement() ).getProject();
+                    if ( project.getState().equals( ProjectState.CLOSED ) )
+                    {
+                        projectsHandler.openProject( project );
+                    }
+                }
+            }
+        } );
     }
 }

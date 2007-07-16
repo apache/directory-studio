@@ -20,17 +20,24 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 
+import java.util.Iterator;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -54,7 +61,7 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
      */
     public DeleteProjectAction( ProjectsView view )
     {
-        super( "Delete Project" ); //$NON-NLS-1$
+        super( "Delete Project" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_DELETE_PROJECT );
         setImageDescriptor( AbstractUIPlugin
@@ -89,9 +96,37 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
     /* (non-Javadoc)
      * @see org.eclipse.jface.action.Action#run()
      */
+    @SuppressWarnings("unchecked")
     public void run()
     {
-        // TODO implement
+        ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
+        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                SWT.YES | SWT.NO | SWT.ICON_QUESTION );
+            int count = selection.size();
+            if ( count == 1 )
+            {
+                ProjectWrapper wrapper = ( ProjectWrapper ) selection.getFirstElement();
+                messageBox.setMessage( "Are you sure you want to delete project '" + wrapper.getProject().getName()
+                    + "'?" );
+            }
+            else
+            {
+                messageBox.setMessage( "Are you sure you want to delete these " + count + " projects?" );
+            }
+            if ( messageBox.open() == SWT.YES )
+            {
+                for ( Iterator iterator = selection.iterator(); iterator.hasNext(); )
+                {
+                    ProjectWrapper wrapper = ( ProjectWrapper ) iterator.next();
+                    projectsHandler.removeProject( wrapper.getProject() );
+                }
+            }
+        }
+
     }
 
 

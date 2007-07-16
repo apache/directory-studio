@@ -22,9 +22,14 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.RenameProjectDialog;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -45,6 +50,9 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
     /** The associated view */
     private ProjectsView view;
 
+    /** The ProjectsHandler */
+    private ProjectsHandler projectsHandler;
+
 
     /**
      * Creates a new instance of RenameProjectAction.
@@ -54,7 +62,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
      */
     public RenameProjectAction( ProjectsView view )
     {
-        super( "Rename Project..." ); //$NON-NLS-1$
+        super( "Rename Project..." );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_RENAME_PROJECT );
         setImageDescriptor( AbstractUIPlugin
@@ -69,6 +77,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
                 setEnabled( selection.size() == 1 );
             }
         } );
+        projectsHandler = Activator.getDefault().getProjectsHandler();
     }
 
 
@@ -77,7 +86,17 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
      */
     public void run()
     {
-        // TODO Implement
+        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+        {
+            Project project = ( ( ProjectWrapper ) selection.getFirstElement() ).getProject();
+            RenameProjectDialog dialog = new RenameProjectDialog( project.getName() );
+            if ( dialog.open() == Dialog.OK )
+            {
+                projectsHandler.renameProject( project, dialog.getNewName() );
+            }
+        }
+
     }
 
 

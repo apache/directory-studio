@@ -47,7 +47,7 @@ public class NewProjectAction extends Action implements IWorkbenchWindowActionDe
      */
     public NewProjectAction()
     {
-        super( "New Schema Project" ); //$NON-NLS-1$
+        super( "New Schema Project" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_NEW_PROJECT );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

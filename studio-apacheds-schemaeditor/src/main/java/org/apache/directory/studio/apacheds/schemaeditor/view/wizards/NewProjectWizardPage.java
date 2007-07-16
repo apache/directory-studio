@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -47,6 +48,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class NewProjectWizardPage extends WizardPage
 {
+    /** The ProjectsHandler */
+    private ProjectsHandler projectsHandler;
+
     // UI Fields
     private Text nameText;
     private Button typeAdsRadio;
@@ -63,6 +67,7 @@ public class NewProjectWizardPage extends WizardPage
         setDescription( "Please specify a name and a type to create a new Schema project." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
+        projectsHandler = Activator.getDefault().getProjectsHandler();
     }
 
 
@@ -130,8 +135,11 @@ public class NewProjectWizardPage extends WizardPage
             displayErrorMessage( "A name must be specified." );
             return;
         }
-
-        // TODO add the duplicate project name check
+        else if ( projectsHandler.isProjectNameAlreadyTaken( nameText.getText() ) )
+        {
+            displayErrorMessage( "A project with this name already exists." );
+            return;
+        }
 
         displayErrorMessage( null );
     }

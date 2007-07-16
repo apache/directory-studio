@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectsViewRoot;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -42,19 +40,19 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class ProjectsViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
-    /** The associated viewer */
-    private TableViewer viewer;
+    /** The viewer */
+    private TableViewer tableViewer;
 
 
     /**
-     * Creates a new instance of ProblemsViewContentProvider.
+     * Creates a new instance of ProjectsViewContentProvider.
      *
-     * @param viewer
-     *      the associated TableViewer
+     * @param tableViewer
+     *      the TableViewer
      */
-    public ProjectsViewContentProvider( TableViewer viewer )
+    public ProjectsViewContentProvider( TableViewer tableViewer )
     {
-        this.viewer = viewer;
+        this.tableViewer = tableViewer;
     }
 
 
@@ -88,23 +86,27 @@ public class ProjectsViewContentProvider implements IStructuredContentProvider, 
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
      */
+    @SuppressWarnings("unchecked")
     public Object[] getChildren( Object parentElement )
     {
         List<TreeNode> children = null;
 
-        if ( parentElement instanceof ProjectsViewRoot )
+        if ( parentElement instanceof List )
         {
+            List<Project> projects = ( List<Project> ) parentElement;
+
             children = new ArrayList<TreeNode>();
 
-            children.add( new ProjectWrapper( new Project( ProjectType.APACHE_DIRECTORY_SERVER,
-                "Apache DS" ) ) );
-
-            children.add( new ProjectWrapper( new Project( ProjectType.OFFLINE, "Open LDAP" ) ) );
+            for ( Project project : projects )
+            {
+                children.add( new ProjectWrapper( project, tableViewer ) );
+            }
         }
         else if ( parentElement instanceof ProjectWrapper )
         {
-            children = new ArrayList<TreeNode>();
+            return null;
         }
+
         return children.toArray();
     }
 

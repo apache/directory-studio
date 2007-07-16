@@ -42,11 +42,28 @@ public class Project
         APACHE_DIRECTORY_SERVER
     }
 
+    /**
+     * This enum represents the different states of Project.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public enum ProjectState
+    {
+        /** An Open project*/
+        OPEN,
+        /** A Closed project*/
+        CLOSED
+    }
+
     /** The type of the project */
     private ProjectType type;
 
     /** The name of the project */
     private String name;
+
+    /** The state of the project */
+    private ProjectState state;
 
 
     /**
@@ -61,6 +78,7 @@ public class Project
     {
         this.type = type;
         this.name = name;
+        this.state = ProjectState.CLOSED;
     }
 
 
@@ -71,6 +89,7 @@ public class Project
     public Project()
     {
         type = ProjectType.OFFLINE;
+        this.state = ProjectState.CLOSED;
     }
 
 
@@ -83,6 +102,7 @@ public class Project
     public Project( ProjectType type )
     {
         this.type = type;
+        this.state = ProjectState.CLOSED;
     }
 
 
@@ -119,5 +139,29 @@ public class Project
     public void setName( String name )
     {
         this.name = name;
+    }
+
+
+    /**
+     * Gets the state of the project.
+     *
+     * @return
+     *      the state of the project
+     */
+    public ProjectState getState()
+    {
+        return state;
+    }
+
+
+    /**
+     * Sets the state of the project
+     *
+     * @param state
+     *      the state
+     */
+    public void setState( ProjectState state )
+    {
+        this.state = state;
     }
 }

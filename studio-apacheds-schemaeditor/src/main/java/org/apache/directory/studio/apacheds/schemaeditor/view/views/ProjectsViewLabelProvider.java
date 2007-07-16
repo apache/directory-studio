@@ -22,6 +22,8 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -44,16 +46,32 @@ public class ProjectsViewLabelProvider extends LabelProvider
     {
         if ( element instanceof ProjectWrapper )
         {
-            ProjectWrapper projectWrapper = ( ProjectWrapper ) element;
-            ProjectType type = projectWrapper.getProject().getType();
+            Project project = ( ( ProjectWrapper ) element ).getProject();
+            ProjectType type = project.getType();
             switch ( type )
             {
                 case OFFLINE:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
+                    ProjectState state = project.getState();
+                    switch ( state )
+                    {
+                        case OPEN:
+                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                                PluginConstants.IMG_PROJECT_OFFLINE ).createImage();
+                        case CLOSED:
+                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                                PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
+                    }
                 case APACHE_DIRECTORY_SERVER:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_PROJECT_ADS ).createImage();
+                    ProjectState state2 = project.getState();
+                    switch ( state2 )
+                    {
+                        case OPEN:
+                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                                PluginConstants.IMG_PROJECT_ADS ).createImage();
+                        case CLOSED:
+                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                                PluginConstants.IMG_PROJECT_ADS_CLOSED ).createImage();
+                    }
             }
         }
 
