@@ -20,6 +20,14 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wrappers;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandlerListener;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.widgets.Display;
+
+
 /**
  * This wrapper is used as root in the ProjectsView.
  *
@@ -28,11 +36,92 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wrappers;
  */
 public class ProjectsViewRoot extends AbstractTreeNode
 {
+    /** The TableViewer */
+    private TableViewer viewer;
+
+    /** The ProjectsHandler */
+    private ProjectsHandler projectsHandler;
+
+
     /**
      * Creates a new instance of ProjectsViewRoot.
+     *
+     * @param tableViewer
+     *      the associated TableViewer
      */
-    public ProjectsViewRoot()
+    public ProjectsViewRoot( TableViewer tableViewer )
     {
         super( null );
+        this.viewer = tableViewer;
+
+        projectsHandler = Activator.getDefault().getProjectsHandler();
+        projectsHandler.addListener( new ProjectsHandlerListener()
+        {
+            public void projectAdded( Project project )
+            {
+                addProjectWrapper( project );
+                refreshProjectsViewer();
+            }
+
+
+            public void projectRemoved( Project project )
+            {
+                deleteProjectWrapper( project );
+                refreshProjectsViewer();
+            }
+
+
+            public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                refreshProjectsViewer();
+            }
+        } );
+    }
+
+
+    /**
+     * Add a ProjectWrapper for the given project.
+     *
+     * @param project
+     *      the project
+     */
+    private void addProjectWrapper( Project project )
+    {
+        addChild( new ProjectWrapper( project, viewer ) );
+    }
+
+
+    /**
+     * Deletes the ProjectWrapper associated with the given project.
+     *
+     * @param project
+     *      the project
+     */
+    private void deleteProjectWrapper( Project project )
+    {
+        for ( TreeNode node : getChildren() )
+        {
+            ProjectWrapper pw = ( ProjectWrapper ) node;
+            if ( project == pw.getProject() )
+            {
+                removeChild( node );
+                return;
+            }
+        }
+    }
+
+
+    /**
+     * Refreshes the Projects Viewer
+     */
+    public void refreshProjectsViewer()
+    {
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                viewer.refresh();
+            }
+        } );
     }
 }

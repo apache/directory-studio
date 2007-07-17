@@ -82,4 +82,18 @@ public class ProjectWrapper extends AbstractTreeNode
     {
         return false;
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ProjectWrapper )
+        {
+            return getProject().equals( ( ( ProjectWrapper ) obj ).getProject() );
+        }
+
+        return super.equals( obj );
+    }
 }

@@ -20,11 +20,14 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectsViewRoot;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -91,16 +94,37 @@ public class ProjectsViewContentProvider implements IStructuredContentProvider, 
     {
         List<TreeNode> children = null;
 
-        if ( parentElement instanceof List )
+        if ( parentElement instanceof ProjectsViewRoot )
         {
-            List<Project> projects = ( List<Project> ) parentElement;
+            ProjectsViewRoot projectsViewRoot = ( ProjectsViewRoot ) parentElement;
 
-            children = new ArrayList<TreeNode>();
-
-            for ( Project project : projects )
+            if ( !projectsViewRoot.hasChildren() )
             {
-                children.add( new ProjectWrapper( project, tableViewer ) );
+                for ( Project project : Activator.getDefault().getProjectsHandler().getProjects() )
+                {
+                    projectsViewRoot.addChild( new ProjectWrapper( project, tableViewer ) );
+                }
             }
+
+            children = projectsViewRoot.getChildren();
+
+            // Sorting Children
+            Collections.sort( children, new Comparator<TreeNode>()
+            {
+                public int compare( TreeNode tn1, TreeNode tn2 )
+                {
+                    if ( ( tn1 instanceof ProjectWrapper ) && ( tn2 instanceof ProjectWrapper ) )
+                    {
+                        ProjectWrapper pw1 = ( ProjectWrapper ) tn1;
+                        ProjectWrapper pw2 = ( ProjectWrapper ) tn2;
+
+                        return pw1.getProject().getName().compareToIgnoreCase( pw2.getProject().getName() );
+                    }
+
+                    // Default
+                    return 0;
+                }
+            } );
         }
         else if ( parentElement instanceof ProjectWrapper )
         {

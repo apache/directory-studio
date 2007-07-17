@@ -176,4 +176,33 @@ public class Project
     {
         this.state = state;
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof Project )
+        {
+            Project project = ( Project ) obj;
+            if ( !getName().equals( project.getName() ) )
+            {
+                return false;
+            }
+            else if ( !getType().equals( project.getType() ) )
+            {
+                return false;
+            }
+            else if ( !getState().equals( project.getState() ) )
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Default
+        return super.equals( obj );
+    }
 }

@@ -59,7 +59,7 @@ public abstract class AbstractTreeNode implements TreeNode
     {
         if ( fChildren == null )
         {
-            return true;
+            return false;
         }
 
         return !fChildren.isEmpty();

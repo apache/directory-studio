@@ -32,6 +32,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectsViewRoot;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -44,7 +45,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 
@@ -58,6 +58,9 @@ public class ProjectsViewController
 {
     /** The associated view */
     private ProjectsView view;
+
+    /** The TableViewer */
+    private TableViewer viewer;
 
     /** The Context Menu */
     private MenuManager contextMenu;
@@ -84,6 +87,7 @@ public class ProjectsViewController
     public ProjectsViewController( ProjectsView view )
     {
         this.view = view;
+        viewer = view.getViewer();
 
         projectsHandler = Activator.getDefault().getProjectsHandler();
 
@@ -151,8 +155,6 @@ public class ProjectsViewController
             }
         } );
 
-        TableViewer viewer = view.getViewer();
-
         // set the context menu to the table viewer
         viewer.getControl().setMenu( contextMenu.createContextMenu( viewer.getControl() ) );
 
@@ -166,8 +168,8 @@ public class ProjectsViewController
      */
     private void initViewer()
     {
-        view.getViewer().setInput( projectsHandler.getProjects() );
-        view.getViewer().getTable().addKeyListener( new KeyAdapter()
+        viewer.setInput( new ProjectsViewRoot( viewer ) );
+        viewer.getTable().addKeyListener( new KeyAdapter()
         {
             public void keyReleased( KeyEvent e )
             {
@@ -178,40 +180,6 @@ public class ProjectsViewController
                 }
             }
         } );
-        projectsHandler.addListener( new ProjectsHandlerListener()
-        {
-            public void projectAdded( Project project )
-            {
-                refreshProjectsViewer();
-            }
-
-
-            public void projectRemoved( Project project )
-            {
-                refreshProjectsViewer();
-            }
-
-
-            public void openProjectChanged( Project oldProject, Project newProject )
-            {
-                refreshProjectsViewer();
-            }
-        } );
-    }
-
-
-    /**
-     * Refreshes the Projects Viewer
-     */
-    public void refreshProjectsViewer()
-    {
-        Display.getDefault().asyncExec( new Runnable()
-        {
-            public void run()
-            {
-                view.getViewer().refresh();
-            }
-        } );
     }
 
 
@@ -220,11 +188,11 @@ public class ProjectsViewController
      */
     private void initDoubleClickListener()
     {
-        view.getViewer().addDoubleClickListener( new IDoubleClickListener()
+        viewer.addDoubleClickListener( new IDoubleClickListener()
         {
             public void doubleClick( DoubleClickEvent event )
             {
-                StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+                StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
 
                 if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
                 {
