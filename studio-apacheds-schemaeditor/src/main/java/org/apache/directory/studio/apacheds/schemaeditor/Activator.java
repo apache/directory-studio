@@ -79,7 +79,6 @@ public class Activator extends AbstractUIPlugin
         projectsHandler = ProjectsHandler.getInstance();
         projectsHandler.addListener( new ProjectsHandlerListener()
         {
-
             public void openProjectChanged( Project oldProject, Project newProject )
             {
                 if ( newProject == null )

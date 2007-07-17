@@ -105,25 +105,28 @@ public class ProblemsViewContentProvider implements IStructuredContentProvider, 
             {
                 SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
 
-                List<SchemaError> errors = schemaChecker.getErrors();
-                if ( !errors.isEmpty() )
+                if ( schemaChecker != null )
                 {
-                    Folder errorsFolder = new Folder( FolderType.ERROR, root );
-                    root.addChild( errorsFolder );
-                    for ( SchemaError error : errors )
+                    List<SchemaError> errors = schemaChecker.getErrors();
+                    if ( !errors.isEmpty() )
                     {
-                        errorsFolder.addChild( new SchemaErrorWrapper( error, errorsFolder ) );
+                        Folder errorsFolder = new Folder( FolderType.ERROR, root );
+                        root.addChild( errorsFolder );
+                        for ( SchemaError error : errors )
+                        {
+                            errorsFolder.addChild( new SchemaErrorWrapper( error, errorsFolder ) );
+                        }
                     }
-                }
 
-                List<SchemaWarning> warnings = schemaChecker.getWarnings();
-                if ( !warnings.isEmpty() )
-                {
-                    Folder warningsFolder = new Folder( FolderType.WARNING, root );
-                    root.addChild( warningsFolder );
-                    for ( SchemaWarning warning : warnings )
+                    List<SchemaWarning> warnings = schemaChecker.getWarnings();
+                    if ( !warnings.isEmpty() )
                     {
-                        warningsFolder.addChild( new SchemaWarningWrapper( warning, warningsFolder ) );
+                        Folder warningsFolder = new Folder( FolderType.WARNING, root );
+                        root.addChild( warningsFolder );
+                        for ( SchemaWarning warning : warnings )
+                        {
+                            warningsFolder.addChild( new SchemaWarningWrapper( warning, warningsFolder ) );
+                        }
                     }
                 }
             }

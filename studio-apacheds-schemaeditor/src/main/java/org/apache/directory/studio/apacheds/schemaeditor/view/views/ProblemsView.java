@@ -57,6 +57,9 @@ public class ProblemsView extends ViewPart
     /** The overview label */
     private Label overviewLabel;
 
+    /** The SchemaChecker */
+    private SchemaChecker schemaChecker;
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -75,7 +78,7 @@ public class ProblemsView extends ViewPart
         parent.setLayout( gridLayout );
 
         overviewLabel = new Label( parent, SWT.NULL );
-        overviewLabel.setText( "0 error, 0 warning" );
+        setErrorsAndWarningsCount( 0, 0 );
         overviewLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         initViewer( parent );
@@ -104,6 +107,8 @@ public class ProblemsView extends ViewPart
         contentProvider = new ProblemsViewContentProvider( treeViewer );
         treeViewer.setContentProvider( contentProvider );
         treeViewer.setLabelProvider( new ProblemsViewLabelProvider() );
+        treeViewer.setInput( new ProblemsViewRoot() );
+        treeViewer.expandAll();
     }
 
 
@@ -135,8 +140,16 @@ public class ProblemsView extends ViewPart
     {
         treeViewer.setInput( new ProblemsViewRoot() );
         treeViewer.expandAll();
-        SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
-        setErrorsAndWarningsCount( schemaChecker.getErrors().size(), schemaChecker.getWarnings().size() );
+
+        schemaChecker = Activator.getDefault().getSchemaChecker();
+        if ( schemaChecker != null )
+        {
+            setErrorsAndWarningsCount( schemaChecker.getErrors().size(), schemaChecker.getWarnings().size() );
+        }
+        else
+        {
+            setErrorsAndWarningsCount( 0, 0 );
+        }
     }
 
 
@@ -152,4 +165,5 @@ public class ProblemsView extends ViewPart
     {
         overviewLabel.setText( String.format( "%d error(s), %d warning(s)", errors, warnings ) );
     }
+    
 }

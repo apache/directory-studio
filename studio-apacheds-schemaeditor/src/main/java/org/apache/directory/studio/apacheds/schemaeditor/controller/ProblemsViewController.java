@@ -188,11 +188,6 @@ public class ProblemsViewController
                     {
                         public void run()
                         {
-                            SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
-                            int errors = schemaChecker.getErrors().size();
-                            int warnings = schemaChecker.getWarnings().size();
-
-                            view.setErrorsAndWarningsCount( errors, warnings );
                             view.reloadViewer();
                         }
                     } );
