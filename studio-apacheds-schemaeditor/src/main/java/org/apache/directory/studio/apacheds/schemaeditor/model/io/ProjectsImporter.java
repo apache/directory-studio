@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -45,6 +46,7 @@ public class ProjectsImporter
     private static final String PROJECT_TAG = "project";
     private static final String PROJECTS_TAG = "projects";
     private static final String NAME_TAG = "name";
+    private static final String SCHEMAS_TAG = "schemas";
     private static final String TYPE_TAG = "type";
 
 
@@ -160,6 +162,25 @@ public class ProjectsImporter
             catch ( IllegalArgumentException e )
             {
                 throw new ProjectsImportException( "The parser was not able to convert the type value of the project." );
+            }
+        }
+
+        // Schemas
+        Element schemasElement = element.element( SCHEMAS_TAG );
+        if ( schemasElement != null )
+        {
+            Schema[] schemas = null;
+            try
+            {
+                schemas = XMLSchemaFileImporter.readSchemas( schemasElement, path );
+            }
+            catch ( XMLSchemaFileImportException e )
+            {
+                throw new ProjectsImportException( "The parser was not able to convert the schemas of the project." );
+            }
+            for ( Schema schema : schemas )
+            {
+                project.getSchemaHandler().addSchema( schema );
             }
         }
     }

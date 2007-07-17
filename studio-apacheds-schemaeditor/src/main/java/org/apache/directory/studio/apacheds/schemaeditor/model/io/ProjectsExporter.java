@@ -28,6 +28,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
 import org.dom4j.Branch;
 import org.dom4j.Document;
@@ -128,6 +129,9 @@ public class ProjectsExporter
             {
                 element.addAttribute( TYPE_TAG, type.toString() );
             }
+
+            // Schemas
+            XMLSchemaFileExporter.addSchemas( project.getSchemaHandler().getSchemas().toArray( new Schema[0] ), element );
         }
     }
 

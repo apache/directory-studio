@@ -97,7 +97,7 @@ public class XMLSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    public static String toSourceCode( Schema schema )
+    public static String toXml( Schema schema )
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -118,27 +118,43 @@ public class XMLSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    public static String toSourceCode( Schema[] schemas )
+    public static String toXml( Schema[] schemas )
     {
         // Creating the Document and the 'root' Element
         Document document = DocumentHelper.createDocument();
-        Element root = document.addElement( SCHEMAS_TAG );
 
-        if ( schemas != null )
-        {
-            for ( Schema schema : schemas )
-            {
-                addSchema( schema, root );
-            }
-        }
+        addSchemas( schemas, document );
 
         return styleDocument( document ).asXML();
     }
 
 
     /**
+     * Add the XML representation of the given schemas
+     * to the given branch.
+     *
+     * @param schemas
+     *      the schemas
+     * @param branch
+     *      the branch
+     */
+    public static void addSchemas( Schema[] schemas, Branch branch )
+    {
+        Element element = branch.addElement( SCHEMAS_TAG );
+
+        if ( schemas != null )
+        {
+            for ( Schema schema : schemas )
+            {
+                addSchema( schema, element );
+            }
+        }
+    }
+
+
+    /**
      * Add the XML representation of the given schema
-     * to the given branch
+     * to the given branch.
      *
      * @param schema
      *      the schema
@@ -164,7 +180,7 @@ public class XMLSchemaFileExporter
                 Element attributeTypesNode = element.addElement( ATTRIBUTE_TYPES_TAG );
                 for ( AttributeTypeImpl at : ats )
                 {
-                    toSourceCode( at, attributeTypesNode );
+                    toXml( at, attributeTypesNode );
                 }
             }
 
@@ -175,7 +191,7 @@ public class XMLSchemaFileExporter
                 Element objectClassesNode = element.addElement( OBJECT_CLASSES_TAG );
                 for ( ObjectClassImpl oc : ocs )
                 {
-                    toSourceCode( oc, objectClassesNode );
+                    toXml( oc, objectClassesNode );
                 }
             }
 
@@ -186,7 +202,7 @@ public class XMLSchemaFileExporter
                 Element matchingRulesNode = element.addElement( MATCHING_RULES_TAG );
                 for ( MatchingRuleImpl mr : mrs )
                 {
-                    toSourceCode( mr, matchingRulesNode );
+                    toXml( mr, matchingRulesNode );
                 }
             }
 
@@ -197,7 +213,7 @@ public class XMLSchemaFileExporter
                 Element syntaxesNode = element.addElement( SYNTAXES_TAG );
                 for ( SyntaxImpl syntax : syntaxes )
                 {
-                    toSourceCode( syntax, syntaxesNode );
+                    toXml( syntax, syntaxesNode );
                 }
             }
         }
@@ -212,7 +228,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toSourceCode( AttributeTypeImpl at, Element root )
+    private static void toXml( AttributeTypeImpl at, Element root )
     {
         Element atNode = root.addElement( ATTRIBUTE_TYPE_TAG );
 
@@ -340,7 +356,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toSourceCode( ObjectClassImpl oc, Element root )
+    private static void toXml( ObjectClassImpl oc, Element root )
     {
         Element ocNode = root.addElement( OBJECT_CLASS_TAG );
 
@@ -429,7 +445,7 @@ public class XMLSchemaFileExporter
      * @param root
      *      the root Element
      */
-    private static void toSourceCode( MatchingRuleImpl mr, Element root )
+    private static void toXml( MatchingRuleImpl mr, Element root )
     {
         Element mrNode = root.addElement( MATCHING_RULE_TAG );
 
@@ -488,7 +504,7 @@ public class XMLSchemaFileExporter
      * @return
      *      the corresponding source code representation
      */
-    private static void toSourceCode( SyntaxImpl syntax, Element root )
+    private static void toXml( SyntaxImpl syntax, Element root )
     {
         Element syntaxNode = root.addElement( SYNTAX_TAG );
 

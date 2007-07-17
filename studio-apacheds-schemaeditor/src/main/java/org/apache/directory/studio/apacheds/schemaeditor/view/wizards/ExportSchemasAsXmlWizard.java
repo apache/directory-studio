@@ -86,7 +86,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                             {
                                 BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/"
                                     + schema.getName() + ".xml" ) );
-                                buffWriter.write( XMLSchemaFileExporter.toSourceCode( schema ) );
+                                buffWriter.write( XMLSchemaFileExporter.toXml( schema ) );
                                 buffWriter.close();
                             }
                             catch ( IOException e )
@@ -122,7 +122,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                         try
                         {
                             BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportFile ) );
-                            buffWriter.write( XMLSchemaFileExporter.toSourceCode( selectedSchemas ) );
+                            buffWriter.write( XMLSchemaFileExporter.toXml( selectedSchemas ) );
                             buffWriter.close();
                         }
                         catch ( IOException e )
