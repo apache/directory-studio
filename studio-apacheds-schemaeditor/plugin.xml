@@ -73,6 +73,14 @@
           project="true"/>
     <wizard
           category="org.apache.directory.studio.apacheds.schemaeditor.newWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewSchemaWizard"
+          hasPages="true"
+          icon="resources/icons/schema_new.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.NewSchemaWizard"
+          name="New Schema"
+          project="false"/>
+    <wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.newWizardCategory"
           class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewAttributeTypeWizard"
           hasPages="true"
           icon="resources/icons/attribute_type_new.gif"
@@ -127,7 +135,7 @@
           class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard"
           icon="resources/icons/schemas_export.gif"
           id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ExportSchemasAsOpenLdapWizard"
-          name="Schemas as OpenLdap files">
+          name="Schemas as OpenLDAP files">
     </wizard>
 	<wizard
           category="org.apache.directory.studio.apacheds.schemaeditor.exportWizardCategory"
@@ -155,7 +163,7 @@
           class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ImportSchemasFromOpenLdapWizard"
           icon="resources/icons/schemas_import.gif"
           id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ImportSchemasFromOpenLdapWizard"
-          name="Schemas from OpenLdap files">
+          name="Schemas from OpenLDAP files">
     </wizard>
     <wizard
           category="org.apache.directory.studio.apacheds.schemaeditor.importWizardCategory"

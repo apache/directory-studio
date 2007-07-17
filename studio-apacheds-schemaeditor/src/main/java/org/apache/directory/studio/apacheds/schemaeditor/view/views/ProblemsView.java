@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProblemsViewController;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProblemsViewRoot;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -103,8 +104,6 @@ public class ProblemsView extends ViewPart
         contentProvider = new ProblemsViewContentProvider( treeViewer );
         treeViewer.setContentProvider( contentProvider );
         treeViewer.setLabelProvider( new ProblemsViewLabelProvider() );
-        treeViewer.setInput( new ProblemsViewRoot() );
-        treeViewer.expandAll();
     }
 
 
@@ -136,6 +135,8 @@ public class ProblemsView extends ViewPart
     {
         treeViewer.setInput( new ProblemsViewRoot() );
         treeViewer.expandAll();
+        SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
+        setErrorsAndWarningsCount( schemaChecker.getErrors().size(), schemaChecker.getWarnings().size() );
     }
 
 

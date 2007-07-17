@@ -20,6 +20,10 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
+
+
 /**
  * This class implements a Project.
  *
@@ -65,6 +69,12 @@ public class Project
     /** The state of the project */
     private ProjectState state;
 
+    /** The SchemaHandler */
+    private SchemaHandler schemaHandler;
+
+    /** The SchemaCheker */
+    private SchemaChecker schemaChecker;
+
 
     /**
      * Creates a new instance of Project.
@@ -79,6 +89,8 @@ public class Project
         this.type = type;
         this.name = name;
         this.state = ProjectState.CLOSED;
+        schemaHandler = new SchemaHandler();
+        schemaChecker = new SchemaChecker();
     }
 
 
@@ -90,6 +102,8 @@ public class Project
     {
         type = ProjectType.OFFLINE;
         this.state = ProjectState.CLOSED;
+        schemaHandler = new SchemaHandler();
+        schemaChecker = new SchemaChecker();
     }
 
 
@@ -103,6 +117,8 @@ public class Project
     {
         this.type = type;
         this.state = ProjectState.CLOSED;
+        schemaHandler = new SchemaHandler();
+        schemaChecker = new SchemaChecker();
     }
 
 
@@ -175,6 +191,30 @@ public class Project
     public void setState( ProjectState state )
     {
         this.state = state;
+    }
+
+
+    /**
+     * Gets the SchemaHandler
+     *
+     * @return
+     *      the SchemaHandler
+     */
+    public SchemaHandler getSchemaHandler()
+    {
+        return schemaHandler;
+    }
+
+
+    /**
+     * Gets the SchemaChecker
+     *
+     * @return
+     *      the SchemaChecker
+     */
+    public SchemaChecker getSchemaChecker()
+    {
+        return schemaChecker;
     }
 
 

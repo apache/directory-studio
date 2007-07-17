@@ -59,11 +59,11 @@ public class ProjectsViewController
     /** The associated view */
     private ProjectsView view;
 
-    /** The TableViewer */
-    private TableViewer viewer;
-
     /** The Context Menu */
     private MenuManager contextMenu;
+
+    /** The TableViewer */
+    private TableViewer viewer;
 
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;

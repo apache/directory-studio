@@ -47,7 +47,7 @@ public class ImportProjectsAction extends Action implements IWorkbenchWindowActi
      */
     public ImportProjectsAction()
     {
-        super( "Import Schema Projects" );
+        super( "Schema Projects" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_IMPORT_PROJECTS );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,

@@ -89,7 +89,7 @@ public class ProblemsViewController
      */
     private void initToolbar()
     {
-//        IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
+        //        IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
     }
 
 
@@ -173,26 +173,31 @@ public class ProblemsViewController
      */
     private void initSchemaCheckerListener()
     {
-        Activator.getDefault().getSchemaChecker().addListener( new SchemaCheckerListener()
+        SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
+
+        if ( schemaChecker != null )
         {
-            /* (non-Javadoc)
-             * @see org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaCheckerListener#schemaCheckerUpdated()
-             */
-            public void schemaCheckerUpdated()
+            schemaChecker.addListener( new SchemaCheckerListener()
             {
-                Display.getDefault().asyncExec( new Runnable()
+                /* (non-Javadoc)
+                 * @see org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaCheckerListener#schemaCheckerUpdated()
+                 */
+                public void schemaCheckerUpdated()
                 {
-                    public void run()
+                    Display.getDefault().asyncExec( new Runnable()
                     {
-                        SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
-                        int errors = schemaChecker.getErrors().size();
-                        int warnings = schemaChecker.getWarnings().size();
-                        
-                        view.setErrorsAndWarningsCount( errors, warnings );
-                        view.reloadViewer();
-                    }
-                } );
-            }
-        } );
+                        public void run()
+                        {
+                            SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
+                            int errors = schemaChecker.getErrors().size();
+                            int warnings = schemaChecker.getWarnings().size();
+
+                            view.setErrorsAndWarningsCount( errors, warnings );
+                            view.reloadViewer();
+                        }
+                    } );
+                }
+            } );
+        }
     }
 }

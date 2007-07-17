@@ -165,6 +165,7 @@ public class SchemaChecker
     {
         if ( !listeningToModifications )
         {
+            schemaHandler = Activator.getDefault().getSchemaHandler();
             schemaHandler.addListener( schemaHandlerListener );
             listeningToModifications = true;
             checkWholeSchema();

@@ -22,7 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 import java.util.List;
 
-import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
@@ -103,7 +103,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
 
             if ( root.getChildren().isEmpty() )
             {
-                List<Schema> schemas = SchemaHandler.getInstance().getSchemas();
+                List<Schema> schemas = Activator.getDefault().getSchemaHandler().getSchemas();
                 for ( Schema schema : schemas )
                 {
                     root.addChild( new SchemaWrapper( schema, root ) );

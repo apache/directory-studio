@@ -60,6 +60,8 @@ public interface PluginConstants
     public static final String IMG_PROJECT_OFFLINE_CLOSED = "resources/icons/project_offline_closed.gif";
     public static final String IMG_RENAME = "resources/icons/rename.gif";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
+    public static final String IMG_SCHEMA_NEW = "resources/icons/schema_new.gif";
+    public static final String IMG_SCHEMA_NEW_WIZARD = "resources/icons/schema_new_wizard.png";
     public static final String IMG_SCHEMAS_EXPORT = "resources/icons/schemas_export.gif";
     public static final String IMG_SCHEMAS_EXPORT_WIZARD = "resources/icons/schemas_export_wizard.png";
     public static final String IMG_SCHEMAS_IMPORT = "resources/icons/schemas_import.gif";
@@ -70,10 +72,21 @@ public interface PluginConstants
     public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".commands.connect";
     public static final String CMD_CLOSE_PROJECT = Activator.PLUGIN_ID + ".commands.closeProject";
     public static final String CMD_DELETE_PROJECT = Activator.PLUGIN_ID + ".commands.deleteProject";
+    public static final String CMD_DELETE_SCHEMA_ELEMENT = Activator.PLUGIN_ID + ".commands.deleteSchemaElement";
     public static final String CMD_EXPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.exportProjects";
+    public static final String CMD_EXPORT_SCHEMAS_AS_OPENLDAP = Activator.PLUGIN_ID
+        + ".commands.exportSchemasAsOpenLDAP";
+    public static final String CMD_EXPORT_SCHEMAS_AS_XML = Activator.PLUGIN_ID + ".commands.exportSchemasAsXML";
     public static final String CMD_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.importProjects";
+    public static final String CMD_IMPORT_SCHEMAS_FROM_OPENLDAP = Activator.PLUGIN_ID
+        + ".commands.importSchemasFromOpenLDAP";
+    public static final String CMD_IMPORT_SCHEMAS_FROM_XML = Activator.PLUGIN_ID + ".commands.importSchemasFromXML";
+    public static final String CMD_OPEN_ELEMENT = Activator.PLUGIN_ID + ".commands.openElement";
     public static final String CMD_OPEN_PROJECT = Activator.PLUGIN_ID + ".commands.openProject";
+    public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.PLUGIN_ID + ".commands.newAttributeType";
+    public static final String CMD_NEW_OBJECT_CLASS = Activator.PLUGIN_ID + ".commands.newObjectClass";
     public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
+    public static final String CMD_NEW_SCHEMA = Activator.PLUGIN_ID + ".commands.newSchema";
     public static final String CMD_RENAME_PROJECT = Activator.PLUGIN_ID + ".commands.renameProject";
 
     // Preferences

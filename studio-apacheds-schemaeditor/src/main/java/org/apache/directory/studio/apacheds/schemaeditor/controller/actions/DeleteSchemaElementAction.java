@@ -22,36 +22,32 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportProjectsWizard;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This action launches the ExportProjectsWizard.
+ * This action deletes one or more Schema Elements from the SchemaView.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ExportProjectsAction extends Action implements IWorkbenchWindowActionDelegate
+public class DeleteSchemaElementAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /**
-     * Creates a new instance of NewProjectAction.
+     * Creates a new instance of DeleteSchemaElementAction.
      */
-    public ExportProjectsAction()
+    public DeleteSchemaElementAction()
     {
-        super( "Schema Projects" );
+        super( "Delete" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_EXPORT_PROJECTS );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_EXPORT ) );
+        setId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
+        setImageDescriptor( AbstractUIPlugin
+            .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
         setEnabled( true );
     }
 
@@ -61,13 +57,7 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
      */
     public void run()
     {
-        // Instantiates and initializes the wizard
-        ExportProjectsWizard wizard = new ExportProjectsWizard();
-        wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
-        // Instantiates the wizard container with the wizard and opens it
-        WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
-        dialog.create();
-        dialog.open();
+        // TODO implement
     }
 
 

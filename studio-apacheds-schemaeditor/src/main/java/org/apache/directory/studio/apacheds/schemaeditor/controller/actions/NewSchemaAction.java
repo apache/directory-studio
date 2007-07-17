@@ -22,7 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportProjectsWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewSchemaWizard;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,23 +35,23 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This action launches the ExportProjectsWizard.
+ * This action launches the NewSchemaWizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ExportProjectsAction extends Action implements IWorkbenchWindowActionDelegate
+public class NewSchemaAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /**
-     * Creates a new instance of NewProjectAction.
+     * Creates a new instance of NewSchemaAction.
      */
-    public ExportProjectsAction()
+    public NewSchemaAction()
     {
-        super( "Schema Projects" );
+        super( "New Schema" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_EXPORT_PROJECTS );
+        setId( PluginConstants.CMD_NEW_SCHEMA );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_EXPORT ) );
+            PluginConstants.IMG_SCHEMA_NEW ) );
         setEnabled( true );
     }
 
@@ -62,7 +62,7 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
     public void run()
     {
         // Instantiates and initializes the wizard
-        ExportProjectsWizard wizard = new ExportProjectsWizard();
+        NewSchemaWizard wizard = new NewSchemaWizard();
         wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
         // Instantiates the wizard container with the wizard and opens it
         WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );

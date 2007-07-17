@@ -44,9 +44,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
  */
 public class SchemaHandler
 {
-    /** The SchemaHandler instance */
-    private static SchemaHandler instance;
-
     //
     // The Lists
     //
@@ -87,7 +84,7 @@ public class SchemaHandler
     /**
      * Creates a new instance of SchemaHandler.
      */
-    private SchemaHandler()
+    public SchemaHandler()
     {
         // Lists
         schemasList = new ArrayList<Schema>();
@@ -108,23 +105,6 @@ public class SchemaHandler
         schemaListeners = new MultiValueMap();
         attributeTypeListeners = new MultiValueMap();
         objectClassListeners = new MultiValueMap();
-    }
-
-
-    /**
-     * Gets the singleton instance of the SchemaHandler.
-     *
-     * @return
-     *      the singleton instance of the SchemaHandler
-     */
-    public static SchemaHandler getInstance()
-    {
-        if ( instance == null )
-        {
-            instance = new SchemaHandler();
-        }
-
-        return instance;
     }
 
 
@@ -1076,5 +1056,19 @@ public class SchemaHandler
         }
 
         return false;
+    }
+
+
+    /**
+     * Verifies if the given name for a schema is already taken by another schema.
+     *
+     * @param name
+     *      the name
+     * @return
+     *      true if the the name is already taken
+     */
+    public boolean isSchemaNameAlreadyTaken( String name )
+    {
+        return schemasMap.containsKey( name.toLowerCase() );
     }
 }

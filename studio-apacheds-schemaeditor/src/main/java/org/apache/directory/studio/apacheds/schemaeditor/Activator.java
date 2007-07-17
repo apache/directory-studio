@@ -25,6 +25,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHand
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
 import org.eclipse.jface.text.rules.ITokenScanner;
@@ -61,6 +63,12 @@ public class Activator extends AbstractUIPlugin
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
 
+    /** The SchemaView */
+    private SchemaView schemaView;
+
+    /** The ProblemsView */
+    private ProblemsView problemsView;
+
 
     /**
      * Creates a new instance of Activator.
@@ -74,28 +82,40 @@ public class Activator extends AbstractUIPlugin
 
             public void openProjectChanged( Project oldProject, Project newProject )
             {
-                // TODO Auto-generated method stub
+                if ( newProject == null )
+                {
+                    schemaHandler = null;
+                    schemaChecker = null;
+                }
+                else
+                {
+                    // Registering the SchemaHandler and SchemaChecker
+                    schemaHandler = newProject.getSchemaHandler();
+                    schemaChecker = newProject.getSchemaChecker();
+                    schemaChecker.enableModificationsListening();
 
+                    // Reloading views
+                    schemaView = ( SchemaView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+                        SchemaView.ID );
+                    problemsView = ( ProblemsView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+                        ProblemsView.ID );
+                    schemaView.reloadViewer();
+                    problemsView.reloadViewer();
+                }
             }
 
 
             public void projectAdded( Project project )
             {
                 PluginUtils.saveProjects();
-
             }
 
 
             public void projectRemoved( Project project )
             {
                 PluginUtils.saveProjects();
-
             }
-
         } );
-
-        schemaHandler = SchemaHandler.getInstance();
-        schemaChecker = new SchemaChecker();
     }
 
 
@@ -110,8 +130,6 @@ public class Activator extends AbstractUIPlugin
         // Loading the projects
         PluginUtils.loadProjects();
 
-        //        FakeLoader.loadSchemas(); // TODO Remove after testing
-        //        schemaChecker.enableModificationsListening();
     }
 
 
@@ -121,8 +139,6 @@ public class Activator extends AbstractUIPlugin
      */
     public void stop( BundleContext context ) throws Exception
     {
-        System.out.println( "stop" );
-
         // Saving the projects
         PluginUtils.saveProjects();
 
