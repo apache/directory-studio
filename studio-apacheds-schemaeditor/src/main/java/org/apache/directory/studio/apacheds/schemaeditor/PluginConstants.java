@@ -33,6 +33,7 @@ public interface PluginConstants
     public static final String IMG_ATTRIBUTE_TYPE_NEW = "resources/icons/attribute_type_new.gif";
     public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "resources/icons/attribute_type_new_wizard.png";
     public static final String IMG_CONNECT = "resources/icons/connect.gif";
+    public static final String IMG_COLLAPSE_ALL = "resources/icons/collapse_all.gif";
     public static final String IMG_DELETE = "resources/icons/delete.gif";
     public static final String IMG_DISCONNECT = "resources/icons/disconnect.gif";
     public static final String IMG_DIFFERENCE_ADD = "resources/icons/difference_add.png";
@@ -71,6 +72,7 @@ public interface PluginConstants
     // Commands
     public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".commands.connect";
     public static final String CMD_CLOSE_PROJECT = Activator.PLUGIN_ID + ".commands.closeProject";
+    public static final String CMD_COLLAPSE_ALL = Activator.PLUGIN_ID + ".commands.collapseAll";
     public static final String CMD_DELETE_PROJECT = Activator.PLUGIN_ID + ".commands.deleteProject";
     public static final String CMD_DELETE_SCHEMA_ELEMENT = Activator.PLUGIN_ID + ".commands.deleteSchemaElement";
     public static final String CMD_EXPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.exportProjects";

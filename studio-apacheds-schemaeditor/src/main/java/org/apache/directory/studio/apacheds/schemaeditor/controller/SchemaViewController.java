@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ConnectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteSchemaElementAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsOpenLdapAction;
@@ -84,6 +85,7 @@ public class SchemaViewController
     private ImportSchemasFromXmlAction importSchemasFromXml;
     private ExportSchemasAsOpenLdapAction exportSchemasAsOpenLdap;
     private ExportSchemasAsXmlAction exportSchemasAsXml;
+    private CollapseAllAction collapseAll;
 
 
     /**
@@ -119,6 +121,7 @@ public class SchemaViewController
         importSchemasFromXml = new ImportSchemasFromXmlAction();
         exportSchemasAsOpenLdap = new ExportSchemasAsOpenLdapAction();
         exportSchemasAsXml = new ExportSchemasAsXmlAction();
+        collapseAll = new CollapseAllAction( viewer );
     }
 
 
@@ -132,6 +135,8 @@ public class SchemaViewController
         toolbar.add( newSchema );
         toolbar.add( newAttributeType );
         toolbar.add( newObjectClass );
+        toolbar.add( new Separator() );
+        toolbar.add( collapseAll );
     }
 
 
