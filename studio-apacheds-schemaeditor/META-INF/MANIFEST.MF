@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.apache.directory.studio.jars,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.eclipse.core.runtime.compatibility
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar

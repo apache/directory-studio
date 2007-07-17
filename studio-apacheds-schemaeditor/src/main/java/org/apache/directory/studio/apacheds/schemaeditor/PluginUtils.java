@@ -20,8 +20,18 @@
 package org.apache.directory.studio.apacheds.schemaeditor;
 
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsExporter;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImportException;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImporter;
 
 
 /**
@@ -98,5 +108,68 @@ public class PluginUtils
         clone.setMayNamesList( oc.getMayNamesList() );
 
         return clone;
+    }
+
+
+    /**
+     * Gets the Projects (where is store information about the loaded Projects).
+     *
+     * @return
+     *      the Projects File
+     */
+    private static File getProjectsFile()
+    {
+        return Activator.getDefault().getStateLocation().append( "projects.xml" ).toFile(); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Loads the projects saved in the Projects File.
+     */
+    public static void loadProjects()
+    {
+        ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
+        File projectsFile = getProjectsFile();
+
+        if ( projectsFile.exists() )
+        {
+            Project[] projects = null;
+            try
+            {
+                projects = ProjectsImporter.getProjects( projectsFile.getAbsolutePath() );
+            }
+            catch ( ProjectsImportException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            for ( Project project : projects )
+            {
+                projectsHandler.addProject( project );
+            }
+        }
+    }
+
+
+    /**
+     * Saves the projects in the Projects File.
+     */
+    public static void saveProjects()
+    {
+        ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
+        File projectsFile = getProjectsFile();
+
+        try
+        {
+            BufferedWriter buffWriter = new BufferedWriter( new FileWriter( projectsFile ) );
+            buffWriter.write( ProjectsExporter.toXml( projectsHandler.getProjects().toArray( new Project[0] ) ) );
+            buffWriter.close();
+        }
+        catch ( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

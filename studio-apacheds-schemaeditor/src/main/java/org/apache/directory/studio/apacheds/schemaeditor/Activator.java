@@ -21,7 +21,9 @@ package org.apache.directory.studio.apacheds.schemaeditor;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
@@ -67,6 +69,30 @@ public class Activator extends AbstractUIPlugin
     {
         plugin = this;
         projectsHandler = ProjectsHandler.getInstance();
+        projectsHandler.addListener( new ProjectsHandlerListener()
+        {
+
+            public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                // TODO Auto-generated method stub
+
+            }
+
+
+            public void projectAdded( Project project )
+            {
+                PluginUtils.saveProjects();
+
+            }
+
+
+            public void projectRemoved( Project project )
+            {
+                PluginUtils.saveProjects();
+
+            }
+
+        } );
 
         schemaHandler = SchemaHandler.getInstance();
         schemaChecker = new SchemaChecker();
@@ -81,9 +107,11 @@ public class Activator extends AbstractUIPlugin
     {
         super.start( context );
 
-        FakeLoader.loadSchemas(); // TODO Remove after testing
+        // Loading the projects
+        PluginUtils.loadProjects();
 
-        schemaChecker.enableModificationsListening();
+        //        FakeLoader.loadSchemas(); // TODO Remove after testing
+        //        schemaChecker.enableModificationsListening();
     }
 
 
@@ -93,7 +121,13 @@ public class Activator extends AbstractUIPlugin
      */
     public void stop( BundleContext context ) throws Exception
     {
+        System.out.println( "stop" );
+
+        // Saving the projects
+        PluginUtils.saveProjects();
+
         super.stop( context );
+        plugin = null;
     }
 
 

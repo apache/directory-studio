@@ -118,8 +118,9 @@ public class ProjectsImporter
 
         for ( Iterator<?> i = rootElement.elementIterator( PROJECT_TAG ); i.hasNext(); )
         {
+            Element projectElement = ( Element ) i.next();
             Project project = new Project();
-            readProject( rootElement, project, path );
+            readProject( projectElement, project, path );
             projects.add( project );
         }
 
