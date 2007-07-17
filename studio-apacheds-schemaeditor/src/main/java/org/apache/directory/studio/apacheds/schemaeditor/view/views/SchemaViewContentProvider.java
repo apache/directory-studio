@@ -106,7 +106,25 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 List<Schema> schemas = Activator.getDefault().getSchemaHandler().getSchemas();
                 for ( Schema schema : schemas )
                 {
-                    root.addChild( new SchemaWrapper( schema, root ) );
+                    SchemaWrapper schemaWrapper = new SchemaWrapper( schema, root );
+                    root.addChild( schemaWrapper );
+
+                    Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
+                    schemaWrapper.addChild( atFolder );
+                    Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
+                    schemaWrapper.addChild( ocFolder );
+
+                    List<AttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
+                    for ( AttributeTypeImpl attributeType : attributeTypes )
+                    {
+                        atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
+                    }
+
+                    List<ObjectClassImpl> objectClasses = schema.getObjectClasses();
+                    for ( ObjectClassImpl objectClass : objectClasses )
+                    {
+                        ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
+                    }
                 }
             }
 
@@ -114,35 +132,11 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
         }
         else if ( parentElement instanceof SchemaWrapper )
         {
-            SchemaWrapper schemaWrapper = ( SchemaWrapper ) parentElement;
-
-            if ( schemaWrapper.getChildren().isEmpty() )
-            {
-                Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
-                schemaWrapper.addChild( atFolder );
-                Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
-                schemaWrapper.addChild( ocFolder );
-
-                List<AttributeTypeImpl> attributeTypes = schemaWrapper.getSchema().getAttributeTypes();
-                for ( AttributeTypeImpl attributeType : attributeTypes )
-                {
-                    atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
-                }
-
-                List<ObjectClassImpl> objectClasses = schemaWrapper.getSchema().getObjectClasses();
-                for ( ObjectClassImpl objectClass : objectClasses )
-                {
-                    ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
-                }
-            }
-
-            children = schemaWrapper.getChildren();
+            children = ( ( SchemaWrapper ) parentElement ).getChildren();
         }
         else if ( parentElement instanceof Folder )
         {
-            Folder folder = ( Folder ) parentElement;
-
-            children = folder.getChildren();
+            children = ( ( Folder ) parentElement ).getChildren();
         }
 
         return children.toArray();
@@ -154,6 +148,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public Object getParent( Object element )
     {
+
         if ( element instanceof TreeNode )
         {
             return ( ( TreeNode ) element ).getParent();
