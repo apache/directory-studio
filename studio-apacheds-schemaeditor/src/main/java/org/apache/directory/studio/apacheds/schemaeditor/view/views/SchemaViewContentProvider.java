@@ -20,22 +20,29 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.FirstNameSorter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.OidSorter;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaSorter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaViewRoot;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder.FolderType;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 
@@ -47,19 +54,29 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class SchemaViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
-    /** The associated viewer */
-    private TreeViewer viewer;
+    /** The preferences store */
+    private IPreferenceStore store;
+
+    /** The FirstName Sorter */
+    private FirstNameSorter firstNameSorter;
+
+    /** The OID Sorter */
+    private OidSorter oidSorter;
+
+    /** The Schema Sorter */
+    private SchemaSorter schemaSorter;
 
 
     /**
-     * Default constructor
-     *
-     * @param viewer
-     *      the associated TreeViewer
+     * Creates a new instance of SchemaViewContentProvider.
      */
-    public SchemaViewContentProvider( TreeViewer viewer )
+    public SchemaViewContentProvider()
     {
-        this.viewer = viewer;
+        store = Activator.getDefault().getPreferenceStore();
+
+        firstNameSorter = new FirstNameSorter();
+        oidSorter = new OidSorter();
+        schemaSorter = new SchemaSorter();
     }
 
 
@@ -95,7 +112,11 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public Object[] getChildren( Object parentElement )
     {
-        List<TreeNode> children = null;
+        List<TreeNode> children = new ArrayList<TreeNode>();
+
+        int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+        int sortBy = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY );
+        int sortOrder = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER );
 
         if ( parentElement instanceof SchemaViewRoot )
         {
@@ -103,40 +124,98 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
 
             if ( root.getChildren().isEmpty() )
             {
-                List<Schema> schemas = Activator.getDefault().getSchemaHandler().getSchemas();
-                for ( Schema schema : schemas )
+                SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+                if ( schemaHandler != null )
                 {
-                    SchemaWrapper schemaWrapper = new SchemaWrapper( schema, root );
-                    root.addChild( schemaWrapper );
-
-                    Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
-                    schemaWrapper.addChild( atFolder );
-                    Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
-                    schemaWrapper.addChild( ocFolder );
-
-                    List<AttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
-                    for ( AttributeTypeImpl attributeType : attributeTypes )
+                    List<Schema> schemas = schemaHandler.getSchemas();
+                    for ( Schema schema : schemas )
                     {
-                        atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
-                    }
+                        SchemaWrapper schemaWrapper = new SchemaWrapper( schema, root );
+                        root.addChild( schemaWrapper );
 
-                    List<ObjectClassImpl> objectClasses = schema.getObjectClasses();
-                    for ( ObjectClassImpl objectClass : objectClasses )
-                    {
-                        ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
+                        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                        {
+                            Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
+                            schemaWrapper.addChild( atFolder );
+                            Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
+                            schemaWrapper.addChild( ocFolder );
+
+                            List<AttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
+                            for ( AttributeTypeImpl attributeType : attributeTypes )
+                            {
+                                atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
+                            }
+
+                            List<ObjectClassImpl> objectClasses = schema.getObjectClasses();
+                            for ( ObjectClassImpl objectClass : objectClasses )
+                            {
+                                ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
+                            }
+                        }
+                        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                        {
+                            List<AttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
+                            for ( AttributeTypeImpl attributeType : attributeTypes )
+                            {
+                                schemaWrapper.addChild( new AttributeTypeWrapper( attributeType, schemaWrapper ) );
+                            }
+
+                            List<ObjectClassImpl> objectClasses = schema.getObjectClasses();
+                            for ( ObjectClassImpl objectClass : objectClasses )
+                            {
+                                schemaWrapper.addChild( new ObjectClassWrapper( objectClass, schemaWrapper ) );
+                            }
+                        }
                     }
                 }
             }
 
             children = root.getChildren();
+
+            Collections.sort( children, schemaSorter );
         }
         else if ( parentElement instanceof SchemaWrapper )
         {
             children = ( ( SchemaWrapper ) parentElement ).getChildren();
+
+            if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+            {
+                // Sort by
+                if ( sortBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME )
+                {
+                    Collections.sort( children, firstNameSorter );
+                }
+                else if ( sortBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_OID )
+                {
+                    Collections.sort( children, oidSorter );
+                }
+
+                // Sort Order
+                if ( sortOrder == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_DESCENDING )
+                {
+                    Collections.reverse( children );
+                }
+            }
         }
         else if ( parentElement instanceof Folder )
         {
             children = ( ( Folder ) parentElement ).getChildren();
+
+            // Sort by
+            if ( sortBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME )
+            {
+                Collections.sort( children, firstNameSorter );
+            }
+            else if ( sortBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_OID )
+            {
+                Collections.sort( children, oidSorter );
+            }
+
+            // Sort Order
+            if ( sortOrder == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_DESCENDING )
+            {
+                Collections.reverse( children );
+            }
         }
 
         return children.toArray();

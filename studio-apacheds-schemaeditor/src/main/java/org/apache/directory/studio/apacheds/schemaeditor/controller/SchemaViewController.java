@@ -20,6 +20,11 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ConnectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteSchemaElementAction;
@@ -31,6 +36,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewA
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewObjectClassAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewSchemaAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenElementAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewPreferenceAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewSortingDialogAction;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -46,6 +53,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -68,6 +77,9 @@ public class SchemaViewController
     /** The associated view */
     private SchemaView view;
 
+    /** The authorized Preferences keys*/
+    private List<String> authorizedPrefs;
+
     /** The Context Menu */
     private MenuManager contextMenu;
 
@@ -86,6 +98,8 @@ public class SchemaViewController
     private ExportSchemasAsOpenLdapAction exportSchemasAsOpenLdap;
     private ExportSchemasAsXmlAction exportSchemasAsXml;
     private CollapseAllAction collapseAll;
+    private OpenSchemaViewSortingDialogAction openSchemaViewSortingDialog;
+    private OpenSchemaViewPreferenceAction openSchemaViewPreference;
 
 
     /**
@@ -101,8 +115,11 @@ public class SchemaViewController
 
         initActions();
         initToolbar();
+        initMenu();
         initContextMenu();
         initDoubleClickListener();
+        initAuthorizedPrefs();
+        initPreferencesListener();
     }
 
 
@@ -122,6 +139,8 @@ public class SchemaViewController
         exportSchemasAsOpenLdap = new ExportSchemasAsOpenLdapAction();
         exportSchemasAsXml = new ExportSchemasAsXmlAction();
         collapseAll = new CollapseAllAction( viewer );
+        openSchemaViewSortingDialog = new OpenSchemaViewSortingDialogAction();
+        openSchemaViewPreference = new OpenSchemaViewPreferenceAction();
     }
 
 
@@ -137,6 +156,20 @@ public class SchemaViewController
         toolbar.add( newObjectClass );
         toolbar.add( new Separator() );
         toolbar.add( collapseAll );
+    }
+
+
+    /**
+     * Initializes the Menu.
+     */
+    private void initMenu()
+    {
+        IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
+        menu.add( openSchemaViewSortingDialog );
+        menu.add( new Separator() );
+        //        menu.add( linkWithEditor );
+        //        menu.add( new Separator() );
+        menu.add( openSchemaViewPreference );
     }
 
 
@@ -232,6 +265,53 @@ public class SchemaViewController
                     {
                         //                        logger.debug( "error when opening the editor" ); //$NON-NLS-1$
                         e.printStackTrace();
+                    }
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Initializes the Authorized Prefs IDs.
+     */
+    private void initAuthorizedPrefs()
+    {
+        authorizedPrefs = new ArrayList<String>();
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_DISPLAY );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER );
+    }
+
+
+    /**
+     * Initializes the listener on the preferences store
+     */
+    private void initPreferencesListener()
+    {
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        {
+            /* (non-Javadoc)
+             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+             */
+            public void propertyChange( PropertyChangeEvent event )
+            {
+                if ( authorizedPrefs.contains( event.getProperty() ) )
+                {
+                    if ( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING == event.getProperty() )
+                    {
+                        view.reloadViewer();
+                    }
+                    else
+                    {
+                        view.update();
                     }
                 }
             }

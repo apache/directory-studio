@@ -112,7 +112,7 @@ public class SchemaView extends ViewPart
     private void initViewer( Composite parent )
     {
         treeViewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new SchemaViewContentProvider( treeViewer );
+        contentProvider = new SchemaViewContentProvider();
         treeViewer.setContentProvider( contentProvider );
         treeViewer.setLabelProvider( new DecoratingLabelProvider( new SchemaViewLabelProvider(), Activator.getDefault()
             .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
@@ -146,5 +146,14 @@ public class SchemaView extends ViewPart
     public void reloadViewer()
     {
         treeViewer.setInput( new SchemaViewRoot() );
+    }
+
+
+    /**
+     * Updates the viewer
+     */
+    public void update()
+    {
+        treeViewer.update( treeViewer.getInput(), null );
     }
 }

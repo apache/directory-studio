@@ -173,4 +173,16 @@
           name="Schema Projects">
     </wizard>
  </extension>
+    <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.PluginPreferencePage"
+            id="org.apache.directory.studio.apacheds.schemaeditor.preferences.plugin"
+            name="Schema Editor"/>
+      <page
+      		category="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.plugin"
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.SchemaViewPreferencePage"
+            id="org.apache.directory.studio.apacheds.schemaeditor.preferences.schemaView"
+            name="Schema View"/>
+   </extension>
 </plugin>

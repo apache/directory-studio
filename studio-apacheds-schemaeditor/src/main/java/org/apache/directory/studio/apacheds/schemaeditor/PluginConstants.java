@@ -20,6 +20,9 @@
 package org.apache.directory.studio.apacheds.schemaeditor;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.view.preferences.SchemaViewPreferencePage;
+
+
 /**
  * This interface contains all the Constants used in the Plugin.
  *
@@ -67,6 +70,7 @@ public interface PluginConstants
     public static final String IMG_SCHEMAS_EXPORT_WIZARD = "resources/icons/schemas_export_wizard.png";
     public static final String IMG_SCHEMAS_IMPORT = "resources/icons/schemas_import.gif";
     public static final String IMG_SCHEMAS_IMPORT_WIZARD = "resources/icons/schemas_import_wizard.png";
+    public static final String IMG_SORTING = "resources/icons/sorting.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
 
     // Commands
@@ -85,13 +89,17 @@ public interface PluginConstants
     public static final String CMD_IMPORT_SCHEMAS_FROM_XML = Activator.PLUGIN_ID + ".commands.importSchemasFromXML";
     public static final String CMD_OPEN_ELEMENT = Activator.PLUGIN_ID + ".commands.openElement";
     public static final String CMD_OPEN_PROJECT = Activator.PLUGIN_ID + ".commands.openProject";
+    public static final String CMD_OPEN_SCHEMA_VIEW_PREFERENCE = Activator.PLUGIN_ID
+        + ".commands.openSchemaViewPreference";
+    public static final String CMD_OPEN_SCHEMA_VIEW_SORTING_DIALOG = Activator.PLUGIN_ID
+        + ".commands.openSchemaViewSortingDialog";
     public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.PLUGIN_ID + ".commands.newAttributeType";
     public static final String CMD_NEW_OBJECT_CLASS = Activator.PLUGIN_ID + ".commands.newObjectClass";
     public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
     public static final String CMD_NEW_SCHEMA = Activator.PLUGIN_ID + ".commands.newSchema";
     public static final String CMD_RENAME_PROJECT = Activator.PLUGIN_ID + ".commands.renameProject";
 
-    // Preferences
+    // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */
     public static final String PREFS_DIFFERENCES_WIDGET_GROUPING = Activator.PLUGIN_ID
         + ".prefs.DifferencesWidget.grouping";
@@ -100,4 +108,49 @@ public interface PluginConstants
     /** The preference value for DifferencesWidget Grouping 'Property' */
     public static final int PREFS_DIFFERENCES_WIDGET_GROUPING_TYPE = 1;
 
+    // Preferences - SchemaView
+    /** The preference ID for Schema View Label */
+    public static final String PREFS_SCHEMA_VIEW_LABEL = SchemaViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
+    /** The preference value for Schema View First Name label */
+    public static final int PREFS_SCHEMA_VIEW_LABEL_FIRST_NAME = 0;
+    /** The preference value for Schema View All Aliases label */
+    public static final int PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES = 1;
+    /** The preference value for Schema View OID label */
+    public static final int PREFS_SCHEMA_VIEW_LABEL_OID = 2;
+    /** The preference ID for Schema View Abbreviate */
+    public static final String PREFS_SCHEMA_VIEW_ABBREVIATE = SchemaViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
+    /** The preference ID for Schema View Abbreviate Max Length*/
+    public static final String PREFS_SCHEMA_VIEW_ABBREVIATE_MAX_LENGTH = SchemaViewPreferencePage.ID
+        + ".label.abbreviate.maxLength"; //$NON-NLS-1$
+    /** The preference ID for Schema View Display Secondary Label */
+    public static final String PREFS_SCHEMA_VIEW_SECONDARY_LABEL_DISPLAY = SchemaViewPreferencePage.ID
+        + ".secondaryLabel.display"; //$NON-NLS-1$
+    /** The preference ID for Schema View Secondary Label */
+    public static final String PREFS_SCHEMA_VIEW_SECONDARY_LABEL = SchemaViewPreferencePage.ID
+        + ".secondaryLabel.labelValue"; //$NON-NLS-1$
+    /** The preference ID for Schema View Abbreviate Secondary Label */
+    public static final String PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE = SchemaViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate"; //$NON-NLS-1$
+    /** The preference ID for Schema View Abbreviate Secondary Label Max Length*/
+    public static final String PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = SchemaViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
+    /** The preference ID for Schema View Grouping */
+    public static final String PREFS_SCHEMA_VIEW_GROUPING = Activator.PLUGIN_ID + ".preferences.SchemaView.grouping"; //$NON-NLS-1$
+    /** The preference value for Schema View Grouping 'group ATs and OCs in folders' */
+    public static final int PREFS_SCHEMA_VIEW_GROUPING_FOLDERS = 0;
+    /** The preference value for Schema View Grouping 'mixed' */
+    public static final int PREFS_SCHEMA_VIEW_GROUPING_MIXED = 1;
+    /** The preference ID for Schema View Sorting By */
+    public static final String PREFS_SCHEMA_VIEW_SORTING_BY = Activator.PLUGIN_ID + ".preferences.SchemaView.sortingBy"; //$NON-NLS-1$
+    /** The preference value for Schema View Sorting 'First Name' */
+    public static final int PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME = 0;
+    /** The preference value for Schema View Sorting 'OID' */
+    public static final int PREFS_SCHEMA_VIEW_SORTING_BY_OID = 1;
+    /** The preference ID for Sorting Order */
+    public static final String PREFS_SCHEMA_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
+        + ".preferences.SchemaView.sortingOrder"; //$NON-NLS-1$
+    /** The preference value for Schema View Sorting 'ascending' */
+    public static final int PREFS_SCHEMA_VIEW_SORTING_ORDER_ASCENDING = 0;
+    /** The preference value for Schema View Sorting 'descending' */
+    public static final int PREFS_SCHEMA_VIEW_SORTING_ORDER_DESCENDING = 1;
 }

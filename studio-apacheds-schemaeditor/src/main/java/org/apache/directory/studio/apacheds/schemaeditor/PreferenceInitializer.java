@@ -42,5 +42,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         // DifferencesWidget
         store.setDefault( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING,
             PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING_PROPERTY );
+
+        // Schema View Preference Page
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE, true );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_DISPLAY, true );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL,
+            PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
     }
 }
