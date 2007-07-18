@@ -25,7 +25,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.RenameProjectDialog;
-import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -34,6 +33,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -47,8 +47,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class RenameProjectAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    /** The associated view */
-    private ProjectsView view;
+    /** The associated viewer */
+    private TableViewer viewer;
 
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
@@ -60,7 +60,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
      * @param view
      *      the associate view
      */
-    public RenameProjectAction( ProjectsView view )
+    public RenameProjectAction( TableViewer viewer)
     {
         super( "Rename Project..." );
         setToolTipText( getText() );
@@ -68,8 +68,8 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_RENAME ) );
         setEnabled( false );
-        this.view = view;
-        this.view.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        this.viewer = viewer;
+        this.viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
@@ -86,7 +86,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
      */
     public void run()
     {
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
         if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
         {
             Project project = ( ( ProjectWrapper ) selection.getFirstElement() ).getProject();

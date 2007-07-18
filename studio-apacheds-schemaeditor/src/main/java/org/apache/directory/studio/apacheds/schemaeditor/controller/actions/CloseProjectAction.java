@@ -24,7 +24,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
-import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -32,6 +31,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
@@ -44,8 +44,8 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class CloseProjectAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    /** The associated view */
-    private ProjectsView view;
+    /** The associated viewer */
+    private TableViewer viewer;
 
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
@@ -57,14 +57,14 @@ public class CloseProjectAction extends Action implements IWorkbenchWindowAction
      * @param view
      *      the associate view
      */
-    public CloseProjectAction( ProjectsView view )
+    public CloseProjectAction( TableViewer viewer )
     {
         super( "Close Project" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_CLOSE_PROJECT );
         setEnabled( false );
-        this.view = view;
-        this.view.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        this.viewer = viewer;
+        this.viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
@@ -89,7 +89,7 @@ public class CloseProjectAction extends Action implements IWorkbenchWindowAction
      */
     public void run()
     {
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
         if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
         {
             projectsHandler.closeProject( ( ( ProjectWrapper ) selection.getFirstElement() ).getProject() );

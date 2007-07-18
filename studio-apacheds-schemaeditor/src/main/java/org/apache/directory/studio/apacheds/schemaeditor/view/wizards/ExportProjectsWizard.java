@@ -43,6 +43,9 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportProjectsWizard extends Wizard implements IExportWizard
 {
+    /** The selected projects */
+    private Project[] selectedProjects = new Project[0];
+
     // The pages of the wizard
     private ExportProjectsWizardPage page;
 
@@ -54,6 +57,7 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
     {
         // Creating pages
         page = new ExportProjectsWizardPage();
+        page.setSelectedProjects( selectedProjects );
 
         // Adding pages
         addPage( page );
@@ -107,6 +111,18 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
         }
 
         return true;
+    }
+
+
+    /**
+     * Sets the selected projects.
+     *
+     * @param projects
+     *      the projects
+     */
+    public void setSelectedProjects( Project[] projects )
+    {
+        selectedProjects = projects;
     }
 
 

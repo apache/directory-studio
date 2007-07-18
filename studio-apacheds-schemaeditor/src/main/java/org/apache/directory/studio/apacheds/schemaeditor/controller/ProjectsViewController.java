@@ -105,12 +105,12 @@ public class ProjectsViewController
     private void initActions()
     {
         newProject = new NewProjectAction();
-        openProject = new OpenProjectAction( view );
-        closeProject = new CloseProjectAction( view );
-        renameProject = new RenameProjectAction( view );
-        deleteProject = new DeleteProjectAction( view );
+        openProject = new OpenProjectAction( view.getViewer() );
+        closeProject = new CloseProjectAction( view.getViewer() );
+        renameProject = new RenameProjectAction( view.getViewer() );
+        deleteProject = new DeleteProjectAction( view.getViewer() );
         importProjects = new ImportProjectsAction();
-        exportProjects = new ExportProjectsAction();
+        exportProjects = new ExportProjectsAction( view.getViewer() );
     }
 
 

@@ -22,6 +22,8 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
@@ -64,6 +66,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ExportProjectsWizardPage extends WizardPage
 {
+    /** The selected projects */
+    private Project[] selectedProjects = new Project[0];
+
     // UI Fields
     private CheckboxTableViewer projectsTableViewer;
     private Button projectsTableSelectAllButton;
@@ -221,7 +226,20 @@ public class ExportProjectsWizardPage extends WizardPage
     private void initFields()
     {
         // Filling the Schemas table
-        projectsTableViewer.setInput( Activator.getDefault().getProjectsHandler().getProjects() );
+        List<Project> projects = new ArrayList<Project>();
+        projects.addAll( Activator.getDefault().getProjectsHandler().getProjects() );
+        Collections.sort( projects, new Comparator<Project>()
+        {
+            public int compare( Project o1, Project o2 )
+            {
+                return o1.getName().compareToIgnoreCase( o2.getName() );
+            }
+
+        } );
+        projectsTableViewer.setInput( projects );
+
+        // Setting the selected projects
+        projectsTableViewer.setCheckedElements( selectedProjects );
 
         displayErrorMessage( null );
         setPageComplete( false );
@@ -319,6 +337,18 @@ public class ExportProjectsWizardPage extends WizardPage
         }
 
         return schemas.toArray( new Project[0] );
+    }
+
+
+    /**
+     * Sets the selected projects.
+     *
+     * @param projects
+     *      the projects
+     */
+    public void setSelectedProjects( Project[] projects )
+    {
+        selectedProjects = projects;
     }
 
 

@@ -22,6 +22,8 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
@@ -217,7 +219,22 @@ public class ExportSchemasAsOpenLdapWizardPage extends WizardPage
     private void initFields()
     {
         // Filling the Schemas table
-        schemasTableViewer.setInput( schemaHandler.getSchemas() );
+        if ( schemaHandler != null )
+        {
+            List<Schema> schemas = new ArrayList<Schema>();
+            schemas.addAll( schemaHandler.getSchemas() );
+
+            Collections.sort( schemas, new Comparator<Schema>()
+            {
+                public int compare( Schema o1, Schema o2 )
+                {
+                    return o1.getName().compareToIgnoreCase( o2.getName() );
+                }
+
+            } );
+
+            schemasTableViewer.setInput( schemas );
+        }
 
         displayErrorMessage( null );
         setPageComplete( false );

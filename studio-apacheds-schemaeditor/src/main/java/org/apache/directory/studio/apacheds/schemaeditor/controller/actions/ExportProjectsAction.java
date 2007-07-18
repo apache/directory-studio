@@ -20,13 +20,20 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportProjectsWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -42,10 +49,14 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ExportProjectsAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    /** The associated viewer */
+    private TableViewer viewer;
+
+
     /**
      * Creates a new instance of NewProjectAction.
      */
-    public ExportProjectsAction()
+    public ExportProjectsAction( TableViewer viewer )
     {
         super( "Schema Projects" );
         setToolTipText( getText() );
@@ -53,6 +64,7 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_PROJECT_EXPORT ) );
         setEnabled( true );
+        this.viewer = viewer;
     }
 
 
@@ -61,8 +73,20 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
      */
     public void run()
     {
+        List<Project> selectedProjects = new ArrayList<Project>();
+        // Getting the selection
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        if ( ( !selection.isEmpty() ) && ( selection.size() > 0 ) )
+        {
+            for ( Iterator<?> i = selection.iterator(); i.hasNext(); )
+            {
+                selectedProjects.add( ( ( ProjectWrapper ) i.next() ).getProject() );
+            }
+        }
+
         // Instantiates and initializes the wizard
         ExportProjectsWizard wizard = new ExportProjectsWizard();
+        wizard.setSelectedProjects( selectedProjects.toArray( new Project[0] ) );
         wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
         // Instantiates the wizard container with the wizard and opens it
         WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );

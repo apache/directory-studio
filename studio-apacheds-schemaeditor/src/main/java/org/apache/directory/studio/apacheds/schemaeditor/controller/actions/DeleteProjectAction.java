@@ -25,7 +25,6 @@ import java.util.Iterator;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
-import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -33,6 +32,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -49,8 +49,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class DeleteProjectAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    /** The associated view */
-    private ProjectsView view;
+    /** The associated viewer */
+    private TableViewer viewer;
 
 
     /**
@@ -59,7 +59,7 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
      * @param view
      *      the associated view
      */
-    public DeleteProjectAction( ProjectsView view )
+    public DeleteProjectAction( TableViewer viewer )
     {
         super( "Delete Project" );
         setToolTipText( getText() );
@@ -67,8 +67,8 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
         setEnabled( false );
-        this.view = view;
-        this.view.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        this.viewer = viewer;
+        this.viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
@@ -100,7 +100,7 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
     public void run()
     {
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
