@@ -311,7 +311,7 @@ public class SchemaViewController
                     }
                     else
                     {
-                        view.update();
+                        view.refresh();
                     }
                 }
             }

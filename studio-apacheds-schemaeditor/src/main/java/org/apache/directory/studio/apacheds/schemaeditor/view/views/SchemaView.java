@@ -150,10 +150,10 @@ public class SchemaView extends ViewPart
 
 
     /**
-     * Updates the viewer
+     * Refreshes the viewer
      */
-    public void update()
+    public void refresh()
     {
-        treeViewer.update( treeViewer.getInput(), null );
+        treeViewer.refresh();
     }
 }
