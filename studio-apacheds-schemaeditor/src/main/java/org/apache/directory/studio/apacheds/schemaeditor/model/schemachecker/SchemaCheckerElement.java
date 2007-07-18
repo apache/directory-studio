@@ -20,12 +20,22 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
 
 
+import org.apache.directory.shared.ldap.schema.SchemaObject;
+
+
 /**
- * Common interface for all the schema warnings.
+ * Common interface for the all the schema errors.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface SchemaWarning extends SchemaCheckerElement
+public interface SchemaCheckerElement
 {
+    /**
+     * Gets the source object.
+     * 
+     * @return
+     *      the source object
+     */
+    public SchemaObject getSource();
 }

@@ -304,7 +304,7 @@ public class SchemaChecker
                         counter++;
                         o = list.get( counter );
                     }
-                    SchemaError error = new DuplicateAliasError( at, oid, ( SchemaObject ) o );
+                    SchemaError error = new DuplicateAliasError( at, alias, ( SchemaObject ) o );
                     errorsList.add( error );
                     errorsMap.put( at, error );
                 }
@@ -462,13 +462,6 @@ public class SchemaChecker
 
             for ( String mandatoryAT : mandatoryATsList )
             {
-                if ( optionalATsList.contains( mandatoryAT ) )
-                {
-                    SchemaError error = new DuplicateMandatoryOptionalAttributeError( oc, mandatoryAT );
-                    errorsList.add( error );
-                    errorsMap.put( oc, error );
-                }
-
                 if ( schemaHandler.getAttributeType( mandatoryAT ) == null )
                 {
                     SchemaError error = new NonExistingMandatoryATError( oc, mandatoryAT );

@@ -20,8 +20,21 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
+import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DuplicateAliasError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DuplicateOidError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NoAliasWarning;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingATSuperiorError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingMandatoryATError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingMatchingRuleError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingOCSuperiorError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingOptionalATError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingSyntaxError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaCheckerElement;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaErrorWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWarningWrapper;
@@ -79,7 +92,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
             if ( columnIndex == 0 )
             {
-                return errorWrapper.getSchemaError().toString();
+                return getMessage( errorWrapper.getSchemaError() );
             }
             else if ( columnIndex == 1 )
             {
@@ -102,7 +115,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
             if ( columnIndex == 0 )
             {
-                return warningWrapper.getSchemaWarning().toString();
+                return getMessage( warningWrapper.getSchemaWarning() );
             }
             else if ( columnIndex == 1 )
             {
@@ -133,5 +146,100 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
         // Default
         return element.toString();
+    }
+
+
+    private String getMessage( SchemaCheckerElement element )
+    {
+        StringBuffer message = new StringBuffer();
+
+        if ( element instanceof DuplicateAliasError )
+        {
+            DuplicateAliasError duplicateAliasError = ( DuplicateAliasError ) element;
+
+            message.append( "Alias '" + duplicateAliasError.getAlias() + "' is already used by another item: " );
+            SchemaObject duplicate = duplicateAliasError.getDuplicate();
+            if ( duplicate instanceof AttributeTypeImpl )
+            {
+                message.append( "attribute type" );
+            }
+            else if ( duplicate instanceof ObjectClassImpl )
+            {
+                message.append( "object class" );
+            }
+            message.append( " with OID '" + duplicate.getOid() + "'." );
+        }
+        else if ( element instanceof DuplicateOidError )
+        {
+            DuplicateOidError duplicateOidError = ( DuplicateOidError ) element;
+
+            message.append( "OID '" + duplicateOidError.getOid() + "' is already used by another item: " );
+            SchemaObject duplicate = duplicateOidError.getDuplicate();
+            if ( duplicate instanceof AttributeTypeImpl )
+            {
+                message.append( "attribute type" );
+            }
+            else if ( duplicate instanceof ObjectClassImpl )
+            {
+                message.append( "object class" );
+            }
+            message.append( " with alias '" + duplicate.getName() + "'." );
+        }
+        else if ( element instanceof NonExistingATSuperiorError )
+        {
+            NonExistingATSuperiorError nonExistingATSuperiorError = ( NonExistingATSuperiorError ) element;
+
+            message.append( "Superior attribute type '" + nonExistingATSuperiorError.getSuperiorAlias()
+                + "' does not exist." );
+        }
+        else if ( element instanceof NonExistingOCSuperiorError )
+        {
+            NonExistingOCSuperiorError nonExistingOCSuperiorError = ( NonExistingOCSuperiorError ) element;
+
+            message.append( "Superior object class '" + nonExistingOCSuperiorError.getSuperiorAlias()
+                + "' does not exist." );
+        }
+        else if ( element instanceof NonExistingMandatoryATError )
+        {
+            NonExistingMandatoryATError nonExistingMandatoryATError = ( NonExistingMandatoryATError ) element;
+
+            message
+                .append( "Mandatory attribute type '" + nonExistingMandatoryATError.getAlias() + "' does not exist." );
+        }
+        else if ( element instanceof NonExistingOptionalATError )
+        {
+            NonExistingOptionalATError nonExistingOptionalATError = ( NonExistingOptionalATError ) element;
+
+            message.append( "Optional attribute type '" + nonExistingOptionalATError.getAlias() + "' does not exist." );
+        }
+        else if ( element instanceof NonExistingSyntaxError )
+        {
+            NonExistingSyntaxError nonExistingSyntaxError = ( NonExistingSyntaxError ) element;
+
+            message.append( "Syntax with OID '" + nonExistingSyntaxError.getSyntaxOid() + "' does not exist." );
+        }
+        else if ( element instanceof NonExistingMatchingRuleError )
+        {
+            NonExistingMatchingRuleError nonExistingMatchingRuleError = ( NonExistingMatchingRuleError ) element;
+
+            message.append( "Matching rule '" + nonExistingMatchingRuleError.getMatchingRuleAlias()
+                + "' does not exist." );
+        }
+        else if ( element instanceof NoAliasWarning )
+        {
+            NoAliasWarning noAliasWarning = ( NoAliasWarning ) element;
+            SchemaObject source = noAliasWarning.getSource();
+            if ( source instanceof AttributeTypeImpl )
+            {
+                message.append( "Attribute type" );
+            }
+            else if ( source instanceof ObjectClassImpl )
+            {
+                message.append( "Abject class" );
+            }
+            message.append( " with OID '" + source.getOid() + "' does not have any alias." );
+        }
+
+        return message.toString();
     }
 }
