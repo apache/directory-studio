@@ -136,8 +136,8 @@ public class SchemaViewController
         deleteSchemaElement = new DeleteSchemaElementAction();
         importSchemasFromOpenLdap = new ImportSchemasFromOpenLdapAction();
         importSchemasFromXml = new ImportSchemasFromXmlAction();
-        exportSchemasAsOpenLdap = new ExportSchemasAsOpenLdapAction();
-        exportSchemasAsXml = new ExportSchemasAsXmlAction();
+        exportSchemasAsOpenLdap = new ExportSchemasAsOpenLdapAction( viewer );
+        exportSchemasAsXml = new ExportSchemasAsXmlAction( viewer );
         collapseAll = new CollapseAllAction( viewer );
         openSchemaViewSortingDialog = new OpenSchemaViewSortingDialogAction();
         openSchemaViewPreference = new OpenSchemaViewPreferenceAction();

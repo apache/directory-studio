@@ -43,6 +43,9 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
 {
+    /** The selected schemas */
+    private Schema[] selectedSchemas = new Schema[0];
+
     // The pages of the wizard
     private ExportSchemasAsXmlWizardPage page;
 
@@ -54,6 +57,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
     {
         // Creating pages
         page = new ExportSchemasAsXmlWizardPage();
+        page.setSelectedSchemas( selectedSchemas );
 
         // Adding pages
         addPage( page );
@@ -155,5 +159,17 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         setNeedsProgressMonitor( true );
+    }
+
+
+    /**
+     * Sets the selected projects.
+     *
+     * @param schemas
+     *      the schemas
+     */
+    public void setSelectedSchemas( Schema[] schemas )
+    {
+        selectedSchemas = schemas;
     }
 }

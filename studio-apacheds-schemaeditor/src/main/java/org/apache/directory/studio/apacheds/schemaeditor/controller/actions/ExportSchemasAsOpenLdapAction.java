@@ -20,13 +20,20 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -42,10 +49,14 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ExportSchemasAsOpenLdapAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    /** The associated viewer */
+    private TreeViewer viewer;
+
+
     /**
      * Creates a new instance of ExportSchemasAsOpenLdapAction.
      */
-    public ExportSchemasAsOpenLdapAction()
+    public ExportSchemasAsOpenLdapAction( TreeViewer viewer )
     {
         super( "Schemas as OpenLDAP files" );
         setToolTipText( getText() );
@@ -53,6 +64,7 @@ public class ExportSchemasAsOpenLdapAction extends Action implements IWorkbenchW
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SCHEMAS_EXPORT ) );
         setEnabled( true );
+        this.viewer = viewer;
     }
 
 
@@ -61,8 +73,24 @@ public class ExportSchemasAsOpenLdapAction extends Action implements IWorkbenchW
      */
     public void run()
     {
+        List<Schema> selectedSchemas = new ArrayList<Schema>();
+        // Getting the selection
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        if ( ( !selection.isEmpty() ) && ( selection.size() > 0 ) )
+        {
+            for ( Iterator<?> i = selection.iterator(); i.hasNext(); )
+            {
+                Object o = i.next();
+                if ( o instanceof SchemaWrapper )
+                {
+                    selectedSchemas.add( ( ( SchemaWrapper ) o ).getSchema() );
+                }
+            }
+        }
+
         // Instantiates and initializes the wizard
         ExportSchemasAsOpenLdapWizard wizard = new ExportSchemasAsOpenLdapWizard();
+        wizard.setSelectedSchemas( selectedSchemas.toArray( new Schema[0] ) );
         wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
         // Instantiates the wizard container with the wizard and opens it
         WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );

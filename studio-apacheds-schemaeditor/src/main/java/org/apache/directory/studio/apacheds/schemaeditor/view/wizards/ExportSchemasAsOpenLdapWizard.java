@@ -43,6 +43,9 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWizard
 {
+    /** The selected schemas */
+    private Schema[] selectedSchemas = new Schema[0];
+
     // The pages of the wizard
     private ExportSchemasAsOpenLdapWizardPage page;
 
@@ -54,6 +57,7 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
     {
         // Creating pages
         page = new ExportSchemasAsOpenLdapWizardPage();
+        page.setSelectedSchemas( selectedSchemas );
 
         // Adding pages
         addPage( page );
@@ -116,5 +120,17 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         setNeedsProgressMonitor( true );
+    }
+
+
+    /**
+     * Sets the selected projects.
+     *
+     * @param schemas
+     *      the schemas
+     */
+    public void setSelectedSchemas( Schema[] schemas )
+    {
+        selectedSchemas = schemas;
     }
 }

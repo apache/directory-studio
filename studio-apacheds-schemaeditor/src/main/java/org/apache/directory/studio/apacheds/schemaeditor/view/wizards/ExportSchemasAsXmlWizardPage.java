@@ -67,6 +67,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ExportSchemasAsXmlWizardPage extends WizardPage
 {
+    /** The selected schemas */
+    private Schema[] selectedSchemas = new Schema[0];
+
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
@@ -292,10 +295,12 @@ public class ExportSchemasAsXmlWizardPage extends WizardPage
                 {
                     return o1.getName().compareToIgnoreCase( o2.getName() );
                 }
-
             } );
 
             schemasTableViewer.setInput( schemas );
+
+            // Setting the selected schemas
+            schemasTableViewer.setCheckedElements( selectedSchemas );
         }
 
         // Selecting the Multiple Files choice
@@ -473,6 +478,18 @@ public class ExportSchemasAsXmlWizardPage extends WizardPage
         }
 
         return schemas.toArray( new Schema[0] );
+    }
+
+
+    /**
+     * Sets the selected projects.
+     *
+     * @param schemas
+     *      the schemas
+     */
+    public void setSelectedSchemas( Schema[] schemas )
+    {
+        selectedSchemas = schemas;
     }
 
 
