@@ -20,12 +20,13 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectSorter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectsViewRoot;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
@@ -46,6 +47,9 @@ public class ProjectsViewContentProvider implements IStructuredContentProvider, 
     /** The viewer */
     private TableViewer tableViewer;
 
+    /** The Sorter */
+    private ProjectSorter projectSorter;
+
 
     /**
      * Creates a new instance of ProjectsViewContentProvider.
@@ -56,6 +60,7 @@ public class ProjectsViewContentProvider implements IStructuredContentProvider, 
     public ProjectsViewContentProvider( TableViewer tableViewer )
     {
         this.tableViewer = tableViewer;
+        projectSorter = new ProjectSorter();
     }
 
 
@@ -92,7 +97,7 @@ public class ProjectsViewContentProvider implements IStructuredContentProvider, 
     @SuppressWarnings("unchecked")
     public Object[] getChildren( Object parentElement )
     {
-        List<TreeNode> children = null;
+        List<TreeNode> children = new ArrayList<TreeNode>();
 
         if ( parentElement instanceof ProjectsViewRoot )
         {
@@ -109,26 +114,7 @@ public class ProjectsViewContentProvider implements IStructuredContentProvider, 
             children = projectsViewRoot.getChildren();
 
             // Sorting Children
-            Collections.sort( children, new Comparator<TreeNode>()
-            {
-                public int compare( TreeNode tn1, TreeNode tn2 )
-                {
-                    if ( ( tn1 instanceof ProjectWrapper ) && ( tn2 instanceof ProjectWrapper ) )
-                    {
-                        ProjectWrapper pw1 = ( ProjectWrapper ) tn1;
-                        ProjectWrapper pw2 = ( ProjectWrapper ) tn2;
-
-                        return pw1.getProject().getName().compareToIgnoreCase( pw2.getProject().getName() );
-                    }
-
-                    // Default
-                    return 0;
-                }
-            } );
-        }
-        else if ( parentElement instanceof ProjectWrapper )
-        {
-            return null;
+            Collections.sort( children, projectSorter );
         }
 
         return children.toArray();
