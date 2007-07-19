@@ -21,63 +21,45 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.difference;
 
 
 /**
- * This interface defines a Difference between two objects.
+ * This interface represents a property difference
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface Difference
+public interface PropertyDifference extends Difference
 {
     /**
-     * Gets the source Object.
+     * Gets the old value.
      *
      * @return
-     *      the source Object
+     *      the old value
      */
-    public Object getSource();
+    public Object getOldValue();
 
 
     /**
-     * Sets the source Object.
+     * Sets the old value.
      *
-     * @param source
-     *      the source Object
+     * @param oldValue
+     *      the old value
      */
-    public void setSource( Object source );
+    public void setOldValue( Object oldValue );
 
 
     /**
-     * Gets the destination Object.
-     *
-     * @return
-     *      the destination Object
-     */
-    public Object getDestination();
-
-
-    /**
-     * Sets the destination Object.
-     *
-     * @param destination
-     *      the destination Object
-     */
-    public void setDestination( Object destination );
-
-
-    /**
-     * Gets the type.
+     * Gets the new value.
      *
      * @return
-     *      the type
+     *      the new value
      */
-    public DifferenceType getType();
+    public Object getNewValue();
 
 
     /**
-     * Sets the type.
+     * Sets the new value.
      *
-     * @param type
-     *      the type
+     * @param newValue
+     *      the new value
      */
-    public void setType( DifferenceType type );
+    public void setNewValue( Object newValue );
 }

@@ -56,12 +56,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddAliasDifference ) )
+        if ( !( difference instanceof AliasDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "alias", ( ( AddAliasDifference ) difference ).getValue() );
+        assertEquals( "alias", ( ( AliasDifference ) difference ).getNewValue() );
     }
 
 
@@ -82,12 +82,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddDescriptionDifference ) )
+        if ( !( difference instanceof DescriptionDifference )
+            || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "Description", ( ( AddDescriptionDifference ) difference ).getValue() );
+        assertEquals( "Description", ( ( DescriptionDifference ) difference ).getNewValue() );
     }
 
 
@@ -108,12 +109,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddEqualityDifference ) )
+        if ( !( difference instanceof EqualityDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "Equality", ( ( AddEqualityDifference ) difference ).getValue() );
+        assertEquals( "Equality", ( ( EqualityDifference ) difference ).getNewValue() );
     }
 
 
@@ -135,12 +136,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddMandatoryATDifference ) )
+        if ( !( difference instanceof MandatoryATDifference )
+            || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "must", ( ( AddMandatoryATDifference ) difference ).getValue() );
+        assertEquals( "must", ( ( MandatoryATDifference ) difference ).getNewValue() );
     }
 
 
@@ -162,12 +164,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddOptionalATDifference ) )
+        if ( !( difference instanceof OptionalATDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "may", ( ( AddOptionalATDifference ) difference ).getValue() );
+        assertEquals( "may", ( ( OptionalATDifference ) difference ).getNewValue() );
     }
 
 
@@ -188,12 +190,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddOrderingDifference ) )
+        if ( !( difference instanceof OrderingDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "Ordering", ( ( AddOrderingDifference ) difference ).getValue() );
+        assertEquals( "Ordering", ( ( OrderingDifference ) difference ).getNewValue() );
     }
 
 
@@ -214,12 +216,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddSubstringDifference ) )
+        if ( !( difference instanceof SubstringDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "Substring", ( ( AddSubstringDifference ) difference ).getValue() );
+        assertEquals( "Substring", ( ( SubstringDifference ) difference ).getNewValue() );
     }
 
 
@@ -240,12 +242,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddSuperiorATDifference ) )
+        if ( !( difference instanceof SuperiorATDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "superiorAT", ( ( AddSuperiorATDifference ) difference ).getValue() );
+        assertEquals( "superiorAT", ( ( SuperiorATDifference ) difference ).getNewValue() );
     }
 
 
@@ -267,12 +269,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddSuperiorOCDifference ) )
+        if ( !( difference instanceof SuperiorOCDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "superiorOC", ( ( AddSuperiorOCDifference ) difference ).getValue() );
+        assertEquals( "superiorOC", ( ( SuperiorOCDifference ) difference ).getNewValue() );
     }
 
 
@@ -293,12 +295,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddSyntaxDifference ) )
+        if ( !( difference instanceof SyntaxDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( "1.2.3.4.5", ( ( AddSyntaxDifference ) difference ).getValue() );
+        assertEquals( "1.2.3.4.5", ( ( SyntaxDifference ) difference ).getNewValue() );
     }
 
 
@@ -319,12 +321,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof AddSyntaxLengthDifference ) )
+        if ( !( difference instanceof SyntaxLengthDifference )
+            || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
 
-        assertEquals( 1234, ( ( AddSyntaxLengthDifference ) difference ).getValue() );
+        assertEquals( 1234, ( ( SyntaxLengthDifference ) difference ).getNewValue() );
     }
 
 
@@ -346,13 +349,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyClassTypeDifference ) )
+        if ( !( difference instanceof ClassTypeDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( ObjectClassTypeEnum.STRUCTURAL, ( ( ModifyClassTypeDifference ) difference ).getOldValue() );
-        assertEquals( ObjectClassTypeEnum.ABSTRACT, ( ( ModifyClassTypeDifference ) difference ).getNewValue() );
+        assertEquals( ObjectClassTypeEnum.STRUCTURAL, ( ( ClassTypeDifference ) difference ).getOldValue() );
+        assertEquals( ObjectClassTypeEnum.ABSTRACT, ( ( ClassTypeDifference ) difference ).getNewValue() );
     }
 
 
@@ -374,13 +378,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyCollectiveDifference ) )
+        if ( !( difference instanceof CollectiveDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( true, ( ( ModifyCollectiveDifference ) difference ).getOldValue() );
-        assertEquals( false, ( ( ModifyCollectiveDifference ) difference ).getNewValue() );
+        assertEquals( true, ( ( CollectiveDifference ) difference ).getOldValue() );
+        assertEquals( false, ( ( CollectiveDifference ) difference ).getNewValue() );
     }
 
 
@@ -402,13 +407,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyDescriptionDifference ) )
+        if ( !( difference instanceof DescriptionDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( "Description", ( ( ModifyDescriptionDifference ) difference ).getOldValue() );
-        assertEquals( "New Description", ( ( ModifyDescriptionDifference ) difference ).getNewValue() );
+        assertEquals( "Description", ( ( DescriptionDifference ) difference ).getOldValue() );
+        assertEquals( "New Description", ( ( DescriptionDifference ) difference ).getNewValue() );
     }
 
 
@@ -430,13 +436,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyEqualityDifference ) )
+        if ( !( difference instanceof EqualityDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( "equalityName", ( ( ModifyEqualityDifference ) difference ).getOldValue() );
-        assertEquals( "newEqualityName", ( ( ModifyEqualityDifference ) difference ).getNewValue() );
+        assertEquals( "equalityName", ( ( EqualityDifference ) difference ).getOldValue() );
+        assertEquals( "newEqualityName", ( ( EqualityDifference ) difference ).getNewValue() );
     }
 
 
@@ -458,13 +465,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyNoUserModificationDifference ) )
+        if ( !( difference instanceof NoUserModificationDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( true, ( ( ModifyNoUserModificationDifference ) difference ).getOldValue() );
-        assertEquals( false, ( ( ModifyNoUserModificationDifference ) difference ).getNewValue() );
+        assertEquals( true, ( ( NoUserModificationDifference ) difference ).getOldValue() );
+        assertEquals( false, ( ( NoUserModificationDifference ) difference ).getNewValue() );
     }
 
 
@@ -486,13 +494,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyObsoleteDifference ) )
+        if ( !( difference instanceof ObsoleteDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( true, ( ( ModifyObsoleteDifference ) difference ).getOldValue() );
-        assertEquals( false, ( ( ModifyObsoleteDifference ) difference ).getNewValue() );
+        assertEquals( true, ( ( ObsoleteDifference ) difference ).getOldValue() );
+        assertEquals( false, ( ( ObsoleteDifference ) difference ).getNewValue() );
     }
 
 
@@ -514,13 +523,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyOrderingDifference ) )
+        if ( !( difference instanceof OrderingDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( "orderingName", ( ( ModifyOrderingDifference ) difference ).getOldValue() );
-        assertEquals( "newOrderingName", ( ( ModifyOrderingDifference ) difference ).getNewValue() );
+        assertEquals( "orderingName", ( ( OrderingDifference ) difference ).getOldValue() );
+        assertEquals( "newOrderingName", ( ( OrderingDifference ) difference ).getNewValue() );
     }
 
 
@@ -542,13 +552,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifySingleValueDifference ) )
+        if ( !( difference instanceof SingleValueDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( true, ( ( ModifySingleValueDifference ) difference ).getOldValue() );
-        assertEquals( false, ( ( ModifySingleValueDifference ) difference ).getNewValue() );
+        assertEquals( true, ( ( SingleValueDifference ) difference ).getOldValue() );
+        assertEquals( false, ( ( SingleValueDifference ) difference ).getNewValue() );
     }
 
 
@@ -570,13 +581,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifySubstringDifference ) )
+        if ( !( difference instanceof SubstringDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( "substrName", ( ( ModifySubstringDifference ) difference ).getOldValue() );
-        assertEquals( "newSubstrName", ( ( ModifySubstringDifference ) difference ).getNewValue() );
+        assertEquals( "substrName", ( ( SubstringDifference ) difference ).getOldValue() );
+        assertEquals( "newSubstrName", ( ( SubstringDifference ) difference ).getNewValue() );
     }
 
 
@@ -598,13 +610,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifySuperiorATDifference ) )
+        if ( !( difference instanceof SuperiorATDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( "superiorName", ( ( ModifySuperiorATDifference ) difference ).getOldValue() );
-        assertEquals( "newSuperiorName", ( ( ModifySuperiorATDifference ) difference ).getNewValue() );
+        assertEquals( "superiorName", ( ( SuperiorATDifference ) difference ).getOldValue() );
+        assertEquals( "newSuperiorName", ( ( SuperiorATDifference ) difference ).getNewValue() );
     }
 
 
@@ -626,13 +639,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifySyntaxDifference ) )
+        if ( !( difference instanceof SyntaxDifference ) || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( "1.2.3.4.5", ( ( ModifySyntaxDifference ) difference ).getOldValue() );
-        assertEquals( "1.2.3.4.6", ( ( ModifySyntaxDifference ) difference ).getNewValue() );
+        assertEquals( "1.2.3.4.5", ( ( SyntaxDifference ) difference ).getOldValue() );
+        assertEquals( "1.2.3.4.6", ( ( SyntaxDifference ) difference ).getNewValue() );
     }
 
 
@@ -654,13 +667,14 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifySyntaxLengthDifference ) )
+        if ( !( difference instanceof SyntaxLengthDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( 1234, ( ( ModifySyntaxLengthDifference ) difference ).getOldValue() );
-        assertEquals( 12345, ( ( ModifySyntaxLengthDifference ) difference ).getNewValue() );
+        assertEquals( 1234, ( ( SyntaxLengthDifference ) difference ).getOldValue() );
+        assertEquals( 12345, ( ( SyntaxLengthDifference ) difference ).getNewValue() );
     }
 
 
@@ -682,13 +696,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof ModifyUsageDifference ) )
+        if ( !( difference instanceof UsageDifference ) || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
 
-        assertEquals( UsageEnum.DISTRIBUTED_OPERATION, ( ( ModifyUsageDifference ) difference ).getOldValue() );
-        assertEquals( UsageEnum.DIRECTORY_OPERATION, ( ( ModifyUsageDifference ) difference ).getNewValue() );
+        assertEquals( UsageEnum.DISTRIBUTED_OPERATION, ( ( UsageDifference ) difference ).getOldValue() );
+        assertEquals( UsageEnum.DIRECTORY_OPERATION, ( ( UsageDifference ) difference ).getNewValue() );
     }
 
 
@@ -712,12 +726,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveAliasDifference ) )
+        if ( !( difference instanceof AliasDifference ) || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertEquals( "name1", ( ( RemoveAliasDifference ) difference ).getValue() );
+        assertEquals( "name1", ( ( AliasDifference ) difference ).getOldValue() );
     }
 
 
@@ -738,12 +752,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveDescriptionDifference ) )
+        if ( !( difference instanceof DescriptionDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertNull( ( ( RemoveDescriptionDifference ) difference ).getValue() );
+        assertNull( ( ( DescriptionDifference ) difference ).getNewValue() );
     }
 
 
@@ -764,12 +779,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveEqualityDifference ) )
+        if ( !( difference instanceof EqualityDifference ) || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertNull( ( ( RemoveEqualityDifference ) difference ).getValue() );
+        assertNull( ( ( EqualityDifference ) difference ).getNewValue() );
     }
 
 
@@ -793,12 +808,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveMandatoryATDifference ) )
+        if ( !( difference instanceof MandatoryATDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertEquals( "must1", ( ( RemoveMandatoryATDifference ) difference ).getValue() );
+        assertEquals( "must1", ( ( MandatoryATDifference ) difference ).getOldValue() );
     }
 
 
@@ -822,12 +838,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveOptionalATDifference ) )
+        if ( !( difference instanceof OptionalATDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertEquals( "may1", ( ( RemoveOptionalATDifference ) difference ).getValue() );
+        assertEquals( "may1", ( ( OptionalATDifference ) difference ).getOldValue() );
     }
 
 
@@ -848,12 +865,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveOrderingDifference ) )
+        if ( !( difference instanceof OrderingDifference ) || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertNull( ( ( RemoveOrderingDifference ) difference ).getValue() );
+        assertNull( ( ( OrderingDifference ) difference ).getNewValue() );
     }
 
 
@@ -874,12 +891,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveSubstringDifference ) )
+        if ( !( difference instanceof SubstringDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertNull( ( ( RemoveSubstringDifference ) difference ).getValue() );
+        assertNull( ( ( SubstringDifference ) difference ).getNewValue() );
     }
 
 
@@ -900,12 +918,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveSuperiorATDifference ) )
+        if ( !( difference instanceof SuperiorATDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertNull( ( ( RemoveSuperiorATDifference ) difference ).getValue() );
+        assertNull( ( ( SuperiorATDifference ) difference ).getNewValue() );
     }
 
 
@@ -917,9 +936,11 @@ public class DifferenceEngineTest extends TestCase
     public void testRemoveSuperiorOCDifference() throws Exception
     {
         ObjectClassImpl o1 = new ObjectClassImpl( "1.2.3.4" );
-        o1.setSuperClassesNames( new String [] { "sup1", "sup2" } );
+        o1.setSuperClassesNames( new String[]
+            { "sup1", "sup2" } );
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
-        o2.setSuperClassesNames( new String [] { "sup2" } );
+        o2.setSuperClassesNames( new String[]
+            { "sup2" } );
 
         List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
@@ -927,12 +948,13 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveSuperiorOCDifference ) )
+        if ( !( difference instanceof SuperiorOCDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertEquals( "sup1", ( ( RemoveSuperiorOCDifference ) difference ).getValue() );
+        assertEquals( "sup1", ( ( SuperiorOCDifference ) difference ).getOldValue() );
     }
 
 
@@ -953,12 +975,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveSyntaxDifference ) )
+        if ( !( difference instanceof SyntaxDifference ) || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertNull( ( ( RemoveSyntaxDifference ) difference ).getValue() );
+        assertNull( ( ( SyntaxDifference ) difference ).getNewValue() );
     }
 
 
@@ -979,11 +1001,12 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof RemoveSyntaxLengthDifference ) )
+        if ( !( difference instanceof SyntaxLengthDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
 
-        assertNull( ( ( RemoveSyntaxLengthDifference ) difference ).getValue() );
+        assertNull( ( ( SyntaxLengthDifference ) difference ).getNewValue() );
     }
 }

@@ -20,13 +20,22 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model.difference;
 
 
+/**
+ * This class represents the AbstractDifference.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AbstractDifference implements Difference
 {
     /** The source Object */
     private Object source;
 
-    /** The sestination Object */
+    /** The destination Object */
     private Object destination;
+
+    /** The type of difference */
+    private DifferenceType type;
 
 
     /**
@@ -41,6 +50,24 @@ public class AbstractDifference implements Difference
     {
         this.source = source;
         this.destination = destination;
+    }
+
+
+    /**
+     * Creates a new instance of AbstractDifference.
+     *
+     * @param source
+     *      the source Object
+     * @param destination
+     *      the destination Object
+     * @param type
+     *      the type
+     */
+    public AbstractDifference( Object source, Object destination, DifferenceType type )
+    {
+        this.source = source;
+        this.destination = destination;
+        this.type = type;
     }
 
 
@@ -77,5 +104,23 @@ public class AbstractDifference implements Difference
     public void setSource( Object source )
     {
         this.source = source;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference#getType()
+     */
+    public DifferenceType getType()
+    {
+        return type;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference#setType(org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceType)
+     */
+    public void setType( DifferenceType type )
+    {
+        this.type = type;
     }
 }

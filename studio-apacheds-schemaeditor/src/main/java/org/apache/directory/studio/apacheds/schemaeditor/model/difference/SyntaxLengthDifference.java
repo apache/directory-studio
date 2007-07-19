@@ -21,63 +21,39 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.difference;
 
 
 /**
- * This interface defines a Difference between two objects.
+ * This class represents a difference of syntax length.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface Difference
+public class SyntaxLengthDifference extends AbstractPropertyDifference
 {
     /**
-     * Gets the source Object.
-     *
-     * @return
-     *      the source Object
-     */
-    public Object getSource();
-
-
-    /**
-     * Sets the source Object.
+     * Creates a new instance of SyntaxLengthDifference.
      *
      * @param source
      *      the source Object
-     */
-    public void setSource( Object source );
-
-
-    /**
-     * Gets the destination Object.
-     *
-     * @return
-     *      the destination Object
-     */
-    public Object getDestination();
-
-
-    /**
-     * Sets the destination Object.
-     *
      * @param destination
      *      the destination Object
-     */
-    public void setDestination( Object destination );
-
-
-    /**
-     * Gets the type.
-     *
-     * @return
-     *      the type
-     */
-    public DifferenceType getType();
-
-
-    /**
-     * Sets the type.
-     *
      * @param type
      *      the type
      */
-    public void setType( DifferenceType type );
+    public SyntaxLengthDifference( Object source, Object destination, DifferenceType type )
+    {
+        super( source, destination, type );
+    }
+
+
+    /**
+     * Creates a new instance of SyntaxLengthDifference.
+     *
+     * @param source
+     *      the source Object
+     * @param destination
+     *      the destination Object
+     */
+    public SyntaxLengthDifference( Object source, Object destination )
+    {
+        super( source, destination );
+    }
 }

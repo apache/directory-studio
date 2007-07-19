@@ -22,7 +22,24 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.widget;
 
 import java.util.Comparator;
 
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AliasDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ClassTypeDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.CollectiveDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DescriptionDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.EqualityDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.MandatoryATDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.NoUserModificationDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ObsoleteDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.OptionalATDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.OrderingDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SingleValueDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SubstringDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SuperiorATDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SuperiorOCDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SyntaxDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SyntaxLengthDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.UsageDifference;
 
 
 /**
@@ -38,54 +55,193 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
      */
     public int compare( Difference diff1, Difference diff2 )
     {
-        return DifferencesWidgetPropertySorterEnum.valueOf( diff1.getClass().getSimpleName() ).getWeight()
-            - DifferencesWidgetPropertySorterEnum.valueOf( diff2.getClass().getSimpleName() ).getWeight();
+        return getWeight( diff1 ) - getWeight( diff2 );
     }
 
-    
+
     /**
-     * This enum is used to get the weight of each Difference.
+     * Gets the weight of the given difference
      *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
+     * @param diff
+     *      the difference
+     * @return
+     *      the weight of the difference
      */
-    private enum DifferencesWidgetPropertySorterEnum
+    private int getWeight( Difference diff )
     {
-        AddAliasDifference(1), RemoveAliasDifference(2), AddDescriptionDifference(3), ModifyDescriptionDifference(4), RemoveDescriptionDifference(
-            5), AddSuperiorATDifference(6), ModifySuperiorATDifference(7), RemoveSuperiorATDifference(8), AddSuperiorOCDifference(
-            9), RemoveSuperiorOCDifference(10), ModifyUsageDifference(11), AddSyntaxDifference(12), ModifySyntaxDifference(
-            13), RemoveSyntaxDifference(14), AddSyntaxLengthDifference(15), ModifySyntaxLengthDifference(16), RemoveSyntaxLengthDifference(
-            17), ModifyClassTypeDifference(18), ModifyObsoleteDifference(19), ModifySingleValueDifference(20), ModifyCollectiveDifference(
-            21), ModifyNoUserModificationDifference(22), AddEqualityDifference(23), ModifyEqualityDifference(24), RemoveEqualityDifference(
-            25), AddOrderingDifference(26), ModifyOrderingDifference(27), RemoveOrderingDifference(28), AddSubstringDifference(
-            29), ModifySubstringDifference(30), RemoveSubstringDifference(31), AddMandatoryATDifference(32), RemoveMandatoryATDifference(
-            33), AddOptionalATDifference(34), RemoveOptionalATDifference(35);
-
-        /** The weight */
-        private int weight;
-
-
-        /**
-         * Creates a new instance of DifferencesWidgetTypeSorterEnum.
-         *
-         * @param weight
-         *      the weight
-         */
-        private DifferencesWidgetPropertySorterEnum( int weight )
+        if ( diff instanceof AliasDifference )
         {
-            this.weight = weight;
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 1;
+                case REMOVED:
+                    return 2;
+            }
+        }
+        else if ( diff instanceof ClassTypeDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case MODIFIED:
+                    return 18;
+            }
+        }
+        else if ( diff instanceof CollectiveDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case MODIFIED:
+                    return 21;
+            }
+        }
+        else if ( diff instanceof DescriptionDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 3;
+                case MODIFIED:
+                    return 4;
+                case REMOVED:
+                    return 5;
+            }
+        }
+        else if ( diff instanceof EqualityDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 23;
+                case MODIFIED:
+                    return 24;
+                case REMOVED:
+                    return 25;
+            }
+        }
+        else if ( diff instanceof MandatoryATDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 32;
+                case REMOVED:
+                    return 33;
+            }
+        }
+        else if ( diff instanceof NoUserModificationDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case MODIFIED:
+                    return 22;
+            }
+        }
+        else if ( diff instanceof ObsoleteDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case MODIFIED:
+                    return 19;
+            }
+        }
+        else if ( diff instanceof OptionalATDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 34;
+                case REMOVED:
+                    return 35;
+            }
+        }
+        else if ( diff instanceof OrderingDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 26;
+                case MODIFIED:
+                    return 27;
+                case REMOVED:
+                    return 28;
+            }
+        }
+        else if ( diff instanceof SingleValueDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case MODIFIED:
+                    return 20;
+            }
+        }
+        else if ( diff instanceof SubstringDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 29;
+                case MODIFIED:
+                    return 30;
+                case REMOVED:
+                    return 31;
+            }
+        }
+        else if ( diff instanceof SuperiorATDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 6;
+                case MODIFIED:
+                    return 7;
+                case REMOVED:
+                    return 8;
+            }
+        }
+        else if ( diff instanceof SuperiorOCDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 9;
+                case REMOVED:
+                    return 10;
+            }
+        }
+        else if ( diff instanceof SyntaxDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 12;
+                case MODIFIED:
+                    return 13;
+                case REMOVED:
+                    return 14;
+            }
+        }
+        else if ( diff instanceof SyntaxLengthDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return 15;
+                case MODIFIED:
+                    return 16;
+                case REMOVED:
+                    return 17;
+            }
+        }
+        else if ( diff instanceof UsageDifference )
+        {
+            switch ( diff.getType() )
+            {
+                case MODIFIED:
+                    return 11;
+            }
         }
 
-
-        /**
-         * Gets the weight.
-         *
-         * @return
-         *      the weight
-         */
-        public int getWeight()
-        {
-            return weight;
-        }
+        return 0;
     }
 }

@@ -127,7 +127,7 @@ public class DifferenceEngine
         {
             differences.add( usageDifference );
         }
-        
+
         // Superior
         Difference superiorDifference = getSuperiorDifference( at1, at2 );
         if ( superiorDifference != null )
@@ -233,7 +233,9 @@ public class DifferenceEngine
         {
             if ( !so2NamesList.contains( name ) )
             {
-                differences.add( new RemoveAliasDifference( so1, so2, name ) );
+                PropertyDifference diff = new AliasDifference( so1, so2, DifferenceType.REMOVED );
+                diff.setOldValue( name );
+                differences.add( diff );
             }
         }
 
@@ -241,7 +243,9 @@ public class DifferenceEngine
         {
             if ( !so1NamesList.contains( name ) )
             {
-                differences.add( new AddAliasDifference( so1, so2, name ) );
+                PropertyDifference diff = new AliasDifference( so1, so2, DifferenceType.ADDED );
+                diff.setNewValue( name );
+                differences.add( diff );
             }
         }
 
@@ -266,17 +270,24 @@ public class DifferenceEngine
 
         if ( ( so1Description == null ) && ( so2Description != null ) )
         {
-            return new AddDescriptionDifference( so1, so2, so2Description );
+            PropertyDifference diff = new DescriptionDifference( so1, so2, DifferenceType.ADDED );
+            diff.setNewValue( so2Description );
+            return diff;
         }
         else if ( ( so1Description != null ) && ( so2Description == null ) )
         {
-            return new RemoveDescriptionDifference( so1, so2, null );
+            PropertyDifference diff = new DescriptionDifference( so1, so2, DifferenceType.REMOVED );
+            diff.setOldValue( so1Description );
+            return diff;
         }
         else if ( ( so1Description != null ) && ( so2Description != null ) )
         {
             if ( !so1Description.equals( so2Description ) )
             {
-                return new ModifyDescriptionDifference( so1, so2, so1Description, so2Description );
+                PropertyDifference diff = new DescriptionDifference( so1, so2, DifferenceType.MODIFIED );
+                diff.setOldValue( so1Description );
+                diff.setNewValue( so2Description );
+                return diff;
             }
         }
 
@@ -301,7 +312,10 @@ public class DifferenceEngine
 
         if ( so1Obsolete != so2Obsolete )
         {
-            return new ModifyObsoleteDifference( so1, so2, so1Obsolete, so2Obsolete );
+            PropertyDifference diff = new ObsoleteDifference( so1, so2 );
+            diff.setOldValue( so1Obsolete );
+            diff.setNewValue( so2Obsolete );
+            return diff;
         }
 
         return null;
@@ -325,7 +339,10 @@ public class DifferenceEngine
 
         if ( oc1ClassType != oc2ClassType )
         {
-            return new ModifyClassTypeDifference( oc1, oc2, oc1ClassType, oc2ClassType );
+            PropertyDifference diff = new ClassTypeDifference( oc1, oc2 );
+            diff.setOldValue( oc1ClassType );
+            diff.setNewValue( oc2ClassType );
+            return diff;
         }
 
         return null;
@@ -370,7 +387,9 @@ public class DifferenceEngine
         {
             if ( !oc2SupsList.contains( name ) )
             {
-                differences.add( new RemoveSuperiorOCDifference( oc1, oc2, name ) );
+                PropertyDifference diff = new SuperiorOCDifference( oc1, oc2, DifferenceType.REMOVED );
+                diff.setOldValue( name );
+                differences.add( diff );
             }
         }
 
@@ -378,7 +397,9 @@ public class DifferenceEngine
         {
             if ( !oc1SupsList.contains( name ) )
             {
-                differences.add( new AddSuperiorOCDifference( oc1, oc2, name ) );
+                PropertyDifference diff = new SuperiorOCDifference( oc1, oc2, DifferenceType.ADDED );
+                diff.setNewValue( name );
+                differences.add( diff );
             }
         }
 
@@ -424,7 +445,9 @@ public class DifferenceEngine
         {
             if ( !oc2MustsList.contains( name ) )
             {
-                differences.add( new RemoveMandatoryATDifference( oc1, oc2, name ) );
+                PropertyDifference diff = new MandatoryATDifference( oc1, oc2, DifferenceType.REMOVED );
+                diff.setOldValue( name );
+                differences.add( diff );
             }
         }
 
@@ -432,7 +455,9 @@ public class DifferenceEngine
         {
             if ( !oc1MustsList.contains( name ) )
             {
-                differences.add( new AddMandatoryATDifference( oc1, oc2, name ) );
+                PropertyDifference diff = new MandatoryATDifference( oc1, oc2, DifferenceType.ADDED );
+                diff.setNewValue( name );
+                differences.add( diff );
             }
         }
 
@@ -478,7 +503,9 @@ public class DifferenceEngine
         {
             if ( !oc2MaysList.contains( name ) )
             {
-                differences.add( new RemoveOptionalATDifference( oc1, oc2, name ) );
+                PropertyDifference diff = new OptionalATDifference( oc1, oc2, DifferenceType.REMOVED );
+                diff.setOldValue( name );
+                differences.add( diff );
             }
         }
 
@@ -486,7 +513,9 @@ public class DifferenceEngine
         {
             if ( !oc1MaysList.contains( name ) )
             {
-                differences.add( new AddOptionalATDifference( oc1, oc2, name ) );
+                PropertyDifference diff = new OptionalATDifference( oc1, oc2, DifferenceType.ADDED );
+                diff.setNewValue( name );
+                differences.add( diff );
             }
         }
 
@@ -511,13 +540,16 @@ public class DifferenceEngine
 
         if ( at1Usage != at2Usage )
         {
-            return new ModifyUsageDifference( at1, at2, at1Usage, at2Usage );
+            PropertyDifference diff = new UsageDifference( at1, at2 );
+            diff.setOldValue( at1Usage );
+            diff.setNewValue( at2Usage );
+            return diff;
         }
 
         return null;
     }
-    
-    
+
+
     /**
      * Gets the 'Superior' difference between the two AttributeTypeImpl Objects.
      *
@@ -535,17 +567,24 @@ public class DifferenceEngine
 
         if ( ( at1Superior == null ) && ( at2Superior != null ) )
         {
-            return new AddSuperiorATDifference( at1, at2, at2Superior );
+            PropertyDifference diff = new SuperiorATDifference( at1, at2, DifferenceType.ADDED );
+            diff.setNewValue( at2Superior );
+            return diff;
         }
         else if ( ( at1Superior != null ) && ( at2Superior == null ) )
         {
-            return new RemoveSuperiorATDifference( at1, at2, null );
+            PropertyDifference diff = new SuperiorATDifference( at1, at2, DifferenceType.REMOVED );
+            diff.setOldValue( at1Superior );
+            return diff;
         }
         else if ( ( at1Superior != null ) && ( at2Superior != null ) )
         {
             if ( !at1Superior.equals( at2Superior ) )
             {
-                return new ModifySuperiorATDifference( at1, at2, at1Superior, at2Superior );
+                PropertyDifference diff = new SuperiorATDifference( at1, at2, DifferenceType.MODIFIED );
+                diff.setOldValue( at1Superior );
+                diff.setNewValue( at2Superior );
+                return diff;
             }
         }
 
@@ -570,17 +609,24 @@ public class DifferenceEngine
 
         if ( ( at1Syntax == null ) && ( at2Syntax != null ) )
         {
-            return new AddSyntaxDifference( at1, at2, at2Syntax );
+            PropertyDifference diff = new SyntaxDifference( at1, at2, DifferenceType.ADDED );
+            diff.setNewValue( at2Syntax );
+            return diff;
         }
         else if ( ( at1Syntax != null ) && ( at2Syntax == null ) )
         {
-            return new RemoveSyntaxDifference( at1, at2, null );
+            PropertyDifference diff = new SyntaxDifference( at1, at2, DifferenceType.REMOVED );
+            diff.setOldValue( at1Syntax );
+            return diff;
         }
         else if ( ( at1Syntax != null ) && ( at2Syntax != null ) )
         {
             if ( !at1Syntax.equals( at2Syntax ) )
             {
-                return new ModifySyntaxDifference( at1, at2, at1Syntax, at2Syntax );
+                PropertyDifference diff = new SyntaxDifference( at1, at2, DifferenceType.MODIFIED );
+                diff.setOldValue( at1Syntax );
+                diff.setNewValue( at2Syntax );
+                return diff;
             }
         }
 
@@ -605,17 +651,24 @@ public class DifferenceEngine
 
         if ( ( at1SyntaxLength == -1 ) && ( at2SyntaxLength != -1 ) )
         {
-            return new AddSyntaxLengthDifference( at1, at2, at2SyntaxLength );
+            PropertyDifference diff = new SyntaxLengthDifference( at1, at2, DifferenceType.ADDED );
+            diff.setNewValue( at2SyntaxLength );
+            return diff;
         }
         else if ( ( at1SyntaxLength != -1 ) && ( at2SyntaxLength == -1 ) )
         {
-            return new RemoveSyntaxLengthDifference( at1, at2, null );
+            PropertyDifference diff = new SyntaxLengthDifference( at1, at2, DifferenceType.REMOVED );
+            diff.setOldValue( at1SyntaxLength );
+            return diff;
         }
         else if ( ( at1SyntaxLength != -1 ) && ( at2SyntaxLength != -1 ) )
         {
             if ( at1SyntaxLength != at2SyntaxLength )
             {
-                return new ModifySyntaxLengthDifference( at1, at2, at1SyntaxLength, at2SyntaxLength );
+                PropertyDifference diff = new SyntaxLengthDifference( at1, at2, DifferenceType.MODIFIED );
+                diff.setOldValue( at1SyntaxLength );
+                diff.setNewValue( at2SyntaxLength );
+                return diff;
             }
         }
 
@@ -640,7 +693,10 @@ public class DifferenceEngine
 
         if ( at1SingleValue != at2SingleValue )
         {
-            return new ModifySingleValueDifference( at1, at2, at1SingleValue, at2SingleValue );
+            PropertyDifference diff = new SingleValueDifference( at1, at2 );
+            diff.setOldValue( at1SingleValue );
+            diff.setNewValue( at2SingleValue );
+            return diff;
         }
 
         return null;
@@ -664,7 +720,10 @@ public class DifferenceEngine
 
         if ( at1Collective != at2Collective )
         {
-            return new ModifyCollectiveDifference( at1, at2, at1Collective, at2Collective );
+            PropertyDifference diff = new CollectiveDifference( at1, at2 );
+            diff.setOldValue( at1Collective );
+            diff.setNewValue( at2Collective );
+            return diff;
         }
 
         return null;
@@ -688,7 +747,10 @@ public class DifferenceEngine
 
         if ( at1CanUserModify != at2CanUserModify )
         {
-            return new ModifyNoUserModificationDifference( at1, at2, at1CanUserModify, at2CanUserModify );
+            PropertyDifference diff = new NoUserModificationDifference( at1, at2 );
+            diff.setOldValue( at1CanUserModify );
+            diff.setNewValue( at2CanUserModify );
+            return diff;
         }
 
         return null;
@@ -712,17 +774,24 @@ public class DifferenceEngine
 
         if ( ( at1Equality == null ) && ( at2Equality != null ) )
         {
-            return new AddEqualityDifference( at1, at2, at2Equality );
+            PropertyDifference diff = new EqualityDifference( at1, at2, DifferenceType.ADDED );
+            diff.setNewValue( at2Equality );
+            return diff;
         }
         else if ( ( at1Equality != null ) && ( at2Equality == null ) )
         {
-            return new RemoveEqualityDifference( at1, at2, null );
+            PropertyDifference diff = new EqualityDifference( at1, at2, DifferenceType.REMOVED );
+            diff.setOldValue( at1Equality );
+            return diff;
         }
         else if ( ( at1Equality != null ) && ( at2Equality != null ) )
         {
             if ( !at1Equality.equals( at2Equality ) )
             {
-                return new ModifyEqualityDifference( at1, at2, at1Equality, at2Equality );
+                PropertyDifference diff = new EqualityDifference( at1, at2, DifferenceType.MODIFIED );
+                diff.setOldValue( at1Equality );
+                diff.setNewValue( at2Equality );
+                return diff;
             }
         }
 
@@ -747,17 +816,24 @@ public class DifferenceEngine
 
         if ( ( at1Ordering == null ) && ( at2Ordering != null ) )
         {
-            return new AddOrderingDifference( at1, at2, at2Ordering );
+            PropertyDifference diff = new OrderingDifference( at1, at2, DifferenceType.ADDED );
+            diff.setNewValue( at2Ordering );
+            return diff;
         }
         else if ( ( at1Ordering != null ) && ( at2Ordering == null ) )
         {
-            return new RemoveOrderingDifference( at1, at2, null );
+            PropertyDifference diff = new OrderingDifference( at1, at2, DifferenceType.REMOVED );
+            diff.setOldValue( at1Ordering );
+            return diff;
         }
         else if ( ( at1Ordering != null ) && ( at2Ordering != null ) )
         {
             if ( !at1Ordering.equals( at2Ordering ) )
             {
-                return new ModifyOrderingDifference( at1, at2, at1Ordering, at2Ordering );
+                PropertyDifference diff = new OrderingDifference( at1, at2, DifferenceType.MODIFIED );
+                diff.setOldValue( at1Ordering );
+                diff.setNewValue( at2Ordering );
+                return diff;
             }
         }
 
@@ -782,17 +858,24 @@ public class DifferenceEngine
 
         if ( ( at1Substring == null ) && ( at2Substring != null ) )
         {
-            return new AddSubstringDifference( at1, at2, at2Substring );
+            PropertyDifference diff = new SubstringDifference( at1, at2, DifferenceType.ADDED );
+            diff.setNewValue( at2Substring );
+            return diff;
         }
         else if ( ( at1Substring != null ) && ( at2Substring == null ) )
         {
-            return new RemoveSubstringDifference( at1, at2, null );
+            PropertyDifference diff = new SubstringDifference( at1, at2, DifferenceType.REMOVED );
+            diff.setOldValue( at1Substring );
+            return diff;
         }
         else if ( ( at1Substring != null ) && ( at2Substring != null ) )
         {
             if ( !at1Substring.equals( at2Substring ) )
             {
-                return new ModifySubstringDifference( at1, at2, at1Substring, at2Substring );
+                PropertyDifference diff = new SubstringDifference( at1, at2, DifferenceType.MODIFIED );
+                diff.setOldValue( at1Substring );
+                diff.setNewValue( at2Substring );
+                return diff;
             }
         }
 

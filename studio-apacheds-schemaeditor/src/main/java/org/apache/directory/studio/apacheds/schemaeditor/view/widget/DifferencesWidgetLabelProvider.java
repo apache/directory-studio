@@ -22,44 +22,24 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.widget;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AbstractAddDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AbstractModifyDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AbstractRemoveDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddAliasDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddDescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddEqualityDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddMandatoryATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddOptionalATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddOrderingDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSubstringDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSuperiorATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSuperiorOCDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSyntaxDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AddSyntaxLengthDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyClassTypeDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyCollectiveDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyDescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyEqualityDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyNoUserModificationDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyObsoleteDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyOrderingDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySingleValueDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySubstringDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySuperiorATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySyntaxDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifySyntaxLengthDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ModifyUsageDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveAliasDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveDescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveEqualityDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveMandatoryATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveOptionalATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveOrderingDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSubstringDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSuperiorATDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSuperiorOCDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSyntaxDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.RemoveSyntaxLengthDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AliasDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ClassTypeDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.CollectiveDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DescriptionDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.EqualityDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.MandatoryATDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.NoUserModificationDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ObsoleteDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.OptionalATDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.OrderingDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.PropertyDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SingleValueDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SubstringDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SuperiorATDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SuperiorOCDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SyntaxDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SyntaxLengthDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.UsageDifference;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -78,20 +58,22 @@ public class DifferencesWidgetLabelProvider extends LabelProvider
      */
     public Image getImage( Object element )
     {
-        if ( element instanceof AbstractAddDifference )
+        if ( element instanceof PropertyDifference )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DIFFERENCE_ADD )
-                .createImage();
-        }
-        else if ( element instanceof AbstractModifyDifference )
-        {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_DIFFERENCE_MODIFY ).createImage();
-        }
-        else if ( element instanceof AbstractRemoveDifference )
-        {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_DIFFERENCE_REMOVE ).createImage();
+            PropertyDifference propertyDifference = ( PropertyDifference ) element;
+            switch ( propertyDifference.getType() )
+            {
+                case ADDED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_ADD ).createImage();
+
+                case MODIFIED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_MODIFY ).createImage();
+                case REMOVED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_REMOVE ).createImage();
+            }
         }
 
         // Default
@@ -104,171 +86,201 @@ public class DifferencesWidgetLabelProvider extends LabelProvider
      */
     public String getText( Object element )
     {
-        if ( element instanceof AbstractAddDifference )
+        if ( element instanceof AliasDifference )
         {
-            if ( element instanceof AddAliasDifference )
+            AliasDifference diff = ( AliasDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Added a new alias: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddDescriptionDifference )
-            {
-                return "Added a description: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddEqualityDifference )
-            {
-                return "Added an equality matching rule: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddMandatoryATDifference )
-            {
-                return "Added a new mandatory attribute type: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddOptionalATDifference )
-            {
-                return "Added a new optional attribute type: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddOrderingDifference )
-            {
-                return "Added an ordering matching rule: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddSubstringDifference )
-            {
-                return "Added a substring matching rule: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddSuperiorATDifference )
-            {
-                return "Added a superior: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddSuperiorOCDifference )
-            {
-                return "Added a superior: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddSyntaxDifference )
-            {
-                return "Added a syntax: " + ( ( AbstractAddDifference ) element ).getValue();
-            }
-            else if ( element instanceof AddSyntaxLengthDifference )
-            {
-                return "Added a syntax length: " + ( ( AbstractAddDifference ) element ).getValue();
+                case ADDED:
+                    return "Added alias: '" + diff.getNewValue() + "'.";
+                case REMOVED:
+                    return "Removed alias: '" + diff.getOldValue() + "'.";
             }
         }
-        else if ( element instanceof AbstractModifyDifference )
+        else if ( element instanceof ClassTypeDifference )
         {
-            if ( element instanceof ModifyClassTypeDifference )
+            ClassTypeDifference diff = ( ClassTypeDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Modified the class type to : " + ( ( AbstractModifyDifference ) element ).getNewValue()
-                    + " (was " + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifyCollectiveDifference )
-            {
-                return "Modified the 'collective' value to : " + ( ( AbstractModifyDifference ) element ).getNewValue()
-                    + " (was " + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifyDescriptionDifference )
-            {
-                return "Modified the description to : " + ( ( AbstractModifyDifference ) element ).getNewValue()
-                    + " (was " + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifyEqualityDifference )
-            {
-                return "Modified the equality matching rule to : "
-                    + ( ( AbstractModifyDifference ) element ).getNewValue() + " (was "
-                    + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifyNoUserModificationDifference )
-            {
-                return "Modified the 'no user modification' value to : "
-                    + ( ( AbstractModifyDifference ) element ).getNewValue() + " (was "
-                    + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifyObsoleteDifference )
-            {
-                return "Modified the 'obsolete' value to : " + ( ( AbstractModifyDifference ) element ).getNewValue()
-                    + " (was " + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifyOrderingDifference )
-            {
-                return "Modified the ordering matching rule to : "
-                    + ( ( AbstractModifyDifference ) element ).getNewValue() + " (was "
-                    + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifySingleValueDifference )
-            {
-                return "Modified the 'single value' value to : "
-                    + ( ( AbstractModifyDifference ) element ).getNewValue() + " (was "
-                    + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifySubstringDifference )
-            {
-                return "Modified the substring matching rule to : "
-                    + ( ( AbstractModifyDifference ) element ).getNewValue() + " (was "
-                    + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifySuperiorATDifference )
-            {
-                return "Modified the superior to : " + ( ( AbstractModifyDifference ) element ).getNewValue()
-                    + " (was " + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifySyntaxDifference )
-            {
-                return "Modified the syntax to : " + ( ( AbstractModifyDifference ) element ).getNewValue() + " (was "
-                    + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifySyntaxLengthDifference )
-            {
-                return "Modified the syntax length to : " + ( ( AbstractModifyDifference ) element ).getNewValue()
-                    + " (was " + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
-            }
-            else if ( element instanceof ModifyUsageDifference )
-            {
-                return "Modified the usage to : " + ( ( AbstractModifyDifference ) element ).getNewValue() + " (was "
-                    + ( ( AbstractModifyDifference ) element ).getOldValue() + ")";
+                case MODIFIED:
+                    return "Modified class type to : '" + diff.getNewValue() + "' (was '" + diff.getOldValue() + "').";
             }
         }
-        else if ( element instanceof AbstractRemoveDifference )
+        else if ( element instanceof CollectiveDifference )
         {
-            if ( element instanceof RemoveAliasDifference )
+            CollectiveDifference diff = ( CollectiveDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the alias: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case MODIFIED:
+                    return "Modified 'collective' value to : '" + diff.getNewValue() + "' (was '" + diff.getOldValue()
+                        + "').";
             }
-            else if ( element instanceof RemoveDescriptionDifference )
+        }
+        else if ( element instanceof DescriptionDifference )
+        {
+            DescriptionDifference diff = ( DescriptionDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the description: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case ADDED:
+                    return "Added description: '" + diff.getNewValue() + "'.";
+                case MODIFIED:
+                    return "Modified description to : '" + diff.getNewValue() + "' (was '" + diff.getOldValue() + "').";
+                case REMOVED:
+                    return "Removed description: '" + diff.getOldValue() + "'.";
             }
-            else if ( element instanceof RemoveEqualityDifference )
+        }
+        else if ( element instanceof EqualityDifference )
+        {
+            EqualityDifference diff = ( EqualityDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the equality matching rule: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case ADDED:
+                    return "Added equality matching rule: '" + diff.getNewValue() + "'.";
+                case MODIFIED:
+                    return "Modified equality matching rule to : '" + diff.getNewValue() + "' (was '"
+                        + diff.getOldValue() + "').";
+                case REMOVED:
+                    return "Removed equality matching rule: '" + diff.getOldValue() + "'.";
             }
-            else if ( element instanceof RemoveMandatoryATDifference )
+        }
+        else if ( element instanceof MandatoryATDifference )
+        {
+            MandatoryATDifference diff = ( MandatoryATDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the mandatory attribute type: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case ADDED:
+                    return "Added mandatory attribute type: '" + diff.getNewValue() + "'.";
+                case REMOVED:
+                    return "Removed mandatory attribute type: '" + diff.getOldValue() + "'.";
             }
-            else if ( element instanceof RemoveOptionalATDifference )
+        }
+        else if ( element instanceof NoUserModificationDifference )
+        {
+            NoUserModificationDifference diff = ( NoUserModificationDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the optional attribute type: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case MODIFIED:
+                    return "Modified 'no user modification' value to : '" + diff.getNewValue() + "' (was '"
+                        + diff.getOldValue() + "').";
             }
-            else if ( element instanceof RemoveOrderingDifference )
+        }
+        else if ( element instanceof ObsoleteDifference )
+        {
+            ObsoleteDifference diff = ( ObsoleteDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the ordering matching rule: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case MODIFIED:
+                    return "Modified 'obsolete' value to : '" + diff.getNewValue() + "' (was '" + diff.getOldValue()
+                        + "').";
             }
-            else if ( element instanceof RemoveSubstringDifference )
+        }
+        else if ( element instanceof OptionalATDifference )
+        {
+            OptionalATDifference diff = ( OptionalATDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the substring matching rule: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case ADDED:
+                    return "Added optional attribute type: '" + diff.getNewValue() + "'.";
+                case REMOVED:
+                    return "Removed optional attribute type: '" + diff.getOldValue() + "'.";
             }
-            else if ( element instanceof RemoveSuperiorATDifference )
+        }
+        else if ( element instanceof OrderingDifference )
+        {
+            OrderingDifference diff = ( OrderingDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the superior: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case ADDED:
+                    return "Added ordering matching rule: '" + diff.getNewValue() + "'.";
+                case MODIFIED:
+                    return "Modified ordering matching rule to : '" + diff.getNewValue() + "' (was '"
+                        + diff.getOldValue() + "').";
+                case REMOVED:
+                    return "Removed ordering matching rule: '" + diff.getOldValue() + "'.";
             }
-            else if ( element instanceof RemoveSuperiorOCDifference )
+        }
+        else if ( element instanceof SingleValueDifference )
+        {
+            SingleValueDifference diff = ( SingleValueDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the superior: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case MODIFIED:
+                    return "Modified 'single value' value to : '" + diff.getNewValue() + "' (was '"
+                        + diff.getOldValue() + "').";
             }
-            else if ( element instanceof RemoveSyntaxDifference )
+        }
+        else if ( element instanceof SubstringDifference )
+        {
+            SubstringDifference diff = ( SubstringDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the syntax: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case ADDED:
+                    return "Added substring matching rule: '" + diff.getNewValue() + "'.";
+                case MODIFIED:
+                    return "Modified substring matching rule to : '" + diff.getNewValue() + "' (was '"
+                        + diff.getOldValue() + "').";
+                case REMOVED:
+                    return "Removed substring matching rule: '" + diff.getOldValue() + "'.";
             }
-            else if ( element instanceof RemoveSyntaxLengthDifference )
+        }
+        else if ( element instanceof SuperiorATDifference )
+        {
+            SuperiorATDifference diff = ( SuperiorATDifference ) element;
+            switch ( diff.getType() )
             {
-                return "Removed the syntax length: " + ( ( AbstractRemoveDifference ) element ).getValue();
+                case ADDED:
+                    return "Added superior: '" + diff.getNewValue() + "'.";
+                case MODIFIED:
+                    return "Modified superior to: '" + diff.getNewValue() + "' (was '" + diff.getOldValue() + "').";
+                case REMOVED:
+                    return "Removed superior: '" + diff.getOldValue() + "'.";
+            }
+        }
+        else if ( element instanceof SuperiorOCDifference )
+        {
+            SuperiorOCDifference diff = ( SuperiorOCDifference ) element;
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return "Added superior: '" + diff.getNewValue() + "'.";
+                case REMOVED:
+                    return "Removed superior: '" + diff.getOldValue() + "'.";
+            }
+        }
+        else if ( element instanceof SyntaxDifference )
+        {
+            SyntaxDifference diff = ( SyntaxDifference ) element;
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return "Added syntax: '" + diff.getNewValue() + "'.";
+                case MODIFIED:
+                    return "Modified syntax to: '" + diff.getNewValue() + "' (was '" + diff.getOldValue() + "').";
+                case REMOVED:
+                    return "Removed syntax: '" + diff.getOldValue() + "'.";
+            }
+        }
+        else if ( element instanceof SyntaxLengthDifference )
+        {
+            SyntaxLengthDifference diff = ( SyntaxLengthDifference ) element;
+            switch ( diff.getType() )
+            {
+                case ADDED:
+                    return "Added syntax length: '" + diff.getNewValue() + "'.";
+                case MODIFIED:
+                    return "Modified syntax length to: '" + diff.getNewValue() + "' (was '" + diff.getOldValue()
+                        + "').";
+                case REMOVED:
+                    return "Removed syntax length: '" + diff.getOldValue() + "'.";
+            }
+        }
+        else if ( element instanceof UsageDifference )
+        {
+            UsageDifference diff = ( UsageDifference ) element;
+            switch ( diff.getType() )
+            {
+                case MODIFIED:
+                    return "Modified usage to: '" + diff.getNewValue() + "' (was '" + diff.getOldValue() + "').";
             }
         }
 

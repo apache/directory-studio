@@ -21,63 +21,12 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.difference;
 
 
 /**
- * This interface defines a Difference between two objects.
+ * This enum represents the type of Difference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface Difference
+public enum DifferenceType
 {
-    /**
-     * Gets the source Object.
-     *
-     * @return
-     *      the source Object
-     */
-    public Object getSource();
-
-
-    /**
-     * Sets the source Object.
-     *
-     * @param source
-     *      the source Object
-     */
-    public void setSource( Object source );
-
-
-    /**
-     * Gets the destination Object.
-     *
-     * @return
-     *      the destination Object
-     */
-    public Object getDestination();
-
-
-    /**
-     * Sets the destination Object.
-     *
-     * @param destination
-     *      the destination Object
-     */
-    public void setDestination( Object destination );
-
-
-    /**
-     * Gets the type.
-     *
-     * @return
-     *      the type
-     */
-    public DifferenceType getType();
-
-
-    /**
-     * Sets the type.
-     *
-     * @param type
-     *      the type
-     */
-    public void setType( DifferenceType type );
+    IDENTICAL, ADDED, MODIFIED, REMOVED
 }
