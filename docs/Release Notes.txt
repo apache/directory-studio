@@ -1,5 +1,13 @@
 Release Notes
 
+Apache Directory LDAP Studio 0.8.1
+
+Bug
+  * [DIRSTUDIO-80] - LDAP Studio does not work on x86_64
+  * [DIRSTUDIO-144] - Unable to install plugins from updatesite on x86_64 architecture
+
+---------------------------------------------------------------------------------
+
 Apache Directory LDAP Studio 0.8.0
 
 Bug
