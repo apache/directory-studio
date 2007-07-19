@@ -36,12 +36,13 @@ public interface PluginConstants
     public static final String IMG_ATTRIBUTE_TYPE_NEW = "resources/icons/attribute_type_new.gif";
     public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "resources/icons/attribute_type_new_wizard.png";
     public static final String IMG_CONNECT = "resources/icons/connect.gif";
+    public static final String IMG_COMMIT_CHANGES_WIZARD = "resources/icons/commit_changes_wizard.png";
     public static final String IMG_COLLAPSE_ALL = "resources/icons/collapse_all.gif";
     public static final String IMG_DELETE = "resources/icons/delete.gif";
     public static final String IMG_DISCONNECT = "resources/icons/disconnect.gif";
-    public static final String IMG_DIFFERENCE_ADD = "resources/icons/difference_add.png";
-    public static final String IMG_DIFFERENCE_MODIFY = "resources/icons/difference_modify.png";
-    public static final String IMG_DIFFERENCE_REMOVE = "resources/icons/difference_remove.png";
+    public static final String IMG_DIFFERENCE_ADD = "resources/icons/difference_add.gif";
+    public static final String IMG_DIFFERENCE_MODIFY = "resources/icons/difference_modify.gif";
+    public static final String IMG_DIFFERENCE_REMOVE = "resources/icons/difference_remove.gif";
     public static final String IMG_FOLDER = "resources/icons/folder.gif";
     public static final String IMG_FOLDER_AT = "resources/icons/folder_at.gif";
     public static final String IMG_FOLDER_OC = "resources/icons/folder_oc.gif";
