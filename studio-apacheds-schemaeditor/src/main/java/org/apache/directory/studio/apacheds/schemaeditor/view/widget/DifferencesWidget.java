@@ -67,12 +67,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class DifferencesWidget
 {
-    /** The TreeViewer */
-    private TreeViewer treeViewer;
-
-    /** The TableViewer */
-    private TableViewer tableViewer;
-
     /** The PreferenceStore*/
     private IPreferenceStore store;
 
@@ -89,26 +83,20 @@ public class DifferencesWidget
         {
             if ( authorizedPrefs.contains( event.getProperty() ) )
             {
-                //                    if ( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING == event.getProperty() )
-                //                    {
-                //                        view.reloadViewer();
-                //                    }
-                //                    else
-                //                    {
                 treeViewer.refresh();
-                //                    }
             }
         }
     };
 
     // The MenuItems
+    private TreeViewer treeViewer;
+    private TableViewer tableViewer;
     private MenuItem groupByType;
     private MenuItem groupByProperty;
 
 
     /**
      * Creates a new instance of DifferencesWidget.
-     *
      */
     public DifferencesWidget()
     {

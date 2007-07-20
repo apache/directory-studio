@@ -76,6 +76,20 @@ public class DifferenceEngine
             {
                 SchemaDifference schemaDifference = new SchemaDifference( schemaFromL1, null, DifferenceType.REMOVED );
                 differences.add( schemaDifference );
+
+                // Adding attribute types
+                for ( AttributeTypeImpl at : schemaFromL2.getAttributeTypes() )
+                {
+                    schemaDifference.addAttributeTypeDifference( new AttributeTypeDifference( null, at,
+                        DifferenceType.REMOVED ) );
+                }
+
+                // Adding object classes
+                for ( ObjectClassImpl oc : schemaFromL2.getObjectClasses() )
+                {
+                    schemaDifference.addObjectClassDifference( new ObjectClassDifference( null, oc,
+                        DifferenceType.REMOVED ) );
+                }
             }
             else
             {
@@ -199,6 +213,20 @@ public class DifferenceEngine
             {
                 SchemaDifference schemaDifference = new SchemaDifference( null, schemaFromL2, DifferenceType.ADDED );
                 differences.add( schemaDifference );
+
+                // Adding attribute types
+                for ( AttributeTypeImpl at : schemaFromL2.getAttributeTypes() )
+                {
+                    schemaDifference.addAttributeTypeDifference( new AttributeTypeDifference( null, at,
+                        DifferenceType.ADDED ) );
+                }
+
+                // Adding object classes
+                for ( ObjectClassImpl oc : schemaFromL2.getObjectClasses() )
+                {
+                    schemaDifference.addObjectClassDifference( new ObjectClassDifference( null, oc,
+                        DifferenceType.ADDED ) );
+                }
             }
         }
 
