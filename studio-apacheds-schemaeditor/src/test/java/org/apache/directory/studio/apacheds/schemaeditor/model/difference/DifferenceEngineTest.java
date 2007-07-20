@@ -732,6 +732,7 @@ public class DifferenceEngineTest extends TestCase
         }
 
         assertEquals( "name1", ( ( AliasDifference ) difference ).getOldValue() );
+        assertNull( ( ( AliasDifference ) difference ).getNewValue() );
     }
 
 
@@ -758,6 +759,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
+        assertEquals( "Description", ( ( DescriptionDifference ) difference ).getOldValue() );
         assertNull( ( ( DescriptionDifference ) difference ).getNewValue() );
     }
 
@@ -784,6 +786,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
+        assertEquals( "equalityName", ( ( EqualityDifference ) difference ).getOldValue() );
         assertNull( ( ( EqualityDifference ) difference ).getNewValue() );
     }
 
@@ -815,6 +818,7 @@ public class DifferenceEngineTest extends TestCase
         }
 
         assertEquals( "must1", ( ( MandatoryATDifference ) difference ).getOldValue() );
+        assertNull( ( ( MandatoryATDifference ) difference ).getNewValue() );
     }
 
 
@@ -845,6 +849,7 @@ public class DifferenceEngineTest extends TestCase
         }
 
         assertEquals( "may1", ( ( OptionalATDifference ) difference ).getOldValue() );
+        assertNull( ( ( OptionalATDifference ) difference ).getNewValue() );
     }
 
 
@@ -870,6 +875,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
+        assertEquals( "orderingName", ( ( OrderingDifference ) difference ).getOldValue() );
         assertNull( ( ( OrderingDifference ) difference ).getNewValue() );
     }
 
@@ -897,6 +903,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
+        assertEquals( "substrName", ( ( SubstringDifference ) difference ).getOldValue() );
         assertNull( ( ( SubstringDifference ) difference ).getNewValue() );
     }
 
@@ -924,6 +931,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
+        assertEquals( "superiorName", ( ( SuperiorATDifference ) difference ).getOldValue() );
         assertNull( ( ( SuperiorATDifference ) difference ).getNewValue() );
     }
 
@@ -955,6 +963,7 @@ public class DifferenceEngineTest extends TestCase
         }
 
         assertEquals( "sup1", ( ( SuperiorOCDifference ) difference ).getOldValue() );
+        assertNull( ( ( SuperiorOCDifference ) difference ).getNewValue() );
     }
 
 
@@ -980,6 +989,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
+        assertEquals( "1.2.3.4.5", ( ( SyntaxDifference ) difference ).getOldValue() );
         assertNull( ( ( SyntaxDifference ) difference ).getNewValue() );
     }
 
@@ -1007,6 +1017,7 @@ public class DifferenceEngineTest extends TestCase
             fail();
         }
 
+        assertEquals( 1234, ( ( SyntaxLengthDifference ) difference ).getOldValue() );
         assertNull( ( ( SyntaxLengthDifference ) difference ).getNewValue() );
     }
 }
