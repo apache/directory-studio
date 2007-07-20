@@ -54,6 +54,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class CommitChangesDifferencesWizardPage extends WizardPage
 {
+    // UI Fields
+    private DifferencesWidget differencesWidget;
+
+
     /**
      * Creates a new instance of ExportSchemasAsXmlWizardPage.
      */
@@ -76,7 +80,7 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         GridLayout layout = new GridLayout();
         composite.setLayout( layout );
 
-        DifferencesWidget differencesWidget = new DifferencesWidget();
+        differencesWidget = new DifferencesWidget();
         differencesWidget.createWidget( composite );
 
         SchemaImpl schema1Old = new SchemaImpl( "Schema1" );
@@ -111,7 +115,7 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         schema1Old.addAttributeType( at2 );
         schema1New.addAttributeType( at2Bis );
         schema1New.addAttributeType( at3 );
-        
+
         ObjectClassImpl oc1 = new ObjectClassImpl( "1.2.10" );
         oc1.setNames( new String[]
             { "OC1", "ObjectClass1" } );
@@ -165,5 +169,16 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
     private void initFields()
     {
 
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.DialogPage#dispose()
+     */
+    public void dispose()
+    {
+        differencesWidget.dispose();
+
+        super.dispose();
     }
 }

@@ -20,15 +20,20 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.widget;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewPreferenceAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewSortingDialogAction;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AttributeTypeDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceType;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ObjectClassDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SchemaDifference;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -70,6 +75,31 @@ public class DifferencesWidget
 
     /** The PreferenceStore*/
     private IPreferenceStore store;
+
+    /** The authorized Preferences keys*/
+    private List<String> authorizedPrefs;
+
+    /** The preference listener */
+    private IPropertyChangeListener preferenceListener = new IPropertyChangeListener()
+    {
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+         */
+        public void propertyChange( PropertyChangeEvent event )
+        {
+            if ( authorizedPrefs.contains( event.getProperty() ) )
+            {
+                //                    if ( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING == event.getProperty() )
+                //                    {
+                //                        view.reloadViewer();
+                //                    }
+                //                    else
+                //                    {
+                treeViewer.refresh();
+                //                    }
+            }
+        }
+    };
 
     // The MenuItems
     private MenuItem groupByType;
@@ -117,6 +147,53 @@ public class DifferencesWidget
         gridLayout.marginWidth = 0;
         leftComposite.setLayout( gridLayout );
         leftComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        // ToolBar
+        final ToolBar leftToolBar = new ToolBar( leftComposite, SWT.HORIZONTAL );
+        leftToolBar.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
+        // Creating the 'Menu' ToolBar item
+        final ToolItem leftMenuToolItem = new ToolItem( leftToolBar, SWT.PUSH );
+        leftMenuToolItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_TOOLBAR_MENU ).createImage() );
+        leftMenuToolItem.setToolTipText( "Menu" );
+        // Creating the associated Menu
+        final Menu leftMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
+        // Adding the action to display the Menu when the item is clicked
+        leftMenuToolItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                Rectangle rect = leftMenuToolItem.getBounds();
+                Point pt = new Point( rect.x, rect.y + rect.height );
+                pt = leftToolBar.toDisplay( pt );
+                leftMenu.setLocation( pt.x, pt.y );
+                leftMenu.setVisible( true );
+            }
+        } );
+        // Adding the 'Sorting...' MenuItem
+        MenuItem sortingMenuItem = new MenuItem( leftMenu, SWT.PUSH );
+        sortingMenuItem.setText( "Sorting..." );
+        sortingMenuItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_SORTING ).createImage() );
+        sortingMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                new OpenSchemaViewSortingDialogAction().run();
+            }
+        } );
+        // Adding the 'Separator' MenuItem
+        new MenuItem( leftMenu, SWT.SEPARATOR );
+        // Adding the 'Preferences...' MenuItem
+        MenuItem preferencesMenuItem = new MenuItem( leftMenu, SWT.PUSH );
+        preferencesMenuItem.setText( "Preferences..." );
+        preferencesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                new OpenSchemaViewPreferenceAction().run();
+            }
+        } );
 
         // TreeViewer
         treeViewer = new TreeViewer( leftComposite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
@@ -178,29 +255,29 @@ public class DifferencesWidget
         rightComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // ToolBar
-        final ToolBar toolBar = new ToolBar( rightComposite, SWT.HORIZONTAL );
-        toolBar.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
+        final ToolBar rightToolBar = new ToolBar( rightComposite, SWT.HORIZONTAL );
+        rightToolBar.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
         // Creating the 'Menu' ToolBar item
-        final ToolItem menuToolItem = new ToolItem( toolBar, SWT.PUSH );
-        menuToolItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        final ToolItem rightMenuToolItem = new ToolItem( rightToolBar, SWT.PUSH );
+        rightMenuToolItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_TOOLBAR_MENU ).createImage() );
-        menuToolItem.setToolTipText( "Menu" );
+        rightMenuToolItem.setToolTipText( "Menu" );
         // Creating the associated Menu
-        final Menu menu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
+        final Menu rightMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
         // Adding the action to display the Menu when the item is clicked
-        menuToolItem.addSelectionListener( new SelectionAdapter()
+        rightMenuToolItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
-                Rectangle rect = menuToolItem.getBounds();
+                Rectangle rect = rightMenuToolItem.getBounds();
                 Point pt = new Point( rect.x, rect.y + rect.height );
-                pt = toolBar.toDisplay( pt );
-                menu.setLocation( pt.x, pt.y );
-                menu.setVisible( true );
+                pt = rightToolBar.toDisplay( pt );
+                rightMenu.setLocation( pt.x, pt.y );
+                rightMenu.setVisible( true );
             }
         } );
         // Adding the 'Group By Property' MenuItem
-        groupByProperty = new MenuItem( menu, SWT.CHECK );
+        groupByProperty = new MenuItem( rightMenu, SWT.CHECK );
         groupByProperty.setText( "Group By Property" );
         groupByProperty.addSelectionListener( new SelectionAdapter()
         {
@@ -210,7 +287,7 @@ public class DifferencesWidget
             }
         } );
         // Adding the 'Group By Type' MenuItem
-        groupByType = new MenuItem( menu, SWT.CHECK );
+        groupByType = new MenuItem( rightMenu, SWT.CHECK );
         groupByType.setText( "Group By Type" );
         groupByType.addSelectionListener( new SelectionAdapter()
         {
@@ -226,6 +303,9 @@ public class DifferencesWidget
         tableViewer.getTable().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         tableViewer.setContentProvider( new DifferencesWidgetPropertiesContentProvider() );
         tableViewer.setLabelProvider( new DifferencesWidgetPropertiesLabelProvider() );
+
+        initAuthorizedPrefs();
+        initPreferencesListener();
     }
 
 
@@ -276,5 +356,42 @@ public class DifferencesWidget
             groupByProperty.setSelection( false );
             groupByType.setSelection( false );
         }
+    }
+
+
+    /**
+     * Initializes the Authorized Prefs IDs.
+     */
+    private void initAuthorizedPrefs()
+    {
+        authorizedPrefs = new ArrayList<String>();
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_DISPLAY );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY );
+        authorizedPrefs.add( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER );
+    }
+
+
+    /**
+     * Initializes the listener on the preferences store
+     */
+    private void initPreferencesListener()
+    {
+        store.addPropertyChangeListener( preferenceListener );
+    }
+
+
+    /**
+     * Disposes the SWT resources allocated by this dialog page.
+     */
+    public void dispose()
+    {
+        store.removePropertyChangeListener( preferenceListener );
     }
 }
