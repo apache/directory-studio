@@ -50,7 +50,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setNames( new String[]
             { "alias" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -76,7 +76,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setDescription( "Description" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -103,7 +103,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setEqualityName( "Equality" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -130,7 +130,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setMustNamesList( new String[]
             { "must" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -158,7 +158,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setMayNamesList( new String[]
             { "may" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -184,7 +184,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setOrderingName( "Ordering" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -210,7 +210,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setSubstrName( "Substring" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -236,7 +236,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setSuperiorName( "superiorAT" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -263,7 +263,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setSuperClassesNames( new String[]
             { "superiorOC" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -289,7 +289,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setSyntaxOid( "1.2.3.4.5" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -315,7 +315,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setLength( 1234 );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -343,7 +343,7 @@ public class DifferenceEngineTest extends TestCase
         ObjectClassImpl o2 = new ObjectClassImpl( "1.2.3.4" );
         o2.setType( ObjectClassTypeEnum.ABSTRACT );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -372,7 +372,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setCollective( false );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -401,7 +401,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setDescription( "New Description" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -430,7 +430,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setEqualityName( "newEqualityName" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -459,7 +459,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setCanUserModify( false );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -488,7 +488,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setObsolete( false );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -517,7 +517,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setOrderingName( "newOrderingName" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -546,7 +546,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setSingleValue( false );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -575,7 +575,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setSubstrName( "newSubstrName" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -604,7 +604,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setSuperiorName( "newSuperiorName" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -633,7 +633,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setSyntaxOid( "1.2.3.4.6" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -661,7 +661,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setLength( 12345 );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -690,7 +690,7 @@ public class DifferenceEngineTest extends TestCase
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
         o2.setUsage( UsageEnum.DIRECTORY_OPERATION );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -720,7 +720,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setNames( new String[]
             { "name2" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -747,7 +747,7 @@ public class DifferenceEngineTest extends TestCase
         o1.setDescription( "Description" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -775,7 +775,7 @@ public class DifferenceEngineTest extends TestCase
         o1.setEqualityName( "equalityName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -805,7 +805,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setMustNamesList( new String[]
             { "must2" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -836,7 +836,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setMayNamesList( new String[]
             { "may2" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -864,7 +864,7 @@ public class DifferenceEngineTest extends TestCase
         o1.setOrderingName( "orderingName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -891,7 +891,7 @@ public class DifferenceEngineTest extends TestCase
         o1.setSubstrName( "substrName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -919,7 +919,7 @@ public class DifferenceEngineTest extends TestCase
         o1.setSuperiorName( "superiorName" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -950,7 +950,7 @@ public class DifferenceEngineTest extends TestCase
         o2.setSuperClassesNames( new String[]
             { "sup2" } );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -978,7 +978,7 @@ public class DifferenceEngineTest extends TestCase
         o1.setSyntaxOid( "1.2.3.4.5" );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 
@@ -1005,7 +1005,7 @@ public class DifferenceEngineTest extends TestCase
         o1.setLength( 1234 );
         AttributeTypeImpl o2 = new AttributeTypeImpl( "1.2.3.4" );
 
-        List<Difference> differences = DifferenceEngine.getDifferences( o1, o2 );
+        List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
 
         assertEquals( 1, differences.size() );
 

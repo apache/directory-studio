@@ -21,13 +21,16 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.difference;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 
 
 /**
@@ -40,6 +43,169 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 public class DifferenceEngine
 {
     /**
+     * Gets the differences between two Lists of Schemas.
+     *
+     * @param l1
+     *      the first list
+     * @param l2
+     *      the second list
+     * @return
+     *      the differences between the two schema Lists
+     */
+    public static List<Difference> getDifferences( List<Schema> l1, List<Schema> l2 )
+    {
+        List<Difference> differences = new ArrayList<Difference>();
+
+        // Building Maps for schemas
+        Map<String, Schema> mapL1 = new HashMap<String, Schema>();
+        for ( Schema schema : l1 )
+        {
+            mapL1.put( schema.getName().toLowerCase(), schema );
+        }
+        Map<String, Schema> mapL2 = new HashMap<String, Schema>();
+        for ( Schema schema : l2 )
+        {
+            mapL2.put( schema.getName().toLowerCase(), schema );
+        }
+
+        // Looping on schemas from the first list
+        for ( Schema schemaFromL1 : l1 )
+        {
+            Schema schemaFromL2 = mapL2.get( schemaFromL1.getName().toLowerCase() );
+            if ( schemaFromL2 == null )
+            {
+                SchemaDifference schemaDifference = new SchemaDifference( schemaFromL1, null, DifferenceType.REMOVED );
+                differences.add( schemaDifference );
+            }
+            else
+            {
+                SchemaDifference schemaDifference = new SchemaDifference( schemaFromL1, schemaFromL2,
+                    DifferenceType.IDENTICAL );
+
+                // Building Maps for attribute types
+                Map<String, AttributeTypeImpl> atMapL1 = new HashMap<String, AttributeTypeImpl>();
+                for ( AttributeTypeImpl at : schemaFromL1.getAttributeTypes() )
+                {
+                    atMapL1.put( at.getOid(), at );
+                }
+                Map<String, AttributeTypeImpl> atMapL2 = new HashMap<String, AttributeTypeImpl>();
+                for ( AttributeTypeImpl at : schemaFromL2.getAttributeTypes() )
+                {
+                    atMapL2.put( at.getOid(), at );
+                }
+
+                // Looping on the attribute types from the Schema from the first list
+                for ( AttributeTypeImpl atFromL1 : schemaFromL1.getAttributeTypes() )
+                {
+                    AttributeTypeImpl atFromL2 = atMapL2.get( atFromL1.getOid() );
+                    if ( atFromL2 == null )
+                    {
+                        AttributeTypeDifference attributeTypeDifference = new AttributeTypeDifference( atFromL1, null,
+                            DifferenceType.REMOVED );
+                        schemaDifference.addAttributeTypeDifference( attributeTypeDifference );
+                        schemaDifference.setType( DifferenceType.MODIFIED );
+                    }
+                    else
+                    {
+                        AttributeTypeDifference attributeTypeDifference = new AttributeTypeDifference( atFromL1,
+                            atFromL2, DifferenceType.IDENTICAL );
+                        schemaDifference.addAttributeTypeDifference( attributeTypeDifference );
+
+                        List<PropertyDifference> atDifferences = getDifferences( atFromL1, atFromL2 );
+                        if ( atDifferences.size() > 0 )
+                        {
+                            attributeTypeDifference.setType( DifferenceType.MODIFIED );
+                            attributeTypeDifference.addDifferences( atDifferences );
+                            schemaDifference.setType( DifferenceType.MODIFIED );
+                        }
+                    }
+                }
+
+                // Looping on the attribute types from the Schema from the second list
+                for ( AttributeTypeImpl atFromL2 : schemaFromL2.getAttributeTypes() )
+                {
+                    AttributeTypeImpl atFromL1 = atMapL2.get( atFromL2.getOid() );
+                    if ( atFromL1 == null )
+                    {
+                        AttributeTypeDifference attributeTypeDifference = new AttributeTypeDifference( null, atFromL2,
+                            DifferenceType.ADDED );
+                        schemaDifference.addAttributeTypeDifference( attributeTypeDifference );
+                        schemaDifference.setType( DifferenceType.MODIFIED );
+                    }
+                    // If atFromL1 exists, then it has already been processed when looping on the first list. 
+                }
+
+                // Building Maps for object classes
+                Map<String, ObjectClassImpl> ocMapL1 = new HashMap<String, ObjectClassImpl>();
+                for ( ObjectClassImpl oc : schemaFromL1.getObjectClasses() )
+                {
+                    ocMapL1.put( oc.getOid(), oc );
+                }
+                Map<String, ObjectClassImpl> ocMapL2 = new HashMap<String, ObjectClassImpl>();
+                for ( ObjectClassImpl oc : schemaFromL2.getObjectClasses() )
+                {
+                    ocMapL2.put( oc.getOid(), oc );
+                }
+
+                // Looping on the object classes from the Schema from the first list
+                for ( ObjectClassImpl ocFromL1 : schemaFromL1.getObjectClasses() )
+                {
+                    ObjectClassImpl ocFromL2 = ocMapL2.get( ocFromL1.getOid() );
+                    if ( ocFromL2 == null )
+                    {
+                        ObjectClassDifference objectClassDifference = new ObjectClassDifference( ocFromL1, null,
+                            DifferenceType.REMOVED );
+                        schemaDifference.addObjectClassDifference( objectClassDifference );
+                        schemaDifference.setType( DifferenceType.MODIFIED );
+                    }
+                    else
+                    {
+                        ObjectClassDifference objectClassDifference = new ObjectClassDifference( ocFromL1, ocFromL2,
+                            DifferenceType.IDENTICAL );
+                        schemaDifference.addObjectClassDifference( objectClassDifference );
+
+                        List<PropertyDifference> ocDifferences = getDifferences( ocFromL1, ocFromL2 );
+                        if ( ocDifferences.size() > 0 )
+                        {
+                            objectClassDifference.setType( DifferenceType.MODIFIED );
+                            objectClassDifference.addDifferences( ocDifferences );
+                            schemaDifference.setType( DifferenceType.MODIFIED );
+                        }
+                    }
+                }
+
+                // Looping on the object classes from the Schema from the second list
+                for ( ObjectClassImpl ocFromL2 : schemaFromL2.getObjectClasses() )
+                {
+                    ObjectClassImpl ocFromL1 = ocMapL2.get( ocFromL2.getOid() );
+                    if ( ocFromL1 == null )
+                    {
+                        ObjectClassDifference objectClassDifference = new ObjectClassDifference( null, ocFromL2,
+                            DifferenceType.ADDED );
+                        schemaDifference.addObjectClassDifference( objectClassDifference );
+                        schemaDifference.setType( DifferenceType.MODIFIED );
+                    }
+                    // If ocFromL1 exists, then it has already been processed when looping on the first list. 
+                }
+            }
+        }
+
+        // Looping on schemas from the second list
+        for ( Schema schemaFromL2 : l2 )
+        {
+            Schema schemaFromL1 = mapL1.get( schemaFromL2.getName().toLowerCase() );
+            if ( schemaFromL1 == null )
+            {
+                SchemaDifference schemaDifference = new SchemaDifference( null, schemaFromL2, DifferenceType.ADDED );
+                differences.add( schemaDifference );
+            }
+        }
+
+        return differences;
+    }
+
+
+    /**
      * Gets the differences between two ObjectClassImpl Objects.
      *
      * @param oc1
@@ -49,29 +215,29 @@ public class DifferenceEngine
      * @return
      *      the differences between two ObjectClassImpl Objects.
      */
-    public static List<Difference> getDifferences( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+    public static List<PropertyDifference> getDifferences( ObjectClassImpl oc1, ObjectClassImpl oc2 )
     {
-        List<Difference> differences = new ArrayList<Difference>();
+        List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
         // Aliases
         differences.addAll( getAliasesDifferences( oc1, oc2 ) );
 
         // Description
-        Difference descriptionDifference = getDescriptionDifference( oc1, oc2 );
+        PropertyDifference descriptionDifference = getDescriptionDifference( oc1, oc2 );
         if ( descriptionDifference != null )
         {
             differences.add( descriptionDifference );
         }
 
         // Obsolete
-        Difference obsoleteDifference = getObsoleteDifference( oc1, oc2 );
+        PropertyDifference obsoleteDifference = getObsoleteDifference( oc1, oc2 );
         if ( obsoleteDifference != null )
         {
             differences.add( obsoleteDifference );
         }
 
         // Class type
-        Difference classTypeDifference = getClassTypeDifference( oc1, oc2 );
+        PropertyDifference classTypeDifference = getClassTypeDifference( oc1, oc2 );
         if ( classTypeDifference != null )
         {
             differences.add( classTypeDifference );
@@ -100,92 +266,92 @@ public class DifferenceEngine
      * @return
      *      the differences between two AttributeTypeImpl Objects.
      */
-    public static List<Difference> getDifferences( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    public static List<PropertyDifference> getDifferences( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
-        List<Difference> differences = new ArrayList<Difference>();
+        List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
         // Aliases
         differences.addAll( getAliasesDifferences( at1, at2 ) );
 
         // Description
-        Difference descriptionDifference = getDescriptionDifference( at1, at2 );
+        PropertyDifference descriptionDifference = getDescriptionDifference( at1, at2 );
         if ( descriptionDifference != null )
         {
             differences.add( descriptionDifference );
         }
 
         // Obsolete
-        Difference obsoleteDifference = getObsoleteDifference( at1, at2 );
+        PropertyDifference obsoleteDifference = getObsoleteDifference( at1, at2 );
         if ( obsoleteDifference != null )
         {
             differences.add( obsoleteDifference );
         }
 
         // Usage
-        Difference usageDifference = getUsageDifference( at1, at2 );
+        PropertyDifference usageDifference = getUsageDifference( at1, at2 );
         if ( usageDifference != null )
         {
             differences.add( usageDifference );
         }
 
         // Superior
-        Difference superiorDifference = getSuperiorDifference( at1, at2 );
+        PropertyDifference superiorDifference = getSuperiorDifference( at1, at2 );
         if ( superiorDifference != null )
         {
             differences.add( superiorDifference );
         }
 
         // Syntax
-        Difference syntaxDifference = getSyntaxDifference( at1, at2 );
+        PropertyDifference syntaxDifference = getSyntaxDifference( at1, at2 );
         if ( syntaxDifference != null )
         {
             differences.add( syntaxDifference );
         }
 
         // Syntax length
-        Difference syntaxLengthDifference = getSyntaxLengthDifference( at1, at2 );
+        PropertyDifference syntaxLengthDifference = getSyntaxLengthDifference( at1, at2 );
         if ( syntaxLengthDifference != null )
         {
             differences.add( syntaxLengthDifference );
         }
 
         // Single value
-        Difference singleValueDifference = getSingleValueDifference( at1, at2 );
+        PropertyDifference singleValueDifference = getSingleValueDifference( at1, at2 );
         if ( singleValueDifference != null )
         {
             differences.add( singleValueDifference );
         }
 
         // Collective
-        Difference collectiveDifference = getCollectiveDifference( at1, at2 );
+        PropertyDifference collectiveDifference = getCollectiveDifference( at1, at2 );
         if ( collectiveDifference != null )
         {
             differences.add( collectiveDifference );
         }
 
         // No user modification
-        Difference noUserModificationDifference = getNoUserModificationDifference( at1, at2 );
+        PropertyDifference noUserModificationDifference = getNoUserModificationDifference( at1, at2 );
         if ( noUserModificationDifference != null )
         {
             differences.add( noUserModificationDifference );
         }
 
         // Equality
-        Difference equalityDifference = getEqualityDifference( at1, at2 );
+        PropertyDifference equalityDifference = getEqualityDifference( at1, at2 );
         if ( equalityDifference != null )
         {
             differences.add( equalityDifference );
         }
 
         // Ordering
-        Difference orderingDifference = getOrderingDifference( at1, at2 );
+        PropertyDifference orderingDifference = getOrderingDifference( at1, at2 );
         if ( orderingDifference != null )
         {
             differences.add( orderingDifference );
         }
 
         // Substring
-        Difference substringDifference = getSubstringDifference( at1, at2 );
+        PropertyDifference substringDifference = getSubstringDifference( at1, at2 );
         if ( substringDifference != null )
         {
             differences.add( substringDifference );
@@ -205,9 +371,9 @@ public class DifferenceEngine
      * @return
      *      the 'Aliases' differences between the two SchemaObject Objects
      */
-    private static List<Difference> getAliasesDifferences( SchemaObject so1, SchemaObject so2 )
+    private static List<PropertyDifference> getAliasesDifferences( SchemaObject so1, SchemaObject so2 )
     {
-        List<Difference> differences = new ArrayList<Difference>();
+        List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
         String[] so1Names = so1.getNames();
         List<String> so1NamesList = new ArrayList<String>();
@@ -263,7 +429,7 @@ public class DifferenceEngine
      * @return
      *      the 'Description' difference between the two SchemaObject Objects
      */
-    private static Difference getDescriptionDifference( SchemaObject so1, SchemaObject so2 )
+    private static PropertyDifference getDescriptionDifference( SchemaObject so1, SchemaObject so2 )
     {
         String so1Description = so1.getDescription();
         String so2Description = so2.getDescription();
@@ -305,7 +471,7 @@ public class DifferenceEngine
      * @return
      *      the 'Obsolete' difference between the two SchemaObject Objects
      */
-    private static Difference getObsoleteDifference( SchemaObject so1, SchemaObject so2 )
+    private static PropertyDifference getObsoleteDifference( SchemaObject so1, SchemaObject so2 )
     {
         boolean so1Obsolete = so1.isObsolete();
         boolean so2Obsolete = so2.isObsolete();
@@ -332,7 +498,7 @@ public class DifferenceEngine
      * @return
      *      the 'Class type' difference between the two ObjectClassImpl Objects
      */
-    private static Difference getClassTypeDifference( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+    private static PropertyDifference getClassTypeDifference( ObjectClassImpl oc1, ObjectClassImpl oc2 )
     {
         ObjectClassTypeEnum oc1ClassType = oc1.getType();
         ObjectClassTypeEnum oc2ClassType = oc2.getType();
@@ -359,9 +525,9 @@ public class DifferenceEngine
      * @return
      *      the 'Superior Classes' differences between the two ObjectClassImpl Objects
      */
-    private static List<Difference> getSuperiorClassesDifferences( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+    private static List<PropertyDifference> getSuperiorClassesDifferences( ObjectClassImpl oc1, ObjectClassImpl oc2 )
     {
-        List<Difference> differences = new ArrayList<Difference>();
+        List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
         String[] oc1Sups = oc1.getSuperClassesNames();
         List<String> oc1SupsList = new ArrayList<String>();
@@ -417,9 +583,10 @@ public class DifferenceEngine
      * @return
      *      the 'Mandatory attribute types' differences between the two ObjectClassImpl Objects
      */
-    private static List<Difference> getMandatoryAttributeTypesDifferences( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+    private static List<PropertyDifference> getMandatoryAttributeTypesDifferences( ObjectClassImpl oc1,
+        ObjectClassImpl oc2 )
     {
-        List<Difference> differences = new ArrayList<Difference>();
+        List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
         String[] oc1Musts = oc1.getMustNamesList();
         List<String> oc1MustsList = new ArrayList<String>();
@@ -475,9 +642,10 @@ public class DifferenceEngine
      * @return
      *      the 'Optional attribute types' differences between the two ObjectClassImpl Objects
      */
-    private static List<Difference> getOptionalAttributeTypesDifferences( ObjectClassImpl oc1, ObjectClassImpl oc2 )
+    private static List<PropertyDifference> getOptionalAttributeTypesDifferences( ObjectClassImpl oc1,
+        ObjectClassImpl oc2 )
     {
-        List<Difference> differences = new ArrayList<Difference>();
+        List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
         String[] oc1Mays = oc1.getMayNamesList();
         List<String> oc1MaysList = new ArrayList<String>();
@@ -533,7 +701,7 @@ public class DifferenceEngine
      * @return
      *      the 'Usage' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getUsageDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getUsageDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         UsageEnum at1Usage = at1.getUsage();
         UsageEnum at2Usage = at2.getUsage();
@@ -560,7 +728,7 @@ public class DifferenceEngine
      * @return
      *      the 'Superior' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getSuperiorDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getSuperiorDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         String at1Superior = at1.getSuperiorName();
         String at2Superior = at2.getSuperiorName();
@@ -602,7 +770,7 @@ public class DifferenceEngine
      * @return
      *      the 'Syntax' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getSyntaxDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getSyntaxDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         String at1Syntax = at1.getSyntaxOid();
         String at2Syntax = at2.getSyntaxOid();
@@ -644,7 +812,7 @@ public class DifferenceEngine
      * @return
      *      the 'Syntax length' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getSyntaxLengthDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getSyntaxLengthDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         int at1SyntaxLength = at1.getLength();
         int at2SyntaxLength = at2.getLength();
@@ -686,7 +854,7 @@ public class DifferenceEngine
      * @return
      *      the 'Single value' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getSingleValueDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getSingleValueDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         boolean at1SingleValue = at1.isSingleValue();
         boolean at2SingleValue = at2.isSingleValue();
@@ -713,7 +881,7 @@ public class DifferenceEngine
      * @return
      *      the 'Collective' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getCollectiveDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getCollectiveDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         boolean at1Collective = at1.isCollective();
         boolean at2Collective = at2.isCollective();
@@ -740,7 +908,7 @@ public class DifferenceEngine
      * @return
      *      the 'No user modification' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getNoUserModificationDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getNoUserModificationDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         boolean at1CanUserModify = at1.isCanUserModify();
         boolean at2CanUserModify = at2.isCanUserModify();
@@ -767,7 +935,7 @@ public class DifferenceEngine
      * @return
      *      the 'Equality' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getEqualityDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getEqualityDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         String at1Equality = at1.getEqualityName();
         String at2Equality = at2.getEqualityName();
@@ -809,7 +977,7 @@ public class DifferenceEngine
      * @return
      *      the 'Ordering' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getOrderingDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getOrderingDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         String at1Ordering = at1.getOrderingName();
         String at2Ordering = at2.getOrderingName();
@@ -851,7 +1019,7 @@ public class DifferenceEngine
      * @return
      *      the 'Substring' difference between the two AttributeTypeImpl Objects
      */
-    private static Difference getSubstringDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
+    private static PropertyDifference getSubstringDifference( AttributeTypeImpl at1, AttributeTypeImpl at2 )
     {
         String at1Substring = at1.getSubstrName();
         String at2Substring = at2.getSubstrName();

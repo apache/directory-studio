@@ -91,6 +91,18 @@ public class AttributeTypeDifference extends AbstractDifference
 
 
     /**
+     * Adds differences.
+     *
+     * @param differences
+     *      the differences
+     */
+    public void addDifferences( List<PropertyDifference> differences )
+    {
+        differences.addAll( differences );
+    }
+
+
+    /**
      * Removes a difference.
      *
      * @param difference

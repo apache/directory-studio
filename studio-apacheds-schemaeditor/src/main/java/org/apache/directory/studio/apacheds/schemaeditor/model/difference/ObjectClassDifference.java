@@ -88,6 +88,17 @@ public class ObjectClassDifference extends AbstractDifference
     {
         differences.add( difference );
     }
+    
+    /**
+     * Adds differences.
+     *
+     * @param differences
+     *      the differences
+     */
+    public void addDifferences( List<PropertyDifference> differences )
+    {
+        differences.addAll( differences );
+    }
 
 
     /**
