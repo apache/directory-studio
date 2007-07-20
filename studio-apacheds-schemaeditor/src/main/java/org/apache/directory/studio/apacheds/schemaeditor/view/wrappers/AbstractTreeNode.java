@@ -118,12 +118,6 @@ public abstract class AbstractTreeNode implements TreeNode
     /* (non-Javadoc)
      * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#removeChild(org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode)
      */
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#removeChild(org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode)
-     */
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode#removeChild(org.apache.directory.studio.schemas.view.viewers.wrappers.ITreeNode)
-     */
     public void removeChild( TreeNode node )
     {
         if ( fChildren != null )

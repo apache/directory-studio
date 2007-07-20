@@ -51,6 +51,20 @@ public class OidSorter implements Comparator<TreeNode>
 
             return oc1.getOid().compareToIgnoreCase( oc2.getOid() );
         }
+        else if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
+        {
+            AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
+            ObjectClassImpl oc = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
+
+            return at.getOid().compareToIgnoreCase( oc.getOid() );
+        }
+        else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
+        {
+            ObjectClassImpl oc = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
+            AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
+
+            return oc.getOid().compareToIgnoreCase( at.getOid() );
+        }
 
         // Default
         return o1.toString().compareToIgnoreCase( o2.toString() );
