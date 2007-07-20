@@ -25,9 +25,14 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.SchemaImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AliasDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DescriptionDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceEngine;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceType;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.PropertyDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.DifferencesWidget;
@@ -74,11 +79,61 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         DifferencesWidget differencesWidget = new DifferencesWidget();
         differencesWidget.createWidget( composite );
 
+        SchemaImpl schema1Old = new SchemaImpl( "Schema1" );
+        SchemaImpl schema1New = new SchemaImpl( "Schema1" );
+        SchemaImpl schema2 = new SchemaImpl( "Schema2" );
+        SchemaImpl schema3 = new SchemaImpl( "Schema3" );
+        SchemaImpl schema4 = new SchemaImpl( "Schema4" );
+
+        List<Schema> schemasListOld = new ArrayList<Schema>();
+        schemasListOld.add( schema1Old );
+        schemasListOld.add( schema2 );
+        schemasListOld.add( schema4 );
+
+        List<Schema> schemasListNew = new ArrayList<Schema>();
+        schemasListNew.add( schema4 );
+        schemasListNew.add( schema1New );
+        schemasListNew.add( schema3 );
+
+        AttributeTypeImpl at1 = new AttributeTypeImpl( "1.2.1" );
+        at1.setNames( new String[]
+            { "AT1", "AttributeType1" } );
+        AttributeTypeImpl at2 = new AttributeTypeImpl( "1.2.2" );
+        at2.setNames( new String[]
+            { "AT2", "AttributeType2" } );
+        AttributeTypeImpl at2Bis = new AttributeTypeImpl( "1.2.2" );
+        at2Bis.setNames( new String[]
+            { "AT2" } );
+        AttributeTypeImpl at3 = new AttributeTypeImpl( "1.2.3" );
+        at3.setNames( new String[]
+            { "AT3" } );
+        schema1Old.addAttributeType( at1 );
+        schema1Old.addAttributeType( at2 );
+        schema1New.addAttributeType( at2Bis );
+        schema1New.addAttributeType( at3 );
+        
+        ObjectClassImpl oc1 = new ObjectClassImpl( "1.2.10" );
+        oc1.setNames( new String[]
+            { "OC1", "ObjectClass1" } );
+        ObjectClassImpl oc2 = new ObjectClassImpl( "1.2.11" );
+        oc2.setNames( new String[]
+            { "OC2", "ObjectClass2" } );
+        ObjectClassImpl oc2Bis = new ObjectClassImpl( "1.2.11" );
+        oc2Bis.setNames( new String[]
+            { "OC2" } );
+        ObjectClassImpl oc3 = new ObjectClassImpl( "1.2.12" );
+        oc3.setNames( new String[]
+            { "OC3" } );
+        schema1Old.addObjectClass( oc1 );
+        schema1Old.addObjectClass( oc2 );
+        schema1New.addObjectClass( oc2Bis );
+        schema1New.addObjectClass( oc3 );
+
         List<Difference> differences = new ArrayList<Difference>();
         PropertyDifference diff = new AliasDifference( null, null, DifferenceType.ADDED );
         diff.setNewValue( "alias1" );
         differences.add( diff );
-        
+
         diff = new AliasDifference( null, null, DifferenceType.REMOVED );
         diff.setOldValue( "alias2" );
         differences.add( diff );
@@ -86,50 +141,17 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         diff = new DescriptionDifference( null, null, DifferenceType.ADDED );
         diff.setNewValue( "Description" );
         differences.add( diff );
-        
+
         diff = new DescriptionDifference( null, null, DifferenceType.MODIFIED );
         diff.setOldValue( "Old Description" );
         diff.setNewValue( "New Description" );
         differences.add( diff );
-        
+
         diff = new DescriptionDifference( null, null, DifferenceType.REMOVED );
         diff.setOldValue( "Description" );
         differences.add( diff );
-        
 
-        //        differences.add( new AddEqualityDifference( null, null, "equality" ) );
-        //        differences.add( new ModifyEqualityDifference( null, null, "old equality", "new equality" ) );
-        //        differences.add( new RemoveEqualityDifference( null, null, "equality" ) );
-        //        differences.add( new AddMandatoryATDifference( null, null, "name" ) );
-        //        differences.add( new RemoveMandatoryATDifference( null, null, "name2" ) );
-        //        differences.add( new AddOptionalATDifference( null, null, "name" ) );
-        //        differences.add( new RemoveOptionalATDifference( null, null, "name2" ) );
-        //        differences.add( new AddOrderingDifference( null, null, "ordering" ) );
-        //        differences.add( new ModifyOrderingDifference( null, null, "old ordering", "new ordering" ) );
-        //        differences.add( new RemoveOrderingDifference( null, null, "ordering" ) );
-        //        differences.add( new AddSubstringDifference( null, null, "substring" ) );
-        //        differences.add( new ModifySubstringDifference( null, null, "old substring", "new substring" ) );
-        //        differences.add( new RemoveSubstringDifference( null, null, "substring" ) );
-        //        differences.add( new AddSuperiorATDifference( null, null, "supAT" ) );
-        //        differences.add( new ModifySuperiorATDifference( null, null, "oldSupAT", "newSupAT" ) );
-        //        differences.add( new RemoveSuperiorATDifference( null, null, "supAT" ) );
-        //        differences.add( new AddSuperiorOCDifference( null, null, "supOC" ) );
-        //        differences.add( new RemoveSuperiorOCDifference( null, null, "supOC" ) );
-        //        differences.add( new AddSyntaxDifference( null, null, "syntax" ) );
-        //        differences.add( new ModifySyntaxDifference( null, null, "syntax1", "syntax2" ) );
-        //        differences.add( new RemoveSyntaxDifference( null, null, "syntax" ) );
-        //        differences.add( new AddSyntaxLengthDifference( null, null, 1234 ) );
-        //        differences.add( new ModifySyntaxLengthDifference( null, null, 1234, 12345 ) );
-        //        differences.add( new RemoveSyntaxLengthDifference( null, null, 1234 ) );
-        //        differences.add( new ModifyClassTypeDifference( null, null, ObjectClassTypeEnum.AUXILIARY,
-        //            ObjectClassTypeEnum.ABSTRACT ) );
-        //        differences.add( new ModifyCollectiveDifference( null, null, false, true ) );
-        //        differences.add( new ModifyNoUserModificationDifference( null, null, true, false ) );
-        //        differences.add( new ModifyObsoleteDifference( null, null, true, false ) );
-        //        differences.add( new ModifySingleValueDifference( null, null, true, false ) );
-        //        differences.add( new ModifyUsageDifference( null, null, UsageEnum.DISTRIBUTED_OPERATION,
-        //            UsageEnum.DSA_OPERATION ) );
-        differencesWidget.setInput( differences );
+        differencesWidget.setInput( DifferenceEngine.getDifferences( schemasListOld, schemasListNew ) );
 
         initFields();
 

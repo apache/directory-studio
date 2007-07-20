@@ -51,7 +51,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DifferencesWidgetLabelProvider extends LabelProvider
+public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
 {
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
@@ -65,14 +65,14 @@ public class DifferencesWidgetLabelProvider extends LabelProvider
             {
                 case ADDED:
                     return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_ADD ).createImage();
+                        PluginConstants.IMG_DIFFERENCE_PROPERTY_ADD ).createImage();
 
                 case MODIFIED:
                     return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_MODIFY ).createImage();
+                        PluginConstants.IMG_DIFFERENCE_PROPERTY_MODIFY ).createImage();
                 case REMOVED:
                     return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_REMOVE ).createImage();
+                        PluginConstants.IMG_DIFFERENCE_PROPERTY_REMOVE ).createImage();
             }
         }
 

@@ -24,9 +24,18 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AttributeTypeDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceType;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ObjectClassDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SchemaDifference;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,7 +46,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
@@ -54,8 +62,11 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class DifferencesWidget
 {
+    /** The TreeViewer */
+    private TreeViewer treeViewer;
+
     /** The TableViewer */
-    private TableViewer viewer;
+    private TableViewer tableViewer;
 
     /** The PreferenceStore*/
     private IPreferenceStore store;
@@ -85,7 +96,7 @@ public class DifferencesWidget
     {
         // Composite
         Composite composite = new Composite( parent, SWT.NONE );
-        GridLayout gridLayout = new GridLayout();
+        GridLayout gridLayout = new GridLayout( 2, true );
         gridLayout.marginBottom = 0;
         gridLayout.marginHeight = 0;
         gridLayout.marginLeft = 0;
@@ -93,9 +104,81 @@ public class DifferencesWidget
         gridLayout.marginTop = 0;
         gridLayout.marginWidth = 0;
         composite.setLayout( gridLayout );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        // Left Composite
+        Composite leftComposite = new Composite( composite, SWT.NONE );
+        gridLayout = new GridLayout();
+        gridLayout.marginBottom = 0;
+        gridLayout.marginHeight = 0;
+        gridLayout.marginLeft = 0;
+        gridLayout.marginRight = 0;
+        gridLayout.marginTop = 0;
+        gridLayout.marginWidth = 0;
+        leftComposite.setLayout( gridLayout );
+        leftComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        // TreeViewer
+        treeViewer = new TreeViewer( leftComposite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        treeViewer.getTree().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        treeViewer.setContentProvider( new DifferencesWidgetSchemaContentProvider() );
+        treeViewer.setLabelProvider( new DifferencesWidgetSchemaLabelProvider() );
+        treeViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+                Object element = selection.getFirstElement();
+                if ( element instanceof AttributeTypeDifference )
+                {
+                    AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
+                    if ( atd.getType().equals( DifferenceType.MODIFIED ) )
+                    {
+                        tableViewer.setInput( atd.getDifferences() );
+                        return;
+                    }
+                }
+                else if ( element instanceof ObjectClassDifference )
+                {
+                    ObjectClassDifference ocd = ( ObjectClassDifference ) element;
+                    if ( ocd.getType().equals( DifferenceType.MODIFIED ) )
+                    {
+                        tableViewer.setInput( ocd.getDifferences() );
+                        return;
+                    }
+                }
+
+                // Default
+                tableViewer.setInput( null );
+            }
+        } );
+        treeViewer.addDoubleClickListener( new IDoubleClickListener()
+        {
+            public void doubleClick( DoubleClickEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+                Object element = selection.getFirstElement();
+                if ( ( element instanceof Folder ) || ( element instanceof SchemaDifference ) )
+                {
+                    treeViewer.setExpandedState( element, !treeViewer.getExpandedState( element ) );
+                }
+            }
+        } );
+
+        // Right Composite
+        Composite rightComposite = new Composite( composite, SWT.NONE );
+        gridLayout = new GridLayout();
+        gridLayout.marginBottom = 0;
+        gridLayout.marginHeight = 0;
+        gridLayout.marginLeft = 0;
+        gridLayout.marginRight = 0;
+        gridLayout.marginTop = 0;
+        gridLayout.marginWidth = 0;
+        rightComposite.setLayout( gridLayout );
+        rightComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // ToolBar
-        final ToolBar toolBar = new ToolBar( composite, SWT.HORIZONTAL );
+        final ToolBar toolBar = new ToolBar( rightComposite, SWT.HORIZONTAL );
         toolBar.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
         // Creating the 'Menu' ToolBar item
         final ToolItem menuToolItem = new ToolItem( toolBar, SWT.PUSH );
@@ -138,38 +221,23 @@ public class DifferencesWidget
         } );
         updateMenuItemsCheckStatus();
 
-        // Table
-        Table table = new Table( composite, SWT.BORDER );
-        table.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-
         // TableViewer
-        viewer = new TableViewer( table );
-        viewer.setContentProvider( new DifferencesWidgetContentProvider() );
-        viewer.setLabelProvider( new DifferencesWidgetLabelProvider() );
+        tableViewer = new TableViewer( rightComposite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        tableViewer.getTable().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        tableViewer.setContentProvider( new DifferencesWidgetPropertiesContentProvider() );
+        tableViewer.setLabelProvider( new DifferencesWidgetPropertiesLabelProvider() );
     }
 
 
     /**
-     * Sets the Input of the TableViewer.
+     * Sets the Input of the DifferencesWidget.
      *
      * @param input
      *      the input
      */
-    public void setInput( List<Difference> input )
+    public void setInput( List<SchemaDifference> input )
     {
-        viewer.setInput( input );
-    }
-
-
-    /**
-     * Gets the TableViewer used in the Widget.
-     *
-     * @return
-     *      the TableViewer used in the Widget
-     */
-    public TableViewer getViewer()
-    {
-        return viewer;
+        treeViewer.setInput( input );
     }
 
 
@@ -183,7 +251,7 @@ public class DifferencesWidget
     {
         store.setValue( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING, value );
         updateMenuItemsCheckStatus();
-        viewer.refresh();
+        tableViewer.refresh();
     }
 
 

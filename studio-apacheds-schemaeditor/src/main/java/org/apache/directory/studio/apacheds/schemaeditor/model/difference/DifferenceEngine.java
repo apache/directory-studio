@@ -52,9 +52,9 @@ public class DifferenceEngine
      * @return
      *      the differences between the two schema Lists
      */
-    public static List<Difference> getDifferences( List<Schema> l1, List<Schema> l2 )
+    public static List<SchemaDifference> getDifferences( List<Schema> l1, List<Schema> l2 )
     {
-        List<Difference> differences = new ArrayList<Difference>();
+        List<SchemaDifference> differences = new ArrayList<SchemaDifference>();
 
         // Building Maps for schemas
         Map<String, Schema> mapL1 = new HashMap<String, Schema>();
@@ -81,6 +81,7 @@ public class DifferenceEngine
             {
                 SchemaDifference schemaDifference = new SchemaDifference( schemaFromL1, schemaFromL2,
                     DifferenceType.IDENTICAL );
+                differences.add( schemaDifference );
 
                 // Building Maps for attribute types
                 Map<String, AttributeTypeImpl> atMapL1 = new HashMap<String, AttributeTypeImpl>();
@@ -124,7 +125,7 @@ public class DifferenceEngine
                 // Looping on the attribute types from the Schema from the second list
                 for ( AttributeTypeImpl atFromL2 : schemaFromL2.getAttributeTypes() )
                 {
-                    AttributeTypeImpl atFromL1 = atMapL2.get( atFromL2.getOid() );
+                    AttributeTypeImpl atFromL1 = atMapL1.get( atFromL2.getOid() );
                     if ( atFromL1 == null )
                     {
                         AttributeTypeDifference attributeTypeDifference = new AttributeTypeDifference( null, atFromL2,
@@ -177,7 +178,7 @@ public class DifferenceEngine
                 // Looping on the object classes from the Schema from the second list
                 for ( ObjectClassImpl ocFromL2 : schemaFromL2.getObjectClasses() )
                 {
-                    ObjectClassImpl ocFromL1 = ocMapL2.get( ocFromL2.getOid() );
+                    ObjectClassImpl ocFromL1 = ocMapL1.get( ocFromL2.getOid() );
                     if ( ocFromL1 == null )
                     {
                         ObjectClassDifference objectClassDifference = new ObjectClassDifference( null, ocFromL2,

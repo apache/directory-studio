@@ -68,7 +68,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
 
 
     /**
-     * Creates a new instance of SchemaViewContentProvider.
+     * Creates a new instance of DifferencesWidgetSchemaContentProvider.
      */
     public SchemaViewContentProvider()
     {

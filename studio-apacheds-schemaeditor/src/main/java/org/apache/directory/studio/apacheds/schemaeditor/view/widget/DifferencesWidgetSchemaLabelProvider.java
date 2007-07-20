@@ -17,18 +17,18 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor.view.views;
+package org.apache.directory.studio.apacheds.schemaeditor.view.widget;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AttributeTypeDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ObjectClassDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SchemaDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -41,7 +41,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaViewLabelProvider extends LabelProvider
+public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
 {
     private static final String NONE = "(None)";
 
@@ -52,7 +52,7 @@ public class SchemaViewLabelProvider extends LabelProvider
     /**
      * Creates a new instance of DifferencesWidgetSchemaLabelProvider.
      */
-    public SchemaViewLabelProvider()
+    public DifferencesWidgetSchemaLabelProvider()
     {
         store = Activator.getDefault().getPreferenceStore();
     }
@@ -75,15 +75,43 @@ public class SchemaViewLabelProvider extends LabelProvider
         int secondaryLabelAbbreviateMaxLength = store
             .getInt( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
 
-        if ( element instanceof SchemaWrapper )
+        if ( element instanceof SchemaDifference )
         {
-            SchemaWrapper sw = ( SchemaWrapper ) element;
+            SchemaDifference sd = ( SchemaDifference ) element;
 
-            return sw.getSchema().getName();
+            switch ( sd.getType() )
+            {
+                case ADDED:
+                    return ( ( Schema ) sd.getDestination() ).getName();
+                case MODIFIED:
+                    return ( ( Schema ) sd.getDestination() ).getName();
+                case REMOVED:
+                    return ( ( Schema ) sd.getSource() ).getName();
+                case IDENTICAL:
+                    return ( ( Schema ) sd.getDestination() ).getName();
+            }
         }
-        else if ( element instanceof AttributeTypeWrapper )
+        else if ( element instanceof AttributeTypeDifference )
         {
-            AttributeTypeImpl at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
+            AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
+
+            AttributeTypeImpl at = null;
+
+            switch ( atd.getType() )
+            {
+                case ADDED:
+                    at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                    break;
+                case MODIFIED:
+                    at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                    break;
+                case REMOVED:
+                    at = ( ( AttributeTypeImpl ) atd.getSource() );
+                    break;
+                case IDENTICAL:
+                    at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                    break;
+            }
 
             // Label
             if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_FIRST_NAME )
@@ -134,9 +162,27 @@ public class SchemaViewLabelProvider extends LabelProvider
                 label = label.substring( 0, abbreviateMaxLength ) + "..."; //$NON-NLS-1$
             }
         }
-        else if ( element instanceof ObjectClassWrapper )
+        else if ( element instanceof ObjectClassDifference )
         {
-            ObjectClassImpl oc = ( ( ObjectClassWrapper ) element ).getObjectClass();
+            ObjectClassDifference ocd = ( ObjectClassDifference ) element;
+
+            ObjectClassImpl oc = null;
+
+            switch ( ocd.getType() )
+            {
+                case ADDED:
+                    oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                    break;
+                case MODIFIED:
+                    oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                    break;
+                case REMOVED:
+                    oc = ( ( ObjectClassImpl ) ocd.getSource() );
+                    break;
+                case IDENTICAL:
+                    oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                    break;
+            }
 
             // Label
             if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_FIRST_NAME )
@@ -198,9 +244,27 @@ public class SchemaViewLabelProvider extends LabelProvider
         if ( secondaryLabelDisplay )
         {
             String secondaryLabel = ""; //$NON-NLS-1$
-            if ( element instanceof AttributeTypeWrapper )
+            if ( element instanceof AttributeTypeDifference )
             {
-                AttributeTypeImpl at = ( ( AttributeTypeWrapper ) element ).getAttributeType();
+                AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
+
+                AttributeTypeImpl at = null;
+
+                switch ( atd.getType() )
+                {
+                    case ADDED:
+                        at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                        break;
+                    case MODIFIED:
+                        at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                        break;
+                    case REMOVED:
+                        at = ( ( AttributeTypeImpl ) atd.getSource() );
+                        break;
+                    case IDENTICAL:
+                        at = ( ( AttributeTypeImpl ) atd.getDestination() );
+                        break;
+                }
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_FIRST_NAME )
                 {
@@ -231,9 +295,27 @@ public class SchemaViewLabelProvider extends LabelProvider
                     secondaryLabel = at.getOid();
                 }
             }
-            else if ( element instanceof ObjectClassWrapper )
+            else if ( element instanceof ObjectClassDifference )
             {
-                ObjectClassImpl oc = ( ( ObjectClassWrapper ) element ).getObjectClass();
+                ObjectClassDifference ocd = ( ObjectClassDifference ) element;
+
+                ObjectClassImpl oc = null;
+
+                switch ( ocd.getType() )
+                {
+                    case ADDED:
+                        oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                        break;
+                    case MODIFIED:
+                        oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                        break;
+                    case REMOVED:
+                        oc = ( ( ObjectClassImpl ) ocd.getSource() );
+                        break;
+                    case IDENTICAL:
+                        oc = ( ( ObjectClassImpl ) ocd.getDestination() );
+                        break;
+                }
 
                 if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_FIRST_NAME )
                 {
@@ -282,20 +364,62 @@ public class SchemaViewLabelProvider extends LabelProvider
      */
     public Image getImage( Object element )
     {
-        if ( element instanceof SchemaWrapper )
+        if ( element instanceof SchemaDifference )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
-                .createImage();
+            SchemaDifference sd = ( SchemaDifference ) element;
+            switch ( sd.getType() )
+            {
+                case ADDED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_SCHEMA_ADD ).createImage();
+                case MODIFIED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_SCHEMA_MODIFY ).createImage();
+                case REMOVED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_SCHEMA_REMOVE ).createImage();
+                case IDENTICAL:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
+                        .createImage();
+            }
         }
-        else if ( element instanceof AttributeTypeWrapper )
+        else if ( element instanceof AttributeTypeDifference )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
-                .createImage();
+            AttributeTypeDifference atd = ( AttributeTypeDifference ) element;
+            switch ( atd.getType() )
+            {
+                case ADDED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_ADD ).createImage();
+                case MODIFIED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_MODIFY ).createImage();
+                case REMOVED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_REMOVE ).createImage();
+                case IDENTICAL:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage();
+            }
         }
-        else if ( element instanceof ObjectClassWrapper )
+        else if ( element instanceof ObjectClassDifference )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
-                .createImage();
+            ObjectClassDifference ocd = ( ObjectClassDifference ) element;
+            switch ( ocd.getType() )
+            {
+                case ADDED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_ADD ).createImage();
+                case MODIFIED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_MODIFY ).createImage();
+                case REMOVED:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_REMOVE ).createImage();
+                case IDENTICAL:
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_OBJECT_CLASS ).createImage();
+            }
         }
         else if ( element instanceof Folder )
         {

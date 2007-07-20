@@ -88,7 +88,8 @@ public class ObjectClassDifference extends AbstractDifference
     {
         differences.add( difference );
     }
-    
+
+
     /**
      * Adds differences.
      *
@@ -97,7 +98,7 @@ public class ObjectClassDifference extends AbstractDifference
      */
     public void addDifferences( List<PropertyDifference> differences )
     {
-        differences.addAll( differences );
+        this.differences.addAll( differences );
     }
 
 

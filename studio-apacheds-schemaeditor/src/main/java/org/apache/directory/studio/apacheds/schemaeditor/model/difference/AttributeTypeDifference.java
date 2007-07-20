@@ -98,7 +98,7 @@ public class AttributeTypeDifference extends AbstractDifference
      */
     public void addDifferences( List<PropertyDifference> differences )
     {
-        differences.addAll( differences );
+        this.differences.addAll( differences );
     }
 
 

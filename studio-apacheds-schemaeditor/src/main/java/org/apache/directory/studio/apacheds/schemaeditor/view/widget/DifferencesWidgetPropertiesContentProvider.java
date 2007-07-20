@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.PropertyDifference;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -37,26 +37,26 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DifferencesWidgetContentProvider implements IStructuredContentProvider
+public class DifferencesWidgetPropertiesContentProvider implements IStructuredContentProvider
 {
-    /** The DifferencesWidgetPropertySorter */
-    private DifferencesWidgetPropertySorter propertySorter;
+    /** The PropertySorter */
+    private PropertySorter propertySorter;
 
-    /** The DifferencesWidgetTypeSorter */
-    private DifferencesWidgetTypeSorter typeSorter;
+    /** The TypeSorter */
+    private TypeSorter typeSorter;
 
     /** The PreferenceStore */
     private IPreferenceStore store;
 
 
     /**
-     * Creates a new instance of DifferencesWidgetContentProvider.
+     * Creates a new instance of DifferencesWidgetPropertiesContentProvider.
      *
      */
-    public DifferencesWidgetContentProvider()
+    public DifferencesWidgetPropertiesContentProvider()
     {
-        propertySorter = new DifferencesWidgetPropertySorter();
-        typeSorter = new DifferencesWidgetTypeSorter();
+        propertySorter = new PropertySorter();
+        typeSorter = new TypeSorter();
 
         store = Activator.getDefault().getPreferenceStore();
     }
@@ -65,11 +65,12 @@ public class DifferencesWidgetContentProvider implements IStructuredContentProvi
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
+    @SuppressWarnings("unchecked")
     public Object[] getElements( Object inputElement )
     {
         if ( inputElement instanceof List )
         {
-            List<Difference> differences = ( List<Difference> ) inputElement;
+            List<PropertyDifference> differences = ( List<PropertyDifference> ) inputElement;
 
             int prefValue = store.getInt( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING );
             if ( prefValue == PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING_PROPERTY )

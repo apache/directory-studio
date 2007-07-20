@@ -26,13 +26,13 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AliasD
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ClassTypeDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.CollectiveDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.EqualityDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.MandatoryATDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.NoUserModificationDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.ObsoleteDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.OptionalATDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.OrderingDifference;
+import org.apache.directory.studio.apacheds.schemaeditor.model.difference.PropertyDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SingleValueDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SubstringDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.SuperiorATDifference;
@@ -43,17 +43,17 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.difference.UsageD
 
 
 /**
- * This class is used to compare, group and sort Differences by 'Property'
+ * This class is used to compare, group and sort Differences by 'Type'
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DifferencesWidgetPropertySorter implements Comparator<Difference>
+public class TypeSorter implements Comparator<PropertyDifference>
 {
     /* (non-Javadoc)
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
-    public int compare( Difference diff1, Difference diff2 )
+    public int compare( PropertyDifference diff1, PropertyDifference diff2 )
     {
         return getWeight( diff1 ) - getWeight( diff2 );
     }
@@ -67,7 +67,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
      * @return
      *      the weight of the difference
      */
-    private int getWeight( Difference diff )
+    private int getWeight( PropertyDifference diff )
     {
         if ( diff instanceof AliasDifference )
         {
@@ -76,7 +76,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
                 case ADDED:
                     return 1;
                 case REMOVED:
-                    return 2;
+                    return 25;
             }
         }
         else if ( diff instanceof ClassTypeDifference )
@@ -84,7 +84,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case MODIFIED:
-                    return 18;
+                    return 17;
             }
         }
         else if ( diff instanceof CollectiveDifference )
@@ -92,7 +92,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case MODIFIED:
-                    return 21;
+                    return 20;
             }
         }
         else if ( diff instanceof DescriptionDifference )
@@ -100,11 +100,11 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 3;
+                    return 2;
                 case MODIFIED:
-                    return 4;
+                    return 12;
                 case REMOVED:
-                    return 5;
+                    return 26;
             }
         }
         else if ( diff instanceof EqualityDifference )
@@ -112,11 +112,11 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 23;
+                    return 7;
                 case MODIFIED:
-                    return 24;
+                    return 22;
                 case REMOVED:
-                    return 25;
+                    return 31;
             }
         }
         else if ( diff instanceof MandatoryATDifference )
@@ -124,9 +124,9 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 32;
+                    return 10;
                 case REMOVED:
-                    return 33;
+                    return 34;
             }
         }
         else if ( diff instanceof NoUserModificationDifference )
@@ -134,7 +134,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case MODIFIED:
-                    return 22;
+                    return 21;
             }
         }
         else if ( diff instanceof ObsoleteDifference )
@@ -142,7 +142,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case MODIFIED:
-                    return 19;
+                    return 18;
             }
         }
         else if ( diff instanceof OptionalATDifference )
@@ -150,7 +150,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 34;
+                    return 11;
                 case REMOVED:
                     return 35;
             }
@@ -160,11 +160,11 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 26;
+                    return 8;
                 case MODIFIED:
-                    return 27;
+                    return 23;
                 case REMOVED:
-                    return 28;
+                    return 32;
             }
         }
         else if ( diff instanceof SingleValueDifference )
@@ -172,7 +172,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case MODIFIED:
-                    return 20;
+                    return 19;
             }
         }
         else if ( diff instanceof SubstringDifference )
@@ -180,11 +180,11 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 29;
+                    return 9;
                 case MODIFIED:
-                    return 30;
+                    return 24;
                 case REMOVED:
-                    return 31;
+                    return 33;
             }
         }
         else if ( diff instanceof SuperiorATDifference )
@@ -192,11 +192,11 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 6;
+                    return 3;
                 case MODIFIED:
-                    return 7;
+                    return 13;
                 case REMOVED:
-                    return 8;
+                    return 27;
             }
         }
         else if ( diff instanceof SuperiorOCDifference )
@@ -204,9 +204,9 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 9;
+                    return 4;
                 case REMOVED:
-                    return 10;
+                    return 28;
             }
         }
         else if ( diff instanceof SyntaxDifference )
@@ -214,11 +214,11 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 12;
+                    return 5;
                 case MODIFIED:
-                    return 13;
+                    return 15;
                 case REMOVED:
-                    return 14;
+                    return 29;
             }
         }
         else if ( diff instanceof SyntaxLengthDifference )
@@ -226,11 +226,11 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case ADDED:
-                    return 15;
+                    return 6;
                 case MODIFIED:
                     return 16;
                 case REMOVED:
-                    return 17;
+                    return 30;
             }
         }
         else if ( diff instanceof UsageDifference )
@@ -238,7 +238,7 @@ public class DifferencesWidgetPropertySorter implements Comparator<Difference>
             switch ( diff.getType() )
             {
                 case MODIFIED:
-                    return 11;
+                    return 14;
             }
         }
 
