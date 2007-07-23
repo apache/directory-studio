@@ -20,16 +20,27 @@
 package org.apache.directory.studio.apacheds.schemaeditor;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema.SchemaEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.text.rules.ITokenScanner;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.internal.EditorReference;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -81,6 +92,28 @@ public class Activator extends AbstractUIPlugin
         {
             public void openProjectChanged( Project oldProject, Project newProject )
             {
+                // Listing all the editors from the Schema Editor Plugin.
+                List<IEditorReference> editors = new ArrayList<IEditorReference>();
+                for ( IEditorReference editorReference : getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                    .getEditorReferences() )
+                {
+                    if ( ( editorReference.getId().equals( AttributeTypeEditor.ID ) )
+                        || ( editorReference.getId().equals( ObjectClassEditor.ID ) )
+                        || ( editorReference.getId().equals( SchemaEditor.ID ) ) )
+                    {
+                        editors.add( editorReference );
+                    }
+                }
+
+                // Closing the opened editors
+                if ( !getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditors(
+                    editors.toArray( new IEditorReference[0] ), true ) )
+                {
+                    // If all the editors have not been closed, we force them to be closed.
+                    getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditors(
+                        editors.toArray( new IEditorReference[0] ), false );
+                }
+
                 if ( newProject == null )
                 {
                     schemaHandler = null;
@@ -94,11 +127,11 @@ public class Activator extends AbstractUIPlugin
                     schemaChecker.enableModificationsListening();
 
                     // Reloading views
-//                    schemaView = ( SchemaView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-//                        SchemaView.ID );
+                    //                    schemaView = ( SchemaView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+                    //                        SchemaView.ID );
                     problemsView = ( ProblemsView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
                         ProblemsView.ID );
-//                    schemaView.reloadViewer();
+                    //                    schemaView.reloadViewer();
                     problemsView.reloadViewer();
                 }
             }
