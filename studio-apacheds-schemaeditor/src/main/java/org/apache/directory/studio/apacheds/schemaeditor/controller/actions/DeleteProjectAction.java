@@ -96,7 +96,6 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
     /* (non-Javadoc)
      * @see org.eclipse.jface.action.Action#run()
      */
-    @SuppressWarnings("unchecked")
     public void run()
     {
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
@@ -119,7 +118,7 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
             }
             if ( messageBox.open() == SWT.YES )
             {
-                for ( Iterator iterator = selection.iterator(); iterator.hasNext(); )
+                for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                 {
                     ProjectWrapper wrapper = ( ProjectWrapper ) iterator.next();
                     projectsHandler.removeProject( wrapper.getProject() );

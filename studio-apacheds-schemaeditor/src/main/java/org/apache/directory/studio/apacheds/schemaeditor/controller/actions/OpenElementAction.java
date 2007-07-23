@@ -20,12 +20,26 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 
+import java.util.Iterator;
+
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -36,15 +50,20 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class OpenElementAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    /** The associated viewer */
+    private TreeViewer viewer;
+
+
     /**
      * Creates a new instance of DeleteSchemaElementAction.
      */
-    public OpenElementAction()
+    public OpenElementAction( TreeViewer viewer )
     {
         super( "Open" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_OPEN_ELEMENT );
         setEnabled( true );
+        this.viewer = viewer;
     }
 
 
@@ -53,7 +72,41 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
      */
     public void run()
     {
-        // TODO implement
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
+        {
+            Object selectedItem = iterator.next();
+            if ( selectedItem instanceof AttributeTypeWrapper )
+            {
+                try
+                {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
+                        new AttributeTypeEditorInput( ( ( AttributeTypeWrapper ) selectedItem ).getAttributeType() ),
+                        AttributeTypeEditor.ID );
+                }
+                catch ( PartInitException e )
+                {
+                    // TODO Add logging
+                }
+            }
+            else if ( selectedItem instanceof ObjectClassWrapper )
+            {
+                try
+                {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
+                        new ObjectClassEditorInput( ( ( ObjectClassWrapper ) selectedItem ).getObjectClass() ),
+                        ObjectClassEditor.ID );
+                }
+                catch ( PartInitException e )
+                {
+                    // TODO Add logging
+                }
+            }
+            else if ( ( selectedItem instanceof Folder ) || ( selectedItem instanceof SchemaWrapper ) )
+            {
+                viewer.setExpandedState( selectedItem, !viewer.getExpandedState( selectedItem ) );
+            }
+        }
     }
 
 

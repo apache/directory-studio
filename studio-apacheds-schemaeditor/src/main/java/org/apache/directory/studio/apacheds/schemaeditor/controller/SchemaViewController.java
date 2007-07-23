@@ -365,7 +365,7 @@ public class SchemaViewController
         newSchema = new NewSchemaAction();
         newAttributeType = new NewAttributeTypeAction();
         newObjectClass = new NewObjectClassAction();
-        openElement = new OpenElementAction();
+        openElement = new OpenElementAction( viewer );
         deleteSchemaElement = new DeleteSchemaElementAction();
         importSchemasFromOpenLdap = new ImportSchemasFromOpenLdapAction();
         importSchemasFromXml = new ImportSchemasFromXmlAction();
