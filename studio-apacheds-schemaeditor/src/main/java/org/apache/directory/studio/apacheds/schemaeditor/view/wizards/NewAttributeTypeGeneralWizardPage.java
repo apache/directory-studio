@@ -245,7 +245,10 @@ public class NewAttributeTypeGeneralWizardPage extends WizardPage
 
             schemaComboViewer.setInput( schemas );
 
-            schemaComboViewer.setSelection( new StructuredSelection( selectedSchema ) );
+            if ( selectedSchema != null )
+            {
+                schemaComboViewer.setSelection( new StructuredSelection( selectedSchema ) );
+            }
         }
     }
 
