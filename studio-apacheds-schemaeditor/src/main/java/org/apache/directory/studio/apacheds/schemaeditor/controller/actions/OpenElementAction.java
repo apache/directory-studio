@@ -27,6 +27,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributet
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema.SchemaEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema.SchemaEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
@@ -102,7 +104,19 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                     // TODO Add logging
                 }
             }
-            else if ( ( selectedItem instanceof Folder ) || ( selectedItem instanceof SchemaWrapper ) )
+            else if ( selectedItem instanceof SchemaWrapper )
+            {
+                try
+                {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
+                        new SchemaEditorInput( ( ( SchemaWrapper ) selectedItem ).getSchema() ), SchemaEditor.ID );
+                }
+                catch ( PartInitException e )
+                {
+                    // TODO Add logging
+                }
+            }
+            else if ( selectedItem instanceof Folder )
             {
                 viewer.setExpandedState( selectedItem, !viewer.getExpandedState( selectedItem ) );
             }
