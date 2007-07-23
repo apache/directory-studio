@@ -94,11 +94,11 @@ public class Activator extends AbstractUIPlugin
                     schemaChecker.enableModificationsListening();
 
                     // Reloading views
-                    schemaView = ( SchemaView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-                        SchemaView.ID );
+//                    schemaView = ( SchemaView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+//                        SchemaView.ID );
                     problemsView = ( ProblemsView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
                         ProblemsView.ID );
-                    schemaView.reloadViewer();
+//                    schemaView.reloadViewer();
                     problemsView.reloadViewer();
                 }
             }

@@ -46,9 +46,6 @@ public class SchemaView extends ViewPart
     /** The viewer */
     private TreeViewer treeViewer;
 
-    /** The content provider of the viewer */
-    private SchemaViewContentProvider contentProvider;
-
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -62,47 +59,6 @@ public class SchemaView extends ViewPart
 
         // Adding the controller
         new SchemaViewController( this );
-
-        //        DifferencesWidget differencesWidget = new DifferencesWidget();
-        //        differencesWidget.createWidget( parent );
-        //        
-        //        List<Difference> differences = new ArrayList<Difference>();
-        //        differences.add( new AddAliasDifference(null, null, "alias1") );
-        //        differences.add( new RemoveAliasDifference(null, null, "alias2") );
-        //        differences.add( new AddDescriptionDifference(null, null, "Description") );
-        //        differences.add( new ModifyDescriptionDifference(null, null, "Old description", "New Description") );
-        //        differences.add( new RemoveDescriptionDifference(null, null, "Description") );
-        //        differences.add( new AddEqualityDifference(null, null, "equality") );
-        //        differences.add( new ModifyEqualityDifference(null, null, "old equality", "new equality") );
-        //        differences.add( new RemoveEqualityDifference(null, null, "equality") );
-        //        differences.add( new AddMandatoryATDifference(null, null, "name") );
-        //        differences.add( new RemoveMandatoryATDifference(null, null, "name2") );
-        //        differences.add( new AddOptionalATDifference(null, null, "name") );
-        //        differences.add( new RemoveOptionalATDifference(null, null, "name2") );
-        //        differences.add( new AddOrderingDifference(null, null, "ordering") );
-        //        differences.add( new ModifyOrderingDifference(null, null, "old ordering", "new ordering") );
-        //        differences.add( new RemoveOrderingDifference(null, null, "ordering") );
-        //        differences.add( new AddSubstringDifference(null, null, "substring") );
-        //        differences.add( new ModifySubstringDifference(null, null, "old substring", "new substring") );
-        //        differences.add( new RemoveSubstringDifference(null, null, "substring") );
-        //        differences.add( new AddSuperiorATDifference(null, null, "supAT") );
-        //        differences.add( new ModifySuperiorATDifference(null, null, "oldSupAT", "newSupAT") );
-        //        differences.add( new RemoveSuperiorATDifference(null, null, "supAT") );
-        //        differences.add( new AddSuperiorOCDifference(null, null, "supOC") );
-        //        differences.add( new RemoveSuperiorOCDifference(null, null, "supOC") );
-        //        differences.add( new AddSyntaxDifference(null, null, "syntax") );
-        //        differences.add( new ModifySyntaxDifference(null, null, "syntax1", "syntax2") );
-        //        differences.add( new RemoveSyntaxDifference(null, null, "syntax") );
-        //        differences.add( new AddSyntaxLengthDifference(null, null, 1234) );
-        //        differences.add( new ModifySyntaxLengthDifference(null, null, 1234, 12345) );
-        //        differences.add( new RemoveSyntaxLengthDifference(null, null, 1234) );
-        //        differences.add( new ModifyClassTypeDifference(null, null, ObjectClassTypeEnum.AUXILIARY, ObjectClassTypeEnum.ABSTRACT) );
-        //        differences.add( new ModifyCollectiveDifference(null, null, false, true) );
-        //        differences.add( new ModifyNoUserModificationDifference(null, null, true, false) );
-        //        differences.add( new ModifyObsoleteDifference(null, null, true, false) );
-        //        differences.add( new ModifySingleValueDifference(null, null, true, false) );
-        //        differences.add( new ModifyUsageDifference(null, null, UsageEnum.DISTRIBUTED_OPERATION, UsageEnum.DSA_OPERATION) );
-        //        differencesWidget.setInput( differences );
     }
 
 
@@ -112,8 +68,7 @@ public class SchemaView extends ViewPart
     private void initViewer( Composite parent )
     {
         treeViewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new SchemaViewContentProvider();
-        treeViewer.setContentProvider( contentProvider );
+        treeViewer.setContentProvider( new SchemaViewContentProvider() );
         treeViewer.setLabelProvider( new DecoratingLabelProvider( new SchemaViewLabelProvider(), Activator.getDefault()
             .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
     }

@@ -23,6 +23,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
@@ -38,6 +39,10 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewS
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenElementAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewPreferenceAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewSortingDialogAction;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -47,6 +52,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Attribute
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder.FolderType;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -57,6 +64,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IEditorInput;
@@ -85,6 +93,230 @@ public class SchemaViewController
 
     /** The TreeViewer */
     private TreeViewer viewer;
+
+    /** The SchemaHandlerListener */
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
+    {
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeAdded(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
+        public void attributeTypeAdded( AttributeTypeImpl at )
+        {
+            TreeNode schemaWrapper = findSchemaWrapperInTree( at.getSchema() );
+
+            if ( schemaWrapper != null )
+            {
+                int group = Activator.getDefault().getPreferenceStore().getInt(
+                    PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+                if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                {
+                    List<TreeNode> children = schemaWrapper.getChildren();
+                    for ( TreeNode child : children )
+                    {
+                        Folder folder = ( Folder ) child;
+                        if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
+                        {
+                            folder.addChild( new AttributeTypeWrapper( at, folder ) );
+                            break;
+                        }
+                    }
+                }
+                else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                {
+                    schemaWrapper.addChild( new AttributeTypeWrapper( at, schemaWrapper ) );
+                }
+
+                viewer.refresh( schemaWrapper );
+            }
+            else
+            {
+                // An error has occurred we need to reload the view.
+                view.reloadViewer();
+            }
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeModified(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
+        public void attributeTypeModified( AttributeTypeImpl at )
+        {
+            AttributeTypeWrapper atw = findAttributeTypeWrapperInTree( at );
+
+            if ( atw != null )
+            {
+                viewer.update( atw, null );
+            }
+            else
+            {
+                // An error has occurred we need to reload the view.
+                view.reloadViewer();
+            }
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#attributeTypeRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
+         */
+        public void attributeTypeRemoved( AttributeTypeImpl at )
+        {
+            AttributeTypeWrapper atw = findAttributeTypeWrapperInTree( at );
+
+            if ( atw != null )
+            {
+                atw.getParent().removeChild( atw );
+                viewer.refresh( atw.getParent() );
+            }
+            else
+            {
+                // An error has occurred we need to reload the view.
+                view.reloadViewer();
+            }
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassAdded(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
+        public void objectClassAdded( ObjectClassImpl oc )
+        {
+            TreeNode schemaWrapper = findSchemaWrapperInTree( oc.getSchema() );
+
+            if ( schemaWrapper != null )
+            {
+                int group = Activator.getDefault().getPreferenceStore().getInt(
+                    PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+                if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                {
+                    List<TreeNode> children = schemaWrapper.getChildren();
+                    for ( TreeNode child : children )
+                    {
+                        Folder folder = ( Folder ) child;
+                        if ( folder.getType() == FolderType.OBJECT_CLASS )
+                        {
+                            folder.addChild( new ObjectClassWrapper( oc, folder ) );
+                            break;
+                        }
+                    }
+                }
+                else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                {
+                    schemaWrapper.addChild( new ObjectClassWrapper( oc, schemaWrapper ) );
+                }
+
+                viewer.refresh( schemaWrapper );
+            }
+            else
+            {
+                // An error has occurred we need to reload the view.
+                view.reloadViewer();
+            }
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassModified(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
+        public void objectClassModified( ObjectClassImpl oc )
+        {
+            ObjectClassWrapper ocw = findObjectClassWrapperInTree( oc );
+
+            if ( ocw != null )
+            {
+                viewer.update( ocw, null );
+            }
+            else
+            {
+                // An error has occurred we need to reload the view.
+                view.reloadViewer();
+            }
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#objectClassRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl)
+         */
+        public void objectClassRemoved( ObjectClassImpl oc )
+        {
+            ObjectClassWrapper ocw = findObjectClassWrapperInTree( oc );
+
+            if ( ocw != null )
+            {
+                ocw.getParent().removeChild( ocw );
+                viewer.refresh( ocw.getParent() );
+            }
+            else
+            {
+                // An error has occurred we need to reload the view.
+                view.reloadViewer();
+            }
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#schemaAdded(org.apache.directory.studio.apacheds.schemaeditor.model.Schema)
+         */
+        public void schemaAdded( Schema schema )
+        {
+            TreeNode rootNode = ( TreeNode ) viewer.getInput();
+            SchemaWrapper schemaWrapper = new SchemaWrapper( schema, rootNode );
+            rootNode.addChild( schemaWrapper );
+
+            int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+            if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+            {
+                Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
+                schemaWrapper.addChild( atFolder );
+
+                for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
+                {
+                    atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
+                }
+
+                Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
+                schemaWrapper.addChild( ocFolder );
+
+                for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
+                {
+                    ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
+                }
+            }
+            else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+            {
+                for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
+                {
+                    schemaWrapper.addChild( new AttributeTypeWrapper( attributeType, schemaWrapper ) );
+                }
+
+                for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
+                {
+                    schemaWrapper.addChild( new ObjectClassWrapper( objectClass, schemaWrapper ) );
+                }
+            }
+
+            viewer.refresh( rootNode );
+            viewer.setSelection( new StructuredSelection( schemaWrapper ) );
+        }
+
+
+        /* (non-Javadoc)
+         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener#schemaRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.Schema)
+         */
+        public void schemaRemoved( Schema schema )
+        {
+            TreeNode schemaWrapper = findSchemaWrapperInTree( schema.getName() );
+            if ( schemaWrapper != null )
+            {
+                schemaWrapper.getParent().removeChild( schemaWrapper );
+                viewer.refresh( viewer.getInput() );
+            }
+            else
+            {
+                // An error has occurred we need to reload the view.
+                view.reloadViewer();
+            }
+        }
+    };
 
     // The Actions
     private Action connect;
@@ -117,6 +349,7 @@ public class SchemaViewController
         initToolbar();
         initMenu();
         initContextMenu();
+        initProjectsHandlerListener();
         initDoubleClickListener();
         initAuthorizedPrefs();
         initPreferencesListener();
@@ -216,11 +449,71 @@ public class SchemaViewController
 
 
     /**
+     * Initializes the ProjectsHandlerListener.
+     */
+    private void initProjectsHandlerListener()
+    {
+        Activator.getDefault().getProjectsHandler().addListener( new ProjectsHandlerAdapter()
+        {
+            public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                if ( oldProject != null )
+                {
+                    removeSchemaHandlerListener( oldProject );
+                }
+
+                if ( newProject != null )
+                {
+                    addSchemaHandlerListener( newProject );
+                    view.reloadViewer();
+                }
+                else
+                {
+                    viewer.setInput( null );
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Adds the SchemaHandlerListener.
+     *
+     * @param project
+     *      the project
+     */
+    private void addSchemaHandlerListener( Project project )
+    {
+        SchemaHandler schemaHandler = project.getSchemaHandler();
+        if ( schemaHandler != null )
+        {
+            schemaHandler.addListener( schemaHandlerListener );
+        }
+    }
+
+
+    /**
+     * Removes the SchemaHandlerListener.
+     *
+     * @param project
+     *      the project
+     */
+    private void removeSchemaHandlerListener( Project project )
+    {
+        SchemaHandler schemaHandler = project.getSchemaHandler();
+        if ( schemaHandler != null )
+        {
+            schemaHandler.removeListener( schemaHandlerListener );
+        }
+    }
+
+
+    /**
      * Initializes the DoubleClickListener.
      */
     private void initDoubleClickListener()
     {
-        view.getViewer().addDoubleClickListener( new IDoubleClickListener()
+        viewer.addDoubleClickListener( new IDoubleClickListener()
         {
             public void doubleClick( DoubleClickEvent event )
             {
@@ -264,7 +557,7 @@ public class SchemaViewController
                     catch ( PartInitException e )
                     {
                         //                        logger.debug( "error when opening the editor" ); //$NON-NLS-1$
-                        e.printStackTrace();
+                        e.printStackTrace(); // TODO
                     }
                 }
             }
@@ -316,5 +609,192 @@ public class SchemaViewController
                 }
             }
         } );
+    }
+
+
+    /**
+     * Finds the parent node of a given element (AT or OT).
+     *
+     * @param element
+     *      the element
+     * @return
+     *      the parent node of a given element (AT or OT)
+     */
+    private TreeNode findParentElement( SchemaObject element )
+    {
+        // Finding the associated SchemaWrapper
+        TreeNode schemaWrapper = findSchemaWrapperInTree( element.getSchema() );
+        if ( schemaWrapper == null )
+        {
+            return null;
+        }
+
+        // Finding the correct node
+        TreeNode parentNode = null;
+        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+        {
+            Object[] children = ( ( ITreeContentProvider ) viewer.getContentProvider() ).getChildren( schemaWrapper );
+            for ( Object child : children )
+            {
+                Folder folder = ( Folder ) child;
+
+                if ( element instanceof AttributeTypeImpl )
+                {
+                    if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
+                    {
+                        parentNode = folder;
+                    }
+                }
+                else if ( element instanceof ObjectClassImpl )
+                {
+                    if ( folder.getType() == FolderType.OBJECT_CLASS )
+                    {
+                        parentNode = folder;
+                    }
+                }
+            }
+        }
+        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+        {
+            parentNode = schemaWrapper;
+        }
+
+        return parentNode;
+    }
+
+
+    /**
+     * Finds the corresponding SchemaWrapper in the Tree.
+     *
+     * @param name
+     *      the name of the SchemaWrapper to search
+     * @return
+     *      the corresponding SchemaWrapper in the Tree
+     */
+    private SchemaWrapper findSchemaWrapperInTree( String name )
+    {
+        List<TreeNode> schemaWrappers = ( ( TreeNode ) viewer.getInput() ).getChildren();
+        for ( TreeNode sw : schemaWrappers )
+        {
+            if ( ( ( SchemaWrapper ) sw ).getSchema().getName().toLowerCase().equals( name.toLowerCase() ) )
+            {
+                return ( SchemaWrapper ) sw;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Finds the corresponding AttributeTypeWrapper in the Tree.
+     *
+     * @param at
+     *      the attribute type
+     * @return
+     *      the corresponding AttributeTypeWrapper in the Tree
+     */
+    private AttributeTypeWrapper findAttributeTypeWrapperInTree( AttributeTypeImpl at )
+    {
+        SchemaWrapper schemaWrapper = findSchemaWrapperInTree( at.getSchema() );
+        if ( schemaWrapper == null )
+        {
+            return null;
+        }
+
+        // Finding the correct node
+        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+        List<TreeNode> children = schemaWrapper.getChildren();
+        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+        {
+            for ( TreeNode child : children )
+            {
+                Folder folder = ( Folder ) child;
+                if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
+                {
+                    for ( TreeNode folderChild : folder.getChildren() )
+                    {
+                        AttributeTypeWrapper atw = ( AttributeTypeWrapper ) folderChild;
+                        if ( atw.getAttributeType().equals( at ) )
+                        {
+                            return atw;
+                        }
+                    }
+                }
+            }
+        }
+        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+        {
+            for ( Object child : children )
+            {
+                if ( child instanceof AttributeTypeImpl )
+                {
+                    AttributeTypeWrapper atw = ( AttributeTypeWrapper ) child;
+                    if ( atw.getAttributeType().equals( at ) )
+                    {
+                        return atw;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Finds the corresponding ObjectClassWrapper in the Tree.
+     *
+     * @param oc
+     *      the attribute type
+     * @return
+     *      the corresponding ObjectClassWrapper in the Tree
+     */
+    private ObjectClassWrapper findObjectClassWrapperInTree( ObjectClassImpl oc )
+    {
+        SchemaWrapper schemaWrapper = findSchemaWrapperInTree( oc.getSchema() );
+        if ( schemaWrapper == null )
+        {
+            return null;
+        }
+
+        // Finding the correct node
+        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+        List<TreeNode> children = schemaWrapper.getChildren();
+        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+        {
+            for ( TreeNode child : children )
+            {
+                Folder folder = ( Folder ) child;
+                if ( folder.getType() == FolderType.OBJECT_CLASS )
+                {
+                    for ( TreeNode folderChild : folder.getChildren() )
+                    {
+                        ObjectClassWrapper ocw = ( ObjectClassWrapper ) folderChild;
+                        if ( ocw.getObjectClass().equals( oc ) )
+                        {
+                            return ocw;
+                        }
+                    }
+                }
+            }
+        }
+        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+        {
+            for ( Object child : children )
+            {
+                if ( child instanceof ObjectClassWrapper )
+                {
+                    ObjectClassWrapper ocw = ( ObjectClassWrapper ) child;
+                    if ( ocw.getObjectClass().equals( oc ) )
+                    {
+                        return ocw;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

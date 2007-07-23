@@ -137,31 +137,28 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                         {
                             Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
                             schemaWrapper.addChild( atFolder );
-                            Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
-                            schemaWrapper.addChild( ocFolder );
 
-                            List<AttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
-                            for ( AttributeTypeImpl attributeType : attributeTypes )
+                            for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
                             {
                                 atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
                             }
 
-                            List<ObjectClassImpl> objectClasses = schema.getObjectClasses();
-                            for ( ObjectClassImpl objectClass : objectClasses )
+                            Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
+                            schemaWrapper.addChild( ocFolder );
+
+                            for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
                             {
                                 ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
                             }
                         }
                         else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
                         {
-                            List<AttributeTypeImpl> attributeTypes = schema.getAttributeTypes();
-                            for ( AttributeTypeImpl attributeType : attributeTypes )
+                            for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
                             {
                                 schemaWrapper.addChild( new AttributeTypeWrapper( attributeType, schemaWrapper ) );
                             }
 
-                            List<ObjectClassImpl> objectClasses = schema.getObjectClasses();
-                            for ( ObjectClassImpl objectClass : objectClasses )
+                            for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
                             {
                                 schemaWrapper.addChild( new ObjectClassWrapper( objectClass, schemaWrapper ) );
                             }
