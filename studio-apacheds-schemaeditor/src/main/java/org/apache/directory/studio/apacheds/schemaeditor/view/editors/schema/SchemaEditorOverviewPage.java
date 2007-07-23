@@ -285,8 +285,8 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        attributeTypesSection.setDescription( "The schema" + schema.getName()
-            + "contains the following attribute types." );
+        attributeTypesSection.setDescription( "The schema '" + schema.getName()
+            + "' contains the following attribute types." );
         attributeTypesSection.setText( "Attribute Types" );
 
         // Creating the layout of the section
@@ -316,8 +316,8 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        objectClassesSection
-            .setDescription( "The_schema" + schema.getName() + "contains the following object classes." );
+        objectClassesSection.setDescription( "The schema '" + schema.getName()
+            + "' contains the following object classes." );
         objectClassesSection.setText( "Object Classes" );
 
         // Creating the layout of the section
