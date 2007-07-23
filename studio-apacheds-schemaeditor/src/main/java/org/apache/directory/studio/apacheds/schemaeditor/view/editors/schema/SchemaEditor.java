@@ -43,7 +43,7 @@ public class SchemaEditor extends FormEditor
     private static Logger logger = Logger.getLogger( SchemaEditor.class );
 
     /** The ID of the Editor */
-    public static final String ID = Activator.PLUGIN_ID + ".view.schemaformeditor"; //$NON-NLS-1$
+    public static final String ID = Activator.PLUGIN_ID + ".view.schemaEditor"; //$NON-NLS-1$
 
     /** The Overview Page */
     private SchemaEditorOverviewPage overview;

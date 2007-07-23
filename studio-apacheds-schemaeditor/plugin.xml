@@ -114,7 +114,7 @@
 		class="org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema.SchemaEditor"
 		default="false"
 		icon="resources/icons/schema.gif"
-		id="org.apache.directory.studio.apacheds.schemaeditor.view.schemaformeditor"
+		id="org.apache.directory.studio.apacheds.schemaeditor.view.schemaEditor"
 		name="Schema Editor"/>
 </extension>
  <extension
