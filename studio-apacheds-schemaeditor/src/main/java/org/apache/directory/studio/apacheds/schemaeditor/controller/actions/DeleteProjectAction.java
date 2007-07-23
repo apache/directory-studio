@@ -25,6 +25,8 @@ import java.util.Iterator;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -121,7 +123,15 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
                 for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                 {
                     ProjectWrapper wrapper = ( ProjectWrapper ) iterator.next();
-                    projectsHandler.removeProject( wrapper.getProject() );
+                    Project project = wrapper.getProject();
+
+                    if ( project.getState() == ProjectState.OPEN )
+                    {
+                        // Closing the project before removing it. 
+                        projectsHandler.closeProject( project );
+                    }
+
+                    projectsHandler.removeProject( project );
                 }
             }
         }
