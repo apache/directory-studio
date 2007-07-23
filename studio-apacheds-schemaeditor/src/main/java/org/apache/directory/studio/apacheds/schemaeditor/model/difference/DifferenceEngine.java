@@ -78,14 +78,14 @@ public class DifferenceEngine
                 differences.add( schemaDifference );
 
                 // Adding attribute types
-                for ( AttributeTypeImpl at : schemaFromL2.getAttributeTypes() )
+                for ( AttributeTypeImpl at : schemaFromL1.getAttributeTypes() )
                 {
                     schemaDifference.addAttributeTypeDifference( new AttributeTypeDifference( null, at,
                         DifferenceType.REMOVED ) );
                 }
 
                 // Adding object classes
-                for ( ObjectClassImpl oc : schemaFromL2.getObjectClasses() )
+                for ( ObjectClassImpl oc : schemaFromL1.getObjectClasses() )
                 {
                     schemaDifference.addObjectClassDifference( new ObjectClassDifference( null, oc,
                         DifferenceType.REMOVED ) );
