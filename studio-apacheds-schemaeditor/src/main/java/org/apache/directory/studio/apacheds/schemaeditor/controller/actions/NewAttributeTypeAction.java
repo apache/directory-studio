@@ -22,11 +22,18 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewAttributeTypeWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -42,10 +49,14 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class NewAttributeTypeAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    /** The associated viewer */
+    private TreeViewer viewer;
+
+
     /**
      * Creates a new instance of NewAttributeTypeAction.
      */
-    public NewAttributeTypeAction()
+    public NewAttributeTypeAction( TreeViewer viewer )
     {
         super( "New Attribute Type" );
         setToolTipText( getText() );
@@ -53,6 +64,7 @@ public class NewAttributeTypeAction extends Action implements IWorkbenchWindowAc
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_ATTRIBUTE_TYPE_NEW ) );
         setEnabled( false );
+        this.viewer = viewer;
     }
 
 
@@ -61,9 +73,53 @@ public class NewAttributeTypeAction extends Action implements IWorkbenchWindowAc
      */
     public void run()
     {
+        // Getting the selection
+        Schema selectedSchema = null;
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+        {
+            Object firstElement = selection.getFirstElement();
+            if ( firstElement instanceof SchemaWrapper )
+            {
+                selectedSchema = ( ( SchemaWrapper ) firstElement ).getSchema();
+            }
+            else if ( firstElement instanceof Folder )
+            {
+                selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) firstElement ).getParent() ).getSchema();
+            }
+            else if ( firstElement instanceof AttributeTypeWrapper )
+            {
+                TreeNode parent = ( ( AttributeTypeWrapper ) firstElement ).getParent();
+
+                if ( parent instanceof Folder )
+                {
+                    selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) parent ).getParent() ).getSchema();
+
+                }
+                else if ( parent instanceof SchemaWrapper )
+                {
+                    selectedSchema = ( ( SchemaWrapper ) parent ).getSchema();
+                }
+            }
+            else if ( firstElement instanceof ObjectClassWrapper )
+            {
+                TreeNode parent = ( ( ObjectClassWrapper ) firstElement ).getParent();
+
+                if ( parent instanceof Folder )
+                {
+                    selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) parent ).getParent() ).getSchema();
+                }
+                else if ( parent instanceof SchemaWrapper )
+                {
+                    selectedSchema = ( ( SchemaWrapper ) parent ).getSchema();
+                }
+            }
+        }
+
         // Instantiates and initializes the wizard
         NewAttributeTypeWizard wizard = new NewAttributeTypeWizard();
         wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
+        wizard.setSelectedSchema( selectedSchema );
         // Instantiates the wizard container with the wizard and opens it
         WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );
         dialog.create();

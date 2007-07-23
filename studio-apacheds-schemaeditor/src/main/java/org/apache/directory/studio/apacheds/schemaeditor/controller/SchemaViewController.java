@@ -368,7 +368,7 @@ public class SchemaViewController
     {
         connect = new ConnectAction( view );
         newSchema = new NewSchemaAction();
-        newAttributeType = new NewAttributeTypeAction();
+        newAttributeType = new NewAttributeTypeAction( viewer );
         newObjectClass = new NewObjectClassAction( viewer );
         openElement = new OpenElementAction( viewer );
         deleteSchemaElement = new DeleteSchemaElementAction( viewer );

@@ -20,8 +20,6 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 
-import java.util.Iterator;
-
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;

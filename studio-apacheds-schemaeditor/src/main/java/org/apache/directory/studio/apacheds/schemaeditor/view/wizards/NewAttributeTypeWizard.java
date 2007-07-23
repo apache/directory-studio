@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -36,6 +37,9 @@ import org.eclipse.ui.IWorkbench;
  */
 public class NewAttributeTypeWizard extends Wizard implements INewWizard
 {
+    /** The selected schema */
+    private Schema selectedSchema;
+
     // The pages of the wizards
     private NewAttributeTypeGeneralWizardPage generalPage;
     private NewAttributeTypeContentWizardPage contentPage;
@@ -49,6 +53,7 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
     {
         // Creating pages
         generalPage = new NewAttributeTypeGeneralWizardPage();
+        generalPage.setSelectedSchema( selectedSchema );
         contentPage = new NewAttributeTypeContentWizardPage();
         matchingRulesPage = new NewAttributeTypeMatchingRulesWizardPage();
 
@@ -79,12 +84,12 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
         newAT.setEqualityName( matchingRulesPage.getEqualityMatchingRuleValue() );
         newAT.setOrderingName( matchingRulesPage.getOrderingMatchingRuleValue() );
         newAT.setSubstrName( matchingRulesPage.getSubstringMatchingRuleValue() );
-        
+
         Activator.getDefault().getSchemaHandler().addAttributeType( newAT );
-        
+
         return true;
     }
-    
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
@@ -92,5 +97,17 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         // Nothing to do.
+    }
+
+
+    /**
+     * Sets the selected schema.
+     *
+     * @param schema
+     *      the selected schema
+     */
+    public void setSelectedSchema( Schema schema )
+    {
+        selectedSchema = schema;
     }
 }

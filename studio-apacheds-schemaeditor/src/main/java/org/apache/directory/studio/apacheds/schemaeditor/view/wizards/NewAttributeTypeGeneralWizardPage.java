@@ -68,6 +68,9 @@ public class NewAttributeTypeGeneralWizardPage extends WizardPage
     /** The aliases */
     private String[] aliases;
 
+    /** The selected schema */
+    private Schema selectedSchema;
+
     // UI fields
     private ComboViewer schemaComboViewer;
     private Text oidText;
@@ -222,6 +225,11 @@ public class NewAttributeTypeGeneralWizardPage extends WizardPage
     private void initFields()
     {
         schemaComboViewer.setInput( schemaHandler.getSchemas() );
+
+        if ( selectedSchema != null )
+        {
+            schemaComboViewer.setSelection( new StructuredSelection( selectedSchema ) );
+        }
     }
 
 
@@ -359,5 +367,17 @@ public class NewAttributeTypeGeneralWizardPage extends WizardPage
     public String getDescriptionValue()
     {
         return descriptionText.getText();
+    }
+
+
+    /**
+     * Sets the selected schema.
+     *
+     * @param schema
+     *      the selected schema
+     */
+    public void setSelectedSchema( Schema schema )
+    {
+        selectedSchema = schema;
     }
 }
