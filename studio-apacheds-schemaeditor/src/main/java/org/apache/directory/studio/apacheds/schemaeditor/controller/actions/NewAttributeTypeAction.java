@@ -52,7 +52,7 @@ public class NewAttributeTypeAction extends Action implements IWorkbenchWindowAc
         setId( PluginConstants.CMD_NEW_ATTRIBUTE_TYPE );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_ATTRIBUTE_TYPE_NEW ) );
-        setEnabled( true );
+        setEnabled( false );
     }
 
 

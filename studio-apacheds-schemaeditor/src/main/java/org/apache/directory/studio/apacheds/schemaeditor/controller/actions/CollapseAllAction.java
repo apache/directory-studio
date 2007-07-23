@@ -56,7 +56,7 @@ public class CollapseAllAction extends Action implements IWorkbenchWindowActionD
         setId( PluginConstants.CMD_COLLAPSE_ALL );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_COLLAPSE_ALL ) );
-        setEnabled( true );
+        setEnabled( false );
         this.viewer = viewer;
     }
 

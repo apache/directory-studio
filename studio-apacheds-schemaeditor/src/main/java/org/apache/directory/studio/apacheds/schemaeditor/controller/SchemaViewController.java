@@ -461,6 +461,14 @@ public class SchemaViewController
                 {
                     removeSchemaHandlerListener( oldProject );
                 }
+                else
+                {
+                    viewer.getTree().setEnabled( true );
+                    newSchema.setEnabled( true );
+                    newAttributeType.setEnabled( true );
+                    newObjectClass.setEnabled( true );
+                    collapseAll.setEnabled( true );
+                }
 
                 if ( newProject != null )
                 {
@@ -470,6 +478,11 @@ public class SchemaViewController
                 else
                 {
                     viewer.setInput( null );
+                    viewer.getTree().setEnabled( false );
+                    newSchema.setEnabled( false );
+                    newAttributeType.setEnabled( false );
+                    newObjectClass.setEnabled( false );
+                    collapseAll.setEnabled( false );
                 }
             }
         } );

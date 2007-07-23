@@ -52,7 +52,7 @@ public class NewSchemaAction extends Action implements IWorkbenchWindowActionDel
         setId( PluginConstants.CMD_NEW_SCHEMA );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SCHEMA_NEW ) );
-        setEnabled( true );
+        setEnabled( false );
     }
 
 

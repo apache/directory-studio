@@ -52,7 +52,7 @@ public class NewObjectClassAction extends Action implements IWorkbenchWindowActi
         setId( PluginConstants.CMD_NEW_OBJECT_CLASS );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_OBJECT_CLASS_NEW ) );
-        setEnabled( true );
+        setEnabled( false );
     }
 
 
