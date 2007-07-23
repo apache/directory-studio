@@ -666,7 +666,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         // General Information Section
         Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        section_general_information.setDescription( "Specify general information (name, OID, etc.)." );
+        section_general_information.setDescription( "Specify general information (aliases, OID, etc.)." );
         section_general_information.setText( "General information" );
 
         // Creating the layout of the section

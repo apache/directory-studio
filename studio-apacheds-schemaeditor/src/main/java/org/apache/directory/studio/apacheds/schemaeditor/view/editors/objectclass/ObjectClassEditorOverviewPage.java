@@ -859,8 +859,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         // General Information Section
         Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section_general_information.setDescription( "General_Information_Section_Description" ); //TODO
-        section_general_information.setText( "General_Information_Section_Text" ); //TODO
+        section_general_information.setDescription( "Specify general information (aliases, OID, etc.)." );
+        section_general_information.setText( "General information" );
         section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true ) );
 
         // Creating the layout of the section
@@ -870,7 +870,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         section_general_information.setClient( client_general_information );
 
         // ALIASES Button
-        toolkit.createLabel( client_general_information, "Aliases" );
+        toolkit.createLabel( client_general_information, "Aliases:" );
         aliasesLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
@@ -878,24 +878,24 @@ public class ObjectClassEditorOverviewPage extends FormPage
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
-        toolkit.createLabel( client_general_information, "OID" );
+        toolkit.createLabel( client_general_information, "OID:" );
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SCHEMA Field
-        schemaLink = toolkit.createHyperlink( client_general_information, "Schema", SWT.WRAP );
+        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // DESCRIPTION Field
-        toolkit.createLabel( client_general_information, "Description" );
+        toolkit.createLabel( client_general_information, "Description:" );
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
         GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         descriptionGridData.heightHint = 42;
         descriptionText.setLayoutData( descriptionGridData );
 
         // SUPERIORS Table
-        toolkit.createLabel( client_general_information, "Superior classes" );
+        toolkit.createLabel( client_general_information, "Superior classes:" );
         superiorsTable = toolkit.createTable( client_general_information, SWT.SINGLE | SWT.V_SCROLL );
         GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         gridData.heightHint = 45;
@@ -936,8 +936,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         // MANDATORY ATTRIBUTES Section
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section.setText( "Mandatory_Attribute_Section_Text" ); //TODO
-        section.setDescription( "Mandatory_Attribute_Section_Description" ); //TODO
+        section.setText( "Mandatory attributes" );
+        section.setDescription( "Specify the mandatory attribute types." );
         section.setExpanded( true );
         Composite client = toolkit.createComposite( section );
         section.setClient( client );
@@ -981,8 +981,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         // OPTIONAL ATTRIBUTES Section
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section.setText( "Optionnal_Attributes_Section_Text" ); //TODO
-        section.setDescription( "Optionnal_Attributes_Section_Description" ); //TODO
+        section.setText( "Optional attributes" );
+        section.setDescription( "Specify the optional attribute types." );
         section.setExpanded( true );
         Composite client = toolkit.createComposite( section );
         section.setClient( client );
