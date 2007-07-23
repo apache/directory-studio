@@ -34,7 +34,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.action.Action;

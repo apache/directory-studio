@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -36,6 +37,9 @@ import org.eclipse.ui.IWorkbench;
  */
 public class NewObjectClassWizard extends Wizard implements INewWizard
 {
+    /** The selected schema */
+    private Schema selectedSchema;
+
     // The pages of the wizards
     private NewObjectClassGeneralPageWizardPage generalPage;
     private NewObjectClassContentWizardPage contentPage;
@@ -50,6 +54,7 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
     {
         // Creating pages
         generalPage = new NewObjectClassGeneralPageWizardPage();
+        generalPage.setSelectedSchema( selectedSchema );
         contentPage = new NewObjectClassContentWizardPage();
         mandatoryAttributesPage = new NewObjectClassMandatoryAttributesPage();
         optionalAttributesPage = new NewObjectClassOptionalAttributesPage();
@@ -113,5 +118,17 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
     public NewObjectClassOptionalAttributesPage getOptionalAttributesPage()
     {
         return optionalAttributesPage;
+    }
+
+
+    /**
+     * Sets the selected schema.
+     *
+     * @param schema
+     *      the selected schema
+     */
+    public void setSelectedSchema( Schema schema )
+    {
+        selectedSchema = schema;
     }
 }

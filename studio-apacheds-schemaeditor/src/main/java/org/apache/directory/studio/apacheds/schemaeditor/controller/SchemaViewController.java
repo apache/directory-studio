@@ -23,7 +23,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
@@ -64,9 +63,9 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
@@ -258,8 +257,8 @@ public class SchemaViewController
          */
         public void schemaAdded( Schema schema )
         {
-            TreeNode rootNode = ( TreeNode ) viewer.getInput();
-            SchemaWrapper schemaWrapper = new SchemaWrapper( schema, rootNode );
+            final TreeNode rootNode = ( TreeNode ) viewer.getInput();
+            final SchemaWrapper schemaWrapper = new SchemaWrapper( schema, rootNode );
             rootNode.addChild( schemaWrapper );
 
             int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
@@ -294,8 +293,14 @@ public class SchemaViewController
                 }
             }
 
-            viewer.refresh( rootNode );
-            viewer.setSelection( new StructuredSelection( schemaWrapper ) );
+            Display.getDefault().asyncExec( new Runnable()
+            {
+                public void run()
+                {
+                    viewer.refresh( rootNode );
+                    viewer.setSelection( new StructuredSelection( schemaWrapper ) );
+                }
+            } );
         }
 
 
@@ -364,7 +369,7 @@ public class SchemaViewController
         connect = new ConnectAction( view );
         newSchema = new NewSchemaAction();
         newAttributeType = new NewAttributeTypeAction();
-        newObjectClass = new NewObjectClassAction();
+        newObjectClass = new NewObjectClassAction( viewer );
         openElement = new OpenElementAction( viewer );
         deleteSchemaElement = new DeleteSchemaElementAction( viewer );
         importSchemasFromOpenLdap = new ImportSchemasFromOpenLdapAction();
@@ -622,58 +627,6 @@ public class SchemaViewController
                 }
             }
         } );
-    }
-
-
-    /**
-     * Finds the parent node of a given element (AT or OT).
-     *
-     * @param element
-     *      the element
-     * @return
-     *      the parent node of a given element (AT or OT)
-     */
-    private TreeNode findParentElement( SchemaObject element )
-    {
-        // Finding the associated SchemaWrapper
-        TreeNode schemaWrapper = findSchemaWrapperInTree( element.getSchema() );
-        if ( schemaWrapper == null )
-        {
-            return null;
-        }
-
-        // Finding the correct node
-        TreeNode parentNode = null;
-        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-        {
-            Object[] children = ( ( ITreeContentProvider ) viewer.getContentProvider() ).getChildren( schemaWrapper );
-            for ( Object child : children )
-            {
-                Folder folder = ( Folder ) child;
-
-                if ( element instanceof AttributeTypeImpl )
-                {
-                    if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
-                    {
-                        parentNode = folder;
-                    }
-                }
-                else if ( element instanceof ObjectClassImpl )
-                {
-                    if ( folder.getType() == FolderType.OBJECT_CLASS )
-                    {
-                        parentNode = folder;
-                    }
-                }
-            }
-        }
-        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-        {
-            parentNode = schemaWrapper;
-        }
-
-        return parentNode;
     }
 
 
