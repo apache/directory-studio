@@ -235,7 +235,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             }
             else if ( source instanceof ObjectClassImpl )
             {
-                message.append( "Abject class" );
+                message.append( "Object class" );
             }
             message.append( " with OID '" + source.getOid() + "' does not have any alias." );
         }
