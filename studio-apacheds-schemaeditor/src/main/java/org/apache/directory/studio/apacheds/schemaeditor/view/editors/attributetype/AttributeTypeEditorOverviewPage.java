@@ -666,8 +666,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         // General Information Section
         Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        section_general_information.setDescription( "General Section Description" ); //TODO
-        section_general_information.setText( "General Section Text" ); //TODO
+        section_general_information.setDescription( "Specify general information (name, OID, etc.)." );
+        section_general_information.setText( "General information" );
 
         // Creating the layout of the section
         Composite client_general_information = toolkit.createComposite( section_general_information );
@@ -680,7 +680,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         // Adding elements to the section
         // ALIASES Button
-        toolkit.createLabel( client_general_information, "Aliases" );
+        toolkit.createLabel( client_general_information, "Aliases:" );
         aliasesLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
@@ -688,24 +688,24 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
-        toolkit.createLabel( client_general_information, "OID" );
+        toolkit.createLabel( client_general_information, "OID:" );
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
 
         // DESCRIPTION Field
-        toolkit.createLabel( client_general_information, "Description" );
+        toolkit.createLabel( client_general_information, "Description:" );
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
         GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         descriptionGridData.heightHint = 42;
         descriptionText.setLayoutData( descriptionGridData );
 
         // SCHEMA Field
-        schemaLink = toolkit.createHyperlink( client_general_information, "Schema", SWT.WRAP );
+        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SUP Combo
-        supLabel = toolkit.createHyperlink( client_general_information, "Superior_type", SWT.WRAP );
+        supLabel = toolkit.createHyperlink( client_general_information, "Superior type:", SWT.WRAP );
         supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         supComboViewer = new ComboViewer( supCombo );
@@ -713,13 +713,13 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         supComboViewer.setLabelProvider( new ATESuperiorComboLabelProvider() );
 
         // USAGE Combo
-        toolkit.createLabel( client_general_information, "Usage" );
+        toolkit.createLabel( client_general_information, "Usage:" );
         usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         initUsageCombo();
 
         // SYNTAX Combo
-        toolkit.createLabel( client_general_information, "Synatx" );
+        toolkit.createLabel( client_general_information, "Syntax:" );
         syntaxCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         syntaxComboViewer = new ComboViewer( syntaxCombo );
@@ -727,7 +727,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         syntaxComboViewer.setLabelProvider( new ATESyntaxComboLabelProvider() );
 
         // SYNTAX LENGTH Field
-        toolkit.createLabel( client_general_information, "Syntax_length" );
+        toolkit.createLabel( client_general_information, "Syntax length:" );
         syntaxLengthText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         syntaxLengthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
@@ -765,8 +765,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         // Matching Rules Section
         Section section_matching_rules = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        section_matching_rules.setDescription( "AttributeTypeEditorOverviewPage.Specify_matching_rules" ); //TODO
-        section_matching_rules.setText( "AttributeTypeEditorOverviewPage.Matching_Rules" ); //TODO
+        section_matching_rules.setDescription( "Specify matching rules (Equality, Ordering & Substring)." );
+        section_matching_rules.setText( "Matching Rules" );
 
         // Creating the layout of the section
         Composite client_matching_rules = toolkit.createComposite( section_matching_rules );
@@ -778,7 +778,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         section_matching_rules.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // EQUALITY Combo
-        toolkit.createLabel( client_matching_rules, "Equality" );
+        toolkit.createLabel( client_matching_rules, "Equality:" );
         equalityCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         equalityComboViewer = new ComboViewer( equalityCombo );
@@ -786,7 +786,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         equalityComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
 
         // ORDERING Combo
-        toolkit.createLabel( client_matching_rules, "Ordering" );
+        toolkit.createLabel( client_matching_rules, "Ordering:" );
         orderingCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         orderingComboViewer = new ComboViewer( orderingCombo );
@@ -794,7 +794,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         orderingComboViewer.setLabelProvider( new ATEMatchingRulesComboLabelProvider() );
 
         // SUBSTRING Combo
-        toolkit.createLabel( client_matching_rules, "Substring" );
+        toolkit.createLabel( client_matching_rules, "Substring:" );
         substringCombo = new Combo( client_matching_rules, SWT.READ_ONLY | SWT.SINGLE );
         substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         substringComboViewer = new ComboViewer( substringCombo );
@@ -1082,31 +1082,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         }
     }
 
-
-    //    /**
-    //     * Enalbes/Disables the UI fields
-    //     */
-    //    private void setFieldsEditableState()
-    //    {
-    //        if ( modifiedAttributeType.getOriginatingSchema().type == Schema.SchemaType.coreSchema )
-    //        {
-    //            // If the attribute type is in a core-schema file, we disable editing
-    //            aliasesButton.setEnabled( false );
-    //            oidText.setEditable( false );
-    //            descriptionText.setEditable( false );
-    //            supCombo.setEnabled( false );
-    //            usageCombo.setEnabled( false );
-    //            syntaxCombo.setEnabled( false );
-    //            syntaxLengthText.setEditable( false );
-    //            obsoleteCheckbox.setEnabled( false );
-    //            singleValueCheckbox.setEnabled( false );
-    //            collectiveCheckbox.setEnabled( false );
-    //            noUserModificationCheckbox.setEnabled( false );
-    //            equalityCombo.setEnabled( false );
-    //            orderingCombo.setEnabled( false );
-    //            substringCombo.setEnabled( false );
-    //        }
-    //    }
 
     /**
      * Adds listeners to UI fields

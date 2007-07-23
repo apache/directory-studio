@@ -45,11 +45,13 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
         }
         else if ( o1 instanceof MatchingRuleImpl && o2 instanceof NonExistingMatchingRule )
         {
-            return ( ( MatchingRuleImpl ) o1 ).getName().compareToIgnoreCase( ( ( NonExistingMatchingRule ) o2 ).getName() );
+            return ( ( MatchingRuleImpl ) o1 ).getName().compareToIgnoreCase(
+                ( ( NonExistingMatchingRule ) o2 ).getName() );
         }
         else if ( o1 instanceof NonExistingMatchingRule && o2 instanceof MatchingRuleImpl )
         {
-            return ( ( NonExistingMatchingRule ) o1 ).getName().compareToIgnoreCase( ( ( MatchingRuleImpl ) o2 ).getName() );
+            return ( ( NonExistingMatchingRule ) o1 ).getName().compareToIgnoreCase(
+                ( ( MatchingRuleImpl ) o2 ).getName() );
         }
         else if ( o1 instanceof NonExistingMatchingRule && o2 instanceof NonExistingMatchingRule )
         {

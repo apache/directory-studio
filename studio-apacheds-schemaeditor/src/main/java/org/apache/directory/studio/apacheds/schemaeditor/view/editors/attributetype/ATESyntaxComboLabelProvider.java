@@ -41,8 +41,8 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
         if ( obj instanceof SyntaxImpl )
         {
             SyntaxImpl syntax = ( SyntaxImpl ) obj;
-            
-            return syntax.getName() + "  -  (" + syntax.getOid()  + ")";
+
+            return syntax.getName() + "  -  (" + syntax.getOid() + ")";
         }
         else if ( obj instanceof NonExistingSyntax )
         {
