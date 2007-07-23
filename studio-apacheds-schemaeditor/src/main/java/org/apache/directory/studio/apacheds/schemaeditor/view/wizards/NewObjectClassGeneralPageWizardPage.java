@@ -20,6 +20,11 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
@@ -224,10 +229,22 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
      */
     private void initFields()
     {
-        schemaComboViewer.setInput( schemaHandler.getSchemas() );
-
-        if ( selectedSchema != null )
+        // Filling the Schemas table
+        if ( schemaHandler != null )
         {
+            List<Schema> schemas = new ArrayList<Schema>();
+            schemas.addAll( schemaHandler.getSchemas() );
+
+            Collections.sort( schemas, new Comparator<Schema>()
+            {
+                public int compare( Schema o1, Schema o2 )
+                {
+                    return o1.getName().compareToIgnoreCase( o2.getName() );
+                }
+            } );
+
+            schemaComboViewer.setInput( schemas );
+
             schemaComboViewer.setSelection( new StructuredSelection( selectedSchema ) );
         }
     }
