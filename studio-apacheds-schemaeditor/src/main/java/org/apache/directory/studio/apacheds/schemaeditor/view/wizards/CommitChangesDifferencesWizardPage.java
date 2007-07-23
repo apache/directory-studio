@@ -133,28 +133,6 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         schema1New.addObjectClass( oc2Bis );
         schema1New.addObjectClass( oc3 );
 
-        List<Difference> differences = new ArrayList<Difference>();
-        PropertyDifference diff = new AliasDifference( null, null, DifferenceType.ADDED );
-        diff.setNewValue( "alias1" );
-        differences.add( diff );
-
-        diff = new AliasDifference( null, null, DifferenceType.REMOVED );
-        diff.setOldValue( "alias2" );
-        differences.add( diff );
-
-        diff = new DescriptionDifference( null, null, DifferenceType.ADDED );
-        diff.setNewValue( "Description" );
-        differences.add( diff );
-
-        diff = new DescriptionDifference( null, null, DifferenceType.MODIFIED );
-        diff.setOldValue( "Old Description" );
-        diff.setNewValue( "New Description" );
-        differences.add( diff );
-
-        diff = new DescriptionDifference( null, null, DifferenceType.REMOVED );
-        diff.setOldValue( "Description" );
-        differences.add( diff );
-
         differencesWidget.setInput( DifferenceEngine.getDifferences( schemasListOld, schemasListNew ) );
 
         initFields();
