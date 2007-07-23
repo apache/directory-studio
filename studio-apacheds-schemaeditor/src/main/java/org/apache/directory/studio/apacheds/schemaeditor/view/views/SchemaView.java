@@ -71,6 +71,7 @@ public class SchemaView extends ViewPart
         treeViewer.setContentProvider( new SchemaViewContentProvider() );
         treeViewer.setLabelProvider( new DecoratingLabelProvider( new SchemaViewLabelProvider(), Activator.getDefault()
             .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
+        treeViewer.getTree().setEnabled( false );
     }
 
 
