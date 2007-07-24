@@ -32,6 +32,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.Expo
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsXmlAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromOpenLdapAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromXmlAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.LinkWithEditorAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewAttributeTypeAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewObjectClassAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewSchemaAction;
@@ -337,6 +338,7 @@ public class SchemaViewController
     private CollapseAllAction collapseAll;
     private OpenSchemaViewSortingDialogAction openSchemaViewSortingDialog;
     private OpenSchemaViewPreferenceAction openSchemaViewPreference;
+    private LinkWithEditorAction linkWithEditor;
 
 
     /**
@@ -379,6 +381,7 @@ public class SchemaViewController
         collapseAll = new CollapseAllAction( viewer );
         openSchemaViewSortingDialog = new OpenSchemaViewSortingDialogAction();
         openSchemaViewPreference = new OpenSchemaViewPreferenceAction();
+        linkWithEditor = new LinkWithEditorAction( view );
     }
 
 
@@ -393,6 +396,7 @@ public class SchemaViewController
         toolbar.add( newAttributeType );
         toolbar.add( newObjectClass );
         toolbar.add( new Separator() );
+        toolbar.add( linkWithEditor );
         toolbar.add( collapseAll );
     }
 
@@ -405,8 +409,8 @@ public class SchemaViewController
         IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
         menu.add( openSchemaViewSortingDialog );
         menu.add( new Separator() );
-        //        menu.add( linkWithEditor );
-        //        menu.add( new Separator() );
+        menu.add( linkWithEditor );
+        menu.add( new Separator() );
         menu.add( openSchemaViewPreference );
     }
 
@@ -472,6 +476,7 @@ public class SchemaViewController
                     newSchema.setEnabled( true );
                     newAttributeType.setEnabled( true );
                     newObjectClass.setEnabled( true );
+                    linkWithEditor.setEnabled( true );
                     collapseAll.setEnabled( true );
                 }
 
@@ -487,6 +492,7 @@ public class SchemaViewController
                     newSchema.setEnabled( false );
                     newAttributeType.setEnabled( false );
                     newObjectClass.setEnabled( false );
+                    linkWithEditor.setEnabled( false );
                     collapseAll.setEnabled( false );
                 }
             }
@@ -574,7 +580,7 @@ public class SchemaViewController
                     }
                     catch ( PartInitException e )
                     {
-                        //                        logger.debug( "error when opening the editor" ); //$NON-NLS-1$
+                        // logger.debug( "error when opening the editor" ); //$NON-NLS-1$
                         e.printStackTrace(); // TODO
                     }
                 }

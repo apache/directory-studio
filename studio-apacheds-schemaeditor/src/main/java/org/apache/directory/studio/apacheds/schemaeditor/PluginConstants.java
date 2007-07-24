@@ -55,6 +55,7 @@ public interface PluginConstants
     public static final String IMG_FOLDER = "resources/icons/folder.gif";
     public static final String IMG_FOLDER_AT = "resources/icons/folder_at.gif";
     public static final String IMG_FOLDER_OC = "resources/icons/folder_oc.gif";
+    public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif";
     public static final String IMG_OBJECT_CLASS = "resources/icons/object_class.gif";
     public static final String IMG_OBJECT_CLASS_NEW = "resources/icons/object_class_new.gif";
     public static final String IMG_OBJECT_CLASS_NEW_WIZARD = "resources/icons/object_class_new_wizard.png";
@@ -97,6 +98,7 @@ public interface PluginConstants
     public static final String CMD_IMPORT_SCHEMAS_FROM_OPENLDAP = Activator.PLUGIN_ID
         + ".commands.importSchemasFromOpenLDAP";
     public static final String CMD_IMPORT_SCHEMAS_FROM_XML = Activator.PLUGIN_ID + ".commands.importSchemasFromXML";
+    public static final String CMD_LINK_WITH_EDITOR = Activator.PLUGIN_ID + ".commands.linkWithEditor";
     public static final String CMD_OPEN_ELEMENT = Activator.PLUGIN_ID + ".commands.openElement";
     public static final String CMD_OPEN_PROJECT = Activator.PLUGIN_ID + ".commands.openProject";
     public static final String CMD_OPEN_SCHEMA_VIEW_PREFERENCE = Activator.PLUGIN_ID
