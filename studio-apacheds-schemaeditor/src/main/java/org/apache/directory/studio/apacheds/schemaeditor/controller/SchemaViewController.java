@@ -106,6 +106,7 @@ public class SchemaViewController
 
             if ( schemaWrapper != null )
             {
+                AttributeTypeWrapper atw = null;
                 int group = Activator.getDefault().getPreferenceStore().getInt(
                     PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
                 if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
@@ -116,17 +117,23 @@ public class SchemaViewController
                         Folder folder = ( Folder ) child;
                         if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
                         {
-                            folder.addChild( new AttributeTypeWrapper( at, folder ) );
+                            atw = new AttributeTypeWrapper( at, folder );
+                            folder.addChild( atw );
                             break;
                         }
                     }
                 }
                 else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
                 {
-                    schemaWrapper.addChild( new AttributeTypeWrapper( at, schemaWrapper ) );
+                    atw = new AttributeTypeWrapper( at, schemaWrapper );
+                    schemaWrapper.addChild( atw );
                 }
 
                 viewer.refresh( schemaWrapper );
+                if ( atw != null )
+                {
+                    viewer.setSelection( new StructuredSelection( atw ) );
+                }
             }
             else
             {
@@ -184,6 +191,7 @@ public class SchemaViewController
 
             if ( schemaWrapper != null )
             {
+                ObjectClassWrapper ocw = null;
                 int group = Activator.getDefault().getPreferenceStore().getInt(
                     PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
                 if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
@@ -194,17 +202,23 @@ public class SchemaViewController
                         Folder folder = ( Folder ) child;
                         if ( folder.getType() == FolderType.OBJECT_CLASS )
                         {
-                            folder.addChild( new ObjectClassWrapper( oc, folder ) );
+                            ocw = new ObjectClassWrapper( oc, folder );
+                            folder.addChild( ocw );
                             break;
                         }
                     }
                 }
                 else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
                 {
-                    schemaWrapper.addChild( new ObjectClassWrapper( oc, schemaWrapper ) );
+                    ocw = new ObjectClassWrapper( oc, schemaWrapper );
+                    schemaWrapper.addChild( ocw );
                 }
 
                 viewer.refresh( schemaWrapper );
+                if ( ocw != null )
+                {
+                    viewer.setSelection( new StructuredSelection( ocw ) );
+                }
             }
             else
             {
