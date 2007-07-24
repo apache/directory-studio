@@ -38,6 +38,7 @@ public interface PluginConstants
     public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION = "resources/icons/attribute_type_overlay_operation.gif";
     public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION = "resources/icons/attribute_type_overlay_userApplication.gif";
     public static final String IMG_CONNECT = "resources/icons/connect.gif";
+    public static final String IMG_COMMIT_CHANGES = "resources/icons/commit_changes.gif";
     public static final String IMG_COMMIT_CHANGES_WIZARD = "resources/icons/commit_changes_wizard.png";
     public static final String IMG_COLLAPSE_ALL = "resources/icons/collapse_all.gif";
     public static final String IMG_DELETE = "resources/icons/delete.gif";
@@ -92,6 +93,7 @@ public interface PluginConstants
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
 
     // Commands
+    public static final String CMD_COMMIT_CHANGES = Activator.PLUGIN_ID + ".commands.commitChanges";
     public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".commands.connect";
     public static final String CMD_CLOSE_PROJECT = Activator.PLUGIN_ID + ".commands.closeProject";
     public static final String CMD_COLLAPSE_ALL = Activator.PLUGIN_ID + ".commands.collapseAll";

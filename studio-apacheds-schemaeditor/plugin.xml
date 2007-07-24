@@ -144,13 +144,6 @@
           id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ExportProjectsWizard"
           name="Schema Projects">
     </wizard>
-	<wizard
-          category="org.apache.directory.studio.apacheds.schemaeditor.exportWizardCategory"
-          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.CommitChangesWizard"
-          icon="resources/icons/commit_changes.gif"
-          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.CommitChangesWizard"
-          name="Commit Changes">
-    </wizard>
  </extension>
  <extension
        point="org.eclipse.ui.importWizards">
