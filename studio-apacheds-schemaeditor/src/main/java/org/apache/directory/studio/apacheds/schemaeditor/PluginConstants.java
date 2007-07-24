@@ -35,6 +35,8 @@ public interface PluginConstants
     public static final String IMG_ATTRIBUTE_TYPE = "resources/icons/attribute_type.gif";
     public static final String IMG_ATTRIBUTE_TYPE_NEW = "resources/icons/attribute_type_new.gif";
     public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "resources/icons/attribute_type_new_wizard.png";
+    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION = "resources/icons/attribute_type_overlay_operation.gif";
+    public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION = "resources/icons/attribute_type_overlay_userApplication.gif";
     public static final String IMG_CONNECT = "resources/icons/connect.gif";
     public static final String IMG_COMMIT_CHANGES_WIZARD = "resources/icons/commit_changes_wizard.png";
     public static final String IMG_COLLAPSE_ALL = "resources/icons/collapse_all.gif";
@@ -59,6 +61,9 @@ public interface PluginConstants
     public static final String IMG_OBJECT_CLASS = "resources/icons/object_class.gif";
     public static final String IMG_OBJECT_CLASS_NEW = "resources/icons/object_class_new.gif";
     public static final String IMG_OBJECT_CLASS_NEW_WIZARD = "resources/icons/object_class_new_wizard.png";
+    public static final String IMG_OBJECT_CLASS_OVERLAY_ABSTRACT = "resources/icons/object_class_overlay_abstract.gif";
+    public static final String IMG_OBJECT_CLASS_OVERLAY_AUXILIARY = "resources/icons/object_class_overlay_auxiliary.gif";
+    public static final String IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL = "resources/icons/object_class_overlay_structural.gif";
     public static final String IMG_PROBLEMS_ERROR = "resources/icons/problems_error.gif";
     public static final String IMG_PROBLEMS_GROUP = "resources/icons/problems_group.gif";
     public static final String IMG_PROBLEMS_WARNING = "resources/icons/problems_warning.gif";

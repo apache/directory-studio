@@ -192,4 +192,29 @@
             id="org.apache.directory.studio.apacheds.schemaeditor.preferences.schemaView"
             name="Schema View"/>
    </extension>
+    <extension
+          point="org.eclipse.ui.decorators">
+       <decorator
+             adaptable="false"
+             class="org.apache.directory.studio.apacheds.schemaeditor.view.SchemaEditorTypeLabelDecorator"
+             id="org.apache.directory.studio.schemas.typeDecorator"
+             label="Schema Editor Type Decorator"
+             lightweight="true"
+             location="BOTTOM_RIGHT"
+             state="true">
+          <enablement>
+             <or>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper">
+                </objectClass>
+             </or>
+          </enablement>
+          <description>
+             Decorates Schema Editor icons with type information
+          </description>
+       </decorator>
+    </extension>
 </plugin>
