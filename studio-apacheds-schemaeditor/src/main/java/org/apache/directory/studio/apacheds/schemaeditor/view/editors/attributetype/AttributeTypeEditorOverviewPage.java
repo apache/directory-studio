@@ -1091,6 +1091,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         aliasesButton.addSelectionListener( aliasesButtonListener );
         oidText.addModifyListener( oidTextModifyListener );
         oidText.addVerifyListener( oidTextVerifyListener );
+        schemaLink.addHyperlinkListener( schemaLinkListener );
         descriptionText.addModifyListener( descriptionTextListener );
         supLabel.addHyperlinkListener( supLabelListener );
         supCombo.addModifyListener( supComboListener );
@@ -1105,8 +1106,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         equalityCombo.addModifyListener( equalityComboListener );
         orderingCombo.addModifyListener( orderingComboListener );
         substringCombo.addModifyListener( substringComboListener );
-        schemaLink.addHyperlinkListener( schemaLinkListener );
-        supLabel.addHyperlinkListener( supLabelListener );
     }
 
 
@@ -1115,9 +1114,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     private void removeListeners()
     {
+        aliasesButton.removeSelectionListener( aliasesButtonListener );
         oidText.removeModifyListener( oidTextModifyListener );
         oidText.removeVerifyListener( oidTextVerifyListener );
-        aliasesButton.removeSelectionListener( aliasesButtonListener );
         schemaLink.removeHyperlinkListener( schemaLinkListener );
         descriptionText.removeModifyListener( descriptionTextListener );
         supLabel.removeHyperlinkListener( supLabelListener );

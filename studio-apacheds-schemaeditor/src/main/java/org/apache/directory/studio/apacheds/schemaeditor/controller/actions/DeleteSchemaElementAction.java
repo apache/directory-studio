@@ -43,8 +43,11 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -118,53 +121,85 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
 
         if ( !selection.isEmpty() )
         {
-            Map<String, Schema> schemasMap = new HashMap<String, Schema>();
-            List<SchemaObject> schemaObjectsList = new ArrayList<SchemaObject>();
-
-            for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
+            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                SWT.YES | SWT.NO | SWT.ICON_QUESTION );
+            int count = selection.size();
+            if ( count == 1 )
             {
-                Object selectedItem = iterator.next();
-                if ( selectedItem instanceof SchemaWrapper )
+                Object firstElement = selection.getFirstElement();
+                if ( firstElement instanceof AttributeTypeWrapper )
                 {
-                    Schema schema = ( ( SchemaWrapper ) selectedItem ).getSchema();
-                    schemasMap.put( schema.getName().toLowerCase(), schema );
+                    messageBox.setMessage( "Are you sure you want to delete this attribute type?" );
                 }
-                else if ( selectedItem instanceof AttributeTypeWrapper )
+                else if ( firstElement instanceof ObjectClassWrapper )
                 {
-                    AttributeTypeImpl at = ( ( AttributeTypeWrapper ) selectedItem ).getAttributeType();
-                    schemaObjectsList.add( at );
+                    messageBox.setMessage( "Are you sure you want to delete this object class?" );
                 }
-                else if ( selectedItem instanceof ObjectClassWrapper )
+                else if ( firstElement instanceof SchemaWrapper )
                 {
-                    ObjectClassImpl oc = ( ( ObjectClassWrapper ) selectedItem ).getObjectClass();
-                    schemaObjectsList.add( oc );
+                    messageBox.setMessage( "Are you sure you want to delete this schema?" );
                 }
+                else
+                {
+                    messageBox.setMessage( "Are you sure you want to delete this item?" );
+                }
+
             }
-
-            SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
-            // Removing schema objects
-            for ( SchemaObject schemaObject : schemaObjectsList )
+            else
             {
-                if ( !schemasMap.containsKey( schemaObject.getSchema().toLowerCase() ) )
+                messageBox.setMessage( "Are you sure you want to delete these " + count + " items?" );
+            }
+            if ( messageBox.open() == SWT.YES )
+            {
+
+                Map<String, Schema> schemasMap = new HashMap<String, Schema>();
+                List<SchemaObject> schemaObjectsList = new ArrayList<SchemaObject>();
+
+                for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                 {
-                    // If the schema object is not part of deleted schema, we need to delete it.
-                    // But, we don't delete schema objects that are part of a deleted schema, since
-                    // deleting the schema will also delete this schema object.
-                    if ( schemaObject instanceof AttributeTypeImpl )
+                    Object selectedItem = iterator.next();
+                    if ( selectedItem instanceof SchemaWrapper )
                     {
-                        schemaHandler.removeAttributeType( ( AttributeTypeImpl ) schemaObject );
+                        Schema schema = ( ( SchemaWrapper ) selectedItem ).getSchema();
+                        schemasMap.put( schema.getName().toLowerCase(), schema );
                     }
-                    else if ( schemaObject instanceof ObjectClassImpl )
+                    else if ( selectedItem instanceof AttributeTypeWrapper )
                     {
-                        schemaHandler.removeObjectClass( ( ObjectClassImpl ) schemaObject );
+                        AttributeTypeImpl at = ( ( AttributeTypeWrapper ) selectedItem ).getAttributeType();
+                        schemaObjectsList.add( at );
+                    }
+                    else if ( selectedItem instanceof ObjectClassWrapper )
+                    {
+                        ObjectClassImpl oc = ( ( ObjectClassWrapper ) selectedItem ).getObjectClass();
+                        schemaObjectsList.add( oc );
                     }
                 }
-            }
 
-            // Removing schemas
-            for ( Schema schema : schemasMap.values() )
-            {
-                schemaHandler.removeSchema( schema );
+                SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+                // Removing schema objects
+                for ( SchemaObject schemaObject : schemaObjectsList )
+                {
+                    if ( !schemasMap.containsKey( schemaObject.getSchema().toLowerCase() ) )
+                    {
+                        // If the schema object is not part of deleted schema, we need to delete it.
+                        // But, we don't delete schema objects that are part of a deleted schema, since
+                        // deleting the schema will also delete this schema object.
+                        if ( schemaObject instanceof AttributeTypeImpl )
+                        {
+                            schemaHandler.removeAttributeType( ( AttributeTypeImpl ) schemaObject );
+                        }
+                        else if ( schemaObject instanceof ObjectClassImpl )
+                        {
+                            schemaHandler.removeObjectClass( ( ObjectClassImpl ) schemaObject );
+                        }
+                    }
+                }
+
+                // Removing schemas
+                for ( Schema schema : schemasMap.values() )
+                {
+                    schemaHandler.removeSchema( schema );
+                }
             }
         }
     }
