@@ -1,0 +1,129 @@
+Manifest-Version: 1.0
+Import-Package: org.apache.commons.logging;resolution:=optional,org.ap
+ ache.commons.logging.impl;resolution:=optional
+Bundle-ManifestVersion: 2
+Created-By: 1.4.2 (IBM Corporation)
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Ant-Version: Apache Ant 1.7.0
+Bundle-ClassPath: tomcatwrapper.jar,catalina.jar,bootstrap.jar,commons
+ -beanutils.jar,commons-collections.jar,commons-digester.jar,commons-l
+ ogging-api.jar,commons-modeler.jar,jakarta-regexp-1.3.jar,jasper-comp
+ iler.jar,jasper-runtime.jar,mx4j-jmx.jar,naming-common.jar,naming-fac
+ tory.jar,naming-resources.jar,servlet.jar,servlets-common.jar,servlet
+ s-default.jar,servlets-invoker.jar,servlets-manager.jar,tomcat-coyote
+ .jar,tomcat-http11.jar,tomcat-util.jar
+Export-Package: org.eclipse.tomcat.internal;x-internal:=true,org.eclip
+ se.tomcat.internal.extensions
+Bundle-Version: 4.1.230.v20070531
+Require-Bundle: org.eclipse.help.appserver;bundle-version="[3.1.0,4.0.
+ 0)",org.apache.ant;bundle-version="[1.6.5,2.0.0)";resolution:=optiona
+ l,org.eclipse.core.runtime;bundle-version="[3.1.0,4.0.0)"
+Bundle-Activator: org.eclipse.tomcat.internal.TomcatPlugin
+Bundle-SymbolicName: org.eclipse.tomcat; singleton:=true
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-Localization: plugin
+
+Name: tomcat-http11.jar
+SHA1-Digest: VQEfTsKPLIBAj6gvCcxZl3NDdPo=
+
+Name: about_files/mx4j.license
+SHA1-Digest: H/fTl7JO/UqoBrlJ8vbuhxaQl/4=
+
+Name: naming-common.jar
+SHA1-Digest: kOK8vghRD+7JtVH64rgogscjTuk=
+
+Name: tomcatwrapper.jar
+SHA1-Digest: YypCZxt/k09r8N19dUdb1xAjroU=
+
+Name: jasper-runtime.jar
+SHA1-Digest: kzTwSXJR05XB1KE1k7ozHDpbfuQ=
+
+Name: servlets-common.jar
+SHA1-Digest: qhQXOxEQ8Zwxnsb40WTL0bvkMbA=
+
+Name: commons-logging-api.jar
+SHA1-Digest: STIrI5nMObCVhhYuM8xGWxc/Bhs=
+
+Name: conf/tomcat-users.xml
+SHA1-Digest: ++oSTw44/VUxtFjGpa+yNYQobI4=
+
+Name: naming-factory.jar
+SHA1-Digest: b4+IgjSZOj7JWWsMw9czCQJLuWw=
+
+Name: servlet.jar
+SHA1-Digest: 5JPLg47l86WXxcUI14Z9Me+qidA=
+
+Name: servlets-default.jar
+SHA1-Digest: U2uVo2cuuqh8RbvzHFdQKt9FI/I=
+
+Name: preferences.ini
+SHA1-Digest: pvTIWM5u+bdK8llGqcCdlT2k8Io=
+
+Name: about.html
+SHA1-Digest: vIsPRQkxeXAYduNqySJ4UUlvfQM=
+
+Name: servlets-invoker.jar
+SHA1-Digest: 5E88j6+MCgHnISFeYoNsNT/56M0=
+
+Name: catalina.jar
+SHA1-Digest: nUIQpvziM+e21MhiX/bq5Mc63uw=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+
+Name: commons-digester.jar
+SHA1-Digest: 5u0C1K+DNg2HLJDStShVgrjG1hA=
+
+Name: commons-modeler.jar
+SHA1-Digest: N/1p6+XKjgrbeg3C/g05I7DKwfg=
+
+Name: commons-collections.jar
+SHA1-Digest: zbbDl9h84siiAEalVcHNLfT1Zqs=
+
+Name: plugin.xml
+SHA1-Digest: ay37kKPMQmcAaJZ5OEzdd8S2sDs=
+
+Name: servlets-manager.jar
+SHA1-Digest: m5yjYDcVhcPawXjuEGNPgB7wvzg=
+
+Name: bootstrap.jar
+SHA1-Digest: lNOMappcsQU2nTfLIk/yhJ499Vw=
+
+Name: jakarta-regexp-1.3.jar
+SHA1-Digest: Eflo2Eq0u+DvHcCTw+UoOf2L5Gs=
+
+Name: conf/catalina.policy
+SHA1-Digest: pC4rZ6OEkqu+bMwdjSp/KDy3fHA=
+
+Name: tomcat-util.jar
+SHA1-Digest: ctZkw12Uc5UoJ5DOsgiOsZIkTys=
+
+Name: jasper-compiler.jar
+SHA1-Digest: mPm4v+qVdsJ4yeldi8vnhjLnMgI=
+
+Name: mx4j-jmx.jar
+SHA1-Digest: Io0Ai+U/WqTc1BJ99ImX7XKiCvI=
+
+Name: webapps/ROOT/WEB-INF/web.xml
+SHA1-Digest: WiqCucvpQhEoySK2hFkueF0EvX8=
+
+Name: conf/web.xml
+SHA1-Digest: 1M47qyFLCBma8w98f4pxUkkoDwI=
+
+Name: plugin.properties
+SHA1-Digest: akZGnJrweNu08W5XnMbgccfgDXI=
+
+Name: naming-resources.jar
+SHA1-Digest: /KHtAXkaftpm2n4oR/en0M/2nS4=
+
+Name: webapps/ROOT/index.html
+SHA1-Digest: 5J+YwZBlKaFCjW/9AbBVwKuGQN8=
+
+Name: tomcat-coyote.jar
+SHA1-Digest: StdazJYUBKyeiBHx3j0KQU0VDe4=
+
+Name: commons-beanutils.jar
+SHA1-Digest: s6Ztngdzxaxehge+5f8fLd1XGOQ=
+

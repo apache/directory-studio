@@ -1,0 +1,85 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Version: 3.3.0.v20070613
+Eclipse-AutoStart: true
+Created-By: 1.4.2 (IBM Corporation)
+Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",org.ecli
+ pse.help.ui;bundle-version="[3.2.0,4.0.0)",org.eclipse.help.base;bund
+ le-version="[3.1.0,4.0.0)",org.eclipse.ui.cheatsheets;bundle-version=
+ "[3.2.0,4.0.0)",org.eclipse.ui.ide.application;bundle-version="[1.0.0
+ ,2.0.0)"
+Bundle-SymbolicName: org.eclipse.sdk; singleton:=true
+Bundle-Name: %pluginName
+Bundle-Localization: plugin
+Bundle-Vendor: %providerName
+Ant-Version: Apache Ant 1.7.0
+
+Name: introData.xml
+SHA1-Digest: hRUHRieYHfLpbEmuEpkQGBDq/fU=
+
+Name: book.css
+SHA1-Digest: kvGJAYWLgQEfAU05klpaFKLBUG0=
+
+Name: plugin_customization.ini
+SHA1-Digest: uBrPnnvsSj8Z/0ZqdalqIBfGjkY=
+
+Name: eclipse.gif
+SHA1-Digest: qqPgXl0Cuu7J+oyLI7KYJzKh5GQ=
+
+Name: plugin.xml
+SHA1-Digest: 7Z8K93E3bRI5oK1cb2MCmk9XepM=
+
+Name: eclipse32.gif
+SHA1-Digest: TC1aERPmoyNdWkFeFsikkFv/a0c=
+
+Name: plugin_customization.properties
+SHA1-Digest: MrQ8crKtLhmApcHy3MtzuLPnS8g=
+
+Name: helpData.xml
+SHA1-Digest: ZR1pFHw9xoMSs25sZ0MO6v4/asI=
+
+Name: about.properties
+SHA1-Digest: Y0Yh40c3cCxipe1dBcbISw1uIOA=
+
+Name: plugin.properties
+SHA1-Digest: kOD6M9C/xr2xlCBmtOYxiWDDyZ4=
+
+Name: about.html
+SHA1-Digest: ejOZra0kypGLQQ2bJtGTX+LI8tU=
+
+Name: eclipse_lg.gif
+SHA1-Digest: V1bzzsRNTt2D6InH92BXO4We/X0=
+
+Name: macosx_narrow_book.css
+SHA1-Digest: jjHm301H2huNyXiXwJbHzgWn0K4=
+
+Name: about.mappings
+SHA1-Digest: od4F2wDyVOiQI20iPLdpdCCzxYA=
+
+Name: eclipse48.png
+SHA1-Digest: fOC/Uu6aZ5meBi9nhXV5pSTmoSk=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+
+Name: about.ini
+SHA1-Digest: 047iq9u2++7hl+oJ2nkNdXXELdw=
+
+Name: narrow_book.css
+SHA1-Digest: YfcPAsxyncN7+WhlbNPXQsXvmGg=
+
+Name: eclipse.png
+SHA1-Digest: Wn4ZtSh8OGwHMxNVSl1blf1x/8A=
+
+Name: intro-eclipse.png
+SHA1-Digest: /phcIB3M6hWnVnHO34m6tUethaU=
+
+Name: disabled_book.css
+SHA1-Digest: x3/plDo/tiH3FDASeesyGUCF4gM=
+
+Name: eclipse32.png
+SHA1-Digest: eCk/A3/COXL3S6qAVDOSrlsqmLw=
+
+Name: eclipse48.gif
+SHA1-Digest: wzuHxugoGF9ip2YX+dp2pqBg3X4=
+
