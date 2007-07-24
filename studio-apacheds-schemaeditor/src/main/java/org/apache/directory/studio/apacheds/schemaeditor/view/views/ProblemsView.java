@@ -113,8 +113,6 @@ public class ProblemsView extends ViewPart
         contentProvider = new ProblemsViewContentProvider( treeViewer );
         treeViewer.setContentProvider( contentProvider );
         treeViewer.setLabelProvider( new ProblemsViewLabelProvider() );
-        treeViewer.setInput( new ProblemsViewRoot() );
-        treeViewer.expandAll();
     }
 
 
