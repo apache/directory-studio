@@ -118,7 +118,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
             }
             else if ( selectedItem instanceof Folder )
             {
-                viewer.setExpandedState( selectedItem, !viewer.getExpandedState( selectedItem ) );
+                viewer.setExpandedState( selectedItem, true );
             }
         }
     }
