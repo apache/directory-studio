@@ -120,6 +120,7 @@ public class RenameProjectDialog extends Dialog
         errorLabel.setText( "A project with the same name already exists." );
 
         newNameText.setFocus();
+        newNameText.selectAll();
 
         return composite;
     }
