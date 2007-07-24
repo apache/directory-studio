@@ -298,7 +298,6 @@ public class LinkWithEditorAction extends Action implements IWorkbenchWindowActi
 
         if ( wrapper != null )
         {
-            view.getViewer().reveal( wrapper );
             view.getViewer().setSelection( new StructuredSelection( wrapper ) );
         }
     }
