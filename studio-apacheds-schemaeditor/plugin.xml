@@ -216,5 +216,27 @@
              Decorates Schema Editor icons with type information
           </description>
        </decorator>
+	   <decorator
+             adaptable="false"
+             class="org.apache.directory.studio.apacheds.schemaeditor.view.SchemaEditorSchemaCheckerLabelDecorator"
+             id="org.apache.directory.studio.schemas.schemaCheckerDecorator"
+             label="Schema Editor Schema Checker Decorator"
+             lightweight="true"
+             location="BOTTOM_LEFT"
+             state="true">
+          <enablement>
+             <or>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper">
+                </objectClass>
+             </or>
+          </enablement>
+          <description>
+             Decorates Schema Editor icons with schema checker information
+          </description>
+       </decorator>
     </extension>
 </plugin>

@@ -64,6 +64,8 @@ public interface PluginConstants
     public static final String IMG_OBJECT_CLASS_OVERLAY_ABSTRACT = "resources/icons/object_class_overlay_abstract.gif";
     public static final String IMG_OBJECT_CLASS_OVERLAY_AUXILIARY = "resources/icons/object_class_overlay_auxiliary.gif";
     public static final String IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL = "resources/icons/object_class_overlay_structural.gif";
+    public static final String IMG_OVERLAY_ERROR = "resources/icons/overlay_error.gif";
+    public static final String IMG_OVERLAY_WARNING = "resources/icons/overlay_warning.gif";
     public static final String IMG_PROBLEMS_ERROR = "resources/icons/problems_error.gif";
     public static final String IMG_PROBLEMS_GROUP = "resources/icons/problems_group.gif";
     public static final String IMG_PROBLEMS_WARNING = "resources/icons/problems_warning.gif";

@@ -627,4 +627,78 @@ public class SchemaChecker
             listener.schemaCheckerUpdated();
         }
     }
+
+
+    /**
+     * Gets the errors associated with the given Schema Object
+     *
+     * @param so
+     *      the Schema Object
+     * @return
+     *      the associated errors
+     */
+    public List<?> getErrors( SchemaObject so )
+    {
+        return ( List<?> ) errorsMap.get( so );
+    }
+
+
+    /**
+     * Returns whether the given Schema Object has errors.
+     *
+     * @param so
+     *      the Schema Object
+     * @return
+     *      true if the given Schema Object has errors.
+     */
+    public boolean hasErrors( SchemaObject so )
+    {
+        List<?> errors = getErrors( so );
+
+        if ( errors == null )
+        {
+            return false;
+        }
+        else
+        {
+            return errors.size() > 0;
+        }
+    }
+
+
+    /**
+     * Gets the warnings associated with the given Schema Object
+     *
+     * @param so
+     *      the Schema Object
+     * @return
+     *      the associated warnings
+     */
+    public List<?> getWarnings( SchemaObject so )
+    {
+        return ( List<?> ) warningsMap.get( so );
+    }
+
+
+    /**
+     * Returns whether the given Schema Object has warnings.
+     *
+     * @param so
+     *      the Schema Object
+     * @return
+     *      true if the given Schema Object has errors.
+     */
+    public boolean hasWarnings( SchemaObject so )
+    {
+        List<?> warnings = getWarnings( so );
+
+        if ( warnings == null )
+        {
+            return false;
+        }
+        else
+        {
+            return warnings.size() > 0;
+        }
+    }
 }
