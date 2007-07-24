@@ -77,10 +77,16 @@ public class ProblemsView extends ViewPart
         gridLayout.verticalSpacing = 0;
         parent.setLayout( gridLayout );
 
+        // Overview Label
         overviewLabel = new Label( parent, SWT.NULL );
         setErrorsAndWarningsCount( 0, 0 );
         overviewLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
+        // Separator Label
+        Label separatorLabel = new Label( parent, SWT.SEPARATOR | SWT.HORIZONTAL );
+        separatorLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Viewer
         initViewer( parent );
 
         // Adding the controller
@@ -165,5 +171,5 @@ public class ProblemsView extends ViewPart
     {
         overviewLabel.setText( String.format( "%d error(s), %d warning(s)", errors, warnings ) );
     }
-    
+
 }
