@@ -35,12 +35,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.internal.EditorReference;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -134,6 +130,8 @@ public class Activator extends AbstractUIPlugin
                     //                    schemaView.reloadViewer();
                     problemsView.reloadViewer();
                 }
+
+                PluginUtils.saveProjects();
             }
 
 
