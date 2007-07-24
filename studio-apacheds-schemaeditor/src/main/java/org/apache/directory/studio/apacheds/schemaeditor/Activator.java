@@ -31,8 +31,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.Sch
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema.SchemaEditor;
-import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView;
-import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeScanner;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
 import org.eclipse.jface.text.rules.ITokenScanner;
@@ -69,12 +67,6 @@ public class Activator extends AbstractUIPlugin
 
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
-
-    /** The SchemaView */
-    private SchemaView schemaView;
-
-    /** The ProblemsView */
-    private ProblemsView problemsView;
 
 
     /**
@@ -120,15 +112,6 @@ public class Activator extends AbstractUIPlugin
                     // Registering the SchemaHandler and SchemaChecker
                     schemaHandler = newProject.getSchemaHandler();
                     schemaChecker = newProject.getSchemaChecker();
-                    schemaChecker.enableModificationsListening();
-
-                    // Reloading views
-                    //                    schemaView = ( SchemaView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-                    //                        SchemaView.ID );
-                    problemsView = ( ProblemsView ) getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-                        ProblemsView.ID );
-                    //                    schemaView.reloadViewer();
-                    problemsView.reloadViewer();
                 }
 
                 PluginUtils.saveProjects();

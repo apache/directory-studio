@@ -122,6 +122,7 @@ public class ProblemsViewController
                 if ( oldProject != null )
                 {
                     removeSchemaCheckerListener( oldProject );
+
                 }
 
                 if ( newProject != null )
@@ -150,6 +151,7 @@ public class ProblemsViewController
         if ( schemaChecker != null )
         {
             schemaChecker.addListener( schemaCheckerListener );
+            schemaChecker.enableModificationsListening();
         }
     }
 
@@ -166,6 +168,7 @@ public class ProblemsViewController
         if ( schemaChecker != null )
         {
             schemaChecker.removeListener( schemaCheckerListener );
+            schemaChecker.disableModificationsListening();
         }
     }
 
