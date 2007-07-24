@@ -82,19 +82,22 @@ public class OpenLdapSchemaFileExporter
 
         // NAME(S)
         String[] names = at.getNames();
-        sb.append( "\tNAME " ); //$NON-NLS-1$
-        if ( names.length > 1 )
+        if ( ( names != null ) && ( names.length > 0 ) )
         {
-            sb.append( "( " ); //$NON-NLS-1$
-            for ( String name : names )
+            sb.append( "\tNAME " ); //$NON-NLS-1$
+            if ( names.length > 1 )
             {
-                sb.append( "'" + name + "' " ); //$NON-NLS-1$ //$NON-NLS-2$
+                sb.append( "( " ); //$NON-NLS-1$
+                for ( String name : names )
+                {
+                    sb.append( "'" + name + "' " ); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                sb.append( ") \n" ); //$NON-NLS-1$
             }
-            sb.append( ") \n" ); //$NON-NLS-1$
-        }
-        else
-        {
-            sb.append( "'" + names[0] + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            else
+            {
+                sb.append( "'" + names[0] + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
 
         // DESC
@@ -209,19 +212,22 @@ public class OpenLdapSchemaFileExporter
 
         // NAME(S)
         String[] names = oc.getNames();
-        sb.append( "\tNAME " ); //$NON-NLS-1$
-        if ( names.length > 1 )
+        if ( ( names != null ) && ( names.length > 0 ) )
         {
-            sb.append( "( " ); //$NON-NLS-1$
-            for ( String name : names )
+            sb.append( "\tNAME " ); //$NON-NLS-1$
+            if ( names.length > 1 )
             {
-                sb.append( "'" + name + "' " ); //$NON-NLS-1$ //$NON-NLS-2$
+                sb.append( "( " ); //$NON-NLS-1$
+                for ( String name : names )
+                {
+                    sb.append( "'" + name + "' " ); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                sb.append( ") \n" ); //$NON-NLS-1$
             }
-            sb.append( ") \n" ); //$NON-NLS-1$
-        }
-        else
-        {
-            sb.append( "'" + names[0] + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            else
+            {
+                sb.append( "'" + names[0] + "' \n" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
 
         // DESC
