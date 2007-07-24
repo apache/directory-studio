@@ -225,6 +225,9 @@
                 <objectClass
                       name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper">
                 </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper">
+                </objectClass>
              </or>
           </enablement>
           <description>

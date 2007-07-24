@@ -24,9 +24,11 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -81,6 +83,42 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                     PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+            }
+        }
+        else if ( element instanceof SchemaWrapper )
+        {
+            Schema schema = ( ( SchemaWrapper ) element ).getSchema();
+
+            for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+            {
+                if ( schemaChecker.hasErrors( at ) )
+                {
+                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                    return;
+                }
+
+                if ( schemaChecker.hasWarnings( at ) )
+                {
+                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+                }
+            }
+
+            for ( ObjectClassImpl oc : schema.getObjectClasses() )
+            {
+                if ( schemaChecker.hasErrors( oc ) )
+                {
+                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                    return;
+                }
+
+                if ( schemaChecker.hasWarnings( oc ) )
+                {
+                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+                }
             }
         }
     }
