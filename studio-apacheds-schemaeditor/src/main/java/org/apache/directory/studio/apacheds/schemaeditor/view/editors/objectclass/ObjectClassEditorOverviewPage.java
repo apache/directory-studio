@@ -480,7 +480,15 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMusts.add( must );
                 }
             }
-            newMusts.add( at.getNames()[0] );
+            String[] names = at.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                newMusts.add( names[0] );
+            }
+            else
+            {
+                newMusts.add( at.getOid() );
+            }
             modifiedObjectClass.setMustNamesList( newMusts.toArray( new String[0] ) );
 
             fillInMandatoryAttributesTable();
@@ -621,7 +629,15 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMays.add( may );
                 }
             }
-            newMays.add( at.getNames()[0] );
+            String[] names = at.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                newMays.add( names[0] );
+            }
+            else
+            {
+                newMays.add( at.getOid() );
+            }
             modifiedObjectClass.setMayNamesList( newMays.toArray( new String[0] ) );
 
             fillInOptionalAttributesTable();
@@ -744,7 +760,15 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 superiors.add( sup );
             }
-            superiors.add( oc.getNames()[0] );
+            String[] names = oc.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                superiors.add( names[0] );
+            }
+            else
+            {
+                superiors.add( oc.getOid() );
+            }
             modifiedObjectClass.setSuperClassesNames( superiors.toArray( new String[0] ) );
 
             fillInSuperiorsTable();

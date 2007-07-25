@@ -381,7 +381,16 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
             if ( selectedItem instanceof AttributeTypeImpl )
             {
-                modifiedAttributeType.setSuperiorName( ( ( AttributeTypeImpl ) selectedItem ).getNames()[0] );
+                AttributeTypeImpl at = ( AttributeTypeImpl ) selectedItem;
+                String[] names = at.getNames();
+                if ( ( names != null ) && ( names.length > 0 ) )
+                {
+                    modifiedAttributeType.setSuperiorName( names[0] );
+                }
+                else
+                {
+                    modifiedAttributeType.setSuperiorName( at.getOid() );
+                }
             }
             else if ( selectedItem instanceof NonExistingAttributeType )
             {
