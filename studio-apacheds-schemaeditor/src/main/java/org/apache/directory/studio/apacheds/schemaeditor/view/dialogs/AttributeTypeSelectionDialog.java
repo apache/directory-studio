@@ -28,7 +28,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -151,7 +150,7 @@ public class AttributeTypeSelectionDialog extends Dialog
 
         attributeTypesTableViewer.setContentProvider( new AttributeTypeSelectionDialogContentProvider(
             hiddenAttributeTypes ) );
-        attributeTypesTableViewer.setLabelProvider( new LabelProvider() );
+        attributeTypesTableViewer.setLabelProvider( new AttributeTypeSelectionDialogLabelProvider() );
 
         // We need to force the input to load the complete list of attribute types
         attributeTypesTableViewer.setInput( "" ); //$NON-NLS-1$
@@ -167,7 +166,7 @@ public class AttributeTypeSelectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.OK_ID, "Add", true ); //$NON-NLS-1$
+        createButton( parent, IDialogConstants.OK_ID, "Choose", true ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
 
     }

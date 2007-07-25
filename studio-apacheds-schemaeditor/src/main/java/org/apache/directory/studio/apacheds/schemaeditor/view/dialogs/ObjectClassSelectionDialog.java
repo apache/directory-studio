@@ -28,7 +28,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -150,7 +149,7 @@ public class ObjectClassSelectionDialog extends Dialog
         tableViewer.setUseHashlookup( true );
 
         tableViewer.setContentProvider( new ObjectClassSelectionDialogContentProvider( hiddenObjectClasses ) );
-        tableViewer.setLabelProvider( new LabelProvider() );
+        tableViewer.setLabelProvider( new ObjectClassSelectionDialogLabelProvider() );
 
         // We need to force the input to load the complete list of attribute types
         tableViewer.setInput( "" ); //$NON-NLS-1$
@@ -166,7 +165,7 @@ public class ObjectClassSelectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.OK_ID, "Add", true );
+        createButton( parent, IDialogConstants.OK_ID, "Choose", true );
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
 
