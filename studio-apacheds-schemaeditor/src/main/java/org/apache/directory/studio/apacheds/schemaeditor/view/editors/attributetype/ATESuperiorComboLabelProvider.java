@@ -46,8 +46,7 @@ public class ATESuperiorComboLabelProvider extends LabelProvider
             String[] names = at.getNames();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
-                return ViewUtils.concateAliases( ( ( AttributeTypeImpl ) obj ).getNames() ) + "  -  (" + at.getOid()
-                    + ")";
+                return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";
             }
             else
             {

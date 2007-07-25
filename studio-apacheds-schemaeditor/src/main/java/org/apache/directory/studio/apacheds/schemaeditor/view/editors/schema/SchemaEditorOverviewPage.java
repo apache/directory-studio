@@ -22,28 +22,24 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
-import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaAdapter;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
-import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
@@ -52,7 +48,6 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -75,7 +70,7 @@ public class SchemaEditorOverviewPage extends FormPage
     /** The associated schema */
     private Schema schema;
 
-    private SchemaListener schemaListener = new SchemaListener()
+    private SchemaListener schemaListener = new SchemaAdapter()
     {
         /* (non-Javadoc)
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#attributeTypeAdded(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
@@ -99,33 +94,6 @@ public class SchemaEditorOverviewPage extends FormPage
          * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#attributeTypeRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl)
          */
         public void attributeTypeRemoved( AttributeTypeImpl at )
-        {
-            fillInUiFields();
-        }
-
-
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#matchingRuleAdded(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
-         */
-        public void matchingRuleAdded( MatchingRuleImpl mr )
-        {
-            fillInUiFields();
-        }
-
-
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#matchingRuleModified(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
-         */
-        public void matchingRuleModified( MatchingRuleImpl mr )
-        {
-            fillInUiFields();
-        }
-
-
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#matchingRuleRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl)
-         */
-        public void matchingRuleRemoved( MatchingRuleImpl mr )
         {
             fillInUiFields();
         }
@@ -156,77 +124,63 @@ public class SchemaEditorOverviewPage extends FormPage
         {
             fillInUiFields();
         }
-
-
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#syntaxAdded(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
-         */
-        public void syntaxAdded( SyntaxImpl syntax )
-        {
-            fillInUiFields();
-        }
-
-
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#syntaxModified(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
-         */
-        public void syntaxModified( SyntaxImpl syntax )
-        {
-            fillInUiFields();
-        }
-
-
-        /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener#syntaxRemoved(org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl)
-         */
-        public void syntaxRemoved( SyntaxImpl syntax )
-        {
-            fillInUiFields();
-        }
     };
 
     // UI Fields
-    private Table attributeTypesTable;
-    private Table objectClassesTable;
+    private TableViewer attributeTypesTableViewer;
+    private TableViewer objectClassesTableViewer;
 
     // Listeners
-    /** The listener of the Attribute Types Table*/
-    private MouseAdapter attributeTypesTableListener = new MouseAdapter()
+    /** The listener of the Attribute Types TableViewer */
+    private IDoubleClickListener attributeTypesTableViewerListener = new IDoubleClickListener()
     {
-        public void mouseDoubleClick( MouseEvent e )
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+         */
+        public void doubleClick( DoubleClickEvent event )
         {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            StructuredSelection selection = ( StructuredSelection ) event.getSelection();
 
-            AttributeTypeEditorInput input = new AttributeTypeEditorInput( schemaHandler
-                .getAttributeType( attributeTypesTable.getSelection()[0].getText() ) );
-            String editorId = AttributeTypeEditor.ID;
-            try
+            if ( !selection.isEmpty() )
             {
-                page.openEditor( input, editorId );
-            }
-            catch ( PartInitException exception )
-            {
-                Logger.getLogger( SchemaEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                AttributeTypeImpl at = ( AttributeTypeImpl ) selection.getFirstElement();
+
+                try
+                {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
+                        new AttributeTypeEditorInput( at ), AttributeTypeEditor.ID );
+                }
+                catch ( PartInitException exception )
+                {
+                    //TODO Add a logger
+                }
             }
         }
     };
-    /** The listener of the Object Classes Table*/
-    private MouseAdapter objectClassesTableListener = new MouseAdapter()
-    {
-        public void mouseDoubleClick( MouseEvent e )
-        {
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
-            ObjectClassEditorInput input = new ObjectClassEditorInput( schemaHandler.getObjectClass( objectClassesTable
-                .getSelection()[0].getText() ) );
-            String editorId = ObjectClassEditor.ID;
-            try
+    /** The listener of the Object Classes TableViewer */
+    private IDoubleClickListener objectClassesTableViewerListener = new IDoubleClickListener()
+    {
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+         */
+        public void doubleClick( DoubleClickEvent event )
+        {
+            StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+
+            if ( !selection.isEmpty() )
             {
-                page.openEditor( input, editorId );
-            }
-            catch ( PartInitException exception )
-            {
-                Logger.getLogger( SchemaEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                ObjectClassImpl oc = ( ObjectClassImpl ) selection.getFirstElement();
+
+                try
+                {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(
+                        new ObjectClassEditorInput( oc ), ObjectClassEditor.ID );
+                }
+                catch ( PartInitException exception )
+                {
+                    //TODO Add a logger
+                }
             }
         }
     };
@@ -294,12 +248,13 @@ public class SchemaEditorOverviewPage extends FormPage
         attributeTypesSectionClient.setLayout( new GridLayout() );
         toolkit.paintBordersFor( attributeTypesSectionClient );
         attributeTypesSection.setClient( attributeTypesSectionClient );
-        attributeTypesSection.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        attributeTypesSection.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        attributeTypesTable = toolkit.createTable( attributeTypesSectionClient, SWT.NONE );
-        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
-        gridData.heightHint = 1;
-        attributeTypesTable.setLayoutData( gridData );
+        attributeTypesTableViewer = new TableViewer( attributeTypesSectionClient, SWT.SINGLE | SWT.H_SCROLL
+            | SWT.V_SCROLL | SWT.BORDER );
+        attributeTypesTableViewer.setContentProvider( new SchemaEditorTableViewerContentProvider() );
+        attributeTypesTableViewer.setLabelProvider( new SchemaEditorTableViewerLabelProvider() );
+        attributeTypesTableViewer.getTable().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     }
 
 
@@ -325,12 +280,13 @@ public class SchemaEditorOverviewPage extends FormPage
         objectClassesSectionClient.setLayout( new GridLayout() );
         toolkit.paintBordersFor( objectClassesSectionClient );
         objectClassesSection.setClient( objectClassesSectionClient );
-        objectClassesSection.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        objectClassesSection.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        objectClassesTable = toolkit.createTable( objectClassesSectionClient, SWT.NONE );
-        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
-        gridData.heightHint = 1;
-        objectClassesTable.setLayoutData( gridData );
+        objectClassesTableViewer = new TableViewer( objectClassesSectionClient, SWT.SINGLE | SWT.H_SCROLL
+            | SWT.V_SCROLL | SWT.BORDER );
+        objectClassesTableViewer.setContentProvider( new SchemaEditorTableViewerContentProvider() );
+        objectClassesTableViewer.setLabelProvider( new SchemaEditorTableViewerLabelProvider() );
+        objectClassesTableViewer.getTable().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     }
 
 
@@ -339,21 +295,8 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     private void fillInUiFields()
     {
-        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
-        {
-            TableItem item = new TableItem( attributeTypesTable, SWT.NONE );
-            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage() );
-            item.setText( at.getNames()[0] );
-        }
-
-        for ( ObjectClassImpl oc : schema.getObjectClasses() )
-        {
-            TableItem item = new TableItem( objectClassesTable, SWT.NONE );
-            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_OBJECT_CLASS ).createImage() );
-            item.setText( oc.getNames()[0] );
-        }
+        attributeTypesTableViewer.setInput( schema.getAttributeTypes() );
+        objectClassesTableViewer.setInput( schema.getObjectClasses() );
     }
 
 
@@ -362,7 +305,7 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     private void addListeners()
     {
-        attributeTypesTable.addMouseListener( attributeTypesTableListener );
-        objectClassesTable.addMouseListener( objectClassesTableListener );
+        attributeTypesTableViewer.addDoubleClickListener( attributeTypesTableViewerListener );
+        objectClassesTableViewer.addDoubleClickListener( objectClassesTableViewerListener );
     }
 }
