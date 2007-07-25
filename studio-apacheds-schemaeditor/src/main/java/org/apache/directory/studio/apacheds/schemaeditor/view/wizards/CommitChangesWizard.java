@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
@@ -34,6 +35,8 @@ import org.eclipse.ui.IWorkbench;
  */
 public class CommitChangesWizard extends Wizard implements IExportWizard
 {
+    public static final String ID = Activator.PLUGIN_ID + ".wizards.CommitChangesWizard";
+    
     // The pages of the wizard
     private CommitChangesInformationWizardPage commitChangesInformation;
     private CommitChangesDifferencesWizardPage commitChangesDifferences;

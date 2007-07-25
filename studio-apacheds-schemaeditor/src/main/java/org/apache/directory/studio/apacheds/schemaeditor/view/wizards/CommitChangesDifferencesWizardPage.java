@@ -29,12 +29,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.SchemaImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.AliasDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DescriptionDifference;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.Difference;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceEngine;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceType;
-import org.apache.directory.studio.apacheds.schemaeditor.model.difference.PropertyDifference;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.DifferencesWidget;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

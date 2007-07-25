@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsExporter;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,6 +44,8 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportProjectsWizard extends Wizard implements IExportWizard
 {
+    public static final String ID = Activator.PLUGIN_ID + ".wizards.ExportProjectsWizard";
+    
     /** The selected projects */
     private Project[] selectedProjects = new Project[0];
 

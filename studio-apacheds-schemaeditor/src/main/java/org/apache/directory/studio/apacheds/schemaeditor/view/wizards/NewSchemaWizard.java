@@ -36,6 +36,8 @@ import org.eclipse.ui.IWorkbench;
  */
 public class NewSchemaWizard extends Wizard implements INewWizard
 {
+    public static final String ID = Activator.PLUGIN_ID + ".wizards.NewSchemaWizard";
+
     // The pages of the wizard
     private NewSchemaWizardPage page;
 

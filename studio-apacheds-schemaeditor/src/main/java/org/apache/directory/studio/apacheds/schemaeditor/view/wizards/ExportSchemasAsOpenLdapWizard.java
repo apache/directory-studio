@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -43,6 +44,8 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWizard
 {
+    public static final String ID = Activator.PLUGIN_ID + ".wizards.ExportSchemasAsOpenLdapWizard";
+
     /** The selected schemas */
     private Schema[] selectedSchemas = new Schema[0];
 
