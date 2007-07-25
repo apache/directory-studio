@@ -79,7 +79,7 @@ public class AttributeTypeEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( "AttributeTypeEditor.Souce_Code_Error_cannot_return_to_Overview_page" );
+                    notifyError( "AttributeTypeEditor.Souce_Code_Error_cannot_return_to_Overview_page" ); //TODO
                     return;
                 }
 
@@ -106,7 +106,6 @@ public class AttributeTypeEditor extends FormEditor
         setPartName( input.getName() );
 
         originalAttributeType = ( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
-        //        originalAttributeType.setEditor( this );
 
         modifiedAttributeType = ( AttributeTypeImpl ) PluginUtils.getClone( originalAttributeType );
 

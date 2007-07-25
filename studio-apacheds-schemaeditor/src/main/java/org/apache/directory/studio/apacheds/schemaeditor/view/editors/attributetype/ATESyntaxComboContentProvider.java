@@ -21,7 +21,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.attribute
 
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
@@ -65,33 +64,7 @@ public class ATESyntaxComboContentProvider implements IStructuredContentProvider
             List<Object> children = input.getChildren();
 
             // Sorting Children
-            Collections.sort( children, new Comparator<Object>()
-            {
-                public int compare( Object o1, Object o2 )
-                {
-                    if ( o1 instanceof SyntaxImpl && o2 instanceof SyntaxImpl )
-                    {
-                        return ( ( SyntaxImpl ) o1 ).getName().compareToIgnoreCase( ( ( SyntaxImpl ) o2 ).getName() );
-                    }
-                    else if ( o1 instanceof SyntaxImpl && o2 instanceof NonExistingSyntax )
-                    {
-                        return ( ( SyntaxImpl ) o1 ).getName().compareToIgnoreCase(
-                            ( ( NonExistingSyntax ) o2 ).getName() );
-                    }
-                    else if ( o1 instanceof NonExistingSyntax && o2 instanceof SyntaxImpl )
-                    {
-                        return ( ( NonExistingSyntax ) o1 ).getName().compareToIgnoreCase(
-                            ( ( SyntaxImpl ) o2 ).getName() );
-                    }
-                    else if ( o1 instanceof NonExistingSyntax && o2 instanceof NonExistingSyntax )
-                    {
-                        return ( ( NonExistingSyntax ) o1 ).getName().compareToIgnoreCase(
-                            ( ( NonExistingSyntax ) o2 ).getName() );
-                    }
-
-                    return 0;
-                }
-            } );
+            Collections.sort( children, new ATESyntaxComboComparator() );
 
             return children.toArray();
         }

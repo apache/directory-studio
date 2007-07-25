@@ -40,7 +40,17 @@ public class ATEMatchingRulesComboLabelProvider extends LabelProvider
     {
         if ( obj instanceof MatchingRuleImpl )
         {
-            return ( ( MatchingRuleImpl ) obj ).getName();
+            MatchingRuleImpl mr = ( MatchingRuleImpl ) obj;
+
+            String name = mr.getName();
+            if ( name != null )
+            {
+                return name + "  -  (" + mr.getOid() + ")";
+            }
+            else
+            {
+                return "(None)  -  (" + mr.getOid() + ")";
+            }
         }
         else if ( obj instanceof NonExistingMatchingRule )
         {

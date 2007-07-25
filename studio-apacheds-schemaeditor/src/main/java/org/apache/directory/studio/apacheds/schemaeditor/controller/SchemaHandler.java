@@ -526,9 +526,13 @@ public class SchemaHandler
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) object;
             attributeTypesList.add( at );
-            for ( String name : at.getNames() )
+            String[] names = at.getNames();
+            if ( names != null )
             {
-                attributeTypesMap.put( name.toLowerCase(), at );
+                for ( String name : names )
+                {
+                    attributeTypesMap.put( name.toLowerCase(), at );
+                }
             }
             attributeTypesMap.put( at.getOid(), at );
         }
@@ -536,9 +540,13 @@ public class SchemaHandler
         {
             MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
             matchingRulesList.add( mr );
-            for ( String name : mr.getNames() )
+            String[] names = mr.getNames();
+            if ( names != null )
             {
-                matchingRulesMap.put( name.toLowerCase(), mr );
+                for ( String name : names )
+                {
+                    matchingRulesMap.put( name.toLowerCase(), mr );
+                }
             }
             matchingRulesMap.put( mr.getOid(), mr );
         }
@@ -546,9 +554,13 @@ public class SchemaHandler
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) object;
             objectClassesList.add( oc );
-            for ( String name : oc.getNames() )
+            String[] names = oc.getNames();
+            if ( names != null )
             {
-                objectClassesMap.put( name.toLowerCase(), oc );
+                for ( String name : names )
+                {
+                    objectClassesMap.put( name.toLowerCase(), oc );
+                }
             }
             objectClassesMap.put( oc.getOid(), oc );
         }
@@ -556,9 +568,13 @@ public class SchemaHandler
         {
             SyntaxImpl syntax = ( SyntaxImpl ) object;
             syntaxesList.add( syntax );
-            for ( String name : syntax.getNames() )
+            String[] names = syntax.getNames();
+            if ( names != null )
             {
-                syntaxesMap.put( name.toLowerCase(), syntax );
+                for ( String name : names )
+                {
+                    syntaxesMap.put( name.toLowerCase(), syntax );
+                }
             }
             syntaxesMap.put( syntax.getOid(), syntax );
         }
@@ -617,9 +633,13 @@ public class SchemaHandler
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) object;
             attributeTypesList.remove( at );
-            for ( String name : at.getNames() )
+            String[] names = at.getNames();
+            if ( names != null )
             {
-                attributeTypesMap.remove( name.toLowerCase() );
+                for ( String name : names )
+                {
+                    attributeTypesMap.remove( name.toLowerCase() );
+                }
             }
             attributeTypesMap.remove( at.getOid() );
         }
@@ -627,9 +647,13 @@ public class SchemaHandler
         {
             MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
             matchingRulesList.remove( mr );
-            for ( String name : mr.getNames() )
+            String[] names = mr.getNames();
+            if ( names != null )
             {
-                matchingRulesMap.remove( name.toLowerCase() );
+                for ( String name : mr.getNames() )
+                {
+                    matchingRulesMap.remove( name.toLowerCase() );
+                }
             }
             matchingRulesMap.remove( mr.getOid() );
         }
@@ -637,9 +661,13 @@ public class SchemaHandler
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) object;
             objectClassesList.remove( oc );
-            for ( String name : oc.getNames() )
+            String[] names = oc.getNames();
+            if ( names != null )
             {
-                objectClassesMap.remove( name.toLowerCase() );
+                for ( String name : oc.getNames() )
+                {
+                    objectClassesMap.remove( name.toLowerCase() );
+                }
             }
             objectClassesMap.remove( oc.getOid() );
         }
@@ -647,9 +675,13 @@ public class SchemaHandler
         {
             SyntaxImpl syntax = ( SyntaxImpl ) object;
             syntaxesList.remove( syntax );
-            for ( String name : syntax.getNames() )
+            String[] names = syntax.getNames();
+            if ( names != null )
             {
-                syntaxesMap.remove( name.toLowerCase() );
+                for ( String name : syntax.getNames() )
+                {
+                    syntaxesMap.remove( name.toLowerCase() );
+                }
             }
             syntaxesMap.remove( syntax.getOid() );
         }

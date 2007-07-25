@@ -21,7 +21,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.attribute
 
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
@@ -84,34 +83,7 @@ public class ATESuperiorComboContentProvider implements IStructuredContentProvid
             List<Object> children = input.getChildren();
 
             // Sorting Children
-            Collections.sort( children, new Comparator<Object>()
-            {
-                public int compare( Object o1, Object o2 )
-                {
-                    if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
-                    {
-                        return ( ( AttributeTypeImpl ) o1 ).getNames()[0]
-                            .compareToIgnoreCase( ( ( AttributeTypeImpl ) o2 ).getNames()[0] );
-                    }
-                    else if ( o1 instanceof AttributeTypeImpl && o2 instanceof NonExistingAttributeType )
-                    {
-                        return ( ( AttributeTypeImpl ) o1 ).getNames()[0]
-                            .compareToIgnoreCase( ( ( NonExistingAttributeType ) o2 ).getName() );
-                    }
-                    else if ( o1 instanceof NonExistingAttributeType && o2 instanceof AttributeTypeImpl )
-                    {
-                        return ( ( NonExistingAttributeType ) o1 ).getName().compareToIgnoreCase(
-                            ( ( AttributeTypeImpl ) o2 ).getNames()[0] );
-                    }
-                    else if ( o1 instanceof NonExistingAttributeType && o2 instanceof NonExistingAttributeType )
-                    {
-                        return ( ( NonExistingAttributeType ) o1 ).getName().compareToIgnoreCase(
-                            ( ( NonExistingAttributeType ) o2 ).getName() );
-                    }
-
-                    return 0;
-                }
-            } );
+            Collections.sort( children, new ATESuperiorComboComparator() );
 
             return children.toArray();
         }

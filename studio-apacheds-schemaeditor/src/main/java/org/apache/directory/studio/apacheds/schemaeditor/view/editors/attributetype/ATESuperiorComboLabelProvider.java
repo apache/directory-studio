@@ -41,7 +41,18 @@ public class ATESuperiorComboLabelProvider extends LabelProvider
     {
         if ( obj instanceof AttributeTypeImpl )
         {
-            return ViewUtils.concateAliases( ( ( AttributeTypeImpl ) obj ).getNames() );
+            AttributeTypeImpl at = ( AttributeTypeImpl ) obj;
+
+            String[] names = at.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                return ViewUtils.concateAliases( ( ( AttributeTypeImpl ) obj ).getNames() ) + "  -  (" + at.getOid()
+                    + ")";
+            }
+            else
+            {
+                return "(None)  -  (" + at.getOid() + ")";
+            }
         }
         else if ( obj instanceof NonExistingAttributeType )
         {

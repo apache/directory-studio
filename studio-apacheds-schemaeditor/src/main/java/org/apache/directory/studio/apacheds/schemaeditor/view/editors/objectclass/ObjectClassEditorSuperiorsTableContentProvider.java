@@ -88,23 +88,44 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                 {
                     if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
                     {
-                        return ( ( ObjectClassImpl ) o1 ).getNames()[0].compareToIgnoreCase( ( ( ObjectClassImpl ) o2 )
-                            .getNames()[0] );
+                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
+                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+
+                        if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.length > 0 )
+                            && ( oc2Names.length > 0 ) )
+                        {
+                            return oc1Names[0].compareToIgnoreCase( oc2Names[0] );
+                        }
                     }
                     else if ( o1 instanceof ObjectClassImpl && o2 instanceof NonExistingObjectClass )
                     {
-                        return ( ( ObjectClassImpl ) o1 ).getNames()[0]
-                            .compareToIgnoreCase( ( ( NonExistingObjectClass ) o2 ).getName() );
+                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
+                        String oc2Name = ( ( NonExistingObjectClass ) o2 ).getName();
+
+                        if ( ( oc1Names != null ) && ( oc2Name != null ) && ( oc1Names.length > 0 ) )
+                        {
+                            return oc1Names[0].compareToIgnoreCase( oc2Name );
+                        }
                     }
                     else if ( o1 instanceof NonExistingObjectClass && o2 instanceof ObjectClassImpl )
                     {
-                        return ( ( NonExistingObjectClass ) o1 ).getName().compareToIgnoreCase(
-                            ( ( ObjectClassImpl ) o2 ).getNames()[0] );
+                        String oc1Name = ( ( NonExistingObjectClass ) o1 ).getName();
+                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+
+                        if ( ( oc1Name != null ) && ( oc2Names != null ) && ( oc2Names.length > 0 ) )
+                        {
+                            return oc1Name.compareToIgnoreCase( oc2Names[0] );
+                        }
                     }
                     else if ( o1 instanceof NonExistingObjectClass && o2 instanceof NonExistingObjectClass )
                     {
-                        return ( ( NonExistingObjectClass ) o1 ).getName().compareToIgnoreCase(
-                            ( ( NonExistingObjectClass ) o2 ).getName() );
+                        String oc1Name = ( ( NonExistingObjectClass ) o1 ).getName();
+                        String oc2Name = ( ( NonExistingObjectClass ) o2 ).getName();
+
+                        if ( ( oc1Name != null ) && ( oc2Name != null ) )
+                        {
+                            return oc1Name.compareToIgnoreCase( oc2Name );
+                        }
                     }
 
                     return 0;

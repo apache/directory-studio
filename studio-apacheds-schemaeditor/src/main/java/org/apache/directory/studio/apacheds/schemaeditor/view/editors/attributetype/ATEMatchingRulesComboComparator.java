@@ -41,22 +41,43 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
     {
         if ( o1 instanceof MatchingRuleImpl && o2 instanceof MatchingRuleImpl )
         {
-            return ( ( MatchingRuleImpl ) o1 ).getName().compareToIgnoreCase( ( ( MatchingRuleImpl ) o2 ).getName() );
+            String[] mr1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
+            String[] mr2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+
+            if ( ( mr1Names != null ) && ( mr2Names != null ) && ( mr1Names.length > 0 ) && ( mr2Names.length > 0 ) )
+            {
+                return mr1Names[0].compareToIgnoreCase( mr1Names[0] );
+            }
         }
         else if ( o1 instanceof MatchingRuleImpl && o2 instanceof NonExistingMatchingRule )
         {
-            return ( ( MatchingRuleImpl ) o1 ).getName().compareToIgnoreCase(
-                ( ( NonExistingMatchingRule ) o2 ).getName() );
+            String[] mr1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
+            String mr2Name = ( ( NonExistingMatchingRule ) o2 ).getName();
+
+            if ( ( mr1Names != null ) && ( mr2Name != null ) && ( mr1Names.length > 0 ) )
+            {
+                return mr1Names[0].compareToIgnoreCase( mr2Name );
+            }
         }
         else if ( o1 instanceof NonExistingMatchingRule && o2 instanceof MatchingRuleImpl )
         {
-            return ( ( NonExistingMatchingRule ) o1 ).getName().compareToIgnoreCase(
-                ( ( MatchingRuleImpl ) o2 ).getName() );
+            String mr1Name = ( ( NonExistingMatchingRule ) o1 ).getName();
+            String[] mr2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+
+            if ( ( mr1Name != null ) && ( mr2Names != null ) && ( mr2Names.length > 0 ) )
+            {
+                return mr1Name.compareToIgnoreCase( mr2Names[0] );
+            }
         }
         else if ( o1 instanceof NonExistingMatchingRule && o2 instanceof NonExistingMatchingRule )
         {
-            return ( ( NonExistingMatchingRule ) o1 ).getName().compareToIgnoreCase(
-                ( ( NonExistingMatchingRule ) o2 ).getName() );
+            String mr1Name = ( ( NonExistingMatchingRule ) o1 ).getName();
+            String mr2Name = ( ( NonExistingMatchingRule ) o2 ).getName();
+
+            if ( ( mr1Name != null ) && ( mr2Name != null ) )
+            {
+                return mr1Name.compareToIgnoreCase( mr2Name );
+            }
         }
 
         return 0;

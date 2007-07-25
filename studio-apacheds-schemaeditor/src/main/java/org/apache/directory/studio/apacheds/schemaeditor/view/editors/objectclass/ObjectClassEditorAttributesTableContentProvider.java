@@ -84,23 +84,44 @@ public class ObjectClassEditorAttributesTableContentProvider implements IStructu
                 {
                     if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
                     {
-                        return ( ( AttributeTypeImpl ) o1 ).getNames()[0]
-                            .compareToIgnoreCase( ( ( AttributeTypeImpl ) o2 ).getNames()[0] );
+                        String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
+                        String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+
+                        if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 )
+                            && ( at2Names.length > 0 ) )
+                        {
+                            return at1Names[0].compareToIgnoreCase( at2Names[0] );
+                        }
                     }
                     else if ( o1 instanceof AttributeTypeImpl && o2 instanceof NonExistingAttributeType )
                     {
-                        return ( ( AttributeTypeImpl ) o1 ).getNames()[0]
-                            .compareToIgnoreCase( ( ( NonExistingAttributeType ) o2 ).getName() );
+                        String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
+                        String at2Name = ( ( NonExistingAttributeType ) o2 ).getName();
+
+                        if ( ( at1Names != null ) && ( at2Name != null ) && ( at1Names.length > 0 ) )
+                        {
+                            return at1Names[0].compareToIgnoreCase( at2Name );
+                        }
                     }
                     else if ( o1 instanceof NonExistingAttributeType && o2 instanceof AttributeTypeImpl )
                     {
-                        return ( ( NonExistingAttributeType ) o1 ).getName().compareToIgnoreCase(
-                            ( ( AttributeTypeImpl ) o2 ).getNames()[0] );
+                        String at1Name = ( ( NonExistingAttributeType ) o1 ).getName();
+                        String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+
+                        if ( ( at1Name != null ) && ( at2Names != null ) && ( at2Names.length > 0 ) )
+                        {
+                            return at1Name.compareToIgnoreCase( at2Names[0] );
+                        }
                     }
                     else if ( o1 instanceof NonExistingAttributeType && o2 instanceof NonExistingAttributeType )
                     {
-                        return ( ( NonExistingAttributeType ) o1 ).getName().compareToIgnoreCase(
-                            ( ( NonExistingAttributeType ) o2 ).getName() );
+                        String at1Name = ( ( NonExistingAttributeType ) o1 ).getName();
+                        String at2Name = ( ( NonExistingAttributeType ) o2 ).getName();
+
+                        if ( ( at1Name != null ) && ( at2Name != null ) )
+                        {
+                            return at1Name.compareToIgnoreCase( at2Name );
+                        }
                     }
 
                     return 0;

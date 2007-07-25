@@ -28,6 +28,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandle
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
 import org.apache.log4j.Logger;
@@ -258,8 +259,17 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         // As Mandatory Attribute Section
         Section mandatoryAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        mandatoryAttributeSection.setDescription( "The attribute type" + " '" + modifiedAttributeType.getNames()[0]
-            + "' " + "is used as a mandatory attribute in the following object classes." );
+        String names[] = modifiedAttributeType.getNames();
+        if ( ( names != null ) && ( names.length > 0 ) )
+        {
+            mandatoryAttributeSection.setDescription( "The attribute type" + " '" + ViewUtils.concateAliases( names )
+                + "' " + "is used as a mandatory attribute in the following object classes." );
+        }
+        else
+        {
+            mandatoryAttributeSection.setDescription( "The attribute type" + " '" + modifiedAttributeType.getOid()
+                + "' " + "is used as a mandatory attribute in the following object classes." );
+        }
         mandatoryAttributeSection.setText( "As Mandatory Attribute" );
 
         // Creating the layout of the section
@@ -292,8 +302,17 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         // Matching Rules Section
         Section optionalAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        optionalAttributeSection.setDescription( "The attribute type" + " '" + modifiedAttributeType.getNames()[0]
-            + "' " + "is used as an optional attribute in the following object classes." );
+        String names[] = modifiedAttributeType.getNames();
+        if ( ( names != null ) && ( names.length > 0 ) )
+        {
+            optionalAttributeSection.setDescription( "The attribute type" + " '" + ViewUtils.concateAliases( names )
+                + "' " + "is used as an optional attribute in the following object classes." );
+        }
+        else
+        {
+            optionalAttributeSection.setDescription( "The attribute type" + " '" + modifiedAttributeType.getOid()
+                + "' " + "is used as an optional attribute in the following object classes." );
+        }
         optionalAttributeSection.setText( "As Optional Attribute" );
 
         // Creating the layout of the section

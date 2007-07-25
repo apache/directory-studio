@@ -66,6 +66,9 @@ public class SchemaChecker
     /** The warnings MultiMap */
     private MultiMap warningsMap;
 
+    /** The dependencies MultiMap */
+    private MultiMap dependenciesMap;
+
     /** The 'listening to modifications' flag*/
     private boolean listeningToModifications = false;
 
@@ -154,6 +157,7 @@ public class SchemaChecker
         errorsMap = new MultiValueMap();
         warningsList = new ArrayList<SchemaWarning>();
         warningsMap = new MultiValueMap();
+        dependenciesMap = new MultiValueMap();
         listeners = new ArrayList<SchemaCheckerListener>();
     }
 

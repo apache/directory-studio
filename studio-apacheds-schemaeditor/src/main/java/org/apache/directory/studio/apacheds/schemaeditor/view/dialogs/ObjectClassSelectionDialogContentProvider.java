@@ -89,24 +89,26 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
             {
                 public int compare( ObjectClassImpl oc1, ObjectClassImpl oc2 )
                 {
-                    if ( ( oc1.getNames() == null || oc1.getNames().length == 0 )
-                        && ( oc2.getNames() == null || oc2.getNames().length == 0 ) )
+                    String[] oc1Names = ( ( ObjectClassImpl ) oc1 ).getNames();
+                    String[] oc2Names = ( ( ObjectClassImpl ) oc2 ).getNames();
+
+                    if ( ( oc1Names == null || oc1Names.length == 0 ) && ( oc2Names == null || oc2Names.length == 0 ) )
                     {
                         return 0;
                     }
-                    else if ( ( oc1.getNames() == null || oc1.getNames().length == 0 )
-                        && ( oc2.getNames() != null && oc2.getNames().length > 0 ) )
+                    else if ( ( oc1Names == null || oc1Names.length == 0 )
+                        && ( oc2Names != null && oc2Names.length > 0 ) )
                     {
-                        return "".compareToIgnoreCase( oc2.getNames()[0] ); //$NON-NLS-1$
+                        return "".compareToIgnoreCase( oc2Names[0] ); //$NON-NLS-1$
                     }
-                    else if ( ( oc1.getNames() != null && oc1.getNames().length > 0 )
-                        && ( oc2.getNames() == null || oc2.getNames().length == 0 ) )
+                    else if ( ( oc1Names != null && oc1Names.length > 0 )
+                        && ( oc2Names == null || oc2Names.length == 0 ) )
                     {
-                        return oc1.getNames()[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
+                        return oc1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
                     }
                     else
                     {
-                        return oc1.getNames()[0].compareToIgnoreCase( oc2.getNames()[0] );
+                        return oc1Names[0].compareToIgnoreCase( oc2Names[0] );
                     }
                 }
             } );

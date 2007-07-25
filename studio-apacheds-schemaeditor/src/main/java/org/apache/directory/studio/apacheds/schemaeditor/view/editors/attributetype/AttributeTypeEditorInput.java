@@ -73,9 +73,10 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public String getName()
     {
-        if ( attributeType.getNames().length != 0 )
+        String[] names = attributeType.getNames();
+        if ( ( names != null ) && ( names.length > 0 ) )
         {
-            return attributeType.getNames()[0];
+            return names[0];
         }
         else
         {
