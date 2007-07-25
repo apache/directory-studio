@@ -24,6 +24,10 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewAttributeTypeWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewObjectClassWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewProjectWizard;
+import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewSchemaWizard;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -76,5 +80,11 @@ public class Perspective implements IPerspectiveFactory
         layout.addShowViewShortcut( SchemaView.ID );
         layout.addShowViewShortcut( ProjectsView.ID );
         layout.addShowViewShortcut( ProblemsView.ID );
+
+        // Adding New Wizard shortcuts
+        layout.addNewWizardShortcut( NewProjectWizard.ID );
+        layout.addNewWizardShortcut( NewSchemaWizard.ID );
+        layout.addNewWizardShortcut( NewAttributeTypeWizard.ID );
+        layout.addNewWizardShortcut( NewObjectClassWizard.ID );
     }
 }
