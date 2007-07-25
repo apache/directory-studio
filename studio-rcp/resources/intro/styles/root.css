@@ -8,7 +8,7 @@ body
 
 #overview a
 {
-	position: fixed;
+	position: absolute;
 	height: 95px;
 	width: 95px;
 	top: 50%;
@@ -31,7 +31,7 @@ body
 
 #whatsnew a
 {
-	position: fixed;
+	position: absolute;
 	width: 75px;
 	height: 75px;
 	top: 50%;
@@ -54,7 +54,7 @@ body
 
 #webresources a
 {
-	position: fixed;
+	position: absolute;
 	width: 75px;
 	height: 75px;
 	top: 50%;
@@ -77,7 +77,7 @@ body
 
 #workbench a
 {
-	position: fixed;
+	position: absolute;
 	width: 75px;
 	height: 75px;
 	top: 50%;
