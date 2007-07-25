@@ -45,6 +45,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -168,6 +170,19 @@ public class NewAttributeTypeGeneralWizardPage extends WizardPage
             public void modifyText( ModifyEvent arg0 )
             {
                 dialogChanged();
+            }
+        } );
+        oidText.addVerifyListener( new VerifyListener()
+        {
+            /* (non-Javadoc)
+             * @see org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.VerifyEvent)
+             */
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "([0-9]*\\.?)*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
             }
         } );
 
