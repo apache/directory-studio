@@ -410,8 +410,8 @@ public class SchemaViewController
         toolbar.add( newAttributeType );
         toolbar.add( newObjectClass );
         toolbar.add( new Separator() );
-        toolbar.add( linkWithEditor );
         toolbar.add( collapseAll );
+        toolbar.add( linkWithEditor );
     }
 
 
