@@ -119,15 +119,6 @@ public class ObjectClassEditor extends FormEditor
 
 
     /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
-     */
-    public void dispose()
-    {
-        //        originalObjectClass.removeEditor( this ); //TODO
-    }
-
-
-    /* (non-Javadoc)
      * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
      */
     @Override

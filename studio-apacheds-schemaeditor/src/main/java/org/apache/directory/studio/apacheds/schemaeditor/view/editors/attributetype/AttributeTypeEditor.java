@@ -114,15 +114,6 @@ public class AttributeTypeEditor extends FormEditor
 
 
     /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
-     */
-    public void dispose()
-    {
-        //        originalAttributeType.removeEditor( this ); //TODO
-    }
-
-
-    /* (non-Javadoc)
      * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
      */
     protected void addPages()
