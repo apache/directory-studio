@@ -90,13 +90,21 @@ public class SchemaChecker
 
         public void attributeTypeModified( AttributeTypeImpl at )
         {
+            List<?> deps = ( List<?> ) dependenciesMap.get( at );
+
             checkAttributeType( at );
+
+            checkDependencies( deps );
         }
 
 
         public void attributeTypeRemoved( AttributeTypeImpl at )
         {
+            List<?> deps = ( List<?> ) dependenciesMap.get( at );
+
             removeSchemaObject( at );
+
+            checkDependencies( deps );
         }
 
 
@@ -108,13 +116,21 @@ public class SchemaChecker
 
         public void objectClassModified( ObjectClassImpl oc )
         {
+            List<?> deps = ( List<?> ) dependenciesMap.get( oc );
+
             checkObjectClass( oc );
+
+            checkDependencies( deps );
         }
 
 
         public void objectClassRemoved( ObjectClassImpl oc )
         {
+            List<?> deps = ( List<?> ) dependenciesMap.get( oc );
+
             removeSchemaObject( oc );
+
+            checkDependencies( deps );
         }
 
 
@@ -587,8 +603,8 @@ public class SchemaChecker
             {
                 errorsList.remove( error );
             }
+            errorsMap.remove( element );
         }
-        errorsMap.remove( element );
         List<?> warnings = ( List<?> ) warningsMap.get( element );
         if ( ( warnings != null ) && ( warnings.size() >= 1 ) )
         {
@@ -596,8 +612,25 @@ public class SchemaChecker
             {
                 warningsList.remove( warning );
             }
+            warningsMap.remove( element );
         }
-        warningsMap.remove( element );
+
+        // Removing 'depends on' and dependencies
+        List<?> dependsOn = ( List<?> ) dependsOnMap.get( element );
+        if ( dependsOn != null )
+        {
+            for ( Object dep : dependsOn )
+            {
+                dependenciesMap.remove( dep, element );
+            }
+            dependsOnMap.remove( element );
+        }
+
+        if ( notify )
+        {
+            notifyListeners();
+        }
+
     }
 
 
@@ -771,6 +804,31 @@ public class SchemaChecker
         else
         {
             return warnings.size() > 0;
+        }
+    }
+
+
+    /**
+     * Checks the given list of dependencies.
+     * 
+     * @param deps
+     *      the list of dependencies
+     */
+    public void checkDependencies( List<?> deps )
+    {
+        if ( deps != null )
+        {
+            for ( Object object : deps )
+            {
+                if ( object instanceof AttributeTypeImpl )
+                {
+                    checkAttributeType( ( AttributeTypeImpl ) object );
+                }
+                else if ( object instanceof ObjectClassImpl )
+                {
+                    checkObjectClass( ( ObjectClassImpl ) object );
+                }
+            }
         }
     }
 }
