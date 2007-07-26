@@ -258,7 +258,6 @@ public class EditAliasesDialog extends Dialog
                 if ( "".equals( text ) ) //$NON-NLS-1$
                 {
                     newAliasAddButton.setEnabled( false );
-                    return;
                 }
                 else if ( aliasesLowerCased.contains( text.toLowerCase() ) )
                 {

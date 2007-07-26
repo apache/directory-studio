@@ -920,7 +920,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
         // SUPERIORS Table
         toolkit.createLabel( client_general_information, "Superior classes:" );
-        superiorsTable = toolkit.createTable( client_general_information, SWT.SINGLE | SWT.V_SCROLL );
+        superiorsTable = toolkit.createTable( client_general_information, SWT.SINGLE | SWT.FULL_SELECTION
+            | SWT.H_SCROLL | SWT.V_SCROLL );
         GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         gridData.heightHint = 45;
         gridData.minimumHeight = 45;
@@ -973,7 +974,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         layout.numColumns = 2;
         client.setLayout( layout );
 
-        mandatoryAttributesTable = toolkit.createTable( client, SWT.NULL );
+        mandatoryAttributesTable = toolkit.createTable( client, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
+            | SWT.V_SCROLL );
         gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.verticalSpan = 2;
         gd.heightHint = 108;
@@ -1018,7 +1020,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         layout.numColumns = 2;
         client.setLayout( layout );
 
-        optionalAttributesTable = toolkit.createTable( client, SWT.SINGLE | SWT.V_SCROLL );
+        optionalAttributesTable = toolkit.createTable( client, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
+            | SWT.V_SCROLL );
         gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.verticalSpan = 2;
         gd.heightHint = 108;
