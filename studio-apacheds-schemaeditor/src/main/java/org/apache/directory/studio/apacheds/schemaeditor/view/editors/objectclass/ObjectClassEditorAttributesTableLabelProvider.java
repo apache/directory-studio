@@ -63,7 +63,17 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
     {
         if ( element instanceof AttributeTypeImpl )
         {
-            return ViewUtils.concateAliases( ( ( AttributeTypeImpl ) element ).getNames() );
+            AttributeTypeImpl at = ( AttributeTypeImpl ) element;
+
+            String[] names = at.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";
+            }
+            else
+            {
+                return "(None)  -  (" + at.getOid() + ")";
+            }
         }
         else if ( element instanceof NonExistingAttributeType )
         {

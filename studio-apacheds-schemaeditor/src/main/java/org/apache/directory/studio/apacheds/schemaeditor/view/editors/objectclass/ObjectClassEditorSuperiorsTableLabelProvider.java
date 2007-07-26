@@ -63,7 +63,17 @@ public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider 
     {
         if ( element instanceof ObjectClassImpl )
         {
-            return ViewUtils.concateAliases( ( ( ObjectClassImpl ) element ).getNames() );
+            ObjectClassImpl oc = ( ObjectClassImpl ) element;
+
+            String[] names = oc.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
+            }
+            else
+            {
+                return "(None)  -  (" + oc.getOid() + ")";
+            }
         }
         else if ( element instanceof NonExistingObjectClass )
         {
