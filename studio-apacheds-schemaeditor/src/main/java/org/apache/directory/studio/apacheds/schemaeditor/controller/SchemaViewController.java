@@ -786,7 +786,7 @@ public class SchemaViewController
 
 
     /**
-     * Updates the give node and its parents.
+     * Updates the given node and its parents.
      *
      * @param node
      *      the node
