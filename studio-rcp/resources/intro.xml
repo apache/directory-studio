@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <introContent>
     <page id="root" content="intro/root.xhtml"/>
-    <page id="concept1" content="intro/concept1.xhtml"/>
-    <page id="concept2" content="intro/concept2.xhtml"/>
+    <page id="overview" content="intro/overview.xhtml"/>
+    <page id="whatsnew" content="intro/whatsnew.xhtml"/>
+    <page id="webresources" content="intro/webresources.xhtml"/>
 </introContent>
