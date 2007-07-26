@@ -21,7 +21,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
@@ -32,8 +31,10 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandle
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NonExistingMatchingRuleError.NonExistingMatchingRuleErrorEnum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -66,8 +67,11 @@ public class SchemaChecker
     /** The warnings MultiMap */
     private MultiMap warningsMap;
 
-    /** The dependencies MultiMap */
+    /** The Dependencies MultiMap */
     private MultiMap dependenciesMap;
+
+    /** The Depends On MultiMap */
+    private MultiMap dependsOnMap;
 
     /** The 'listening to modifications' flag*/
     private boolean listeningToModifications = false;
@@ -158,6 +162,7 @@ public class SchemaChecker
         warningsList = new ArrayList<SchemaWarning>();
         warningsMap = new MultiValueMap();
         dependenciesMap = new MultiValueMap();
+        dependsOnMap = new MultiValueMap();
         listeners = new ArrayList<SchemaCheckerListener>();
     }
 
@@ -214,6 +219,8 @@ public class SchemaChecker
         errorsMap.clear();
         warningsList.clear();
         warningsMap.clear();
+        dependenciesMap.clear();
+        dependsOnMap.clear();
     }
 
 
@@ -319,11 +326,19 @@ public class SchemaChecker
         String superior = at.getSuperiorName();
         if ( ( superior != null ) && ( !"".equals( superior ) ) )
         {
-            if ( schemaHandler.getAttributeType( superior ) == null )
+            AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superior );
+            if ( superiorAT == null )
             {
                 SchemaError error = new NonExistingATSuperiorError( at, superior );
                 errorsList.add( error );
                 errorsMap.put( at, error );
+                dependenciesMap.put( superior, at );
+                dependsOnMap.put( at, superior );
+            }
+            else
+            {
+                dependenciesMap.put( superiorAT, at );
+                dependsOnMap.put( at, superiorAT );
             }
         }
 
@@ -331,11 +346,19 @@ public class SchemaChecker
         String syntaxOid = at.getSyntaxOid();
         if ( ( syntaxOid != null ) && ( !"".equals( syntaxOid ) ) )
         {
-            if ( schemaHandler.getSyntax( syntaxOid ) == null )
+            SyntaxImpl syntax = schemaHandler.getSyntax( syntaxOid );
+            if ( syntax == null )
             {
                 SchemaError error = new NonExistingSyntaxError( at, syntaxOid );
                 errorsList.add( error );
                 errorsMap.put( at, error );
+                dependenciesMap.put( syntaxOid, at );
+                dependsOnMap.put( at, syntaxOid );
+            }
+            else
+            {
+                dependenciesMap.put( syntax, at );
+                dependsOnMap.put( at, syntax );
             }
         }
 
@@ -343,12 +366,20 @@ public class SchemaChecker
         String equality = at.getEqualityName();
         if ( ( equality != null ) && ( !"".equals( equality ) ) )
         {
-            if ( schemaHandler.getMatchingRule( equality ) == null )
+            MatchingRuleImpl equalityMR = schemaHandler.getMatchingRule( equality );
+            if ( equalityMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, equality,
                     NonExistingMatchingRuleErrorEnum.EQUALITY );
                 errorsList.add( error );
                 errorsMap.put( at, error );
+                dependenciesMap.put( equality, at );
+                dependsOnMap.put( at, equality );
+            }
+            else
+            {
+                dependenciesMap.put( equalityMR, at );
+                dependsOnMap.put( at, equalityMR );
             }
         }
 
@@ -356,12 +387,20 @@ public class SchemaChecker
         String ordering = at.getOrderingName();
         if ( ( ordering != null ) && ( !"".equals( ordering ) ) )
         {
-            if ( schemaHandler.getMatchingRule( ordering ) == null )
+            MatchingRuleImpl orderingMR = schemaHandler.getMatchingRule( ordering );
+            if ( orderingMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, ordering,
                     NonExistingMatchingRuleErrorEnum.ORDERING );
                 errorsList.add( error );
                 errorsMap.put( at, error );
+                dependenciesMap.put( ordering, at );
+                dependsOnMap.put( at, ordering );
+            }
+            else
+            {
+                dependenciesMap.put( orderingMR, at );
+                dependsOnMap.put( at, orderingMR );
             }
         }
 
@@ -369,12 +408,20 @@ public class SchemaChecker
         String substring = at.getSubstrName();
         if ( ( substring != null ) && ( !"".equals( substring ) ) )
         {
-            if ( schemaHandler.getMatchingRule( substring ) == null )
+            MatchingRuleImpl substringMR = schemaHandler.getMatchingRule( substring );
+            if ( substringMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, substring,
                     NonExistingMatchingRuleErrorEnum.SUBSTRING );
                 errorsList.add( error );
                 errorsMap.put( at, error );
+                dependenciesMap.put( substring, at );
+                dependsOnMap.put( at, substring );
+            }
+            else
+            {
+                dependenciesMap.put( substringMR, at );
+                dependsOnMap.put( at, substringMR );
             }
         }
 
@@ -447,40 +494,61 @@ public class SchemaChecker
         {
             for ( String superior : superiors )
             {
-                if ( schemaHandler.getObjectClass( superior ) == null )
+                ObjectClassImpl superiorOC = schemaHandler.getObjectClass( superior );
+                if ( superiorOC == null )
                 {
                     SchemaError error = new NonExistingOCSuperiorError( oc, superior );
                     errorsList.add( error );
                     errorsMap.put( oc, error );
+                    dependenciesMap.put( superior, oc );
+                    dependsOnMap.put( oc, superior );
+                }
+                else
+                {
+                    dependenciesMap.put( superiorOC, oc );
+                    dependsOnMap.put( oc, superiorOC );
                 }
             }
         }
 
         // Checking mandatory and optional attributes
-        String[] mandatoryATs = oc.getMustNamesList();
-        String[] optionalATs = oc.getMayNamesList();
-        if ( ( mandatoryATs != null ) && ( optionalATs != null ) )
+        String[] mandatoryATNames = oc.getMustNamesList();
+        String[] optionalATNames = oc.getMayNamesList();
+        if ( ( mandatoryATNames != null ) && ( optionalATNames != null ) )
         {
-            List<String> mandatoryATsList = Arrays.asList( mandatoryATs );
-            List<String> optionalATsList = Arrays.asList( optionalATs );
-
-            for ( String mandatoryAT : mandatoryATsList )
+            for ( String mandatoryATName : mandatoryATNames )
             {
-                if ( schemaHandler.getAttributeType( mandatoryAT ) == null )
+                AttributeTypeImpl mandatoryAT = schemaHandler.getAttributeType( mandatoryATName );
+                if ( mandatoryAT == null )
                 {
-                    SchemaError error = new NonExistingMandatoryATError( oc, mandatoryAT );
+                    SchemaError error = new NonExistingMandatoryATError( oc, mandatoryATName );
                     errorsList.add( error );
                     errorsMap.put( oc, error );
+                    dependenciesMap.put( mandatoryATName, oc );
+                    dependsOnMap.put( oc, mandatoryATName );
+                }
+                else
+                {
+                    dependenciesMap.put( mandatoryAT, oc );
+                    dependsOnMap.put( oc, mandatoryAT );
                 }
             }
 
-            for ( String optionalAT : optionalATsList )
+            for ( String optionalATName : optionalATNames )
             {
-                if ( schemaHandler.getAttributeType( optionalAT ) == null )
+                AttributeTypeImpl optionalAT = schemaHandler.getAttributeType( optionalATName );
+                if ( optionalAT == null )
                 {
-                    SchemaError error = new NonExistingOptionalATError( oc, optionalAT );
+                    SchemaError error = new NonExistingOptionalATError( oc, optionalATName );
                     errorsList.add( error );
                     errorsMap.put( oc, error );
+                    dependenciesMap.put( optionalATName, oc );
+                    dependsOnMap.put( oc, optionalATName );
+                }
+                else
+                {
+                    dependenciesMap.put( optionalAT, oc );
+                    dependsOnMap.put( oc, optionalAT );
                 }
             }
         }
