@@ -128,7 +128,7 @@ public class AttributeTypeEditorInput implements IEditorInput
         }
 
         AttributeTypeEditorInput other = ( AttributeTypeEditorInput ) obj;
-        return other.getAttributeType().getOid().equals( this.attributeType.getOid() );
+        return other.getAttributeType().equals( this.attributeType );
     }
 
 

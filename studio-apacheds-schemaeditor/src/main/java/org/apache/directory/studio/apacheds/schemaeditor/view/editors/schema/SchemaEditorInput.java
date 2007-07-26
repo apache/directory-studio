@@ -110,7 +110,7 @@ public class SchemaEditorInput implements IEditorInput
         if ( !( obj instanceof SchemaEditorInput ) )
             return false;
         SchemaEditorInput other = ( SchemaEditorInput ) obj;
-        return other.getSchema().getName().equals( this.schema.getName() );
+        return other.getSchema().equals( this.schema );
     }
 
 

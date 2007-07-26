@@ -120,7 +120,7 @@ public class ObjectClassEditorInput implements IEditorInput
         if ( !( obj instanceof ObjectClassEditorInput ) )
             return false;
         ObjectClassEditorInput other = ( ObjectClassEditorInput ) obj;
-        return other.getObjectClass().getOid().equals( this.objectClass.getOid() );
+        return other.getObjectClass().equals( this.objectClass );
     }
 
 
