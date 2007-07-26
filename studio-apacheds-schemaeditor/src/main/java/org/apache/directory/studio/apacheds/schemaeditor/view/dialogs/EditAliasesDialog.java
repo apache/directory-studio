@@ -30,8 +30,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -198,7 +198,7 @@ public class EditAliasesDialog extends Dialog
      */
     private void initListeners()
     {
-        aliasesTable.addKeyListener( new KeyListener()
+        aliasesTable.addKeyListener( new KeyAdapter()
         {
             public void keyPressed( KeyEvent e )
             {
@@ -208,11 +208,6 @@ public class EditAliasesDialog extends Dialog
 
                     removeAliases();
                 }
-            }
-
-
-            public void keyReleased( KeyEvent e )
-            {
             }
         } );
 
@@ -240,7 +235,11 @@ public class EditAliasesDialog extends Dialog
                 {
                     String text = newAliasText.getText();
 
-                    if ( ( !"".equals( text ) ) && ( !aliasesLowerCased.contains( text.toLowerCase() ) ) //$NON-NLS-1$
+                    if ( "".equals( text ) ) //$NON-NLS-1$
+                    {
+                        close();
+                    }
+                    else if ( ( !aliasesLowerCased.contains( text.toLowerCase() ) ) //$NON-NLS-1$
                         && ( !Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( text ) ) )
                     {
                         addANewAlias();
@@ -248,7 +247,6 @@ public class EditAliasesDialog extends Dialog
                 }
             }
         } );
-
         newAliasText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -260,6 +258,7 @@ public class EditAliasesDialog extends Dialog
                 if ( "".equals( text ) ) //$NON-NLS-1$
                 {
                     newAliasAddButton.setEnabled( false );
+                    return;
                 }
                 else if ( aliasesLowerCased.contains( text.toLowerCase() ) )
                 {
