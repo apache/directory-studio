@@ -152,7 +152,7 @@ public class SchemaViewController
 
             if ( atw != null )
             {
-                viewer.update( atw, null );
+                updateNodeAndParents( atw );
             }
             else
             {
@@ -237,7 +237,7 @@ public class SchemaViewController
 
             if ( ocw != null )
             {
-                viewer.update( ocw, null );
+                updateNodeAndParents( ocw );
             }
             else
             {
@@ -782,5 +782,23 @@ public class SchemaViewController
         }
 
         return null;
+    }
+
+
+    /**
+     * Updates the give node and its parents.
+     *
+     * @param node
+     *      the node
+     */
+    public void updateNodeAndParents( TreeNode node )
+    {
+        viewer.update( node, null );
+        TreeNode parent = node.getParent();
+        while ( parent != null )
+        {
+            viewer.update( parent, null );
+            parent = parent.getParent();
+        }
     }
 }
