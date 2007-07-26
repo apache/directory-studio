@@ -72,6 +72,7 @@
          point="org.eclipse.ui.intro">
       <intro
             class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            icon="resources/icons/intro.gif"
             id="studio.intro">
       </intro>
       <introProductBinding
