@@ -153,7 +153,7 @@ body
 
 #title
 {
-	position: fixed;
+	position: absolute;
 	top: 84px;
 	left: 74px;
 	font: 34px Arial, Helvetica, Geneva, sans-serif;
@@ -162,7 +162,7 @@ body
 
 #description
 {
-	position: fixed;
+	position: absolute;
 	left: 74px;
 	top: 152px;
 	font-family: Verdana, Arial, Helvetica; 
@@ -172,7 +172,7 @@ body
 
 #left-column
 {
-	position: fixed;
+	position: absolute;
 	top: 212px;
 	width: 45%;
 	margin-left: 20px;
@@ -180,7 +180,7 @@ body
 
 #right-column
 {	
-	position: fixed;
+	position: absolute;
 	top: 212px;
 	left: 50%;
 	width: 45%;
