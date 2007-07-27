@@ -130,7 +130,8 @@ public class DifferencesWidget {
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		// ToolBar
-		final ToolBar leftToolBar = new ToolBar(leftComposite, SWT.HORIZONTAL);
+		final ToolBar leftToolBar = new ToolBar(leftComposite, SWT.HORIZONTAL
+				| SWT.FLAT);
 		leftToolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.NONE, false,
 				false));
 		// Creating the 'Menu' ToolBar item
@@ -233,7 +234,8 @@ public class DifferencesWidget {
 				true));
 
 		// ToolBar
-		final ToolBar rightToolBar = new ToolBar(rightComposite, SWT.HORIZONTAL);
+		final ToolBar rightToolBar = new ToolBar(rightComposite, SWT.HORIZONTAL
+				| SWT.FLAT);
 		rightToolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.NONE, false,
 				false));
 		// Creating the 'Menu' ToolBar item
