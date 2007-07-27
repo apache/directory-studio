@@ -18,7 +18,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/overview.gif");
 	background-repeat: no-repeat;
-	z-index: 2;
+	z-index: 4;
 }
 
 #overview a:hover
@@ -31,7 +31,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/overview_hover.gif");
 	background-repeat: no-repeat;
-	z-index: 3;
+	z-index: 8;
 }
 
 #overview-visited
@@ -57,7 +57,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/whats_new.gif");
 	background-repeat: no-repeat;
-	z-index: 8;
+	z-index: 5;
 }
 
 #whatsnew a:hover
@@ -83,7 +83,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/whats_new_selected.gif");
 	background-repeat: no-repeat;
-	z-index: 7;
+	z-index: 2;
 }
 
 #webresources a
@@ -96,7 +96,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/web_resources.gif");
 	background-repeat: no-repeat;
-	z-index: 5;
+	z-index: 6;
 }
 
 #webresources a:hover
@@ -109,7 +109,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/web_resources_hover.gif");
 	background-repeat: no-repeat;
-	z-index: 6;
+	z-index: 10;
 }
 
 #webresources-visited
@@ -122,7 +122,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/web_resources_selected.gif");
 	background-repeat: no-repeat;
-	z-index: 4;
+	z-index: 3;
 }
 
 #workbench a
@@ -135,7 +135,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/workbench.gif");
 	background-repeat: no-repeat;
-	z-index: 11;
+	z-index: 7;
 }
 
 #workbench a:hover
@@ -148,7 +148,7 @@ body
 	text-decoration: none;
     background-image : url("../graphics/contentpages/workbench_hover.gif");
 	background-repeat: no-repeat;
-	z-index: 12;
+	z-index: 11;
 }
 
 #title
