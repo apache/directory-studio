@@ -49,6 +49,10 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
     public static final int AUTH_ANONYMOUS = 0;
 
     public static final int AUTH_SIMPLE = 1;
+    
+    public static final int AUTH_SASL_DIGMD5 = 2;
+    
+    public static final int AUTH_SASL_CRAMD5 = 3;
 
     public static final int ENCYRPTION_NONE = 0;
 

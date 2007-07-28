@@ -45,6 +45,9 @@ public class ConnectionParameter implements Serializable
 
     /** The encryption method, one of IConnection.ENCYRPTION_NONE, IConnection.ENCYRPTION_LDAPS or IConnection.ENCYRPTION_STARTTLS. */
     private int encryptionMethod;
+    
+    /** The sasl mechanism, one of IConnection.AUTH_SASL_DIGMD5, IConnection.AUTH_SASL_CRAMD5 */
+    private int saslMechanism;
 
     /** The port of the LDAP server. */
     private int port;
@@ -370,6 +373,16 @@ public class ConnectionParameter implements Serializable
     public void setEncryptionMethod( int encryptionMethod )
     {
         this.encryptionMethod = encryptionMethod;
+    }
+    
+    
+    public int getSaslMechanism(){
+    	return this.saslMechanism;
+    }
+    
+    
+    public void setSaslMechanism(int saslMechanism){
+    	this.saslMechanism = saslMechanism;    	
     }
 
 

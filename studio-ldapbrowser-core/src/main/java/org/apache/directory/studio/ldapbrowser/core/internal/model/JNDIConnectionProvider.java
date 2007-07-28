@@ -107,6 +107,21 @@ public class JNDIConnectionProvider implements IConnectionProvider
                 String bindPassword = credentials.getBindPassword();
                 this.context.bindSimple( bindPrincipal, bindPassword, monitor );
             }
+            
+            else if (parameter.getAuthMethod() == IConnection.AUTH_SASL_DIGMD5)
+            {
+            	String bindPrincipal = credentials.getBindPrincipal();
+                String bindPassword = credentials.getBindPassword();
+                this.context.bindSaslDigestMD5(bindPrincipal, bindPassword, monitor);
+            }
+            
+            else if (parameter.getAuthMethod() == IConnection.AUTH_SASL_CRAMD5)
+            {
+            	String bindPrincipal = credentials.getBindPrincipal();
+                String bindPassword = credentials.getBindPassword();
+                this.context.bindSaslCramMD5(bindPrincipal, bindPassword, monitor);
+            }
+            
             else if ( parameter.getAuthMethod() == IConnection.AUTH_ANONYMOUS )
             {
                 this.context.bindAnonymous( monitor );

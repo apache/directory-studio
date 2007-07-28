@@ -122,25 +122,33 @@ public class JNDIConnectionContext
 
     public void bindAnonymous( ExtendedProgressMonitor monitor ) throws NamingException
     {
-        this.authMethod = "none"; //$NON-NLS-1$
-        this.principal = ""; //$NON-NLS-1$
-        this.credentials = ""; //$NON-NLS-1$
-
-        try
-        {
-            this.doBind( monitor );
-        }
-        catch ( NamingException ne )
-        {
-            this.close();
-            throw ne;
-        }
+        bindWithAuth( "", "", "none", monitor );
     }
 
 
     public void bindSimple( String user, String password, ExtendedProgressMonitor monitor ) throws NamingException
     {
-        this.authMethod = "simple"; //$NON-NLS-1$
+        bindWithAuth( user, password, "simple", monitor );
+    }
+
+
+    public void bindSaslDigestMD5( String user, String password, ExtendedProgressMonitor monitor )
+        throws NamingException
+    {
+        bindWithAuth( user, password, "DIGEST-MD5", monitor );
+    }
+    
+    
+    public void bindSaslCramMD5( String user, String password, ExtendedProgressMonitor monitor ) throws NamingException
+    {
+        bindWithAuth( user, password, "CRAM-MD5", monitor );
+    }
+
+
+    private void bindWithAuth( String user, String password, String authMethod, ExtendedProgressMonitor monitor )
+        throws NamingException
+    {
+        this.authMethod = authMethod;
         this.principal = user;
         this.credentials = password;
 
