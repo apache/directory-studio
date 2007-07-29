@@ -111,12 +111,9 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
 
     /** The checkbox to choose wether the connection should be opened when finishing the wizard */
     private Button openConnectionButton;
-
-    /** The radio to select anonymous authentication */
-    private Button anonymousAuthButton;
-
-    /** The radio to select simple authentication */
-    private Button simpleAuthButton;
+    
+    /** The combo to select the authentication method */
+    private Combo authenticationMethodCombo;
 
     /** The bind user combo with the history of recently used bind users */
     private Combo simpleAuthBindPrincipalCombo;
@@ -131,7 +128,7 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
     private Button saveSimpleAuthBindPasswordButton;
 
     /** The button to check the authentication parameters */
-    private Button checkSimpleAuthButton;
+    private Button checkPrincipalPasswordAuthButton;
 
     /** The list of listerns that are interested in modifications in this page */
     private List<ConnectionPageModifyListener> listenerList;
@@ -337,25 +334,31 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
      */
     public int getAuthenticationMethod()
     {
-        if ( anonymousAuthButton.getSelection() )
+        if ( authenticationMethodCombo != null )
         {
-            return IConnection.AUTH_ANONYMOUS;
+            switch ( authenticationMethodCombo.getSelectionIndex() )
+            {
+                case 1:
+                    return IConnection.AUTH_SIMPLE;
+                case 2:
+                    return IConnection.AUTH_SASL_DIGMD5;
+                case 3:
+                    return IConnection.AUTH_SASL_CRAMD5;
+                default:
+                    return IConnection.AUTH_ANONYMOUS;
+            }
         }
-        else if ( simpleAuthButton.getSelection() )
-        {
-            return IConnection.AUTH_SIMPLE;
-        }
-
         return IConnection.AUTH_ANONYMOUS;
     }
+    
 
 
     /**
-     * Gets the simple auth bind principal.
+     * Gets the simple auth, digest md5 or cram md5 bind principal.
      * 
      * @return the simple auth bind principal
      */
-    public String getSimpleAuthBindPrincipal()
+    public String getAuthBindPrincipal()
     {
         return simpleAuthBindPrincipalCombo != null ? simpleAuthBindPrincipalCombo.getText()
             : simpleAuthBindPrincipalText.getText();
@@ -363,11 +366,11 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
 
 
     /**
-     * Gets the simple auth bind password.
+     * Gets the simple, digest md5 or cram md5 auth bind password.
      * 
-     * @return the simple auth bind password
+     * @return the auth bind password
      */
-    public String getSimpleAuthBindPassword()
+    public String getAuthBindPassword()
     {
         return simpleAuthBindPasswordText.getText();
     }
@@ -624,31 +627,23 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
         Group group = BaseWidgetUtils.createGroup( composite, "Authentication Method", 1 );
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
 
-        anonymousAuthButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Anonymous Authentication", 1 );
-        anonymousAuthButton.setSelection( authMethod == IConnection.AUTH_ANONYMOUS );
-        anonymousAuthButton.addSelectionListener( this );
-
-        simpleAuthButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Simple Authentication", 1 );
-        simpleAuthButton.setSelection( authMethod == IConnection.AUTH_SIMPLE );
-        simpleAuthButton.addSelectionListener( this );
-
-        // saslAuthButton = new Button(authenticationMethodGroup, SWT.RADIO);
-        // saslAuthButton.setText("SASL Authentication");
-        // saslAuthButton.setSelection(authMethod ==
-        // ConnectionParameter.AUTH_SASL);
-        // saslAuthButton.addSelectionListener(this);
+        String[] authMethods = new String[]
+                                         { "Anonymous Authentication", "Simple Authentication", "DIGEST-MD5 (SASL)", "CRAM-MD5 (SASL)" };
+        
+        authenticationMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, authMethods, authMethod, 2 );
+        authenticationMethodCombo.addSelectionListener( this );
     }
 
 
     /**
-     * Adds the simple auth input.
+     * Adds inputs for principal and pasword.
      * 
      * @param saveBindPassword the initial save bind password flag
      * @param bindPrincipal the initial bind principal
      * @param bindPassword the initial bind password
      * @param parent the parent
      */
-    public void addSimpleAuthInput( boolean saveBindPassword, String bindPrincipal, String bindPassword,
+    public void addPrincipalPasswordInput( boolean saveBindPassword, String bindPrincipal, String bindPassword,
         Composite parent )
     {
 
@@ -686,13 +681,13 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
         saveSimpleAuthBindPasswordButton.setSelection( saveBindPassword );
         saveSimpleAuthBindPasswordButton.addSelectionListener( this );
 
-        checkSimpleAuthButton = new Button( composite, SWT.PUSH );
+        checkPrincipalPasswordAuthButton = new Button( composite, SWT.PUSH );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalAlignment = SWT.RIGHT;
-        checkSimpleAuthButton.setLayoutData( gd );
-        checkSimpleAuthButton.setText( "Check Authentication" );
-        checkSimpleAuthButton.setEnabled( false );
-        checkSimpleAuthButton.addSelectionListener( new SelectionListener()
+        checkPrincipalPasswordAuthButton.setLayoutData( gd );
+        checkPrincipalPasswordAuthButton.setText( "Check Authentication" );
+        checkPrincipalPasswordAuthButton.setEnabled( false );
+        checkPrincipalPasswordAuthButton.addSelectionListener( new SelectionListener()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -748,15 +743,14 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
                 fetchBaseDnsButton.setEnabled( false );
             }
 
-            if ( anonymousAuthButton != null && simpleAuthButton != null )
+            if ( authenticationMethodCombo != null )
             {
-                anonymousAuthButton.setEnabled( false );
-                simpleAuthButton.setEnabled( false );
+                authenticationMethodCombo.setEnabled( false );
             }
             if ( saveSimpleAuthBindPasswordButton != null && saveSimpleAuthBindPasswordButton != null )
             {
                 saveSimpleAuthBindPasswordButton.setEnabled( false );
-                checkSimpleAuthButton.setEnabled( false );
+                checkPrincipalPasswordAuthButton.setEnabled( false );
             }
         }
         else
@@ -787,14 +781,13 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
             if ( simpleAuthBindPrincipalCombo != null && simpleAuthBindPasswordText != null
                 && saveSimpleAuthBindPasswordButton != null )
             {
-                boolean simpleAuthSelected = simpleAuthButton == null || simpleAuthButton.getSelection();
-                simpleAuthBindPrincipalCombo.setEnabled( simpleAuthSelected );
+                simpleAuthBindPrincipalCombo.setEnabled( getPrincipalPasswordEnabled () );
                 simpleAuthBindPasswordText.setEnabled( saveSimpleAuthBindPasswordButton.getSelection()
-                    && simpleAuthSelected );
-                saveSimpleAuthBindPasswordButton.setEnabled( simpleAuthSelected );
-                checkSimpleAuthButton.setEnabled( saveSimpleAuthBindPasswordButton.getSelection()
+                    && getPrincipalPasswordEnabled () );
+                saveSimpleAuthBindPasswordButton.setEnabled( getPrincipalPasswordEnabled () );
+                checkPrincipalPasswordAuthButton.setEnabled( saveSimpleAuthBindPasswordButton.getSelection()
                     && !simpleAuthBindPrincipalCombo.getText().equals( "" )
-                    && !simpleAuthBindPasswordText.getText().equals( "" ) && simpleAuthSelected );
+                    && !simpleAuthBindPasswordText.getText().equals( "" ) && getPrincipalPasswordEnabled () );
             }
         }
     }
@@ -808,8 +801,6 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
         String message = null;
         String errorMessage = null;
 
-        boolean simpleAuthSelected = simpleAuthButton == null || simpleAuthButton.getSelection();
-
         if ( baseDNCombo != null && baseDNCombo.isVisible() )
         {
             try
@@ -821,14 +812,14 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
                 message = "Please enter a valid base DN.";
             }
         }
-        if ( simpleAuthBindPasswordText != null && simpleAuthSelected && simpleAuthBindPasswordText.isVisible() )
+        if ( simpleAuthBindPasswordText != null && getPrincipalPasswordEnabled () && simpleAuthBindPasswordText.isVisible() )
         {
             if ( saveSimpleAuthBindPasswordButton.getSelection() && "".equals( simpleAuthBindPasswordText.getText() ) )
             {
                 message = "Please enter a bind password.";
             }
         }
-        if ( simpleAuthBindPrincipalCombo != null && simpleAuthSelected && simpleAuthBindPrincipalCombo.isVisible() )
+        if ( simpleAuthBindPrincipalCombo != null && getPrincipalPasswordEnabled () && simpleAuthBindPrincipalCombo.isVisible() )
         {
             if ( "".equals( simpleAuthBindPrincipalCombo.getText() ) )
             {
@@ -875,6 +866,13 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
         }
     }
 
+    
+    private boolean getPrincipalPasswordEnabled ()
+    {
+        return ( getAuthenticationMethod() == IConnection.AUTH_SIMPLE )
+        || ( getAuthenticationMethod() == IConnection.AUTH_SASL_DIGMD5 )
+        || ( getAuthenticationMethod() == IConnection.AUTH_SASL_CRAMD5 );
+    }
 
     /**
      * {@inheritDoc}
@@ -917,41 +915,39 @@ public class ConnectionPageWrapper implements ModifyListener, SelectionListener
      */
     public IConnection getTestConnection()
     {
+        String principal;
+        String password;
+        Connection conn;
+        
         if ( getAuthenticationMethod() == IConnection.AUTH_ANONYMOUS )
         {
-            Connection conn;
-            try
-            {
-                conn = new Connection( null, getHostName(), getPort(), getEncyrptionMethod(), isAutoFetchBaseDns(),
-                    new DN( getBaseDN() ), getCountLimit(), getTimeLimit(), getAliasesDereferencingMethod(),
-                    getReferralsHandlingMethod(), IConnection.AUTH_ANONYMOUS, null, null );
-            }
-            catch ( NameException e )
-            {
-                conn = null;
-            }
-            return conn;
+            principal = null;
+            password = null;
         }
-        else if ( getAuthenticationMethod() == IConnection.AUTH_SIMPLE )
+        else if ( getAuthenticationMethod() == IConnection.AUTH_SIMPLE
+            || getAuthenticationMethod() == IConnection.AUTH_SASL_DIGMD5
+            || getAuthenticationMethod() == IConnection.AUTH_SASL_CRAMD5 )
         {
-            Connection conn;
-            try
-            {
-                conn = new Connection( null, getHostName(), getPort(), getEncyrptionMethod(), isAutoFetchBaseDns(),
-                    new DN( getBaseDN() ), getCountLimit(), getTimeLimit(), getAliasesDereferencingMethod(),
-                    getReferralsHandlingMethod(), IConnection.AUTH_SIMPLE, getSimpleAuthBindPrincipal(),
-                    getSimpleAuthBindPassword() );
-            }
-            catch ( NameException e )
-            {
-                conn = null;
-            }
-            return conn;
+            principal = getAuthBindPrincipal();
+            password = getAuthBindPassword();
         }
-        else
+        else 
         {
             return null;
         }
+        
+        
+        try
+        {
+            conn = new Connection( null, getHostName(), getPort(), getEncyrptionMethod(), isAutoFetchBaseDns(),
+                new DN( getBaseDN() ), getCountLimit(), getTimeLimit(), getAliasesDereferencingMethod(),
+                getReferralsHandlingMethod(), getAuthenticationMethod(), principal, password );
+        }
+        catch ( NameException e )
+        {
+            conn = null;
+        }
+        return conn;
     }
 
 

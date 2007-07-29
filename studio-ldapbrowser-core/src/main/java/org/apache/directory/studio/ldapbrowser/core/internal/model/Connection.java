@@ -795,18 +795,6 @@ public class Connection implements IConnection, Serializable
         EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
             ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
     }
-    
-    public int getSASLMechanism ()
-    {
-    	return this.connectionParameter.getSaslMechanism();
-    }
-    
-    public void setSASLMechanism (int saslMethod)
-    {
-    	this.connectionParameter.setSaslMechanism(saslMethod);
-    	EventRegistry.fireConnectionUpdated(new ConnectionUpdateEvent (this,
-    			ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED), this);
-    }
 
 
     public int getTimeLimit()

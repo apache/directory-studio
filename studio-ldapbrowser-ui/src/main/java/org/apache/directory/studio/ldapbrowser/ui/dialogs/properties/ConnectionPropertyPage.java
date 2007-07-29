@@ -132,7 +132,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         gl = new GridLayout( 1, false );
         authComposite.setLayout( gl );
         cpw.addAuthenticationMethodInput( connection.getAuthMethod(), authComposite );
-        cpw.addSimpleAuthInput( ( connection.getBindPassword() != null ) || ( connection.getBindPrincipal() == null && connection.getBindPassword() == null ),
+        cpw.addPrincipalPasswordInput( ( connection.getBindPassword() != null ) || ( connection.getBindPrincipal() == null && connection.getBindPassword() == null ),
             connection.getBindPrincipal() != null ? connection.getBindPrincipal().toString() : "", connection
                 .getBindPassword() != null ? connection.getBindPassword() : "", authComposite );
         this.authTab = new TabItem( this.tabFolder, SWT.NONE );
@@ -187,13 +187,15 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
             connection.setBindPrincipal( null );
             connection.setBindPassword( null );
         }
-        if ( connection.getAuthMethod() == IConnection.AUTH_SIMPLE )
+        if ( connection.getAuthMethod() == IConnection.AUTH_SIMPLE
+            || connection.getAuthMethod() == IConnection.AUTH_SASL_CRAMD5
+            || connection.getAuthMethod() == IConnection.AUTH_SASL_DIGMD5 )
         {
             try
             {
-                connection.setBindPrincipal( cpw.getSimpleAuthBindPrincipal() );
+                connection.setBindPrincipal( cpw.getAuthBindPrincipal() );
                 connection
-                    .setBindPassword( cpw.isSaveSimpleAuthBindPassword() ? cpw.getSimpleAuthBindPassword() : null );
+                    .setBindPassword( cpw.isSaveSimpleAuthBindPassword() ? cpw.getAuthBindPassword() : null );
             }
             catch ( Exception e )
             {

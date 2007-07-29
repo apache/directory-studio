@@ -70,7 +70,8 @@ public class ConnectionParameter implements Serializable
     /** The referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE or IConnection.HANDLE_REFERRALS_FOLLOW. */
     private int referralsHandlingMethod;
 
-    /** The authentication method, one of IConnection.AUTH_ANONYMOUS or IConnection.AUTH_SIMPLE */
+    /** The authentication method, one of IConnection.AUTH_ANONYMOUS, IConnection.AUTH_SIMPLE,
+     * IConnection.AUTH_SASL_CRAMD5 or IConnection.AUTH_SASL_DIGMD5 */
     private int authMethod;
 
     /** The bind principal, typically a DN. */
@@ -307,8 +308,8 @@ public class ConnectionParameter implements Serializable
 
 
     /**
-     * Gets the auth method, one of IConnection.AUTH_ANONYMOUS
-     * or IConnection.AUTH_SIMPLE.
+     * Gets the auth method, one of IConnection.AUTH_ANONYMOUS,
+     * IConnection.AUTH_SIMPLE, IConnection.AUTH_SASL_CRAMD5 or IConnection.AUTH_SASL_DIGMD5.
      * 
      * @return the auth method
      */

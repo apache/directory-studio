@@ -129,7 +129,9 @@ public class NewConnectionWizard extends Wizard implements INewWizard
         {
             return mainPage.isPageComplete() && optionsPage.isPageComplete();
         }
-        else if ( cpw.getAuthenticationMethod() == IConnection.AUTH_SIMPLE )
+        else if ( cpw.getAuthenticationMethod() == IConnection.AUTH_SIMPLE
+            || cpw.getAuthenticationMethod() == IConnection.AUTH_SASL_CRAMD5
+            || cpw.getAuthenticationMethod() == IConnection.AUTH_SASL_DIGMD5 )
         {
             return mainPage.isPageComplete() && authPage.isPageComplete() && optionsPage.isPageComplete();
         }

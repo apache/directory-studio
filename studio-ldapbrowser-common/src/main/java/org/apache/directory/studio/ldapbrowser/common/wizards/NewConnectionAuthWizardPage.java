@@ -131,8 +131,8 @@ public class NewConnectionAuthWizardPage extends WizardPage implements Connectio
         composite.setLayout( gl );
 
         wizard.getCpw().addAuthenticationMethodInput( IConnection.AUTH_SIMPLE, composite );
-        wizard.getCpw().addSimpleAuthInput( true, "", "", composite );
-
+        wizard.getCpw().addPrincipalPasswordInput( true, "", "", composite );
+     
         setControl( composite );
     }
 
