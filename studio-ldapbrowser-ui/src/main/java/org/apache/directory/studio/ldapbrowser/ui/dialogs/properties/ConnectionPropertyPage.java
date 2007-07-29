@@ -136,7 +136,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
             connection.getBindPrincipal() != null ? connection.getBindPrincipal().toString() : "", connection
                 .getBindPassword() != null ? connection.getBindPassword() : "", authComposite );
         this.authTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.authTab.setText( "Authentification" );
+        this.authTab.setText( "Authentication" );
         this.authTab.setControl( authComposite );
 
         Composite optionsComposite = new Composite( this.tabFolder, SWT.NONE );

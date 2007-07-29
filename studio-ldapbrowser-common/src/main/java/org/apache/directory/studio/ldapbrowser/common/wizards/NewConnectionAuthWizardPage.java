@@ -54,8 +54,8 @@ public class NewConnectionAuthWizardPage extends WizardPage implements Connectio
     public NewConnectionAuthWizardPage( String pageName, NewConnectionWizard wizard )
     {
         super( pageName );
-        setTitle( "Authentification" );
-        setDescription( "Please select an authentification method and input authentification data." );
+        setTitle( "Authentication" );
+        setDescription( "Please select an authentication method and input authentication data." );
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_CONNECTION_WIZARD ) );
         setPageComplete( false );
 

@@ -186,7 +186,7 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
 
 
     /**
-     * Connects to the LDAP server without any authentification:
+     * Connects to the LDAP server without any authentication:
      * 
      * @param pm
      *                The progress monitor
@@ -195,7 +195,7 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
 
 
     /**
-     * Binds to the LDAP server using the required authentification. Depends
+     * Binds to the LDAP server using the required authentication. Depends
      * on connect().
      * 
      * @param pm
