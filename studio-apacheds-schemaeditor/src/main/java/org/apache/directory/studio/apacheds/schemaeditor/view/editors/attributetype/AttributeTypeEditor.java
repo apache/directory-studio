@@ -55,6 +55,9 @@ public class AttributeTypeEditor extends FormEditor
 
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.attributeTypeEditor"; //$NON-NLS-1$
+    
+    /** The editor */
+    private AttributeTypeEditor instance;
 
     /** The dirty state flag */
     private boolean dirty = false;
@@ -100,9 +103,6 @@ public class AttributeTypeEditor extends FormEditor
         }
     };
 
-    /** The editor */
-    private AttributeTypeEditor instance;
-
     /** The attribute type listener */
     private AttributeTypeListener attributeTypeListener = new AttributeTypeAdapter()
     {
@@ -117,7 +117,7 @@ public class AttributeTypeEditor extends FormEditor
     {
         public void schemaRemoved( Schema schema )
         {
-            if ( schema.equals( originalSchema )  )
+            if ( schema.equals( originalSchema ) )
             {
                 getEditorSite().getPage().closeEditor( instance, false );
             }
@@ -137,7 +137,7 @@ public class AttributeTypeEditor extends FormEditor
         setPartName( input.getName() );
 
         originalAttributeType = ( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
-        modifiedAttributeType = ( AttributeTypeImpl ) PluginUtils.getClone( originalAttributeType );
+        modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
         originalSchema = schemaHandler.getSchema( originalAttributeType.getSchema() );

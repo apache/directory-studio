@@ -954,7 +954,7 @@ public class SchemaHandler
                 ( ( SchemaListener ) object ).attributeTypeRemoved( at );
             }
         }
-        
+
         // Attribute Type Listeners
         List<?> atListeners = ( List<?> ) attributeTypeListeners.get( at );
         if ( atListeners != null )
@@ -1040,6 +1040,16 @@ public class SchemaHandler
             for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).objectClassModified( oc );
+            }
+        }
+
+        // Object Class Listeners
+        List<?> ocListeners = ( List<?> ) objectClassListeners.get( oc );
+        if ( ocListeners != null )
+        {
+            for ( Object object : ocListeners.toArray() )
+            {
+                ( ( ObjectClassListener ) object ).objectClassRemoved();
             }
         }
     }

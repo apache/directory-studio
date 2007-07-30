@@ -97,6 +97,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
     /** The modified object class */
     private ObjectClassImpl modifiedObjectClass;
 
+    /** The original schema */
+    private Schema originalSchema;
+
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
@@ -180,7 +183,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
          */
         public void objectClassRemoved( ObjectClassImpl oc )
         {
-            refreshUI();
+            if ( !oc.equals( originalObjectClass ) )
+            {
+                refreshUI();
+            }
         }
 
 
@@ -198,7 +204,10 @@ public class ObjectClassEditorOverviewPage extends FormPage
          */
         public void schemaRemoved( Schema schema )
         {
-            refreshUI();
+            if ( !schema.equals( originalSchema ) )
+            {
+                refreshUI();
+            }
         }
 
 
@@ -841,6 +850,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         // Getting the original and modified object classes
         modifiedObjectClass = ( ( ObjectClassEditor ) getEditor() ).getModifiedObjectClass();
         originalObjectClass = ( ( ObjectClassEditor ) getEditor() ).getOriginalObjectClass();
+        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchema() );
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -1219,7 +1229,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
     public void dispose()
     {
         schemaHandler.removeListener( schemaHandlerListener );
-        removeListeners();
 
         super.dispose();
     }

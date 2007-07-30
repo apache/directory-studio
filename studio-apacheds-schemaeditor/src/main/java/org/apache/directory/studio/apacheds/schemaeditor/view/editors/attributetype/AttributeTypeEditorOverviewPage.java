@@ -87,6 +87,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     /** The modified object class */
     private AttributeTypeImpl modifiedAttributeType;
 
+    /** The original schema */
     private Schema originalSchema;
 
     /** The SchemaHandler */

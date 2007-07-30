@@ -23,7 +23,13 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectcla
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ObjectClassAdapter;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ObjectClassListener;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
@@ -48,6 +54,9 @@ public class ObjectClassEditor extends FormEditor
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.objectClassEditor"; //$NON-NLS-1$
 
+    /** The editor */
+    private ObjectClassEditor instance;
+
     /** The Overview page */
     private ObjectClassEditorOverviewPage overview;
 
@@ -62,6 +71,9 @@ public class ObjectClassEditor extends FormEditor
 
     /** The object class used to save modifications */
     private ObjectClassImpl modifiedObjectClass;
+
+    /** The originalSchema */
+    private Schema originalSchema;
 
     /** The listener for page changed */
     private IPageChangedListener pageChangedListener = new IPageChangedListener()
@@ -90,14 +102,26 @@ public class ObjectClassEditor extends FormEditor
         }
     };
 
-
-    /**
-     * Default constructor
-     */
-    public ObjectClassEditor()
+    /** The object class listener */
+    private ObjectClassListener objectClassListener = new ObjectClassAdapter()
     {
-        super();
-    }
+        public void objectClassRemoved()
+        {
+            getEditorSite().getPage().closeEditor( instance, false );
+        }
+    };
+
+    /** The SchemaHandler listener */
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
+    {
+        public void schemaRemoved( Schema schema )
+        {
+            if ( schema.equals( originalSchema ) )
+            {
+                getEditorSite().getPage().closeEditor( instance, false );
+            }
+        }
+    };
 
 
     /* (non-Javadoc)
@@ -105,16 +129,34 @@ public class ObjectClassEditor extends FormEditor
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
+        instance = this;
+
         setSite( site );
         setInput( input );
         setPartName( input.getName() );
 
         originalObjectClass = ( ( ObjectClassEditorInput ) getEditorInput() ).getObjectClass();
-        //        originalObjectClass.setEditor( this );
-
         modifiedObjectClass = PluginUtils.getClone( originalObjectClass );
 
+        SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+        originalSchema = schemaHandler.getSchema( originalObjectClass.getSchema() );
+        schemaHandler.addListener( originalObjectClass, objectClassListener );
+        schemaHandler.addListener( schemaHandlerListener );
+
         addPageChangedListener( pageChangedListener );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
+     */
+    public void dispose()
+    {
+        SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+        schemaHandler.removeListener( originalObjectClass, objectClassListener );
+        schemaHandler.removeListener( schemaHandlerListener );
+
+        super.dispose();
     }
 
 
