@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.schema.Syntax;
 public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
-    
+
     /** The OID of the syntax */
     private String syntaxOid;
 

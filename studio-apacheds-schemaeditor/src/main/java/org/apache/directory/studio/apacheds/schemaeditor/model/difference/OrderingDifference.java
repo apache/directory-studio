@@ -43,6 +43,7 @@ public class OrderingDifference extends AbstractPropertyDifference
         super( source, destination, type );
     }
 
+
     /**
      * Creates a new instance of OrderingDifference.
      *

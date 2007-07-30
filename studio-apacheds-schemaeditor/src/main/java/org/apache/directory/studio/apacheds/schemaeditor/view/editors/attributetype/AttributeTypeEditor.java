@@ -55,7 +55,7 @@ public class AttributeTypeEditor extends FormEditor
 
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.attributeTypeEditor"; //$NON-NLS-1$
-    
+
     /** The editor */
     private AttributeTypeEditor instance;
 

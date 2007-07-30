@@ -45,7 +45,7 @@ import org.eclipse.ui.IWorkbench;
 public class ExportProjectsWizard extends Wizard implements IExportWizard
 {
     public static final String ID = Activator.PLUGIN_ID + ".wizards.ExportProjectsWizard";
-    
+
     /** The selected projects */
     private Project[] selectedProjects = new Project[0];
 

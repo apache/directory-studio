@@ -286,8 +286,7 @@ public class ImportSchemasFromOpenLdapWizardPage extends WizardPage
                 return;
             }
         }
-        
-        
+
         // Schemas table
         if ( schemaFilesTableViewer.getCheckedElements().length == 0 )
         {

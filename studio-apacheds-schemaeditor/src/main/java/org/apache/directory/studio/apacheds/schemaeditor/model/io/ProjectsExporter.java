@@ -131,7 +131,8 @@ public class ProjectsExporter
             }
 
             // Schemas
-            XMLSchemaFileExporter.addSchemas( project.getSchemaHandler().getSchemas().toArray( new Schema[0] ), element );
+            XMLSchemaFileExporter
+                .addSchemas( project.getSchemaHandler().getSchemas().toArray( new Schema[0] ), element );
         }
     }
 

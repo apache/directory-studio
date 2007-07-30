@@ -214,7 +214,7 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
             displayErrorMessage( "The superior attribute type does not exist." );
             return;
         }
-        
+
         displayErrorMessage( null );
     }
 

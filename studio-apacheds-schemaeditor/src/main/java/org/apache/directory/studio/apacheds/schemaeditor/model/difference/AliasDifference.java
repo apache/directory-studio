@@ -55,5 +55,5 @@ public class AliasDifference extends AbstractPropertyDifference
     public AliasDifference( Object source, Object destination )
     {
         super( source, destination );
-    }    
+    }
 }

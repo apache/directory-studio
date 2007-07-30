@@ -132,7 +132,7 @@ public class ProblemsViewController
                 }
                 else
                 {
-                	view.setErrorsAndWarningsCount(0, 0);
+                    view.setErrorsAndWarningsCount( 0, 0 );
                     view.getViewer().setInput( null );
                 }
             }

@@ -135,7 +135,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             catch ( InvocationTargetException e )
             {
                 // Nothing to do (it will never occur)
-               e.printStackTrace();
+                e.printStackTrace();
             }
             catch ( InterruptedException e )
             {

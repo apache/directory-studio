@@ -43,6 +43,7 @@ public class MandatoryATDifference extends AbstractPropertyDifference
         super( source, destination, type );
     }
 
+
     /**
      * Creates a new instance of MandatoryATDifference.
      *

@@ -52,7 +52,7 @@ public class NonExistingOCSuperiorError implements SchemaError
         this.supAlias = supAlias;
     }
 
-    
+
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaError#getSource()
      */

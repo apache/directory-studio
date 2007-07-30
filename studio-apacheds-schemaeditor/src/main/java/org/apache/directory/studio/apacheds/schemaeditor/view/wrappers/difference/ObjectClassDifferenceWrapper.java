@@ -40,7 +40,8 @@ public class ObjectClassDifferenceWrapper extends AbstractDifferenceWrapper
      * @param parent
      *      the parent TreeNode
      */
-    public ObjectClassDifferenceWrapper( Object originalObject, Object modifiedObject, WrapperState state, TreeNode parent )
+    public ObjectClassDifferenceWrapper( Object originalObject, Object modifiedObject, WrapperState state,
+        TreeNode parent )
     {
         super( originalObject, modifiedObject, state, parent );
     }

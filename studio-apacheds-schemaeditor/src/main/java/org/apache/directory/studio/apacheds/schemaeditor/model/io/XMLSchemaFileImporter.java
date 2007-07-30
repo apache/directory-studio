@@ -161,7 +161,7 @@ public class XMLSchemaFileImporter
     public static Schema[] readSchemas( Element element, String path ) throws XMLSchemaFileImportException
     {
         List<Schema> schemas = new ArrayList<Schema>();
-        
+
         if ( !element.getName().equals( SCHEMAS_TAG ) )
         {
             throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );

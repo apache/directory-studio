@@ -46,7 +46,7 @@ import org.eclipse.ui.IWorkbench;
 public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWizard
 {
     public static final String ID = Activator.PLUGIN_ID + ".wizards.ImportSchemasFromOpenLdapWizard";
-    
+
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
@@ -76,9 +76,9 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
     public boolean performFinish()
     {
         final File[] selectedSchemasFiles = page.getSelectedSchemaFiles();
-        
+
         schemaChecker.disableModificationsListening();
-        
+
         try
         {
             getContainer().run( true, false, new IRunnableWithProgress()
@@ -102,7 +102,7 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
                         }
                         monitor.worked( 1 );
                     }
-                    
+
                     monitor.done();
                 }
             } );

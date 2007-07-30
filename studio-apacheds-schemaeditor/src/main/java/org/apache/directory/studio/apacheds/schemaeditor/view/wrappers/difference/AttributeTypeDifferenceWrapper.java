@@ -40,7 +40,8 @@ public class AttributeTypeDifferenceWrapper extends AbstractDifferenceWrapper
      * @param parent
      *      the parent TreeNode
      */
-    public AttributeTypeDifferenceWrapper( Object originalObject, Object modifiedObject, WrapperState state, TreeNode parent )
+    public AttributeTypeDifferenceWrapper( Object originalObject, Object modifiedObject, WrapperState state,
+        TreeNode parent )
     {
         super( originalObject, modifiedObject, state, parent );
     }

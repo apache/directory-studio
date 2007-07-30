@@ -36,7 +36,7 @@ import org.eclipse.ui.IWorkbench;
 public class CommitChangesWizard extends Wizard implements IExportWizard
 {
     public static final String ID = Activator.PLUGIN_ID + ".wizards.CommitChangesWizard";
-    
+
     // The pages of the wizard
     private CommitChangesInformationWizardPage commitChangesInformation;
     private CommitChangesDifferencesWizardPage commitChangesDifferences;

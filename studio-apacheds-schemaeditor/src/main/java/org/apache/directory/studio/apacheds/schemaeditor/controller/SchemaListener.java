@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
+
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;

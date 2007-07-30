@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
 
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 
+
 /**
  * This class represents the NoAliasWarning.
  *

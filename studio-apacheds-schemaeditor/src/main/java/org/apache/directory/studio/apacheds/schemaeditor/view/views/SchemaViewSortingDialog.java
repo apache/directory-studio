@@ -140,7 +140,7 @@ public class SchemaViewSortingDialog extends Dialog
 
         // Descending Button
         descendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        descendingButton.setText( "Descending");
+        descendingButton.setText( "Descending" );
         descendingButton.setEnabled( true );
 
         initFieldsFromPreferences();

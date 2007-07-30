@@ -45,7 +45,7 @@ import org.eclipse.ui.IWorkbench;
 public class ImportProjectsWizard extends Wizard implements IImportWizard
 {
     public static final String ID = Activator.PLUGIN_ID + ".wizards.ImportProjectsWizard";
-    
+
     // The pages of the wizard
     private ImportProjectsWizardPage page;
 

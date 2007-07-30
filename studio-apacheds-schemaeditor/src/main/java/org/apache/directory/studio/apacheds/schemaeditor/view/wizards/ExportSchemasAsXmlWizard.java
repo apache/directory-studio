@@ -45,7 +45,7 @@ import org.eclipse.ui.IWorkbench;
 public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
 {
     public static final String ID = Activator.PLUGIN_ID + ".wizards.ExportSchemasAsXmlWizard";
-    
+
     /** The selected schemas */
     private Schema[] selectedSchemas = new Schema[0];
 

@@ -60,7 +60,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
      * @param view
      *      the associate view
      */
-    public RenameProjectAction( TableViewer viewer)
+    public RenameProjectAction( TableViewer viewer )
     {
         super( "Rename Project..." );
         setToolTipText( getText() );

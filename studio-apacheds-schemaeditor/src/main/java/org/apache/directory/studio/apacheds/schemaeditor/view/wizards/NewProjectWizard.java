@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkbench;
 public class NewProjectWizard extends Wizard implements INewWizard
 {
     public static final String ID = Activator.PLUGIN_ID + ".wizards.NewProjectWizard";
-    
+
     // The pages of the wizard
     private NewProjectWizardPage page;
 

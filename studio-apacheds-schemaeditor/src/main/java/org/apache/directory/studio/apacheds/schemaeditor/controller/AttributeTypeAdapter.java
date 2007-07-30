@@ -20,7 +20,6 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
-
 /**
  * This adapter class provides default implementations for the methods 
  * described by the AttributeTypeListener interface.

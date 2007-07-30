@@ -286,8 +286,7 @@ public class ImportSchemasFromXmlWizardPage extends WizardPage
                 return;
             }
         }
-        
-        
+
         // Schemas table
         if ( schemaFilesTableViewer.getCheckedElements().length == 0 )
         {
@@ -326,7 +325,7 @@ public class ImportSchemasFromXmlWizardPage extends WizardPage
         List<String> schemaFiles = new ArrayList<String>();
         for ( Object schemaFile : selectedSchemaFile )
         {
-            schemaFiles.add( (( File ) schemaFile).getAbsolutePath() );
+            schemaFiles.add( ( ( File ) schemaFile ).getAbsolutePath() );
         }
 
         return schemaFiles.toArray( new String[0] );

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker;
 
+
 /**
  * Classes which implement this interface provide methods that deal with the 
  * events that are generated when an event occurrs on the SchemaChecker.
