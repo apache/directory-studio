@@ -484,18 +484,18 @@ public class SchemaViewController
                 {
                     removeSchemaHandlerListener( oldProject );
                 }
-                else
+
+                if ( newProject != null )
                 {
                     viewer.getTree().setEnabled( true );
                     newSchema.setEnabled( true );
                     newAttributeType.setEnabled( true );
                     newObjectClass.setEnabled( true );
-                    linkWithEditor.setEnabled( true );
                     collapseAll.setEnabled( true );
-                }
+                    linkWithEditor.setEnabled( true );
+                    openSchemaViewSortingDialog.setEnabled( true );
+                    openSchemaViewPreference.setEnabled( true );
 
-                if ( newProject != null )
-                {
                     addSchemaHandlerListener( newProject );
                     view.reloadViewer();
                 }
@@ -506,8 +506,10 @@ public class SchemaViewController
                     newSchema.setEnabled( false );
                     newAttributeType.setEnabled( false );
                     newObjectClass.setEnabled( false );
-                    linkWithEditor.setEnabled( false );
                     collapseAll.setEnabled( false );
+                    linkWithEditor.setEnabled( false );
+                    openSchemaViewSortingDialog.setEnabled( false );
+                    openSchemaViewPreference.setEnabled( false );
                 }
             }
         } );
