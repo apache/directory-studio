@@ -288,6 +288,12 @@ public class NewAttributeTypeGeneralWizardPage extends WizardPage
             displayErrorMessage( "Incorrect OID." );
             return;
         }
+        else if ( ( !oidText.getText().equals( "" ) ) && ( OID.isOID( oidText.getText() ) )
+            && ( schemaHandler.isAliasOrOidAlreadyTaken( oidText.getText() ) ) )
+        {
+            displayErrorMessage( "An object with this OID already exists." );
+            return;
+        }
         else if ( aliases.length == 0 )
         {
             displayWarningMessage( "The attribute type does not have any name. It is recommanded to add at least one name." );
