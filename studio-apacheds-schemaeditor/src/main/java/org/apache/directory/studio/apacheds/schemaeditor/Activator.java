@@ -40,7 +40,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeS
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -174,123 +173,6 @@ public class Activator extends AbstractUIPlugin
     }
 
 
-    /**
-     * Close the editor associated with the given object if it is opened.
-     *
-     * @param o
-     *      the object
-     */
-    private void closeOpenedEditor( Object o )
-    {
-        if ( o instanceof AttributeTypeImpl )
-        {
-            closeAttributeTypeEditor( ( AttributeTypeImpl ) o );
-        }
-        else if ( o instanceof ObjectClassImpl )
-        {
-            closeObjectClassEditor( ( ObjectClassImpl ) o );
-        }
-        else if ( o instanceof Schema )
-        {
-            Schema schema = ( Schema ) o;
-
-            // Closing the schema editor
-            closeObjectClassEditor( schema );
-
-            // Closing attribute type editors
-            for ( AttributeTypeImpl at : schema.getAttributeTypes() )
-            {
-                closeAttributeTypeEditor( at );
-            }
-
-            // Closing object class editors
-            for ( ObjectClassImpl oc : schema.getObjectClasses() )
-            {
-                closeObjectClassEditor( oc );
-            }
-        }
-    }
-
-
-    /**
-     * Closes the editor associated with the given attribute type.
-     *
-     * @param at
-     *      the attribute type
-     */
-    private void closeAttributeTypeEditor( AttributeTypeImpl at )
-    {
-        IWorkbenchPage activePage = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-        for ( IEditorReference editorReference : activePage.getEditorReferences() )
-        {
-            String editorID = editorReference.getId();
-
-            if ( editorID.equals( AttributeTypeEditor.ID ) )
-            {
-                if ( at.equals( ( ( AttributeTypeEditor ) editorReference.getEditor( false ) )
-                    .getOriginalAttributeType() ) )
-                {
-                    activePage.closeEditors( new IEditorReference[]
-                        { editorReference }, false );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Closes the editor associate with the given object class.
-     *
-     * @param oc
-     *      the object class
-     */
-    private void closeObjectClassEditor( ObjectClassImpl oc )
-    {
-        IWorkbenchPage activePage = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-        for ( IEditorReference editorReference : activePage.getEditorReferences() )
-        {
-            String editorID = editorReference.getId();
-
-            if ( editorID.equals( ObjectClassEditor.ID ) )
-            {
-                if ( oc.equals( ( ( ObjectClassEditor ) editorReference.getEditor( false ) ).getOriginalObjectClass() ) )
-                {
-                    activePage.closeEditors( new IEditorReference[]
-                        { editorReference }, false );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Closes the editor associated with the given schema.
-     *
-     * @param schema
-     *      the schema
-     */
-    private void closeObjectClassEditor( Schema schema )
-    {
-        IWorkbenchPage activePage = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-        for ( IEditorReference editorReference : activePage.getEditorReferences() )
-        {
-            String editorID = editorReference.getId();
-
-            if ( editorID.equals( SchemaEditor.ID ) )
-            {
-                if ( schema.equals( ( ( SchemaEditor ) editorReference.getEditor( false ) ).getSchema() ) )
-                {
-                    activePage.closeEditors( new IEditorReference[]
-                        { editorReference }, false );
-                }
-            }
-        }
-    }
-
-
     /*
      * (non-Javadoc)
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -301,7 +183,6 @@ public class Activator extends AbstractUIPlugin
 
         // Loading the projects
         PluginUtils.loadProjects();
-
     }
 
 
