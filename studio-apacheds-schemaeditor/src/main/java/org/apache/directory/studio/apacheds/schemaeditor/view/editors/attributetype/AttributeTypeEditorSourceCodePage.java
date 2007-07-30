@@ -77,7 +77,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
                 ( ( AttributeTypeEditor ) getEditor() ).setDirty( true );
                 OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                 parser.parse( schemaSourceViewer.getTextWidget().getText() );
-                List attributeTypes = parser.getAttributeTypes();
+                List<?> attributeTypes = parser.getAttributeTypes();
                 if ( attributeTypes.size() != 1 )
                 {
                     // Throw an exception and return
@@ -191,7 +191,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         modifiedAttributeType.setSingleValue( atl.isSingleValue() );
         modifiedAttributeType.setSubstrName( atl.getSubstr() );
         modifiedAttributeType.setSuperiorName( atl.getSuperior() );
-        modifiedAttributeType.setSyntaxOid( atl.getOid() );
+        modifiedAttributeType.setSyntaxOid( atl.getSyntax() );
         modifiedAttributeType.setUsage( atl.getUsage() );
     }
 
