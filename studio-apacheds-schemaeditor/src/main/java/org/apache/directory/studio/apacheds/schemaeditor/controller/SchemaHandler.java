@@ -857,7 +857,7 @@ public class SchemaHandler
      */
     private void notifySchemaAdded( Schema schema )
     {
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.schemaAdded( schema );
         }
@@ -872,7 +872,7 @@ public class SchemaHandler
      */
     private void notifySchemaRemoved( Schema schema )
     {
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.schemaRemoved( schema );
         }
@@ -888,7 +888,7 @@ public class SchemaHandler
     private void notifyAttributeTypeAdded( AttributeTypeImpl at )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.attributeTypeAdded( at );
         }
@@ -897,7 +897,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).attributeTypeAdded( at );
             }
@@ -914,7 +914,7 @@ public class SchemaHandler
     private void notifyAttributeTypeModified( AttributeTypeImpl at )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.attributeTypeModified( at );
         }
@@ -923,7 +923,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).attributeTypeModified( at );
             }
@@ -940,7 +940,7 @@ public class SchemaHandler
     private void notifyAttributeTypeRemoved( AttributeTypeImpl at )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.attributeTypeRemoved( at );
         }
@@ -949,9 +949,19 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( at.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).attributeTypeRemoved( at );
+            }
+        }
+        
+        // Attribute Type Listeners
+        List<?> atListeners = ( List<?> ) attributeTypeListeners.get( at );
+        if ( atListeners != null )
+        {
+            for ( Object object : atListeners.toArray() )
+            {
+                ( ( AttributeTypeListener ) object ).attributeTypeRemoved();
             }
         }
     }
@@ -966,7 +976,7 @@ public class SchemaHandler
     private void notifyObjectClassAdded( ObjectClassImpl oc )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.objectClassAdded( oc );
         }
@@ -975,7 +985,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).objectClassAdded( oc );
             }
@@ -992,7 +1002,7 @@ public class SchemaHandler
     private void notifyObjectClassModified( ObjectClassImpl oc )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.objectClassModified( oc );
         }
@@ -1001,7 +1011,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).objectClassModified( oc );
             }
@@ -1018,7 +1028,7 @@ public class SchemaHandler
     private void notifyObjectClassRemoved( ObjectClassImpl oc )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.objectClassRemoved( oc );
         }
@@ -1027,7 +1037,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( oc.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).objectClassModified( oc );
             }
@@ -1044,7 +1054,7 @@ public class SchemaHandler
     private void notifyMatchingRuleAdded( MatchingRuleImpl mr )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.matchingRuleAdded( mr );
         }
@@ -1053,7 +1063,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).matchingRuleAdded( mr );
             }
@@ -1070,7 +1080,7 @@ public class SchemaHandler
     private void notifyMatchingRuleModified( MatchingRuleImpl mr )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.matchingRuleModified( mr );
         }
@@ -1079,7 +1089,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).matchingRuleModified( mr );
             }
@@ -1096,7 +1106,7 @@ public class SchemaHandler
     private void notifyMatchingRuleRemoved( MatchingRuleImpl mr )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.matchingRuleRemoved( mr );
         }
@@ -1105,7 +1115,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( mr.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).matchingRuleRemoved( mr );
             }
@@ -1122,7 +1132,7 @@ public class SchemaHandler
     private void notifySyntaxRuleAdded( SyntaxImpl syntax )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.syntaxAdded( syntax );
         }
@@ -1131,7 +1141,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).syntaxAdded( syntax );
             }
@@ -1148,7 +1158,7 @@ public class SchemaHandler
     private void notifySyntaxRuleModified( SyntaxImpl syntax )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.syntaxModified( syntax );
         }
@@ -1157,7 +1167,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).syntaxModified( syntax );
             }
@@ -1174,7 +1184,7 @@ public class SchemaHandler
     private void notifySyntaxRemoved( SyntaxImpl syntax )
     {
         // SchemaHandler Listeners
-        for ( SchemaHandlerListener listener : schemaHandlerListeners )
+        for ( SchemaHandlerListener listener : schemaHandlerListeners.toArray( new SchemaHandlerListener[0] ) )
         {
             listener.syntaxRemoved( syntax );
         }
@@ -1183,7 +1193,7 @@ public class SchemaHandler
         List<?> listeners = ( List<?> ) schemaListeners.get( getSchema( syntax.getSchema() ) );
         if ( listeners != null )
         {
-            for ( Object object : listeners )
+            for ( Object object : listeners.toArray() )
             {
                 ( ( SchemaListener ) object ).syntaxRemoved( syntax );
             }

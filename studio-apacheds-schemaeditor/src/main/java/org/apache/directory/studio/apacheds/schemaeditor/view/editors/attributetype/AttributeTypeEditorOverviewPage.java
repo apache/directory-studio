@@ -87,6 +87,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     /** The modified object class */
     private AttributeTypeImpl modifiedAttributeType;
 
+    private Schema originalSchema;
+
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
@@ -116,7 +118,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
          */
         public void attributeTypeRemoved( AttributeTypeImpl at )
         {
-            refreshUI();
+            if ( !at.equals( originalAttributeType ) )
+            {
+                refreshUI();
+            }
         }
 
 
@@ -188,7 +193,10 @@ public class AttributeTypeEditorOverviewPage extends FormPage
          */
         public void schemaRemoved( Schema schema )
         {
-            refreshUI();
+            if ( !schema.equals( originalSchema ) )
+            {
+                refreshUI();
+            }
         }
 
 
@@ -638,6 +646,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         // Getting the original and modified attribute types
         modifiedAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getModifiedAttributeType();
         originalAttributeType = ( ( AttributeTypeEditor ) getEditor() ).getOriginalAttributeType();
+        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchema() );
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -1170,7 +1179,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     public void dispose()
     {
         schemaHandler.removeListener( schemaHandlerListener );
-        removeListeners();
         super.dispose();
     }
 }

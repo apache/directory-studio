@@ -26,7 +26,12 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -35,6 +40,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaCodeS
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.SchemaTextAttributeProvider;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -68,6 +74,26 @@ public class Activator extends AbstractUIPlugin
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
 
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
+    {
+        public void attributeTypeRemoved( AttributeTypeImpl at )
+        {
+//            closeOpenedEditor( at );
+        }
+
+
+        public void objectClassRemoved( ObjectClassImpl oc )
+        {
+//            closeOpenedEditor( oc );
+        }
+
+
+        public void schemaRemoved( Schema schema )
+        {
+//            closeOpenedEditor( schema );
+        }
+    };
+
 
     /**
      * Creates a new instance of Activator.
@@ -80,26 +106,11 @@ public class Activator extends AbstractUIPlugin
         {
             public void openProjectChanged( Project oldProject, Project newProject )
             {
-                // Listing all the editors from the Schema Editor Plugin.
-                List<IEditorReference> editors = new ArrayList<IEditorReference>();
-                for ( IEditorReference editorReference : getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                    .getEditorReferences() )
-                {
-                    if ( ( editorReference.getId().equals( AttributeTypeEditor.ID ) )
-                        || ( editorReference.getId().equals( ObjectClassEditor.ID ) )
-                        || ( editorReference.getId().equals( SchemaEditor.ID ) ) )
-                    {
-                        editors.add( editorReference );
-                    }
-                }
+                closeProjectEditors();
 
-                // Closing the opened editors
-                if ( !getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditors(
-                    editors.toArray( new IEditorReference[0] ), true ) )
+                if ( oldProject != null )
                 {
-                    // If all the editors have not been closed, we force them to be closed.
-                    getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditors(
-                        editors.toArray( new IEditorReference[0] ), false );
+                    schemaHandler.removeListener( schemaHandlerListener );
                 }
 
                 if ( newProject == null )
@@ -112,6 +123,8 @@ public class Activator extends AbstractUIPlugin
                     // Registering the SchemaHandler and SchemaChecker
                     schemaHandler = newProject.getSchemaHandler();
                     schemaChecker = newProject.getSchemaChecker();
+
+                    schemaHandler.addListener( schemaHandlerListener );
                 }
 
                 PluginUtils.saveProjects();
@@ -129,6 +142,152 @@ public class Activator extends AbstractUIPlugin
                 PluginUtils.saveProjects();
             }
         } );
+    }
+
+
+    /**
+     * Closes the project editors.
+     */
+    private void closeProjectEditors()
+    {
+        // Listing all the editors from the Schema Editor Plugin.
+        List<IEditorReference> editors = new ArrayList<IEditorReference>();
+        for ( IEditorReference editorReference : getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .getEditorReferences() )
+        {
+            if ( ( editorReference.getId().equals( AttributeTypeEditor.ID ) )
+                || ( editorReference.getId().equals( ObjectClassEditor.ID ) )
+                || ( editorReference.getId().equals( SchemaEditor.ID ) ) )
+            {
+                editors.add( editorReference );
+            }
+        }
+
+        // Closing the opened editors
+        if ( !getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditors(
+            editors.toArray( new IEditorReference[0] ), true ) )
+        {
+            // If all the editors have not been closed, we force them to be closed.
+            getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditors(
+                editors.toArray( new IEditorReference[0] ), false );
+        }
+    }
+
+
+    /**
+     * Close the editor associated with the given object if it is opened.
+     *
+     * @param o
+     *      the object
+     */
+    private void closeOpenedEditor( Object o )
+    {
+        if ( o instanceof AttributeTypeImpl )
+        {
+            closeAttributeTypeEditor( ( AttributeTypeImpl ) o );
+        }
+        else if ( o instanceof ObjectClassImpl )
+        {
+            closeObjectClassEditor( ( ObjectClassImpl ) o );
+        }
+        else if ( o instanceof Schema )
+        {
+            Schema schema = ( Schema ) o;
+
+            // Closing the schema editor
+            closeObjectClassEditor( schema );
+
+            // Closing attribute type editors
+            for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+            {
+                closeAttributeTypeEditor( at );
+            }
+
+            // Closing object class editors
+            for ( ObjectClassImpl oc : schema.getObjectClasses() )
+            {
+                closeObjectClassEditor( oc );
+            }
+        }
+    }
+
+
+    /**
+     * Closes the editor associated with the given attribute type.
+     *
+     * @param at
+     *      the attribute type
+     */
+    private void closeAttributeTypeEditor( AttributeTypeImpl at )
+    {
+        IWorkbenchPage activePage = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+        for ( IEditorReference editorReference : activePage.getEditorReferences() )
+        {
+            String editorID = editorReference.getId();
+
+            if ( editorID.equals( AttributeTypeEditor.ID ) )
+            {
+                if ( at.equals( ( ( AttributeTypeEditor ) editorReference.getEditor( false ) )
+                    .getOriginalAttributeType() ) )
+                {
+                    activePage.closeEditors( new IEditorReference[]
+                        { editorReference }, false );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Closes the editor associate with the given object class.
+     *
+     * @param oc
+     *      the object class
+     */
+    private void closeObjectClassEditor( ObjectClassImpl oc )
+    {
+        IWorkbenchPage activePage = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+        for ( IEditorReference editorReference : activePage.getEditorReferences() )
+        {
+            String editorID = editorReference.getId();
+
+            if ( editorID.equals( ObjectClassEditor.ID ) )
+            {
+                if ( oc.equals( ( ( ObjectClassEditor ) editorReference.getEditor( false ) ).getOriginalObjectClass() ) )
+                {
+                    activePage.closeEditors( new IEditorReference[]
+                        { editorReference }, false );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Closes the editor associated with the given schema.
+     *
+     * @param schema
+     *      the schema
+     */
+    private void closeObjectClassEditor( Schema schema )
+    {
+        IWorkbenchPage activePage = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+        for ( IEditorReference editorReference : activePage.getEditorReferences() )
+        {
+            String editorID = editorReference.getId();
+
+            if ( editorID.equals( SchemaEditor.ID ) )
+            {
+                if ( schema.equals( ( ( SchemaEditor ) editorReference.getEditor( false ) ).getSchema() ) )
+                {
+                    activePage.closeEditors( new IEditorReference[]
+                        { editorReference }, false );
+                }
+            }
+        }
     }
 
 

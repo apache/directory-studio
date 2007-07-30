@@ -23,7 +23,13 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.attribute
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.AttributeTypeAdapter;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.AttributeTypeListener;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
@@ -50,23 +56,22 @@ public class AttributeTypeEditor extends FormEditor
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.attributeTypeEditor"; //$NON-NLS-1$
 
-    /** The Overview page */
-    private AttributeTypeEditorOverviewPage overview;
-
-    /** The Source Code page */
-    private AttributeTypeEditorSourceCodePage sourceCode;
-
-    /** The Used By page */
-    private AttributeTypeEditorUsedByPage usedBy;
-
     /** The dirty state flag */
     private boolean dirty = false;
+
+    // The pages
+    private AttributeTypeEditorOverviewPage overview;
+    private AttributeTypeEditorSourceCodePage sourceCode;
+    private AttributeTypeEditorUsedByPage usedBy;
 
     /** The original attribute type */
     private AttributeTypeImpl originalAttributeType;
 
     /** The attribute type used to save modifications */
     private AttributeTypeImpl modifiedAttributeType;
+
+    /** The originalSchema */
+    private Schema originalSchema;
 
     /** The listener for page changed */
     private IPageChangedListener pageChangedListener = new IPageChangedListener()
@@ -95,21 +100,64 @@ public class AttributeTypeEditor extends FormEditor
         }
     };
 
+    /** The editor */
+    private AttributeTypeEditor instance;
+
+    /** The attribute type listener */
+    private AttributeTypeListener attributeTypeListener = new AttributeTypeAdapter()
+    {
+        public void attributeTypeRemoved()
+        {
+            getEditorSite().getPage().closeEditor( instance, false );
+        }
+    };
+
+    /** The originalSchema listener */
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
+    {
+        public void schemaRemoved( Schema schema )
+        {
+            if ( schema.equals( originalSchema )  )
+            {
+                getEditorSite().getPage().closeEditor( instance, false );
+            }
+        }
+    };
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
+        instance = this;
+
         setSite( site );
         setInput( input );
         setPartName( input.getName() );
 
         originalAttributeType = ( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
-
         modifiedAttributeType = ( AttributeTypeImpl ) PluginUtils.getClone( originalAttributeType );
 
+        SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+        originalSchema = schemaHandler.getSchema( originalAttributeType.getSchema() );
+        schemaHandler.addListener( originalAttributeType, attributeTypeListener );
+        schemaHandler.addListener( schemaHandlerListener );
+
         addPageChangedListener( pageChangedListener );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
+     */
+    public void dispose()
+    {
+        SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+        schemaHandler.removeListener( originalAttributeType, attributeTypeListener );
+        schemaHandler.removeListener( schemaHandlerListener );
+
+        super.dispose();
     }
 
 
