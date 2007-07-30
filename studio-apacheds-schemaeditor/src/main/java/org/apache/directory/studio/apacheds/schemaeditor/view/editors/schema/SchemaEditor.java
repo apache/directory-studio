@@ -22,6 +22,8 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,6 +47,9 @@ public class SchemaEditor extends FormEditor
     /** The ID of the Editor */
     public static final String ID = Activator.PLUGIN_ID + ".view.schemaEditor"; //$NON-NLS-1$
 
+    /** The editor */
+    private SchemaEditor instance;
+
     /** The Overview Page */
     private SchemaEditorOverviewPage overview;
 
@@ -54,15 +59,31 @@ public class SchemaEditor extends FormEditor
     /** The associated schema */
     private Schema schema;
 
+    /** The SchemaHandler listener */
+    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
+    {
+        public void schemaRemoved( Schema s )
+        {
+            if ( schema.equals( s ) )
+            {
+                getEditorSite().getPage().closeEditor( instance, false );
+            }
+        }
+    };
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
+        instance = this;
+
         setSite( site );
         setInput( input );
         setPartName( input.getName() );
+
+        Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
 
         schema = ( ( SchemaEditorInput ) getEditorInput() ).getSchema();
     }
@@ -84,6 +105,17 @@ public class SchemaEditor extends FormEditor
         {
             logger.debug( "error when adding pages" ); //$NON-NLS-1$
         }
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormEditor#dispose()
+     */
+    public void dispose()
+    {
+        Activator.getDefault().getSchemaHandler().removeListener( schemaHandlerListener );
+
+        super.dispose();
     }
 
 

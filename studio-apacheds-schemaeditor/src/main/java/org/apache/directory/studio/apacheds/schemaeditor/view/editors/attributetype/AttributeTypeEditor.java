@@ -112,7 +112,7 @@ public class AttributeTypeEditor extends FormEditor
         }
     };
 
-    /** The originalSchema listener */
+    /** The SchemaHandler listener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
     {
         public void schemaRemoved( Schema schema )
