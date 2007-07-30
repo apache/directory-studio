@@ -26,12 +26,7 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandlerListener;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerListener;
-import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -73,26 +68,6 @@ public class Activator extends AbstractUIPlugin
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
 
-    private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
-    {
-        public void attributeTypeRemoved( AttributeTypeImpl at )
-        {
-//            closeOpenedEditor( at );
-        }
-
-
-        public void objectClassRemoved( ObjectClassImpl oc )
-        {
-//            closeOpenedEditor( oc );
-        }
-
-
-        public void schemaRemoved( Schema schema )
-        {
-//            closeOpenedEditor( schema );
-        }
-    };
-
 
     /**
      * Creates a new instance of Activator.
@@ -107,11 +82,6 @@ public class Activator extends AbstractUIPlugin
             {
                 closeProjectEditors();
 
-                if ( oldProject != null )
-                {
-                    schemaHandler.removeListener( schemaHandlerListener );
-                }
-
                 if ( newProject == null )
                 {
                     schemaHandler = null;
@@ -122,8 +92,6 @@ public class Activator extends AbstractUIPlugin
                     // Registering the SchemaHandler and SchemaChecker
                     schemaHandler = newProject.getSchemaHandler();
                     schemaChecker = newProject.getSchemaChecker();
-
-                    schemaHandler.addListener( schemaHandlerListener );
                 }
 
                 PluginUtils.saveProjects();
