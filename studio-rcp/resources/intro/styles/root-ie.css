@@ -1,0 +1,99 @@
+body 
+{
+	background-image : url("../graphics/rootpage/welcomebckgrd.png");
+	background-repeat: no-repeat;
+	background-position: center center;	background-attachment: fixed;
+	background-color: #60a9cc;
+}
+
+#overview a
+{
+	position: absolute;
+	height: 95px;
+	width: 95px;
+	top: 50%;
+	left: 50%;
+	margin-left: -419px;
+	margin-top: -148px;
+	text-decoration: none;
+	z-index: 7;
+}
+
+#overview a:hover 
+{
+	width: 202px;
+	height: 148px;
+	margin-left: -427px;
+	margin-top: -149px;
+	background: url(../graphics/rootpage/overview_hover.png) no-repeat;
+	z-index: 8;
+}
+
+#whatsnew a
+{
+	position: absolute;
+	width: 75px;
+	height: 75px;
+	top: 50%;
+	left: 50%;
+	margin-left: -283px;
+	margin-top: 79px;
+	text-decoration: none;
+	z-index: 5;
+}
+
+#whatsnew a:hover 
+{
+	width: 202px;
+	height: 109px;
+	margin-left: -291px;
+	margin-top: 78px;
+	background: url(../graphics/rootpage/whatsnew_hover.png) no-repeat;
+	z-index: 6;
+}
+
+#webresources a
+{
+	position: absolute;
+	width: 75px;
+	height: 75px;
+	top: 50%;
+	left: 50%;
+	margin-left: -183px;
+	margin-top: 169px;
+	text-decoration: none;
+	z-index: 3;
+}
+
+#webresources a:hover 
+{
+	width: 202px;
+	height: 126px;
+	margin-left: -192px;
+	margin-top: 168px;
+	background: url(../graphics/rootpage/webresources_hover.png) no-repeat;
+	z-index: 4;
+}
+
+#workbench a
+{
+	position: absolute;
+	width: 75px;
+	height: 75px;
+	top: 50%;
+	left: 50%;
+	margin-left: 317px;
+	margin-top: 168px;
+	text-decoration: none;
+	z-index: 1;
+}
+
+#workbench a:hover 
+{
+	width: 202px;
+	height: 106px;
+	margin-left: 202px;
+	margin-top: 168px;
+	background: url(../graphics/rootpage/workbench_hover.png) no-repeat;
+	z-index: 2;
+}
