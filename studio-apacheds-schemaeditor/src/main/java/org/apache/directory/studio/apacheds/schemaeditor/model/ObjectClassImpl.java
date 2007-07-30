@@ -46,13 +46,13 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     private ObjectClassTypeEnum type;
 
     /** The optional attribute type names list */
-    private String[] mayNamesList;
+    private String[] mayNamesList = new String[0];
 
     /** The mandatory attribute type names list */
-    private String[] mustNamesList;
+    private String[] mustNamesList = new String[0];
 
     /** The super class names list */
-    private String[] superClassesNames;
+    private String[] superClassesNames = new String[0];
 
 
     /**

@@ -30,6 +30,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.Conn
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteSchemaElementAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsOpenLdapAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsXmlAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasForADSAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromOpenLdapAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromXmlAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.LinkWithEditorAction;
@@ -349,6 +350,7 @@ public class SchemaViewController
     private ImportSchemasFromXmlAction importSchemasFromXml;
     private ExportSchemasAsOpenLdapAction exportSchemasAsOpenLdap;
     private ExportSchemasAsXmlAction exportSchemasAsXml;
+    private ExportSchemasForADSAction exportSchemasForADS;
     private CollapseAllAction collapseAll;
     private OpenSchemaViewSortingDialogAction openSchemaViewSortingDialog;
     private OpenSchemaViewPreferenceAction openSchemaViewPreference;
@@ -392,6 +394,7 @@ public class SchemaViewController
         importSchemasFromXml = new ImportSchemasFromXmlAction();
         exportSchemasAsOpenLdap = new ExportSchemasAsOpenLdapAction( viewer );
         exportSchemasAsXml = new ExportSchemasAsXmlAction( viewer );
+        exportSchemasForADS = new ExportSchemasForADSAction( viewer );
         collapseAll = new CollapseAllAction( viewer );
         openSchemaViewSortingDialog = new OpenSchemaViewSortingDialogAction();
         openSchemaViewPreference = new OpenSchemaViewPreferenceAction();
@@ -458,6 +461,8 @@ public class SchemaViewController
                 manager.add( exportManager );
                 exportManager.add( exportSchemasAsOpenLdap );
                 exportManager.add( exportSchemasAsXml );
+                exportManager.add( new Separator() );
+                exportManager.add( exportSchemasForADS );
 
                 manager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
             }

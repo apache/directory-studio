@@ -139,6 +139,13 @@
     </wizard>
 	<wizard
           category="org.apache.directory.studio.apacheds.schemaeditor.exportWizardCategory"
+          class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportSchemasForADSWizard"
+          icon="resources/icons/schemas_export_for_ads.gif"
+          id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ExportSchemasForADSWizard"
+          name="Schemas for Apache DS">
+    </wizard>
+	<wizard
+          category="org.apache.directory.studio.apacheds.schemaeditor.exportWizardCategory"
           class="org.apache.directory.studio.apacheds.schemaeditor.view.wizards.ExportProjectsWizard"
           icon="resources/icons/project_export.gif"
           id="org.apache.directory.studio.apacheds.schemaeditor.wizards.ExportProjectsWizard"

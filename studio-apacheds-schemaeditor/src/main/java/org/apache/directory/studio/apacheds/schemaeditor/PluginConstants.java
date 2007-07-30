@@ -86,6 +86,8 @@ public interface PluginConstants
     public static final String IMG_SCHEMA_NEW = "resources/icons/schema_new.gif";
     public static final String IMG_SCHEMA_NEW_WIZARD = "resources/icons/schema_new_wizard.png";
     public static final String IMG_SCHEMAS_EXPORT = "resources/icons/schemas_export.gif";
+    public static final String IMG_SCHEMAS_EXPORT_FOR_ADS = "resources/icons/schemas_export_for_ads.gif";
+    public static final String IMG_SCHEMAS_EXPORT_FOR_ADS_WIZARD = "resources/icons/schemas_export_for_ads_wizard.png";
     public static final String IMG_SCHEMAS_EXPORT_WIZARD = "resources/icons/schemas_export_wizard.png";
     public static final String IMG_SCHEMAS_IMPORT = "resources/icons/schemas_import.gif";
     public static final String IMG_SCHEMAS_IMPORT_WIZARD = "resources/icons/schemas_import_wizard.png";
@@ -103,6 +105,7 @@ public interface PluginConstants
     public static final String CMD_EXPORT_SCHEMAS_AS_OPENLDAP = Activator.PLUGIN_ID
         + ".commands.exportSchemasAsOpenLDAP";
     public static final String CMD_EXPORT_SCHEMAS_AS_XML = Activator.PLUGIN_ID + ".commands.exportSchemasAsXML";
+    public static final String CMD_EXPORT_SCHEMAS_FOR_ADS = Activator.PLUGIN_ID + ".commands.exportSchemasForADS";
     public static final String CMD_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.importProjects";
     public static final String CMD_IMPORT_SCHEMAS_FROM_OPENLDAP = Activator.PLUGIN_ID
         + ".commands.importSchemasFromOpenLDAP";
