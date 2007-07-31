@@ -46,7 +46,7 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
 
             if ( ( mr1Names != null ) && ( mr2Names != null ) && ( mr1Names.length > 0 ) && ( mr2Names.length > 0 ) )
             {
-                return mr1Names[0].compareToIgnoreCase( mr1Names[0] );
+                return mr1Names[0].compareToIgnoreCase( mr2Names[0] );
             }
         }
         else if ( o1 instanceof MatchingRuleImpl && o2 instanceof NonExistingMatchingRule )
