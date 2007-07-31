@@ -280,7 +280,7 @@ public class XMLSchemaFileExporter
 
         // Syntax Length
         int syntaxLength = at.getLength();
-        if ( syntaxLength != -1 )
+        if ( syntaxLength > 0 )
         {
             atNode.addElement( SYNTAX_LENGTH_TAG ).setText( "" + syntaxLength );
         }
