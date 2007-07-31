@@ -455,18 +455,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     }
                 }
             }
-            String[] maysHidden = modifiedObjectClass.getMayNamesList();
-            if ( maysHidden != null )
-            {
-                for ( String may : maysHidden )
-                {
-                    AttributeTypeImpl at = schemaHandler.getAttributeType( may );
-                    if ( at != null )
-                    {
-                        hiddenATs.add( at );
-                    }
-                }
-            }
             dialog.setHiddenAttributeTypes( hiddenATs.toArray( new AttributeTypeImpl[0] ) );
 
             if ( dialog.open() != Window.OK )
@@ -592,18 +580,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
         {
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeTypeImpl> hiddenATs = new ArrayList<AttributeTypeImpl>();
-            String[] mustsHidden = modifiedObjectClass.getMustNamesList();
-            if ( mustsHidden != null )
-            {
-                for ( String must : mustsHidden )
-                {
-                    AttributeTypeImpl at = schemaHandler.getAttributeType( must );
-                    if ( at != null )
-                    {
-                        hiddenATs.add( at );
-                    }
-                }
-            }
             String[] maysHidden = modifiedObjectClass.getMayNamesList();
             if ( maysHidden != null )
             {

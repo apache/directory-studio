@@ -100,30 +100,6 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
 
 
     /**
-     * Gets the mandatory attributes page.
-     *
-     * @return
-     *      the mandatory attributes page
-     */
-    public NewObjectClassMandatoryAttributesPage getMandatoryAttributesPage()
-    {
-        return mandatoryAttributesPage;
-    }
-
-
-    /**
-     * Gets the optional attributes page.
-     *
-     * @return
-     *      the optional attributes page
-     */
-    public NewObjectClassOptionalAttributesPage getOptionalAttributesPage()
-    {
-        return optionalAttributesPage;
-    }
-
-
-    /**
      * Sets the selected schema.
      *
      * @param schema

@@ -145,9 +145,6 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
     {
         AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
         List<AttributeTypeImpl> hiddenAttributes = new ArrayList<AttributeTypeImpl>();
-        List<AttributeTypeImpl> mdndatoryAttributes = ( ( NewObjectClassWizard ) getWizard() )
-            .getMandatoryAttributesPage().getMandatoryAttributeTypes();
-        hiddenAttributes.addAll( mdndatoryAttributes );
         hiddenAttributes.addAll( optionalAttributeTypesList );
         dialog.setHiddenAttributeTypes( hiddenAttributes );
         if ( dialog.open() == Dialog.OK )
