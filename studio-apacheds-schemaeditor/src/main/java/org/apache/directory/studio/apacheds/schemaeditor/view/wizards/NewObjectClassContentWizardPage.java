@@ -21,12 +21,15 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.ObjectClassSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -39,6 +42,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -111,7 +115,41 @@ public class NewObjectClassContentWizardPage extends WizardPage
         superiorsTableGridData.heightHint = 100;
         superiorsTable.setLayoutData( superiorsTableGridData );
         superiorsTableViewer = new TableViewer( superiorsTable );
-        superiorsTableViewer.setLabelProvider( new LabelProvider() );
+        superiorsTableViewer.setLabelProvider( new LabelProvider()
+        {
+            public Image getImage( Object element )
+            {
+                if ( element instanceof ObjectClassImpl )
+                {
+                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_OBJECT_CLASS ).createImage();
+                }
+
+                // Default
+                return super.getImage( element );
+            }
+
+
+            public String getText( Object element )
+            {
+                if ( element instanceof ObjectClassImpl )
+                {
+                    ObjectClassImpl oc = ( ObjectClassImpl ) element;
+
+                    String[] names = oc.getNames();
+                    if ( ( names != null ) && ( names.length > 0 ) )
+                    {
+                        return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
+                    }
+                    else
+                    {
+                        return "(None)  -  (" + oc.getOid() + ")";
+                    }
+                }
+                // Default
+                return super.getText( element );
+            }
+        } );
         superiorsTableViewer.setContentProvider( new ArrayContentProvider() );
         superiorsTableViewer.setInput( superiorsList );
         superiorsTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
@@ -241,6 +279,23 @@ public class NewObjectClassContentWizardPage extends WizardPage
      */
     private void updateSuperiorsTable()
     {
+        Collections.sort( superiorsList, new Comparator<ObjectClassImpl>()
+        {
+            public int compare( ObjectClassImpl o1, ObjectClassImpl o2 )
+            {
+                String[] at1Names = o1.getNames();
+                String[] at2Names = o2.getNames();
+
+                if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 ) && ( at2Names.length > 0 ) )
+                {
+                    return at1Names[0].compareToIgnoreCase( at2Names[0] );
+                }
+
+                // Default
+                return 0;
+            }
+        } );
+
         superiorsTableViewer.refresh();
     }
 
