@@ -171,7 +171,7 @@ public class ProblemsView extends ViewPart
 
         sb.append( errors );
         sb.append( " " );
-        if ( errors > 0 )
+        if ( errors > 1 )
         {
             sb.append( "errors" );
         }
@@ -184,7 +184,7 @@ public class ProblemsView extends ViewPart
 
         sb.append( warnings );
         sb.append( " " );
-        if ( warnings > 0 )
+        if ( warnings > 1 )
         {
             sb.append( "warnings" );
         }
