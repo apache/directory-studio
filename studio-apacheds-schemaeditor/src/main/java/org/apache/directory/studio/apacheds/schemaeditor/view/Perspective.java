@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.HierarchyView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
@@ -65,6 +66,7 @@ public class Perspective implements IPerspectiveFactory
 
         // Adding Views
         topLeftFolder.addView( SchemaView.ID );
+        topLeftFolder.addView( HierarchyView.ID );
         layout.addStandaloneView( ProjectsView.ID, true, IPageLayout.BOTTOM, 0.7f, topLeftFolderId );
         layout.addStandaloneView( ProblemsView.ID, true, IPageLayout.BOTTOM, 0.7f, editorAreaId );
 

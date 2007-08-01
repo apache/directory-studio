@@ -33,13 +33,14 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.Expo
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasForADSAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromOpenLdapAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromXmlAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.LinkWithEditorAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.LinkWithEditorSchemaViewAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewAttributeTypeAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewObjectClassAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewSchemaAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenElementAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewPreferenceAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewSortingDialogAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenTypeHierarchyAction;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
@@ -345,6 +346,7 @@ public class SchemaViewController
     private NewAttributeTypeAction newAttributeType;
     private NewObjectClassAction newObjectClass;
     private OpenElementAction openElement;
+    private OpenTypeHierarchyAction openTypeHierarchy;
     private DeleteSchemaElementAction deleteSchemaElement;
     private ImportSchemasFromOpenLdapAction importSchemasFromOpenLdap;
     private ImportSchemasFromXmlAction importSchemasFromXml;
@@ -354,7 +356,7 @@ public class SchemaViewController
     private CollapseAllAction collapseAll;
     private OpenSchemaViewSortingDialogAction openSchemaViewSortingDialog;
     private OpenSchemaViewPreferenceAction openSchemaViewPreference;
-    private LinkWithEditorAction linkWithEditor;
+    private LinkWithEditorSchemaViewAction linkWithEditor;
 
 
     /**
@@ -389,6 +391,7 @@ public class SchemaViewController
         newAttributeType = new NewAttributeTypeAction( viewer );
         newObjectClass = new NewObjectClassAction( viewer );
         openElement = new OpenElementAction( viewer );
+        openTypeHierarchy = new OpenTypeHierarchyAction( viewer );
         deleteSchemaElement = new DeleteSchemaElementAction( viewer );
         importSchemasFromOpenLdap = new ImportSchemasFromOpenLdapAction();
         importSchemasFromXml = new ImportSchemasFromXmlAction();
@@ -398,7 +401,7 @@ public class SchemaViewController
         collapseAll = new CollapseAllAction( viewer );
         openSchemaViewSortingDialog = new OpenSchemaViewSortingDialogAction();
         openSchemaViewPreference = new OpenSchemaViewPreferenceAction();
-        linkWithEditor = new LinkWithEditorAction( view );
+        linkWithEditor = new LinkWithEditorSchemaViewAction( view );
     }
 
 
@@ -443,15 +446,16 @@ public class SchemaViewController
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                MenuManager newManager = new MenuManager( "New" );
-                MenuManager importManager = new MenuManager( "Import..." );
-                MenuManager exportManager = new MenuManager( "Export..." );
+                MenuManager newManager = new MenuManager( "Ne&w" );
+                MenuManager importManager = new MenuManager( "&Import..." );
+                MenuManager exportManager = new MenuManager( "Exp&ort..." );
                 manager.add( newManager );
                 newManager.add( newSchema );
                 newManager.add( newAttributeType );
                 newManager.add( newObjectClass );
                 manager.add( new Separator() );
                 manager.add( openElement );
+                manager.add( openTypeHierarchy );
                 manager.add( new Separator() );
                 manager.add( deleteSchemaElement );
                 manager.add( new Separator() );

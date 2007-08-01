@@ -139,8 +139,8 @@ public class ProjectsViewController
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                MenuManager importManager = new MenuManager( "Import..." );
-                MenuManager exportManager = new MenuManager( "Export..." );
+                MenuManager importManager = new MenuManager( "&Import..." );
+                MenuManager exportManager = new MenuManager( "Exp&ort..." );
                 manager.add( newProject );
                 manager.add( new Separator() );
                 manager.add( openProject );

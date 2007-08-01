@@ -63,8 +63,8 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
      */
     public DeleteProjectAction( TableViewer viewer )
     {
-        super( "Delete Project" );
-        setToolTipText( getText() );
+        super( "&Delete Project" );
+        setToolTipText( "Delete Project" );
         setId( PluginConstants.CMD_DELETE_PROJECT );
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
@@ -77,17 +77,17 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
                 if ( selection.size() == 1 )
                 {
-                    setText( "Delete Project" );
+                    setText( "&Delete Project" );
                     setEnabled( true );
                 }
                 else if ( selection.size() > 1 )
                 {
-                    setText( "Delete Projects" );
+                    setText( "&Delete Projects" );
                     setEnabled( true );
                 }
                 else
                 {
-                    setText( "Delete Project" );
+                    setText( "&Delete Project" );
                     setEnabled( false );
                 }
             }

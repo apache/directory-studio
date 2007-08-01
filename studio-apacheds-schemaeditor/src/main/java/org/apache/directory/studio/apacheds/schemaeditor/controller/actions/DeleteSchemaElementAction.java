@@ -68,8 +68,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
      */
     public DeleteSchemaElementAction( TreeViewer viewer )
     {
-        super( "Delete" );
-        setToolTipText( getText() );
+        super( "&Delete" );
+        setToolTipText( "Delete" );
         setId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );

@@ -61,8 +61,8 @@ public class OpenProjectAction extends Action implements IWorkbenchWindowActionD
      */
     public OpenProjectAction( TableViewer viewer )
     {
-        super( "Open Project" );
-        setToolTipText( getText() );
+        super( "Op&en Project" );
+        setToolTipText( "Open Project" );
         setId( PluginConstants.CMD_OPEN_PROJECT );
         setEnabled( false );
         this.viewer = viewer;

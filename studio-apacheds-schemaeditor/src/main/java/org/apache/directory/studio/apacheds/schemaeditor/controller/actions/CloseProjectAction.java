@@ -61,8 +61,8 @@ public class CloseProjectAction extends Action implements IWorkbenchWindowAction
      */
     public CloseProjectAction( TableViewer viewer )
     {
-        super( "Close Project" );
-        setToolTipText( getText() );
+        super( "Clo&se Project" );
+        setToolTipText( "Close Project" );
         setId( PluginConstants.CMD_CLOSE_PROJECT );
         setEnabled( false );
         this.viewer = viewer;

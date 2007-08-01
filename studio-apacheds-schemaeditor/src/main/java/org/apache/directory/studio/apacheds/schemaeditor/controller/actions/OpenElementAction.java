@@ -61,8 +61,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
      */
     public OpenElementAction( TreeViewer viewer )
     {
-        super( "Open" );
-        setToolTipText( getText() );
+        super( "&Open" );
+        setToolTipText( "Open" );
         setId( PluginConstants.CMD_OPEN_ELEMENT );
         setEnabled( true );
         this.viewer = viewer;

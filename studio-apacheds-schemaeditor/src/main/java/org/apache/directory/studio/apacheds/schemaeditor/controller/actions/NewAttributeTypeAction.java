@@ -58,8 +58,8 @@ public class NewAttributeTypeAction extends Action implements IWorkbenchWindowAc
      */
     public NewAttributeTypeAction( TreeViewer viewer )
     {
-        super( "New Attribute Type" );
-        setToolTipText( getText() );
+        super( "New &Attribute Type" );
+        setToolTipText( "New Attribute Type" );
         setId( PluginConstants.CMD_NEW_ATTRIBUTE_TYPE );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_ATTRIBUTE_TYPE_NEW ) );

@@ -47,8 +47,8 @@ public class NewSchemaAction extends Action implements IWorkbenchWindowActionDel
      */
     public NewSchemaAction()
     {
-        super( "New Schema" );
-        setToolTipText( getText() );
+        super( "New &Schema" );
+        setToolTipText( "New Schema" );
         setId( PluginConstants.CMD_NEW_SCHEMA );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SCHEMA_NEW ) );

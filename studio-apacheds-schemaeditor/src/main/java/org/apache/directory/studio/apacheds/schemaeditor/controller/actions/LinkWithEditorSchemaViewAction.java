@@ -60,10 +60,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class LinkWithEditorAction extends Action implements IWorkbenchWindowActionDelegate
+public class LinkWithEditorSchemaViewAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /** The String for storing the checked state of the action */
-    private static final String LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY = LinkWithEditorAction.class.getName()
+    private static final String LINK_WITH_EDITOR_SCHEMAS_VIEW_DS_KEY = LinkWithEditorSchemaViewAction.class.getName()
         + ".dialogsettingkey"; //$NON-NLS-1$
 
     /** The associated view */
@@ -199,11 +199,11 @@ public class LinkWithEditorAction extends Action implements IWorkbenchWindowActi
     /**
      * Creates a new instance of ExportSchemasAsXmlAction.
      */
-    public LinkWithEditorAction( SchemaView view )
+    public LinkWithEditorSchemaViewAction( SchemaView view )
     {
-        super( "Link with Editor", AS_CHECK_BOX );
-        setToolTipText( getText() );
-        setId( PluginConstants.CMD_LINK_WITH_EDITOR );
+        super( "Lin&k with Editor", AS_CHECK_BOX );
+        setToolTipText( "Link with Editor" );
+        setId( PluginConstants.CMD_LINK_WITH_EDITOR_SCHEMA_VIEW );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( false );

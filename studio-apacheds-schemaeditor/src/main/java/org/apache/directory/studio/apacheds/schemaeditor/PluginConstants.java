@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.schemaeditor;
 
 
+import org.apache.directory.studio.apacheds.schemaeditor.view.preferences.HierarchyViewPreferencePage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.preferences.SchemaViewPreferencePage;
 
 
@@ -91,6 +92,8 @@ public interface PluginConstants
     public static final String IMG_SCHEMAS_EXPORT_WIZARD = "resources/icons/schemas_export_wizard.png";
     public static final String IMG_SCHEMAS_IMPORT = "resources/icons/schemas_import.gif";
     public static final String IMG_SCHEMAS_IMPORT_WIZARD = "resources/icons/schemas_import_wizard.png";
+    public static final String IMG_SHOW_SUBTYPE_HIERARCHY = "resources/icons/hierarchy_subtype.gif";
+    public static final String IMG_SHOW_SUPERTYPE_HIERARCHY = "resources/icons/hierarchy_supertype.gif";
     public static final String IMG_SORTING = "resources/icons/sorting.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
 
@@ -110,18 +113,26 @@ public interface PluginConstants
     public static final String CMD_IMPORT_SCHEMAS_FROM_OPENLDAP = Activator.PLUGIN_ID
         + ".commands.importSchemasFromOpenLDAP";
     public static final String CMD_IMPORT_SCHEMAS_FROM_XML = Activator.PLUGIN_ID + ".commands.importSchemasFromXML";
-    public static final String CMD_LINK_WITH_EDITOR = Activator.PLUGIN_ID + ".commands.linkWithEditor";
+    public static final String CMD_LINK_WITH_EDITOR_SCHEMA_VIEW = Activator.PLUGIN_ID
+        + ".commands.linkWithEditorSchemaView";
+    public static final String CMD_LINK_WITH_EDITOR_HIERARCHY_VIEW = Activator.PLUGIN_ID
+        + ".commands.linkWithEditorHierarchyView";
     public static final String CMD_OPEN_ELEMENT = Activator.PLUGIN_ID + ".commands.openElement";
+    public static final String CMD_OPEN_HIERARCHY_VIEW_PREFERENCES = Activator.PLUGIN_ID
+        + ".commands.openHierarchyViewPreference";
     public static final String CMD_OPEN_PROJECT = Activator.PLUGIN_ID + ".commands.openProject";
     public static final String CMD_OPEN_SCHEMA_VIEW_PREFERENCE = Activator.PLUGIN_ID
         + ".commands.openSchemaViewPreference";
     public static final String CMD_OPEN_SCHEMA_VIEW_SORTING_DIALOG = Activator.PLUGIN_ID
         + ".commands.openSchemaViewSortingDialog";
+    public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.openTypeHierarchy";
     public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.PLUGIN_ID + ".commands.newAttributeType";
     public static final String CMD_NEW_OBJECT_CLASS = Activator.PLUGIN_ID + ".commands.newObjectClass";
     public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
     public static final String CMD_NEW_SCHEMA = Activator.PLUGIN_ID + ".commands.newSchema";
     public static final String CMD_RENAME_PROJECT = Activator.PLUGIN_ID + ".commands.renameProject";
+    public static final String CMD_SHOW_SUBTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSubTypeHierarchy";
+    public static final String CMD_SHOW_SUPERTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSuperTypeHierarchy";
 
     // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */
@@ -177,4 +188,37 @@ public interface PluginConstants
     public static final int PREFS_SCHEMA_VIEW_SORTING_ORDER_ASCENDING = 0;
     /** The preference value for Schema View Sorting 'descending' */
     public static final int PREFS_SCHEMA_VIEW_SORTING_ORDER_DESCENDING = 1;
+
+    // Preferences - Hierarchy View
+    /** The preference ID for Mode of the Hierarchy View */
+    public static final String PREFS_HIERARCHY_VIEW_MODE = Activator.PLUGIN_ID + ".preferences.HierarchyView.mode"; //$NON-NLS-1$
+    /** The preference value for Hierarchy View Mode 'Supertype' */
+    public static final int PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE = 0;
+    /** The preference value for Hierarchy View Mode 'Subtype' */
+    public static final int PREFS_HIERARCHY_VIEW_MODE_SUBTYPE = 1;
+    /** The preference ID for Hierarchy View Label */
+    public static final String PREFS_HIERARCHY_VIEW_LABEL = HierarchyViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
+    /** The preference value for Hierarchy View First Name label */
+    public static final int PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME = 0;
+    /** The preference value for Hierarchy View All Aliases label */
+    public static final int PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES = 1;
+    /** The preference value for Hierarchy View OID label */
+    public static final int PREFS_HIERARCHY_VIEW_LABEL_OID = 2;
+    /** The preference ID for Hierarchy View Abbreviate */
+    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE = HierarchyViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
+    /** The preference ID for Hierarchy View Abbreviate Max Length*/
+    public static final String PREFS_HIERARCHY_VIEW_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
+        + ".label.abbreviate.maxLength"; //$NON-NLS-1$
+    /** The preference ID for Hierarchy View Display Secondary Label */
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.display"; //$NON-NLS-1$
+    /** The preference ID for Hierarchy View Secondary Label */
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.labelValue"; //$NON-NLS-1$
+    /** The preference ID for Hierarchy View Abbreviate Secondary Label */
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate"; //$NON-NLS-1$
+    /** The preference ID for Hierarchy View Abbreviate Secondary Label Max Length*/
+    public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
 }

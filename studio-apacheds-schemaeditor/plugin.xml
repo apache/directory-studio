@@ -42,6 +42,13 @@
 	  <view
             allowMultiple="false"
             category="org.apache.directory.studio.apacheds.schemaeditor.view.category"
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.views.HierarchyView"
+            icon="resources/icons/hierarchy_view.gif"
+            id="org.apache.directory.studio.apacheds.schemaeditor.view.HierarchyView"
+            name="Hierarchy"/>
+	  <view
+            allowMultiple="false"
+            category="org.apache.directory.studio.apacheds.schemaeditor.view.category"
             class="org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView"
             icon="resources/icons/problems_view.gif"
             id="org.apache.directory.studio.apacheds.schemaeditor.view.ProblemsView"
@@ -191,6 +198,11 @@
             class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.SchemaViewPreferencePage"
             id="org.apache.directory.studio.apacheds.schemaeditor.preferences.schemaView"
             name="Schema View"/>
+      <page
+      		category="org.apache.directory.studio.apacheds.schemaeditor.preferences.plugin"
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.HierarchyViewPreferencePage"
+            id="org.apache.directory.studio.apacheds.schemaeditor.preferences.hierarchyView"
+            name="Hierarchy View"/>
    </extension>
     <extension
           point="org.eclipse.ui.decorators">

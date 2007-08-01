@@ -45,8 +45,8 @@ public class OpenSchemaViewSortingDialogAction extends Action implements IWorkbe
      */
     public OpenSchemaViewSortingDialogAction()
     {
-        super( "Sorting..." );
-        setToolTipText( getText() );
+        super( "&Sorting..." );
+        setToolTipText( "Sorting..." );
         setId( PluginConstants.CMD_OPEN_SCHEMA_VIEW_SORTING_DIALOG );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SORTING ) );
