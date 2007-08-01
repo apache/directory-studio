@@ -82,6 +82,7 @@ public class Perspective implements IPerspectiveFactory
         layout.addShowViewShortcut( SchemaView.ID );
         layout.addShowViewShortcut( ProjectsView.ID );
         layout.addShowViewShortcut( ProblemsView.ID );
+        layout.addShowViewShortcut( HierarchyView.ID );
 
         // Adding New Wizard shortcuts
         layout.addNewWizardShortcut( NewProjectWizard.ID );

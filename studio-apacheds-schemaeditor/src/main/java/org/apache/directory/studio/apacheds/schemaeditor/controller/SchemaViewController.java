@@ -378,6 +378,7 @@ public class SchemaViewController
         initDoubleClickListener();
         initAuthorizedPrefs();
         initPreferencesListener();
+        initState();
     }
 
 
@@ -810,6 +811,40 @@ public class SchemaViewController
         {
             viewer.update( parent, null );
             parent = parent.getParent();
+        }
+    }
+
+
+    /**
+     * Initializes the state of the View.
+     */
+    private void initState()
+    {
+        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
+        if ( project != null )
+        {
+            viewer.getTree().setEnabled( true );
+            newSchema.setEnabled( true );
+            newAttributeType.setEnabled( true );
+            newObjectClass.setEnabled( true );
+            collapseAll.setEnabled( true );
+            linkWithEditor.setEnabled( true );
+            openSchemaViewSortingDialog.setEnabled( true );
+            openSchemaViewPreference.setEnabled( true );
+
+            addSchemaHandlerListener( project );
+            view.reloadViewer();
+        }
+        else
+        {
+            viewer.getTree().setEnabled( false );
+            newSchema.setEnabled( false );
+            newAttributeType.setEnabled( false );
+            newObjectClass.setEnabled( false );
+            collapseAll.setEnabled( false );
+            linkWithEditor.setEnabled( false );
+            openSchemaViewSortingDialog.setEnabled( false );
+            openSchemaViewPreference.setEnabled( false );
         }
     }
 }

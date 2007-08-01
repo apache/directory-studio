@@ -43,8 +43,8 @@ public class HierarchyView extends ViewPart
     /** The tree viewer */
     private TreeViewer viewer;
 
-    /** The content provider */
-    private HierarchyViewContentProvider contentProvider;
+    /** The controller */
+    private HierarchyViewController controller;
 
 
     /* (non-Javadoc)
@@ -54,7 +54,7 @@ public class HierarchyView extends ViewPart
     {
         initViewer( parent );
 
-        new HierarchyViewController( this );
+        controller = new HierarchyViewController( this );
     }
 
 
@@ -67,8 +67,7 @@ public class HierarchyView extends ViewPart
     private void initViewer( Composite parent )
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        contentProvider = new HierarchyViewContentProvider();
-        viewer.setContentProvider( contentProvider );
+        viewer.setContentProvider( new HierarchyViewContentProvider() );
         viewer.setLabelProvider( new DecoratingLabelProvider( new HierarchyViewLabelProvider(), Activator.getDefault()
             .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
         viewer.getTree().setEnabled( false );
@@ -110,5 +109,16 @@ public class HierarchyView extends ViewPart
     {
         viewer.setInput( input );
         viewer.expandAll();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+     */
+    public void dispose()
+    {
+        controller.dispose();
+        
+        super.dispose();
     }
 }

@@ -67,6 +67,84 @@ public class HierarchyViewController
     /** The authorized Preferences keys*/
     List<String> authorizedPrefs;
 
+    /** The ProjectsHandlerListener */
+    private ProjectsHandlerListener projectsHandlerListener = new ProjectsHandlerAdapter()
+    {
+        public void openProjectChanged( Project oldProject, Project newProject )
+        {
+            if ( newProject != null )
+            {
+                view.getViewer().getTree().setEnabled( true );
+                showSupertypeHierarchy.setEnabled( true );
+                showSubtypeHierarchy.setEnabled( true );
+                linkWithEditor.setEnabled( true );
+                openPreferencePage.setEnabled( true );
+            }
+            else
+            {
+                view.setInput( null );
+                view.getViewer().getTree().setEnabled( false );
+                showSupertypeHierarchy.setEnabled( false );
+                showSubtypeHierarchy.setEnabled( false );
+                linkWithEditor.setEnabled( false );
+                openPreferencePage.setEnabled( false );
+            }
+        }
+    };
+
+    /** The IDoubleClickListener */
+    private IDoubleClickListener doubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            // What we get from the treeViewer is a StructuredSelection
+            StructuredSelection selection = ( StructuredSelection ) event.getSelection();
+
+            // Here's the real object (an AttributeTypeWrapper, ObjectClassWrapper or IntermediateNode)
+            Object objectSelection = selection.getFirstElement();
+            IEditorInput input = null;
+            String editorId = null;
+
+            // Selecting the right editor and input
+            if ( objectSelection instanceof AttributeTypeWrapper )
+            {
+                input = new AttributeTypeEditorInput( ( ( AttributeTypeWrapper ) objectSelection ).getAttributeType() );
+                editorId = AttributeTypeEditor.ID;
+            }
+            else if ( objectSelection instanceof ObjectClassWrapper )
+            {
+                input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getObjectClass() );
+                editorId = ObjectClassEditor.ID;
+            }
+
+            // Let's open the editor
+            if ( input != null )
+            {
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                try
+                {
+                    page.openEditor( input, editorId );
+                }
+                catch ( PartInitException e )
+                {
+                    // TODO ADD A LOGGER
+                }
+            }
+        }
+    };
+
+    /** The IPropertyChangeListener */
+    private IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
+    {
+        public void propertyChange( PropertyChangeEvent event )
+        {
+            if ( authorizedPrefs.contains( event.getProperty() ) )
+            {
+                view.refresh();
+            }
+        }
+    };
+
     // The Actions
     private Action showSupertypeHierarchy;
     private Action showSubtypeHierarchy;
@@ -91,6 +169,7 @@ public class HierarchyViewController
         initProjectsHandlerListener();
         initDoubleClickListener();
         initPreferencesListener();
+        initState();
     }
 
 
@@ -161,29 +240,7 @@ public class HierarchyViewController
      */
     private void initProjectsHandlerListener()
     {
-        Activator.getDefault().getProjectsHandler().addListener( new ProjectsHandlerAdapter()
-        {
-            public void openProjectChanged( Project oldProject, Project newProject )
-            {
-                if ( newProject != null )
-                {
-                    view.getViewer().getTree().setEnabled( true );
-                    showSupertypeHierarchy.setEnabled( true );
-                    showSubtypeHierarchy.setEnabled( true );
-                    linkWithEditor.setEnabled( true );
-                    openPreferencePage.setEnabled( true );
-                }
-                else
-                {
-                    view.setInput( null );
-                    view.getViewer().getTree().setEnabled( false );
-                    showSupertypeHierarchy.setEnabled( false );
-                    showSubtypeHierarchy.setEnabled( false );
-                    linkWithEditor.setEnabled( false );
-                    openPreferencePage.setEnabled( false );
-                }
-            }
-        } );
+        Activator.getDefault().getProjectsHandler().addListener( projectsHandlerListener );
     }
 
 
@@ -192,46 +249,7 @@ public class HierarchyViewController
      */
     private void initDoubleClickListener()
     {
-        view.getViewer().addDoubleClickListener( new IDoubleClickListener()
-        {
-            public void doubleClick( DoubleClickEvent event )
-            {
-                // What we get from the treeViewer is a StructuredSelection
-                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
-
-                // Here's the real object (an AttributeTypeWrapper, ObjectClassWrapper or IntermediateNode)
-                Object objectSelection = selection.getFirstElement();
-                IEditorInput input = null;
-                String editorId = null;
-
-                // Selecting the right editor and input
-                if ( objectSelection instanceof AttributeTypeWrapper )
-                {
-                    input = new AttributeTypeEditorInput( ( ( AttributeTypeWrapper ) objectSelection )
-                        .getAttributeType() );
-                    editorId = AttributeTypeEditor.ID;
-                }
-                else if ( objectSelection instanceof ObjectClassWrapper )
-                {
-                    input = new ObjectClassEditorInput( ( ( ObjectClassWrapper ) objectSelection ).getObjectClass() );
-                    editorId = ObjectClassEditor.ID;
-                }
-
-                // Let's open the editor
-                if ( input != null )
-                {
-                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                    try
-                    {
-                        page.openEditor( input, editorId );
-                    }
-                    catch ( PartInitException e )
-                    {
-                        // TODO ADD A LOGGER
-                    }
-                }
-            }
-        } );
+        view.getViewer().addDoubleClickListener( doubleClickListener );
     }
 
 
@@ -240,18 +258,41 @@ public class HierarchyViewController
      */
     private void initPreferencesListener()
     {
-        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( propertyChangeListener );
+    }
+
+
+    /**
+     * Initializes the state of the View.
+     */
+    private void initState()
+    {
+        if ( Activator.getDefault().getProjectsHandler().getOpenProject() != null )
         {
-            /* (non-Javadoc)
-             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
-             */
-            public void propertyChange( PropertyChangeEvent event )
-            {
-                if ( authorizedPrefs.contains( event.getProperty() ) )
-                {
-                    view.refresh();
-                }
-            }
-        } );
+            view.getViewer().getTree().setEnabled( true );
+            showSupertypeHierarchy.setEnabled( true );
+            showSubtypeHierarchy.setEnabled( true );
+            linkWithEditor.setEnabled( true );
+            openPreferencePage.setEnabled( true );
+        }
+        else
+        {
+            view.getViewer().getTree().setEnabled( false );
+            showSupertypeHierarchy.setEnabled( false );
+            showSubtypeHierarchy.setEnabled( false );
+            linkWithEditor.setEnabled( false );
+            openPreferencePage.setEnabled( false );
+        }
+    }
+
+
+    /**
+     * This method is called when the view is disposed.
+     */
+    public void dispose()
+    {
+        Activator.getDefault().getProjectsHandler().removeListener( projectsHandlerListener );
+        view.getViewer().removeDoubleClickListener( doubleClickListener );
+        Activator.getDefault().getPreferenceStore().removePropertyChangeListener( propertyChangeListener );
     }
 }

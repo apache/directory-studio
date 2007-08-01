@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -153,8 +154,24 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
         HierarchyView view = ( HierarchyView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
             .findView( HierarchyView.ID );
 
-        view.setInput( element );
-        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( view );
+        if ( view == null )
+        {
+            try
+            {
+                view = ( HierarchyView ) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+                    HierarchyView.ID );
+            }
+            catch ( PartInitException e )
+            {
+                // TODO Add a logger
+            }
+        }
+
+        if ( view != null )
+        {
+            view.setInput( element );
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().bringToTop( view );
+        }
     }
 
 
