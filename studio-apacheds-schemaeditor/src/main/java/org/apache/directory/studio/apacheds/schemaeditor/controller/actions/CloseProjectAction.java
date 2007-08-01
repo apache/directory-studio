@@ -23,6 +23,8 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandlerAdapter;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.action.Action;
@@ -68,19 +70,35 @@ public class CloseProjectAction extends Action implements IWorkbenchWindowAction
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
-                StructuredSelection selection = ( StructuredSelection ) event.getSelection();
-                if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
-                {
-                    setEnabled( ( ( ProjectWrapper ) selection.getFirstElement() ).getProject().getState().equals(
-                        ProjectState.OPEN ) );
-                }
-                else
-                {
-                    setEnabled( false );
-                }
+                enableDisable();
             }
         } );
         projectsHandler = Activator.getDefault().getProjectsHandler();
+        projectsHandler.addListener( new ProjectsHandlerAdapter()
+        {
+            public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                enableDisable();
+            }
+        } );
+    }
+
+
+    /**
+     * Enables or disables the Action.
+     */
+    private void enableDisable()
+    {
+        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+        {
+            setEnabled( ( ( ProjectWrapper ) selection.getFirstElement() ).getProject().getState().equals(
+                ProjectState.OPEN ) );
+        }
+        else
+        {
+            setEnabled( false );
+        }
     }
 
 
