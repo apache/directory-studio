@@ -167,7 +167,33 @@ public class ProblemsView extends ViewPart
      */
     public void setErrorsAndWarningsCount( int errors, int warnings )
     {
-        overviewLabel.setText( String.format( "%d error(s), %d warning(s)", errors, warnings ) );
+        StringBuffer sb = new StringBuffer();
+
+        sb.append( errors );
+        sb.append( " " );
+        if ( errors > 0 )
+        {
+            sb.append( "errors" );
+        }
+        else
+        {
+            sb.append( "error" );
+        }
+
+        sb.append( ", " );
+
+        sb.append( warnings );
+        sb.append( " " );
+        if ( warnings > 0 )
+        {
+            sb.append( "warnings" );
+        }
+        else
+        {
+            sb.append( "warning" );
+        }
+
+        overviewLabel.setText( sb.toString() );
     }
 
 }
