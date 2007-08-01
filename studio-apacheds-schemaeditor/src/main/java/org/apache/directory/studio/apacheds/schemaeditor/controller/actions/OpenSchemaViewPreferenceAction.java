@@ -48,7 +48,7 @@ public class OpenSchemaViewPreferenceAction extends Action implements IWorkbench
         super( "Preferences..." );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_OPEN_SCHEMA_VIEW_PREFERENCE );
-        setEnabled( true );
+        setEnabled( false );
     }
 
 

@@ -50,7 +50,7 @@ public class OpenSchemaViewSortingDialogAction extends Action implements IWorkbe
         setId( PluginConstants.CMD_OPEN_SCHEMA_VIEW_SORTING_DIALOG );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SORTING ) );
-        setEnabled( true );
+        setEnabled( false );
     }
 
 
