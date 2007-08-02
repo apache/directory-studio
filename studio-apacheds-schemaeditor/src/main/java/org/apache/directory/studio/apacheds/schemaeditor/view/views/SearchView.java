@@ -124,6 +124,13 @@ public class SearchView extends ViewPart
         gridLayout.verticalSpacing = 0;
         searchFieldComposite.setLayout( gridLayout );
         searchFieldComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // This searchFieldCompositeSeparator is used to display correctly the searchFieldComposite,
+        // since an empty composite does not display well.
+        Label searchFieldCompositeSeparator = new Label( searchFieldComposite, SWT.SEPARATOR | SWT.HORIZONTAL );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        gridData.heightHint = 1;
+        searchFieldCompositeSeparator.setLayoutData( gridData );
+        searchFieldCompositeSeparator.setVisible( false );
 
         // Search Results Label
         Label searchResultsLabel = new Label( parent, SWT.NONE );
