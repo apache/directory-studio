@@ -60,6 +60,13 @@
             icon="resources/icons/projects_view.gif"
             id="org.apache.directory.studio.apacheds.schemaeditor.view.ProjectsView"
             name="Projects"/>
+	<view
+            allowMultiple="false"
+            category="org.apache.directory.studio.apacheds.schemaeditor.view.category"
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView"
+            icon="resources/icons/search_view.gif"
+            id="org.apache.directory.studio.apacheds.schemaeditor.view.SearchView"
+            name="Search"/>
    </extension>
  <extension
        point="org.eclipse.core.runtime.preferences">

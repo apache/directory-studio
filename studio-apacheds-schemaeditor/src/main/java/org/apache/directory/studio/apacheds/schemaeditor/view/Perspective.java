@@ -25,6 +25,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.views.HierarchyVie
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProblemsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.ProjectsView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewAttributeTypeWizard;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewObjectClassWizard;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wizards.NewProjectWizard;
@@ -50,6 +51,9 @@ public class Perspective implements IPerspectiveFactory
     /** The ID of the top left folder */
     public static final String topLeftFolderId = "org.apache.directory.studio.apacheds.schemaeditor.topleftfolder"; //$NON-NLS-1$
 
+    /** The ID of the bottom folder */
+    public static final String bottomFolderId = "org.apache.directory.studio.apacheds.schemaeditor.bottomfolder"; //$NON-NLS-1$
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
@@ -62,13 +66,16 @@ public class Perspective implements IPerspectiveFactory
 
         // Creating top left folder 
         IFolderLayout topLeftFolder = layout.createFolder( topLeftFolderId, IPageLayout.LEFT, 0.3f, editorAreaId );
-        layout.addPlaceholder( topLeftFolderId, IPageLayout.LEFT, 0.3f, editorAreaId );
+
+        // Creating bottom folder 
+        IFolderLayout bottomFolder = layout.createFolder( bottomFolderId, IPageLayout.BOTTOM, 0.7f, editorAreaId );
 
         // Adding Views
         topLeftFolder.addView( SchemaView.ID );
         topLeftFolder.addView( HierarchyView.ID );
         layout.addStandaloneView( ProjectsView.ID, true, IPageLayout.BOTTOM, 0.7f, topLeftFolderId );
-        layout.addStandaloneView( ProblemsView.ID, true, IPageLayout.BOTTOM, 0.7f, editorAreaId );
+        bottomFolder.addView( ProblemsView.ID );
+        bottomFolder.addView( SearchView.ID );
 
         // Setting up non-closeable views
         layout.getViewLayout( SchemaView.ID ).setCloseable( false );
@@ -83,6 +90,7 @@ public class Perspective implements IPerspectiveFactory
         layout.addShowViewShortcut( ProjectsView.ID );
         layout.addShowViewShortcut( ProblemsView.ID );
         layout.addShowViewShortcut( HierarchyView.ID );
+        layout.addShowViewShortcut( SearchView.ID );
 
         // Adding New Wizard shortcuts
         layout.addNewWizardShortcut( NewProjectWizard.ID );
