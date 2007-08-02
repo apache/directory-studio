@@ -72,6 +72,9 @@ public class HierarchyViewController
     {
         public void openProjectChanged( Project oldProject, Project newProject )
         {
+            // Since we're changing of project, let's set the input as null
+            view.setInput( null );
+
             if ( newProject != null )
             {
                 view.getViewer().getTree().setEnabled( true );
@@ -82,7 +85,6 @@ public class HierarchyViewController
             }
             else
             {
-                view.setInput( null );
                 view.getViewer().getTree().setEnabled( false );
                 showSupertypeHierarchy.setEnabled( false );
                 showSubtypeHierarchy.setEnabled( false );
