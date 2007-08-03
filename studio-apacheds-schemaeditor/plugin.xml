@@ -261,4 +261,15 @@
           </description>
        </decorator>
     </extension>
+	<extension
+         point="org.eclipse.search.searchPages">
+		<page
+			class="org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage"
+            enabled="true"
+            icon="resources/icons/search.gif"
+            id="org.apache.directory.studio.apacheds.schemaeditor.search"
+            label="Schema Editor Search"
+            showScopeSection="false"
+            sizeHint="450,300"/>
+	</extension>
 </plugin>

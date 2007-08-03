@@ -94,6 +94,7 @@ public interface PluginConstants
     public static final String IMG_SCHEMAS_IMPORT = "resources/icons/schemas_import.gif";
     public static final String IMG_SCHEMAS_IMPORT_WIZARD = "resources/icons/schemas_import_wizard.png";
     public static final String IMG_SEARCH = "resources/icons/search.gif";
+    public static final String IMG_SEARCH_HISTORY_ITEM = "resources/icons/search_history_item.gif";
     public static final String IMG_SHOW_SEARCH_FIELD = "resources/icons/show_search_field.gif";
     public static final String IMG_SHOW_SEARCH_HISTORY = "resources/icons/show_search_history.gif";
     public static final String IMG_SHOW_SUBTYPE_HIERARCHY = "resources/icons/hierarchy_subtype.gif";
@@ -228,4 +229,35 @@ public interface PluginConstants
     /** The preference ID for Hierarchy View Abbreviate Secondary Label Max Length*/
     public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
         + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
+
+    // Preferences - Search View
+    /** The preference ID for Search History of the Search Page */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_HISTORY = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.searchHistory"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Aliases' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_ALIASES = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeAliases"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'OID' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_OID = Activator.PLUGIN_ID + ".preferences.SearchPage.scopeOid"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Description' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeDescription"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Superior' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_SUPERIOR = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeSuperior"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Syntax' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_SYNTAX = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeSyntax"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Matching Rules' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeMatchingRules"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Superiors' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_SUPERIORS = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeSuperiors"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Mandatory Attributes' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeMandatoryAttributes"; //$NON-NLS-1$
+    /** The preference ID for Search Scope 'Optional Attributes' of the Search View */
+    public static final String PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeOptionalAttributes"; //$NON-NLS-1$
 }

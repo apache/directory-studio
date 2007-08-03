@@ -21,6 +21,10 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SearchViewController;
@@ -33,7 +37,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -63,8 +66,6 @@ public class SearchView extends ViewPart
     private Table resultsTable;
     private TableViewer resultsTableViewer;
     private Text searchField;
-    private Combo scopeCombo;
-    //    private SearchViewContentProvider searchContentProvider;
 
     /** The Type column */
     private final String TYPE_COLUMN = "Type";
@@ -75,35 +76,17 @@ public class SearchView extends ViewPart
     /** The Schema column */
     private final String SCHEMA_COLUMN = "Schema";
 
-    /** The Columns names Array */
-    private String[] columnNames = new String[]
-        { TYPE_COLUMN, NAME_COLUMN, SCHEMA_COLUMN, };
-
-    private Composite searchFieldInnerComposite;
-
-    private Label separatorLabel;
-
-    private Composite parent;
-
+    /** The Search Field Composite */
     private Composite searchFieldComposite;
 
-    /** The scope */
-    public static final String SCOPE = "Scope";
+    /** The Search Field Inner Composite */
+    private Composite searchFieldInnerComposite;
 
-    /** The Search All scope */
-    public static final String SEARCH_ALL = "All Metadata";
+    /** The separator */
+    private Label separatorLabel;
 
-    /** The Search Name scope */
-    public static final String SEARCH_NAME = "Name";
-
-    /** The Search OID scope */
-    public static final String SEARCH_OID = "OID";
-
-    /** The Search Description scope */
-    public static final String SEARCH_DESC = "Description";
-
-    /** The current Search type */
-    public static String currentSearchScope = SEARCH_ALL;
+    /** The parent composite */
+    private Composite parent;
 
 
     /* (non-Javadoc)
@@ -157,15 +140,6 @@ public class SearchView extends ViewPart
         // Create the table 
         createTable();
 
-        //        this.searchContentProvider = new SearchViewContentProvider();
-        //        resultsTableViewer.setContentProvider( searchContentProvider );
-        //        resultsTableViewer.setLabelProvider( new TableDecoratingLabelProvider( new SearchViewLabelProvider(), Activator
-        //            .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );
-
-        //        initSearchHistory();
-        //        initListeners();
-        //        initToolbar();
-
         new SearchViewController( this );
     }
 
@@ -212,9 +186,27 @@ public class SearchView extends ViewPart
                 scopeMenu.setVisible( true );
             }
         } );
-        MenuItem item = new MenuItem( scopeMenu, SWT.CHECK );
-        item.setSelection( true );
-        item.setText( "Aliases" );
+        MenuItem aliasesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        aliasesMenuItem.setText( "Aliases" );
+        MenuItem oidMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        oidMenuItem.setText( "OID" );
+        MenuItem descriptionMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        descriptionMenuItem.setText( "Description" );
+        new MenuItem( scopeMenu, SWT.SEPARATOR );
+        MenuItem superiorMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        superiorMenuItem.setText( "Superior" );
+        MenuItem syntaxMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        syntaxMenuItem.setText( "Syntax" );
+        MenuItem matchingRulesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        matchingRulesMenuItem.setText( "Matching Rules" );
+        new MenuItem( scopeMenu, SWT.SEPARATOR );
+        MenuItem superiorsMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        superiorsMenuItem.setText( "Superiors" );
+        MenuItem mandatoryAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        mandatoryAttributesMenuItem.setText( "Mandatory Attributes" );
+        MenuItem optionalAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        optionalAttributesMenuItem.setText( "Optional Attributes" );
+        
 
         // Search Button
         Button searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
@@ -244,23 +236,24 @@ public class SearchView extends ViewPart
 
         // 1st column with image
         TableColumn column = new TableColumn( resultsTable, SWT.CENTER, 0 );
-        column.setText( columnNames[0] );
+        column.setText( TYPE_COLUMN );
         column.setWidth( 40 );
 
         // 2nd column with name
         column = new TableColumn( resultsTable, SWT.LEFT, 1 );
-        column.setText( columnNames[1] );
+        column.setText( NAME_COLUMN );
         column.setWidth( 400 );
 
         // 3rd column with element defining schema
         column = new TableColumn( resultsTable, SWT.LEFT, 2 );
-        column.setText( columnNames[2] );
+        column.setText( SCHEMA_COLUMN );
         column.setWidth( 100 );
 
         // Creating the TableViewer
         resultsTableViewer = new TableViewer( resultsTable );
         resultsTableViewer.setUseHashlookup( true );
-        resultsTableViewer.setColumnProperties( columnNames );
+        resultsTableViewer.setColumnProperties( new String[]
+            { TYPE_COLUMN, NAME_COLUMN, SCHEMA_COLUMN } );
     }
 
 
@@ -397,85 +390,6 @@ public class SearchView extends ViewPart
             searchField.setFocus();
         }
     }
-
-
-    //    /* (non-Javadoc)
-    //     * @see org.eclipse.ui.part.ViewPart#setPartName(java.lang.String)
-    //     */
-    //    public void setPartName( String partName )
-    //    {
-    //        super.setPartName( partName );
-    //    }
-
-    //    /**
-    //     * Initializes the Search History.
-    //     */
-    //    private void initSearchHistory()
-    //    {
-    //        searchField.setItems( loadHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY ) );
-    //    }
-    //
-    //
-    //    /**
-    //     * Saves to the History.
-    //     *
-    //     * @param key
-    //     *      the key to save to
-    //     * @param value
-    //     *      the value to save
-    //     */
-    //    public static void saveHistory( String key, String value )
-    //    {
-    //        // get current history
-    //        String[] history = loadHistory( key );
-    //        List<String> list = new ArrayList<String>( Arrays.asList( history ) );
-    //
-    //        // add new value or move to first position
-    //        if ( list.contains( value ) )
-    //        {
-    //            list.remove( value );
-    //        }
-    //        list.add( 0, value );
-    //
-    //        // check history size
-    //        while ( list.size() > 15 )
-    //        {
-    //            list.remove( list.size() - 1 );
-    //        }
-    //
-    //        // save
-    //        history = ( String[] ) list.toArray( new String[list.size()] );
-    //        Activator.getDefault().getDialogSettings().put( key, history );
-    //
-    //    }
-    //
-    //
-    //    /**
-    //     * Loads History
-    //     *
-    //     * @param key
-    //     *      the preference key
-    //     * @return
-    //     */
-    //    public static String[] loadHistory( String key )
-    //    {
-    //        String[] history = Activator.getDefault().getDialogSettings().getArray( key );
-    //        if ( history == null )
-    //        {
-    //            history = new String[0];
-    //        }
-    //        return history;
-    //    }
-    //
-    //
-    //    public void setSearch( String searchString, String scope )
-    //    {
-    //        scopeCombo.setText( scope );
-    //        currentSearchScope = scopeCombo.getText();
-    //        searchField.setText( searchString );
-    //        resultsTableViewer.setInput( searchString );
-    //        resultsTable.setFocus();
-    //    }
 
     /**
      * Shows the Search Field Section.

@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -33,7 +34,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -73,15 +73,6 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
     public void run()
     {
         System.out.println( "run" );
-    }
-
-
-    @Override
-    public IMenuCreator getMenuCreator()
-    {
-        System.out.println( "getMenuCreator" );
-        // TODO Auto-generated method stub
-        return super.getMenuCreator();
     }
 
 
@@ -147,13 +138,21 @@ class MenuCreator implements IMenuCreator
     {
         menu = new Menu( parent );
 
-        MenuItem item = new MenuItem( menu, SWT.RADIO );
-        item.setText( "searchString1" );
-        item = new MenuItem( menu, SWT.RADIO );
-        item.setText( "searchString2" );
-        item.setSelection( true );
-        item = new MenuItem( menu, SWT.SEPARATOR );
-        item = new MenuItem( menu, SWT.PUSH );
+        String[] previousSearches = SearchPage.loadSearchStringHistory();
+        for ( String search : previousSearches )
+        {
+            MenuItem item = new MenuItem( menu, SWT.RADIO );
+            item.setText( search );
+            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                PluginConstants.IMG_SEARCH_HISTORY_ITEM ).createImage() );
+        }
+
+        if ( previousSearches.length > 0 )
+        {
+            new MenuItem( menu, SWT.SEPARATOR );
+        }
+        
+        MenuItem item = new MenuItem( menu, SWT.PUSH );
         item.setText( "History..." );
         item = new MenuItem( menu, SWT.PUSH );
         item.setText( "Clear History" );
