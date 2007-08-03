@@ -22,20 +22,30 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SearchViewController;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -76,6 +86,9 @@ public class SearchView extends ViewPart
     private Composite parent;
 
     private Composite searchFieldComposite;
+
+    /** The scope */
+    public static final String SCOPE = "Scope";
 
     /** The Search All scope */
     public static final String SEARCH_ALL = "All Metadata";
@@ -134,7 +147,7 @@ public class SearchView extends ViewPart
 
         // Search Results Label
         Label searchResultsLabel = new Label( parent, SWT.NONE );
-        searchResultsLabel.setText( "'searchString' - X matches in Schema" );
+        searchResultsLabel.setText( "'searchString' - X matches in workspace" );
         searchResultsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Separator Label
@@ -162,36 +175,52 @@ public class SearchView extends ViewPart
      */
     private void createSearchField()
     {
+        // Search Inner Composite
         searchFieldInnerComposite = new Composite( searchFieldComposite, SWT.NONE );
         GridLayout searchFieldInnerCompositeGridLayout = new GridLayout( 4, false );
-        searchFieldInnerCompositeGridLayout.horizontalSpacing = 3;
-        searchFieldInnerCompositeGridLayout.verticalSpacing = 3;
+        searchFieldInnerCompositeGridLayout.horizontalSpacing = 1;
+        searchFieldInnerCompositeGridLayout.verticalSpacing = 1;
+        searchFieldInnerCompositeGridLayout.marginHeight = 1;
+        searchFieldInnerCompositeGridLayout.marginWidth = 2;
         searchFieldInnerComposite.setLayout( searchFieldInnerCompositeGridLayout );
         searchFieldInnerComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
+        // Search Label
         Label searchFieldLabel = new Label( searchFieldInnerComposite, SWT.NONE );
         searchFieldLabel.setText( "Search:" );
 
-        searchField = new Text( searchFieldInnerComposite, SWT.DROP_DOWN | SWT.BORDER );
+        // Search Text Field
+        searchField = new Text( searchFieldInnerComposite, SWT.BORDER );
         searchField.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        Label inLabel = new Label( searchFieldInnerComposite, SWT.NONE );
-        inLabel.setText( "Scope:" );
-
-        scopeCombo = new Combo( searchFieldInnerComposite, SWT.READ_ONLY | SWT.SINGLE );
-        scopeCombo.addSelectionListener( new SelectionAdapter()
+        // Search Scope Toolbar
+        final ToolBar scopeToolBar = new ToolBar( searchFieldInnerComposite, SWT.HORIZONTAL | SWT.FLAT );
+        // Creating the Search Scope ToolItem
+        final ToolItem scopeToolItem = new ToolItem( scopeToolBar, SWT.DROP_DOWN );
+        scopeToolItem.setText( "Scope" );
+        // Creating the associated Menu
+        final Menu scopeMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
+        // Adding the action to display the Menu when the item is clicked
+        scopeToolItem.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
-                currentSearchScope = scopeCombo.getText();
-                resultsTableViewer.refresh();
+                Rectangle rect = scopeToolItem.getBounds();
+                Point pt = new Point( rect.x, rect.y + rect.height );
+                pt = scopeToolBar.toDisplay( pt );
+                scopeMenu.setLocation( pt.x, pt.y );
+                scopeMenu.setVisible( true );
             }
         } );
-        scopeCombo.add( SEARCH_ALL, 0 );
-        scopeCombo.add( SEARCH_NAME, 1 );
-        scopeCombo.add( SEARCH_OID, 2 );
-        scopeCombo.add( SEARCH_DESC, 3 );
-        scopeCombo.select( 0 );
+        MenuItem item = new MenuItem( scopeMenu, SWT.CHECK );
+        item.setSelection( true );
+        item.setText( "Aliases" );
+
+        // Search Button
+        Button searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
+        searchButton.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_SEARCH ).createImage() );
+        searchButton.setToolTipText( "Search" );
 
         // Separator Label
         separatorLabel = new Label( searchFieldComposite, SWT.SEPARATOR | SWT.HORIZONTAL );
@@ -455,6 +484,7 @@ public class SearchView extends ViewPart
     {
         createSearchField();
         parent.layout( true, true );
+        searchField.setFocus();
     }
 
 
@@ -474,5 +504,6 @@ public class SearchView extends ViewPart
             separatorLabel = null;
         }
         parent.layout( true, true );
+        resultsTable.setFocus();
     }
 }

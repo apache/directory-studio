@@ -20,62 +20,12 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.directory.studio.apacheds.schemaeditor.Activator;
-import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ConnectAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteSchemaElementAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsOpenLdapAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsXmlAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasForADSAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromOpenLdapAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportSchemasFromXmlAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.LinkWithEditorSchemaViewAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewAttributeTypeAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewObjectClassAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.NewSchemaAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenElementAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewPreferenceAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSchemaViewSortingDialogAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenTypeHierarchyAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.RunCurrentSearchAgainAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ShowSearchFieldAction;
-import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
-import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
-import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
-import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
-import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ShowSearchHistoryAction;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
-import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder.FolderType;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -91,6 +41,8 @@ public class SearchViewController
 
     // The Actions
     private ShowSearchFieldAction showSearchField;
+    private RunCurrentSearchAgainAction runCurrentSearchAgain;
+    private ShowSearchHistoryAction searchHistory;
 
 
     /**
@@ -105,7 +57,6 @@ public class SearchViewController
 
         initActions();
         initToolbar();
-        initMenu();
     }
 
 
@@ -115,6 +66,8 @@ public class SearchViewController
     private void initActions()
     {
         showSearchField = new ShowSearchFieldAction( view );
+        runCurrentSearchAgain = new RunCurrentSearchAgainAction( view );
+        searchHistory = new ShowSearchHistoryAction( view );
     }
 
 
@@ -125,14 +78,8 @@ public class SearchViewController
     {
         IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
         toolbar.add( showSearchField );
-    }
-
-
-    /**
-     * Initializes the Menu.
-     */
-    private void initMenu()
-    {
-        IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
+        toolbar.add( new Separator() );
+        toolbar.add( runCurrentSearchAgain );
+        toolbar.add( searchHistory );
     }
 }

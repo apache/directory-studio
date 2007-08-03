@@ -83,6 +83,7 @@ public interface PluginConstants
     public static final String IMG_PROJECT_OFFLINE = "resources/icons/project_offline.gif";
     public static final String IMG_PROJECT_OFFLINE_CLOSED = "resources/icons/project_offline_closed.gif";
     public static final String IMG_RENAME = "resources/icons/rename.gif";
+    public static final String IMG_RUN_CURRENT_SEARCH_AGAIN = "resources/icons/run_current_search_again.gif";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
     public static final String IMG_SCHEMA_NEW = "resources/icons/schema_new.gif";
     public static final String IMG_SCHEMA_NEW_WIZARD = "resources/icons/schema_new_wizard.png";
@@ -92,7 +93,9 @@ public interface PluginConstants
     public static final String IMG_SCHEMAS_EXPORT_WIZARD = "resources/icons/schemas_export_wizard.png";
     public static final String IMG_SCHEMAS_IMPORT = "resources/icons/schemas_import.gif";
     public static final String IMG_SCHEMAS_IMPORT_WIZARD = "resources/icons/schemas_import_wizard.png";
+    public static final String IMG_SEARCH = "resources/icons/search.gif";
     public static final String IMG_SHOW_SEARCH_FIELD = "resources/icons/show_search_field.gif";
+    public static final String IMG_SHOW_SEARCH_HISTORY = "resources/icons/show_search_history.gif";
     public static final String IMG_SHOW_SUBTYPE_HIERARCHY = "resources/icons/hierarchy_subtype.gif";
     public static final String IMG_SHOW_SUPERTYPE_HIERARCHY = "resources/icons/hierarchy_supertype.gif";
     public static final String IMG_SORTING = "resources/icons/sorting.gif";
@@ -132,7 +135,9 @@ public interface PluginConstants
     public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
     public static final String CMD_NEW_SCHEMA = Activator.PLUGIN_ID + ".commands.newSchema";
     public static final String CMD_RENAME_PROJECT = Activator.PLUGIN_ID + ".commands.renameProject";
+    public static final String CMD_RUN_CURRENT_SEARCH_AGAIN = Activator.PLUGIN_ID + ".commands.runCurrentSearchAgain";
     public static final String CMD_SHOW_SEARCH_FIELD = Activator.PLUGIN_ID + ".commands.showSearchField";
+    public static final String CMD_SHOW_SEARCH_HISTORY = Activator.PLUGIN_ID + ".commands.showSearchHistory";
     public static final String CMD_SHOW_SUBTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSubTypeHierarchy";
     public static final String CMD_SHOW_SUPERTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSuperTypeHierarchy";
 
