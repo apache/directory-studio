@@ -158,7 +158,7 @@ public class ProblemsView extends ViewPart
 
 
     /**
-     * Refresh the overview label with the number of errors and warnings
+     * Refresh the overview label with the number of errors and warnings.
      *
      * @param errors
      *      the number of errors
@@ -195,5 +195,4 @@ public class ProblemsView extends ViewPart
 
         overviewLabel.setText( sb.toString() );
     }
-
 }

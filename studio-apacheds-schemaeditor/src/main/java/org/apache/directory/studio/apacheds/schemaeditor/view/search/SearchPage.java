@@ -27,6 +27,8 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.search.ui.ISearchPage;
@@ -41,6 +43,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.PartInitException;
 
 
 /**
@@ -171,6 +174,8 @@ public class SearchPage extends DialogPage implements ISearchPage
 
         initSearchScope();
 
+        searchCombo.setFocus();
+
         super.setControl( parent );
     }
 
@@ -273,11 +278,22 @@ public class SearchPage extends DialogPage implements ISearchPage
             searchScope.add( SearchScopeEnum.OPTIONAL_ATTRIBUTES );
         }
 
-        //
-        //        searchView.setSearch( searchCombo.getText(), scope );
-
-        saveSearchScope( searchScope );
+        // Saving search String and Search Scope to dialings settings
         addSearchStringHistory( searchCombo.getText() );
+        saveSearchScope( searchScope );
+
+        // Opening the SearchView and displaying the results
+        try
+        {
+            SearchView searchView = ( SearchView ) Activator.getDefault().getWorkbench().getActiveWorkbenchWindow()
+                .getActivePage().showView( SearchView.ID );
+            searchView.setSearchInput( searchCombo.getText(), searchScope.toArray( new SearchScopeEnum[0] ) );
+        }
+        catch ( PartInitException e )
+        {
+            // TODO ADD Logger
+            e.printStackTrace();
+        }
 
         return true;
     }

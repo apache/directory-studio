@@ -22,14 +22,20 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SearchViewController;
+import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -62,31 +68,27 @@ public class SearchView extends ViewPart
     /** The view's ID */
     public static final String ID = Activator.PLUGIN_ID + ".view.SearchView"; //$NON-NLS-1$
 
-    // UI fields
-    private Table resultsTable;
-    private TableViewer resultsTableViewer;
-    private Text searchField;
+    private String searchString;
 
     /** The Type column */
     private final String TYPE_COLUMN = "Type";
-
     /** The Name column*/
     private final String NAME_COLUMN = "Name";
-
     /** The Schema column */
     private final String SCHEMA_COLUMN = "Schema";
 
-    /** The Search Field Composite */
+    // UI fields
+    private Text searchField;
+    private Label searchResultsLabel;
+    private Table resultsTable;
+    private TableViewer resultsTableViewer;
     private Composite searchFieldComposite;
-
-    /** The Search Field Inner Composite */
     private Composite searchFieldInnerComposite;
-
-    /** The separator */
     private Label separatorLabel;
-
     /** The parent composite */
     private Composite parent;
+
+    private Button searchButton;
 
 
     /* (non-Javadoc)
@@ -129,8 +131,7 @@ public class SearchView extends ViewPart
         searchFieldCompositeSeparator.setVisible( false );
 
         // Search Results Label
-        Label searchResultsLabel = new Label( parent, SWT.NONE );
-        searchResultsLabel.setText( "'searchString' - X matches in workspace" );
+        searchResultsLabel = new Label( parent, SWT.NONE );
         searchResultsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Separator Label
@@ -138,7 +139,9 @@ public class SearchView extends ViewPart
         separatorLabel2.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Create the table 
-        createTable();
+        createTableViewer();
+
+        setSearchResultsLabel( null, 0 );
 
         new SearchViewController( this );
     }
@@ -165,15 +168,24 @@ public class SearchView extends ViewPart
 
         // Search Text Field
         searchField = new Text( searchFieldInnerComposite, SWT.BORDER );
+        if ( searchString != null )
+        {
+            searchField.setText( searchString );
+        }
         searchField.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        searchField.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                validateSearchField();
+            }
+        } );
 
         // Search Scope Toolbar
         final ToolBar scopeToolBar = new ToolBar( searchFieldInnerComposite, SWT.HORIZONTAL | SWT.FLAT );
         // Creating the Search Scope ToolItem
         final ToolItem scopeToolItem = new ToolItem( scopeToolBar, SWT.DROP_DOWN );
         scopeToolItem.setText( "Scope" );
-        // Creating the associated Menu
-        final Menu scopeMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
         // Adding the action to display the Menu when the item is clicked
         scopeToolItem.addSelectionListener( new SelectionAdapter()
         {
@@ -182,37 +194,26 @@ public class SearchView extends ViewPart
                 Rectangle rect = scopeToolItem.getBounds();
                 Point pt = new Point( rect.x, rect.y + rect.height );
                 pt = scopeToolBar.toDisplay( pt );
-                scopeMenu.setLocation( pt.x, pt.y );
-                scopeMenu.setVisible( true );
+
+                Menu menu = createMenu();
+                menu.setLocation( pt.x, pt.y );
+                menu.setVisible( true );
             }
         } );
-        MenuItem aliasesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        aliasesMenuItem.setText( "Aliases" );
-        MenuItem oidMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        oidMenuItem.setText( "OID" );
-        MenuItem descriptionMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        descriptionMenuItem.setText( "Description" );
-        new MenuItem( scopeMenu, SWT.SEPARATOR );
-        MenuItem superiorMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        superiorMenuItem.setText( "Superior" );
-        MenuItem syntaxMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        syntaxMenuItem.setText( "Syntax" );
-        MenuItem matchingRulesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        matchingRulesMenuItem.setText( "Matching Rules" );
-        new MenuItem( scopeMenu, SWT.SEPARATOR );
-        MenuItem superiorsMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        superiorsMenuItem.setText( "Superiors" );
-        MenuItem mandatoryAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        mandatoryAttributesMenuItem.setText( "Mandatory Attributes" );
-        MenuItem optionalAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        optionalAttributesMenuItem.setText( "Optional Attributes" );
-        
 
         // Search Button
-        Button searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
+        searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
+        searchButton.setEnabled( false );
         searchButton.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SEARCH ).createImage() );
         searchButton.setToolTipText( "Search" );
+        searchButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                search();
+            }
+        } );
 
         // Separator Label
         separatorLabel = new Label( searchFieldComposite, SWT.SEPARATOR | SWT.HORIZONTAL );
@@ -221,9 +222,164 @@ public class SearchView extends ViewPart
 
 
     /**
-     * Creates the Table.
+     * Creates the menu
+     *
+     * @return
+     *      the menu
      */
-    private void createTable()
+    public Menu createMenu()
+    {
+        final IDialogSettings settings = Activator.getDefault().getDialogSettings();
+
+        // Creating the associated Menu
+        Menu scopeMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
+
+        // Filling the menu
+        // Aliases
+        final MenuItem aliasesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        aliasesMenuItem.setText( "Aliases" );
+        aliasesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES, aliasesMenuItem.getSelection() );
+            }
+        } );
+        // OID
+        final MenuItem oidMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        oidMenuItem.setText( "OID" );
+        oidMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID, oidMenuItem.getSelection() );
+            }
+        } );
+        // Description
+        final MenuItem descriptionMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        descriptionMenuItem.setText( "Description" );
+        descriptionMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION, descriptionMenuItem.getSelection() );
+            }
+        } );
+        // Separator
+        new MenuItem( scopeMenu, SWT.SEPARATOR );
+        // Superior
+        final MenuItem superiorMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        superiorMenuItem.setText( "Superior" );
+        superiorMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR, superiorMenuItem.getSelection() );
+            }
+        } );
+        // Syntax
+        final MenuItem syntaxMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        syntaxMenuItem.setText( "Syntax" );
+        syntaxMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX, syntaxMenuItem.getSelection() );
+            }
+        } );
+        // Matching Rules
+        final MenuItem matchingRulesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        matchingRulesMenuItem.setText( "Matching Rules" );
+        matchingRulesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES, matchingRulesMenuItem
+                    .getSelection() );
+            }
+        } );
+        // Separator
+        new MenuItem( scopeMenu, SWT.SEPARATOR );
+        // Superiors
+        final MenuItem superiorsMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        superiorsMenuItem.setText( "Superiors" );
+        superiorsMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS, superiorsMenuItem.getSelection() );
+            }
+        } );
+        // Mandatory Attributes
+        final MenuItem mandatoryAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        mandatoryAttributesMenuItem.setText( "Mandatory Attributes" );
+        mandatoryAttributesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES, mandatoryAttributesMenuItem
+                    .getSelection() );
+            }
+        } );
+        // Optional Attributes
+        final MenuItem optionalAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
+        optionalAttributesMenuItem.setText( "Optional Attributes" );
+        optionalAttributesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES, optionalAttributesMenuItem
+                    .getSelection() );
+            }
+        } );
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) == null )
+        {
+            aliasesMenuItem.setSelection( true );
+        }
+        else
+        {
+            aliasesMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) );
+        }
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) == null )
+        {
+            oidMenuItem.setSelection( true );
+        }
+        else
+        {
+
+            oidMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) );
+        }
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) == null )
+        {
+            descriptionMenuItem.setSelection( true );
+        }
+        else
+        {
+            descriptionMenuItem
+                .setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) );
+        }
+
+        superiorMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR ) );
+        syntaxMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX ) );
+        matchingRulesMenuItem.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES ) );
+        superiorsMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS ) );
+        mandatoryAttributesMenuItem.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES ) );
+        optionalAttributesMenuItem.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES ) );
+
+        return scopeMenu;
+    }
+
+
+    /**
+     * Creates the TableViewer.
+     */
+    private void createTableViewer()
     {
         resultsTable = new Table( parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
@@ -251,9 +407,11 @@ public class SearchView extends ViewPart
 
         // Creating the TableViewer
         resultsTableViewer = new TableViewer( resultsTable );
-        resultsTableViewer.setUseHashlookup( true );
+        //        resultsTableViewer.setUseHashlookup( true );
         resultsTableViewer.setColumnProperties( new String[]
             { TYPE_COLUMN, NAME_COLUMN, SCHEMA_COLUMN } );
+        resultsTableViewer.setLabelProvider( new LabelProvider() );
+        resultsTableViewer.setContentProvider( new ArrayContentProvider() );
     }
 
 
@@ -382,14 +540,18 @@ public class SearchView extends ViewPart
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
      */
-    @Override
     public void setFocus()
     {
         if ( searchField != null && !searchField.isDisposed() )
         {
             searchField.setFocus();
         }
+        else
+        {
+            resultsTable.setFocus();
+        }
     }
+
 
     /**
      * Shows the Search Field Section.
@@ -399,6 +561,7 @@ public class SearchView extends ViewPart
         createSearchField();
         parent.layout( true, true );
         searchField.setFocus();
+        validateSearchField();
     }
 
 
@@ -419,5 +582,96 @@ public class SearchView extends ViewPart
         }
         parent.layout( true, true );
         resultsTable.setFocus();
+    }
+
+
+    private void validateSearchField()
+    {
+        searchButton.setEnabled( searchField.getText().length() > 0 );
+    }
+
+
+    /**
+     * Sets the Search Input.
+     *
+     * @param searchString
+     *      the search String
+     * @param scope
+     *      the search Scope
+     */
+    public void setSearchInput( String searchString, SearchScopeEnum[] scope )
+    {
+        this.searchString = searchString;
+        if ( ( searchField != null ) && ( !searchField.isDisposed() ) )
+        {
+            searchField.setText( searchString );
+            validateSearchField();
+        }
+        List<SchemaObject> results = search( searchString, scope );
+        setSearchResultsLabel( searchString, results.size() );
+    }
+
+
+    /**
+     * Searches the objects corresponding to the search parameters.
+     *
+     * @param searchString
+     *      the search String
+     * @param scope
+     *      the search Scope
+     */
+    private List<SchemaObject> search( String searchString, SearchScopeEnum[] scope )
+    {
+        return new ArrayList<SchemaObject>();
+    }
+
+
+    /**
+     * Launches the search from the search fields views.
+     */
+    private void search()
+    {
+        // TODO
+    }
+
+
+    /**
+     * Refresh the overview label with the number of results.
+     *
+     * @param searchString
+     *      the search String
+     * @param resultsCount
+     *      the number of results
+     */
+    public void setSearchResultsLabel( String searchString, int resultsCount )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        if ( searchString == null )
+        {
+            sb.append( "No search" );
+        }
+        else
+        {
+            // Search String
+            sb.append( "'" + searchString + "'" );
+            sb.append( " - " );
+
+            // Search results count
+            sb.append( resultsCount );
+            sb.append( " " );
+            if ( resultsCount > 1 )
+            {
+                sb.append( "matches" );
+            }
+            else
+            {
+                sb.append( "match" );
+            }
+
+            sb.append( " in workspace" );
+        }
+
+        searchResultsLabel.setText( sb.toString() );
     }
 }

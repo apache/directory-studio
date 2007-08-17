@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.PreviousSearchesDialog;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.action.Action;
@@ -29,6 +30,9 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -72,7 +76,8 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
      */
     public void run()
     {
-        System.out.println( "run" );
+        PreviousSearchesDialog dialog = new PreviousSearchesDialog();
+        dialog.open();
     }
 
 
@@ -138,6 +143,7 @@ class MenuCreator implements IMenuCreator
     {
         menu = new Menu( parent );
 
+        // Previous searches 
         String[] previousSearches = SearchPage.loadSearchStringHistory();
         for ( String search : previousSearches )
         {
@@ -147,13 +153,27 @@ class MenuCreator implements IMenuCreator
                 PluginConstants.IMG_SEARCH_HISTORY_ITEM ).createImage() );
         }
 
-        if ( previousSearches.length > 0 )
+        // No search history
+        if ( previousSearches.length == 0 )
         {
-            new MenuItem( menu, SWT.SEPARATOR );
+            MenuItem item = new MenuItem( menu, SWT.RADIO );
+            item.setText( "(None)" );
+            item.setEnabled( false );
         }
-        
+
+        // Menu Separator
+        new MenuItem( menu, SWT.SEPARATOR );
+
         MenuItem item = new MenuItem( menu, SWT.PUSH );
         item.setText( "History..." );
+        item.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                PreviousSearchesDialog dialog = new PreviousSearchesDialog();
+                dialog.open();
+            }
+        } );
         item = new MenuItem( menu, SWT.PUSH );
         item.setText( "Clear History" );
 
