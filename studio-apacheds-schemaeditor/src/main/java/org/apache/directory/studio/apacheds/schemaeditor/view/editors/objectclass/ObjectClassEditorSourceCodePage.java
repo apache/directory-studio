@@ -78,7 +78,7 @@ public class ObjectClassEditorSourceCodePage extends FormPage
                 OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                 parser.parse( schemaSourceViewer.getTextWidget().getText() );
 
-                List objectclasses = parser.getObjectClassTypes();
+                List<?> objectclasses = parser.getObjectClassTypes();
                 if ( objectclasses.size() != 1 )
                 {
                     // TODO Throw an exception and return

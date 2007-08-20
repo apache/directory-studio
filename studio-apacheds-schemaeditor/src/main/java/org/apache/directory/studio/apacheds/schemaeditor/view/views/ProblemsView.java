@@ -110,7 +110,7 @@ public class ProblemsView extends ViewPart
         TreeColumn resourceColumn = new TreeColumn( tree, SWT.LEFT );
         resourceColumn.setText( "Resource" );
         resourceColumn.setWidth( 100 );
-        contentProvider = new ProblemsViewContentProvider( treeViewer );
+        contentProvider = new ProblemsViewContentProvider();
         treeViewer.setContentProvider( contentProvider );
         treeViewer.setLabelProvider( new ProblemsViewLabelProvider() );
     }

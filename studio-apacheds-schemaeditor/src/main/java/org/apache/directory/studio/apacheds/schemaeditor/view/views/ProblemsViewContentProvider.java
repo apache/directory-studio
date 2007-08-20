@@ -35,7 +35,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder.FolderType;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 
@@ -47,22 +46,6 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class ProblemsViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
-    /** The associated viewer */
-    private TreeViewer viewer;
-
-
-    /**
-     * Creates a new instance of ProblemsViewContentProvider.
-     *
-     * @param viewer
-     *      the associated TreeViewer
-     */
-    public ProblemsViewContentProvider( TreeViewer viewer )
-    {
-        this.viewer = viewer;
-    }
-
-
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
