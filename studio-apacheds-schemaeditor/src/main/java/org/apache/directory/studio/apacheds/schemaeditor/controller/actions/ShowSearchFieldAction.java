@@ -32,7 +32,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This action is used to link the with the view with the frontmost editor.
+ * This action is used to show/hide the search field in the SearchView.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

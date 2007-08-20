@@ -23,12 +23,21 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.dialogs;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
+import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
+import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -49,16 +58,22 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class PreviousSearchesDialog extends Dialog
 {
+    /** The associated view */
+    private SearchView view;
+
     // UI Fields
     private TableViewer tableViewer;
+    private Button openButton;
+    private Button removeButton;
 
 
     /**
      * Creates a new instance of PreviousSearchesDialog.
      */
-    public PreviousSearchesDialog()
+    public PreviousSearchesDialog( SearchView view )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
+        this.view = view;
     }
 
 
@@ -85,7 +100,7 @@ public class PreviousSearchesDialog extends Dialog
         label.setText( "Select the search to show in the search results view:" );
         label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        tableViewer = new TableViewer( composite );
+        tableViewer = new TableViewer( composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.widthHint = 300;
         gd.heightHint = 200;
@@ -93,17 +108,42 @@ public class PreviousSearchesDialog extends Dialog
         tableViewer.setContentProvider( new ArrayContentProvider() );
         tableViewer.setLabelProvider( new LabelProvider()
         {
-            @Override
             public Image getImage( Object element )
             {
                 return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                     PluginConstants.IMG_SEARCH_HISTORY_ITEM ).createImage();
             }
         } );
+        tableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                openButton.setEnabled( !event.getSelection().isEmpty() );
+                removeButton.setEnabled( !event.getSelection().isEmpty() );
+            }
+        } );
+        tableViewer.addDoubleClickListener( new IDoubleClickListener()
+        {
+            public void doubleClick( DoubleClickEvent event )
+            {
+                buttonPressed( IDialogConstants.OK_ID );
+            }
+        } );
 
-        Button removeButton = new Button( composite, SWT.NONE );
+        removeButton = new Button( composite, SWT.NONE );
         removeButton.setText( "Remove" );
         removeButton.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false ) );
+        removeButton.setEnabled( false );
+        removeButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+                String selectedSearch = ( String ) selection.getFirstElement();
+                SearchPage.removeSearchStringHistory( selectedSearch );
+                initTableViewer();
+            }
+        } );
 
         initTableViewer();
 
@@ -126,6 +166,27 @@ public class PreviousSearchesDialog extends Dialog
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
-        createButton( parent, IDialogConstants.OK_ID, "Open", true );
+        openButton = createButton( parent, IDialogConstants.OK_ID, "Open", true );
+        openButton.setEnabled( false );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
+     */
+    protected void buttonPressed( int buttonId )
+    {
+        if ( buttonId == IDialogConstants.OK_ID )
+        {
+            if ( !tableViewer.getSelection().isEmpty() )
+            {
+                StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+                String selectedSearch = ( String ) selection.getFirstElement();
+
+                view.setSearchInput( selectedSearch, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
+            }
+        }
+
+        super.buttonPressed( buttonId );
     }
 }

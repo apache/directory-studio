@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.view.views.SchemaView;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -231,7 +230,6 @@ public class SearchPage extends DialogPage implements ISearchPage
             .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES ) );
         optionalAttributes.setSelection( settings
             .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES ) );
-
     }
 
 
@@ -277,10 +275,6 @@ public class SearchPage extends DialogPage implements ISearchPage
         {
             searchScope.add( SearchScopeEnum.OPTIONAL_ATTRIBUTES );
         }
-
-        // Saving search String and Search Scope to dialings settings
-        addSearchStringHistory( searchCombo.getText() );
-        saveSearchScope( searchScope );
 
         // Opening the SearchView and displaying the results
         try
@@ -340,7 +334,7 @@ public class SearchPage extends DialogPage implements ISearchPage
 
 
     /**
-     * Saves to the History.
+     * Adds a new Search String to the History.
      *
      * @param value
      *      the value to save
@@ -371,6 +365,30 @@ public class SearchPage extends DialogPage implements ISearchPage
 
 
     /**
+     * Removes the given value from the History.
+     *
+     * @param value
+     *      the value to remove
+     */
+    public static void removeSearchStringHistory( String value )
+    {
+        // get current history
+        String[] history = loadSearchStringHistory();
+        List<String> list = new ArrayList<String>( Arrays.asList( history ) );
+
+        // add new value or move to first position
+        if ( list.contains( value ) )
+        {
+            list.remove( value );
+        }
+
+        // save
+        history = ( String[] ) list.toArray( new String[list.size()] );
+        Activator.getDefault().getDialogSettings().put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_HISTORY, history );
+    }
+
+
+    /**
      * Loads the Search History
      *
      * @return
@@ -388,6 +406,87 @@ public class SearchPage extends DialogPage implements ISearchPage
     }
 
 
+    /**
+     * Loads the Search scope.
+     *
+     * @return
+     *      the search scope
+     */
+    public static List<SearchScopeEnum> loadSearchScope()
+    {
+        List<SearchScopeEnum> searchScope = new ArrayList<SearchScopeEnum>();
+        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) == null )
+        {
+            searchScope.add( SearchScopeEnum.ALIASES );
+        }
+        else
+        {
+            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) )
+            {
+                searchScope.add( SearchScopeEnum.ALIASES );
+            }
+        }
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) == null )
+        {
+            searchScope.add( SearchScopeEnum.OID );
+        }
+        else
+        {
+            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) )
+            {
+                searchScope.add( SearchScopeEnum.OID );
+            }
+        }
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) == null )
+        {
+            searchScope.add( SearchScopeEnum.DESCRIPTION );
+        }
+        else
+        {
+            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) )
+            {
+                searchScope.add( SearchScopeEnum.DESCRIPTION );
+            }
+        }
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR ) )
+        {
+            searchScope.add( SearchScopeEnum.SUPERIOR );
+        }
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX ) )
+        {
+            searchScope.add( SearchScopeEnum.SYNTAX );
+        }
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES ) )
+        {
+            searchScope.add( SearchScopeEnum.MATCHING_RULES );
+        }
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS ) )
+        {
+            searchScope.add( SearchScopeEnum.SUPERIORS );
+        }
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES ) )
+        {
+            searchScope.add( SearchScopeEnum.MANDATORY_ATTRIBUTES );
+        }
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES ) )
+        {
+            searchScope.add( SearchScopeEnum.OPTIONAL_ATTRIBUTES );
+        }
+
+        return searchScope;
+    }
+
+
+    /**
+     * Saves the Search scope.
+     *
+     * @param scope
+     *      the Search scope
+     */
     public static void saveSearchScope( List<SearchScopeEnum> scope )
     {
         if ( ( scope != null ) && ( scope.size() > 0 ) )
@@ -409,5 +508,15 @@ public class SearchPage extends DialogPage implements ISearchPage
             settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES, scope
                 .contains( SearchScopeEnum.OPTIONAL_ATTRIBUTES ) );
         }
+    }
+
+
+    /**
+     * Clears the Search History.
+     */
+    public static void clearSearchHistory()
+    {
+        Activator.getDefault().getDialogSettings()
+            .put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_HISTORY, new String[0] );
     }
 }

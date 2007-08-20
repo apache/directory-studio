@@ -24,6 +24,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.PreviousSearchesDialog;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
+import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -32,7 +33,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -42,7 +42,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This action is used to link the with the view with the frontmost editor.
+ * This action is show the search History.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -59,13 +59,13 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
     public ShowSearchHistoryAction( SearchView view )
     {
         super( "Search History", AS_DROP_DOWN_MENU );
+        this.view = view;
         setToolTipText( getText() );
         setId( PluginConstants.CMD_SHOW_SEARCH_HISTORY );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_SHOW_SEARCH_HISTORY ) );
         setEnabled( true );
-        this.view = view;
-        setMenuCreator( new MenuCreator() );
+        setMenuCreator( new MenuCreator( view ) );
     }
 
 
@@ -76,7 +76,7 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
      */
     public void run()
     {
-        PreviousSearchesDialog dialog = new PreviousSearchesDialog();
+        PreviousSearchesDialog dialog = new PreviousSearchesDialog( view );
         dialog.open();
     }
 
@@ -122,6 +122,21 @@ class MenuCreator implements IMenuCreator
     /** The menu */
     private Menu menu;
 
+    /** The associated view */
+    private SearchView view;
+
+
+    /**
+     * Creates a new instance of MenuCreator.
+     *
+     * @param view
+     *      the associated view
+     */
+    public MenuCreator( SearchView view )
+    {
+        this.view = view;
+    }
+
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.action.IMenuCreator#dispose()
@@ -145,12 +160,19 @@ class MenuCreator implements IMenuCreator
 
         // Previous searches 
         String[] previousSearches = SearchPage.loadSearchStringHistory();
-        for ( String search : previousSearches )
+        for ( final String search : previousSearches )
         {
             MenuItem item = new MenuItem( menu, SWT.RADIO );
             item.setText( search );
             item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                 PluginConstants.IMG_SEARCH_HISTORY_ITEM ).createImage() );
+            item.addSelectionListener( new SelectionAdapter()
+            {
+                public void widgetSelected( SelectionEvent e )
+                {
+                    view.setSearchInput( search, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
+                }
+            } );
         }
 
         // No search history
@@ -170,12 +192,19 @@ class MenuCreator implements IMenuCreator
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreviousSearchesDialog dialog = new PreviousSearchesDialog();
+                PreviousSearchesDialog dialog = new PreviousSearchesDialog( view );
                 dialog.open();
             }
         } );
         item = new MenuItem( menu, SWT.PUSH );
         item.setText( "Clear History" );
+        item.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                SearchPage.clearSearchHistory();
+            }
+        } );
 
         return menu;
     }

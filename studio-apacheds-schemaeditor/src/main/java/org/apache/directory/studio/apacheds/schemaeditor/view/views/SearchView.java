@@ -22,18 +22,22 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SearchViewController;
+import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -178,6 +182,16 @@ public class SearchView extends ViewPart
             public void modifyText( ModifyEvent e )
             {
                 validateSearchField();
+            }
+        } );
+        searchField.addKeyListener( new KeyAdapter()
+        {
+            public void keyReleased( KeyEvent e )
+            {
+                if ( e.keyCode == 13 ) // TODO replace with the correct key
+                {
+                    search();
+                }
             }
         } );
 
@@ -602,11 +616,17 @@ public class SearchView extends ViewPart
     public void setSearchInput( String searchString, SearchScopeEnum[] scope )
     {
         this.searchString = searchString;
+
+        // Saving search String and Search Scope to dialog settings
+        SearchPage.addSearchStringHistory( searchString );
+        SearchPage.saveSearchScope( Arrays.asList( scope ) );
+
         if ( ( searchField != null ) && ( !searchField.isDisposed() ) )
         {
             searchField.setText( searchString );
             validateSearchField();
         }
+
         List<SchemaObject> results = search( searchString, scope );
         setSearchResultsLabel( searchString, results.size() );
     }
@@ -631,7 +651,10 @@ public class SearchView extends ViewPart
      */
     private void search()
     {
-        // TODO
+        String searchString = searchField.getText();
+        List<SearchScopeEnum> searchScope = SearchPage.loadSearchScope();
+
+        setSearchInput( searchString, searchScope.toArray( new SearchScopeEnum[0] ) );
     }
 
 
@@ -673,5 +696,17 @@ public class SearchView extends ViewPart
         }
 
         searchResultsLabel.setText( sb.toString() );
+    }
+
+
+    /**
+     * Runs the current search again.
+     */
+    public void runCurrentSearchAgain()
+    {
+        if ( searchString != null )
+        {
+            setSearchInput( searchString, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
+        }
     }
 }
