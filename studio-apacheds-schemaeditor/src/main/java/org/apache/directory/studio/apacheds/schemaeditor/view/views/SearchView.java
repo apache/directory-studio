@@ -24,16 +24,19 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SearchViewController;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -52,7 +55,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -74,13 +76,6 @@ public class SearchView extends ViewPart
 
     /** The current Search String */
     private String searchString;
-
-    /** The Type column */
-    private final String TYPE_COLUMN = "Type";
-    /** The Name column*/
-    private final String NAME_COLUMN = "Name";
-    /** The Schema column */
-    private final String SCHEMA_COLUMN = "Schema";
 
     // UI fields
     private Text searchField;
@@ -170,6 +165,7 @@ public class SearchView extends ViewPart
         // Search Label
         Label searchFieldLabel = new Label( searchFieldInnerComposite, SWT.NONE );
         searchFieldLabel.setText( "Search:" );
+        searchFieldLabel.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // Search Text Field
         searchField = new Text( searchFieldInnerComposite, SWT.BORDER );
@@ -177,7 +173,7 @@ public class SearchView extends ViewPart
         {
             searchField.setText( searchString );
         }
-        searchField.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        searchField.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         searchField.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -189,7 +185,7 @@ public class SearchView extends ViewPart
         {
             public void keyReleased( KeyEvent e )
             {
-                if ( e.keyCode == 13 ) // TODO replace with the correct key
+                if ( e.keyCode == 13 ) // TODO replace with the correct key and add the other enter key...
                 {
                     search();
                 }
@@ -215,6 +211,7 @@ public class SearchView extends ViewPart
                 menu.setVisible( true );
             }
         } );
+        scopeToolBar.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // Search Button
         searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
@@ -229,6 +226,7 @@ public class SearchView extends ViewPart
                 search();
             }
         } );
+        searchButton.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // Separator Label
         separatorLabel = new Label( searchFieldComposite, SWT.SEPARATOR | SWT.HORIZONTAL );
@@ -396,36 +394,16 @@ public class SearchView extends ViewPart
      */
     private void createTableViewer()
     {
+        // Creating the TableViewer
         resultsTable = new Table( parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
-
         GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true );
         resultsTable.setLayoutData( gridData );
-
-        resultsTable.setLinesVisible( false );
-        resultsTable.setHeaderVisible( true );
-
-        // 1st column with image
-        TableColumn column = new TableColumn( resultsTable, SWT.CENTER, 0 );
-        column.setText( TYPE_COLUMN );
-        column.setWidth( 40 );
-
-        // 2nd column with name
-        column = new TableColumn( resultsTable, SWT.LEFT, 1 );
-        column.setText( NAME_COLUMN );
-        column.setWidth( 400 );
-
-        // 3rd column with element defining schema
-        column = new TableColumn( resultsTable, SWT.LEFT, 2 );
-        column.setText( SCHEMA_COLUMN );
-        column.setWidth( 100 );
+        resultsTable.setLinesVisible( true );
 
         // Creating the TableViewer
         resultsTableViewer = new TableViewer( resultsTable );
-        //        resultsTableViewer.setUseHashlookup( true );
-        resultsTableViewer.setColumnProperties( new String[]
-            { TYPE_COLUMN, NAME_COLUMN, SCHEMA_COLUMN } );
-        resultsTableViewer.setLabelProvider( new LabelProvider() );
+        resultsTableViewer.setLabelProvider( new SearchViewLabelProvider() );
         resultsTableViewer.setContentProvider( new ArrayContentProvider() );
     }
 
@@ -630,6 +608,7 @@ public class SearchView extends ViewPart
 
         List<SchemaObject> results = search( searchString, scope );
         setSearchResultsLabel( searchString, results.size() );
+        resultsTableViewer.setInput( results );
     }
 
 
@@ -643,7 +622,201 @@ public class SearchView extends ViewPart
      */
     private List<SchemaObject> search( String searchString, SearchScopeEnum[] scope )
     {
-        return new ArrayList<SchemaObject>();
+        List<SchemaObject> searchResults = new ArrayList<SchemaObject>();
+
+        if ( searchString != null )
+        {
+            Pattern pattern = Pattern.compile( ".*" + searchString + ".*", Pattern.CASE_INSENSITIVE );
+
+            SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+            if ( schemaHandler != null )
+            {
+                List<SearchScopeEnum> searchScope = new ArrayList<SearchScopeEnum>( Arrays.asList( scope ) );
+
+                // Looping on attribute types
+                List<AttributeTypeImpl> attributeTypes = schemaHandler.getAttributeTypes();
+                for ( AttributeTypeImpl at : attributeTypes )
+                {
+                    // Aliases
+                    if ( searchScope.contains( SearchScopeEnum.ALIASES ) )
+                    {
+                        if ( checkArray( pattern, at.getNames() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+                    }
+
+                    // OID
+                    if ( searchScope.contains( SearchScopeEnum.OID ) )
+                    {
+                        if ( checkString( pattern, at.getOid() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+                    }
+
+                    // Description
+                    if ( searchScope.contains( SearchScopeEnum.DESCRIPTION ) )
+                    {
+                        if ( checkString( pattern, at.getDescription() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+                    }
+
+                    // Superior
+                    if ( searchScope.contains( SearchScopeEnum.SUPERIOR ) )
+                    {
+                        if ( checkString( pattern, at.getSuperiorName() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+                    }
+
+                    // Syntax
+                    if ( searchScope.contains( SearchScopeEnum.SYNTAX ) )
+                    {
+                        if ( checkString( pattern, at.getSyntaxOid() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+                    }
+
+                    // Matching Rules
+                    if ( searchScope.contains( SearchScopeEnum.MATCHING_RULES ) )
+                    {
+                        // Equality
+                        if ( checkString( pattern, at.getEqualityName() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+
+                        // Ordering
+                        if ( checkString( pattern, at.getOrderingName() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+
+                        // Substring
+                        if ( checkString( pattern, at.getSubstrName() ) )
+                        {
+                            searchResults.add( at );
+                            continue;
+                        }
+                    }
+                }
+
+                // Looping on object classes
+                List<ObjectClassImpl> objectClasses = schemaHandler.getObjectClasses();
+                for ( ObjectClassImpl oc : objectClasses )
+                {
+                    // Aliases
+                    if ( searchScope.contains( SearchScopeEnum.ALIASES ) )
+                    {
+                        if ( checkArray( pattern, oc.getNames() ) )
+                        {
+                            searchResults.add( oc );
+                            continue;
+                        }
+                    }
+
+                    // OID
+                    if ( searchScope.contains( SearchScopeEnum.OID ) )
+                    {
+                        if ( checkString( pattern, oc.getOid() ) )
+                        {
+                            searchResults.add( oc );
+                            continue;
+                        }
+                    }
+
+                    // Description
+                    if ( searchScope.contains( SearchScopeEnum.DESCRIPTION ) )
+                    {
+                        if ( checkString( pattern, oc.getDescription() ) )
+                        {
+                            searchResults.add( oc );
+                            continue;
+                        }
+                    }
+
+                    // Superiors
+                    if ( searchScope.contains( SearchScopeEnum.SUPERIORS ) )
+                    {
+                        if ( checkArray( pattern, oc.getSuperClassesNames() ) )
+                        {
+                            searchResults.add( oc );
+                            continue;
+                        }
+                    }
+
+                    // Mandatory Attributes
+                    if ( searchScope.contains( SearchScopeEnum.MANDATORY_ATTRIBUTES ) )
+                    {
+                        if ( checkArray( pattern, oc.getMustNamesList() ) )
+                        {
+                            searchResults.add( oc );
+                            continue;
+                        }
+                    }
+
+                    // Optional Attributes
+                    if ( searchScope.contains( SearchScopeEnum.OPTIONAL_ATTRIBUTES ) )
+                    {
+                        if ( checkArray( pattern, oc.getMayNamesList() ) )
+                        {
+                            searchResults.add( oc );
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return searchResults;
+    }
+
+
+    /**
+     * Check an array with the given pattern.
+     *
+     * @param pattern
+     *      the Regex pattern
+     * @param array
+     *      the array
+     * @return
+     *      true if the pattern matches one of the aliases, false, if not.
+     */
+    private boolean checkArray( Pattern pattern, String[] array )
+    {
+        if ( array != null )
+        {
+            for ( String string : array )
+            {
+                return pattern.matcher( string ).matches();
+
+            }
+        }
+
+        return false;
+    }
+
+
+    private boolean checkString( Pattern pattern, String string )
+    {
+        if ( string != null )
+        {
+            return pattern.matcher( string ).matches();
+        }
+
+        return false;
     }
 
 
