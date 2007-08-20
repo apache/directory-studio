@@ -173,6 +173,10 @@ class MenuCreator implements IMenuCreator
                     view.setSearchInput( search, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
                 }
             } );
+            if ( search.equals( view.getSearchString() ) )
+            {
+                item.setSelection( true );
+            }
         }
 
         // No search history
@@ -181,6 +185,7 @@ class MenuCreator implements IMenuCreator
             MenuItem item = new MenuItem( menu, SWT.RADIO );
             item.setText( "(None)" );
             item.setEnabled( false );
+            item.setSelection( true );
         }
 
         // Menu Separator

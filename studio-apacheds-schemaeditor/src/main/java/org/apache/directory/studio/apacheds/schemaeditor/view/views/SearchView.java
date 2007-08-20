@@ -72,6 +72,7 @@ public class SearchView extends ViewPart
     /** The view's ID */
     public static final String ID = Activator.PLUGIN_ID + ".view.SearchView"; //$NON-NLS-1$
 
+    /** The current Search String */
     private String searchString;
 
     /** The Type column */
@@ -83,16 +84,16 @@ public class SearchView extends ViewPart
 
     // UI fields
     private Text searchField;
+    private Button searchButton;
     private Label searchResultsLabel;
     private Table resultsTable;
     private TableViewer resultsTableViewer;
     private Composite searchFieldComposite;
     private Composite searchFieldInnerComposite;
     private Label separatorLabel;
+
     /** The parent composite */
     private Composite parent;
-
-    private Button searchButton;
 
 
     /* (non-Javadoc)
@@ -708,5 +709,17 @@ public class SearchView extends ViewPart
         {
             setSearchInput( searchString, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
         }
+    }
+
+
+    /**
+     * Gets the Search String.
+     *
+     * @return
+     *      the Search String or null if no Search String is set.
+     */
+    public String getSearchString()
+    {
+        return searchString;
     }
 }
