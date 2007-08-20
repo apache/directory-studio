@@ -43,7 +43,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         store.setDefault( PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING,
             PluginConstants.PREFS_DIFFERENCES_WIDGET_GROUPING_PROPERTY );
 
-        // Schema View Preference Page
+        // SchemaView Preference Page
         store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_LABEL, PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES );
         store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE, true );
         store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
@@ -53,7 +53,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
         store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
 
-        // Hierarchy View Preference Page
+        // SchemaView Sorting
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING,
+            PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY,
+            PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME );
+        store.setDefault( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER,
+            PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_ASCENDING );
+
+        // HierarchyView Preference Page
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL,
             PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_ABBREVIATE, true );
@@ -63,5 +71,23 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
             PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
         store.setDefault( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
+
+        // SearchView Preference Page
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_LABEL, PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES );
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_ABBREVIATE, true );
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_DISPLAY, true );
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL,
+            PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID );
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE, false );
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH, "50" ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SCHEMA_LABEL_DISPLAY, true );
+
+        // SearchView Sorting
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_GROUPING, PluginConstants.PREFS_SEARCH_VIEW_GROUPING_MIXED );
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY,
+            PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_FIRSTNAME );
+        store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER,
+            PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER_ASCENDING );
     }
 }

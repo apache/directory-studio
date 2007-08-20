@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.schemaeditor;
 
 import org.apache.directory.studio.apacheds.schemaeditor.view.preferences.HierarchyViewPreferencePage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.preferences.SchemaViewPreferencePage;
+import org.apache.directory.studio.apacheds.schemaeditor.view.preferences.SearchViewPreferencePage;
 
 
 /**
@@ -130,6 +131,10 @@ public interface PluginConstants
         + ".commands.openSchemaViewPreference";
     public static final String CMD_OPEN_SCHEMA_VIEW_SORTING_DIALOG = Activator.PLUGIN_ID
         + ".commands.openSchemaViewSortingDialog";
+    public static final String CMD_OPEN_SEARCH_VIEW_PREFERENCE = Activator.PLUGIN_ID
+        + ".commands.openSearchViewPreference";
+    public static final String CMD_OPEN_SEARCH_VIEW_SORTING_DIALOG = Activator.PLUGIN_ID
+        + ".commands.openSearchViewSortingDialog";
     public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.openTypeHierarchy";
     public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.PLUGIN_ID + ".commands.newAttributeType";
     public static final String CMD_NEW_OBJECT_CLASS = Activator.PLUGIN_ID + ".commands.newObjectClass";
@@ -230,34 +235,85 @@ public interface PluginConstants
     public static final String PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = HierarchyViewPreferencePage.ID
         + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
 
-    // Preferences - Search View
-    /** The preference ID for Search History of the Search Page */
+    // Search - SearchPage
+    /** The preference ID for Search History of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SEARCH_HISTORY = Activator.PLUGIN_ID
         + ".preferences.SearchPage.searchHistory"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Aliases' of the Search View */
+    /** The preference ID for Search Scope 'Aliases' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_ALIASES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeAliases"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'OID' of the Search View */
+    /** The preference ID for Search Scope 'OID' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_OID = Activator.PLUGIN_ID + ".preferences.SearchPage.scopeOid"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Description' of the Search View */
+    /** The preference ID for Search Scope 'Description' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeDescription"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Superior' of the Search View */
+    /** The preference ID for Search Scope 'Superior' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_SUPERIOR = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeSuperior"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Syntax' of the Search View */
+    /** The preference ID for Search Scope 'Syntax' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_SYNTAX = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeSyntax"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Matching Rules' of the Search View */
+    /** The preference ID for Search Scope 'Matching Rules' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeMatchingRules"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Superiors' of the Search View */
+    /** The preference ID for Search Scope 'Superiors' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_SUPERIORS = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeSuperiors"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Mandatory Attributes' of the Search View */
+    /** The preference ID for Search Scope 'Mandatory Attributes' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeMandatoryAttributes"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Optional Attributes' of the Search View */
+    /** The preference ID for Search Scope 'Optional Attributes' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeOptionalAttributes"; //$NON-NLS-1$
+
+    // Preferences - SearchView
+    /** The preference ID for Search View Label */
+    public static final String PREFS_SEARCH_VIEW_LABEL = SearchViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
+    /** The preference value for Search View First Name label */
+    public static final int PREFS_SEARCH_VIEW_LABEL_FIRST_NAME = 0;
+    /** The preference value for Search View All Aliases label */
+    public static final int PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES = 1;
+    /** The preference value for Search View OID label */
+    public static final int PREFS_SEARCH_VIEW_LABEL_OID = 2;
+    /** The preference ID for Search View Abbreviate */
+    public static final String PREFS_SEARCH_VIEW_ABBREVIATE = SearchViewPreferencePage.ID + ".label.abbreviate"; //$NON-NLS-1$
+    /** The preference ID for Search View Abbreviate Max Length*/
+    public static final String PREFS_SEARCH_VIEW_ABBREVIATE_MAX_LENGTH = SearchViewPreferencePage.ID
+        + ".label.abbreviate.maxLength"; //$NON-NLS-1$
+    /** The preference ID for Search View Display Secondary Label */
+    public static final String PREFS_SEARCH_VIEW_SECONDARY_LABEL_DISPLAY = SearchViewPreferencePage.ID
+        + ".secondaryLabel.display"; //$NON-NLS-1$
+    /** The preference ID for Search View Secondary Label */
+    public static final String PREFS_SEARCH_VIEW_SECONDARY_LABEL = SearchViewPreferencePage.ID
+        + ".secondaryLabel.labelValue"; //$NON-NLS-1$
+    /** The preference ID for Search View Abbreviate Secondary Label */
+    public static final String PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE = SearchViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate"; //$NON-NLS-1$
+    /** The preference ID for Search View Abbreviate Secondary Label Max Length*/
+    public static final String PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = SearchViewPreferencePage.ID
+        + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
+    /** The preference ID for Search View Grouping */
+    public static final String PREFS_SEARCH_VIEW_GROUPING = Activator.PLUGIN_ID + ".preferences.SearchView.grouping"; //$NON-NLS-1$
+    /** The preference value for Search View Grouping 'Display ATs first' */
+    public static final int PREFS_SEARCH_VIEW_GROUPING_ATTRIBUTE_TYPES_FIRST = 0;
+    /** The preference value for Search View Grouping 'Display OCs first' */
+    public static final int PREFS_SEARCH_VIEW_GROUPING_OBJECT_CLASSES_FIRST = 1;
+    /** The preference value for Search View Grouping 'mixed' */
+    public static final int PREFS_SEARCH_VIEW_GROUPING_MIXED = 2;
+    /** The preference ID for Search View Sorting By */
+    public static final String PREFS_SEARCH_VIEW_SORTING_BY = Activator.PLUGIN_ID + ".preferences.SearchView.sortingBy"; //$NON-NLS-1$
+    /** The preference value for Search View Sorting 'First Name' */
+    public static final int PREFS_SEARCH_VIEW_SORTING_BY_FIRSTNAME = 0;
+    /** The preference value for Search View Sorting 'OID' */
+    public static final int PREFS_SEARCH_VIEW_SORTING_BY_OID = 1;
+    /** The preference ID for Sorting Order */
+    public static final String PREFS_SEARCH_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
+        + ".preferences.SchemaView.sortingOrder"; //$NON-NLS-1$
+    /** The preference value for Search View Sorting 'ascending' */
+    public static final int PREFS_SEARCH_VIEW_SORTING_ORDER_ASCENDING = 0;
+    /** The preference value for Search View Sorting 'descending' */
+    public static final int PREFS_SEARCH_VIEW_SORTING_ORDER_DESCENDING = 1;
+    /** The preference ID for Search View Display Secondary Label */
+    public static final String PREFS_SEARCH_VIEW_SCHEMA_LABEL_DISPLAY = SearchViewPreferencePage.ID
+        + ".schemaLabel.display"; //$NON-NLS-1$
 }

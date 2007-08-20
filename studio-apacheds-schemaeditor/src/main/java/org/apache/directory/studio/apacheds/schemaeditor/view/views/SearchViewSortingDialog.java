@@ -39,15 +39,15 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * This class implements the SchemaView Sorting Dialog.
+ * This class implements the SearchView Sorting Dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaViewSortingDialog extends Dialog
+public class SearchViewSortingDialog extends Dialog
 {
     /** The title of the dialog */
-    private static final String DIALOG_TITLE = "Schema View Sorting";
+    private static final String DIALOG_TITLE = "Search View Sorting";
 
     /** The Sorting First Name category */
     private static final String SORTING_FISTNAME = "First Name";
@@ -56,7 +56,8 @@ public class SchemaViewSortingDialog extends Dialog
     private static final String SORTING_OID = "OID";
 
     // UI Fields
-    private Button inFoldersButton;
+    private Button attributeTypesFirst;
+    private Button objectClassesFirst;
     private Button mixedButton;
     private Combo sortingCombo;
     private Button ascendingButton;
@@ -64,12 +65,12 @@ public class SchemaViewSortingDialog extends Dialog
 
 
     /**
-     * Creates a new instance of SchemasViewSorterDialog.
+     * Creates a new instance of SearchViewSortingDialog.
      *
      * @param parentShell
      *      the parent shell
      */
-    public SchemaViewSortingDialog( Shell parentShell )
+    public SearchViewSortingDialog( Shell parentShell )
     {
         super( parentShell );
     }
@@ -92,7 +93,6 @@ public class SchemaViewSortingDialog extends Dialog
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL );
-        //        gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         composite.setLayoutData( gd );
 
         // Grouping Group
@@ -102,9 +102,14 @@ public class SchemaViewSortingDialog extends Dialog
         groupingGroup.setLayout( new GridLayout() );
 
         // Attribute Types first Button
-        inFoldersButton = new Button( groupingGroup, SWT.RADIO );
-        inFoldersButton.setText( "Group attribute types and object classes in folders" );
-        inFoldersButton.setEnabled( true );
+        attributeTypesFirst = new Button( groupingGroup, SWT.RADIO );
+        attributeTypesFirst.setText( "Display attribute types first" );
+        attributeTypesFirst.setEnabled( true );
+
+        // Object Classes first Button
+        objectClassesFirst = new Button( groupingGroup, SWT.RADIO );
+        objectClassesFirst.setText( "Display object classes first" );
+        objectClassesFirst.setEnabled( true );
 
         // Mixed Button
         mixedButton = new Button( groupingGroup, SWT.RADIO );
@@ -157,32 +162,36 @@ public class SchemaViewSortingDialog extends Dialog
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        int grouping = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-        if ( grouping == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+        int grouping = store.getInt( PluginConstants.PREFS_SEARCH_VIEW_GROUPING );
+        if ( grouping == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_ATTRIBUTE_TYPES_FIRST )
         {
-            inFoldersButton.setSelection( true );
+            attributeTypesFirst.setSelection( true );
         }
-        else if ( grouping == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+        else if ( grouping == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_OBJECT_CLASSES_FIRST )
+        {
+            objectClassesFirst.setSelection( true );
+        }
+        else if ( grouping == PluginConstants.PREFS_SEARCH_VIEW_GROUPING_MIXED )
         {
             mixedButton.setSelection( true );
         }
 
-        int sortingBy = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY );
-        if ( sortingBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME )
+        int sortingBy = store.getInt( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY );
+        if ( sortingBy == PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_FIRSTNAME )
         {
             sortingCombo.select( 0 );
         }
-        else if ( sortingBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_OID )
+        else if ( sortingBy == PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_OID )
         {
             sortingCombo.select( 1 );
         }
 
-        int sortingOrder = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER );
-        if ( sortingOrder == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_ASCENDING )
+        int sortingOrder = store.getInt( PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER );
+        if ( sortingOrder == PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER_ASCENDING )
         {
             ascendingButton.setSelection( true );
         }
-        else if ( sortingOrder == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_DESCENDING )
+        else if ( sortingOrder == PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER_DESCENDING )
         {
             descendingButton.setSelection( true );
         }
@@ -198,37 +207,45 @@ public class SchemaViewSortingDialog extends Dialog
         if ( buttonId == IDialogConstants.OK_ID )
         {
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-            if ( ( inFoldersButton.getSelection() ) && ( !mixedButton.getSelection() ) )
+            if ( ( attributeTypesFirst.getSelection() ) && ( !objectClassesFirst.getSelection() )
+                && ( !mixedButton.getSelection() ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING,
-                    PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS );
+                store.setValue( PluginConstants.PREFS_SEARCH_VIEW_GROUPING,
+                    PluginConstants.PREFS_SEARCH_VIEW_GROUPING_ATTRIBUTE_TYPES_FIRST );
             }
-            else if ( ( !inFoldersButton.getSelection() ) && ( mixedButton.getSelection() ) )
+            else if ( ( !attributeTypesFirst.getSelection() ) && ( objectClassesFirst.getSelection() )
+                && ( !mixedButton.getSelection() ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING,
-                    PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED );
+                store.setValue( PluginConstants.PREFS_SEARCH_VIEW_GROUPING,
+                    PluginConstants.PREFS_SEARCH_VIEW_GROUPING_OBJECT_CLASSES_FIRST );
+            }
+            else if ( ( !attributeTypesFirst.getSelection() ) && ( !objectClassesFirst.getSelection() )
+                && ( mixedButton.getSelection() ) )
+            {
+                store.setValue( PluginConstants.PREFS_SEARCH_VIEW_GROUPING,
+                    PluginConstants.PREFS_SEARCH_VIEW_GROUPING_MIXED );
             }
 
             if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( SORTING_FISTNAME ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY,
-                    PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME );
+                store.setValue( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY,
+                    PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_FIRSTNAME );
             }
             else if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( SORTING_OID ) )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY,
-                    PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_OID );
+                store.setValue( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY,
+                    PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_OID );
             }
 
             if ( ascendingButton.getSelection() && !descendingButton.getSelection() )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER,
-                    PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_ASCENDING );
+                store.setValue( PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER,
+                    PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER_ASCENDING );
             }
             else if ( !ascendingButton.getSelection() && descendingButton.getSelection() )
             {
-                store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER,
-                    PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_DESCENDING );
+                store.setValue( PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER,
+                    PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER_DESCENDING );
             }
         }
 

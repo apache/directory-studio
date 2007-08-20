@@ -36,7 +36,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -404,7 +403,7 @@ public class SearchView extends ViewPart
         // Creating the TableViewer
         resultsTableViewer = new TableViewer( resultsTable );
         resultsTableViewer.setLabelProvider( new SearchViewLabelProvider() );
-        resultsTableViewer.setContentProvider( new ArrayContentProvider() );
+        resultsTableViewer.setContentProvider( new SearchViewContentProvider() );
     }
 
 
@@ -894,5 +893,14 @@ public class SearchView extends ViewPart
     public String getSearchString()
     {
         return searchString;
+    }
+
+
+    /**
+     * Refreshes the view.
+     */
+    public void refresh()
+    {
+        resultsTableViewer.refresh();
     }
 }

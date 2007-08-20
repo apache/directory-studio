@@ -196,6 +196,11 @@
  </extension>
     <extension
          point="org.eclipse.ui.preferencePages">
+	  <page
+      		category="org.apache.directory.studio.apacheds.schemaeditor.preferences.plugin"
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.HierarchyViewPreferencePage"
+            id="org.apache.directory.studio.apacheds.schemaeditor.preferences.hierarchyView"
+            name="Hierarchy View"/>
       <page
             class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.PluginPreferencePage"
             id="org.apache.directory.studio.apacheds.schemaeditor.preferences.plugin"
@@ -207,9 +212,9 @@
             name="Schema View"/>
       <page
       		category="org.apache.directory.studio.apacheds.schemaeditor.preferences.plugin"
-            class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.HierarchyViewPreferencePage"
-            id="org.apache.directory.studio.apacheds.schemaeditor.preferences.hierarchyView"
-            name="Hierarchy View"/>
+            class="org.apache.directory.studio.apacheds.schemaeditor.view.preferences.SearchViewPreferencePage"
+            id="org.apache.directory.studio.apacheds.schemaeditor.preferences.searchView"
+            name="Search View"/>
    </extension>
     <extension
           point="org.eclipse.ui.decorators">

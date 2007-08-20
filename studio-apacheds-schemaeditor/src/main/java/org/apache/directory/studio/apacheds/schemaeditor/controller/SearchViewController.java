@@ -20,12 +20,22 @@
 package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSearchViewPreferenceAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.OpenSearchViewSortingDialogAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.RunCurrentSearchAgainAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ShowSearchFieldAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ShowSearchHistoryAction;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 
 /**
@@ -39,10 +49,15 @@ public class SearchViewController
     /** The associated view */
     private SearchView view;
 
+    /** The authorized Preferences keys*/
+    private List<String> authorizedPrefs;
+
     // The Actions
     private ShowSearchFieldAction showSearchField;
     private RunCurrentSearchAgainAction runCurrentSearchAgain;
     private ShowSearchHistoryAction searchHistory;
+    private OpenSearchViewSortingDialogAction openSearchViewSortingDialog;
+    private OpenSearchViewPreferenceAction openSearchViewPreference;
 
 
     /**
@@ -57,6 +72,9 @@ public class SearchViewController
 
         initActions();
         initToolbar();
+        initMenu();
+        initAuthorizedPrefs();
+        initPreferencesListener();
     }
 
 
@@ -68,6 +86,8 @@ public class SearchViewController
         showSearchField = new ShowSearchFieldAction( view );
         runCurrentSearchAgain = new RunCurrentSearchAgainAction( view );
         searchHistory = new ShowSearchHistoryAction( view );
+        openSearchViewSortingDialog = new OpenSearchViewSortingDialogAction();
+        openSearchViewPreference = new OpenSearchViewPreferenceAction();
     }
 
 
@@ -81,5 +101,58 @@ public class SearchViewController
         toolbar.add( new Separator() );
         toolbar.add( runCurrentSearchAgain );
         toolbar.add( searchHistory );
+    }
+
+
+    /**
+     * Initializes the Menu.
+     */
+    private void initMenu()
+    {
+        IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
+        menu.add( openSearchViewSortingDialog );
+        menu.add( new Separator() );
+        menu.add( openSearchViewPreference );
+    }
+
+
+    /**
+     * Initializes the Authorized Prefs IDs.
+     */
+    private void initAuthorizedPrefs()
+    {
+        authorizedPrefs = new ArrayList<String>();
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_DISPLAY );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_SCHEMA_LABEL_DISPLAY );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_GROUPING );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY );
+        authorizedPrefs.add( PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER );
+    }
+
+
+    /**
+     * Initializes the listener on the preferences store
+     */
+    private void initPreferencesListener()
+    {
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        {
+            /* (non-Javadoc)
+             * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+             */
+            public void propertyChange( PropertyChangeEvent event )
+            {
+                if ( authorizedPrefs.contains( event.getProperty() ) )
+                {
+                    view.refresh();
+                }
+            }
+        } );
     }
 }
