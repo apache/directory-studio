@@ -25,11 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -41,6 +44,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -48,6 +52,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -68,6 +73,12 @@ public class AttributeTypeSelectionDialog extends Dialog
     private Text searchText;
     private Table attributeTypesTable;
     private TableViewer attributeTypesTableViewer;
+
+    private Label schemaIconLabel;
+
+    private Label schemaNameLabel;
+
+    private Button chooseButton;
 
 
     /**
@@ -109,8 +120,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         {
             public void modifyText( ModifyEvent e )
             {
-                attributeTypesTableViewer.setInput( searchText.getText() );
-                attributeTypesTable.select( 0 );
+                setSearchInput( searchText.getText() );
             }
         } );
         searchText.addKeyListener( new KeyAdapter()
@@ -148,18 +158,65 @@ public class AttributeTypeSelectionDialog extends Dialog
         } );
 
         attributeTypesTableViewer = new TableViewer( attributeTypesTable );
-        attributeTypesTableViewer.setUseHashlookup( true );
-
         attributeTypesTableViewer.setContentProvider( new AttributeTypeSelectionDialogContentProvider(
             hiddenAttributeTypes ) );
         attributeTypesTableViewer.setLabelProvider( new DecoratingLabelProvider(
             new AttributeTypeSelectionDialogLabelProvider(), Activator.getDefault().getWorkbench()
                 .getDecoratorManager().getLabelDecorator() ) );
+        attributeTypesTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) attributeTypesTableViewer.getSelection();
+                if ( selection.isEmpty() )
+                {
+                    if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+                    {
+                        chooseButton.setEnabled( false );
+                    }
+                    schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_TRANSPARENT_16X16 ).createImage() );
+                    schemaNameLabel.setText( "" );
+                }
+                else
+                {
+                    if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+                    {
+                        chooseButton.setEnabled( true );
+                    }
+                    schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_SCHEMA ).createImage() );
+                    schemaNameLabel.setText( ( ( AttributeTypeImpl ) selection.getFirstElement() ).getSchema() );
+                }
+            }
+        } );
+
+        // Schema Composite
+        Composite schemaComposite = new Composite( composite, SWT.BORDER );
+        schemaComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        GridLayout schemaCompositeGridLayout = new GridLayout( 2, false );
+        schemaCompositeGridLayout.horizontalSpacing = 0;
+        schemaCompositeGridLayout.verticalSpacing = 0;
+        schemaCompositeGridLayout.marginWidth = 2;
+        schemaCompositeGridLayout.marginHeight = 2;
+        schemaComposite.setLayout( schemaCompositeGridLayout );
+
+        // Schema Icon Label
+        schemaIconLabel = new Label( schemaComposite, SWT.NONE );
+        GridData schemaIconLabelGridData = new GridData( SWT.NONE, SWT.BOTTOM, false, false );
+        schemaIconLabelGridData.widthHint = 18;
+        schemaIconLabelGridData.heightHint = 16;
+        schemaIconLabel.setLayoutData( schemaIconLabelGridData );
+        schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_TRANSPARENT_16X16 ).createImage() );
+
+        // Schema Name Label
+        schemaNameLabel = new Label( schemaComposite, SWT.NONE );
+        schemaNameLabel.setLayoutData( new GridData( SWT.FILL, SWT.BOTTOM, true, false ) );
+        schemaNameLabel.setText( "" );
 
         // We need to force the input to load the complete list of attribute types
-        attributeTypesTableViewer.setInput( "" ); //$NON-NLS-1$
-        // We also need to force the selection of the first row
-        attributeTypesTable.select( 0 );
+        setSearchInput( "" ); //$NON-NLS-1$
 
         return composite;
     }
@@ -170,9 +227,24 @@ public class AttributeTypeSelectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.OK_ID, "Choose", true ); //$NON-NLS-1$
+        chooseButton = createButton( parent, IDialogConstants.OK_ID, "Choose", true ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
 
+        StructuredSelection selection = ( StructuredSelection ) attributeTypesTableViewer.getSelection();
+        if ( selection.isEmpty() )
+        {
+            if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+            {
+                chooseButton.setEnabled( false );
+            }
+        }
+        else
+        {
+            if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+            {
+                chooseButton.setEnabled( true );
+            }
+        }
     }
 
 
@@ -231,6 +303,24 @@ public class AttributeTypeSelectionDialog extends Dialog
         for ( AttributeTypeImpl objectClass : attributeTypes )
         {
             hiddenAttributeTypes.add( objectClass );
+        }
+    }
+
+
+    /**
+     * Set the Search Input.
+     *
+     * @param searchString
+     *      the Search String
+     */
+    private void setSearchInput( String searchString )
+    {
+        attributeTypesTableViewer.setInput( searchString );
+
+        Object firstElement = attributeTypesTableViewer.getElementAt( 0 );
+        if ( firstElement != null )
+        {
+            attributeTypesTableViewer.setSelection( new StructuredSelection( firstElement ), true );
         }
     }
 }
