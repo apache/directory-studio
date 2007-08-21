@@ -25,7 +25,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -37,12 +36,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ObjectClassSelectionDialogLabelProvider extends LabelProvider implements ITableLabelProvider
+public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
 {
     /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
+     * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
      */
-    public Image getColumnImage( Object element, int columnIndex )
+    public Image getImage( Object element )
     {
         if ( element instanceof ObjectClassImpl )
         {
@@ -56,9 +55,9 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider imple
 
 
     /* (non-Javadoc)
-     * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
+     * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
      */
-    public String getColumnText( Object element, int columnIndex )
+    public String getText( Object element )
     {
         if ( element instanceof ObjectClassImpl )
         {

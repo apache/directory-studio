@@ -24,10 +24,12 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -150,7 +152,9 @@ public class AttributeTypeSelectionDialog extends Dialog
 
         attributeTypesTableViewer.setContentProvider( new AttributeTypeSelectionDialogContentProvider(
             hiddenAttributeTypes ) );
-        attributeTypesTableViewer.setLabelProvider( new AttributeTypeSelectionDialogLabelProvider() );
+        attributeTypesTableViewer.setLabelProvider( new DecoratingLabelProvider(
+            new AttributeTypeSelectionDialogLabelProvider(), Activator.getDefault().getWorkbench()
+                .getDecoratorManager().getLabelDecorator() ) );
 
         // We need to force the input to load the complete list of attribute types
         attributeTypesTableViewer.setInput( "" ); //$NON-NLS-1$
