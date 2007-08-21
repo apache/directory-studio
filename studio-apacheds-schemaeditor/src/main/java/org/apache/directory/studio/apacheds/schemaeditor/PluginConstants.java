@@ -102,6 +102,7 @@ public interface PluginConstants
     public static final String IMG_SHOW_SUPERTYPE_HIERARCHY = "resources/icons/hierarchy_supertype.gif";
     public static final String IMG_SORTING = "resources/icons/sorting.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
+    public static final String IMG_TRANSPARENT_16X16 = "resources/icons/transparent_16x16.gif";
 
     // Commands
     public static final String CMD_COMMIT_CHANGES = Activator.PLUGIN_ID + ".commands.commitChanges";
