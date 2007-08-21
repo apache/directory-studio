@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ConnectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteSchemaElementAction;
@@ -45,6 +46,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -606,7 +608,8 @@ public class SchemaViewController
                     }
                     catch ( PartInitException e )
                     {
-                        // TODO Add an error and a log
+                        PluginUtils.logError( "An error occured when opening the editor.", e );
+                        ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
                     }
                 }
             }

@@ -27,6 +27,8 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -285,7 +287,8 @@ public class SearchPage extends DialogPage implements ISearchPage
         }
         catch ( PartInitException e )
         {
-            // TODO Add an error and a log
+            PluginUtils.logError( "An error occured when opening the view.", e );
+            ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the view." );
         }
 
         return true;

@@ -26,8 +26,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaFileExporter;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -95,7 +97,10 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
                         }
                         catch ( IOException e )
                         {
-                            // TODO Add an error and a log
+                            PluginUtils.logError( "An error occured when saving the schema " + schema.getName() + ".",
+                                e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
+                                + schema.getName() + "." );
                         }
                         monitor.worked( 1 );
                     }

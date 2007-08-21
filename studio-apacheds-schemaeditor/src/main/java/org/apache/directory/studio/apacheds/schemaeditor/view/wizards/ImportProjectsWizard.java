@@ -24,10 +24,12 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImportException;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImporter;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -91,7 +93,10 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
                         }
                         catch ( ProjectsImportException e )
                         {
-                            // TODO Add an error and a log
+                            PluginUtils.logError( "An error occured when importing project " + projectFile.getName()
+                                + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Import Error",
+                                "An error occured when importing project " + projectFile.getName() + "." );
                         }
                         monitor.worked( 1 );
                     }

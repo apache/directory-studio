@@ -23,6 +23,8 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 import java.util.Iterator;
 
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -88,7 +90,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO Add an error and a log
+                    PluginUtils.logError( "An error occured when opening the editor.", e );
+                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
                 }
             }
             else if ( selectedItem instanceof ObjectClassWrapper )
@@ -101,7 +104,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO Add an error and a log
+                    PluginUtils.logError( "An error occured when opening the editor.", e );
+                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
                 }
             }
             else if ( selectedItem instanceof SchemaWrapper )
@@ -113,7 +117,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO Add an error and a log
+                    PluginUtils.logError( "An error occured when opening the editor.", e );
+                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
                 }
             }
             else if ( selectedItem instanceof Folder )

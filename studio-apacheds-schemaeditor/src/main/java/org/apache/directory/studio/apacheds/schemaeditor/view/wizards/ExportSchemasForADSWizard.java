@@ -36,10 +36,12 @@ import javax.naming.NamingException;
 import org.apache.directory.shared.converter.schema.AttributeTypeHolder;
 import org.apache.directory.shared.converter.schema.ObjectClassHolder;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -118,11 +120,17 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                             }
                             catch ( IOException e )
                             {
-                                // TODO Add an error and a log
+                                PluginUtils.logError( "An error occured when saving the schema " + schema.getName()
+                                    + ".", e );
+                                ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
+                                    + schema.getName() + "." );
                             }
                             catch ( NamingException e )
                             {
-                                // TODO Add an error and a log
+                                PluginUtils.logError( "An error occured when saving the schema " + schema.getName()
+                                    + ".", e );
+                                ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
+                                    + schema.getName() + "." );
                             }
                             monitor.worked( 1 );
                         }
@@ -165,7 +173,10 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                             }
                             catch ( NamingException e )
                             {
-                                // TODO Add an error and a log
+                                PluginUtils.logError( "An error occured when saving the schema " + schema.getName()
+                                    + ".", e );
+                                ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
+                                    + schema.getName() + "." );
                             }
                         }
 
@@ -177,7 +188,9 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                         }
                         catch ( IOException e )
                         {
-                            // TODO Add an error and a log
+                            PluginUtils.logError( "An error occured when saving the schemas.",
+                                e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schemas." );
                         }
                         monitor.worked( 1 );
                         monitor.done();

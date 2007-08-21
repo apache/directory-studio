@@ -24,11 +24,13 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaFileImportException;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.OpenLdapSchemaFileImporter;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -97,7 +99,10 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
                         }
                         catch ( OpenLdapSchemaFileImportException e )
                         {
-                            // TODO Add an error and a log
+                            PluginUtils.logError( "An error occured when importing the schema " + schemaFile.getName()
+                                + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when importing the schema "
+                                + schemaFile.getName() + "." );
                         }
                         monitor.worked( 1 );
                     }

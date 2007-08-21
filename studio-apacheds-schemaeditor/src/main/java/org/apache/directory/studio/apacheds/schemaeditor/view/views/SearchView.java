@@ -29,10 +29,12 @@ import java.util.regex.Pattern;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SearchViewController;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -445,8 +447,8 @@ public class SearchView extends ViewPart
 
 
     /**
-    * Open the editor associated with the current selection in the table.
-    */
+     * Open the editor associated with the current selection in the table.
+     */
     private void openEditor()
     {
         if ( Activator.getDefault().getSchemaHandler() != null )
@@ -482,7 +484,8 @@ public class SearchView extends ViewPart
                     }
                     catch ( PartInitException exception )
                     {
-                        // TODO Add an error and a log
+                        PluginUtils.logError( "An error occured when opening the editor.", exception );
+                        ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
                     }
                 }
             }

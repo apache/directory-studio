@@ -32,6 +32,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsExporter;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImportException;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImporter;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
+import org.eclipse.core.runtime.Status;
 
 
 /**
@@ -140,7 +142,9 @@ public class PluginUtils
             }
             catch ( ProjectsImportException e )
             {
-                // TODO Add an error and a log
+                PluginUtils.logError( "An error occured when loading the projects.", e );
+                ViewUtils.displayErrorMessageBox( "Projects Loading Error",
+                    "An error occured when loading the projects." );
             }
 
             for ( Project project : projects )
@@ -167,7 +171,40 @@ public class PluginUtils
         }
         catch ( IOException e )
         {
-            // TODO Add an error and a log
+            PluginUtils.logError( "An error occured when saving the projects.", e );
+            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when saving the projects." );
         }
+    }
+
+
+    /**
+     * Logs the given message and exception with the ERROR status level.
+     * 
+     * @param message
+     *      the message
+     * @param exception
+     *      the exception
+     */
+    public static void logError( String message, Throwable exception )
+    {
+        Activator.getDefault().getLog().log(
+            new Status( Status.ERROR, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, message,
+                exception ) );
+    }
+
+
+    /**
+     * Logs the given message and exception with the WARNING status level.
+     * 
+     * @param message
+     *      the message
+     * @param exception
+     *      the exception
+     */
+    public static void logWarning( String message, Throwable exception )
+    {
+        Activator.getDefault().getLog().log(
+            new Status( Status.WARNING, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, message,
+                exception ) );
     }
 }

@@ -22,6 +22,8 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller.actions;
 
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.views.HierarchyView;
@@ -163,7 +165,8 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
             }
             catch ( PartInitException e )
             {
-                // TODO Add an error and a log
+                PluginUtils.logError( "An error occured when opening the view.", e );
+                ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the view." );
             }
         }
 

@@ -22,12 +22,14 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.editors.schema;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaAdapter;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaListener;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
@@ -152,7 +154,8 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    // TODO Add an error and a log
+                    PluginUtils.logError( "An error occured when opening the editor.", exception );
+                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
                 }
             }
         }
@@ -179,7 +182,8 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    // TODO Add an error and a log
+                    PluginUtils.logError( "An error occured when opening the editor.", exception );
+                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
                 }
             }
         }

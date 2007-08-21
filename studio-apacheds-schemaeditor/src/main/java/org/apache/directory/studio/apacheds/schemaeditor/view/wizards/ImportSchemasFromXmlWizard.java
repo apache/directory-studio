@@ -24,12 +24,14 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileImportException;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileImporter.SchemaFileType;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
+import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -111,7 +113,9 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                         }
                         catch ( XMLSchemaFileImportException e )
                         {
-                            // TODO Add an error and a log
+                            PluginUtils.logError( "An error occured when importing  the schema " + schemaFile + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
+                                + schemaFile + "." );
                         }
                         monitor.worked( 1 );
                     }
