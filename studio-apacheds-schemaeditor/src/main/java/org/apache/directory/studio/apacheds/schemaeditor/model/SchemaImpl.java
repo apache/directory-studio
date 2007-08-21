@@ -101,7 +101,25 @@ public class SchemaImpl implements Schema
      */
     public AttributeTypeImpl getAttributeType( String id )
     {
-        // TODO Auto-generated method stub
+        for ( AttributeTypeImpl at : attributeTypes )
+        {
+            String[] aliases = at.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return at;
+                    }
+                }
+            }
+            if ( at.getOid().equalsIgnoreCase( id ) )
+            {
+                return at;
+            }
+        }
+
         return null;
     }
 
@@ -120,7 +138,25 @@ public class SchemaImpl implements Schema
      */
     public MatchingRuleImpl getMatchingRule( String id )
     {
-        // TODO Auto-generated method stub
+        for ( MatchingRuleImpl mr : matchingRules )
+        {
+            String[] aliases = mr.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return mr;
+                    }
+                }
+            }
+            if ( mr.getOid().equalsIgnoreCase( id ) )
+            {
+                return mr;
+            }
+        }
+
         return null;
     }
 
@@ -148,7 +184,25 @@ public class SchemaImpl implements Schema
      */
     public ObjectClassImpl getObjectClass( String id )
     {
-        // TODO Auto-generated method stub
+        for ( ObjectClassImpl oc : objectClasses )
+        {
+            String[] aliases = oc.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return oc;
+                    }
+                }
+            }
+            if ( oc.getOid().equalsIgnoreCase( id ) )
+            {
+                return oc;
+            }
+        }
+
         return null;
     }
 
@@ -167,7 +221,25 @@ public class SchemaImpl implements Schema
      */
     public SyntaxImpl getSyntax( String id )
     {
-        // TODO Auto-generated method stub
+        for ( SyntaxImpl syntax : syntaxes )
+        {
+            String[] aliases = syntax.getNames();
+            if ( aliases != null )
+            {
+                for ( String alias : aliases )
+                {
+                    if ( alias.equalsIgnoreCase( id ) )
+                    {
+                        return syntax;
+                    }
+                }
+            }
+            if ( syntax.getOid().equalsIgnoreCase( id ) )
+            {
+                return syntax;
+            }
+        }
+
         return null;
     }
 
