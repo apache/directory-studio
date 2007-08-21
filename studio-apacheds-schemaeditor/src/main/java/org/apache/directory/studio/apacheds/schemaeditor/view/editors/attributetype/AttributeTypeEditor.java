@@ -87,7 +87,7 @@ public class AttributeTypeEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( "AttributeTypeEditor.Souce_Code_Error_cannot_return_to_Overview_page" ); //TODO
+                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
                     return;
                 }
 
@@ -190,7 +190,7 @@ public class AttributeTypeEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( "AttributeTypeEditor.Souce_Code_Error_cannot_save_object_class" ); //TODO
+            notifyError( "The editor of the Source Code contains errors, you cannot save the attribute type until these errors are fixed." );
             monitor.setCanceled( true );
             return;
         }

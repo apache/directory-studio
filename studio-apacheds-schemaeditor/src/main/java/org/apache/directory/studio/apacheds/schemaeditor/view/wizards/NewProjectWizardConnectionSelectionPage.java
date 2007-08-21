@@ -22,47 +22,38 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class represents the WizardPage of the NewSchemaWizard.
+ * This class represents the Information Page of the NewProjectWizard.
  * <p>
- * It is used to let the user create a new Schema
+ * It is used to let the user create a new Project
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewSchemaWizardPage extends WizardPage
+public class NewProjectWizardConnectionSelectionPage extends WizardPage
 {
-    /** The ProjectsHandler */
-    private SchemaHandler schemaHandler;
-
     // UI Fields
-    private Text nameText;
-
 
     /**
-     * Creates a new instance of NewSchemaWizardPage.
+     * Creates a new instance of NewProjectWizardConnectionSelectionPage.
      */
-    protected NewSchemaWizardPage()
+    protected NewProjectWizardConnectionSelectionPage()
     {
-        super( "NewSchemaWizardPage" );
-        setTitle( "Create a Schema" );
-        setDescription( "Please specify a name to create a new schema." );
+        super( "NewProjectWizardConnectionSelectionPage" );
+        setTitle( "Create a Schema project." );
+        setDescription( "Please select a connection." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMA_NEW_WIZARD ) );
-        schemaHandler = Activator.getDefault().getSchemaHandler();
+            PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
+        setPageComplete( false );
     }
 
 
@@ -71,22 +62,13 @@ public class NewSchemaWizardPage extends WizardPage
      */
     public void createControl( Composite parent )
     {
-        Composite composite = new Composite( parent, SWT.NULL );
-        GridLayout layout = new GridLayout( 2, false );
-        composite.setLayout( layout );
+        Composite composite = new Composite( parent, SWT.NONE );
+        composite.setLayout( new GridLayout() );
 
-        // Name
-        Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( "Schema name:" );
-        nameText = new Text( composite, SWT.BORDER );
-        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        nameText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                dialogChanged();
-            }
-        } );
+        // Connection
+        Label label = new Label( composite, SWT.NONE );
+        label.setText( "Choose a connection:" );
+        label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         initFields();
 
@@ -105,27 +87,6 @@ public class NewSchemaWizardPage extends WizardPage
 
 
     /**
-     * This method is called when the user modifies something in the UI.
-     */
-    private void dialogChanged()
-    {
-        // Name
-        if ( nameText.getText().equals( "" ) )
-        {
-            displayErrorMessage( "A name must be specified." );
-            return;
-        }
-        else if ( schemaHandler.isSchemaNameAlreadyTaken( nameText.getText() ) )
-        {
-            displayErrorMessage( "A schema with this name already exists." );
-            return;
-        }
-
-        displayErrorMessage( null );
-    }
-
-
-    /**
      * Displays an error message and set the page status as incomplete
      * if the message is not null.
      *
@@ -136,17 +97,5 @@ public class NewSchemaWizardPage extends WizardPage
     {
         setErrorMessage( message );
         setPageComplete( message == null );
-    }
-
-
-    /**
-     * Gets the name of the schema.
-     *
-     * @return
-     *      the name of the schema
-     */
-    public String getSchemaName()
-    {
-        return nameText.getText();
     }
 }

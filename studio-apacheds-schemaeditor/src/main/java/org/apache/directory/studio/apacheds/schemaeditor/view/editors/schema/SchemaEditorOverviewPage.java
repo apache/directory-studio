@@ -152,7 +152,7 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    //TODO Add a logger
+                    // TODO Add an error and a log
                 }
             }
         }
@@ -179,7 +179,7 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    //TODO Add a logger
+                    // TODO Add an error and a log
                 }
             }
         }

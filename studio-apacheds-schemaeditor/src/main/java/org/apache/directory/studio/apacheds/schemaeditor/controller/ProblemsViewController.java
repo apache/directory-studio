@@ -241,7 +241,7 @@ public class ProblemsViewController
                     }
                     catch ( PartInitException e )
                     {
-                        // TODO
+                        // TODO Add an error and a log
                     }
                 }
             }

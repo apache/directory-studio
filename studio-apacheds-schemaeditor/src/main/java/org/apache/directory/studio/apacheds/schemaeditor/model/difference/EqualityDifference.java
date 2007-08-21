@@ -41,7 +41,6 @@ public class EqualityDifference extends AbstractPropertyDifference
     public EqualityDifference( Object source, Object destination, DifferenceType type )
     {
         super( source, destination, type );
-        // TODO Auto-generated constructor stub
     }
 
 

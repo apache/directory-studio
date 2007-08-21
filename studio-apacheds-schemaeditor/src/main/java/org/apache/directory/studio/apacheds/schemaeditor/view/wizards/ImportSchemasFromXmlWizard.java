@@ -111,8 +111,7 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                         }
                         catch ( XMLSchemaFileImportException e )
                         {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            // TODO Add an error and a log
                         }
                         monitor.worked( 1 );
                     }

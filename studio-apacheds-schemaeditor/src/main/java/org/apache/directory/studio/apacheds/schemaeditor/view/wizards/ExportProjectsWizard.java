@@ -95,8 +95,7 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
                         }
                         catch ( IOException e )
                         {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            // TODO Add an error and a log
                         }
                         monitor.worked( 1 );
                     }

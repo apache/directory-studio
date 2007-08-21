@@ -39,14 +39,14 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class represents the WizardPage of the NewProjectWizard.
+ * This class represents the Information Page of the NewProjectWizard.
  * <p>
  * It is used to let the user create a new Project
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewProjectWizardPage extends WizardPage
+public class NewProjectWizardInformationPage extends WizardPage
 {
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
@@ -58,11 +58,11 @@ public class NewProjectWizardPage extends WizardPage
 
 
     /**
-     * Creates a new instance of NewProjectWizardPage.
+     * Creates a new instance of NewProjectWizardInformationPage.
      */
-    protected NewProjectWizardPage()
+    protected NewProjectWizardInformationPage()
     {
-        super( "NewProjectWizardPage" );
+        super( "NewProjectWizardInformationPage" );
         setTitle( "Create a Schema project." );
         setDescription( "Please specify a name and a type to create a new Schema project." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
@@ -188,4 +188,6 @@ public class NewProjectWizardPage extends WizardPage
             return ProjectType.OFFLINE;
         }
     }
+    
+    
 }

@@ -38,12 +38,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectSt
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-/**
- * TODO ProjectsHandler.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
- */
 public class ProjectsHandler
 {
     /** The ProjectsHandler instance */

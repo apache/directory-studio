@@ -482,7 +482,7 @@ public class SearchView extends ViewPart
                     }
                     catch ( PartInitException exception )
                     {
-                        //TODO: Add a logger
+                        // TODO Add an error and a log
                     }
                 }
             }

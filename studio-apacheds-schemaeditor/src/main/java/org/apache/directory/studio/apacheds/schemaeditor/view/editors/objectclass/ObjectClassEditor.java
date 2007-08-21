@@ -86,7 +86,7 @@ public class ObjectClassEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( "Source_Code_Error_cannot_return_to_Overview_page" ); //TODO
+                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
                     return;
                 }
 
@@ -188,7 +188,7 @@ public class ObjectClassEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( "Source_Code_Error_cannot_save_object_class" ); //TODO
+            notifyError( "The editor of the Source Code contains errors, you cannot save the object class until these errors are fixed." );
             monitor.setCanceled( true );
             return;
         }

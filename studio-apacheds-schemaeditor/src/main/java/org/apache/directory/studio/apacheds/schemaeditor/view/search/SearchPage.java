@@ -285,8 +285,7 @@ public class SearchPage extends DialogPage implements ISearchPage
         }
         catch ( PartInitException e )
         {
-            // TODO ADD Logger
-            e.printStackTrace();
+            // TODO Add an error and a log
         }
 
         return true;

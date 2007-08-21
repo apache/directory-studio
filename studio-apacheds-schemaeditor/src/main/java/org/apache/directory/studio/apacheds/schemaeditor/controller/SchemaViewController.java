@@ -606,8 +606,7 @@ public class SchemaViewController
                     }
                     catch ( PartInitException e )
                     {
-                        // logger.debug( "error when opening the editor" ); //$NON-NLS-1$
-                        e.printStackTrace(); // TODO
+                        // TODO Add an error and a log
                     }
                 }
             }

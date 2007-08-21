@@ -97,8 +97,7 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
                         }
                         catch ( OpenLdapSchemaFileImportException e )
                         {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            // TODO Add an error and a log
                         }
                         monitor.worked( 1 );
                     }

@@ -140,8 +140,7 @@ public class PluginUtils
             }
             catch ( ProjectsImportException e )
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // TODO Add an error and a log
             }
 
             for ( Project project : projects )
@@ -168,8 +167,7 @@ public class PluginUtils
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // TODO Add an error and a log
         }
     }
 }

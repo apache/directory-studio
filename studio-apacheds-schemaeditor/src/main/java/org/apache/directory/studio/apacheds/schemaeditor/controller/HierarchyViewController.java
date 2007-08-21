@@ -129,7 +129,7 @@ public class HierarchyViewController
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO ADD A LOGGER
+                    // TODO Add an error and a log
                 }
             }
         }

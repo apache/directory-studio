@@ -163,7 +163,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
             }
             catch ( PartInitException e )
             {
-                // TODO Add a logger
+                // TODO Add an error and a log
             }
         }
 

@@ -88,7 +88,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO Add logging
+                    // TODO Add an error and a log
                 }
             }
             else if ( selectedItem instanceof ObjectClassWrapper )
@@ -101,7 +101,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO Add logging
+                    // TODO Add an error and a log
                 }
             }
             else if ( selectedItem instanceof SchemaWrapper )
@@ -113,7 +113,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    // TODO Add logging
+                    // TODO Add an error and a log
                 }
             }
             else if ( selectedItem instanceof Folder )
