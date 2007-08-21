@@ -25,11 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -41,6 +44,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -48,6 +52,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -67,7 +72,10 @@ public class ObjectClassSelectionDialog extends Dialog
     // UI Fields
     private Text searchText;
     private Table objectClassesTable;
-    private TableViewer tableViewer;
+    private TableViewer objectClassesTableViewer;
+    private Label schemaIconLabel;
+    private Label schemaNameLabel;
+    private Button chooseButton;
 
 
     /**
@@ -86,7 +94,7 @@ public class ObjectClassSelectionDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Object Class Selection" ); //$NON-NLS-1$
+        newShell.setText( "Object Class Selection" );
     }
 
 
@@ -109,8 +117,7 @@ public class ObjectClassSelectionDialog extends Dialog
         {
             public void modifyText( ModifyEvent e )
             {
-                tableViewer.setInput( searchText.getText() );
-                objectClassesTable.select( 0 );
+                setSearchInput( searchText.getText() );
             }
         } );
         searchText.addKeyListener( new KeyAdapter()
@@ -147,17 +154,66 @@ public class ObjectClassSelectionDialog extends Dialog
             }
         } );
 
-        tableViewer = new TableViewer( objectClassesTable );
-        tableViewer.setUseHashlookup( true );
+        objectClassesTableViewer = new TableViewer( objectClassesTable );
+        objectClassesTableViewer
+            .setContentProvider( new ObjectClassSelectionDialogContentProvider( hiddenObjectClasses ) );
+        objectClassesTableViewer.setLabelProvider( new DecoratingLabelProvider(
+            new ObjectClassSelectionDialogLabelProvider(), Activator.getDefault().getWorkbench().getDecoratorManager()
+                .getLabelDecorator() ) );
+        objectClassesTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                StructuredSelection selection = ( StructuredSelection ) objectClassesTableViewer.getSelection();
+                if ( selection.isEmpty() )
+                {
+                    if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+                    {
+                        chooseButton.setEnabled( false );
+                    }
+                    schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_TRANSPARENT_16X16 ).createImage() );
+                    schemaNameLabel.setText( "" );
+                }
+                else
+                {
+                    if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+                    {
+                        chooseButton.setEnabled( true );
+                    }
+                    schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                        PluginConstants.IMG_SCHEMA ).createImage() );
+                    schemaNameLabel.setText( ( ( ObjectClassImpl ) selection.getFirstElement() ).getSchema() );
+                }
+            }
+        } );
 
-        tableViewer.setContentProvider( new ObjectClassSelectionDialogContentProvider( hiddenObjectClasses ) );
-        tableViewer.setLabelProvider( new DecoratingLabelProvider( new ObjectClassSelectionDialogLabelProvider(),
-            Activator.getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );
+        // Schema Composite
+        Composite schemaComposite = new Composite( composite, SWT.BORDER );
+        schemaComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        GridLayout schemaCompositeGridLayout = new GridLayout( 2, false );
+        schemaCompositeGridLayout.horizontalSpacing = 0;
+        schemaCompositeGridLayout.verticalSpacing = 0;
+        schemaCompositeGridLayout.marginWidth = 2;
+        schemaCompositeGridLayout.marginHeight = 2;
+        schemaComposite.setLayout( schemaCompositeGridLayout );
+
+        // Schema Icon Label
+        schemaIconLabel = new Label( schemaComposite, SWT.NONE );
+        GridData schemaIconLabelGridData = new GridData( SWT.NONE, SWT.BOTTOM, false, false );
+        schemaIconLabelGridData.widthHint = 18;
+        schemaIconLabelGridData.heightHint = 16;
+        schemaIconLabel.setLayoutData( schemaIconLabelGridData );
+        schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+            PluginConstants.IMG_TRANSPARENT_16X16 ).createImage() );
+
+        // Schema Name Label
+        schemaNameLabel = new Label( schemaComposite, SWT.NONE );
+        schemaNameLabel.setLayoutData( new GridData( SWT.FILL, SWT.BOTTOM, true, false ) );
+        schemaNameLabel.setText( "" );
 
         // We need to force the input to load the complete list of attribute types
-        tableViewer.setInput( "" ); //$NON-NLS-1$
-        // We also need to force the selection of the first row
-        objectClassesTable.select( 0 );
+        setSearchInput( "" ); //$NON-NLS-1$
 
         return composite;
     }
@@ -168,8 +224,24 @@ public class ObjectClassSelectionDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.OK_ID, "Choose", true );
+        chooseButton = createButton( parent, IDialogConstants.OK_ID, "Choose", true ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+
+        StructuredSelection selection = ( StructuredSelection ) objectClassesTableViewer.getSelection();
+        if ( selection.isEmpty() )
+        {
+            if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+            {
+                chooseButton.setEnabled( false );
+            }
+        }
+        else
+        {
+            if ( ( chooseButton != null ) && ( !chooseButton.isDisposed() ) )
+            {
+                chooseButton.setEnabled( true );
+            }
+        }
     }
 
 
@@ -178,7 +250,7 @@ public class ObjectClassSelectionDialog extends Dialog
      */
     protected void okPressed()
     {
-        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) objectClassesTableViewer.getSelection();
 
         if ( selection.isEmpty() )
         {
@@ -229,6 +301,24 @@ public class ObjectClassSelectionDialog extends Dialog
         for ( ObjectClassImpl objectClass : objectClasses )
         {
             hiddenObjectClasses.add( objectClass );
+        }
+    }
+
+
+    /**
+     * Set the Search Input.
+     *
+     * @param searchString
+     *      the Search String
+     */
+    private void setSearchInput( String searchString )
+    {
+        objectClassesTableViewer.setInput( searchString );
+
+        Object firstElement = objectClassesTableViewer.getElementAt( 0 );
+        if ( firstElement != null )
+        {
+            objectClassesTableViewer.setSelection( new StructuredSelection( firstElement ), true );
         }
     }
 }
