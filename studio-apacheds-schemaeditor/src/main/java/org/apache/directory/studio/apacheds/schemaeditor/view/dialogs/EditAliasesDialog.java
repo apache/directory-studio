@@ -136,7 +136,7 @@ public class EditAliasesDialog extends Dialog
 
         // ADD Label
         Label add_label = new Label( composite, SWT.NONE );
-        add_label.setText( "Add_an_alias" );
+        add_label.setText( "Add an alias" );
         add_label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // NEW ALIAS Field
