@@ -97,8 +97,8 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
                         }
                         catch ( IOException e )
                         {
-                            PluginUtils.logError( "An error occured when saving the project " + project.getName() + ".",
-                                e );
+                            PluginUtils.logError(
+                                "An error occured when saving the project " + project.getName() + ".", e );
                             ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the project "
                                 + project.getName() + "." );
                         }

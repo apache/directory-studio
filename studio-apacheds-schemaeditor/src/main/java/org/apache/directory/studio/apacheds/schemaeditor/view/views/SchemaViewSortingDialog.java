@@ -95,7 +95,7 @@ public class SchemaViewSortingDialog extends Dialog
 
         // Grouping Group
         Group groupingGroup = new Group( composite, SWT.NONE );
-        groupingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ));
+        groupingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         groupingGroup.setText( "Grouping" );
         groupingGroup.setLayout( new GridLayout() );
 
@@ -111,7 +111,7 @@ public class SchemaViewSortingDialog extends Dialog
 
         // Sorting Group
         Group sortingGroup = new Group( composite, SWT.NONE );
-        sortingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ));
+        sortingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         sortingGroup.setText( "Sorting" );
         sortingGroup.setLayout( new GridLayout() );
         Composite sortingGroupComposite = new Composite( sortingGroup, SWT.NONE );

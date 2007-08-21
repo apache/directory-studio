@@ -188,8 +188,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
                         }
                         catch ( IOException e )
                         {
-                            PluginUtils.logError( "An error occured when saving the schemas.",
-                                e );
+                            PluginUtils.logError( "An error occured when saving the schemas.", e );
                             ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schemas." );
                         }
                         monitor.worked( 1 );

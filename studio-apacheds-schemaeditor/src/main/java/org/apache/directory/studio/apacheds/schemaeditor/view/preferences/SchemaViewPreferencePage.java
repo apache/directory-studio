@@ -171,14 +171,14 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
 
         // Secondary Label Group
         Group secondaryLabelGroup = new Group( composite, SWT.NONE );
-        secondaryLabelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false )  );
+        secondaryLabelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         secondaryLabelGroup.setText( "Secondary label" );
         secondaryLabelGroup.setLayout( new GridLayout() );
         Composite secondaryLabelGroupComposite = new Composite( secondaryLabelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
         gl.marginHeight = gl.marginWidth = 0;
         secondaryLabelGroupComposite.setLayout( gl );
-        secondaryLabelGroupComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false )  );
+        secondaryLabelGroupComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         secondaryLabelButtonDisplay = new Button( secondaryLabelGroupComposite, SWT.CHECK );
         secondaryLabelButtonDisplay.setText( "Display secondary label." );
@@ -188,7 +188,7 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
         gl = new GridLayout( 3, false );
         gl.marginHeight = gl.marginWidth = 0;
         secondaryLabelComposite.setLayout( gl );
-        gd = new GridData( SWT.FILL, SWT.NONE, true, false ) ;
+        gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.horizontalSpan = 1;
         secondaryLabelComposite.setLayoutData( gd );
 
@@ -212,7 +212,7 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
         gl = new GridLayout( 3, false );
         gl.marginHeight = gl.marginWidth = 0;
         abbreviateComposite2.setLayout( gl );
-        gd = new GridData( SWT.FILL, SWT.NONE, true, false ) ;
+        gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.horizontalSpan = 1;
         abbreviateComposite2.setLayoutData( gd );
 
