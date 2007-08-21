@@ -234,6 +234,12 @@
                 <objectClass
                       name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper">
                 </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl">
+                </objectClass>
              </or>
           </enablement>
           <description>

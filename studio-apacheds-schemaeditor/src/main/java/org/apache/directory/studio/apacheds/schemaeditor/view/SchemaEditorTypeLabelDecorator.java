@@ -24,6 +24,8 @@ import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.eclipse.jface.viewers.IDecoration;
@@ -48,10 +50,7 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
     {
         if ( element instanceof AttributeTypeWrapper )
         {
-            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) element;
-
-            UsageEnum usage = atw.getAttributeType().getUsage();
-
+            UsageEnum usage = ( ( AttributeTypeWrapper ) element ).getAttributeType().getUsage();
             if ( usage == UsageEnum.USER_APPLICATIONS )
             {
                 decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
@@ -66,10 +65,41 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
         }
         else if ( element instanceof ObjectClassWrapper )
         {
-            ObjectClassWrapper ocw = ( ObjectClassWrapper ) element;
-
-            ObjectClassTypeEnum classType = ocw.getObjectClass().getType();
-
+            ObjectClassTypeEnum classType = ( ( ObjectClassWrapper ) element ).getObjectClass().getType();
+            if ( classType == ObjectClassTypeEnum.ABSTRACT )
+            {
+                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_OBJECT_CLASS_OVERLAY_ABSTRACT ), IDecoration.BOTTOM_RIGHT );
+            }
+            else if ( classType == ObjectClassTypeEnum.STRUCTURAL )
+            {
+                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL ), IDecoration.BOTTOM_RIGHT );
+            }
+            else if ( classType == ObjectClassTypeEnum.AUXILIARY )
+            {
+                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_OBJECT_CLASS_OVERLAY_AUXILIARY ), IDecoration.BOTTOM_RIGHT );
+            }
+        }
+        else if ( element instanceof AttributeTypeImpl )
+        {
+            UsageEnum usage = ( ( AttributeTypeImpl ) element ).getUsage();
+            if ( usage == UsageEnum.USER_APPLICATIONS )
+            {
+                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION ), IDecoration.BOTTOM_RIGHT );
+            }
+            else if ( ( usage == UsageEnum.DIRECTORY_OPERATION ) || ( usage == UsageEnum.DISTRIBUTED_OPERATION )
+                || ( usage == UsageEnum.DSA_OPERATION ) )
+            {
+                decoration.addOverlay( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION ), IDecoration.BOTTOM_RIGHT );
+            }
+        }
+        else if ( element instanceof ObjectClassImpl )
+        {
+            ObjectClassTypeEnum classType = ( ( ObjectClassImpl ) element ).getType();
             if ( classType == ObjectClassTypeEnum.ABSTRACT )
             {
                 decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
