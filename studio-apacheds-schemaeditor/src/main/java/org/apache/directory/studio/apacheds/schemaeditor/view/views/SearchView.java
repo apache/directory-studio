@@ -33,11 +33,18 @@ import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandle
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SearchViewController;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditor;
+import org.apache.directory.studio.apacheds.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -59,6 +66,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -186,7 +195,11 @@ public class SearchView extends ViewPart
         {
             public void keyReleased( KeyEvent e )
             {
-                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == 16777296 /* The "Enter" Key at the bottom right of the keyboard */) ) //$NON-NLS-1$ 
+                if ( e.keyCode == SWT.ARROW_DOWN )
+                {
+                    resultsTable.setFocus();
+                }
+                else if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == 16777296 /* The "Enter" Key at the bottom right of the keyboard */) ) //$NON-NLS-1$ 
                 {
                     search();
                 }
@@ -407,130 +420,75 @@ public class SearchView extends ViewPart
         resultsTableViewer.setLabelProvider( new DecoratingLabelProvider( new SearchViewLabelProvider(), Activator
             .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );
         resultsTableViewer.setContentProvider( new SearchViewContentProvider() );
+
+        // Adding listeners
+        resultsTable.addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) )
+                    || ( e.keyCode == 16777296 /* The "Enter" Key at the bottom right of the keyboard */) ) // return key
+                {
+                    openEditor();
+                }
+            }
+        } );
+
+        resultsTableViewer.addDoubleClickListener( new IDoubleClickListener()
+        {
+            public void doubleClick( DoubleClickEvent event )
+            {
+                openEditor();
+            }
+        } );
     }
 
 
-    //    /**
-    //     * Initializes the Listeners
-    //     */
-    //    private void initListeners()
-    //    {
-    //        searchField.addModifyListener( new ModifyListener()
-    //        {
-    //            public void modifyText( ModifyEvent e )
-    //            {
-    //                resultsTableViewer.setInput( searchField.getText() );
-    //            }
-    //        } );
-    //
-    //        searchField.addKeyListener( new KeyAdapter()
-    //        {
-    //            public void keyReleased( KeyEvent e )
-    //            {
-    //                if ( e.keyCode == 13 )
-    //                {
-    //                    resultsTable.setFocus();
-    //                }
-    //            }
-    //        } );
-    //
-    //        searchField.addFocusListener( new FocusAdapter()
-    //        {
-    //            public void focusLost( FocusEvent e )
-    //            {
-    //                if ( !"".equals( searchField.getText() ) ) //$NON-NLS-1$
-    //                {
-    //                    String searchString = searchField.getText();
-    //                    saveHistory( PluginConstants.PREFS_SEARCH_VIEW_SEARCH_HISTORY, searchString );
-    //                    initSearchHistory();
-    //                    searchField.setText( searchString );
-    //                }
-    //            }
-    //        } );
-    //
-    //        scopeCombo.addFocusListener( new FocusAdapter()
-    //        {
-    //            public void focusGained( FocusEvent arg0 )
-    //            {
-    //                resultsTable.setFocus();
-    //            }
-    //        } );
-    //
-    //        resultsTable.addMouseListener( new MouseAdapter()
-    //        {
-    //            public void mouseDoubleClick( MouseEvent e )
-    //            {
-    //                openEditor( ( Table ) e.getSource() );
-    //            }
-    //        } );
-    //
-    //        resultsTable.addKeyListener( new KeyAdapter()
-    //        {
-    //            public void keyPressed( KeyEvent e )
-    //            {
-    //                if ( e.keyCode == SWT.ARROW_UP )
-    //                {
-    //                    searchField.setFocus();
-    //                }
-    //
-    //                if ( e.keyCode == 13 ) // return key
-    //                {
-    //                    openEditor( ( Table ) e.getSource() );
-    //                }
-    //            }
-    //        } );
-    //
-    //        resultsTable.addFocusListener( new FocusAdapter()
-    //        {
-    //            public void focusGained( FocusEvent e )
-    //            {
-    //                if ( ( resultsTable.getSelectionCount() == 0 ) && ( resultsTable.getItemCount() != 0 ) )
-    //                {
-    //                    resultsTable.select( 0 );
-    //                }
-    //            }
-    //        } );
-    //    }
+    /**
+    * Open the editor associated with the current selection in the table.
+    */
+    private void openEditor()
+    {
+        if ( Activator.getDefault().getSchemaHandler() != null )
+        {
+            StructuredSelection selection = ( StructuredSelection ) resultsTableViewer.getSelection();
 
-    //    /**
-    //     * Open the editor associated with the current selection in the table
-    //     *
-    //     * @param table
-    //     *      the associated table
-    //     */
-    //    private void openEditor( Table table )
-    //    {
-    //        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-    //
-    //        IEditorInput input = null;
-    //        String editorId = null;
-    //
-    //        // Here is the double clicked item
-    //        Object item = table.getSelection()[0].getData();
-    //        if ( item instanceof AttributeType )
-    //        {
-    //            input = new AttributeTypeEditorInput( ( AttributeType ) item );
-    //            editorId = AttributeTypeEditor.ID;
-    //        }
-    //        else if ( item instanceof ObjectClass )
-    //        {
-    //            input = new ObjectClassEditorInput( ( ObjectClass ) item );
-    //            editorId = ObjectClassEditor.ID;
-    //        }
-    //
-    //        // Let's open the editor
-    //        if ( input != null )
-    //        {
-    //            try
-    //            {
-    //                page.openEditor( input, editorId );
-    //            }
-    //            catch ( PartInitException exception )
-    //            {
-    //                Logger.getLogger( SchemasViewController.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
-    //            }
-    //        }
-    //    }
+            if ( !selection.isEmpty() )
+            {
+                Object item = selection.getFirstElement();
+
+                IEditorInput input = null;
+                String editorId = null;
+
+                // Here is the double clicked item
+                if ( item instanceof AttributeTypeImpl )
+                {
+                    input = new AttributeTypeEditorInput( ( AttributeTypeImpl ) item );
+                    editorId = AttributeTypeEditor.ID;
+                }
+                else if ( item instanceof ObjectClassImpl )
+                {
+                    input = new ObjectClassEditorInput( ( ObjectClassImpl ) item );
+                    editorId = ObjectClassEditor.ID;
+                }
+
+                // Let's open the editor
+                if ( input != null )
+                {
+                    try
+                    {
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( input,
+                            editorId );
+                    }
+                    catch ( PartInitException exception )
+                    {
+                        //TODO: Add a logger
+                    }
+                }
+            }
+        }
+    }
+
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
