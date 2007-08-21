@@ -274,7 +274,7 @@ public class EditAliasesDialog extends Dialog
                 else if ( !PluginUtils.verifyName( text ) )
                 {
                     errorComposite.setVisible( true );
-                    errorLabel.setText( "Invalid_Alias." );
+                    errorLabel.setText( "Invalid Alias." );
                     newAliasAddButton.setEnabled( false );
                 }
             }
