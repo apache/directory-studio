@@ -90,11 +90,11 @@ public class SearchPage extends DialogPage implements ISearchPage
         // Search String Label
         Label searchStringLabel = new Label( parent, SWT.NONE );
         searchStringLabel.setText( "Search string (*=any string, ?=any character):" );
-        searchStringLabel.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        searchStringLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Search Combo
         searchCombo = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
-        searchCombo.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        searchCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         searchCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent arg0 )

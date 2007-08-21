@@ -277,10 +277,10 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         mandatoryAttributeSectionClient.setLayout( new GridLayout() );
         toolkit.paintBordersFor( mandatoryAttributeSectionClient );
         mandatoryAttributeSection.setClient( mandatoryAttributeSectionClient );
-        mandatoryAttributeSection.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        mandatoryAttributeSection.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         mandatoryAttributeTable = toolkit.createTable( mandatoryAttributeSectionClient, SWT.NONE );
-        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
+        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true );
         gridData.heightHint = 1;
         mandatoryAttributeTable.setLayoutData( gridData );
         mandatoryAttributeTableViewer = new TableViewer( mandatoryAttributeTable );
@@ -320,10 +320,10 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         optionalAttributeSectionClient.setLayout( new GridLayout() );
         toolkit.paintBordersFor( optionalAttributeSectionClient );
         optionalAttributeSection.setClient( optionalAttributeSectionClient );
-        optionalAttributeSection.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        optionalAttributeSection.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         optionalAttibuteTable = toolkit.createTable( optionalAttributeSectionClient, SWT.NONE );
-        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
+        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true );
         gridData.heightHint = 1;
         optionalAttibuteTable.setLayoutData( gridData );
         optionalAttibuteTableViewer = new TableViewer( optionalAttibuteTable );

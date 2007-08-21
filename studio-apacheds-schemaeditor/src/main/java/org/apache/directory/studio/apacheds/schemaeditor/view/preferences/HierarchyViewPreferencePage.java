@@ -95,21 +95,21 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Label Group
         Group labelGroup = new Group( composite, SWT.NONE );
-        labelGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        labelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         labelGroup.setText( "Label" );
         labelGroup.setLayout( new GridLayout() );
         Composite labelGroupComposite = new Composite( labelGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 1, false );
         gl.marginHeight = gl.marginWidth = 0;
         labelGroupComposite.setLayout( gl );
-        labelGroupComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        labelGroupComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Label row composite
         Composite labelComposite = new Composite( labelGroupComposite, SWT.NONE );
         gl = new GridLayout( 3, false );
         gl.marginHeight = gl.marginWidth = 0;
         labelComposite.setLayout( gl );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.horizontalSpan = 1;
         labelComposite.setLayoutData( gd );
 
@@ -133,7 +133,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         gl = new GridLayout( 3, false );
         gl.marginHeight = gl.marginWidth = 0;
         abbreviateComposite.setLayout( gl );
-        gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.horizontalSpan = 1;
         abbreviateComposite.setLayoutData( gd );
 
@@ -172,14 +172,14 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Secondary Label Group
         Group secondaryLabelGroup = new Group( composite, SWT.NONE );
-        secondaryLabelGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        secondaryLabelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         secondaryLabelGroup.setText( "Secondary label" );
         secondaryLabelGroup.setLayout( new GridLayout() );
         Composite secondaryLabelGroupComposite = new Composite( secondaryLabelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
         gl.marginHeight = gl.marginWidth = 0;
         secondaryLabelGroupComposite.setLayout( gl );
-        secondaryLabelGroupComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        secondaryLabelGroupComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         secondaryLabelButtonDisplay = new Button( secondaryLabelGroupComposite, SWT.CHECK );
         secondaryLabelButtonDisplay.setText( "Display secondary label." );
@@ -189,7 +189,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         gl = new GridLayout( 3, false );
         gl.marginHeight = gl.marginWidth = 0;
         secondaryLabelComposite.setLayout( gl );
-        gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.horizontalSpan = 1;
         secondaryLabelComposite.setLayoutData( gd );
 
@@ -213,7 +213,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         gl = new GridLayout( 3, false );
         gl.marginHeight = gl.marginWidth = 0;
         abbreviateComposite2.setLayout( gl );
-        gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd = new GridData( SWT.FILL, SWT.NONE, true, false );
         gd.horizontalSpan = 1;
         abbreviateComposite2.setLayoutData( gd );
 

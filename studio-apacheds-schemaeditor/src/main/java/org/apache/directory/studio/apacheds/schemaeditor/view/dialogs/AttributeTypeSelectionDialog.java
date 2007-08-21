@@ -109,10 +109,10 @@ public class AttributeTypeSelectionDialog extends Dialog
 
         Label chooseLabel = new Label( composite, SWT.NONE );
         chooseLabel.setText( "Choose an attribute type" );
-        chooseLabel.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         searchText = new Text( composite, SWT.BORDER );
-        searchText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        searchText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         searchText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -133,11 +133,11 @@ public class AttributeTypeSelectionDialog extends Dialog
 
         Label matchingLabel = new Label( composite, SWT.NONE );
         matchingLabel.setText( "Matching attribute type(s)" );
-        matchingLabel.setLayoutData( new GridData( GridData.FILL, SWT.None, true, false ) );
+        matchingLabel.setLayoutData( new GridData( SWT.FILL, SWT.None, true, false ) );
 
         attributeTypesTable = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
             | SWT.FULL_SELECTION | SWT.HIDE_SELECTION );
-        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true );
+        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true );
         gridData.heightHint = 148;
         gridData.minimumHeight = 148;
         gridData.widthHint = 350;

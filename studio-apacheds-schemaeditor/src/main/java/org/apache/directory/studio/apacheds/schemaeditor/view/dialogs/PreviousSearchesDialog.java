@@ -94,7 +94,7 @@ public class PreviousSearchesDialog extends Dialog
     {
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayout( new GridLayout( 2, false ) );
-        composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         Label label = new Label( composite, SWT.NONE );
         label.setText( "Select the search to show in the search results view:" );

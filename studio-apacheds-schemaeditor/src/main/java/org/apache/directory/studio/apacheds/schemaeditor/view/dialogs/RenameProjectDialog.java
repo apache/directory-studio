@@ -97,13 +97,13 @@ public class RenameProjectDialog extends Dialog
     {
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayout( new GridLayout( 2, false ) );
-        composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // New Name
         Label newNameLabel = new Label( composite, SWT.NONE );
         newNameLabel.setText( "New name:" );
         newNameText = new Text( composite, SWT.BORDER );
-        newNameText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        newNameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         newNameText.setText( originalName );
         newNameText.addModifyListener( new ModifyListener()
         {
@@ -130,7 +130,7 @@ public class RenameProjectDialog extends Dialog
         // Error Composite
         errorComposite = new Composite( composite, SWT.NONE );
         errorComposite.setLayout( new GridLayout( 2, false ) );
-        errorComposite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 ) );
+        errorComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
         errorComposite.setVisible( false );
 
         // Error Image
@@ -141,7 +141,7 @@ public class RenameProjectDialog extends Dialog
 
         // Error Label
         errorLabel = new Label( errorComposite, SWT.NONE );
-        errorLabel.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         errorLabel.setText( "A project with the same name already exists." );
 
         newNameText.setFocus();

@@ -91,13 +91,11 @@ public class SchemaViewSortingDialog extends Dialog
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-        GridData gd = new GridData( GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL );
-        //        gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        composite.setLayoutData( gd );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // Grouping Group
         Group groupingGroup = new Group( composite, SWT.NONE );
-        groupingGroup.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        groupingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ));
         groupingGroup.setText( "Grouping" );
         groupingGroup.setLayout( new GridLayout() );
 
@@ -113,14 +111,14 @@ public class SchemaViewSortingDialog extends Dialog
 
         // Sorting Group
         Group sortingGroup = new Group( composite, SWT.NONE );
-        sortingGroup.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        sortingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ));
         sortingGroup.setText( "Sorting" );
         sortingGroup.setLayout( new GridLayout() );
         Composite sortingGroupComposite = new Composite( sortingGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 4, false );
         gl.marginHeight = gl.marginWidth = 0;
         sortingGroupComposite.setLayout( gl );
-        sortingGroupComposite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        sortingGroupComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Sort by Label
         Label sortByLabel = new Label( sortingGroupComposite, SWT.NONE );
@@ -128,7 +126,7 @@ public class SchemaViewSortingDialog extends Dialog
 
         // Sorting Combo
         sortingCombo = new Combo( sortingGroupComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
-        sortingCombo.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        sortingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         sortingCombo.setItems( new String[]
             { SORTING_FISTNAME, SORTING_OID } );
         sortingCombo.setEnabled( true );

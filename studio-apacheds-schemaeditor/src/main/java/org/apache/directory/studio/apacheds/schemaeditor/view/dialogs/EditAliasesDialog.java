@@ -117,17 +117,17 @@ public class EditAliasesDialog extends Dialog
     {
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayout( new GridLayout( 2, false ) );
-        composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // ALIASES Label
         Label aliases_label = new Label( composite, SWT.NONE );
         aliases_label.setText( "Aliases" );
-        aliases_label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, true, 2, 1 ) );
+        aliases_label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // ALIASES Table
         aliasesTable = new Table( composite, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
-        GridData gridData = new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 );
+        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 );
         gridData.heightHint = 100;
         gridData.minimumHeight = 100;
         gridData.widthHint = 200;
@@ -137,11 +137,11 @@ public class EditAliasesDialog extends Dialog
         // ADD Label
         Label add_label = new Label( composite, SWT.NONE );
         add_label.setText( "Add an alias" );
-        add_label.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, true, 2, 1 ) );
+        add_label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // NEW ALIAS Field
         newAliasText = new Text( composite, SWT.BORDER );
-        newAliasText.setLayoutData( new GridData( GridData.FILL, SWT.NONE, true, false ) );
+        newAliasText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Add Button
         newAliasAddButton = new Button( composite, SWT.PUSH );
@@ -152,7 +152,7 @@ public class EditAliasesDialog extends Dialog
         // Error Composite
         errorComposite = new Composite( composite, SWT.NONE );
         errorComposite.setLayout( new GridLayout( 2, false ) );
-        errorComposite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true, 2, 1 ) );
+        errorComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
         errorComposite.setVisible( false );
 
         // Error Image
@@ -163,7 +163,7 @@ public class EditAliasesDialog extends Dialog
 
         // Error Label
         errorLabel = new Label( errorComposite, SWT.NONE );
-        errorLabel.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         errorLabel.setText( "An element with the same alias already exists." );
 
         // Table initialization
