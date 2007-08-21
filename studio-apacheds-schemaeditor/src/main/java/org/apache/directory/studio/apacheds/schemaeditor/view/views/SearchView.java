@@ -35,6 +35,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage;
 import org.apache.directory.studio.apacheds.schemaeditor.view.search.SearchPage.SearchScopeEnum;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -185,7 +186,7 @@ public class SearchView extends ViewPart
         {
             public void keyReleased( KeyEvent e )
             {
-                if ( e.keyCode == 13 ) // TODO replace with the correct key and add the other enter key...
+                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == 16777296 /* The "Enter" Key at the bottom right of the keyboard */) ) //$NON-NLS-1$ 
                 {
                     search();
                 }
