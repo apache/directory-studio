@@ -73,11 +73,8 @@ public class AttributeTypeSelectionDialog extends Dialog
     private Text searchText;
     private Table attributeTypesTable;
     private TableViewer attributeTypesTableViewer;
-
     private Label schemaIconLabel;
-
     private Label schemaNameLabel;
-
     private Button chooseButton;
 
 
