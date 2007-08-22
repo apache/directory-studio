@@ -21,6 +21,7 @@
 package org.apache.directory.ldapstudio.schemas;
 
 
+import org.apache.directory.ldapstudio.newversion.NewVersion;
 import org.apache.directory.ldapstudio.schemas.model.SchemaPool;
 import org.apache.directory.ldapstudio.schemas.view.views.SchemaCodeScanner;
 import org.apache.directory.ldapstudio.schemas.view.views.SchemaTextAttributeProvider;
@@ -76,6 +77,8 @@ public class Activator extends AbstractUIPlugin
         // Initialiazing the Preferences Listener
         initPreferencesListener();
 
+        // Display New Version Dialog
+        NewVersion.showNewVersionDialog();
     }
 
 

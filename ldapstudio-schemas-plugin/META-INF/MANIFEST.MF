@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.apache.directory.ldapstudio.jars,
  org.eclipse.jface.text,
  org.eclipse.ui.forms,
- org.eclipse.search
+ org.eclipse.search,
+ org.apache.directory.ldapstudio.newversion
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/commons-configuration-1.2.jar,
