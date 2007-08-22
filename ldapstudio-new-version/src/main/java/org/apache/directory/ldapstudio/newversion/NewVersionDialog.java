@@ -55,7 +55,7 @@ public class NewVersionDialog extends Dialog
     private static final int CLOSE_ID = 1;
 
     // UI Fields
-    private Button dontShowMessageAgainButton;
+    private Button dontShowAgainButton;
 
 
     /**
@@ -93,9 +93,9 @@ public class NewVersionDialog extends Dialog
             "resources/graphics/new_version.png" ).createImage() );
         imageLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        dontShowMessageAgainButton = new Button( composite, SWT.CHECK );
-        dontShowMessageAgainButton.setText( "Don't open this window again." );
-        dontShowMessageAgainButton.setLayoutData( new GridData( SWT.LEFT, SWT.BOTTOM, false, true ) );
+        dontShowAgainButton = new Button( composite, SWT.CHECK );
+        dontShowAgainButton.setText( "Do not show this window again." );
+        dontShowAgainButton.setLayoutData( new GridData( SWT.LEFT, SWT.BOTTOM, false, true ) );
 
         return composite;
     }
@@ -118,7 +118,7 @@ public class NewVersionDialog extends Dialog
      */
     protected void buttonPressed( int buttonId )
     {
-        if ( dontShowMessageAgainButton.getSelection() )
+        if ( dontShowAgainButton.getSelection() )
         {
             Activator.getDefault().getDialogSettings().put( DIALOG_SETTINGS_ID, true );
         }
