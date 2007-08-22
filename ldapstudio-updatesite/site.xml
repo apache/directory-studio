@@ -17,15 +17,27 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<site mirrorsURL="http://directory.apache.org/ldapstudio/update/update--xml.cgi">
-   <feature url="features/org.apache.directory.ldapstudio.rcp.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.rcp.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+<site>
+   <feature
+   		url="features/org.apache.directory.ldapstudio.rcp.feature_0.7.1.jar"
+   		id="org.apache.directory.ldapstudio.rcp.feature" version="0.7.1"
+        os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86,x86_64">
       <category name="LDAP Studio RCP"/>
    </feature>
-   <feature url="features/org.apache.directory.ldapstudio.browser.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.browser.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+   <feature
+   		url="features/org.apache.directory.ldapstudio.browser.feature_0.8.2.jar"
+   		id="org.apache.directory.ldapstudio.browser.feature" version="0.8.2">
       <category name="LDAP Studio Browser"/>
    </feature>
-   <feature url="features/org.apache.directory.ldapstudio.schemas.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.schemas.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+   <feature
+   		url="features/org.apache.directory.ldapstudio.schemas.feature_0.8.2.jar"
+   		id="org.apache.directory.ldapstudio.schemas.feature" version="0.8.2">
       <category name="LDAP Studio Schemas Editor"/>
+   </feature>
+   <feature 
+   		url="features/org.apache.directory.ldapstudio.apacheds.configuration.feature_0.8.1.jar" 
+   		id="org.apache.directory.ldapstudio.apacheds.configuration.feature" version="0.8.1">
+      <category name="LDAP Studio Apache DS"/>
    </feature>
    <category-def name="LDAP Studio RCP" label="LDAP Studio RCP">
       <description>
@@ -40,6 +52,11 @@
    <category-def name="LDAP Studio Schemas Editor" label="LDAP Studio Schemas Editor">
       <description>
          The LDAP Studio Schemas category contains all features related to the LDAP Studio Schemas Editor.
+      </description>
+   </category-def>
+   <category-def name="LDAP Studio Apache DS" label="LDAP Studio Apache DS">
+      <description>
+         The LDAP Studio Apache DS category contains all features related to Apache DS.
       </description>
    </category-def>
 </site>

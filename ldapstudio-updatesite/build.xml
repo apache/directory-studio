@@ -17,8 +17,8 @@
   under the License.
 -->
 <project default="generate" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
-	<property name="project.name" value="org.apache.directory.ldapstudio.schemas.feature" />
-	<property name="project.version" value="0.8.1" />
+	<property name="project.name" value="org.apache.directory.ldapstudio.updatesite" />
+	<property name="project.version" value="0.8.2" />
 
 	<property name="project.plugins" value="${basedir}/plugins" />
 	<property name="project.features" value="${basedir}/features" />
@@ -87,6 +87,8 @@
 	    <ant dir="../ldapstudio-apacheds-configuration" inheritAll="no" />	    
         <!-- LDAP Studio Apache DS Configuration Help Plugin -->
 	    <ant dir="../ldapstudio-apacheds-configuration-help" inheritAll="no" />
+        <!-- LDAP Studio New Version Plugin -->
+	    <ant dir="../ldapstudio-new-version" inheritAll="no" />
 	    
 	    <!-- Copying the Plugins -->
 	    <copy todir="${project.plugins}">
@@ -146,6 +148,10 @@
             <fileset dir="../ldapstudio-apacheds-configuration-help/target">
 	            <include name="*.jar" />
 	        </fileset>
+            <!-- LDAP Studio New Version Plugin -->
+            <fileset dir="../ldapstudio-apacheds-configuration-help/target">
+	            <include name="*.jar" />
+	        </fileset>
 	    </copy>
 	</target>
 	
@@ -165,6 +171,7 @@
         <ant dir="../ldapstudio-browser-ui" inheritAll="no" target="clean" />
         <ant dir="../ldapstudio-jars" inheritAll="no" target="clean" />
         <ant dir="../ldapstudio-ldifeditor" inheritAll="no" target="clean" />
+        <ant dir="../ldapstudio-new-version" inheritAll="no" target="clean" />
 		<ant dir="../ldapstudio-rcp" inheritAll="no" target="clean"/>
         <ant dir="../ldapstudio-rcp-feature" inheritAll="no" target="clean"/>
 		<ant dir="../ldapstudio-rcp-help" inheritAll="no" target="clean"/>
