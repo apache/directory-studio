@@ -35,8 +35,21 @@ public class NewVersion
     {
         if ( !Activator.getDefault().getDialogSettings().getBoolean( NewVersionDialog.DIALOG_SETTINGS_ID ) )
         {
-            NewVersionDialog dialog = new NewVersionDialog();
-            dialog.open();
+            Activator.getDefault().getWorkbench().getDisplay().asyncExec( new Runnable()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        Thread.sleep( 2500 );
+                    }
+                    catch ( InterruptedException e )
+                    {
+                    }
+                    NewVersionDialog dialog = new NewVersionDialog();
+                    dialog.open();
+                }
+            } );
         }
     }
 }
