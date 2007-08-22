@@ -4,6 +4,7 @@
       label="Apache Directory Studio Apache DS Configuration Plugins"
       version="0.8.0"
       provider-name="Apache Software Foundation"
+      plugin="org.apache.directory.studio.apacheds.configuration"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
       arch="ppc,x86"
@@ -235,8 +236,8 @@ of your accepting any such warranty or additional liability.
          install-size="0"
          version="0.8.0"
          unpack="false"/>
-         
-	<plugin
+
+   <plugin
          id="org.apache.directory.studio.apacheds.configuration.help"
          download-size="0"
          install-size="0"
