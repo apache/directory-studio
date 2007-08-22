@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDAP Studio Schemas Editor Plug-in
 Bundle-SymbolicName: org.apache.directory.ldapstudio.schemas;singleton:=true
-Bundle-Version: 0.8.0
+Bundle-Version: 0.8.2
 Bundle-Activator: org.apache.directory.ldapstudio.schemas.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

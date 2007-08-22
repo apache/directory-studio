@@ -214,6 +214,15 @@
             </fileset>
         </copy>
 
+	    <!-- Creation of the New Version Plugin -->
+        <ant dir="ldapstudio-new-version" inheritAll="no" />
+        <!-- Copy of the New Version Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-new-version/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
         <!-- Property for the features -->
 		<property name="project.features" value="${ldapstudio-complete.build}/features" />
 

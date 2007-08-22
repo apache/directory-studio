@@ -18,7 +18,7 @@
 -->
 <project default="jar" xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
 	<property name="project.name" value="org.apache.directory.ldapstudio.browser.ui" />
-	<property name="project.version" value="0.8.0" />
+	<property name="project.version" value="0.8.2" />
 
 	<property name="project.output" value="${basedir}/target" />
 	<property name="project.build" value="${project.output}/build" />
@@ -55,6 +55,8 @@
 			<pathelement location="${basedir}/../ldapstudio-browser-common/target/build"/>
 			<pathelement location="${basedir}/../ldapstudio-ldifeditor/target/classes"/>
 			<pathelement location="${basedir}/../ldapstudio-ldifeditor/target/build"/>
+			<pathelement location="${basedir}/../ldapstudio-new-version/target/classes" />
+			<pathelement location="${basedir}/../ldapstudio-new-version/target/build" />
 	        <pathelement location="target/classes"/>
 		</path>
 				

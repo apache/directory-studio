@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDAP Studio Browser UI Plugin
 Bundle-SymbolicName: org.apache.directory.ldapstudio.browser.ui;singleton:=true
-Bundle-Version: 0.8.0
+Bundle-Version: 0.8.2
 Bundle-Activator: org.apache.directory.ldapstudio.browser.ui.BrowserUIPlugin
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.apache.directory.ldapstudio.browser.core,
  org.apache.directory.ldapstudio.browser.common,
- org.apache.directory.ldapstudio.ldifeditor;resolution:=optional
+ org.apache.directory.ldapstudio.ldifeditor;resolution:=optional,
+ org.apache.directory.ldapstudio.newversion
 Eclipse-LazyStart: true
 Bundle-ClassPath: .

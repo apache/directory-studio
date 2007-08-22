@@ -23,6 +23,7 @@ package org.apache.directory.ldapstudio.browser.ui;
 
 import java.net.URL;
 
+import org.apache.directory.ldapstudio.newversion.NewVersion;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -58,6 +59,9 @@ public class BrowserUIPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+        
+        // Display New Version Dialog
+        NewVersion.showNewVersionDialog();
     }
 
 

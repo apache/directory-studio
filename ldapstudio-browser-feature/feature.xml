@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.ldapstudio.browser.feature"
       label="LDAP Studio Browser"
-      version="0.8.1"
+      version="0.8.2"
       provider-name="Apache Software Foundation"
       image="ldapstudio.png">
 
@@ -229,7 +229,7 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.ldapstudio.browser.ui"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="0.8.2"
          unpack="false"/>
 
    <plugin
@@ -272,6 +272,13 @@ of your accepting any such warranty or additional liability.
          download-size="0"
          install-size="0"
          version="0.8.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.apache.directory.ldapstudio.newversion"
+         download-size="0"
+         install-size="0"
+         version="0.8.2"
          unpack="false"/>
 
 </feature>
