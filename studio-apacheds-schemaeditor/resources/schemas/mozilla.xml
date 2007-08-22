@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="mozilla">
+   <attributetypes>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaHomeState</alias>
+         </aliases>
+         <superior>name</superior>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+         <substring>caseIgnoreSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.4" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaHomeLocalityName</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+         <substring>caseIgnoreSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.9" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaHomeCountryName</alias>
+         </aliases>
+         <superior>name</superior>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+         <substring>caseIgnoreSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.96" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>custom1</alias>
+            <alias>mozillaCustom1</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.8" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaHomePostalCode</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+         <substring>caseIgnoreSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.5" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaPostalAddress2</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.41</syntax>
+         <equality>caseIgnoreListMatch</equality>
+         <substring>caseIgnoreListSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.12" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>workurl</alias>
+            <alias>mozillaWorkUrl</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+         <substring>caseIgnoreIA5SubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>homeurl</alias>
+            <alias>mozillaHomeUrl</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+         <substring>caseIgnoreIA5SubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.6" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaHomePostalAddress2</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.41</syntax>
+         <equality>caseIgnoreListMatch</equality>
+         <substring>caseIgnoreListSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.97" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>custom2</alias>
+            <alias>mozillaCustom2</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.98" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>custom3</alias>
+            <alias>mozillaCustom3</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.99" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>custom4</alias>
+            <alias>mozillaCustom4</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.10" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaHomeFriendlyCountryName</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+         <substring>caseIgnoreSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>xmozillausehtmlmail</alias>
+            <alias>mozillaUseHtmlMail</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.1" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>xmozillanickname</alias>
+            <alias>mozillaNickname</alias>
+         </aliases>
+         <superior>name</superior>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+         <substring>caseIgnoreSubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.3" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mozillaSecondEmail</alias>
+         </aliases>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+         <substring>caseIgnoreIA5SubstringsMatch</substring>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.13769.2.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>nsAIMid</alias>
+         </aliases>
+         <description>AOL Instant Messenger (AIM) Identity</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.50</syntax>
+         <equality>telephoneNumberMatch</equality>
+         <substring>telephoneNumberSubstringsMatch</substring>
+      </attributetype>
+   </attributetypes>
+   <objectclasses>
+      <objectclass oid="1.3.6.1.4.1.13769.2.2.1" obsolete="false">
+         <aliases>
+            <alias>mozillaAbPersonObsolete</alias>
+         </aliases>
+         <superiors>
+            <superior>inetOrgPerson</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <optional>
+            <attributetype>xmozillanickname</attributetype>
+            <attributetype>xmozillausehtmlmail</attributetype>
+            <attributetype>mozillaSecondEmail</attributetype>
+            <attributetype>mozillaPostalAddress2</attributetype>
+            <attributetype>mozillaHomePostalAddress2</attributetype>
+            <attributetype>mozillaHomeLocalityName</attributetype>
+            <attributetype>mozillaHomeState</attributetype>
+            <attributetype>mozillaHomePostalCode</attributetype>
+            <attributetype>mozillaHomeCountryName</attributetype>
+            <attributetype>mozillaHomeFriendlyCountryName</attributetype>
+            <attributetype>homeurl</attributetype>
+            <attributetype>workurl</attributetype>
+            <attributetype>custom1</attributetype>
+            <attributetype>custom2</attributetype>
+            <attributetype>custom3</attributetype>
+            <attributetype>custom4</attributetype>
+            <attributetype>nsAIMid</attributetype>
+            <attributetype>c</attributetype>
+            <attributetype>co</attributetype>
+         </optional>
+      </objectclass>
+   </objectclasses>
+</schema>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="autofs">
+   <attributetypes>
+      <attributetype oid="1.3.6.1.1.1.1.25" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>automountInformation</alias>
+         </aliases>
+         <description>Information used by the autofs automounter</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseExactIA5Match</equality>
+      </attributetype>
+   </attributetypes>
+   <objectclasses>
+      <objectclass oid="1.3.6.1.1.1.1.13" obsolete="false">
+         <aliases>
+            <alias>automount</alias>
+         </aliases>
+         <description>An entry in an automounter map</description>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <mandatory>
+            <attributetype>cn</attributetype>
+            <attributetype>automountInformation</attributetype>
+         </mandatory>
+         <optional>
+            <attributetype>description</attributetype>
+         </optional>
+      </objectclass>
+      <objectclass oid="1.3.6.1.4.1.2312.4.2.2" obsolete="false">
+         <aliases>
+            <alias>automountMap</alias>
+         </aliases>
+         <description>An group of related automount objects</description>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <mandatory>
+            <attributetype>ou</attributetype>
+         </mandatory>
+      </objectclass>
+   </objectclasses>
+</schema>

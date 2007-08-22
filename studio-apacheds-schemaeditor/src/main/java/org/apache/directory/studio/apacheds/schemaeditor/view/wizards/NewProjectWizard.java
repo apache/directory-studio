@@ -21,8 +21,10 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -70,6 +72,26 @@ public class NewProjectWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         Project project = new Project( informationPage.getProjectType(), informationPage.getProjectName() );
+        if ( informationPage.getProjectType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
+        {
+            // TODO: Add connection information.
+        }
+        else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
+        {
+            String[] selectedSchemas = schemasSelectionPage.getSelectedSchemas();
+            if ( selectedSchemas != null )
+            {
+                for ( String selectedSchema : selectedSchemas )
+                {
+                    Schema schema = PluginUtils.loadCoreSchema( selectedSchema );
+                    if ( schema != null )
+                    {
+                        project.getSchemaHandler().addSchema( schema );
+                    }
+                }
+            }
+        }
+
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
         projectsHandler.addProject( project );
         projectsHandler.openProject( project );

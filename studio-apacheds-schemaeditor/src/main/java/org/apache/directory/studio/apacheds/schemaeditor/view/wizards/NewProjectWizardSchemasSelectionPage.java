@@ -20,6 +20,8 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.util.Arrays;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -27,9 +29,12 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -69,15 +74,18 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
     public void createControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
-        composite.setLayout( new GridLayout() );
+        composite.setLayout( new GridLayout( 2, false ) );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // Core Schemas TableViewer
         Label label = new Label( composite, SWT.NONE );
         label.setText( "Choose the 'core' schemas to include in the project:" );
-        label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         coreSchemasTableViewer = new CheckboxTableViewer( new Table( composite, SWT.BORDER | SWT.CHECK
             | SWT.FULL_SELECTION ) );
-        coreSchemasTableViewer.getTable().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 2 );
+        gridData.heightHint = 160;
+        coreSchemasTableViewer.getTable().setLayoutData( gridData );
         coreSchemasTableViewer.setContentProvider( new ArrayContentProvider() );
         coreSchemasTableViewer.setLabelProvider( new LabelProvider()
         {
@@ -85,6 +93,28 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
             {
                 return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
                     .createImage();
+            }
+        } );
+
+        Button coreSchemasTableSelectAllButton = new Button( composite, SWT.PUSH );
+        coreSchemasTableSelectAllButton.setText( "Select All" );
+        coreSchemasTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        coreSchemasTableSelectAllButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                coreSchemasTableViewer.setAllChecked( true );
+            }
+        } );
+
+        Button coreSchemasTableDeselectAllButton = new Button( composite, SWT.PUSH );
+        coreSchemasTableDeselectAllButton.setText( "Deselect All" );
+        coreSchemasTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        coreSchemasTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                coreSchemasTableViewer.setAllChecked( false );
             }
         } );
 
@@ -100,7 +130,8 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
     private void initFields()
     {
         coreSchemasTableViewer.setInput( new String[]
-            { "core", "mozilla", "system" } );
+            { "apache", "apachedns", "apachemeta", "autofs", "collective", "corba", "core", "cosine", "dhcp",
+                "inetorgperson", "java", "krb5kdc", "mozilla", "nis", "samba", "system" } );
     }
 
 
@@ -112,6 +143,6 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
      */
     public String[] getSelectedSchemas()
     {
-        return ( String[] ) coreSchemasTableViewer.getCheckedElements();
+        return Arrays.asList( coreSchemasTableViewer.getCheckedElements() ).toArray( new String[0] );
     }
 }

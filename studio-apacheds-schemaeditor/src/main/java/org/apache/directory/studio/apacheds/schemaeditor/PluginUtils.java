@@ -24,15 +24,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsExporter;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImportException;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImporter;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileImportException;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 
@@ -206,5 +211,44 @@ public class PluginUtils
         Activator.getDefault().getLog().log(
             new Status( Status.WARNING, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, message,
                 exception ) );
+    }
+
+
+    /**
+     * Loads the 'core' corresponding to the given name.
+     *
+     * @param schemaName
+     *      the name of the 'core' schema
+     * @return
+     *      the corresponding schema, or null if no schema has been found
+     */
+    public static Schema loadCoreSchema( String schemaName )
+    {
+        Schema schema = null;
+
+        try
+        {
+            URL url = Platform.getBundle( Activator.PLUGIN_ID )
+                .getResource( "resources/schemas/" + schemaName + ".xml" );
+
+            if ( url == null )
+            {
+                PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", null );
+                ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
+                    + schemaName + "." );
+            }
+            else
+            {
+                schema = XMLSchemaFileImporter.getSchema( url.toString() );
+            }
+        }
+        catch ( XMLSchemaFileImportException e )
+        {
+            PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", e );
+            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
+                + schemaName + "." );
+        }
+
+        return schema;
     }
 }

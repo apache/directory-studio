@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="corba">
+   <attributetypes>
+      <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.15" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>corbaRepositoryId</alias>
+         </aliases>
+         <description>Repository ids of interfaces implemented by a CORBA object</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseExactMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.42.2.27.4.1.14" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>corbaIor</alias>
+         </aliases>
+         <description>Stringified interoperable object reference of a CORBA object</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+   </attributetypes>
+   <objectclasses>
+      <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.10" obsolete="false">
+         <aliases>
+            <alias>corbaContainer</alias>
+         </aliases>
+         <description>Container for a CORBA object</description>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <mandatory>
+            <attributetype>cn</attributetype>
+         </mandatory>
+      </objectclass>
+      <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.11" obsolete="false">
+         <aliases>
+            <alias>corbaObjectReference</alias>
+         </aliases>
+         <description>CORBA interoperable object reference</description>
+         <superiors>
+            <superior>corbaObject</superior>
+         </superiors>
+         <type>AUXILIARY</type>
+         <mandatory>
+            <attributetype>corbaIor</attributetype>
+         </mandatory>
+      </objectclass>
+      <objectclass oid="1.3.6.1.4.1.42.2.27.4.2.9" obsolete="false">
+         <aliases>
+            <alias>corbaObject</alias>
+         </aliases>
+         <description>CORBA object representation</description>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>ABSTRACT</type>
+         <optional>
+            <attributetype>corbaRepositoryId</attributetype>
+            <attributetype>description</attributetype>
+         </optional>
+      </objectclass>
+   </objectclasses>
+</schema>
