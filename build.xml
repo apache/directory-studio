@@ -106,6 +106,15 @@
             </fileset>
         </copy>
 
+	    <!-- Creation of the New Version Plugin -->
+        <ant dir="ldapstudio-new-version" inheritAll="no" />
+        <!-- Copy of the New Version Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${ldapstudio-complete.build}/plugins">
+            <fileset dir="${basedir}/ldapstudio-new-version/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
         <!-- Creation of the Schemas Editor Plugin -->
         <ant dir="ldapstudio-schemas-plugin" inheritAll="no" />
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
@@ -210,15 +219,6 @@
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${ldapstudio-complete.build}/plugins">
             <fileset dir="${basedir}/ldapstudio-apacheds-configuration-help/target">
-                <include name="*.jar" />
-            </fileset>
-        </copy>
-
-	    <!-- Creation of the New Version Plugin -->
-        <ant dir="ldapstudio-new-version" inheritAll="no" />
-        <!-- Copy of the New Version Plugin in the "plugins" folder of the RCP app -->
-        <copy todir="${ldapstudio-complete.build}/plugins">
-            <fileset dir="${basedir}/ldapstudio-new-version/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
