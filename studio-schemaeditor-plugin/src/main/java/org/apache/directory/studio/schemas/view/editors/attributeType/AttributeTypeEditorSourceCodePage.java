@@ -78,7 +78,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
                 ( ( AttributeTypeEditor ) getEditor() ).setDirty( true );
                 OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                 parser.parse( schemaSourceViewer.getTextWidget().getText() );
-                List attributeTypes = parser.getAttributeTypes();
+                List<?> attributeTypes = parser.getAttributeTypes();
                 if ( attributeTypes.size() != 1 )
                 {
                     // Throw an exception and return

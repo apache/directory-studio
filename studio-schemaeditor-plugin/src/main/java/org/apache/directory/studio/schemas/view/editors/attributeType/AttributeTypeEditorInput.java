@@ -67,7 +67,6 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public ImageDescriptor getImageDescriptor()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -90,7 +89,6 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public IPersistableElement getPersistable()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -114,6 +112,7 @@ public class AttributeTypeEditorInput implements IEditorInput
      * 
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         return null;

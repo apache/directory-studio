@@ -353,7 +353,7 @@ public class SchemasViewContentProvider implements IStructuredContentProvider, I
         ITreeNode rootNode = ( ITreeNode ) viewer.getInput();
 
         List<ITreeNode> schemaWrapperList = rootNode.getChildren();
-        for ( Iterator iter = schemaWrapperList.iterator(); iter.hasNext(); )
+        for ( Iterator<?> iter = schemaWrapperList.iterator(); iter.hasNext(); )
         {
             SchemaWrapper schemaWrapper = ( SchemaWrapper ) iter.next();
             if ( schemaWrapper.getMySchema().equals( ( Schema ) e.getOldValue() ) )
