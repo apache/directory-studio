@@ -61,6 +61,8 @@
         <!-- Creation of the Plugins -->
 	    <!-- LDAP Studio RCP -->
 	    <ant dir="../ldapstudio-rcp" target="jar" inheritAll="no" />
+        <!-- LDAP Studio New Version Plugin -->
+	    <ant dir="../ldapstudio-new-version" inheritAll="no" />
 	    <!-- LDAP Studio Help Plugin -->
 	    <ant dir="../ldapstudio-rcp-help" target="jar" inheritAll="no" />		
 	    <!-- LDAP Studio Schemas Editor Plugin -->
@@ -87,8 +89,6 @@
 	    <ant dir="../ldapstudio-apacheds-configuration" inheritAll="no" />	    
         <!-- LDAP Studio Apache DS Configuration Help Plugin -->
 	    <ant dir="../ldapstudio-apacheds-configuration-help" inheritAll="no" />
-        <!-- LDAP Studio New Version Plugin -->
-	    <ant dir="../ldapstudio-new-version" inheritAll="no" />
 	    
 	    <!-- Copying the Plugins -->
 	    <copy todir="${project.plugins}">
@@ -149,7 +149,7 @@
 	            <include name="*.jar" />
 	        </fileset>
             <!-- LDAP Studio New Version Plugin -->
-            <fileset dir="../ldapstudio-apacheds-configuration-help/target">
+            <fileset dir="../ldapstudio-new-version/target">
 	            <include name="*.jar" />
 	        </fileset>
 	    </copy>
