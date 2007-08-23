@@ -20,7 +20,5 @@
 	<info organisation="org.apache.directory.studio" module="studio-ldapbrowser-core"/>
 	<dependencies>
 		<dependency org="commons-io" name="commons-io" rev="1.3.1"/>
-		<dependency org="commons-codec" name="commons-codec" rev="1.3"/>
-		<dependency org="junit" name="junit" rev="3.8.2"/>
     </dependencies>
 </ivy-module>
