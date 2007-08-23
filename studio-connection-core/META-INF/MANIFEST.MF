@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Connection Core
+Bundle-SymbolicName: org.apache.directory.studio.connection.core
+Bundle-Version: 1.0.0
+Bundle-Activator: org.apache.directory.studio.connection.core.ConnectionCorePlugin
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime
+Eclipse-LazyStart: true
+Bundle-ClassPath: lib/commons-io-1.3.1.jar,
+ .
+Export-Package: org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.core.event,
+ org.apache.directory.studio.connection.core.io,
+ org.apache.directory.studio.connection.core.io.jndi,
+ org.apache.directory.studio.connection.core.jobs
