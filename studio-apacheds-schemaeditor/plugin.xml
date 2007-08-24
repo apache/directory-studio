@@ -265,6 +265,9 @@
                 <objectClass
                       name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper">
                 </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder">
+                </objectClass>
              </or>
           </enablement>
           <description>
