@@ -88,8 +88,8 @@ public class Activator extends AbstractUIPlugin
         // Saving workspace configuration
         schemaPool.saveUserSchemasPaths();
 
-        plugin = null;
         super.stop( context );
+        plugin = null;
     }
 
 
