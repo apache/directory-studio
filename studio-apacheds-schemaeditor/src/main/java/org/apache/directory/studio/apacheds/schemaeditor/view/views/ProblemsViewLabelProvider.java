@@ -27,6 +27,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.ClassTypeHierarchyError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DifferentCollectiveAsSuperiorError;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DifferentUsageAsSuperiorError;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DuplicateAliasError;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DuplicateOidError;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NoAliasWarning;
@@ -259,7 +261,24 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
                     message.append( "Structural object class :'" + getDisplayName( superior ) + "'." );
                 }
             }
+        }
+        else if ( element instanceof DifferentUsageAsSuperiorError )
+        {
+            DifferentUsageAsSuperiorError differentUsageAsSuperiorError = ( DifferentUsageAsSuperiorError ) element;
+            AttributeTypeImpl source = ( AttributeTypeImpl ) differentUsageAsSuperiorError.getSource();
+            AttributeTypeImpl superior = ( AttributeTypeImpl ) differentUsageAsSuperiorError.getSuperior();
 
+            message.append( "Attribute type '" + getDisplayName( source )
+                + "' has a different usage value than its superior '" + getDisplayName( superior ) + "'." );
+        }
+        else if ( element instanceof DifferentCollectiveAsSuperiorError )
+        {
+            DifferentCollectiveAsSuperiorError differentCollectiveAsSuperiorError = ( DifferentCollectiveAsSuperiorError ) element;
+            AttributeTypeImpl source = ( AttributeTypeImpl ) differentCollectiveAsSuperiorError.getSource();
+            AttributeTypeImpl superior = ( AttributeTypeImpl ) differentCollectiveAsSuperiorError.getSuperior();
+
+            message.append( "Attribute type '" + getDisplayName( source ) + "' must be collective as its superior '"
+                + getDisplayName( superior ) + "'." );
         }
 
         return message.toString();

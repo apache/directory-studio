@@ -27,6 +27,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
+import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandlerAdapter;
@@ -373,6 +374,26 @@ public class SchemaChecker
             {
                 dependenciesMap.put( superiorAT, at );
                 dependsOnMap.put( at, superiorAT );
+
+                // Checking Usage with superior's
+                UsageEnum usage = at.getUsage();
+                UsageEnum superiorATUsage = superiorAT.getUsage();
+                if ( !usage.equals( superiorATUsage ) )
+                {
+                    SchemaError error = new DifferentUsageAsSuperiorError( at, superiorAT );
+                    errorsList.add( error );
+                    errorsMap.put( at, error );
+                }
+
+                // Checking Collective with superior's
+                boolean collective = at.isCollective();
+                boolean superiorATCollective = superiorAT.isCollective();
+                if ( superiorATCollective && !collective )
+                {
+                    SchemaError error = new DifferentCollectiveAsSuperiorError( at, superiorAT );
+                    errorsList.add( error );
+                    errorsMap.put( at, error );
+                }
             }
         }
 
