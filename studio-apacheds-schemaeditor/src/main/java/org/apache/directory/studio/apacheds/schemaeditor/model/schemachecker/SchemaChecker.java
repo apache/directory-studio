@@ -85,6 +85,8 @@ public class SchemaChecker
         public void attributeTypeAdded( AttributeTypeImpl at )
         {
             checkAttributeType( at );
+
+            notifyListeners();
         }
 
 
@@ -95,6 +97,8 @@ public class SchemaChecker
             checkAttributeType( at );
 
             checkDependencies( deps );
+
+            notifyListeners();
         }
 
 
@@ -105,12 +109,16 @@ public class SchemaChecker
             removeSchemaObject( at );
 
             checkDependencies( deps );
+
+            notifyListeners();
         }
 
 
         public void objectClassAdded( ObjectClassImpl oc )
         {
             checkObjectClass( oc );
+
+            notifyListeners();
         }
 
 
@@ -121,6 +129,8 @@ public class SchemaChecker
             checkObjectClass( oc );
 
             checkDependencies( deps );
+
+            notifyListeners();
         }
 
 
@@ -131,6 +141,8 @@ public class SchemaChecker
             removeSchemaObject( oc );
 
             checkDependencies( deps );
+
+            notifyListeners();
         }
 
 
@@ -147,6 +159,8 @@ public class SchemaChecker
             {
                 checkObjectClass( oc );
             }
+
+            notifyListeners();
         }
 
 
@@ -163,6 +177,8 @@ public class SchemaChecker
             {
                 removeSchemaObject( oc );
             }
+
+            notifyListeners();
         }
     };
 
@@ -267,6 +283,7 @@ public class SchemaChecker
                     }
                     monitor.worked( 1 );
                 }
+                notifyListeners();
                 monitor.done();
 
                 return Status.OK_STATUS;
@@ -287,7 +304,7 @@ public class SchemaChecker
      */
     private void checkAttributeType( AttributeTypeImpl at )
     {
-        removeSchemaObject( at, false );
+        removeSchemaObject( at );
 
         // Checking OID
         String oid = at.getOid();
@@ -440,8 +457,6 @@ public class SchemaChecker
                 dependsOnMap.put( at, substringMR );
             }
         }
-
-        notifyListeners();
     }
 
 
@@ -453,7 +468,7 @@ public class SchemaChecker
      */
     private void checkObjectClass( ObjectClassImpl oc )
     {
-        removeSchemaObject( oc, false );
+        removeSchemaObject( oc );
 
         // Checking OID
         String oid = oc.getOid();
@@ -568,8 +583,6 @@ public class SchemaChecker
                 }
             }
         }
-
-        notifyListeners();
     }
 
 
@@ -580,20 +593,6 @@ public class SchemaChecker
      *      a schema element
      */
     private void removeSchemaObject( SchemaObject element )
-    {
-        removeSchemaObject( element, true );
-    }
-
-
-    /**
-     * Remove the errors and warnings for the given schema element.
-     *
-     * @param element
-     *      a schema element
-     * @param notify
-     *      true if the listeners needs to be notified
-     */
-    private void removeSchemaObject( SchemaObject element, boolean notify )
     {
         // Removing old errors and warnings
         List<?> errors = ( List<?> ) errorsMap.get( element );
@@ -625,12 +624,6 @@ public class SchemaChecker
             }
             dependsOnMap.remove( element );
         }
-
-        if ( notify )
-        {
-            notifyListeners();
-        }
-
     }
 
 
