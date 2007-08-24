@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
@@ -523,6 +524,8 @@ public class SchemaChecker
         String[] superiors = oc.getSuperClassesNames();
         if ( ( superiors != null ) && ( superiors.length >= 1 ) )
         {
+            ObjectClassTypeEnum type = oc.getType();
+
             for ( String superior : superiors )
             {
                 ObjectClassImpl superiorOC = schemaHandler.getObjectClass( superior );
@@ -538,6 +541,33 @@ public class SchemaChecker
                 {
                     dependenciesMap.put( superiorOC, oc );
                     dependsOnMap.put( oc, superiorOC );
+
+                    // Checking Type of Superior Hierarchy
+                    ObjectClassTypeEnum superiorOCType = superiorOC.getType();
+                    switch ( type )
+                    {
+                        case ABSTRACT:
+                            if ( ( !superiorOCType.equals( ObjectClassTypeEnum.ABSTRACT ) )
+                                && ( !superiorOC.getOid().equals( "2.5.6.0" ) ) )
+                            {
+                                SchemaError error = new ClassTypeHierarchyError( oc, superiorOC );
+                                errorsList.add( error );
+                                errorsMap.put( oc, error );
+                            }
+                            break;
+                        case AUXILIARY:
+                            if ( ( superiorOCType.equals( ObjectClassTypeEnum.STRUCTURAL ) )
+                                && ( !superiorOC.getOid().equals( "2.5.6.0" ) ) )
+                            {
+                                SchemaError error = new ClassTypeHierarchyError( oc, superiorOC );
+                                errorsList.add( error );
+                                errorsMap.put( oc, error );
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -644,20 +674,6 @@ public class SchemaChecker
         if ( ( ocList != null ) && ( ocList.size() >= 1 ) )
         {
             results.addAll( ocList );
-        }
-
-        // Matching rules
-        List<?> mrList = schemaHandler.getMatchingRuleList( id );
-        if ( ( mrList != null ) && ( mrList.size() >= 1 ) )
-        {
-            results.addAll( mrList );
-        }
-
-        // Syntaxes
-        List<?> syntaxesList = schemaHandler.getSyntaxList( id );
-        if ( ( syntaxesList != null ) && ( syntaxesList.size() >= 1 ) )
-        {
-            results.addAll( syntaxesList );
         }
 
         return results;

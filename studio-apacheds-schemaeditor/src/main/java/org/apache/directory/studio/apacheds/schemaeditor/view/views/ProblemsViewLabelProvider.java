@@ -20,11 +20,13 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.views;
 
 
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.ClassTypeHierarchyError;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DuplicateAliasError;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.DuplicateOidError;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.NoAliasWarning;
@@ -96,18 +98,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             }
             else if ( columnIndex == 1 )
             {
-                String name = errorWrapper.getSchemaError().getSource().getName();
-
-                if ( ( name != null ) && ( !name.equals( "" ) ) )
-                {
-                    return name;
-                }
-                else
-                {
-                    return errorWrapper.getSchemaError().getSource().getOid();
-                }
+                return getDisplayName( errorWrapper.getSchemaError().getSource() );
             }
-
         }
         else if ( element instanceof SchemaWarningWrapper )
         {
@@ -239,7 +231,60 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             }
             message.append( " with OID '" + source.getOid() + "' does not have any alias." );
         }
+        else if ( element instanceof ClassTypeHierarchyError )
+        {
+            ClassTypeHierarchyError classTypeHierarchyError = ( ClassTypeHierarchyError ) element;
+            ObjectClassImpl source = ( ObjectClassImpl ) classTypeHierarchyError.getSource();
+            ObjectClassImpl superior = ( ObjectClassImpl ) classTypeHierarchyError.getSuperior();
+
+            if ( source.getType().equals( ObjectClassTypeEnum.ABSTRACT ) )
+            {
+                message.append( "Abstract object class Ô" + getDisplayName( source ) + "' can not extend " );
+
+                if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
+                {
+                    message.append( "Structural object class :'" + getDisplayName( superior ) + "'." );
+                }
+                else if ( superior.getType().equals( ObjectClassTypeEnum.AUXILIARY ) )
+                {
+                    message.append( "Auxiliary object class :'" + getDisplayName( superior ) + "'." );
+                }
+            }
+            else if ( source.getType().equals( ObjectClassTypeEnum.AUXILIARY ) )
+            {
+                message.append( "Auxiliary object class Ô" + getDisplayName( source ) + "' can not extend " );
+
+                if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
+                {
+                    message.append( "Structural object class :'" + getDisplayName( superior ) + "'." );
+                }
+            }
+
+        }
 
         return message.toString();
+    }
+
+
+    /**
+     * Gets the displayable name of the given SchemaObject.
+     *
+     * @param so
+     *      the SchemaObject
+     * @return
+     *      the displayable name of the given SchemaObject
+     */
+    private String getDisplayName( SchemaObject so )
+    {
+        String name = so.getName();
+
+        if ( ( name != null ) && ( !name.equals( "" ) ) )
+        {
+            return name;
+        }
+        else
+        {
+            return so.getOid();
+        }
     }
 }
