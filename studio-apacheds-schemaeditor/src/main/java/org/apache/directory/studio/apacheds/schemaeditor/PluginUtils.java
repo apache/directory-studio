@@ -78,7 +78,7 @@ public class PluginUtils
         clone.setNames( at.getNames() );
         clone.setSchema( at.getSchema() );
         clone.setDescription( at.getDescription() );
-        clone.setSuperiorName( at.getSubstrName() );
+        clone.setSuperiorName( at.getSuperiorName() );
         clone.setUsage( clone.getUsage() );
         clone.setSyntaxOid( at.getSyntaxOid() );
         clone.setLength( at.getLength() );
