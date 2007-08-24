@@ -17,21 +17,23 @@
 
    <windowImages i16="/studio-rcp/resources/icons/window/studio_16x16.gif" i32="/studio-rcp/resources/icons/window/studio_32x32.gif" i48="/studio-rcp/resources/icons/window/studio_48x48.gif" i64="/studio-rcp/resources/icons/window/studio_64x64.gif" i128="/studio-rcp/resources/icons/window/studio_128x128.gif"/>
 
+
    <launcher name="Apache Directory Studio">
       <linux icon="/studio-rcp/resources/icons/linux/studio.xpm"/>
       <macosx icon="/studio-rcp/resources/icons/macosx/studio.icns"/>
       <solaris/>
       <win useIco="false">
          <bmp
-            winSmallHigh="/studio-rcp/resources/icons/windows/studio_16x16_32-bits.bmp"
-            winSmallLow="/studio-rcp/resources/icons/windows/studio_16x16_8-bits.bmp"
-            win24Low="/studio-rcp/resources/icons/windows/studio_24x24_8-bits.bmp"
-            winMediumHigh="/studio-rcp/resources/icons/windows/studio_32x32_32-bits.bmp"
-            winMediumLow="/studio-rcp/resources/icons/windows/studio_32x32_8-bits.bmp"
-            winLargeHigh="/studio-rcp/resources/icons/windows/studio_48x48_32-bits.bmp"
-            winLargeLow="/studio-rcp/resources/icons/windows/studio_48x48_8-bits.bmp"/>
+            winSmallHigh="/studio-rcp/resources/icons/windows/studio_16x16_32_bits.bmp"
+            winSmallLow="/studio-rcp/resources/icons/windows/studio_16x16_8_bits.bmp"
+            win24Low="/studio-rcp/resources/icons/windows/studio_24x24_8_bits.bmp"
+            winMediumHigh="/studio-rcp/resources/icons/windows/studio_32x32_32_bits.bmp"
+            winMediumLow="/studio-rcp/resources/icons/windows/studio_32x32_8_bits.bmp"
+            winLargeHigh="/studio-rcp/resources/icons/windows/studio_48x48_32_bits.bmp"
+            winLargeLow="/studio-rcp/resources/icons/windows/studio_48x48_8_bits.bmp"/>
       </win>
    </launcher>
+
 
    <plugins>
       <plugin id="com.ibm.icu"/>
@@ -59,16 +61,16 @@
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.carbon.macosx.ppc"/>
-      <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.linux.x86"/>
       <plugin id="org.eclipse.swt.win32.win32.x86"/>
       <plugin id="org.eclipse.tomcat"/>
       <plugin id="org.eclipse.ui"/>
-      <plugin id="org.eclipse.ui.carbon"/>
+      <plugin id="org.eclipse.ui.carbon" fragment="true"/>
       <plugin id="org.eclipse.ui.forms"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.eclipse.update.configurator"/>
       <plugin id="org.eclipse.update.core"/>
-      <plugin id="org.eclipse.update.core.linux" fragment="true"/>
+      <plugin id="org.eclipse.update.core.linux"/>
       <plugin id="org.eclipse.update.scheduler"/>
       <plugin id="org.eclipse.update.ui"/>
    </plugins>
