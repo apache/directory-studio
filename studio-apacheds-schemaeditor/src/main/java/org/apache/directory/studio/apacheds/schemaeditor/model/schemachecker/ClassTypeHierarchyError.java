@@ -79,7 +79,6 @@ public class ClassTypeHierarchyError implements SchemaError
      */
     public String toString()
     {
-        return "[ClassTypeHierarchyError - Source: " + getSource() + " - Superior: "
-            + getSuperior() + "]";
+        return "[ClassTypeHierarchyError - Source: " + getSource() + " - Superior: " + getSuperior() + "]";
     }
 }
