@@ -127,6 +127,24 @@
             </fileset>
         </copy>
 
+        <!-- Creation of the Connection Core Plugin -->
+        <ant dir="studio-connection-core" inheritAll="no" />
+        <!-- Copy of the Connection Core Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-connection-core/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the Connection UI Plugin -->
+        <ant dir="studio-connection-ui" inheritAll="no" />
+        <!-- Copy of the Connection UI Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-connection-ui/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
         <!-- Creation of the Browser Core Plugin -->
         <ant dir="studio-ldapbrowser-core" inheritAll="no" />
         <!-- Copy of the Browser Core Plugin in the "plugins" folder of the RCP app -->
@@ -361,6 +379,8 @@
     <target name="javadoc" description="Generate Javadoc files">
         <ant dir="studio-aciitemeditor" inheritAll="no" target="javadoc" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="javadoc" />
+        <ant dir="studio-connection-core" inheritAll="no" target="javadoc" />
+        <ant dir="studio-connection-ui" inheritAll="no" target="javadoc" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="javadoc" />
@@ -377,6 +397,8 @@
         <ant dir="studio-aciitemeditor" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-connection-core" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-connection-ui" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-jars" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="retrieve-dependencies" />
@@ -402,6 +424,8 @@
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration-feature" inheritAll="no" target="clean" />
+        <ant dir="studio-connection-core" inheritAll="no" target="clean" />
+        <ant dir="studio-connection-ui" inheritAll="no" target="clean" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="clean" />
         <ant dir="studio-jars" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="clean" />

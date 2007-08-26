@@ -28,6 +28,8 @@
 	
 	<!-- COMPILE-DEPENDENCIES TASK -->
 	<target name="compile-dependencies" description="Compiles the dependencies of the project" >
+		<ant dir="../studio-connection-core" target="compile" inheritall="false" />
+		<ant dir="../studio-connection-ui" target="compile" inheritall="false" />
 		<ant dir="../studio-ldapbrowser-core" target="compile" inheritall="false" />
 		<ant dir="../studio-ldapbrowser-common" target="compile" inheritall="false" />
 	</target>
@@ -45,6 +47,8 @@
 			</fileset>
 			<!-- Plugin dependencies -->
 			<fileset dir="../studio-jars/lib/" />
+			<pathelement location="../studio-connection-core/target/classes"/>
+			<pathelement location="../studio-connection-ui/target/classes"/>
 			<pathelement location="../studio-ldapbrowser-core/target/classes"/>
 			<pathelement location="../studio-ldapbrowser-common/target/classes"/>
 		</path>
