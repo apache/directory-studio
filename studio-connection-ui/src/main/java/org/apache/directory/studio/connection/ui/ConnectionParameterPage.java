@@ -146,4 +146,23 @@ public interface ConnectionParameterPage
      */
     public void setFocus();
 
+
+    /**
+     * The implementing class must return true if important
+     * connection parameters were modified that require a
+     * reconnection to take effect.
+     *
+     * @return true if a reconnection if required
+     */
+    public boolean isReconnectionRequired();
+
+
+    /**
+     * The implementing class must return true if any
+     * parameter was modified.
+     * 
+     * @return true, if parameters were modifed
+     */
+    public boolean areParametersModifed();
+
 }

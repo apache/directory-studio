@@ -140,7 +140,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     private Connection getTestConnection()
     {
         ConnectionParameter cp = new ConnectionParameter( null, getHostName(), getPort(), getEncyrptionMethod(),
-            ConnectionParameter.AuthenticationMethod.NONE, null, null );
+            ConnectionParameter.AuthenticationMethod.NONE, null, null, null );
         Connection conn = new Connection( cp );
         return conn;
     }
@@ -342,6 +342,26 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     public void setFocus()
     {
         nameText.setFocus();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#areParametersModifed()
+     */
+    public boolean areParametersModifed()
+    {
+        return isReconnectionRequired() || !( connectionParameter.getName().equals( getName() ) );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#isReconnectionRequired()
+     */
+    public boolean isReconnectionRequired()
+    {
+        return connectionParameter == null || !( connectionParameter.getHost().equals( getHostName() ) )
+            || connectionParameter.getPort() != getPort()
+            || connectionParameter.getEncryptionMethod() != getEncyrptionMethod();
     }
 
 }

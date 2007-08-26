@@ -326,4 +326,24 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         bindPrincipalCombo.setFocus();
     }
 
+
+    /**
+     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#areParametersModifed()
+     */
+    public boolean areParametersModifed()
+    {
+        return isReconnectionRequired();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#isReconnectionRequired()
+     */
+    public boolean isReconnectionRequired()
+    {
+        return connectionParameter == null || connectionParameter.getAuthMethod() != getAuthenticationMethod()
+            || !( connectionParameter.getBindPrincipal().equals( getBindPrincipal() ) )
+            || !( connectionParameter.getBindPassword().equals( getBindPassword() ) );
+    }
+
 }

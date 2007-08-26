@@ -142,11 +142,12 @@ public class ConnectionParameter
      * @param authMethod the authentication method
      * @param bindPrincipal the bind principal
      * @param bindPassword the bind password
+     * @param extendedProperties the extended properties
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
-        AuthenticationMethod authMethod, String bindPrincipal, String bindPassword )
+        AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
+        Map<String, String> extendedProperties )
     {
-        this();
         this.name = name;
         this.host = host;
         this.port = port;
@@ -154,6 +155,11 @@ public class ConnectionParameter
         this.authMethod = authMethod;
         this.bindPrincipal = bindPrincipal;
         this.bindPassword = bindPassword;
+        this.extendedProperties = new HashMap<String, String>();
+        if ( extendedProperties != null )
+        {
+            this.extendedProperties.putAll( extendedProperties );
+        }
     }
 
 

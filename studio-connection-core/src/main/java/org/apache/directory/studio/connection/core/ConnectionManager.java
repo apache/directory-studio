@@ -280,7 +280,7 @@ public class ConnectionManager implements ConnectionUpdateListener
     /**
      * Saves the Connections
      */
-    public void saveConnections()
+    private void saveConnections()
     {
         Object[] object = new Object[connectionList.size()];
 

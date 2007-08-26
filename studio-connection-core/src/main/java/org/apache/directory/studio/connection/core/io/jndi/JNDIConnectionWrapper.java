@@ -82,36 +82,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      */
     public void connect( StudioProgressMonitor monitor )
     {
-        String host = connection.getConnectionParameter().getHost();
-        int port = connection.getConnectionParameter().getPort();
-
-        useLdaps = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.LDAPS;
-        useStartTLS = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS;
-
-        environment = new Hashtable<String, String>();
-        environment.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" ); //$NON-NLS-1$
-        environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // timeouts
-        if ( !useLdaps )
-        {
-            environment.put( "com.sun.jndi.ldap.connect.timeout", "10000" ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        environment.put( "com.sun.jndi.dns.timeout.initial", "2000" ); //$NON-NLS-1$ //$NON-NLS-2$
-        environment.put( "com.sun.jndi.dns.timeout.retries", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // ldaps://
-        if ( useLdaps )
-        {
-            environment.put( Context.PROVIDER_URL, "ldaps://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
-            environment.put( Context.SECURITY_PROTOCOL, "ssl" ); //$NON-NLS-1$
-            environment.put( "java.naming.ldap.factory.socket", DummySSLSocketFactory.class.getName() ); //$NON-NLS-1$
-        }
-        else
-        {
-            environment.put( Context.PROVIDER_URL, "ldap://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-
         context = null;
         isConnected = false;
         jobThread = null;
@@ -161,35 +131,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      */
     public void bind( StudioProgressMonitor monitor )
     {
-        authMethod = "none";
-        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
-        {
-            authMethod = "simple";
-        }
-        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
-        {
-            authMethod = "DIGEST-MD5";
-        }
-        else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
-        {
-            authMethod = "CRAM-MD5";
-        }
-
-        IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
-        if ( authHandler == null )
-        {
-            monitor.reportError( Messages.model__no_auth_handler, new Exception() );
-        }
-
-        ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
-        if ( credentials == null )
-        {
-            monitor.reportError( Messages.model__no_credentials, new Exception() );
-        }
-
-        bindPrincipal = credentials.getBindPrincipal();
-        bindCredentials = credentials.getBindPassword();
-
         try
         {
             doBind( monitor );
@@ -591,6 +532,37 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         context = null;
         isConnected = true;
 
+        // setup connection parameters
+        String host = connection.getConnectionParameter().getHost();
+        int port = connection.getConnectionParameter().getPort();
+        
+        useLdaps = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.LDAPS;
+        useStartTLS = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS;
+        
+        environment = new Hashtable<String, String>();
+        environment.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" ); //$NON-NLS-1$
+        environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        // timeouts
+        if ( !useLdaps )
+        {
+            environment.put( "com.sun.jndi.ldap.connect.timeout", "10000" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        environment.put( "com.sun.jndi.dns.timeout.initial", "2000" ); //$NON-NLS-1$ //$NON-NLS-2$
+        environment.put( "com.sun.jndi.dns.timeout.retries", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        // ldaps://
+        if ( useLdaps )
+        {
+            environment.put( Context.PROVIDER_URL, "ldaps://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
+            environment.put( Context.SECURITY_PROTOCOL, "ssl" ); //$NON-NLS-1$
+            environment.put( "java.naming.ldap.factory.socket", DummySSLSocketFactory.class.getName() ); //$NON-NLS-1$
+        }
+        else
+        {
+            environment.put( Context.PROVIDER_URL, "ldap://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        
         InnerRunnable runnable = new InnerRunnable()
         {
             private NamingException namingException = null;
@@ -673,6 +645,35 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( context != null && isConnected )
         {
+            // setup authentication methdod
+            authMethod = "none";
+            if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
+            {
+                authMethod = "simple";
+            }
+            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
+            {
+                authMethod = "DIGEST-MD5";
+            }
+            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
+            {
+                authMethod = "CRAM-MD5";
+            }
+
+            // setup credentials
+            IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
+            if ( authHandler == null )
+            {
+                monitor.reportError( Messages.model__no_auth_handler, new Exception() );
+            }
+            ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
+            if ( credentials == null )
+            {
+                monitor.reportError( Messages.model__no_credentials, new Exception() );
+            }
+            bindPrincipal = credentials.getBindPrincipal();
+            bindCredentials = credentials.getBindPassword();
+            
             InnerRunnable runnable = new InnerRunnable()
             {
                 private NamingException namingException = null;

@@ -97,7 +97,7 @@ public class OpenConnectionsJob extends AbstractAsyncBulkJob
             if ( !connections[i].getJNDIConnectionWrapper().isConnected() )
             {
                 monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
-                    { this.connections[i].getName() } ) );
+                    { connections[i].getName() } ) );
                 monitor.worked( 1 );
 
                 connections[i].getJNDIConnectionWrapper().connect( monitor );

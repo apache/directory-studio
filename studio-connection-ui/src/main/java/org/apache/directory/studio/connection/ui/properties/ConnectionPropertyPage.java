@@ -28,11 +28,13 @@ import org.apache.directory.studio.connection.core.jobs.CloseConnectionsJob;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageModifyListener;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.dialogs.PropertyPage;
@@ -162,30 +164,34 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         if ( connection != null )
         {
             super.setMessage( "Connection " + Utils.shorten( connection.getName(), 30 ) );
+            
+            pages = ConnectionParameterPageManager.getConnectionParameterPages();
+            
+            tabFolder = new TabFolder( parent, SWT.TOP );
+            
+            tabs = new TabItem[pages.length];
+            for ( int i = 0; i < pages.length; i++ )
+            {
+                Composite composite = new Composite( tabFolder, SWT.NONE );
+                GridLayout gl = new GridLayout( 1, false );
+                composite.setLayout( gl );
+                
+                pages[i].createComposite( composite );
+                pages[i].setRunnableContext( null );
+                pages[i].setConnectionParameterPageModifyListener( this );
+                pages[i].loadParameters( connection.getConnectionParameter() );
+                
+                tabs[i] = new TabItem( tabFolder, SWT.NONE );
+                tabs[i].setText( pages[i].getPageName() );
+                tabs[i].setControl( composite );
+            }
+            
+            return tabFolder;
         }
-
-        pages = ConnectionParameterPageManager.getConnectionParameterPages();
-
-        tabFolder = new TabFolder( parent, SWT.TOP );
-
-        tabs = new TabItem[pages.length];
-        for ( int i = 0; i < pages.length; i++ )
-        {
-            Composite composite = new Composite( tabFolder, SWT.NONE );
-            GridLayout gl = new GridLayout( 1, false );
-            composite.setLayout( gl );
-
-            pages[i].createComposite( composite );
-            pages[i].setRunnableContext( null );
-            pages[i].setConnectionParameterPageModifyListener( this );
-            pages[i].loadParameters( connection.getConnectionParameter() );
-
-            tabs[i] = new TabItem( tabFolder, SWT.NONE );
-            tabs[i].setText( pages[i].getPageName() );
-            tabs[i].setControl( composite );
+        else {
+            Label label = BaseWidgetUtils.createLabel( parent, "No connection", 1 );
+            return label;
         }
-
-        return tabFolder;
     }
 
 
@@ -196,22 +202,30 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
     {
         // get current connection parameters
         Connection connection = ( Connection ) getConnection( getElement() );
-        ConnectionParameter connectionParameter = connection.getConnectionParameter();
         
         // save modified parameters
+        boolean parametersModified = false;
+        boolean reconnectionRequired = false;
+        ConnectionParameter connectionParameter = new ConnectionParameter();
         for ( int i = 0; i < pages.length; i++ )
         {
             pages[i].saveParameters( connectionParameter );
             pages[i].saveDialogSettings();
+            parametersModified |= pages[i].areParametersModifed();
+            reconnectionRequired |= pages[i].isReconnectionRequired();
         }
-        
-        // update persistent connection
-        connection.setConnectionParameter( connectionParameter );
-        connection.setName( connection.getName() );
-        connection.setHost( connection.getHost() );
-        
-        // close connection
-        new CloseConnectionsJob( connection ).execute();
+
+        if ( parametersModified )
+        {
+            // update connection parameters
+            connection.setConnectionParameter( connectionParameter );
+
+            if ( reconnectionRequired )
+            {
+                // close connection
+                new CloseConnectionsJob( connection ).execute();
+            }
+        }
 
         return true;
     }

@@ -59,7 +59,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public Object clone()
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
-            getAuthMethod(), getBindPrincipal(), getBindPassword() );
+            getAuthMethod(), getBindPrincipal(), getBindPassword(), getConnectionParameter().getExtendedProperties() );
 
         Connection clone = new Connection( cp );
 
@@ -100,7 +100,15 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public void setConnectionParameter( ConnectionParameter connectionParameter )
     {
+        String oldName = this.connectionParameter.getName();
+        
         this.connectionParameter = connectionParameter;
+        
+        ConnectionEventRegistry.fireConnectionUpdated( this, this );
+        if(!oldName.equals( connectionParameter.getName() ))
+        {
+            ConnectionEventRegistry.fireConnectionRenamed( this, oldName, this );
+        }
     }
 
 
@@ -264,8 +272,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         connectionParameter.setPort( port );
         ConnectionEventRegistry.fireConnectionUpdated( this, this );
     }
-
-
+    
+    
     /**
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
