@@ -21,10 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -49,10 +53,10 @@ public abstract class AbstractEclipseJob extends Job
     }
 
 
-    protected abstract IConnection[] getConnections();
+    protected abstract Connection[] getConnections();
 
 
-    protected abstract void executeAsyncJob( ExtendedProgressMonitor monitor ) throws Exception;
+    protected abstract void executeAsyncJob( StudioProgressMonitor monitor ) throws Exception;
 
 
     protected String getErrorMessage()
@@ -64,30 +68,25 @@ public abstract class AbstractEclipseJob extends Job
     protected final IStatus run( IProgressMonitor ipm )
     {
 
-        ExtendedProgressMonitor monitor = new ExtendedProgressMonitor( externalProgressMonitor == null ? ipm
+        StudioProgressMonitor monitor = new StudioProgressMonitor( externalProgressMonitor == null ? ipm
             : externalProgressMonitor );
 
-        // check if connection is opened
-        IConnection[] connections = getConnections();
+        // ensure that connections are opened
+        Connection[] connections = getConnections();
         for ( int i = 0; i < connections.length; i++ )
         {
-            IConnection connection = connections[i];
-            if ( !connection.isOpened() )
+            if ( connections[i] != null && !connections[i].getJNDIConnectionWrapper().isConnected() )
             {
-                // monitor.reportError("Connection is closed");
+                monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
+                    { connections[i].getName() } ) );
+                monitor.worked( 1 );
 
-                EventRegistry.suspendEventFireingInCurrentThread();
-                try
-                {
-                    connection.open( monitor );
-                }
-                finally
-                {
-                    EventRegistry.resumeEventFireingInCurrentThread();
-                }
+                connections[i].getJNDIConnectionWrapper().connect( monitor );
+                connections[i].getJNDIConnectionWrapper().bind( monitor );
+                ConnectionEventRegistry.fireConnectionOpened( connections[i], this );
             }
         }
-
+        
         // execute job
         if ( !monitor.errorsReported() )
         {
@@ -227,9 +226,9 @@ public abstract class AbstractEclipseJob extends Job
         for ( int i = 0; i < identifiers.length; i++ )
         {
             Object o = objects[i];
-            if ( o instanceof IConnection )
+            if ( o instanceof IBrowserConnection )
             {
-                identifiers[i] = getLockIdentifier( ( IConnection ) o );
+                identifiers[i] = getLockIdentifier( ( IBrowserConnection ) o );
             }
             else if ( o instanceof IEntry )
             {
@@ -256,7 +255,7 @@ public abstract class AbstractEclipseJob extends Job
     }
 
 
-    protected static String getLockIdentifier( IConnection connection )
+    protected static String getLockIdentifier( IBrowserConnection connection )
     {
         return connection.getHost() + ":" + connection.getPort();
     }
@@ -264,7 +263,7 @@ public abstract class AbstractEclipseJob extends Job
 
     protected static String getLockIdentifier( IEntry entry )
     {
-        return getLockIdentifier( entry.getConnection() ) + "_"
+        return getLockIdentifier( entry.getBrowserConnection() ) + "_"
             + new StringBuffer( entry.getDn().toString() ).reverse().toString();
     }
 
@@ -283,7 +282,7 @@ public abstract class AbstractEclipseJob extends Job
 
     protected static String getLockIdentifier( ISearch search )
     {
-        return getLockIdentifier( search.getConnection() ) + "_"
+        return getLockIdentifier( search.getBrowserConnection() ) + "_"
             + new StringBuffer( search.getSearchBase().toString() ).reverse().toString();
     }
 

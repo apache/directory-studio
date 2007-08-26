@@ -22,7 +22,7 @@ package org.apache.directory.studio.aciitemeditor;
 
 import org.apache.directory.studio.aciitemeditor.dialogs.ACIItemDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
@@ -94,13 +94,13 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
         {
             IEntry entry = attributeHierarchy.getAttribute().getEntry();
-            IConnection connection = entry.getConnection();
+            IBrowserConnection connection = entry.getBrowserConnection();
             return new ACIItemValueWithContext( connection, entry, "" ); //$NON-NLS-1$
         }
         else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
         {
             IEntry entry = attributeHierarchy.getAttribute().getEntry();
-            IConnection connection = entry.getConnection();
+            IBrowserConnection connection = entry.getBrowserConnection();
             String value = getDisplayValue( attributeHierarchy );
             return new ACIItemValueWithContext( connection, entry, value );
         }
@@ -125,7 +125,7 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
         if ( o != null && o instanceof String )
         {
             IEntry entry = value.getAttribute().getEntry();
-            IConnection connection = entry.getConnection();
+            IBrowserConnection connection = entry.getBrowserConnection();
             String v = (String) o;
             return new ACIItemValueWithContext( connection, entry, v );
         }

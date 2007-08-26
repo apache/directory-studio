@@ -81,8 +81,7 @@ public class PropertiesAction extends BrowserAction
     public boolean isEnabled()
     {
 
-        return getSelectedConnections().length == 1
-            || getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length
+        return getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length
                 + getSelectedSearches().length == 1 || getSelectedAttributes().length + getSelectedValues().length == 1
             || ( getSelectedAttributeHierarchies().length == 1 && getSelectedAttributeHierarchies()[0].size() == 1 );
 
@@ -141,12 +140,6 @@ public class PropertiesAction extends BrowserAction
             element = ( IAdaptable ) getSelectedSearchResults()[0];
             pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage";
             title = getSelectedSearchResults()[0].getDn().toString();
-        }
-        else if ( getSelectedConnections().length == 1 )
-        {
-            element = ( IAdaptable ) getSelectedConnections()[0];
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ConnectionPropertyPage";
-            title = getSelectedConnections()[0].getName();
         }
 
         if ( element != null )

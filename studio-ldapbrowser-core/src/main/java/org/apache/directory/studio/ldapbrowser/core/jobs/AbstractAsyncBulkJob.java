@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
@@ -28,7 +29,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationExcep
 public abstract class AbstractAsyncBulkJob extends AbstractEclipseJob
 {
 
-    protected final void executeAsyncJob( ExtendedProgressMonitor pm ) throws ModelModificationException
+    protected final void executeAsyncJob( StudioProgressMonitor pm ) throws ModelModificationException
     {
 
         EventRegistry.suspendEventFireingInCurrentThread();
@@ -47,7 +48,7 @@ public abstract class AbstractAsyncBulkJob extends AbstractEclipseJob
     }
 
 
-    protected abstract void executeBulkJob( ExtendedProgressMonitor pm ) throws ModelModificationException;
+    protected abstract void executeBulkJob( StudioProgressMonitor pm ) throws ModelModificationException;
 
 
     protected abstract void runNotification();

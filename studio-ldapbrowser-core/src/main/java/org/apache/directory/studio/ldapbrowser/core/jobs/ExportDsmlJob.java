@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
@@ -53,9 +51,13 @@ import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
 import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
+import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.dom4j.Document;
@@ -75,7 +77,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     private String exportDsmlFilename;
 
     /** The connection to use */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The Search Parameter of the export*/
     private SearchParameter searchParameter;
@@ -91,7 +93,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
      * @param searchParameter
      *          the Search Parameter of the export
      */
-    public ExportDsmlJob( String exportDsmlFilename, IConnection connection, SearchParameter searchParameter )
+    public ExportDsmlJob( String exportDsmlFilename, IBrowserConnection connection, SearchParameter searchParameter )
     {
         this.exportDsmlFilename = exportDsmlFilename;
         this.connection = connection;
@@ -104,10 +106,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
     /* (non-Javadoc)
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
      */
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { connection.getConnection() };
     }
 
 
@@ -125,7 +127,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     /* (non-Javadoc)
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor)
      */
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor )
+    protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__export_dsml_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -156,19 +158,19 @@ public class ExportDsmlJob extends AbstractEclipseJob
 
             // DerefAliases
             int derefAliases = searchParameter.getAliasesDereferencingMethod();
-            if ( derefAliases == IConnection.DEREFERENCE_ALIASES_ALWAYS )
+            if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_ALWAYS )
             {
                 searchRequest.setDerefAliases( LdapConstants.DEREF_ALWAYS );
             }
-            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_FINDING )
+            else if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_FINDING )
             {
                 searchRequest.setDerefAliases( LdapConstants.DEREF_FINDING_BASE_OBJ );
             }
-            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_NEVER )
+            else if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_NEVER )
             {
                 searchRequest.setDerefAliases( LdapConstants.NEVER_DEREF_ALIASES );
             }
-            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_SEARCH )
+            else if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_SEARCH )
             {
                 searchRequest.setDerefAliases( LdapConstants.DEREF_IN_SEARCHING );
             }

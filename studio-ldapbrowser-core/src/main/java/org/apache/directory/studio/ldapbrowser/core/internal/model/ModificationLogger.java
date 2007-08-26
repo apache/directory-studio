@@ -31,20 +31,20 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 
 
 public class ModificationLogger
 {
 
-    private Connection connection;
+    private BrowserConnection connection;
 
     private FileHandler fileHandler;
 
     private Logger logger;
 
 
-    public ModificationLogger( Connection connection )
+    public ModificationLogger( BrowserConnection connection )
     {
         this.connection = connection;
     }
@@ -55,7 +55,7 @@ public class ModificationLogger
         this.logger = Logger.getAnonymousLogger();
         this.logger.setLevel( Level.ALL );
 
-        String logfileName = ConnectionManager.getModificationLogFileName( connection.getName() );
+        String logfileName = BrowserConnectionManager.getModificationLogFileName( connection.getName() );
         try
         {
             fileHandler = new FileHandler( logfileName, 100000, 10, true );

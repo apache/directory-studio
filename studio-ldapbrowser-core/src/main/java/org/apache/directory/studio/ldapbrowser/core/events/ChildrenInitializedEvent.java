@@ -43,7 +43,7 @@ public class ChildrenInitializedEvent extends EntryModificationEvent
      */
     public ChildrenInitializedEvent( IEntry initializedEntry )
     {
-        super( initializedEntry.getConnection(), initializedEntry );
+        super( initializedEntry.getBrowserConnection(), initializedEntry );
     }
 
 

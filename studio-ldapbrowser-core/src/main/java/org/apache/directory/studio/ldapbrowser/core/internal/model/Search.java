@@ -24,12 +24,13 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -50,7 +51,7 @@ public class Search implements ISearch
     private static final long serialVersionUID = -3482673086666351174L;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The search results. */
     private ISearchResult[] searchResults;
@@ -86,7 +87,7 @@ public class Search implements ISearch
         this(
             new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss" ).format( new Date() ), //$NON-NLS-1$
             null, EMPTY_SEARCH_BASE, FILTER_TRUE, NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0, 0,
-            IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
+            IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
     }
 
 
@@ -96,7 +97,7 @@ public class Search implements ISearch
      * @param conn the connection
      * @param searchParameter the search parameters
      */
-    public Search( IConnection conn, SearchParameter searchParameter )
+    public Search( IBrowserConnection conn, SearchParameter searchParameter )
     {
         this.connection = conn;
         this.searchResults = null;
@@ -140,7 +141,7 @@ public class Search implements ISearch
      * @param initAliasAndReferralsFlag
      *                the init isAlias and isReferral flag
      */
-    public Search( String searchName, IConnection conn, DN searchBase, String filter, String[] returningAttributes,
+    public Search( String searchName, IBrowserConnection conn, DN searchBase, String filter, String[] returningAttributes,
         int scope, int countLimit, int timeLimit, int aliasesDereferencingMethod, int referralsHandlingMethod,
         boolean initHasChildrenFlag, boolean initAliasAndReferralsFlag, Control[] controls )
     {
@@ -428,7 +429,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public IConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
         return connection;
     }
@@ -437,7 +438,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
         this.connection = connection;
         this.searchParameter.setCountLimit( connection.getCountLimit() );
@@ -462,7 +463,7 @@ public class Search implements ISearch
      */
     public Object clone()
     {
-        return new Search( this.getName(), this.getConnection(), this.getSearchBase(), this.getFilter(), this
+        return new Search( this.getName(), this.getBrowserConnection(), this.getSearchBase(), this.getFilter(), this
             .getReturningAttributes(), this.getScope(), this.getCountLimit(), this.getTimeLimit(), this
             .getAliasesDereferencingMethod(), this.getReferralsHandlingMethod(), this.isInitHasChildrenFlag(), this
             .isInitAliasAndReferralFlag(), this.getControls() );
@@ -492,15 +493,18 @@ public class Search implements ISearch
      */
     public Object getAdapter( Class adapter )
     {
-
         Class<?> clazz = ( Class<?> ) adapter;
         if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( clazz.isAssignableFrom( IConnection.class ) )
+        if ( clazz.isAssignableFrom( Connection.class ) )
         {
-            return getConnection();
+            return getBrowserConnection().getConnection();
+        }
+        if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
+        {
+            return getBrowserConnection();
         }
         if ( clazz.isAssignableFrom( ISearch.class ) )
         {

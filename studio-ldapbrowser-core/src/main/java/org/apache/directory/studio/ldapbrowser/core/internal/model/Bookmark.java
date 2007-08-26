@@ -21,13 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -45,7 +46,7 @@ public class Bookmark implements IBookmark
     private static final long serialVersionUID = 2914726541167255499L;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The bookmark parameter. */
     private BookmarkParameter bookmarkParameter;
@@ -68,7 +69,7 @@ public class Bookmark implements IBookmark
      * @param connection the connection
      * @param bookmarkParameter the bookmark parameter
      */
-    public Bookmark( IConnection connection, BookmarkParameter bookmarkParameter )
+    public Bookmark( IBrowserConnection connection, BookmarkParameter bookmarkParameter )
     {
         this.connection = connection;
         this.bookmarkParameter = bookmarkParameter;
@@ -83,7 +84,7 @@ public class Bookmark implements IBookmark
      * @param dn the target DN
      * @param name the symbolic name
      */
-    public Bookmark( IConnection connection, DN dn, String name )
+    public Bookmark( IBrowserConnection connection, DN dn, String name )
     {
         this.connection = connection;
         this.bookmarkParameter = new BookmarkParameter( dn, name );
@@ -139,9 +140,13 @@ public class Bookmark implements IBookmark
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( clazz.isAssignableFrom( IConnection.class ) )
+        if ( clazz.isAssignableFrom( Connection.class ) )
         {
-            return getConnection();
+            return getBrowserConnection().getConnection();
+        }
+        if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
+        {
+            return getBrowserConnection();
         }
         if ( clazz.isAssignableFrom( IEntry.class ) )
         {
@@ -185,7 +190,7 @@ public class Bookmark implements IBookmark
     /**
      * {@inheritDoc}
      */
-    public IConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
         return this.connection;
     }

@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
@@ -85,7 +86,7 @@ public class DeleteAttributesValueJob extends AbstractModificationJob
     }
 
 
-    protected void executeAsyncModificationJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( attributes.length + values.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_task_1
@@ -102,16 +103,16 @@ public class DeleteAttributesValueJob extends AbstractModificationJob
             values[i].getAttribute().deleteValue( values[i] );
         }
 
-        entry.getConnection().delete( attributes, monitor );
-        entry.getConnection().delete( values, monitor );
+        entry.getBrowserConnection().delete( attributes, monitor );
+        entry.getBrowserConnection().delete( values, monitor );
 
         if ( values.length > 0 )
         {
-            this.event = new ValueDeletedEvent( entry.getConnection(), entry, values[0].getAttribute(), values[0] );
+            this.event = new ValueDeletedEvent( entry.getBrowserConnection(), entry, values[0].getAttribute(), values[0] );
         }
         else if ( attributes.length > 0 )
         {
-            this.event = new AttributeDeletedEvent( entry.getConnection(), entry, attributes[0] );
+            this.event = new AttributeDeletedEvent( entry.getBrowserConnection(), entry, attributes[0] );
         }
     }
 

@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ConnectionPropertyPageProvider;
+import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -311,11 +311,11 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 
 
     /**
-     * Gets the connection.
+     * Gets the browser connection.
      * 
-     * @return the connection
+     * @return the browser connection
      */
-    public abstract IConnection getConnection();
+    public abstract IBrowserConnection getBrowserConnection();
 
 
     /**
@@ -325,7 +325,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param connection the connection
      */
-    public abstract void setConnection( IConnection connection );
+    public abstract void setConnection( IBrowserConnection connection );
 
 
     /**

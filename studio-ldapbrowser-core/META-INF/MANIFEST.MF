@@ -8,7 +8,8 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.search,
- org.apache.directory.studio.jars
+ org.apache.directory.studio.jars,
+ org.apache.directory.studio.connection.core
 Eclipse-LazyStart: true
 Export-Package: org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.core.events,

@@ -29,57 +29,55 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionRenamedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Bookmark;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Connection;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.BrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.eclipse.core.runtime.IPath;
 
 
 /**
- * This class is used to manage {@link IConnection}s.
+ * This class is used to manage {@link IBrowserConnection}s.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionManager implements ConnectionUpdateListener, SearchUpdateListener, BookmarkUpdateListener
+public class BrowserConnectionManager implements ConnectionUpdateListener, SearchUpdateListener, BookmarkUpdateListener
 {
 
     /** The list of connections. */
-    private List<IConnection> connectionList;
+    private Map<String, IBrowserConnection> connectionMap;
 
 
     /**
      * Creates a new instance of ConnectionManager.
      */
-    public ConnectionManager()
+    public BrowserConnectionManager()
     {
-        this.connectionList = new ArrayList<IConnection>();
-        loadConnections();
-        EventRegistry.addConnectionUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
+        this.connectionMap = new HashMap<String, IBrowserConnection>();
+        loadBrowserConnections();
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
         EventRegistry.addSearchUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
         EventRegistry.addBookmarkUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
     }
@@ -126,9 +124,9 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      * @return
      *      the filename of the Connection Store
      */
-    public static final String getConnectionStoreFileName()
+    public static final String getBrowserConnectionStoreFileName()
     {
-        String filename = BrowserCorePlugin.getDefault().getStateLocation().append( "connections.xml" ).toOSString(); //$NON-NLS-1$
+        String filename = BrowserCorePlugin.getDefault().getStateLocation().append( "browserconnections.xml" ).toOSString(); //$NON-NLS-1$
         File file = new File( filename );
         if ( !file.exists() )
         {
@@ -138,8 +136,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             String[] oldFilenames = new String[2];
             oldFilenames[0] = filename.replace( "org.apache.directory.studio.ldapbrowser.core",
                 "org.apache.directory.ldapstudio.browser.core" );
-            oldFilenames[1] = oldFilenames[0].replace( ".ApacheDirectoryStudio",
-                ".ldapstudio" );
+            oldFilenames[1] = oldFilenames[0].replace( ".ApacheDirectoryStudio", ".ldapstudio" );
             for ( int i = 0; i < oldFilenames.length; i++ )
             {
                 File oldFile = new File( oldFilenames[i] );
@@ -207,92 +204,30 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
 
 
     /**
-     * Adds the connection to the end of the connection list. If there is
-     * already a connection with this name, the new connection is renamed.
-     *
-     * @param connection
-     */
-    public void addConnection( IConnection connection )
-    {
-        addConnection( connectionList.size(), connection );
-    }
-
-
-    /**
-     * Adds the connection at the specified position of the connection list.
-     * If there is already a connection with this name the new connection is
-     * renamed.
-     *
-     * @param index
-     * @param connection
-     */
-    public void addConnection( int index, IConnection connection )
-    {
-        if ( getConnection( connection.getName() ) != null )
-        {
-            String newConnectionName = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s,
-                "", connection.getName() ); //$NON-NLS-1$
-            for ( int i = 2; getConnection( newConnectionName ) != null; i++ )
-            {
-                newConnectionName = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s,
-                    i + " ", connection.getName() ); //$NON-NLS-1$
-            }
-            connection.getConnectionParameter().setName( newConnectionName );
-        }
-
-        connectionList.add( index, connection );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connection,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_ADDED ), this );
-    }
-
-
-    /**
      * Gets a connection from its name.
      *
      * @param name
      *      the name of the Connection
      * @return
-     *      the corresponding Connection
+     *      the corresponding IConnection
      */
-    public IConnection getConnection( String name )
+    public IBrowserConnection getConnection( String name )
     {
-        for ( Iterator it = connectionList.iterator(); it.hasNext(); )
-        {
-            IConnection conn = ( IConnection ) it.next();
-            if ( conn.getName().equals( name ) )
-            {
-                return conn;
-            }
-        }
-        return null;
+        return connectionMap.get( name );
     }
 
 
     /**
-     * Gets the index in the Connection list of the first occurrence of the specified Connection.
+     * Gets a connection from its underlying connection.
      *
      * @param connection
-     *      the Connection to search for
+     *      the underlying connection
      * @return
-     *      the index in the Connection list of the first occurrence of the specified Connection
+     *      the corresponding IConnection
      */
-    public int indexOf( IConnection connection )
+    public IBrowserConnection getBrowserConnection( Connection connection )
     {
-        return connectionList.indexOf( connection );
-    }
-
-
-    /**
-     * Removes the given Connection from the Connection list.
-     *
-     * @param conn
-     *      the connection to remove
-     */
-    public void removeConnection( IConnection conn )
-    {
-        connectionList.remove( conn );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( conn,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED ), this );
+        return getConnection( connection.getName() );
     }
 
 
@@ -302,63 +237,101 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      * @return
      *      an array containing all the Connections
      */
-    public IConnection[] getConnections()
+    public IBrowserConnection[] getBrowserConnections()
     {
-        return ( IConnection[] ) connectionList.toArray( new IConnection[0] );
+        return ( IBrowserConnection[] ) connectionMap.values().toArray( new IBrowserConnection[0] );
     }
 
 
     /**
-     * Gets the number of Connections.
-     *
-     * @return
-     *      the number of Connections
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
      */
-    public int getConnectionCount()
+    public void connectionRenamed( Connection connection, String oldName )
     {
-        return connectionList.size();
+        String newName = connection.getName();
+        
+        // update connection list
+        IBrowserConnection browserConnection = connectionMap.remove( oldName );
+        connectionMap.put( newName, browserConnection );
+
+        // rename schema file
+        String oldSchemaFileName = getSchemaCacheFileName( oldName );
+        String newSchemaFileName = getSchemaCacheFileName( newName );
+        File oldSchemaFile = new File( oldSchemaFileName );
+        File newSchemaFile = new File( newSchemaFileName );
+        if ( oldSchemaFile.exists() )
+        {
+            oldSchemaFile.renameTo( newSchemaFile );
+        }
+
+        // TODO: schema
+        //        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED
+        //            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
+        //        {
+        //            saveSchema( connectionUpdateEvent.getConnection() );
+        //        }
+        
+        // make persistent
+        saveBrowserConnections();
     }
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
      */
-    public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
+    public void connectionRemoved( Connection connection )
     {
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_ADDED
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_RENAMED
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED )
+        // update connection list
+        connectionMap.remove( connection.getName() );
+
+        // remove schema file
+        File schemaFile = new File( getSchemaCacheFileName( connection.getName() ) );
+        if ( schemaFile.exists() )
         {
-            saveConnections();
+            schemaFile.delete();
         }
 
-        if ( connectionUpdateEvent instanceof ConnectionRenamedEvent )
-        {
-            String oldName = ( ( ConnectionRenamedEvent ) connectionUpdateEvent ).getOldName();
-            String newName = connectionUpdateEvent.getConnection().getName();
-            String oldSchemaFile = getSchemaCacheFileName( oldName );
-            String newSchemaFile = getSchemaCacheFileName( newName );
-            File oldFile = new File( oldSchemaFile );
-            File newFile = new File( newSchemaFile );
-            if ( oldFile.exists() )
-            {
-                oldFile.renameTo( newFile );
-            }
-        }
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED
-            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
-        {
-            saveSchema( connectionUpdateEvent.getConnection() );
-        }
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_REMOVED )
-        {
-            File file = new File( getSchemaCacheFileName( connectionUpdateEvent.getConnection().getName() ) );
-            if ( file.exists() )
-            {
-                file.delete();
-            }
-        }
+        // make persistent
+        saveBrowserConnections();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionAdded( Connection connection )
+    {
+        // update connection list
+        BrowserConnection browserConnection = new BrowserConnection( connection );
+        connectionMap.put( connection.getName(), browserConnection );
+
+        // make persistent
+        saveBrowserConnections();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionUpdated( Connection connection )
+    {
+        saveBrowserConnections();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionOpened( Connection connection )
+    {
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionClosed( Connection connection )
+    {
     }
 
 
@@ -372,7 +345,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             || searchUpdateEvent.getDetail() == SearchUpdateEvent.EventDetail.SEARCH_RENAMED
             || searchUpdateEvent.getDetail() == SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED )
         {
-            saveConnections();
+            saveBrowserConnections();
         }
     }
 
@@ -386,42 +359,43 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             || bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.Detail.BOOKMARK_REMOVED
             || bookmarkUpdateEvent.getDetail() == BookmarkUpdateEvent.Detail.BOOKMARK_UPDATED )
         {
-            saveConnections();
+            saveBrowserConnections();
         }
     }
 
 
     /**
-     * Saves the Connections
+     * Saves the browser onnections
      */
-    private void saveConnections()
+    private void saveBrowserConnections()
     {
-        Object[][] object = new Object[connectionList.size()][3];
+        Object[][] object = new Object[connectionMap.size()][3];
 
-        Iterator connectionIterator = connectionList.iterator();
+        Iterator<IBrowserConnection> connectionIterator = connectionMap.values().iterator();
         for ( int i = 0; connectionIterator.hasNext(); i++ )
         {
-            IConnection conn = ( IConnection ) connectionIterator.next();
-            ConnectionParameter connectionParameters = conn.getConnectionParameter();
-            ISearch[] searches = conn.getSearchManager().getSearches();
+            IBrowserConnection browserConnection = connectionIterator.next();
+            
+            ISearch[] searches = browserConnection.getSearchManager().getSearches();
             SearchParameter[] searchParameters = new SearchParameter[searches.length];
             for ( int k = 0; k < searches.length; k++ )
             {
                 searchParameters[k] = searches[k].getSearchParameter();
             }
-            IBookmark[] bookmarks = conn.getBookmarkManager().getBookmarks();
+            
+            IBookmark[] bookmarks = browserConnection.getBookmarkManager().getBookmarks();
             BookmarkParameter[] bookmarkParameters = new BookmarkParameter[bookmarks.length];
             for ( int k = 0; k < bookmarks.length; k++ )
             {
                 bookmarkParameters[k] = bookmarks[k].getBookmarkParameter();
             }
 
-            object[i][0] = connectionParameters;
+            object[i][0] = browserConnection.getName();
             object[i][1] = searchParameters;
             object[i][2] = bookmarkParameters;
         }
 
-        save( object, getConnectionStoreFileName() );
+        save( object, getBrowserConnectionStoreFileName() );
     }
 
 
@@ -431,7 +405,7 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
      * @param connection
      *      the Connection
      */
-    private void saveSchema( IConnection connection )
+    private void saveSchema( IBrowserConnection connection )
     {
         try
         {
@@ -450,11 +424,33 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
     /**
      * Loads the Connections
      */
-    private void loadConnections()
+    private void loadBrowserConnections()
     {
+        Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
+        for ( int i = 0; i < connections.length; i++ )
+        {
+            Connection connection = connections[i];
+            BrowserConnection browserConnection = new BrowserConnection( connection );
+            connectionMap.put( connection.getName(), browserConnection );
+        }
+
+        //        try
+        //        {
+        //            String schemaFilename = getSchemaCacheFileName( conn.getName() );
+        //            FileReader reader = new FileReader( schemaFilename );
+        //            Schema schema = new Schema();
+        //            schema.loadFromLdif( reader );
+        //            conn.setSchema( schema );
+        //        }
+        //        catch ( Exception e )
+        //        {
+        //        }
+        
+//        connectionList.clear();
+//        
         try
         {
-            Object[][] object = ( Object[][] ) this.load( getConnectionStoreFileName() );
+            Object[][] object = ( Object[][] ) this.load( getBrowserConnectionStoreFileName() );
 
             if ( object != null )
             {
@@ -462,44 +458,44 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
                 {
                     for ( int i = 0; i < object.length; i++ )
                     {
-                        IConnection conn = new Connection();
-
-                        ConnectionParameter connectionParameters = ( ConnectionParameter ) object[i][0];
-                        conn.setConnectionParameter( connectionParameters );
-
-                        if ( object[i].length > 1 )
+                        String connectionName = ( String ) object[i][0];
+                        IBrowserConnection browserConnection = getConnection( connectionName );
+                        
+                        if( browserConnection != null )
                         {
-                            SearchParameter[] searchParameters = ( SearchParameter[] ) object[i][1];
-                            for ( int k = 0; k < searchParameters.length; k++ )
+                            if ( object[i].length > 0 )
                             {
-                                ISearch search = new Search( conn, searchParameters[k] );
-                                conn.getSearchManager().addSearch( search );
+                                SearchParameter[] searchParameters = ( SearchParameter[] ) object[i][1];
+                                for ( int k = 0; k < searchParameters.length; k++ )
+                                {
+                                    ISearch search = new Search( browserConnection, searchParameters[k] );
+                                    browserConnection.getSearchManager().addSearch( search );
+                                }
                             }
-                        }
-
-                        if ( object[i].length > 2 )
-                        {
-                            BookmarkParameter[] bookmarkParameters = ( BookmarkParameter[] ) object[i][2];
-                            for ( int k = 0; k < bookmarkParameters.length; k++ )
+    
+                            if ( object[i].length > 1 )
                             {
-                                IBookmark bookmark = new Bookmark( conn, bookmarkParameters[k] );
-                                conn.getBookmarkManager().addBookmark( bookmark );
+                                BookmarkParameter[] bookmarkParameters = ( BookmarkParameter[] ) object[i][2];
+                                for ( int k = 0; k < bookmarkParameters.length; k++ )
+                                {
+                                    IBookmark bookmark = new Bookmark( browserConnection, bookmarkParameters[k] );
+                                    browserConnection.getBookmarkManager().addBookmark( bookmark );
+                                }
                             }
+    
+//                            try
+//                            {
+//                                String schemaFilename = getSchemaCacheFileName( browserConnection.getName() );
+//                                FileReader reader = new FileReader( schemaFilename );
+//                                Schema schema = new Schema();
+//                                schema.loadFromLdif( reader );
+//                                browserConnection.setSchema( schema );
+//                            }
+//                            catch ( Exception e )
+//                            {
+//                            }
+    
                         }
-
-                        try
-                        {
-                            String schemaFilename = getSchemaCacheFileName( conn.getName() );
-                            FileReader reader = new FileReader( schemaFilename );
-                            Schema schema = new Schema();
-                            schema.loadFromLdif( reader );
-                            conn.setSchema( schema );
-                        }
-                        catch ( Exception e )
-                        {
-                        }
-
-                        connectionList.add( conn );
                     }
 
                 }
@@ -516,6 +512,8 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
         catch ( Exception e )
         {
         }
+        
+        
     }
 
 
@@ -590,11 +588,12 @@ public class ConnectionManager implements ConnectionUpdateListener, SearchUpdate
             } );
             encoder.writeObject( object );
             encoder.close();
-            
+
             // move temp file to good file
             File file = new File( filename );
             File tempFile = new File( tempFilename );
-            if( file.exists() ) {
+            if ( file.exists() )
+            {
                 file.delete();
             }
             String content = FileUtils.readFileToString( tempFile, "UTF-8" );

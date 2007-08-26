@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.events;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
@@ -35,7 +35,7 @@ public abstract class EntryModificationEvent
 {
 
     /** The connection. */
-    protected IConnection connection;
+    protected IBrowserConnection connection;
 
     /** The entry. */
     protected IEntry modifiedEntry;
@@ -47,7 +47,7 @@ public abstract class EntryModificationEvent
      * @param modifiedEntry the modified entry
      * @param connection the connection
      */
-    public EntryModificationEvent( IConnection connection, IEntry modifiedEntry )
+    public EntryModificationEvent( IBrowserConnection connection, IEntry modifiedEntry )
     {
         this.connection = connection;
         this.modifiedEntry = modifiedEntry;
@@ -59,7 +59,7 @@ public abstract class EntryModificationEvent
      * 
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connection;
     }

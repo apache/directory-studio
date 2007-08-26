@@ -25,15 +25,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserUniversalListener;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
@@ -42,7 +45,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -78,10 +81,10 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 {
 
     /** This map contains all expanded elements for a particular connection */
-    private Map<IConnection, Object[]> connectionToExpandedElementsMap;
+    private Map<IBrowserConnection, Object[]> connectionToExpandedElementsMap;
 
     /** This map contains all selected elements for a particular connection */
-    private Map<IConnection, ISelection> connectionToSelectedElementMap;
+    private Map<IBrowserConnection, ISelection> connectionToSelectedElementMap;
 
     /** The browser view */
     private BrowserView view;
@@ -103,10 +106,12 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             {
                 if ( view.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
                 {
-                    IConnection[] connections = SelectionUtils.getConnections( selection );
+                    Connection[] connections = BrowserSelectionUtils.getConnections( selection );
                     if ( connections.length == 1 )
                     {
-                        setInput( connections[0] );
+                        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
+                            connections[0] );
+                        setInput( connection );
                     }
                     else
                     {
@@ -236,14 +241,14 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         this.view = view;
 
         // create maps
-        connectionToExpandedElementsMap = new HashMap<IConnection, Object[]>();
-        connectionToSelectedElementMap = new HashMap<IConnection, ISelection>();
+        connectionToExpandedElementsMap = new HashMap<IBrowserConnection, Object[]>();
+        connectionToSelectedElementMap = new HashMap<IBrowserConnection, ISelection>();
 
         // register listeners
         EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
         EventRegistry.addBookmarkUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
-        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
 
         view.getSite().getPage().addPartListener( partListener );
         view.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( ConnectionView.getId(),
@@ -263,10 +268,10 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     {
         if ( view != null )
         {
-            IEntry[] entries = SelectionUtils.getEntries( selection );
-            ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
-            IBookmark[] bookmarks = SelectionUtils.getBookmarks( selection );
-            ISearch[] searches = SelectionUtils.getSearches( selection );
+            IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+            ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+            IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+            ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
 
             if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
             {
@@ -329,7 +334,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             EventRegistry.removeSearchUpdateListener( this );
             EventRegistry.removeBookmarkUpdateListener( this );
             EventRegistry.removeEntryUpdateListener( this );
-            EventRegistry.removeConnectionUpdateListener( this );
+            ConnectionEventRegistry.removeConnectionUpdateListener( this );
 
             view.getSite().getPage().removePartListener( partListener );
             view.getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(
@@ -351,13 +356,13 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      *
      * @param connection the connection input
      */
-    void setInput( IConnection connection )
+    void setInput( IBrowserConnection connection )
     {
         // only if another connection is selected
         if ( connection != viewer.getInput() )
         {
 
-            IConnection currentConnection = viewer.getInput() instanceof IConnection ? ( IConnection ) viewer
+            IBrowserConnection currentConnection = viewer.getInput() instanceof IBrowserConnection ? ( IBrowserConnection ) viewer
                 .getInput() : null;
 
             // save expanded elements and selection
@@ -392,40 +397,41 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
 
     /**
-     * {@inheritDoc}
-     *
-     * This implementation refreshes the tree and expands/collapses the
-     * tree when the connection is opened/closed.
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
      */
-    public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
+    public void connectionOpened( Connection connection )
     {
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
-        {
-            // expand viewer
-            viewer.refresh( connectionUpdateEvent.getConnection() );
-            viewer.expandToLevel( 2 );
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
+            connection );
 
-            // expand root DSE to show base entries
-            IRootDSE rootDSE = connectionUpdateEvent.getConnection().getRootDSE();
-            viewer.expandToLevel( rootDSE, 1 );
+        // expand viewer
+        viewer.refresh( browserConnection );
+        viewer.expandToLevel( 2 );
 
-            // expand base entries, if requested
-            if ( view.getConfiguration().getPreferences().isExpandBaseEntries() )
-            {
-                viewer.expandToLevel( rootDSE, 2 );
-            }
-        }
-        else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED )
+        // expand root DSE to show base entries
+        IRootDSE rootDSE = browserConnection.getRootDSE();
+        viewer.expandToLevel( rootDSE, 1 );
+
+        // expand base entries, if requested
+        if ( view.getConfiguration().getPreferences().isExpandBaseEntries() )
         {
-            viewer.collapseAll();
-            connectionToExpandedElementsMap.remove( connectionUpdateEvent.getConnection() );
-            connectionToSelectedElementMap.remove( connectionUpdateEvent.getConnection() );
-            viewer.refresh( connectionUpdateEvent.getConnection() );
+            viewer.expandToLevel( rootDSE, 2 );
         }
-        else
-        {
-            viewer.refresh( connectionUpdateEvent.getConnection() );
-        }
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionClosed( Connection connection )
+    {
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
+            connection );
+        
+        viewer.collapseAll();
+        connectionToExpandedElementsMap.remove( browserConnection );
+        connectionToSelectedElementMap.remove( browserConnection );
+        viewer.refresh( browserConnection );
     }
 
 
@@ -439,7 +445,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         ISearch search = searchUpdateEvent.getSearch();
         viewer.refresh();
 
-        if ( Arrays.asList( search.getConnection().getSearchManager().getSearches() ).contains( search ) )
+        if ( Arrays.asList( search.getBrowserConnection().getSearchManager().getSearches() ).contains( search ) )
         {
             viewer.setSelection( new StructuredSelection( search ), true );
         }

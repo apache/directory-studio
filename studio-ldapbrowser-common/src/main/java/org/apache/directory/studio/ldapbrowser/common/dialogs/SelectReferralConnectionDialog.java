@@ -21,15 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionActionGroup;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionConfiguration;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionUniversalListener;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -53,7 +53,7 @@ public class SelectReferralConnectionDialog extends Dialog
 
     private URL referralUrl;
 
-    private IConnection selectedConnection;
+    private IBrowserConnection selectedConnection;
 
     private ConnectionConfiguration configuration;
 
@@ -139,7 +139,7 @@ public class SelectReferralConnectionDialog extends Dialog
         // create main widget
         this.mainWidget = new ConnectionWidget( this.configuration, null );
         this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( BrowserCorePlugin.getDefault().getConnectionManager() );
+        this.mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
 
         // create actions and context menu (and register global actions)
         this.actionGroup = new ConnectionActionGroup( this.mainWidget, this.configuration );
@@ -158,9 +158,9 @@ public class SelectReferralConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IConnection )
+                    if ( o instanceof IBrowserConnection )
                     {
-                        selectedConnection = ( IConnection ) o;
+                        selectedConnection = ( IBrowserConnection ) o;
                     }
                 }
             }
@@ -173,9 +173,9 @@ public class SelectReferralConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IConnection )
+                    if ( o instanceof IBrowserConnection )
                     {
-                        selectedConnection = ( IConnection ) o;
+                        selectedConnection = ( IBrowserConnection ) o;
                         okPressed();
                     }
                 }
@@ -184,10 +184,10 @@ public class SelectReferralConnectionDialog extends Dialog
 
         if ( this.referralUrl != null )
         {
-            IConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getConnections();
+            IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnections();
             for ( int i = 0; i < connections.length; i++ )
             {
-                IConnection connection = connections[i];
+                IBrowserConnection connection = connections[i];
                 URL connectionUrl = connection.getUrl();
                 if ( connectionUrl != null && referralUrl.toString().startsWith( connectionUrl.toString() ) )
                 {
@@ -206,7 +206,7 @@ public class SelectReferralConnectionDialog extends Dialog
     }
 
 
-    public IConnection getReferralConnection()
+    public IBrowserConnection getReferralConnection()
     {
         return this.selectedConnection;
     }

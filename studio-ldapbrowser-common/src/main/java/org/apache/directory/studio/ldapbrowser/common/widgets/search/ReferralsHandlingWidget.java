@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -58,8 +58,8 @@ public class ReferralsHandlingWidget extends BrowserWidget
     /**
      * Creates a new instance of ReferralsHandlingWidget with the given
      * referrals handling method. This must be one of
-     * {@link IConnection#HANDLE_REFERRALS_IGNORE} or
-     * {@link IConnection#HANDLE_REFERRALS_FOLLOW}.  
+     * {@link IBrowserConnection#HANDLE_REFERRALS_IGNORE} or
+     * {@link IBrowserConnection#HANDLE_REFERRALS_FOLLOW}.  
      * 
      * @param initialReferralsHandlingMethod the initial referrals handling method
      */
@@ -71,11 +71,11 @@ public class ReferralsHandlingWidget extends BrowserWidget
 
     /**
      * Creates a new instance of ReferralsHandlingWidget with initial 
-     * referrals handling method {@link IConnection#HANDLE_REFERRALS_IGNORE}.
+     * referrals handling method {@link IBrowserConnection#HANDLE_REFERRALS_IGNORE}.
      */
     public ReferralsHandlingWidget()
     {
-        this.initialReferralsHandlingMethod = IConnection.HANDLE_REFERRALS_IGNORE;
+        this.initialReferralsHandlingMethod = IBrowserConnection.HANDLE_REFERRALS_IGNORE;
     }
 
 
@@ -114,23 +114,23 @@ public class ReferralsHandlingWidget extends BrowserWidget
 
     /**
      * Sets the referrals handling method must be one of
-     *  {@link IConnection#HANDLE_REFERRALS_IGNORE} or
-     * {@link IConnection#HANDLE_REFERRALS_FOLLOW}. 
+     *  {@link IBrowserConnection#HANDLE_REFERRALS_IGNORE} or
+     * {@link IBrowserConnection#HANDLE_REFERRALS_FOLLOW}. 
      * 
      * @param referralsHandlingMethod the referrals handling method
      */
     public void setReferralsHandlingMethod( int referralsHandlingMethod )
     {
         initialReferralsHandlingMethod = referralsHandlingMethod;
-        ignoreButton.setSelection( initialReferralsHandlingMethod == IConnection.HANDLE_REFERRALS_IGNORE );
-        followButton.setSelection( initialReferralsHandlingMethod == IConnection.HANDLE_REFERRALS_FOLLOW );
+        ignoreButton.setSelection( initialReferralsHandlingMethod == IBrowserConnection.HANDLE_REFERRALS_IGNORE );
+        followButton.setSelection( initialReferralsHandlingMethod == IBrowserConnection.HANDLE_REFERRALS_FOLLOW );
     }
 
 
     /**
      * Gets the referrals handling method, one of
-     * {@link IConnection#HANDLE_REFERRALS_IGNORE} or
-     * {@link IConnection#HANDLE_REFERRALS_FOLLOW}.
+     * {@link IBrowserConnection#HANDLE_REFERRALS_IGNORE} or
+     * {@link IBrowserConnection#HANDLE_REFERRALS_FOLLOW}.
      * 
      * @return the referrals handling method
      */
@@ -138,11 +138,11 @@ public class ReferralsHandlingWidget extends BrowserWidget
     {
         if ( ignoreButton.getSelection() )
         {
-            return IConnection.HANDLE_REFERRALS_IGNORE;
+            return IBrowserConnection.HANDLE_REFERRALS_IGNORE;
         }
         else
         {
-            return IConnection.HANDLE_REFERRALS_FOLLOW;
+            return IBrowserConnection.HANDLE_REFERRALS_FOLLOW;
         }
     }
 

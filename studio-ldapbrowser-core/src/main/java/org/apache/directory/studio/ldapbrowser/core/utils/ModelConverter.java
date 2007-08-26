@@ -30,7 +30,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
@@ -63,7 +63,7 @@ public class ModelConverter
      * @throws ModelModificationException the model modification exception
      * @throws NameException the name exception
      */
-    public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IConnection connection )
+    public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IBrowserConnection connection )
         throws NameException, ModelModificationException
     {
         return createIntern( ldifContentRecord, connection );
@@ -81,7 +81,7 @@ public class ModelConverter
      * @throws ModelModificationException the model modification exception
      * @throws NameException the name exception
      */
-    public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IConnection connection )
+    public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IBrowserConnection connection )
         throws NameException, ModelModificationException
     {
         return createIntern( ldifChangeAddRecord, connection );
@@ -99,7 +99,7 @@ public class ModelConverter
      * @throws ModelModificationException the model modification exception
      * @throws NameException the name exception
      */
-    private static DummyEntry createIntern( LdifRecord ldifRecord, IConnection connection ) throws NameException,
+    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection ) throws NameException,
         ModelModificationException
     {
         LdifPart[] parts = ldifRecord.getParts();
@@ -293,7 +293,7 @@ public class ModelConverter
     {
         if ( entry.isReferral() )
         {
-            cr.addControl( LdifControlLine.create( IConnection.CONTROL_MANAGEDSAIT, null, ( String ) null ) );
+            cr.addControl( LdifControlLine.create( IBrowserConnection.CONTROL_MANAGEDSAIT, null, ( String ) null ) );
         }
     }
 

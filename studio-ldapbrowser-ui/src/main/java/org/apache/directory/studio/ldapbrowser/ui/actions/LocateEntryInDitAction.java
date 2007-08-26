@@ -99,14 +99,14 @@ public class LocateEntryInDitAction extends LocateInDitAction
         if ( getSelectedSearchResults().length == 1
             && getSelectedBookmarks().length + getSelectedEntries().length + getSelectedBrowserViewCategories().length == 0 )
         {
-            return new ConnectionAndDn( getSelectedSearchResults()[0].getEntry().getConnection(),
+            return new ConnectionAndDn( getSelectedSearchResults()[0].getEntry().getBrowserConnection(),
                 getSelectedSearchResults()[0].getEntry().getDn() );
         }
         else if ( getSelectedBookmarks().length == 1
             && getSelectedSearchResults().length + getSelectedEntries().length
                 + getSelectedBrowserViewCategories().length == 0 )
         {
-            return new ConnectionAndDn( getSelectedBookmarks()[0].getConnection(), getSelectedBookmarks()[0].getDn() );
+            return new ConnectionAndDn( getSelectedBookmarks()[0].getBrowserConnection(), getSelectedBookmarks()[0].getDn() );
         }
         else
         {

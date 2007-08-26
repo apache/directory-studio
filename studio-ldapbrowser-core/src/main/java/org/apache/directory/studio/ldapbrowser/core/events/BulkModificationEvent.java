@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 /**
@@ -39,7 +39,7 @@ public class BulkModificationEvent extends EntryModificationEvent
      * 
      * @param connection the connection
      */
-    public BulkModificationEvent( IConnection connection )
+    public BulkModificationEvent( IBrowserConnection connection )
     {
         super( connection, connection.getRootDSE() );
     }

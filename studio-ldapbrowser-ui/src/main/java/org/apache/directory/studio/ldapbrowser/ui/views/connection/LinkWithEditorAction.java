@@ -212,7 +212,7 @@ public class LinkWithEditorAction extends Action
                     IEntry entry = eei.getResolvedEntry();
                     if ( entry != null )
                     {
-                        objectToSelect = entry.getConnection();
+                        objectToSelect = entry.getBrowserConnection().getConnection();
                     }
                 }
             }
@@ -226,7 +226,7 @@ public class LinkWithEditorAction extends Action
                     ISearch search = srei.getSearch();
                     if ( search != null )
                     {
-                        objectToSelect = search.getConnection();
+                        objectToSelect = search.getBrowserConnection().getConnection();
                     }
                 }
             }

@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -126,7 +126,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * @param connection the connection
      * @param parentDn the initial parent DN
      */
-    public void setInput( IConnection connection, String[] attributeNames, RDN rdn, DN parentDn )
+    public void setInput( IBrowserConnection connection, String[] attributeNames, RDN rdn, DN parentDn )
     {
         this.attributeNames = attributeNames;
         this.currentRdn = rdn;

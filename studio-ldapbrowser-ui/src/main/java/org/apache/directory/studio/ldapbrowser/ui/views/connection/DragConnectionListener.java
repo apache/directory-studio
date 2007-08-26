@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.common.dnd.ConnectionTransfer;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -79,15 +79,15 @@ public class DragConnectionListener implements DragSourceListener
                 {
                     Table table = ( Table ) dragSource.getControl();
                     TableItem[] items = table.getSelection();
-                    List<IConnection> connectionList = new ArrayList<IConnection>();
+                    List<Connection> connectionList = new ArrayList<Connection>();
                     for ( int i = 0; i < items.length; i++ )
                     {
-                        if ( items[i].getData() instanceof IConnection )
+                        if ( items[i].getData() instanceof Connection )
                         {
-                            connectionList.add( ( IConnection ) items[i].getData() );
+                            connectionList.add( ( Connection ) items[i].getData() );
                         }
                     }
-                    event.data = connectionList.toArray( new IConnection[connectionList.size()] );
+                    event.data = connectionList.toArray( new Connection[connectionList.size()] );
                 }
             }
         }

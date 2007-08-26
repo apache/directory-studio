@@ -224,7 +224,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
 
             if ( attributes.length > 0 )
             {
-                AttributeComparator comparator = new AttributeComparator( entries[0].getConnection() );
+                AttributeComparator comparator = new AttributeComparator( entries[0].getBrowserConnection() );
                 Arrays.sort( attributes, comparator );
             }
 

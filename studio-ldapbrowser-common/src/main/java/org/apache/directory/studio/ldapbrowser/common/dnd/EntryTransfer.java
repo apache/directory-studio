@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 import org.eclipse.swt.dnd.ByteArrayTransfer;
@@ -104,7 +104,7 @@ public class EntryTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < entries.length; i++ )
                 {
-                    byte[] connectionName = entries[i].getConnection().getName().getBytes();
+                    byte[] connectionName = entries[i].getBrowserConnection().getName().getBytes();
                     writeOut.writeInt( connectionName.length );
                     writeOut.write( connectionName );
                     byte[] dn = entries[i].getDn().toString().getBytes();
@@ -130,8 +130,8 @@ public class EntryTransfer extends ByteArrayTransfer
      * 
      * This implementation just converts the platform specific representation
      * to the connection name and entry DN and invokes 
-     * {@link ConnectionManager#getConnection(String)} to get the
-     * {@link IConnection} object and {@link IConnection#getEntryFromCache(DN)}
+     * {@link BrowserConnectionManager#getConnection(String)} to get the
+     * {@link IBrowserConnection} object and {@link IBrowserConnection#getEntryFromCache(DN)}
      * to get the {@link IEntry} object.
      */
     public Object nativeToJava( TransferData transferData )
@@ -149,7 +149,7 @@ public class EntryTransfer extends ByteArrayTransfer
                 List<IEntry> entryList = new ArrayList<IEntry>();
                 try
                 {
-                    IConnection connection = null;
+                    IBrowserConnection connection = null;
                     ByteArrayInputStream in = new ByteArrayInputStream( buffer );
                     DataInputStream readIn = new DataInputStream( in );
 

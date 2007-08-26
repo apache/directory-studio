@@ -32,7 +32,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListen
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -567,9 +567,9 @@ public class SearchPageWrapper extends BrowserWidget
             searchNameText.setText( search.getName() );
         }
 
-        if ( search.getConnection() != null )
+        if ( search.getBrowserConnection() != null )
         {
-            IConnection connection = search.getConnection();
+            IBrowserConnection connection = search.getBrowserConnection();
             DN searchBase = search.getSearchBase();
 
             if ( connectionWidget != null )
@@ -647,7 +647,7 @@ public class SearchPageWrapper extends BrowserWidget
             searchModified = true;
         }
         if ( connectionWidget != null && connectionWidget.getConnection() != null
-            && connectionWidget.getConnection() != search.getConnection() )
+            && connectionWidget.getConnection() != search.getBrowserConnection() )
         {
             search.setConnection( connectionWidget.getConnection() );
             searchModified = true;
@@ -801,7 +801,7 @@ public class SearchPageWrapper extends BrowserWidget
      */
     public boolean performSearch( final ISearch search )
     {
-        if ( search.getConnection() != null )
+        if ( search.getBrowserConnection() != null )
         {
             new SearchJob( new ISearch[]
                 { search } ).execute();

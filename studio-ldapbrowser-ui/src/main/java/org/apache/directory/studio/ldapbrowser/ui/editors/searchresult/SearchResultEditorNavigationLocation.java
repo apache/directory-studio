@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
@@ -74,7 +74,7 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     {
         ISearch search = getSearch();
         memento.putString( "SEARCH", search.getName() );
-        memento.putString( "CONNECTION", search.getConnection().getName() );
+        memento.putString( "CONNECTION", search.getBrowserConnection().getName() );
     }
 
 
@@ -83,7 +83,7 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
      */
     public void restoreState( IMemento memento )
     {
-        IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
             memento.getString( "CONNECTION" ) );
         ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) );
         super.setInput( new SearchResultEditorInput( search ) );

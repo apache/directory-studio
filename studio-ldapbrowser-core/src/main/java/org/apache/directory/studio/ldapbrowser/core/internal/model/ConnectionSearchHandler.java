@@ -29,13 +29,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -53,10 +53,10 @@ import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 public class ConnectionSearchHandler
 {
 
-    private Connection connection;
+    private BrowserConnection connection;
 
 
-    ConnectionSearchHandler( Connection connection )
+    ConnectionSearchHandler( BrowserConnection connection )
     {
         this.connection = connection;
     }
@@ -72,7 +72,7 @@ public class ConnectionSearchHandler
     }
 
 
-    boolean existsEntry( DN dn, ExtendedProgressMonitor monitor )
+    boolean existsEntry( DN dn, StudioProgressMonitor monitor )
     {
         SearchParameter sp = new SearchParameter();
         sp.setSearchBase( dn );
@@ -93,7 +93,7 @@ public class ConnectionSearchHandler
     }
 
 
-    IEntry getEntry( DN dn, ExtendedProgressMonitor monitor )
+    IEntry getEntry( DN dn, StudioProgressMonitor monitor )
     {
         try
         {
@@ -106,7 +106,7 @@ public class ConnectionSearchHandler
 
             // search in directory
             ISearch search = new Search( null, connection, dn, null, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_OBJECT, 1, 0,
-                IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
+                IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
             this.search( search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             if ( srs.length > 0 )
@@ -127,7 +127,7 @@ public class ConnectionSearchHandler
     }
 
 
-    void search( ISearch search, ExtendedProgressMonitor monitor )
+    void search( ISearch search, StudioProgressMonitor monitor )
     {
 
         try
@@ -191,7 +191,7 @@ public class ConnectionSearchHandler
                     else if ( ce instanceof ReferralException )
                     {
 
-                        if ( search.getReferralsHandlingMethod() == IConnection.HANDLE_REFERRALS_FOLLOW )
+                        if ( search.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                         {
 
                             ReferralException re = ( ReferralException ) ce;
@@ -200,13 +200,7 @@ public class ConnectionSearchHandler
                             {
                                 ISearch referralSearch = referralSearches[i];
 
-                                // open connection
-                                if ( !referralSearch.getConnection().isOpened() )
-                                {
-                                    referralSearch.getConnection().open( monitor );
-                                }
-
-                                referralSearch.getConnection().search( referralSearch, monitor );
+                                referralSearch.getBrowserConnection().search( referralSearch, monitor );
 
                                 ISearchResult[] referralSearchResults = referralSearch.getSearchResults();
                                 for ( int j = 0; referralSearchResults != null && j < referralSearchResults.length; j++ )
@@ -356,7 +350,7 @@ public class ConnectionSearchHandler
         // add children detetion attributes
         if ( search.isInitHasChildrenFlag() )
         {
-            if ( search.getConnection().getSchema().hasAttributeTypeDescription(
+            if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
                 IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
                     IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES ) )
@@ -367,7 +361,7 @@ public class ConnectionSearchHandler
                 returningAttributes[returningAttributes.length - 1] = IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
-            else if ( search.getConnection().getSchema().hasAttributeTypeDescription(
+            else if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
                 IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
                     IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES ) )
@@ -378,7 +372,7 @@ public class ConnectionSearchHandler
                 returningAttributes[returningAttributes.length - 1] = IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
-            else if ( search.getConnection().getSchema().hasAttributeTypeDescription(
+            else if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
                 IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
                     IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT ) )

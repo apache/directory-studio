@@ -28,7 +28,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.Bookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -110,13 +110,13 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         {
             selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
         }
-        else if ( o instanceof IConnection )
+        else if ( o instanceof IBrowserConnection )
         {
-            selectedEntry = ( ( IConnection ) o ).getRootDSE();
+            selectedEntry = ( ( IBrowserConnection ) o ).getRootDSE();
         }
         else if ( o instanceof ISearch )
         {
-            selectedEntry = ( ( ISearch ) o ).getConnection().getRootDSE();
+            selectedEntry = ( ( ISearch ) o ).getBrowserConnection().getRootDSE();
         }
         else if ( o instanceof BrowserCategory )
         {
@@ -124,7 +124,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         }
         else if ( o instanceof BrowserSearchResultPage )
         {
-            selectedEntry = ( ( BrowserSearchResultPage ) o ).getSearch().getConnection().getRootDSE();
+            selectedEntry = ( ( BrowserSearchResultPage ) o ).getSearch().getBrowserConnection().getRootDSE();
         }
         else if ( o instanceof BrowserEntryPage )
         {
@@ -201,8 +201,8 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         {
             String name = mainPage.getBookmarkName();
             DN dn = mainPage.getBookmarkDn();
-            IBookmark bookmark = new Bookmark( selectedEntry.getConnection(), dn, name );
-            selectedEntry.getConnection().getBookmarkManager().addBookmark( bookmark );
+            IBookmark bookmark = new Bookmark( selectedEntry.getBrowserConnection(), dn, name );
+            selectedEntry.getBrowserConnection().getBookmarkManager().addBookmark( bookmark );
         }
         mainPage.saveDialogSettings();
         return true;

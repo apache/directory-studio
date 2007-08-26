@@ -85,7 +85,7 @@ public class LocateDnInDitAction extends LocateInDitAction
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
                 if ( value.isString() && new DN( value.getStringValue() ) != null )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getConnection(), new DN( value
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN( value
                         .getStringValue() ) );
                 }
             }
@@ -102,7 +102,7 @@ public class LocateDnInDitAction extends LocateInDitAction
                 IValue value = getSelectedValues()[0];
                 if ( value.isString() && new DN( value.getStringValue() ) != null )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getConnection(), new DN( value
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN( value
                         .getStringValue() ) );
                 }
             }
@@ -115,7 +115,7 @@ public class LocateDnInDitAction extends LocateInDitAction
         if ( getSelectedSearchResults().length == 1 && getSelectedAttributeHierarchies().length == 0 )
         {
             ISearchResult result = getSelectedSearchResults()[0];
-            return new ConnectionAndDn( result.getEntry().getConnection(), result.getEntry().getDn() );
+            return new ConnectionAndDn( result.getEntry().getBrowserConnection(), result.getEntry().getDn() );
         }
 
         return null;

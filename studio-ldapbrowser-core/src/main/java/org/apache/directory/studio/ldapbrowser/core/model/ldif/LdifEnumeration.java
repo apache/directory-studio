@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.model.ldif;
 
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 
 
@@ -37,7 +37,7 @@ public interface LdifEnumeration
      *                instead.
      * @throws ConnectionException
      */
-    public boolean hasNext( ExtendedProgressMonitor monitor ) throws ConnectionException;
+    public boolean hasNext( StudioProgressMonitor monitor ) throws ConnectionException;
 
 
     /**
@@ -49,6 +49,6 @@ public interface LdifEnumeration
      * @return the next LDIF container or null if hasNext() returns false;
      * @throws ConnectionException
      */
-    public LdifContainer next( ExtendedProgressMonitor monitor ) throws ConnectionException;
+    public LdifContainer next( StudioProgressMonitor monitor ) throws ConnectionException;
 
 }

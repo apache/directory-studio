@@ -21,13 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionActionGroup;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionConfiguration;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionUniversalListener;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionWidget;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -49,9 +48,9 @@ public class SelectConnectionDialog extends Dialog
 
     private String title;
 
-    private IConnection initialConnection;
+    private IBrowserConnection initialConnection;
 
-    private IConnection selectedConnection;
+    private IBrowserConnection selectedConnection;
 
     private ConnectionConfiguration configuration;
 
@@ -62,7 +61,7 @@ public class SelectConnectionDialog extends Dialog
     private ConnectionWidget mainWidget;
 
 
-    public SelectConnectionDialog( Shell parentShell, String title, IConnection initialConnection )
+    public SelectConnectionDialog( Shell parentShell, String title, IBrowserConnection initialConnection )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -135,7 +134,7 @@ public class SelectConnectionDialog extends Dialog
         // create main widget
         this.mainWidget = new ConnectionWidget( this.configuration, null );
         this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( BrowserCorePlugin.getDefault().getConnectionManager() );
+        this.mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
 
         // create actions and context menu (and register global actions)
         this.actionGroup = new ConnectionActionGroup( this.mainWidget, this.configuration );
@@ -154,9 +153,9 @@ public class SelectConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IConnection )
+                    if ( o instanceof IBrowserConnection )
                     {
-                        initialConnection = ( IConnection ) o;
+                        initialConnection = ( IBrowserConnection ) o;
                     }
                 }
             }
@@ -169,9 +168,9 @@ public class SelectConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IConnection )
+                    if ( o instanceof IBrowserConnection )
                     {
-                        initialConnection = ( IConnection ) o;
+                        initialConnection = ( IBrowserConnection ) o;
                         okPressed();
                     }
                 }
@@ -180,7 +179,7 @@ public class SelectConnectionDialog extends Dialog
 
         if ( this.initialConnection != null )
         {
-            IConnection connection = this.initialConnection;
+            IBrowserConnection connection = this.initialConnection;
             this.mainWidget.getViewer().reveal( connection );
             this.mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
         }
@@ -194,7 +193,7 @@ public class SelectConnectionDialog extends Dialog
     }
 
 
-    public IConnection getSelectedConnection()
+    public IBrowserConnection getSelectedConnection()
     {
         return this.selectedConnection;
     }

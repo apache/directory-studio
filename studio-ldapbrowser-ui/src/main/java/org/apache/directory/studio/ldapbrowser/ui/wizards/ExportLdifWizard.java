@@ -98,7 +98,7 @@ public class ExportLdifWizard extends ExportBaseWizard
         fromPage.saveDialogSettings();
         toPage.saveDialogSettings();
 
-        ExportLdifJob elj = new ExportLdifJob( exportFilename, search.getConnection(), search.getSearchParameter() );
+        ExportLdifJob elj = new ExportLdifJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter() );
         elj.execute();
 
         return true;

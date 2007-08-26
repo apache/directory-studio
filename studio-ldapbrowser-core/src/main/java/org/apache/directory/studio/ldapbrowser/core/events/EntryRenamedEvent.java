@@ -49,7 +49,7 @@ public class EntryRenamedEvent extends EntryModificationEvent
      */
     public EntryRenamedEvent( IEntry oldEntry, IEntry newEntry )
     {
-        super( newEntry.getConnection(), newEntry.getParententry() );
+        super( newEntry.getBrowserConnection(), newEntry.getParententry() );
         this.oldEntry = oldEntry;
         this.newEntry = newEntry;
     }

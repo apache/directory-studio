@@ -26,7 +26,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.events.ModifyEvent;
@@ -54,7 +54,7 @@ public class ReturningAttributesWidget extends BrowserWidget
     private ReturningAttributesContentAssistProcessor contentAssistProcessor;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The initial returning attributes. */
     private String[] initialReturningAttributes;
@@ -66,7 +66,7 @@ public class ReturningAttributesWidget extends BrowserWidget
      * @param initialReturningAttributes the initial returning attributes
      * @param connection the connection
      */
-    public ReturningAttributesWidget( IConnection connection, String[] initialReturningAttributes )
+    public ReturningAttributesWidget( IBrowserConnection connection, String[] initialReturningAttributes )
     {
         this.connection = connection;
         this.initialReturningAttributes = initialReturningAttributes;
@@ -134,7 +134,7 @@ public class ReturningAttributesWidget extends BrowserWidget
      * 
      * @param connection the connection
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
         this.connection = connection;
         contentAssistProcessor.setPossibleAttributeTypes( connection == null ? new String[0] : connection.getSchema()

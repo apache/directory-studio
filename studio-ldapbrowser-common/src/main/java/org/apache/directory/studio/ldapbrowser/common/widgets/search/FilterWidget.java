@@ -27,7 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterContent
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -75,7 +75,7 @@ public class FilterWidget extends BrowserWidget
     private FilterContentAssistProcessor contentAssistProcessor;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The inital filter. */
     private String initalFilter;
@@ -90,7 +90,7 @@ public class FilterWidget extends BrowserWidget
      * @param connection the connection
      * @param initalFilter the inital filter
      */
-    public FilterWidget( IConnection connection, String initalFilter )
+    public FilterWidget( IBrowserConnection connection, String initalFilter )
     {
         this.connection = connection;
         this.initalFilter = initalFilter;
@@ -210,7 +210,7 @@ public class FilterWidget extends BrowserWidget
      * 
      * @param connection the connection
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
         if ( this.connection != connection )
         {

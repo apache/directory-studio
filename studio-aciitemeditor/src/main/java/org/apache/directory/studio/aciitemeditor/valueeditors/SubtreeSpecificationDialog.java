@@ -37,7 +37,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListen
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -77,7 +77,7 @@ class SubtreeSpecificationDialog extends Dialog
     private final SubtreeSpecificationParser parser = new SubtreeSpecificationParser( null );
 
     /** The connection */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The subentry's DN */
     private DN subentryDN;
@@ -122,7 +122,7 @@ class SubtreeSpecificationDialog extends Dialog
      * @param refinementOrFilterVisible
      *      true if the refinement of filter widget should be visible
      */
-    SubtreeSpecificationDialog( Shell shell, IConnection connection, DN subentryDN,
+    SubtreeSpecificationDialog( Shell shell, IBrowserConnection connection, DN subentryDN,
         String initialSubtreeSpecification, boolean refinementOrFilterVisible )
     {
         super( shell );

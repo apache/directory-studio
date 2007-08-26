@@ -29,6 +29,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -41,7 +44,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
@@ -95,7 +98,7 @@ public abstract class AbstractEntry implements IEntry
             ci.childrenSet = new LinkedHashSet();
         }
         ci.childrenSet.add( childToAdd );
-        this.entryModified( new EntryAddedEvent( childToAdd.getConnection(), childToAdd ) );
+        this.entryModified( new EntryAddedEvent( childToAdd.getBrowserConnection(), childToAdd ) );
     }
 
 
@@ -119,7 +122,7 @@ public abstract class AbstractEntry implements IEntry
     public void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException
     {
 
-        String oidString = attributeToAdd.getAttributeDescription().toOidString( getConnection().getSchema() );
+        String oidString = attributeToAdd.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
 
         AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
         if ( ai == null )
@@ -152,7 +155,7 @@ public abstract class AbstractEntry implements IEntry
     public void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException
     {
 
-        String oidString = attributeToDelete.getAttributeDescription().toOidString( getConnection().getSchema() );
+        String oidString = attributeToDelete.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
 
         AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
 
@@ -193,7 +196,8 @@ public abstract class AbstractEntry implements IEntry
         }
 
         // check empty attributes and empty values
-        Iterator attributeIterator = ai.attributeMap.values().iterator();
+        Map<String, IAttribute> aiAttributeMap = new HashMap<String, IAttribute>( ai.attributeMap );
+        Iterator attributeIterator = aiAttributeMap.values().iterator();
         while ( attributeIterator.hasNext() )
         {
             IAttribute attribute = ( IAttribute ) attributeIterator.next();
@@ -214,7 +218,7 @@ public abstract class AbstractEntry implements IEntry
             boolean structuralObjectClassAvailable = false;
             for ( int i = 0; i < ocValues.length; i++ )
             {
-                ObjectClassDescription ocd = this.getConnection().getSchema().getObjectClassDescription( ocValues[i] );
+                ObjectClassDescription ocd = this.getBrowserConnection().getSchema().getObjectClassDescription( ocValues[i] );
                 if ( ocd.isStructural() )
                 {
                     structuralObjectClassAvailable = true;
@@ -415,7 +419,7 @@ public abstract class AbstractEntry implements IEntry
         else
         {
             AttributeDescription ad = new AttributeDescription( attributeDescription );
-            String oidString = ad.toOidString( getConnection().getSchema() );
+            String oidString = ad.toOidString( getBrowserConnection().getSchema() );
             return ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
         }
     }
@@ -447,7 +451,7 @@ public abstract class AbstractEntry implements IEntry
                 IAttribute attribute = ( IAttribute ) iterator.next();
 
                 AttributeDescription other = attribute.getAttributeDescription();
-                if ( other.isSubtypeOf( ad, getConnection().getSchema() ) )
+                if ( other.isSubtypeOf( ad, getBrowserConnection().getSchema() ) )
                 {
                     attributeList.add( attribute );
                 }
@@ -619,9 +623,9 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    private Connection getJNDIConnection()
+    private BrowserConnection getJNDIConnection()
     {
-        return ( Connection ) this.getConnection();
+        return ( BrowserConnection ) this.getBrowserConnection();
     }
 
 
@@ -642,23 +646,27 @@ public abstract class AbstractEntry implements IEntry
         IEntry e = ( IEntry ) o;
 
         // compare dn and connection
-        return this.getDn() == null ? e.getDn() == null : ( this.getDn().equals( e.getDn() ) && this.getConnection()
-            .equals( e.getConnection() ) );
+        return this.getDn() == null ? e.getDn() == null : ( this.getDn().equals( e.getDn() ) && this.getBrowserConnection()
+            .equals( e.getBrowserConnection() ) );
     }
 
 
     public Object getAdapter( Class adapter )
     {
-
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+        Class<?> clazz = ( Class<?> ) adapter;
+        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( clazz.isAssignableFrom( Connection.class ) )
         {
-            return this.getConnection();
+            return getBrowserConnection().getConnection();
         }
-        if ( adapter == IEntry.class )
+        if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
+        {
+            return this.getBrowserConnection();
+        }
+        if ( clazz.isAssignableFrom( IEntry.class ) )
         {
             return this;
         }
@@ -674,7 +682,7 @@ public abstract class AbstractEntry implements IEntry
 
     public URL getUrl()
     {
-        return new URL( getConnection(), getDn() );
+        return new URL( getBrowserConnection(), getDn() );
     }
 
 }

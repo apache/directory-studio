@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -44,7 +44,7 @@ public class BookmarkManager implements Serializable
 
     private List<IBookmark> bookmarkList;
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
 
     /**
@@ -53,7 +53,7 @@ public class BookmarkManager implements Serializable
      * @param connection
      *      the attached Connection
      */
-    public BookmarkManager( IConnection connection )
+    public BookmarkManager( IBrowserConnection connection )
     {
         this.connection = connection;
         bookmarkList = new ArrayList<IBookmark>();
@@ -66,7 +66,7 @@ public class BookmarkManager implements Serializable
      * @return
      *      the Connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connection;
     }

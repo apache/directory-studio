@@ -24,15 +24,16 @@ package org.apache.directory.studio.ldifeditor.editor;
 import java.io.File;
 import java.util.ResourceBundle;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
@@ -125,7 +126,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     protected IToolBarManager actionToolBarManager;
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private ProjectionSupport projectionSupport;
 
@@ -236,7 +237,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         super.init( site, input );
 
-        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
         getSite().getPage().addPartListener( this );
 
         this.valueEditorManager = new ValueEditorManager( getSite().getShell() );
@@ -253,7 +254,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         deactivateGlobalActionHandlers();
 
-        EventRegistry.removeConnectionUpdateListener( this );
+        ConnectionEventRegistry.removeConnectionUpdateListener( this );
         getSite().getPage().removePartListener( this );
 
         super.dispose();
@@ -475,7 +476,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         {
             public void modifyText( ModifyEvent e )
             {
-                IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
                     connectionCombo.getText() );
                 setConnection( connection );
                 IAction action = getAction( ExecuteLdifAction.class.getName() );
@@ -569,7 +570,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     /**
      * {@inheritDoc}
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return this.connection;
     }
@@ -581,7 +582,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      * @param connection
      *      the Connection to set
      */
-    private void setConnection( IConnection connection )
+    private void setConnection( IBrowserConnection connection )
     {
         this.connection = connection;
         getEditorSite().getActionBars().getStatusLineManager().setMessage(
@@ -591,22 +592,66 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
      */
-    public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
+    public final void connectionUpdated( Connection connection )
     {
-        IConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getConnections();
+        IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnections();
         String[] names = new String[connections.length + 1];
         names[0] = "";
         for ( int i = 0; i < connections.length; i++ )
         {
             names[i + 1] = connections[i].getName();
         }
-        String old = this.connectionCombo.getText();
-        this.connectionCombo.setItems( names );
-        this.connectionCombo.setText( old );
+        String old = connectionCombo.getText();
+        connectionCombo.setItems( names );
+        connectionCombo.setText( old );
         connectionCombo.setVisibleItemCount( Math.max( names.length, 20 ) );
+    }
 
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionAdded( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionRemoved( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
+     */
+    public void connectionRenamed( Connection connection, String oldName )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionOpened( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionClosed( Connection connection )
+    {
+        connectionUpdated( connection );
     }
 
 

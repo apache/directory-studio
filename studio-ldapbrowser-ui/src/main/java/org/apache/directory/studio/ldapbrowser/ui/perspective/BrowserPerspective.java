@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.perspective;
 
 
+import org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.wizards.NewConnectionWizard;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
 import org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView;

@@ -27,12 +27,13 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -139,7 +140,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
     {
         if ( templateButton.getSelection() )
         {
-            final IConnection connection = entryWidget.getConnection();
+            final IBrowserConnection connection = entryWidget.getConnection();
             final DN dn = entryWidget.getDn();
             final IEntry[] templateEntries = new IEntry[1];
 
@@ -195,7 +196,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 EventRegistry.suspendEventFireingInCurrentThread();
 
                 LdifContentRecord record = ModelConverter.entryToLdifContentRecord( templateEntries[0] );
-                DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, connection );
+                DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, new DummyConnection( connection.getSchema() ) );
                 IAttribute[] attributes = prototypeEntry.getAttributes();
                 for ( int i = 0; i < attributes.length; i++ )
                 {
@@ -217,7 +218,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         }
         else
         {
-            wizard.setPrototypeEntry( new DummyEntry( new DN(), wizard.getSelectedConnection() ) );
+            wizard.setPrototypeEntry( new DummyEntry( new DN(), new DummyConnection( wizard.getSelectedConnection().getSchema() ) ) );
         }
 
         return super.getNextPage();

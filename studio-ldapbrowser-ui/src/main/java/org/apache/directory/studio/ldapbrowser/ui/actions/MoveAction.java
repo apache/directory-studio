@@ -156,7 +156,7 @@ public class MoveAction extends BrowserAction
      */
     protected IEntry[] getEntries()
     {
-        if ( getSelectedConnections().length + getSelectedBookmarks().length + getSelectedSearches().length
+        if ( getSelectedBookmarks().length + getSelectedSearches().length
             + getSelectedAttributes().length + getSelectedValues().length == 0
             && getSelectedEntries().length + getSelectedSearchResults().length > 0 )
         {
@@ -200,7 +200,7 @@ public class MoveAction extends BrowserAction
             DN newParentDn = moveDialog.getParentDn();
             if ( newParentDn != null /* && !newRdn.equals(entry.getRdn()) */)
             {
-                IEntry newParentEntry = entries[0].getConnection().getEntryFromCache( newParentDn );
+                IEntry newParentEntry = entries[0].getBrowserConnection().getEntryFromCache( newParentDn );
                 if ( newParentEntry != null )
                 {
                     new MoveEntriesJob( entries, newParentEntry ).execute();

@@ -41,14 +41,16 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnectionProvider;
-import org.apache.directory.studio.ldapbrowser.core.model.ICredentials;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -68,93 +70,51 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpec
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
 
 
-public class JNDIConnectionProvider implements IConnectionProvider
+public class JNDIConnectionProvider
 {
 
-    private JNDIConnectionContext context;
-
-
-    public JNDIConnectionProvider()
+    private JNDIConnectionWrapper wrapper;
+    
+    public JNDIConnectionProvider(Connection connection)
     {
+        wrapper = connection.getJNDIConnectionWrapper();
     }
 
 
-    public void connect( ConnectionParameter parameter, ExtendedProgressMonitor monitor ) throws ConnectionException
-    {
-        try
-        {
-            this.context = new JNDIConnectionContext();
-            this.context.connect( parameter.getHost(), parameter.getPort(),
-                parameter.getEncryptionMethod() == IConnection.ENCYRPTION_LDAPS,
-                parameter.getEncryptionMethod() == IConnection.ENCYRPTION_STARTTLS, null, monitor );
-        }
-        catch ( NamingException ne )
-        {
-            this.context = null;
-            throw createConnectionException( null, ne );
-        }
-    }
+//    public void connect( Connection connection, ExtendedProgressMonitor monitor ) throws ConnectionException
+//    {
+//        wrapper = connection.getJNDIConnectionWrapper();
+//        wrapper.connect( monitor );
+//        if(monitor.errorsReported())
+//        {
+//            wrapper = null;
+//            throw createConnectionException( null, monitor.getException() );
+//        }
+//    }
+//
+//
+//    public void bind( BrowserConnectionParameter parameter, ExtendedProgressMonitor monitor )
+//        throws ConnectionException
+//    {
+//        wrapper.bind( monitor );
+//        if(monitor.errorsReported())
+//        {
+//            wrapper = null;
+//            throw createConnectionException( null, monitor.getException() );
+//        }
+//    }
+//
+//
+//    public void close() throws ConnectionException
+//    {
+//        wrapper.disconnect();
+//    }
 
 
-    public void bind( ConnectionParameter parameter, ICredentials credentials, ExtendedProgressMonitor monitor )
+    public LdifEnumeration search( SearchParameter parameter, StudioProgressMonitor monitor )
         throws ConnectionException
     {
-        try
-        {
-            if ( parameter.getAuthMethod() == IConnection.AUTH_SIMPLE )
-            {
-                String bindPrincipal = credentials.getBindPrincipal();
-                String bindPassword = credentials.getBindPassword();
-                this.context.bindSimple( bindPrincipal, bindPassword, monitor );
-            }
-            
-            else if (parameter.getAuthMethod() == IConnection.AUTH_SASL_DIGMD5)
-            {
-            	String bindPrincipal = credentials.getBindPrincipal();
-                String bindPassword = credentials.getBindPassword();
-                this.context.bindSaslDigestMD5(bindPrincipal, bindPassword, monitor);
-            }
-            
-            else if (parameter.getAuthMethod() == IConnection.AUTH_SASL_CRAMD5)
-            {
-            	String bindPrincipal = credentials.getBindPrincipal();
-                String bindPassword = credentials.getBindPassword();
-                this.context.bindSaslCramMD5(bindPrincipal, bindPassword, monitor);
-            }
-            
-            else if ( parameter.getAuthMethod() == IConnection.AUTH_ANONYMOUS )
-            {
-                this.context.bindAnonymous( monitor );
-            }
-
-        }
-        catch ( NamingException ne )
-        {
-            this.context = null;
-            throw createConnectionException( null, ne );
-        }
-    }
-
-
-    public void close() throws ConnectionException
-    {
-        if ( this.context != null )
-        {
-            try
-            {
-                this.context.close();
-                this.context = null;
-            }
-            catch ( NamingException e )
-            {
-            }
-        }
-    }
-
-
-    public LdifEnumeration search( SearchParameter parameter, ExtendedProgressMonitor monitor )
-        throws ConnectionException
-    {
+        String searchBase = parameter.getSearchBase().toString();
         SearchControls controls = new SearchControls();
         switch ( parameter.getScope() )
         {
@@ -192,21 +152,16 @@ public class JNDIConnectionProvider implements IConnectionProvider
             // ldapControls = new Control[]{subEntryControl};
         }
 
-        try
+        NamingEnumeration list = wrapper.search( searchBase, filter, controls, derefAliasMethod, handleReferralsMethod, ldapControls, monitor );
+        if(monitor.errorsReported())
         {
-            NamingEnumeration list = this.context.search( parameter.getSearchBase().toString(), filter, controls,
-                derefAliasMethod, handleReferralsMethod, ldapControls, monitor );
-            return new LdifEnumerationImpl( list, parameter );
+            throw createConnectionException( null, monitor.getException() );
         }
-        catch ( NamingException e )
-        {
-            throw createConnectionException( parameter, e );
-        }
-
+        return new LdifEnumerationImpl( list, parameter );
     }
 
 
-    public void applyModification( LdifRecord record, int referralsHandlingMethod, ExtendedProgressMonitor monitor )
+    public void applyModification( LdifRecord record, int referralsHandlingMethod, StudioProgressMonitor monitor )
         throws ConnectionException
     {
 
@@ -239,13 +194,11 @@ public class JNDIConnectionProvider implements IConnectionProvider
                 }
             }
 
-            try
+            
+            wrapper.createEntry( dn, jndiAttributes, getControls( attrValRecord ), monitor );
+            if(monitor.errorsReported())
             {
-                this.context.createSubcontext( dn, jndiAttributes, getControls( attrValRecord ), monitor );
-            }
-            catch ( NamingException ne )
-            {
-                throw createConnectionException( null, ne );
+                throw createConnectionException( null, monitor.getException() );
             }
         }
         else if ( record instanceof LdifChangeAddRecord )
@@ -268,25 +221,19 @@ public class JNDIConnectionProvider implements IConnectionProvider
                 }
             }
 
-            try
+            wrapper.createEntry( dn, jndiAttributes, getControls( changeAddRecord ), monitor );
+            if(monitor.errorsReported())
             {
-                this.context.createSubcontext( dn, jndiAttributes, getControls( changeAddRecord ), monitor );
-            }
-            catch ( NamingException ne )
-            {
-                throw createConnectionException( null, ne );
+                throw createConnectionException( null, monitor.getException() );
             }
         }
         else if ( record instanceof LdifChangeDeleteRecord )
         {
             LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
-            try
+            wrapper.deleteEntry( dn, getControls( changeDeleteRecord ), monitor );
+            if(monitor.errorsReported())
             {
-                this.context.destroySubcontext( dn, getControls( changeDeleteRecord ), monitor );
-            }
-            catch ( NamingException ne )
-            {
-                throw createConnectionException( null, ne );
+                throw createConnectionException( null, monitor.getException() );
             }
         }
         else if ( record instanceof LdifChangeModifyRecord )
@@ -319,13 +266,10 @@ public class JNDIConnectionProvider implements IConnectionProvider
                 }
             }
 
-            try
+            wrapper.modifyAttributes( dn, mis, getControls( modifyRecord ), monitor );
+            if(monitor.errorsReported())
             {
-                this.context.modifyAttributes( dn, mis, getControls( modifyRecord ), monitor );
-            }
-            catch ( NamingException ne )
-            {
-                throw createConnectionException( null, ne );
+                throw createConnectionException( null, monitor.getException() );
             }
         }
         else if ( record instanceof LdifChangeModDnRecord )
@@ -347,14 +291,10 @@ public class JNDIConnectionProvider implements IConnectionProvider
                         newDn = new DN( newRdn.toString(), dnObject.getParentDn().toString() );
                     }
 
-                    try
+                    wrapper.rename( dn.toString(), newDn.toString(), deleteOldRdn, getControls( modDnRecord ), monitor );
+                    if(monitor.errorsReported())
                     {
-                        this.context.rename( dn.toString(), newDn.toString(), deleteOldRdn, getControls( modDnRecord ),
-                            monitor );
-                    }
-                    catch ( NamingException ne )
-                    {
-                        throw createConnectionException( null, ne );
+                        throw createConnectionException( null, monitor.getException() );
                     }
                 }
                 catch ( NameException ne )
@@ -399,7 +339,7 @@ public class JNDIConnectionProvider implements IConnectionProvider
         }
 
 
-        public boolean hasNext( ExtendedProgressMonitor monitor ) throws ConnectionException
+        public boolean hasNext( StudioProgressMonitor monitor ) throws ConnectionException
         {
             try
             {
@@ -412,14 +352,14 @@ public class JNDIConnectionProvider implements IConnectionProvider
         }
 
 
-        public LdifContainer next( ExtendedProgressMonitor monitor ) throws ConnectionException
+        public LdifContainer next( StudioProgressMonitor monitor ) throws ConnectionException
         {
 
             try
             {
                 SearchResult sr = ( SearchResult ) enumeration.next();
 
-                DN dn = JNDIUtils.getDn( sr, parameter.getSearchBase().toString(), context );
+                DN dn = JNDIUtils.getDn( sr, parameter.getSearchBase().toString() );
                 LdifContentRecord record = LdifContentRecord.create( dn.toString() );
 
                 NamingEnumeration attributeEnumeration = sr.getAttributes().getAll();
@@ -589,16 +529,16 @@ public class JNDIConnectionProvider implements IConnectionProvider
 
         switch ( parameter.getAliasesDereferencingMethod() )
         {
-            case IConnection.DEREFERENCE_ALIASES_NEVER:
+            case IBrowserConnection.DEREFERENCE_ALIASES_NEVER:
                 m = "never"; //$NON-NLS-1$
                 break;
-            case IConnection.DEREFERENCE_ALIASES_ALWAYS:
+            case IBrowserConnection.DEREFERENCE_ALIASES_ALWAYS:
                 m = "always"; //$NON-NLS-1$
                 break;
-            case IConnection.DEREFERENCE_ALIASES_FINDING:
+            case IBrowserConnection.DEREFERENCE_ALIASES_FINDING:
                 m = "finding"; //$NON-NLS-1$
                 break;
-            case IConnection.DEREFERENCE_ALIASES_SEARCH:
+            case IBrowserConnection.DEREFERENCE_ALIASES_SEARCH:
                 m = "searching"; //$NON-NLS-1$
                 break;
         }
@@ -613,10 +553,10 @@ public class JNDIConnectionProvider implements IConnectionProvider
 
         switch ( referralHandlingMethod )
         {
-            case IConnection.HANDLE_REFERRALS_IGNORE:
+            case IBrowserConnection.HANDLE_REFERRALS_IGNORE:
                 m = "ignore"; //$NON-NLS-1$
                 break;
-            case IConnection.HANDLE_REFERRALS_FOLLOW:
+            case IBrowserConnection.HANDLE_REFERRALS_FOLLOW:
                 // m = "follow"; //$NON-NLS-1$
                 m = "throw"; //$NON-NLS-1$
                 break;

@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
@@ -52,7 +52,7 @@ public class ValueRenamedEvent extends EntryModificationEvent
      * @param oldValue the old value with the old attribute type
      * @param newValue the new value with the new attribute type
      */
-    public ValueRenamedEvent( IConnection connection, IEntry modifiedEntry, IValue oldValue, IValue newValue )
+    public ValueRenamedEvent( IBrowserConnection connection, IEntry modifiedEntry, IValue oldValue, IValue newValue )
     {
         super( connection, modifiedEntry );
         this.oldValue = oldValue;

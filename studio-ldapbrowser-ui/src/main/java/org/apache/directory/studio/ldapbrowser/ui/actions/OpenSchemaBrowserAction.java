@@ -21,8 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
@@ -305,10 +307,10 @@ public class OpenSchemaBrowserAction extends BrowserAction
         {
             String ocdName = getSelectedValues()[0].getStringValue();
             if ( ocdName != null
-                && getSelectedValues()[0].getAttribute().getEntry().getConnection().getSchema()
+                && getSelectedValues()[0].getAttribute().getEntry().getBrowserConnection().getSchema()
                     .hasObjectClassDescription( ocdName ) )
             {
-                return getSelectedValues()[0].getAttribute().getEntry().getConnection().getSchema()
+                return getSelectedValues()[0].getAttribute().getEntry().getBrowserConnection().getSchema()
                     .getObjectClassDescription( ocdName );
             }
         }
@@ -353,45 +355,48 @@ public class OpenSchemaBrowserAction extends BrowserAction
      *
      * @return the connection
      */
-    private IConnection getConnection()
+    private IBrowserConnection getConnection()
     {
         if ( ( getSelectedValues().length + getSelectedAttributes().length ) + getSelectedAttributeHierarchies().length == 1 )
         {
-            IConnection connection = null;
+            IBrowserConnection connection = null;
             if ( getSelectedValues().length == 1 )
             {
-                connection = getSelectedValues()[0].getAttribute().getEntry().getConnection();
+                connection = getSelectedValues()[0].getAttribute().getEntry().getBrowserConnection();
             }
             else if ( getSelectedAttributes().length == 1 )
             {
-                connection = getSelectedAttributes()[0].getEntry().getConnection();
+                connection = getSelectedAttributes()[0].getEntry().getBrowserConnection();
             }
             else if ( getSelectedAttributeHierarchies().length == 1 && getSelectedAttributeHierarchies()[0].size() == 1 )
             {
-                connection = getSelectedAttributeHierarchies()[0].getAttribute().getEntry().getConnection();
+                connection = getSelectedAttributeHierarchies()[0].getAttribute().getEntry().getBrowserConnection();
             }
 
             return connection;
         }
         else if ( getSelectedConnections().length == 1 )
         {
-            return getSelectedConnections()[0];
+            Connection connection = getSelectedConnections()[0];
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
+                connection );
+            return browserConnection;
         }
         else if ( getSelectedEntries().length == 1 )
         {
-            return getSelectedEntries()[0].getConnection();
+            return getSelectedEntries()[0].getBrowserConnection();
         }
         else if ( getSelectedSearchResults().length == 1 )
         {
-            return getSelectedSearchResults()[0].getEntry().getConnection();
+            return getSelectedSearchResults()[0].getEntry().getBrowserConnection();
         }
         else if ( getSelectedBookmarks().length == 1 )
         {
-            return getSelectedBookmarks()[0].getConnection();
+            return getSelectedBookmarks()[0].getBrowserConnection();
         }
         else if ( getSelectedSearches().length == 1 )
         {
-            return getSelectedSearches()[0].getConnection();
+            return getSelectedSearches()[0].getBrowserConnection();
         }
 
         return null;

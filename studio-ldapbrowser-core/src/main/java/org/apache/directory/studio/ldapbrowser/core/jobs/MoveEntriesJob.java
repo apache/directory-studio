@@ -28,12 +28,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -42,7 +44,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 public class MoveEntriesJob extends AbstractAsyncBulkJob
 {
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private IEntry[] oldEntries;
 
@@ -55,7 +57,7 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
 
     public MoveEntriesJob( IEntry[] entries, IEntry newParent )
     {
-        this.connection = newParent.getConnection();
+        this.connection = newParent.getBrowserConnection();
         this.oldEntries = entries;
         this.newParent = newParent;
 
@@ -64,10 +66,10 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { connection.getConnection() };
     }
 
 
@@ -80,7 +82,7 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( BrowserCoreMessages.bind(

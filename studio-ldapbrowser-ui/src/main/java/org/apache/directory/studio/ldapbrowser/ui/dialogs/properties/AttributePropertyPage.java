@@ -207,10 +207,10 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
             attributeValuesText.setText( "" + valCount );
             attributeSizeText.setText( Utils.formatBytes( bytes ) );
 
-            if ( attribute.getEntry().getConnection().getSchema().hasAttributeTypeDescription(
+            if ( attribute.getEntry().getBrowserConnection().getSchema().hasAttributeTypeDescription(
                 attribute.getDescription() ) )
             {
-                AttributeTypeDescription atd = attribute.getEntry().getConnection().getSchema()
+                AttributeTypeDescription atd = attribute.getEntry().getBrowserConnection().getSchema()
                     .getAttributeTypeDescription( attribute.getDescription() );
 
                 atdOidText.setText( atd.getNumericOID() );

@@ -32,13 +32,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -68,39 +66,33 @@ public class DeleteAction extends BrowserAction
     {
         try
         {
-            IConnection[] connections = getConnections();
             IEntry[] entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
             IAttribute[] attributes = getAttributes();
             IValue[] values = getValues();
 
-            if ( connections.length > 0 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0
-                && attributes.length == 0 && values.length == 0 )
-            {
-                return connections.length > 1 ? "Delete Connections" : "Delete Connection";
-            }
-            if ( entries.length > 0 && connections.length == 0 && searches.length == 0 && bookmarks.length == 0
+            if ( entries.length > 0 && searches.length == 0 && bookmarks.length == 0
                 && attributes.length == 0 && values.length == 0 )
             {
                 return entries.length > 1 ? "Delete Entries" : "Delete Entry";
             }
-            if ( searches.length > 0 && connections.length == 0 && entries.length == 0 && bookmarks.length == 0
+            if ( searches.length > 0 && entries.length == 0 && bookmarks.length == 0
                 && attributes.length == 0 && values.length == 0 )
             {
                 return searches.length > 1 ? "Delete Searches" : "Delete Search";
             }
-            if ( bookmarks.length > 0 && connections.length == 0 && entries.length == 0 && searches.length == 0
+            if ( bookmarks.length > 0 && entries.length == 0 && searches.length == 0
                 && attributes.length == 0 && values.length == 0 )
             {
                 return bookmarks.length > 1 ? "Delete Bookmarks" : "Delete Bookmark";
             }
-            if ( attributes.length > 0 && connections.length == 0 && entries.length == 0 && searches.length == 0
+            if ( attributes.length > 0 && entries.length == 0 && searches.length == 0
                 && bookmarks.length == 0 && values.length == 0 )
             {
                 return attributes.length > 1 ? "Delete Attributes" : "Delete Attribute";
             }
-            if ( values.length > 0 && connections.length == 0 && entries.length == 0 && searches.length == 0
+            if ( values.length > 0 && entries.length == 0 && searches.length == 0
                 && bookmarks.length == 0 && attributes.length == 0 )
             {
                 return values.length > 1 ? "Delete Values" : "Delete Value";
@@ -139,7 +131,6 @@ public class DeleteAction extends BrowserAction
     {
         try
         {
-            IConnection[] connections = getConnections();
             IEntry[] entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
@@ -147,27 +138,6 @@ public class DeleteAction extends BrowserAction
             IValue[] values = getValues();
 
             StringBuffer message = new StringBuffer();
-
-            if ( connections.length > 0 )
-            {
-                if ( connections.length <= 5 )
-                {
-                    message.append( connections.length == 1 ? "Are your sure to delete the following connection?"
-                        : "Are your sure to delete the following connections?" );
-                    for ( int i = 0; i < connections.length; i++ )
-                    {
-                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " );
-                        message.append( connections[i].getName() );
-                    }
-                }
-                else
-                {
-                    message.append( "Are your sure to delete the selected connections?" );
-                }
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-            }
 
             if ( entries.length > 0 )
             {
@@ -288,11 +258,6 @@ public class DeleteAction extends BrowserAction
 
             if ( message.length() == 0 || MessageDialog.openConfirm( getShell(), getText(), message.toString() ) )
             {
-
-                if ( connections.length > 0 )
-                {
-                    deleteConnections( connections );
-                }
                 if ( entries.length > 0 )
                 {
                     deleteEntries( entries );
@@ -366,14 +331,13 @@ public class DeleteAction extends BrowserAction
     {
         try
         {
-            IConnection[] connections = getConnections();
             IEntry[] entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
             IAttribute[] attributes = getAttributes();
             IValue[] values = getValues();
 
-            return connections.length + entries.length + searches.length + bookmarks.length + attributes.length
+            return entries.length + searches.length + bookmarks.length + attributes.length
                 + values.length > 0;
 
         }
@@ -381,43 +345,6 @@ public class DeleteAction extends BrowserAction
         {
             // e.printStackTrace();
             return false;
-        }
-    }
-
-
-    /**
-     * Gets the Connections 
-     *
-     * @return
-     *      the Connections
-     * @throws Exception
-     *      when a is opened
-     */
-    protected IConnection[] getConnections() throws Exception
-    {
-        for ( int i = 0; i < getSelectedConnections().length; i++ )
-        {
-            if ( getSelectedConnections()[i].isOpened() )
-            {
-                throw new Exception();
-            }
-        }
-
-        return getSelectedConnections();
-    }
-
-
-    /**
-     * Deletes Connections
-     *
-     * @param connections
-     *      the Connections to delete
-     */
-    protected void deleteConnections( IConnection[] connections )
-    {
-        for ( int i = 0; i < connections.length; i++ )
-        {
-            BrowserCorePlugin.getDefault().getConnectionManager().removeConnection( connections[i] );
         }
     }
 
@@ -500,7 +427,7 @@ public class DeleteAction extends BrowserAction
         for ( int i = 0; i < searches.length; i++ )
         {
             ISearch search = searches[i];
-            search.getConnection().getSearchManager().removeSearch( search );
+            search.getBrowserConnection().getSearchManager().removeSearch( search );
         }
     }
 
@@ -528,7 +455,7 @@ public class DeleteAction extends BrowserAction
         for ( int i = 0; i < bookmarks.length; i++ )
         {
             IBookmark bookmark = bookmarks[i];
-            bookmark.getConnection().getBookmarkManager().removeBookmark( bookmark );
+            bookmark.getBrowserConnection().getBookmarkManager().removeBookmark( bookmark );
         }
     }
 
@@ -699,7 +626,7 @@ public class DeleteAction extends BrowserAction
             for ( Iterator it = remainingObjectClassesSet.iterator(); it.hasNext(); )
             {
                 String oc = ( String ) it.next();
-                ObjectClassDescription ocd = entry.getConnection().getSchema().getObjectClassDescription( oc );
+                ObjectClassDescription ocd = entry.getBrowserConnection().getSchema().getObjectClassDescription( oc );
                 if ( ocd != null )
                 {
                     remainingAttributeSet

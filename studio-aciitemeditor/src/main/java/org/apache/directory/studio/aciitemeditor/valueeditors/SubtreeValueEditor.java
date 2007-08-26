@@ -23,7 +23,7 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
@@ -93,7 +93,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
         Object o = super.getRawValue( value );
         if ( o != null && o instanceof String )
         {
-            IConnection connection = value.getAttribute().getEntry().getConnection();
+            IBrowserConnection connection = value.getAttribute().getEntry().getBrowserConnection();
             DN dn = value.getAttribute().getEntry().getDn();
             return new SubtreeSpecificationValueWrapper( connection, dn, value.getStringValue() );
         }
@@ -112,7 +112,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
     private class SubtreeSpecificationValueWrapper
     {
         /** The connection, used in DnDialog to browse for an entry */
-        private IConnection connection;
+        private IBrowserConnection connection;
 
         /** The subentry's DN */
         private DN subentryDN;
@@ -131,7 +131,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
          * @param subtreeSpecification
          *      the subtreeSpecification
          */
-        private SubtreeSpecificationValueWrapper( IConnection connection, DN subentryDN, String subtreeSpecification )
+        private SubtreeSpecificationValueWrapper( IBrowserConnection connection, DN subentryDN, String subtreeSpecification )
         {
             this.connection = connection;
             this.subentryDN = subentryDN;

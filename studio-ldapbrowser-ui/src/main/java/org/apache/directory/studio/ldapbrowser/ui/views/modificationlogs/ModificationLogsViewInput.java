@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 /**
@@ -35,7 +35,7 @@ public class ModificationLogsViewInput
 {
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The index of the displayed log file */
     private int index;
@@ -47,7 +47,7 @@ public class ModificationLogsViewInput
      * @param connection the connection
      * @param index the index of the displayed log file
      */
-    public ModificationLogsViewInput( IConnection connection, int index )
+    public ModificationLogsViewInput( IBrowserConnection connection, int index )
     {
         this.connection = connection;
         this.index = index;
@@ -59,7 +59,7 @@ public class ModificationLogsViewInput
      * 
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connection;
     }

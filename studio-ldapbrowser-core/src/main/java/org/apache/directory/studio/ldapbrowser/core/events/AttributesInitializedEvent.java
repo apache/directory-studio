@@ -44,7 +44,7 @@ public class AttributesInitializedEvent extends EntryModificationEvent
      */
     public AttributesInitializedEvent( IEntry initializedEntry )
     {
-        super( initializedEntry.getConnection(), initializedEntry );
+        super( initializedEntry.getBrowserConnection(), initializedEntry );
     }
 
 

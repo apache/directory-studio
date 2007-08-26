@@ -30,12 +30,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralException;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
@@ -55,14 +57,14 @@ public class ExportXlsJob extends AbstractEclipseJob
 
     private String exportLdifFilename;
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private SearchParameter searchParameter;
 
     private boolean exportDn;
 
 
-    public ExportXlsJob( String exportLdifFilename, IConnection connection, SearchParameter searchParameter,
+    public ExportXlsJob( String exportLdifFilename, IBrowserConnection connection, SearchParameter searchParameter,
         boolean exportDn )
     {
         this.exportLdifFilename = exportLdifFilename;
@@ -74,10 +76,10 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { connection.getConnection() };
     }
 
 
@@ -89,7 +91,7 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor )
+    protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__export_xls_task, 2 );
@@ -174,8 +176,8 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
-    private static void export( IConnection connection, SearchParameter searchParameter, HSSFSheet sheet,
-        HSSFRow headerRow, int count, ExtendedProgressMonitor monitor, LinkedHashMap attributeNameMap,
+    private static void export( IBrowserConnection connection, SearchParameter searchParameter, HSSFSheet sheet,
+        HSSFRow headerRow, int count, StudioProgressMonitor monitor, LinkedHashMap attributeNameMap,
         String valueDelimiter, int binaryEncoding, boolean exportDn ) throws IOException, ConnectionException
     {
         try
@@ -210,7 +212,7 @@ public class ExportXlsJob extends AbstractEclipseJob
             else if ( ce instanceof ReferralException )
             {
 
-                if ( searchParameter.getReferralsHandlingMethod() == IConnection.HANDLE_REFERRALS_FOLLOW )
+                if ( searchParameter.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                 {
 
                     ReferralException re = ( ReferralException ) ce;
@@ -219,14 +221,8 @@ public class ExportXlsJob extends AbstractEclipseJob
                     {
                         ISearch referralSearch = referralSearches[i];
 
-                        // open connection
-                        if ( !referralSearch.getConnection().isOpened() )
-                        {
-                            referralSearch.getConnection().open( monitor );
-                        }
-
                         // export recursive
-                        export( referralSearch.getConnection(), referralSearch.getSearchParameter(), sheet, headerRow,
+                        export( referralSearch.getBrowserConnection(), referralSearch.getSearchParameter(), sheet, headerRow,
                             count, monitor, attributeNameMap, valueDelimiter, binaryEncoding, exportDn );
                     }
                 }
@@ -240,7 +236,7 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
-    private static void recordToHSSFRow( IConnection connection, LdifContentRecord record, HSSFSheet sheet, HSSFRow headerRow,
+    private static void recordToHSSFRow( IBrowserConnection connection, LdifContentRecord record, HSSFSheet sheet, HSSFRow headerRow,
         Map headerRowAttributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
     {
 

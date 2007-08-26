@@ -20,18 +20,18 @@
 
 package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
-
 import javax.naming.NamingException;
-import javax.naming.directory.SearchResult;
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 
 
+
+
 public class JNDIUtils
 {
 
-    public static DN getDn( SearchResult sr, String base, JNDIConnectionContext context ) throws NamingException,
+    public static DN getDn( javax.naming.directory.SearchResult sr, String base ) throws NamingException,
         NameException, NoSuchFieldException
     {
         String dn = sr.getNameInNamespace();

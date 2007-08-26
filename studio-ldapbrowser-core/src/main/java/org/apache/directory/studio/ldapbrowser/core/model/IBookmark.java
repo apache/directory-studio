@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.BookmarkPropertyPageProvider;
-import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -73,11 +73,11 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
 
 
     /**
-     * Gets the connection.
+     * Gets the browser connection.
      * 
-     * @return the connection
+     * @return the browser connection
      */
-    public IConnection getConnection();
+    public IBrowserConnection getBrowserConnection();
 
 
     /**

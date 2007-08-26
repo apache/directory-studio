@@ -32,13 +32,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralException;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
@@ -54,14 +56,14 @@ public class ExportCsvJob extends AbstractEclipseJob
 
     private String exportLdifFilename;
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private SearchParameter searchParameter;
 
     private boolean exportDn;
 
 
-    public ExportCsvJob( String exportLdifFilename, IConnection connection, SearchParameter searchParameter,
+    public ExportCsvJob( String exportLdifFilename, IBrowserConnection connection, SearchParameter searchParameter,
         boolean exportDn )
     {
         this.exportLdifFilename = exportLdifFilename;
@@ -73,10 +75,10 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { connection.getConnection() };
     }
 
 
@@ -88,7 +90,7 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor )
+    protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__export_csv_task, 2 );
@@ -145,8 +147,8 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    private static void export( IConnection connection, SearchParameter searchParameter, BufferedWriter bufferedWriter,
-        int count, ExtendedProgressMonitor monitor, String[] attributes, String attributeDelimiter,
+    private static void export( IBrowserConnection connection, SearchParameter searchParameter, BufferedWriter bufferedWriter,
+        int count, StudioProgressMonitor monitor, String[] attributes, String attributeDelimiter,
         String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
         throws IOException, ConnectionException
     {
@@ -182,7 +184,7 @@ public class ExportCsvJob extends AbstractEclipseJob
             else if ( ce instanceof ReferralException )
             {
 
-                if ( searchParameter.getReferralsHandlingMethod() == IConnection.HANDLE_REFERRALS_FOLLOW )
+                if ( searchParameter.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                 {
 
                     ReferralException re = ( ReferralException ) ce;
@@ -191,14 +193,8 @@ public class ExportCsvJob extends AbstractEclipseJob
                     {
                         ISearch referralSearch = referralSearches[i];
 
-                        // open connection
-                        if ( !referralSearch.getConnection().isOpened() )
-                        {
-                            referralSearch.getConnection().open( monitor );
-                        }
-
                         // export recursive
-                        export( referralSearch.getConnection(), referralSearch.getSearchParameter(), bufferedWriter,
+                        export( referralSearch.getBrowserConnection(), referralSearch.getSearchParameter(), bufferedWriter,
                             count, monitor, attributes, attributeDelimiter, valueDelimiter, quoteCharacter,
                             lineSeparator, encoding, binaryEncoding, exportDn );
                     }
@@ -213,7 +209,7 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    private static String recordToCsv( IConnection connection, LdifContentRecord record, String[] attributes, String attributeDelimiter,
+    private static String recordToCsv( IBrowserConnection connection, LdifContentRecord record, String[] attributes, String attributeDelimiter,
         String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
     {
 
@@ -263,7 +259,7 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    static Map getAttributeMap( IConnection connection, LdifContentRecord record, String valueDelimiter, String encoding, int binaryEncoding )
+    static Map getAttributeMap( IBrowserConnection connection, LdifContentRecord record, String valueDelimiter, String encoding, int binaryEncoding )
     {
         Map attributeMap = new HashMap();
         LdifAttrValLine[] lines = record.getAttrVals();

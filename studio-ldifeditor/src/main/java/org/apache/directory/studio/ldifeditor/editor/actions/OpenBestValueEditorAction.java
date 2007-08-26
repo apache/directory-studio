@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
@@ -41,7 +41,7 @@ public class OpenBestValueEditorAction extends AbstractOpenValueEditorAction
         super.setEnabled( isEditableLineSelected() );
 
         // determine value editor
-        IConnection connection = getConnection();
+        IBrowserConnection connection = getConnection();
         String attributeDescription = getAttributeDescription();
 
         if ( attributeDescription != null )

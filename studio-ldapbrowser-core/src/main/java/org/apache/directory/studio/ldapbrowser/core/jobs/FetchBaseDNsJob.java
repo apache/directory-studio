@@ -24,29 +24,34 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 
 
 public class FetchBaseDNsJob extends AbstractAsyncBulkJob
 {
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private String[] baseDNs;
 
 
-    public FetchBaseDNsJob( IConnection connection )
+    public FetchBaseDNsJob( IBrowserConnection connection )
     {
         this.connection = connection;
         setName( BrowserCoreMessages.jobs__fetch_basedns_name );
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[0];
+        return new Connection[0];
     }
 
 
@@ -58,26 +63,28 @@ public class FetchBaseDNsJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.jobs__fetch_basedns_task, 5 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        connection.bind( monitor );
-        connection.fetchRootDSE( monitor );
-
-        IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
-        baseDNs = new String[baseDNEntries.length];
-        for ( int i = 0; i < baseDNs.length; i++ )
+        IRootDSE rootDSE = connection.getRootDSE();
+        InitializeAttributesJob.initializeAttributes( rootDSE, true, monitor );
+//        IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
+//        baseDNs = new String[baseDNEntries.length];
+//        for ( int i = 0; i < baseDNs.length; i++ )
+//        {
+//            baseDNs[i] = baseDNEntries[i].getDn().toString();
+//        }
+        
+        IAttribute attribute = rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
+        if ( attribute != null )
         {
-            baseDNs[i] = baseDNEntries[i].getDn().toString();
+            baseDNs = attribute.getStringValues();
         }
+        
         monitor.worked( 1 );
-
-        connection.close();
-
     }
 
 

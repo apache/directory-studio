@@ -26,7 +26,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -34,7 +34,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageW
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -208,11 +208,11 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
     {
         ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
             .getSelection();
-        this.initSearch = SelectionUtils.getExampleSearch( selection );
+        this.initSearch = BrowserSelectionUtils.getExampleSearch( selection );
         this.initSearch.setName( null );
 
         // never follow referrals for a batch operation!
-        this.initSearch.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
+        this.initSearch.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
     }
 
 
@@ -221,12 +221,12 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
         ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
             .getSelection();
-        ISearch[] searches = SelectionUtils.getSearches( selection );
-        IEntry[] entries = SelectionUtils.getEntries( selection );
-        ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
-        IBookmark[] bookmarks = SelectionUtils.getBookmarks( selection );
-        IAttribute[] attributes = SelectionUtils.getAttributes( selection );
-        IValue[] values = SelectionUtils.getValues( selection );
+        ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
+        IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+        ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+        IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+        IAttribute[] attributes = BrowserSelectionUtils.getAttributes( selection );
+        IValue[] values = BrowserSelectionUtils.getValues( selection );
 
         List textList = new ArrayList();
         List dnsList = new ArrayList();

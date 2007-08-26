@@ -179,7 +179,7 @@ public class BrowserView extends ViewPart
         {
             ISearch search = ( ISearch ) obj;
 
-            universalListener.setInput( search.getConnection() );
+            universalListener.setInput( search.getBrowserConnection() );
 
             mainWidget.getViewer().expandToLevel( search, 0 );
 
@@ -190,7 +190,7 @@ public class BrowserView extends ViewPart
             ISearchResult searchResult = ( ISearchResult ) obj;
             ISearch search = searchResult.getSearch();
 
-            universalListener.setInput( search.getConnection() );
+            universalListener.setInput( search.getBrowserConnection() );
 
             mainWidget.getViewer().expandToLevel( search, 1 );
 
@@ -200,7 +200,7 @@ public class BrowserView extends ViewPart
         {
             IBookmark bookmark = ( IBookmark ) obj;
 
-            universalListener.setInput( bookmark.getConnection() );
+            universalListener.setInput( bookmark.getBrowserConnection() );
 
             mainWidget.getViewer().expandToLevel( bookmark, 0 );
 
@@ -210,7 +210,7 @@ public class BrowserView extends ViewPart
         {
             IEntry entry = ( IEntry ) obj;
 
-            universalListener.setInput( entry.getConnection() );
+            universalListener.setInput( entry.getBrowserConnection() );
 
             List<IEntry> entryList = new ArrayList<IEntry>();
             IEntry tempEntry = entry;

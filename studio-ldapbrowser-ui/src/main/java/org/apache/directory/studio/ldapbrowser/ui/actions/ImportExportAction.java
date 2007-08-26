@@ -21,8 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -195,11 +197,11 @@ public class ImportExportAction extends BrowserAction
         {
             if ( getEntry() != null )
             {
-                wizard = new ImportLdifWizard( getEntry().getConnection() );
+                wizard = new ImportLdifWizard( getEntry().getBrowserConnection() );
             }
             else if ( getSearch() != null )
             {
-                wizard = new ImportLdifWizard( getSearch().getConnection() );
+                wizard = new ImportLdifWizard( getSearch().getBrowserConnection() );
             }
             else if ( getConnectionInput() != null )
             {
@@ -214,11 +216,11 @@ public class ImportExportAction extends BrowserAction
         {
             if ( getEntry() != null )
             {
-                wizard = new ImportDsmlWizard( getEntry().getConnection() );
+                wizard = new ImportDsmlWizard( getEntry().getBrowserConnection() );
             }
             else if ( getSearch() != null )
             {
-                wizard = new ImportDsmlWizard( getSearch().getConnection() );
+                wizard = new ImportDsmlWizard( getSearch().getBrowserConnection() );
             }
             else if ( getConnectionInput() != null )
             {
@@ -279,7 +281,7 @@ public class ImportExportAction extends BrowserAction
             entry = getSelectedBookmarks()[0].getEntry();
         }
 
-        return entry != null && entry.getConnection().isOpened() ? entry : null;
+        return entry != null ? entry : null;
     }
 
 
@@ -289,10 +291,20 @@ public class ImportExportAction extends BrowserAction
      * @return
      *      the Connection
      */
-    protected IConnection getConnection()
+    protected IBrowserConnection getConnection()
     {
-        return getSelectedConnections().length > 0 && getSelectedConnections()[0].isOpened() ? getSelectedConnections()[0]
-            : null;
+        if ( getSelectedConnections().length > 0
+            && getSelectedConnections()[0].getJNDIConnectionWrapper().isConnected() )
+        {
+            Connection connection = getSelectedConnections()[0];
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
+                connection );
+            return browserConnection;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -304,8 +316,7 @@ public class ImportExportAction extends BrowserAction
      */
     protected ISearch getSearch()
     {
-        return getSelectedSearches().length > 0 && getSelectedSearches()[0].getConnection().isOpened() ? getSelectedSearches()[0]
-            : null;
+        return getSelectedSearches().length > 0 ? getSelectedSearches()[0] : null;
     }
 
 
@@ -315,12 +326,12 @@ public class ImportExportAction extends BrowserAction
      * @return
      *      the Connection Input
      */
-    protected IConnection getConnectionInput()
+    protected IBrowserConnection getConnectionInput()
     {
 
-        if ( getInput() != null && ( getInput() instanceof IConnection ) && ( ( IConnection ) getInput() ).isOpened() )
+        if ( getInput() != null && ( getInput() instanceof IBrowserConnection ) )
         {
-            return ( IConnection ) getInput();
+            return ( IBrowserConnection ) getInput();
         }
         else
         {

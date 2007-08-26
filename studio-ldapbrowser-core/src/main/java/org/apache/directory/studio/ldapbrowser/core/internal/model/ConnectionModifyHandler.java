@@ -29,13 +29,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -64,39 +64,30 @@ import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 class ConnectionModifyHandler
 {
 
-    private Connection connection;
+    private BrowserConnection connection;
 
     private ModificationLogger modificationLogger;
-
-    private int suspendDepth;
 
     private LinkedList recordQueue;
 
 
-    ConnectionModifyHandler( Connection connection )
+    ConnectionModifyHandler( BrowserConnection connection )
     {
         this.connection = connection;
 
         this.modificationLogger = new ModificationLogger( connection );
+
+        this.recordQueue = new LinkedList();
     }
 
 
     void connectionClosed()
     {
-        this.suspendDepth = 0;
         this.recordQueue.clear();
-        this.recordQueue = null;
     }
 
 
-    void connectionOpened()
-    {
-        this.suspendDepth = 0;
-        this.recordQueue = new LinkedList();
-    }
-
-
-    void create( IValue[] valuesToCreate, ExtendedProgressMonitor monitor )
+    void create( IValue[] valuesToCreate, StudioProgressMonitor monitor )
     {
         for ( int i = 0; !monitor.isCanceled() && i < valuesToCreate.length; i++ )
         {
@@ -133,7 +124,7 @@ class ConnectionModifyHandler
     }
 
 
-    void modify( IValue oldValue, IValue newValue, ExtendedProgressMonitor monitor )
+    void modify( IValue oldValue, IValue newValue, StudioProgressMonitor monitor )
     {
         try
         {
@@ -201,7 +192,7 @@ class ConnectionModifyHandler
     }
 
 
-    void delete( IValue[] valuesToDelete, ExtendedProgressMonitor monitor )
+    void delete( IValue[] valuesToDelete, StudioProgressMonitor monitor )
     {
         try
         {
@@ -237,7 +228,7 @@ class ConnectionModifyHandler
     }
 
 
-    void delete( IAttribute[] attriubtesToDelete, ExtendedProgressMonitor monitor )
+    void delete( IAttribute[] attriubtesToDelete, StudioProgressMonitor monitor )
     {
         try
         {
@@ -263,7 +254,7 @@ class ConnectionModifyHandler
     }
 
 
-    void create( IEntry entryToCreate, ExtendedProgressMonitor monitor )
+    void create( IEntry entryToCreate, StudioProgressMonitor monitor )
     {
         try
         {
@@ -280,7 +271,7 @@ class ConnectionModifyHandler
     }
 
 
-    void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, ExtendedProgressMonitor monitor )
+    void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor )
     {
         try
         {
@@ -305,7 +296,7 @@ class ConnectionModifyHandler
     }
 
 
-    void move( IEntry entryToMove, DN newSuperior, ExtendedProgressMonitor monitor )
+    void move( IEntry entryToMove, DN newSuperior, StudioProgressMonitor monitor )
     {
         try
         {
@@ -344,7 +335,7 @@ class ConnectionModifyHandler
     }
 
 
-    void delete( IEntry entry, ExtendedProgressMonitor monitor )
+    void delete( IEntry entry, StudioProgressMonitor monitor )
     {
         try
         {
@@ -366,7 +357,7 @@ class ConnectionModifyHandler
 
 
     void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
-        ExtendedProgressMonitor monitor )
+        StudioProgressMonitor monitor )
     {
         int importedCount = 0;
         int errorCount = 0;
@@ -481,42 +472,15 @@ class ConnectionModifyHandler
     }
 
 
-    boolean isSuspended()
-    {
-        return this.suspendDepth > 0;
-    }
-
-
-    void suspend()
-    {
-        this.suspendDepth++;
-    }
-
-
-    void resume( ExtendedProgressMonitor monitor )
-    {
-        try
-        {
-            this.suspendDepth--;
-            this.commit( monitor );
-        }
-        catch ( Exception e )
-        {
-            monitor.reportError( e );
-        }
-    }
-
-
-    void reset()
+    private void reset()
     {
         this.recordQueue.clear();
-        this.suspendDepth = 0;
     }
 
 
-    private void commit( ExtendedProgressMonitor monitor ) throws ConnectionException
+    private void commit( StudioProgressMonitor monitor ) throws ConnectionException
     {
-        if ( this.suspendDepth == 0 && !recordQueue.isEmpty() )
+        if ( !recordQueue.isEmpty() )
         {
 
             final LdifRecord[] records = ( LdifRecord[] ) this.recordQueue.toArray( new LdifRecord[this.recordQueue
@@ -543,7 +507,7 @@ class ConnectionModifyHandler
                     if ( ce instanceof ReferralException )
                     {
 
-                        if ( connection.getReferralsHandlingMethod() == IConnection.HANDLE_REFERRALS_FOLLOW )
+                        if ( connection.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                         {
 
                             // get referral handler
@@ -563,7 +527,7 @@ class ConnectionModifyHandler
                                 URL referralUrl = new URL( referral );
 
                                 // get referral connection
-                                IConnection referralConnection = referralHandler.getReferralConnection( referralUrl );
+                                IBrowserConnection referralConnection = referralHandler.getReferralConnection( referralUrl );
                                 if ( referralConnection == null )
                                 {
                                     // throw new
@@ -571,13 +535,7 @@ class ConnectionModifyHandler
                                     continue;
                                 }
 
-                                // open connection
-                                if ( !referralConnection.isOpened() )
-                                {
-                                    referralConnection.open( monitor );
-                                }
-
-                                ( ( Connection ) referralConnection ).modifyHandler.applyModificationAndLog(
+                                ( ( BrowserConnection ) referralConnection ).modifyHandler.applyModificationAndLog(
                                     records[i], monitor );
 
                             }
@@ -605,7 +563,7 @@ class ConnectionModifyHandler
     }
 
 
-    private void logModificationError( Writer logWriter, LdifRecord record, Exception e, ExtendedProgressMonitor monitor )
+    private void logModificationError( Writer logWriter, LdifRecord record, Exception e, StudioProgressMonitor monitor )
     {
         try
         {
@@ -630,7 +588,7 @@ class ConnectionModifyHandler
     }
 
 
-    private void logModification( Writer logWriter, LdifRecord record, ExtendedProgressMonitor monitor )
+    private void logModification( Writer logWriter, LdifRecord record, StudioProgressMonitor monitor )
     {
         try
         {
@@ -648,7 +606,7 @@ class ConnectionModifyHandler
     }
 
 
-    private void applyModificationAndLog( LdifRecord record, ExtendedProgressMonitor monitor )
+    private void applyModificationAndLog( LdifRecord record, StudioProgressMonitor monitor )
         throws ConnectionException
     {
         this.recordQueue.add( record );

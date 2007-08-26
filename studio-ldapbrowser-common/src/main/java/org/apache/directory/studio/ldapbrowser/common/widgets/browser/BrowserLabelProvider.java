@@ -180,7 +180,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             ISearchResult sr = ( ISearchResult ) obj;
 
-            if ( !sr.getSearch().getConnection().equals( sr.getEntry().getConnection() ) )
+            if ( !sr.getSearch().getBrowserConnection().equals( sr.getEntry().getBrowserConnection() ) )
             {
                 return sr.getEntry().getUrl().toString();
             }
@@ -255,7 +255,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         else if ( obj instanceof ISearch )
         {
             ISearch search = ( ISearch ) obj;
-            if ( search.getConnection().isOpened() && search.getSearchResults() != null )
+            if ( search.getSearchResults() != null )
             {
                 return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_SEARCH );
             }
@@ -319,7 +319,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
-        else if ( entry.getDn().equals( entry.getConnection().getSchema().getDn() ) )
+        else if ( entry.getDn().equals( entry.getBrowserConnection().getSchema().getDn() ) )
         {
             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }

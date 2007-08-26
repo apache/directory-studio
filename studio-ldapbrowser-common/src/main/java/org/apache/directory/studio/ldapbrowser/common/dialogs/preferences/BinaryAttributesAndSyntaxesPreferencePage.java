@@ -29,8 +29,8 @@ import java.util.TreeMap;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinaryAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
@@ -116,8 +116,8 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
         // init available attribute types
         this.attributeNames2AtdMap = new TreeMap();
         this.attributeOid2AtdMap = new TreeMap();
-        ConnectionManager cm = BrowserCorePlugin.getDefault().getConnectionManager();
-        IConnection[] connections = cm.getConnections();
+        BrowserConnectionManager cm = BrowserCorePlugin.getDefault().getConnectionManager();
+        IBrowserConnection[] connections = cm.getBrowserConnections();
         for ( int i = 0; i < connections.length; i++ )
         {
             Schema schema = connections[i].getSchema();

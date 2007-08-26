@@ -119,10 +119,10 @@ public class ModificationLogsView extends ViewPart
         actionGroup = new ModificationLogsViewActionGroup( this );
         actionGroup.fillActionBars( getViewSite().getActionBars() );
         // this.actionGroup.fillContextMenu(this.configuration.getContextMenuManager(this.mainWidget.getViewer()));
-
+        
         // create the listener
         universalListener = new ModificationLogsViewUniversalListener( this );
-
+        
         // set help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_modification_logs_view" );

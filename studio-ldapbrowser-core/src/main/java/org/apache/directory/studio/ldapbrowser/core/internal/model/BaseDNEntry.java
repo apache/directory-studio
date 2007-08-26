@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
@@ -37,7 +37,7 @@ public class BaseDNEntry extends AbstractEntry
     protected DN baseDn;
 
     // protected String connectionName;
-    protected IConnection connection;
+    protected IBrowserConnection connection;
 
 
     protected BaseDNEntry()
@@ -45,7 +45,7 @@ public class BaseDNEntry extends AbstractEntry
     }
 
 
-    public BaseDNEntry( DN baseDn, IConnection connection ) throws ModelModificationException
+    public BaseDNEntry( DN baseDn, IBrowserConnection connection ) throws ModelModificationException
     {
         super();
 
@@ -73,11 +73,11 @@ public class BaseDNEntry extends AbstractEntry
 
     public IEntry getParententry()
     {
-        return getConnection().getRootDSE();
+        return getBrowserConnection().getRootDSE();
     }
 
 
-    public IConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
         // return
         // BrowserCorePlugin.getDefault().getConnectionManager().getConnection(this.connectionName);

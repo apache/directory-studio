@@ -26,13 +26,15 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -56,12 +58,12 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        IConnection[] connections = new IConnection[entries.length];
+        Connection[] connections = new Connection[entries.length];
         for ( int i = 0; i < connections.length; i++ )
         {
-            connections[i] = entries[i].getConnection();
+            connections[i] = entries[i].getBrowserConnection().getConnection();
         }
         return connections;
     }
@@ -82,7 +84,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -92,8 +94,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
                 { this.entries[pi].getDn().toString() } ) );
             monitor.worked( 1 );
-            if ( entries[pi].getConnection() != null && entries[pi].getConnection().isOpened()
-                && entries[pi].isDirectoryEntry() )
+            if ( entries[pi].getBrowserConnection() != null && entries[pi].isDirectoryEntry() )
             {
                 initializeAttributes( entries[pi], initOperationalAttributes, monitor );
             }
@@ -106,7 +107,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
         for ( int pi = 0; pi < entries.length; pi++ )
         {
             IEntry parent = entries[pi];
-            if ( parent.getConnection() != null && entries[pi].getConnection().isOpened() && parent.isDirectoryEntry() )
+            if ( parent.getBrowserConnection() != null && parent.isDirectoryEntry() )
             {
                 EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( parent ), this );
             }
@@ -115,7 +116,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
 
 
     public static void initializeAttributes( IEntry entry, boolean initOperationalAttributes,
-        ExtendedProgressMonitor monitor )
+        StudioProgressMonitor monitor )
     {
 
         // get user attributes or both user and operational attributes
@@ -124,7 +125,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
         raSet.add( ISearch.ALL_USER_ATTRIBUTES );
         if ( initOperationalAttributes )
         {
-            AttributeTypeDescription[] opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry.getConnection()
+            AttributeTypeDescription[] opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry.getBrowserConnection()
                 .getSchema() );
             String[] attributeTypeDescriptionNames = SchemaUtils.getAttributeTypeDescriptionNames( opAtds );
             raSet.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
@@ -145,7 +146,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
     }
 
 
-    public static void initializeAttributes( IEntry entry, String[] attributes, ExtendedProgressMonitor monitor )
+    public static void initializeAttributes( IEntry entry, String[] attributes, StudioProgressMonitor monitor )
     {
 
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_att,
@@ -167,17 +168,17 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
             entry.setChildrenInitialized( false );
             
             // special handling for Root DSE
-        	entry.getConnection().fetchRootDSE( monitor );
+        	entry.getBrowserConnection().fetchRootDSE( monitor );
         	entry.setAttributesInitialized( true );
         	entry.setChildrenInitialized( true );
         }
         else
         {
 	        // search
-	        ISearch search = new Search( null, entry.getConnection(), entry.getDn(), entry.isSubentry()?ISearch.FILTER_SUBENTRY:ISearch.FILTER_TRUE, attributes,
-	            ISearch.SCOPE_OBJECT, 0, 0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE,
+	        ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(), entry.isSubentry()?ISearch.FILTER_SUBENTRY:ISearch.FILTER_TRUE, attributes,
+	            ISearch.SCOPE_OBJECT, 0, 0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE,
 	            false, false, null );
-	        entry.getConnection().search( search, monitor );
+	        entry.getBrowserConnection().search( search, monitor );
 	
 	        // set initialized state
 	        entry.setAttributesInitialized( true );

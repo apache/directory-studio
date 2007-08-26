@@ -23,13 +23,15 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 import java.io.Writer;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -40,7 +42,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
-public class DummyConnection implements IConnection
+public class DummyConnection implements IBrowserConnection
 {
 
     private static final long serialVersionUID = 3671686808330691741L;
@@ -54,93 +56,60 @@ public class DummyConnection implements IConnection
     }
 
 
-    public void bind( ExtendedProgressMonitor monitor )
+    public void create( IEntry entryToCreate, StudioProgressMonitor monitor )
     {
     }
 
 
-    public boolean canClose()
-    {
-        return false;
-    }
-
-
-    public boolean canOpen()
-    {
-        return false;
-    }
-
-
-    public void close()
+    public void create( IValue[] valuesToCreate, StudioProgressMonitor monitor )
     {
     }
 
 
-    public void connect( ExtendedProgressMonitor monitor )
+    public void delete( IEntry entryToDelete, StudioProgressMonitor monitor )
     {
     }
 
 
-    public void create( IEntry entryToCreate, ExtendedProgressMonitor monitor )
-    {
-    }
-
-
-    public void create( IValue[] valuesToCreate, ExtendedProgressMonitor monitor )
-    {
-    }
-
-
-    public void delete( IEntry entryToDelete, ExtendedProgressMonitor monitor )
-    {
-    }
-
-
-    public void delete( IValue[] valuesToDelete, ExtendedProgressMonitor monitor )
+    public void delete( IValue[] valuesToDelete, StudioProgressMonitor monitor )
     {
 
     }
 
 
-    public void delete( IAttribute[] attriubtesToDelete, ExtendedProgressMonitor monitor )
+    public void delete( IAttribute[] attriubtesToDelete, StudioProgressMonitor monitor )
     {
 
     }
 
 
-    public boolean existsEntry( DN dn, ExtendedProgressMonitor monitor )
+    public boolean existsEntry( DN dn, StudioProgressMonitor monitor )
     {
         return false;
     }
 
 
-    public LdifEnumeration exportLdif( SearchParameter searchParameter, ExtendedProgressMonitor pm )
+    public LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor pm )
         throws ConnectionException
     {
         throw new UnsupportedOperationException();
     }
 
 
-    public void fetchRootDSE( ExtendedProgressMonitor monitor )
+    public void fetchRootDSE( StudioProgressMonitor monitor )
     {
     }
 
 
-    public int getAuthMethod()
+    public AuthenticationMethod getAuthMethod()
     {
-        return AUTH_ANONYMOUS;
+        return AuthenticationMethod.NONE;
     }
 
 
     public DN getBaseDN()
     {
         return new DN();
-    }
-
-
-    public IEntry[] getBaseDNEntries()
-    {
-        return new IEntry[0];
     }
 
 
@@ -162,12 +131,6 @@ public class DummyConnection implements IConnection
     }
 
 
-    public ConnectionParameter getConnectionParameter()
-    {
-        return null;
-    }
-
-
     public int getCountLimit()
     {
         return 0;
@@ -180,13 +143,13 @@ public class DummyConnection implements IConnection
     }
 
 
-    public int getEncryptionMethod()
+    public EncryptionMethod getEncryptionMethod()
     {
-        return ENCYRPTION_NONE;
+        return EncryptionMethod.NONE;
     }
 
 
-    public IEntry getEntry( DN dn, ExtendedProgressMonitor monitor )
+    public IEntry getEntry( DN dn, StudioProgressMonitor monitor )
     {
         return null;
     }
@@ -201,12 +164,6 @@ public class DummyConnection implements IConnection
     public String getHost()
     {
         return null;
-    }
-
-
-    public IEntry[] getMetadataEntries()
-    {
-        return new IEntry[0];
     }
 
 
@@ -247,7 +204,7 @@ public class DummyConnection implements IConnection
 
 
     public void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
-        ExtendedProgressMonitor monitor )
+        StudioProgressMonitor monitor )
     {
 
     }
@@ -259,59 +216,32 @@ public class DummyConnection implements IConnection
     }
 
 
-    public boolean isOpened()
-    {
-        return true;
-    }
-
-
-    public boolean isSuspended()
-    {
-        return true;
-    }
-
-
-    public void modify( IValue oldValue, IValue newVaue, ExtendedProgressMonitor monitor )
+    public void modify( IValue oldValue, IValue newVaue, StudioProgressMonitor monitor )
     {
     }
 
 
-    public void open( ExtendedProgressMonitor monitor )
+    public void reloadSchema( StudioProgressMonitor monitor )
     {
     }
 
 
-    public void reloadSchema( ExtendedProgressMonitor monitor )
+    public void move( IEntry entryToMove, DN newSuperior, StudioProgressMonitor monitor )
     {
     }
 
 
-    public void move( IEntry entryToMove, DN newSuperior, ExtendedProgressMonitor monitor )
+    public void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor )
     {
     }
 
 
-    public void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, ExtendedProgressMonitor monitor )
+    public void search( ISearch searchRequest, StudioProgressMonitor monitor )
     {
     }
 
 
-    public void reset()
-    {
-    }
-
-
-    public void resume( ExtendedProgressMonitor monitor )
-    {
-    }
-
-
-    public void search( ISearch searchRequest, ExtendedProgressMonitor monitor )
-    {
-    }
-
-
-    public void setAuthMethod( int authMethod )
+    public void setAuthMethod( AuthenticationMethod authMethod )
     {
     }
 
@@ -331,11 +261,6 @@ public class DummyConnection implements IConnection
     }
 
 
-    public void setConnectionParameter( ConnectionParameter connectionParameter )
-    {
-    }
-
-
     public void setCountLimit( int countLimit )
     {
     }
@@ -346,7 +271,7 @@ public class DummyConnection implements IConnection
     }
 
 
-    public void setEncryptionMethod( int encryptionMethod )
+    public void setEncryptionMethod( EncryptionMethod encryptionMethod )
     {
     }
 
@@ -383,12 +308,6 @@ public class DummyConnection implements IConnection
     }
 
 
-    public void suspend()
-    {
-
-    }
-
-
     public Object getAdapter( Class adapter )
     {
         return null;
@@ -419,6 +338,12 @@ public class DummyConnection implements IConnection
 
 
     public URL getUrl()
+    {
+        return null;
+    }
+
+
+    public Connection getConnection()
     {
         return null;
     }

@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
@@ -52,7 +52,7 @@ public class EmptyValueAddedEvent extends EntryModificationEvent
      * @param modifiedAttribute the modified attribute
      * @param addedValue the added value
      */
-    public EmptyValueAddedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
+    public EmptyValueAddedEvent( IBrowserConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
         IValue addedValue )
     {
         super( connection, modifiedEntry );

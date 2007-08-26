@@ -30,7 +30,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.eclipse.swt.SWT;
@@ -70,7 +70,7 @@ public class EntryWidget extends BrowserWidget
     private Button entryBrowseButton;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The selected DN. */
     private DN dn;
@@ -95,7 +95,7 @@ public class EntryWidget extends BrowserWidget
      * @param connection the connection
      * @param dn the initial DN
      */
-    public EntryWidget( IConnection connection, DN dn )
+    public EntryWidget( IBrowserConnection connection, DN dn )
     {
         this( connection, dn, null );
     }
@@ -108,7 +108,7 @@ public class EntryWidget extends BrowserWidget
      * @param dn the initial DN
      * @param suffix the suffix
      */
-    public EntryWidget( IConnection connection, DN dn, DN suffix )
+    public EntryWidget( IBrowserConnection connection, DN dn, DN suffix )
     {
         this.connection = connection;
         this.dn = dn;
@@ -319,7 +319,7 @@ public class EntryWidget extends BrowserWidget
      *
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connection;
     }
@@ -331,7 +331,7 @@ public class EntryWidget extends BrowserWidget
      * @param dn the DN
      * @param connection the connection
      */
-    public void setInput( IConnection connection, DN dn )
+    public void setInput( IBrowserConnection connection, DN dn )
     {
         setInput( connection, dn, null );
     }
@@ -344,7 +344,7 @@ public class EntryWidget extends BrowserWidget
      * @param dn the DN
      * @param suffix the suffix
      */
-    public void setInput( IConnection connection, DN dn, DN suffix )
+    public void setInput( IBrowserConnection connection, DN dn, DN suffix )
     {
         if ( this.connection != connection || this.dn != dn || this.suffix != suffix )
         {

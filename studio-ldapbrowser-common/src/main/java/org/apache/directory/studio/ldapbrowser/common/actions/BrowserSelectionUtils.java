@@ -29,6 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
@@ -36,7 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -55,7 +56,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class SelectionUtils
+public abstract class BrowserSelectionUtils extends SelectionUtils
 {
 
     /**
@@ -129,19 +130,19 @@ public abstract class SelectionUtils
             else if ( obj instanceof IEntry )
             {
                 IEntry entry = ( IEntry ) obj;
-                exampleSearch.setConnection( entry.getConnection() );
+                exampleSearch.setConnection( entry.getBrowserConnection() );
                 exampleSearch.setSearchBase( entry.getDn() );
             }
             else if ( obj instanceof ISearchResult )
             {
                 ISearchResult searchResult = ( ISearchResult ) obj;
-                exampleSearch.setConnection( searchResult.getEntry().getConnection() );
+                exampleSearch.setConnection( searchResult.getEntry().getBrowserConnection() );
                 exampleSearch.setSearchBase( searchResult.getEntry().getDn() );
             }
             else if ( obj instanceof IBookmark )
             {
                 IBookmark bookmark = ( IBookmark ) obj;
-                exampleSearch.setConnection( bookmark.getConnection() );
+                exampleSearch.setConnection( bookmark.getBrowserConnection() );
                 exampleSearch.setSearchBase( bookmark.getDn() );
             }
 
@@ -185,7 +186,7 @@ public abstract class SelectionUtils
                     }
                 }
 
-                exampleSearch.setConnection( entry.getConnection() );
+                exampleSearch.setConnection( entry.getBrowserConnection() );
                 exampleSearch.setSearchBase( entry.getDn() );
                 StringBuffer filter = new StringBuffer();
                 if ( filterSet.size() > 1 )
@@ -208,9 +209,9 @@ public abstract class SelectionUtils
                 exampleSearch.setFilter( filter.toString() );
             }
 
-            else if ( obj instanceof IConnection )
+            else if ( obj instanceof IBrowserConnection )
             {
-                IConnection connection = ( IConnection ) obj;
+                IBrowserConnection connection = ( IBrowserConnection ) obj;
                 exampleSearch.setConnection( connection );
                 if ( connection.getRootDSE().getChildrenCount() > 0 )
                 {
@@ -399,17 +400,30 @@ public abstract class SelectionUtils
     }
 
 
-    /**
-     * Gets the IConnection beans contained in the given selection.
-     *
-     * @param selection the selection
-     * @return an array with IConnection beans, may be empty.
-     */
-    public static IConnection[] getConnections( ISelection selection )
-    {
-        List<Object> list = getTypes( selection, IConnection.class );
-        return list.toArray( new IConnection[list.size()] );
-    }
+//    /**
+//     * Gets the IConnection beans contained in the given selection.
+//     *
+//     * @param selection the selection
+//     * @return an array with IConnection beans, may be empty.
+//     */
+//    public static IConnection[] getConnections( ISelection selection )
+//    {
+//        List<Object> list1 = getTypes( selection, IConnection.class );
+//
+//        List<Object> list2 = getTypes( selection, Connection.class );
+//        for ( Object object : list2 )
+//        {
+//            Connection connection = ( Connection ) object;
+//            String name = connection.getName();
+//            IConnection conn = BrowserCorePlugin.getDefault().getConnectionManager().getConnection( name );
+//            if ( conn != null )
+//            {
+//                list1.add( conn );
+//            }
+//        }
+//
+//        return list1.toArray( new IConnection[list1.size()] );
+//    }
 
 
     /**

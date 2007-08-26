@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
@@ -100,7 +100,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     public void saveState( IMemento memento )
     {
-        IConnection connection = getConnection();
+        IBrowserConnection connection = getConnection();
         SchemaPart schemaElement = getSchemElement();
         memento.putString( "CONNECTION", connection.getName() );
         memento.putString( "SCHEMAELEMENTYPE", schemaElement.getClass().getName() );
@@ -113,7 +113,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     public void restoreState( IMemento memento )
     {
-        IConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
             memento.getString( "CONNECTION" ) );
         String schemaElementType = memento.getString( "SCHEMAELEMENTYPE" );
         String schemaElementOid = memento.getString( "SCHEMAELEMENTOID" );
@@ -235,7 +235,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      *
      * @return the connection
      */
-    private IConnection getConnection()
+    private IBrowserConnection getConnection()
     {
         
         Object editorInput = getInput();

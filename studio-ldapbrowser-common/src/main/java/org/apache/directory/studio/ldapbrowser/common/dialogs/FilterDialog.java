@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterSourceViewerConfiguration;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -48,7 +48,7 @@ public class FilterDialog extends Dialog
 
     private String title;
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private SourceViewer sourceViewer;
 
@@ -59,7 +59,7 @@ public class FilterDialog extends Dialog
     private String filter;
 
 
-    public FilterDialog( Shell parentShell, String title, String filter, IConnection connection )
+    public FilterDialog( Shell parentShell, String title, String filter, IBrowserConnection connection )
     {
         super( parentShell );
         this.title = title;

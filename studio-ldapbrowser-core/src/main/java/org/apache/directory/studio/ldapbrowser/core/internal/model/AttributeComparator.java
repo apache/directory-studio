@@ -26,7 +26,7 @@ import java.util.Comparator;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
@@ -39,7 +39,7 @@ public class AttributeComparator implements Comparator
     private IEntry dummyEntry;
 
 
-    public AttributeComparator( IConnection connection )
+    public AttributeComparator( IBrowserConnection connection )
     {
         this.dummyEntry = new DummyEntry( new DN(), connection );
     }

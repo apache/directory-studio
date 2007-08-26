@@ -100,8 +100,8 @@ public class SearchParameter implements Serializable
         scope = ISearch.SCOPE_ONELEVEL;
         timeLimit = 0;
         countLimit = 0;
-        aliasesDereferencingMethod = IConnection.DEREFERENCE_ALIASES_NEVER;
-        referralsHandlingMethod = IConnection.HANDLE_REFERRALS_IGNORE;
+        aliasesDereferencingMethod = IBrowserConnection.DEREFERENCE_ALIASES_NEVER;
+        referralsHandlingMethod = IBrowserConnection.HANDLE_REFERRALS_IGNORE;
         controls = null;
         initHasChildrenFlag = false;
         initAliasAndReferralFlag = false;

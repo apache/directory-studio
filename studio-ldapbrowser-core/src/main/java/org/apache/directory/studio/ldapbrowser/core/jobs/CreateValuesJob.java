@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
@@ -66,7 +67,7 @@ public class CreateValuesJob extends AbstractModificationJob
     }
 
 
-    protected void executeAsyncModificationJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( rawValues.length == 1 ? BrowserCoreMessages.jobs__create_values_task_1
@@ -96,11 +97,11 @@ public class CreateValuesJob extends AbstractModificationJob
 
             if ( this.event == null )
             {
-                event = new ValueAddedEvent( entry.getConnection(), entry, attribute, newValues[i] );
+                event = new ValueAddedEvent( entry.getBrowserConnection(), entry, attribute, newValues[i] );
             }
         }
 
-        entry.getConnection().create( newValues, monitor );
+        entry.getBrowserConnection().create( newValues, monitor );
     }
 
 

@@ -27,12 +27,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -42,7 +44,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 public class RenameEntryJob extends AbstractAsyncBulkJob
 {
 
-    private IConnection connection;
+    private IBrowserConnection browserConnection;
 
     private IEntry oldEntry;
 
@@ -57,7 +59,7 @@ public class RenameEntryJob extends AbstractAsyncBulkJob
 
     public RenameEntryJob( IEntry entry, RDN newRdn, boolean deleteOldRdn )
     {
-        this.connection = entry.getConnection();
+        this.browserConnection = entry.getBrowserConnection();
         this.oldEntry = entry;
         this.newEntry = entry;
         this.newRdn = newRdn;
@@ -67,10 +69,10 @@ public class RenameEntryJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
@@ -82,7 +84,7 @@ public class RenameEntryJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__rename_entry_task, new String[]
@@ -96,13 +98,13 @@ public class RenameEntryJob extends AbstractAsyncBulkJob
         // rename in directory
         // TODO: use manual/simulated rename, if rename of subtree is not
         // supported
-        connection.rename( oldEntry, newDn, deleteOldRdn, monitor );
+        browserConnection.rename( oldEntry, newDn, deleteOldRdn, monitor );
 
         if ( !monitor.errorsReported() )
         {
             // rename in parent
             parent.deleteChild( oldEntry );
-            this.newEntry = connection.getEntry( newDn, monitor );
+            this.newEntry = browserConnection.getEntry( newDn, monitor );
             parent.addChild( newEntry );
             parent.setHasMoreChildren( false );
 
@@ -113,7 +115,7 @@ public class RenameEntryJob extends AbstractAsyncBulkJob
             }
 
             // rename in searches
-            ISearch[] searches = connection.getSearchManager().getSearches();
+            ISearch[] searches = browserConnection.getSearchManager().getSearches();
             for ( int j = 0; j < searches.length; j++ )
             {
                 ISearch search = searches[j];

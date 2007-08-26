@@ -25,28 +25,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 public class ReloadSchemasJob extends AbstractAsyncBulkJob
 {
 
-    private IConnection[] connections;
+    private IBrowserConnection[] browserConnections;
 
 
-    public ReloadSchemasJob( IConnection[] connections )
+    public ReloadSchemasJob( IBrowserConnection[] connections )
     {
-        this.connections = connections;
+        this.browserConnections = connections;
         setName( connections.length == 1 ? BrowserCoreMessages.jobs__reload_schemas_name_1
             : BrowserCoreMessages.jobs__reload_schemas_name_n );
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
+        Connection[] connections = new Connection[browserConnections.length];
+        for ( int i = 0; i < browserConnections.length; i++ )
+        {
+            connections[i] = browserConnections[i].getConnection();
+        }
         return connections;
     }
 
@@ -54,45 +59,41 @@ public class ReloadSchemasJob extends AbstractAsyncBulkJob
     protected Object[] getLockedObjects()
     {
         List l = new ArrayList();
-        l.addAll( Arrays.asList( connections ) );
+        l.addAll( Arrays.asList( browserConnections ) );
         return l.toArray();
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
-
-        monitor.beginTask( " ", connections.length + 1 ); //$NON-NLS-1$
+        monitor.beginTask( " ", browserConnections.length + 1 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
-        for ( int i = 0; i < connections.length; i++ )
+        for ( int i = 0; i < browserConnections.length; i++ )
         {
-
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__reload_schemas_task, new String[]
-                { connections[i].getName() } ) );
+                { browserConnections[i].getName() } ) );
             monitor.worked( 1 );
 
-            if ( connections[i].isOpened() )
-            {
-                connections[i].reloadSchema( monitor );
-            }
+            browserConnections[i].reloadSchema( monitor );
         }
     }
 
 
     protected void runNotification()
     {
-        for ( int i = 0; i < connections.length; i++ )
+        for ( int i = 0; i < browserConnections.length; i++ )
         {
-            EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connections[i],
-                ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
+            // TODO: schema update event
+//            EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connections[i],
+//                ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
         }
     }
 
 
     protected String getErrorMessage()
     {
-        return connections.length == 1 ? BrowserCoreMessages.jobs__reload_schemas_error_1
+        return browserConnections.length == 1 ? BrowserCoreMessages.jobs__reload_schemas_error_1
             : BrowserCoreMessages.jobs__reload_schemas_error_n;
     }
 }

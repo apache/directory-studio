@@ -26,7 +26,7 @@ import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
@@ -111,7 +111,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
 
                 Schema schema = editor.getConnection() != null ? editor.getConnection().getSchema()
                     : Schema.DEFAULT_SCHEMA;
-                IConnection dummyConnection = new DummyConnection( schema );
+                IBrowserConnection dummyConnection = new DummyConnection( schema );
 
                 IEntry dummyEntry = null;
                 if ( containers[0] instanceof LdifContentRecord )

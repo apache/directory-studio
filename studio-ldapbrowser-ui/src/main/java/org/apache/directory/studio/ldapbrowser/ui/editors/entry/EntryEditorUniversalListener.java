@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -69,10 +69,10 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
             {
                 if ( entryEditor.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
                 {
-                    IEntry[] entries = SelectionUtils.getEntries( selection );
-                    ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
-                    IBookmark[] bookmarks = SelectionUtils.getBookmarks( selection );
-                    Object[] objects = SelectionUtils.getObjects( selection );
+                    IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+                    ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+                    IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+                    Object[] objects = BrowserSelectionUtils.getObjects( selection );
                     if ( entries.length + searchResults.length + bookmarks.length == 1 && objects.length == 1 )
                     {
                         if ( entries.length == 1 )

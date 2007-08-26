@@ -22,7 +22,6 @@
 package org.apache.directory.studio.ldapbrowser.core.model.schema.parser;
 
 
-import java.util.*;
 
 
 public interface SchemaValueTokenTypes

@@ -33,7 +33,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.UnfilterChildrenAc
 import org.apache.directory.studio.ldapbrowser.common.actions.UpAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserViewActionProxy;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -300,7 +300,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
      *
      * @param connection the connection
      */
-    public void setInput( IConnection connection )
+    public void setInput( IBrowserConnection connection )
     {
         for ( Iterator it = browserActionMap.values().iterator(); it.hasNext(); )
         {

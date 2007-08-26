@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IAutoEditStrategy;
@@ -54,7 +54,7 @@ public class FilterSourceViewerConfiguration extends SourceViewerConfiguration
 {
 
     /** The current connection, used to retrieve schema information. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The filter parser. */
     private LdapFilterParser parser;
@@ -96,7 +96,7 @@ public class FilterSourceViewerConfiguration extends SourceViewerConfiguration
      * @param parser the filer parser
      * @param connection the connection
      */
-    public FilterSourceViewerConfiguration( LdapFilterParser parser, IConnection connection )
+    public FilterSourceViewerConfiguration( LdapFilterParser parser, IBrowserConnection connection )
     {
         this.parser = parser;
         this.connection = connection;
@@ -108,7 +108,7 @@ public class FilterSourceViewerConfiguration extends SourceViewerConfiguration
      * 
      * @param connection the connection
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
         this.connection = connection;
         contentAssistProcessor.setSchema( connection == null ? null : connection.getSchema() );

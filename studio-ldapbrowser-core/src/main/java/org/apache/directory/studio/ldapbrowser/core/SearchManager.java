@@ -27,13 +27,13 @@ import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.osgi.util.NLS;
 
 
 /**
- * This class is used to manages {@link ISearch}es of an {@link IConnection}
+ * This class is used to manages {@link ISearch}es of an {@link IBrowserConnection}
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -48,7 +48,7 @@ public class SearchManager implements Serializable
     private List<ISearch> searchList;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
 
     /**
@@ -65,7 +65,7 @@ public class SearchManager implements Serializable
      * @param connection
      *      the attached Connection
      */
-    public SearchManager( IConnection connection )
+    public SearchManager( IBrowserConnection connection )
     {
         this.connection = connection;
         this.searchList = new ArrayList<ISearch>();
@@ -78,7 +78,7 @@ public class SearchManager implements Serializable
      * @return
      *      the Connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return this.connection;
     }

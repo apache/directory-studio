@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
@@ -105,7 +106,7 @@ public class URL
      * @param connection the connection
      * @param dn the DN
      */
-    public URL( IConnection connection, DN dn )
+    public URL( IBrowserConnection connection, DN dn )
     {
         this( connection );
 
@@ -124,14 +125,14 @@ public class URL
      *
      * @param connection the connection
      */
-    public URL( IConnection connection )
+    public URL( IBrowserConnection connection )
     {
         if ( connection == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_url );
         }
 
-        if ( connection.getEncryptionMethod() == IConnection.ENCYRPTION_LDAPS )
+        if ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
         {
             this.protocol = "ldaps";; //$NON-NLS-1$
         }
@@ -152,7 +153,7 @@ public class URL
      */
     public URL( ISearch search )
     {
-        this( search.getConnection(), search.getSearchBase() );
+        this( search.getBrowserConnection(), search.getSearchBase() );
 
         if ( search == null )
         {

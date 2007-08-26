@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
@@ -52,7 +53,7 @@ public class ModifyValueJob extends AbstractModificationJob
     }
 
 
-    protected void executeAsyncModificationJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__modify_value_task, 2 );
@@ -61,9 +62,9 @@ public class ModifyValueJob extends AbstractModificationJob
 
         IValue newValue = new Value( attribute, newRawValue );
         attribute.modifyValue( oldValue, newValue );
-        attribute.getEntry().getConnection().modify( oldValue, newValue, monitor );
+        attribute.getEntry().getBrowserConnection().modify( oldValue, newValue, monitor );
 
-        this.event = new ValueModifiedEvent( attribute.getEntry().getConnection(), attribute.getEntry(), attribute,
+        this.event = new ValueModifiedEvent( attribute.getEntry().getBrowserConnection(), attribute.getEntry(), attribute,
             oldValue, newValue );
     }
 

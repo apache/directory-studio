@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -34,7 +36,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.AliasBaseEntr
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -54,12 +56,12 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        IConnection[] connections = new IConnection[entries.length];
+        Connection[] connections = new Connection[entries.length];
         for ( int i = 0; i < connections.length; i++ )
         {
-            connections[i] = entries[i].getConnection();
+            connections[i] = entries[i].getBrowserConnection().getConnection();
         }
         return connections;
     }
@@ -80,7 +82,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -92,8 +94,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                 { this.entries[pi].getDn().toString() } ) );
             monitor.worked( 1 );
 
-            if ( entries[pi].getConnection() != null && entries[pi].getConnection().isOpened()
-                && entries[pi].isDirectoryEntry() )
+            if ( entries[pi].getBrowserConnection() != null && entries[pi].isDirectoryEntry() )
             {
                 initializeChildren( entries[pi], monitor );
             }
@@ -106,7 +107,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
         for ( int pi = 0; pi < entries.length; pi++ )
         {
             IEntry parent = entries[pi];
-            if ( parent.getConnection() != null && entries[pi].getConnection().isOpened() && parent.isDirectoryEntry() )
+            if ( parent.getBrowserConnection() != null && parent.isDirectoryEntry() )
             {
                 EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
             }
@@ -114,7 +115,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
     }
 
 
-    public static void initializeChildren( IEntry parent, ExtendedProgressMonitor monitor )
+    public static void initializeChildren( IEntry parent, StudioProgressMonitor monitor )
     {
 
         if ( parent instanceof IRootDSE )
@@ -141,26 +142,26 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             
             // determine alias and referral handling
             int scope = ISearch.SCOPE_ONELEVEL;
-            int derefAliasMethod = parent.getConnection().getAliasesDereferencingMethod();
-            int handleReferralsMethod = parent.getConnection().getReferralsHandlingMethod();
+            int derefAliasMethod = parent.getBrowserConnection().getAliasesDereferencingMethod();
+            int handleReferralsMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
             if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                 BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) )
             {
                 scope = ( parent.isAlias() || parent.isReferral() ) ? ISearch.SCOPE_OBJECT : ISearch.SCOPE_ONELEVEL;
-                derefAliasMethod = parent.isAlias() ? IConnection.DEREFERENCE_ALIASES_FINDING
-                    : IConnection.DEREFERENCE_ALIASES_NEVER;
-                handleReferralsMethod = parent.isReferral() ? IConnection.HANDLE_REFERRALS_FOLLOW
-                    : IConnection.HANDLE_REFERRALS_IGNORE;
+                derefAliasMethod = parent.isAlias() ? IBrowserConnection.DEREFERENCE_ALIASES_FINDING
+                    : IBrowserConnection.DEREFERENCE_ALIASES_NEVER;
+                handleReferralsMethod = parent.isReferral() ? IBrowserConnection.HANDLE_REFERRALS_FOLLOW
+                    : IBrowserConnection.HANDLE_REFERRALS_IGNORE;
             }
 
             // get children,
-            ISearch search = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter(),
-                ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
-                parent.getConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
+            ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent.getChildrenFilter(),
+                ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
+                parent.getBrowserConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
                     .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
                 BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                     BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ), null );
-            parent.getConnection().search( search, monitor );
+            parent.getBrowserConnection().search( search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
                 new String[]
@@ -188,7 +189,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                 {
                     if ( parent.isReferral() )
                     {
-                        ReferralBaseEntry referralBaseEntry = new ReferralBaseEntry( srs[i].getEntry().getConnection(),
+                        ReferralBaseEntry referralBaseEntry = new ReferralBaseEntry( srs[i].getEntry().getBrowserConnection(),
                             srs[i].getEntry().getDn() );
                         parent.addChild( referralBaseEntry );
                         // System.out.println("Ref: " +
@@ -196,7 +197,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
                     }
                     else if ( parent.isAlias() )
                     {
-                        AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getConnection(), srs[i]
+                        AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getBrowserConnection(), srs[i]
                             .getEntry().getDn() );
                         parent.addChild( aliasBaseEntry );
                         // System.out.println("Ali: " +
@@ -214,9 +215,9 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             }
 
             // get subentries
-            ISearch subSearch = new Search( null, parent.getConnection(), parent.getDn(), parent.getChildrenFilter()!=null?parent.getChildrenFilter():ISearch.FILTER_SUBENTRY,
-                ISearch.NO_ATTRIBUTES, scope, parent.getConnection().getCountLimit(),
-                parent.getConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
+            ISearch subSearch = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent.getChildrenFilter()!=null?parent.getChildrenFilter():ISearch.FILTER_SUBENTRY,
+                ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
+                parent.getBrowserConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
                     .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
                 BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                     BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ), new Control[]
@@ -224,7 +225,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
             if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                 BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) )
             {
-                parent.getConnection().search( subSearch, monitor );
+                parent.getBrowserConnection().search( subSearch, monitor );
                 ISearchResult[] subSrs = subSearch.getSearchResults();
                 monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
                     new String[]

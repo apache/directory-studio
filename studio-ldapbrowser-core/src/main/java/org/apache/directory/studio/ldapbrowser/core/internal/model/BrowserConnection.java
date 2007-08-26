@@ -24,29 +24,25 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionRenamedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IAuthHandler;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnectionProvider;
-import org.apache.directory.studio.ldapbrowser.core.model.ICredentials;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -62,12 +58,14 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
-public class Connection implements IConnection, Serializable
+public class BrowserConnection implements ConnectionUpdateListener, IBrowserConnection, Serializable
 {
 
     private static final long serialVersionUID = 2987596234755856270L;
 
-    private ConnectionParameter connectionParameter;
+    private org.apache.directory.studio.connection.core.Connection connection;
+    
+//    private BrowserConnectionParameter browserConnectionParameter;
 
     private IRootDSE rootDSE;
 
@@ -77,184 +75,105 @@ public class Connection implements IConnection, Serializable
 
     private BookmarkManager bookmarkManager;
 
-    private volatile Map dnToEntryCache;
+    private volatile Map<String, IEntry> dnToEntryCache;
 
-    private volatile Map entryToChildrenFilterMap;
+    private volatile Map<IEntry, String> entryToChildrenFilterMap;
 
-    private volatile Map entryToAttributeInfoMap;
+    private volatile Map<IEntry, AttributeInfo> entryToAttributeInfoMap;
 
-    private volatile Map entryToChildrenInfoMap;
+    private volatile Map<IEntry, ChildrenInfo> entryToChildrenInfoMap;
 
-    private static final String DEFAULT_PROVIDER = JNDIConnectionProvider.class.getName();
-
-    transient IConnectionProvider connectionProvider;
-
+    transient JNDIConnectionProvider connectionProvider;
+    
     transient ConnectionModifyHandler modifyHandler;
 
     transient ConnectionSearchHandler searchHandler;
 
 
-    public Connection()
+    /**
+     * Creates a new instance of BrowserConnection.
+     *
+     * @param connection the connection
+     */
+    public BrowserConnection( org.apache.directory.studio.connection.core.Connection connection )
     {
-        this( null, null, 0, 0, true, new DN(), 0, 0, IConnection.DEREFERENCE_ALIASES_NEVER,
-            IConnection.HANDLE_REFERRALS_IGNORE, IConnection.AUTH_ANONYMOUS, null, null );
-    }
-
-
-    public Connection( String name, String host, int port, int encryptionMethod, boolean fetchBaseDNs, DN baseDN,
-        int countLimit, int timeLimit, int aliasesDereferencingMethod, int referralsHandlingMethod, int authMethod,
-        String bindPrincipal, String bindPassword )
-    {
-
-        this.connectionParameter = new ConnectionParameter();
-        this.connectionParameter.setName( name );
-        this.connectionParameter.setHost( host );
-        this.connectionParameter.setPort( port );
-        this.connectionParameter.setEncryptionMethod( encryptionMethod );
-        this.connectionParameter.setCountLimit( countLimit );
-        this.connectionParameter.setTimeLimit( timeLimit );
-        this.connectionParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
-        this.connectionParameter.setReferralsHandlingMethod( referralsHandlingMethod );
-        this.connectionParameter.setFetchBaseDNs( fetchBaseDNs );
-        this.connectionParameter.setBaseDN( baseDN );
-        this.connectionParameter.setAuthMethod( authMethod );
-        // this.connectionParameter.setBindDN(bindDn);
-        this.connectionParameter.setBindPrincipal( bindPrincipal );
-        this.connectionParameter.setBindPassword( bindPassword );
-
+        this.connection = connection;
+        
+        if( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_COUNT_LIMIT ) == null )
+        {
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_COUNT_LIMIT, 0 );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT, 0 );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, IBrowserConnection.HANDLE_REFERRALS_IGNORE );
+            connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
+            connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" );
+        }
+        
+//        this.browserConnectionParameter = new BrowserConnectionParameter();
+//        this.browserConnectionParameter.setCountLimit( 0 );
+//        this.browserConnectionParameter.setTimeLimit( 0 );
+//        this.browserConnectionParameter.setAliasesDereferencingMethod( IConnection.DEREFERENCE_ALIASES_NEVER );
+//        this.browserConnectionParameter.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
+//        this.browserConnectionParameter.setFetchBaseDNs( true );
+//        this.browserConnectionParameter.setBaseDN( new DN() );
+        
         this.rootDSE = null;
 
         this.schema = Schema.DEFAULT_SCHEMA;
         this.searchManager = new SearchManager( this );
         this.bookmarkManager = new BookmarkManager( this );
 
-        this.entryToChildrenFilterMap = new HashMap();
-        this.dnToEntryCache = new HashMap();
-        this.entryToAttributeInfoMap = new HashMap();
-        this.entryToChildrenInfoMap = new HashMap();
+        this.entryToChildrenFilterMap = new HashMap<IEntry, String>();
+        this.dnToEntryCache = new HashMap<String, IEntry>();
+        this.entryToAttributeInfoMap = new HashMap<IEntry, AttributeInfo>();
+        this.entryToChildrenInfoMap = new HashMap<IEntry, ChildrenInfo>();
 
-        this.setConnectionProviderClassName( DEFAULT_PROVIDER );
+        this.connectionProvider = new JNDIConnectionProvider( connection );
         this.modifyHandler = new ConnectionModifyHandler( this );
         this.searchHandler = new ConnectionSearchHandler( this );
+        
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
-
-
+    
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getUrl()
+     */
     public URL getUrl()
     {
         return new URL( this );
     }
 
 
-    public Object clone()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#reloadSchema(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    public void reloadSchema( StudioProgressMonitor monitor )
     {
-        Connection newConnection = new Connection( this.getName(), this.getHost(), this.getPort(), this
-            .getEncryptionMethod(), this.isFetchBaseDNs(), this.getBaseDN(), this.getCountLimit(), this.getTimeLimit(),
-            this.getAliasesDereferencingMethod(), this.getReferralsHandlingMethod(), this.getAuthMethod(), this
-                .getBindPrincipal(), this.getBindPassword() );
-
-        return newConnection;
-    }
-
-
-    public void reloadSchema( ExtendedProgressMonitor monitor )
-    {
+        fetchRootDSE( monitor );
+        
         monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
-        this.loadSchema( monitor );
+        loadSchema( monitor );
     }
 
 
-    public void connect( ExtendedProgressMonitor monitor )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#fetchRootDSE(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    public void fetchRootDSE( StudioProgressMonitor monitor )
     {
-        if ( this.connectionProvider == null )
-        {
-            if ( this.getConnectionProviderClassName() == null )
-            {
-                monitor.reportError( BrowserCoreMessages.model__no_connection_provider );
-                return;
-            }
-
-            try
-            {
-                this.connectionProvider = ( IConnectionProvider ) Class.forName( this.getConnectionProviderClassName() )
-                    .newInstance();
-            }
-            catch ( Exception e )
-            {
-                monitor.reportError( BrowserCoreMessages.model__no_connection_provider );
-                return;
-            }
-        }
-
-        try
-        {
-            this.entryToChildrenFilterMap = new HashMap();
-            this.dnToEntryCache = new HashMap();
-            this.entryToAttributeInfoMap = new HashMap();
-            this.entryToChildrenInfoMap = new HashMap();
-
-            modifyHandler.connectionOpened();
-            searchHandler.connectionOpened();
-
-            monitor.reportProgress( BrowserCoreMessages.model__connecting );
-            this.connectionProvider.connect( this.connectionParameter, monitor );
-            monitor.worked( 1 );
-        }
-        catch ( ConnectionException e )
-        {
-            monitor.reportError( e.getMessage(), e );
-            this.connectionProvider = null;
-        }
-    }
-
-
-    public void bind( ExtendedProgressMonitor monitor )
-    {
-        this.connect( monitor );
-
-        if ( this.connectionProvider != null )
-        {
-            try
-            {
-                monitor.reportProgress( BrowserCoreMessages.model__binding );
-
-                IAuthHandler authHandler = BrowserCorePlugin.getDefault().getAuthHandler();
-                if ( authHandler == null )
-                {
-                    throw new ConnectionException( BrowserCoreMessages.model__no_auth_handler );
-                }
-
-                ICredentials credentials = authHandler.getCredentials( this.connectionParameter );
-                if ( credentials == null )
-                {
-                    throw new ConnectionException( BrowserCoreMessages.model__no_credentials );
-                }
-
-                this.connectionProvider.bind( this.connectionParameter, credentials, monitor );
-                monitor.worked( 1 );
-            }
-            catch ( ConnectionException e )
-            {
-                monitor.reportError( e.getMessage(), e );
-                this.connectionProvider = null;
-            }
-        }
-    }
-
-
-    public void fetchRootDSE( ExtendedProgressMonitor monitor )
-    {
-        if ( this.connectionProvider != null && !monitor.errorsReported() )
+        if ( !monitor.errorsReported() )
         {
             try
             {
                 monitor.reportProgress( BrowserCoreMessages.model__loading_rootdse );
-                this.loadRootDSE( monitor );
+                loadRootDSE( monitor );
                 monitor.worked( 1 );
             }
             catch ( Exception e )
             {
                 monitor.reportError( BrowserCoreMessages.model__error_loading_rootdse );
-                this.rootDSE = null;
+                rootDSE = null;
             }
 
             if ( monitor.errorsReported() )
@@ -265,10 +184,13 @@ public class Connection implements IConnection, Serializable
     }
 
 
-    public void open( ExtendedProgressMonitor monitor )
+    /**
+     * Open.
+     * 
+     * @param monitor the monitor
+     */
+    public void open( StudioProgressMonitor monitor )
     {
-        this.bind( monitor );
-        
         this.fetchRootDSE( monitor );
 
         if ( this.connectionProvider != null && this.rootDSE != null )
@@ -349,72 +271,45 @@ public class Connection implements IConnection, Serializable
                 e.printStackTrace();
                 return;
             }
-
-            EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-                ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED ), this );
         }
     }
 
 
-    public boolean isOpened()
+    /**
+     * Closes the connections, clears all caches
+     * 
+     * TODO: call when connection is closed
+     */
+    private void close()
     {
-        return this.connectionProvider != null;
-    }
-
-
-    public boolean canOpen()
-    {
-        return !this.isOpened();
-    }
-
-
-    public boolean canClose()
-    {
-        return this.isOpened();
-    }
-
-
-    public void close()
-    {
-        if ( this.isOpened() )
+        for ( int i = 0; i < getSearchManager().getSearchCount(); i++ )
         {
-            if ( this.connectionProvider != null )
-            {
-                try
-                {
-                    this.connectionProvider.close();
-                }
-                catch ( ConnectionException ce )
-                {
-                    ce.printStackTrace();
-                }
-                this.connectionProvider = null;
-            }
-
-            for ( int i = 0; i < this.getSearchManager().getSearchCount(); i++ )
-            {
-                this.getSearchManager().getSearches()[i].setSearchResults( null );
-            }
-
-            this.dnToEntryCache.clear();
-            this.entryToAttributeInfoMap.clear();
-            this.entryToChildrenInfoMap.clear();
-            this.entryToChildrenFilterMap.clear();
-
-            modifyHandler.connectionClosed();
-            searchHandler.connectionClosed();
-
-            this.rootDSE = null;
-            this.schema = Schema.DEFAULT_SCHEMA;
-
-            EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-                ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED ), this );
-            System.gc();
+            this.getSearchManager().getSearches()[i].setSearchResults( null );
         }
+
+        dnToEntryCache.clear();
+        entryToAttributeInfoMap.clear();
+        entryToChildrenInfoMap.clear();
+        entryToChildrenFilterMap.clear();
+
+        modifyHandler.connectionClosed();
+        searchHandler.connectionClosed();
+
+        rootDSE = null;
+        schema = Schema.DEFAULT_SCHEMA;
+
+        System.gc();
     }
 
 
-    private void loadRootDSE( ExtendedProgressMonitor monitor ) throws Exception
+    /**
+     * Loads the Root DSE.
+     * 
+     * @param monitor the progress monitor
+     * 
+     * @throws Exception the exception
+     */
+    private void loadRootDSE( StudioProgressMonitor monitor ) throws Exception
     {
         if(rootDSE == null)
         {
@@ -424,7 +319,7 @@ public class Connection implements IConnection, Serializable
 
         // get well-known root DSE attributes, includes + and *
         ISearch search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES, ISearch.SCOPE_OBJECT, 0,
-            0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
+            0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
         search( search, monitor );
 
         // get base DNs
@@ -438,7 +333,7 @@ public class Connection implements IConnection, Serializable
             
             // check if entry exists
             search = new Search( null, this, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_OBJECT, 1, 0,
-                IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
+                IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
             search( search, monitor );
         }
         else
@@ -472,7 +367,7 @@ public class Connection implements IConnection, Serializable
                 {
                     // special handling of empty namingContext: perform a one-level search and add all result DNs to the set
                     search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0,
-                        0, IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
+                        0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
                     search( search, monitor );
                     ISearchResult[] results = search.getSearchResults();
                     for ( int k = 0; results != null && k < results.length; k++ )
@@ -512,15 +407,23 @@ public class Connection implements IConnection, Serializable
         rootDSE.setChildrenInitialized( true );
         rootDSE.setHasChildrenHint( true );
         rootDSE.setDirectoryEntry( true );
-
     }
 
 
+    /**
+     * Gets the directory metadata entries.
+     * 
+     * @param metadataAttributeName the metadata attribute name
+     * 
+     * @return the directory metadata entries
+     * 
+     * @throws ModelModificationException the model modification exception
+     */
     private DirectoryMetadataEntry[] getDirectoryMetadataEntries( String metadataAttributeName )
         throws ModelModificationException
     {
-        List metadataEntryList = new ArrayList();
-        IAttribute attribute = this.rootDSE.getAttribute( metadataAttributeName );
+        List<DN> metadataEntryList = new ArrayList<DN>();
+        IAttribute attribute = getRootDSE().getAttribute( metadataAttributeName );
         if ( attribute != null )
         {
             String[] values = attribute.getStringValues();
@@ -539,7 +442,7 @@ public class Connection implements IConnection, Serializable
         DirectoryMetadataEntry[] metadataEntries = new DirectoryMetadataEntry[metadataEntryList.size()];
         for ( int i = 0; i < metadataEntryList.size(); i++ )
         {
-            metadataEntries[i] = new DirectoryMetadataEntry( ( DN ) metadataEntryList.get( i ), this );
+            metadataEntries[i] = new DirectoryMetadataEntry( metadataEntryList.get( i ), this );
             metadataEntries[i].setDirectoryEntry( true );
             cacheEntry( metadataEntries[i] );
         }
@@ -547,18 +450,21 @@ public class Connection implements IConnection, Serializable
     }
 
 
-    private void loadSchema( ExtendedProgressMonitor monitor )
+    /**
+     * Loads the schema.
+     * 
+     * @param monitor the progress monitor
+     */
+    private void loadSchema( StudioProgressMonitor monitor )
     {
-
-        this.schema = Schema.DEFAULT_SCHEMA;
+        schema = Schema.DEFAULT_SCHEMA;
 
         try
         {
-
-            if ( this.rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
+            if ( getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
             {
                 SearchParameter sp = new SearchParameter();
-                sp.setSearchBase( new DN( this.rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
+                sp.setSearchBase( new DN( getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
                     .getStringValue() ) );
                 sp.setFilter( Schema.SCHEMA_FILTER );
                 sp.setScope( ISearch.SCOPE_OBJECT );
@@ -567,14 +473,15 @@ public class Connection implements IConnection, Serializable
                         Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES, Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES,
                         Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE, IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
                         IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
-                LdifEnumeration le = this.connectionProvider.search( sp, monitor );
+                LdifEnumeration le = connectionProvider.search( sp, monitor );
                 if ( le.hasNext( monitor ) )
                 {
                     LdifContentRecord schemaRecord = ( LdifContentRecord ) le.next( monitor );
-                    this.schema = new Schema();
-                    this.schema.loadFromRecord( schemaRecord );
-                    EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-                        ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
+                    schema = new Schema();
+                    schema.loadFromRecord( schemaRecord );
+                    // TODO: Schema update event
+//                    EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
+//                        ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
                 }
                 else
                 {
@@ -592,21 +499,20 @@ public class Connection implements IConnection, Serializable
             e.printStackTrace();
         }
 
-        if ( this.schema == null )
+        if ( schema == null )
         {
-            this.schema = Schema.DEFAULT_SCHEMA;
+            schema = Schema.DEFAULT_SCHEMA;
         }
-
     }
 
 
-    public void search( ISearch searchRequest, ExtendedProgressMonitor monitor )
+    public void search( ISearch searchRequest, StudioProgressMonitor monitor )
     {
         searchHandler.search( searchRequest, monitor );
     }
 
 
-    public boolean existsEntry( DN dn, ExtendedProgressMonitor monitor )
+    public boolean existsEntry( DN dn, StudioProgressMonitor monitor )
     {
         return searchHandler.existsEntry( dn, monitor );
     }
@@ -617,53 +523,53 @@ public class Connection implements IConnection, Serializable
 
         if ( this.dnToEntryCache != null && this.dnToEntryCache.containsKey( dn.toOidString( this.schema ) ) )
         {
-            return ( IEntry ) dnToEntryCache.get( dn.toOidString( this.schema ) );
+            return dnToEntryCache.get( dn.toOidString( this.schema ) );
         }
-        if ( this.rootDSE != null && this.rootDSE.getDn() != null && this.rootDSE.getDn().equals( dn ) )
+        if ( getRootDSE().getDn().equals( dn ) )
         {
-            return this.rootDSE;
+            return getRootDSE();
         }
         return null;
     }
 
 
-    public IEntry getEntry( DN dn, ExtendedProgressMonitor monitor )
+    public IEntry getEntry( DN dn, StudioProgressMonitor monitor )
     {
         return searchHandler.getEntry( dn, monitor );
     }
 
 
-    public void create( IValue[] valuesToCreate, ExtendedProgressMonitor monitor )
+    public void create( IValue[] valuesToCreate, StudioProgressMonitor monitor )
     {
         modifyHandler.create( valuesToCreate, monitor );
     }
 
 
-    public void modify( IValue oldValue, IValue newValue, ExtendedProgressMonitor monitor )
+    public void modify( IValue oldValue, IValue newValue, StudioProgressMonitor monitor )
     {
         modifyHandler.modify( oldValue, newValue, monitor );
     }
 
 
-    public void create( IEntry entryToCreate, ExtendedProgressMonitor monitor )
+    public void create( IEntry entryToCreate, StudioProgressMonitor monitor )
     {
         modifyHandler.create( entryToCreate, monitor );
     }
 
 
-    public void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, ExtendedProgressMonitor monitor )
+    public void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor )
     {
         modifyHandler.rename( entryToRename, newDn, deleteOldRdn, monitor );
     }
 
 
-    public void move( IEntry entryToMove, DN newSuperior, ExtendedProgressMonitor monitor )
+    public void move( IEntry entryToMove, DN newSuperior, StudioProgressMonitor monitor )
     {
         modifyHandler.move( entryToMove, newSuperior, monitor );
     }
 
 
-    public LdifEnumeration exportLdif( SearchParameter searchParameter, ExtendedProgressMonitor monitor )
+    public LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor monitor )
         throws ConnectionException
     {
         LdifEnumeration subEnumeration = this.connectionProvider.search( searchParameter, monitor );
@@ -671,204 +577,274 @@ public class Connection implements IConnection, Serializable
     }
 
 
+    
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getName()
+     */
     public final String getName()
     {
-        return this.connectionParameter.getName();
+        return connection.getName();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setName(java.lang.String)
+     */
     public final void setName( String name )
     {
-        String oldName = this.getName();
-        this.connectionParameter.setName( name );
-        EventRegistry.fireConnectionUpdated( new ConnectionRenamedEvent( this, oldName ), this );
+        connection.setName( name );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#isFetchBaseDNs()
+     */
     public boolean isFetchBaseDNs()
     {
-        return this.connectionParameter.isFetchBaseDNs();
+        return connection.getConnectionParameter().getExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setFetchBaseDNs(boolean)
+     */
     public void setFetchBaseDNs( boolean fetchBaseDNs )
     {
-        this.connectionParameter.setFetchBaseDNs( fetchBaseDNs );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, fetchBaseDNs );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getBaseDN()
+     */
     public DN getBaseDN()
     {
-        return this.connectionParameter.getBaseDN();
+        try
+        {
+            return new DN( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_BASE_DN ) );
+        }
+        catch ( NameException e )
+        {
+            return null;
+        }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setBaseDN(org.apache.directory.studio.ldapbrowser.core.model.DN)
+     */
     public void setBaseDN( DN baseDN )
     {
-        this.connectionParameter.setBaseDN( baseDN );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, baseDN.toString() );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getCountLimit()
+     */
     public int getCountLimit()
     {
-        return this.connectionParameter.getCountLimit();
+        return connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_COUNT_LIMIT );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setCountLimit(int)
+     */
     public void setCountLimit( int countLimit )
     {
-        this.connectionParameter.setCountLimit( countLimit );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_COUNT_LIMIT, countLimit );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getHost()
+     */
     public String getHost()
     {
-        return this.connectionParameter.getHost();
+        return connection.getHost();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setHost(java.lang.String)
+     */
     public void setHost( String host )
     {
-        this.connectionParameter.setHost( host );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.setHost( host );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getPort()
+     */
     public int getPort()
     {
-        return this.connectionParameter.getPort();
+        return connection.getPort();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setPort(int)
+     */
     public void setPort( int port )
     {
-        this.connectionParameter.setPort( port );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.setPort( port );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getAliasesDereferencingMethod()
+     */
     public int getAliasesDereferencingMethod()
     {
-        return this.connectionParameter.getAliasesDereferencingMethod();
+        return connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setAliasesDereferencingMethod(int)
+     */
     public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
     {
-        this.connectionParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, aliasesDereferencingMethod );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getReferralsHandlingMethod()
+     */
     public int getReferralsHandlingMethod()
     {
-        return this.connectionParameter.getReferralsHandlingMethod();
+        return connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setReferralsHandlingMethod(int)
+     */
     public void setReferralsHandlingMethod( int referralsHandlingMethod )
     {
-        this.connectionParameter.setReferralsHandlingMethod( referralsHandlingMethod );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, referralsHandlingMethod );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
 
-    public int getEncryptionMethod()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getEncryptionMethod()
+     */
+    public EncryptionMethod getEncryptionMethod()
     {
-        return this.connectionParameter.getEncryptionMethod();
+        return connection.getEncryptionMethod();
     }
 
 
-    public void setEncryptionMethod( int encryptionMethod )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setEncryptionMethod(org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod)
+     */
+    public void setEncryptionMethod( EncryptionMethod encryptionMethod )
     {
-        this.connectionParameter.setEncryptionMethod( encryptionMethod );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.setEncryptionMethod( encryptionMethod );
     }
-
-
+    
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getTimeLimit()
+     */
     public int getTimeLimit()
     {
-        return this.connectionParameter.getTimeLimit();
+        return connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setTimeLimit(int)
+     */
     public void setTimeLimit( int timeLimit )
     {
-        this.connectionParameter.setTimeLimit( timeLimit );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT, timeLimit );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getBindPrincipal()
+     */
     public String getBindPrincipal()
     {
-        return this.connectionParameter.getBindPrincipal();
+        return connection.getBindPrincipal();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setBindPrincipal(java.lang.String)
+     */
     public void setBindPrincipal( String bindPrincipal )
     {
-        this.connectionParameter.setBindPrincipal( bindPrincipal );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.setBindPrincipal( bindPrincipal );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getBindPassword()
+     */
     public String getBindPassword()
     {
-        return this.connectionParameter.getBindPassword();
+        return connection.getBindPassword();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setBindPassword(java.lang.String)
+     */
     public void setBindPassword( String bindPassword )
     {
-        this.connectionParameter.setBindPassword( bindPassword );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.setBindPassword( bindPassword );
     }
 
 
-    public int getAuthMethod()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getAuthMethod()
+     */
+    public AuthenticationMethod getAuthMethod()
     {
-        return this.connectionParameter.getAuthMethod();
+        return connection.getAuthMethod();
     }
 
 
-    public void setAuthMethod( int authMethod )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setAuthMethod(org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod)
+     */
+    public void setAuthMethod( AuthenticationMethod authMethod )
     {
-        this.connectionParameter.setAuthMethod( authMethod );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
+        connection.setAuthMethod( authMethod );
     }
 
+    
+    
+    
+    
 
-    public String getConnectionProviderClassName()
-    {
-        return this.connectionParameter.getConnectionProviderClassName();
-    }
-
-
-    public void setConnectionProviderClassName( String connectionProviderClassName )
-    {
-        this.connectionParameter.setConnectionProviderClassName( connectionProviderClassName );
-        EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-            ConnectionUpdateEvent.EventDetail.CONNECTION_PARAMETER_UPDATED ), this );
-    }
-
-
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getRootDSE()
+     */
     public final IRootDSE getRootDSE()
     {
+        if( rootDSE == null )
+        {
+            try
+            {
+                rootDSE = new RootDSE( this );
+                cacheEntry( rootDSE );
+            }
+            catch ( ModelModificationException e )
+            {
+            }
+        }
         return this.rootDSE;
     }
 
@@ -885,21 +861,24 @@ public class Connection implements IConnection, Serializable
     }
 
 
-    public ConnectionParameter getConnectionParameter()
-    {
-        return connectionParameter;
-    }
+//    public BrowserConnectionParameter getConnectionParameter()
+//    {
+//        return browserConnectionParameter;
+//    }
+//
+//
+//    public void setConnectionParameter( BrowserConnectionParameter connectionParameter )
+//    {
+//        this.browserConnectionParameter = connectionParameter;
+//    }
 
 
-    public void setConnectionParameter( ConnectionParameter connectionParameter )
-    {
-        this.connectionParameter = connectionParameter;
-    }
-
-
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString()
     {
-        return this.connectionParameter.getName();
+        return getName();
     }
 
 
@@ -928,18 +907,12 @@ public class Connection implements IConnection, Serializable
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( adapter == IBrowserConnection.class )
         {
             return this;
         }
 
         return null;
-    }
-
-
-    public IConnection getConnection()
-    {
-        return this;
     }
 
 
@@ -963,7 +936,7 @@ public class Connection implements IConnection, Serializable
 
     protected String getChildrenFilter( IEntry entry )
     {
-        return this.entryToChildrenFilterMap == null ? null : ( String ) this.entryToChildrenFilterMap.get( entry );
+        return this.entryToChildrenFilterMap == null ? null : this.entryToChildrenFilterMap.get( entry );
     }
 
 
@@ -981,7 +954,7 @@ public class Connection implements IConnection, Serializable
 
     protected AttributeInfo getAttributeInfo( IEntry entry )
     {
-        return this.entryToAttributeInfoMap == null ? null : ( AttributeInfo ) this.entryToAttributeInfoMap.get( entry );
+        return this.entryToAttributeInfoMap == null ? null : this.entryToAttributeInfoMap.get( entry );
     }
 
 
@@ -1000,7 +973,7 @@ public class Connection implements IConnection, Serializable
 
     protected ChildrenInfo getChildrenInfo( IEntry entry )
     {
-        return this.entryToChildrenInfoMap == null ? null : ( ChildrenInfo ) this.entryToChildrenInfoMap.get( entry );
+        return this.entryToChildrenInfoMap == null ? null : this.entryToChildrenInfoMap.get( entry );
     }
 
 
@@ -1017,52 +990,61 @@ public class Connection implements IConnection, Serializable
     }
 
 
-    public void delete( IEntry entry, ExtendedProgressMonitor monitor )
+    public void delete( IEntry entry, StudioProgressMonitor monitor )
     {
         modifyHandler.delete( entry, monitor );
     }
 
 
-    public void delete( IValue[] valuesToDelete, ExtendedProgressMonitor monitor )
+    public void delete( IValue[] valuesToDelete, StudioProgressMonitor monitor )
     {
         modifyHandler.delete( valuesToDelete, monitor );
     }
 
 
-    public void delete( IAttribute[] attriubtesToDelete, ExtendedProgressMonitor monitor )
+    public void delete( IAttribute[] attriubtesToDelete, StudioProgressMonitor monitor )
     {
         modifyHandler.delete( attriubtesToDelete, monitor );
     }
 
 
     public void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
-        ExtendedProgressMonitor monitor )
+        StudioProgressMonitor monitor )
     {
         modifyHandler.importLdif( enumeration, logWriter, continueOnError, monitor );
     }
 
 
-    public synchronized boolean isSuspended()
+    public org.apache.directory.studio.connection.core.Connection getConnection()
     {
-        return modifyHandler.isSuspended();
+        return connection;
     }
-
-
-    public synchronized void suspend()
+    
+    public void connectionAdded( org.apache.directory.studio.connection.core.Connection connection )
     {
-        modifyHandler.suspend();
     }
-
-
-    public synchronized void resume( ExtendedProgressMonitor monitor )
+    public void connectionRemoved( org.apache.directory.studio.connection.core.Connection connection )
     {
-        modifyHandler.resume( monitor );
     }
-
-
-    public synchronized void reset()
+    public void connectionUpdated( org.apache.directory.studio.connection.core.Connection connection )
     {
-        modifyHandler.reset();
+    }
+    public void connectionRenamed( org.apache.directory.studio.connection.core.Connection connection, String oldName )
+    {
+    }
+    public void connectionOpened( org.apache.directory.studio.connection.core.Connection connection )
+    {
+        if(this.connection == connection)
+        {
+            new OpenBrowserConnectionsJob( this ).execute();
+        }
+    }
+    public void connectionClosed( org.apache.directory.studio.connection.core.Connection connection )
+    {
+        if(this.connection == connection)
+        {
+            close();
+        }
     }
 
 }

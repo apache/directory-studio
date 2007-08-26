@@ -21,10 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
@@ -285,9 +286,13 @@ public class Value implements IValue
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( clazz.isAssignableFrom( IConnection.class ) )
+        if ( clazz.isAssignableFrom( Connection.class ) )
         {
-            return getAttribute().getEntry().getConnection();
+            return getAttribute().getEntry().getBrowserConnection().getConnection();
+        }
+        if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
+        {
+            return getAttribute().getEntry().getBrowserConnection();
         }
         if ( clazz.isAssignableFrom( IEntry.class ) )
         {

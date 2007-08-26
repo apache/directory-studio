@@ -25,95 +25,83 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
 public class CreateEntryJob extends AbstractAsyncBulkJob
 {
 
-    private IEntry[] entriesToCreate;
+    private IEntry entryToCreate;
+    
+    private IBrowserConnection browserConnection;
 
-    private IEntry[] createdEntries;
+    private IEntry createdEntry;
 
 
-    public CreateEntryJob( IEntry[] entriesToCreate )
+    public CreateEntryJob( IEntry entryToCreate, IBrowserConnection browserConnection )
     {
-        this.entriesToCreate = entriesToCreate;
-        createdEntries = new IEntry[entriesToCreate.length];
-        setName( entriesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_entry_name_1
-            : BrowserCoreMessages.jobs__create_entry_name_n );
+        this.entryToCreate = entryToCreate;
+        this.browserConnection = browserConnection;
+        this.createdEntry = null;
+        
+        setName( BrowserCoreMessages.jobs__create_entry_name_1 );
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        IConnection[] connections = new IConnection[entriesToCreate.length];
-        for ( int i = 0; i < connections.length; i++ )
-        {
-            connections[i] = entriesToCreate[i].getConnection();
-        }
-        return connections;
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.addAll( Arrays.asList( entriesToCreate ) );
-        return l.toArray();
+        return new Object[]
+            { browserConnection };
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
 
-        monitor.beginTask( entriesToCreate.length == 1 ? BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__create_entry_task_1, new String[]
-                { entriesToCreate[0].getDn().toString() } ) : BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__create_entry_task_n, new String[]
-                { Integer.toString( entriesToCreate.length ) } ), 2 + entriesToCreate.length );
+        monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__create_entry_task_1, new String[]
+                { entryToCreate.getDn().toString() } ), 2 + 1 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        for ( int i = 0; !monitor.isCanceled() && i < entriesToCreate.length; i++ )
+        browserConnection.create( entryToCreate, monitor );
+
+        if ( !monitor.errorsReported() )
         {
-            IEntry entryToCreate = entriesToCreate[i];
-
-            entryToCreate.getConnection().create( entryToCreate, monitor );
-
-            if ( !monitor.errorsReported() )
-            {
-                createdEntries[i] = entryToCreate.getConnection().getEntry( entryToCreate.getDn(), monitor );
-                // createdEntries[i].getParententry().addChild(entry, this);
-                createdEntries[i].setHasChildrenHint( false );
-            }
-
-            monitor.worked( 1 );
+            createdEntry = browserConnection.getEntry( entryToCreate.getDn(), monitor );
+            // createdEntries[i].getParententry().addChild(entry, this);
+            createdEntry.setHasChildrenHint( false );
         }
+
+        monitor.worked( 1 );
     }
 
 
     protected void runNotification()
     {
-        for ( int i = 0; i < createdEntries.length; i++ )
+        if ( createdEntry != null )
         {
-            if ( createdEntries[i] != null )
-            {
-                EventRegistry.fireEntryUpdated( new EntryAddedEvent( createdEntries[i].getConnection(),
-                    createdEntries[i] ), this );
-            }
+            EventRegistry.fireEntryUpdated( new EntryAddedEvent( browserConnection,
+                createdEntry ), this );
         }
     }
 
 
     protected String getErrorMessage()
     {
-        return entriesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_entry_error_1
-            : BrowserCoreMessages.jobs__create_entry_error_n;
+        return BrowserCoreMessages.jobs__create_entry_error_1;
     }
 
 }

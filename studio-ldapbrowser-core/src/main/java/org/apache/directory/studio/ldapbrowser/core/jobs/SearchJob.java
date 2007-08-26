@@ -25,10 +25,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 
 
@@ -45,12 +47,12 @@ public class SearchJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        IConnection[] connections = new IConnection[searches.length];
+        Connection[] connections = new Connection[searches.length];
         for ( int i = 0; i < connections.length; i++ )
         {
-            connections[i] = searches[i].getConnection();
+            connections[i] = searches[i].getBrowserConnection().getConnection();
         }
         return connections;
     }
@@ -64,7 +66,7 @@ public class SearchJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( " ", searches.length + 1 ); //$NON-NLS-1$
@@ -78,19 +80,9 @@ public class SearchJob extends AbstractAsyncBulkJob
                 { search.getName() } ) );
             monitor.worked( 1 );
 
-            if ( search.getConnection() != null && search.getConnection().isOpened() )
+            if ( search.getBrowserConnection() != null )
             {
-
-                // // clear search result attributes
-                // if(search.getSearchResults() != null) {
-                // ISearchResult[] srs = search.getSearchResults();
-                // for (int s = 0; s < srs.length; s++) {
-                // IEntry entry = srs[s].getEntry();
-                // entry.setAttributesInitialized(false, entry.getConnection());
-                // }
-                // }
-
-                search.getConnection().search( search, monitor );
+                search.getBrowserConnection().search( search, monitor );
             }
         }
     }

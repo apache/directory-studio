@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -33,7 +35,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.Entry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -65,10 +67,10 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { parent.getConnection() };
+        return new Connection[]
+            { parent.getBrowserConnection().getConnection() };
     }
 
 
@@ -81,7 +83,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( entriesToCopy.length == 1 ? BrowserCoreMessages.bind(
@@ -128,7 +130,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
 
 
     private int copyEntryRecursive( IEntry entryToCopy, IEntry parent, int scope, int num,
-        ExtendedProgressMonitor monitor )
+        StudioProgressMonitor monitor )
     {
         try
         {
@@ -136,12 +138,12 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
             param.setSearchBase( entryToCopy.getDn() );
             param.setFilter( ISearch.FILTER_TRUE );
             param.setScope( ISearch.SCOPE_OBJECT );
-            param.setAliasesDereferencingMethod( IConnection.DEREFERENCE_ALIASES_NEVER );
-            param.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
+            param.setAliasesDereferencingMethod( IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
+            param.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
             param.setReturningAttributes( new String[]
                 { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
-            ISearch search = new Search( entryToCopy.getConnection(), param );
-            entryToCopy.getConnection().search( search, monitor );
+            ISearch search = new Search( entryToCopy.getBrowserConnection(), param );
+            entryToCopy.getBrowserConnection().search( search, monitor );
 
             ISearchResult[] srs = search.getSearchResults();
             if ( !monitor.isCanceled() && srs != null && srs.length == 1 )
@@ -154,21 +156,21 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                 IEntry newEntry = new Entry( parent, rdn );
 
                 // change RDN if entry already exists
-                ExtendedProgressMonitor testMonitor = new ExtendedProgressMonitor( monitor );
-                IEntry testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
+                StudioProgressMonitor testMonitor = new StudioProgressMonitor( monitor );
+                IEntry testEntry = parent.getBrowserConnection().getEntry( newEntry.getDn(), testMonitor );
                 if ( testEntry != null )
                 {
                     String rdnValue = rdn.getValue();
                     String newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, "", rdnValue ); //$NON-NLS-1$
                     RDN newRdn = getNewRdn( rdn, newRdnValue );
                     newEntry = new Entry( parent, newRdn );
-                    testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
+                    testEntry = parent.getBrowserConnection().getEntry( newEntry.getDn(), testMonitor );
                     for ( int i = 2; testEntry != null; i++ )
                     {
                         newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, i + " ", rdnValue ); //$NON-NLS-1$
                         newRdn = getNewRdn( rdn, newRdnValue );
                         newEntry = new Entry( parent, newRdn );
-                        testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
+                        testEntry = parent.getBrowserConnection().getEntry( newEntry.getDn(), testMonitor );
                     }
                 }
 
@@ -245,7 +247,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                     }
                 }
 
-                newEntry.getConnection().create( newEntry, monitor );
+                newEntry.getBrowserConnection().create( newEntry, monitor );
                 newEntry.getParententry().addChild( newEntry );
                 newEntry.setHasChildrenHint( false );
 
@@ -263,8 +265,8 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                     subParam.setFilter( ISearch.FILTER_TRUE );
                     subParam.setScope( ISearch.SCOPE_ONELEVEL );
                     subParam.setReturningAttributes( ISearch.NO_ATTRIBUTES );
-                    ISearch subSearch = new Search( entryToCopy.getConnection(), subParam );
-                    entryToCopy.getConnection().search( subSearch, monitor );
+                    ISearch subSearch = new Search( entryToCopy.getBrowserConnection(), subParam );
+                    entryToCopy.getBrowserConnection().search( subSearch, monitor );
 
                     ISearchResult[] subSrs = subSearch.getSearchResults();
                     if ( !monitor.isCanceled() && subSrs != null && subSrs.length > 0 )

@@ -138,7 +138,7 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
         bookmarkEntryWidget = new EntryWidget();
         bookmarkEntryWidget.addWidgetModifyListener( this );
         bookmarkEntryWidget.createWidget( innerComposite );
-        bookmarkEntryWidget.setInput( entry.getConnection(), entry.getDn() );
+        bookmarkEntryWidget.setInput( entry.getBrowserConnection(), entry.getDn() );
 
         setControl( composite );
     }

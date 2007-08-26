@@ -33,10 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
@@ -45,7 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser
 public class ImportLdifJob extends AbstractAsyncBulkJob
 {
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private File ldifFile;
 
@@ -54,7 +56,7 @@ public class ImportLdifJob extends AbstractAsyncBulkJob
     private boolean continueOnError;
 
 
-    public ImportLdifJob( IConnection connection, File ldifFile, File logFile, boolean continueOnError )
+    public ImportLdifJob( IBrowserConnection connection, File ldifFile, File logFile, boolean continueOnError )
     {
         this.connection = connection;
         this.ldifFile = ldifFile;
@@ -65,16 +67,16 @@ public class ImportLdifJob extends AbstractAsyncBulkJob
     }
 
 
-    public ImportLdifJob( IConnection connection, File ldifFile, boolean continueOnError )
+    public ImportLdifJob( IBrowserConnection connection, File ldifFile, boolean continueOnError )
     {
         this( connection, ldifFile, null, continueOnError );
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { connection.getConnection() };
     }
 
 
@@ -86,7 +88,7 @@ public class ImportLdifJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
+    protected void executeBulkJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__import_ldif_task, 2 );

@@ -25,7 +25,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 
@@ -51,7 +51,7 @@ public abstract class LocateInDitAction extends BrowserAction
         ConnectionAndDn connectionAndDn = getConnectionAndDn();
         if ( connectionAndDn != null )
         {
-            IConnection connection = connectionAndDn.connection;
+            IBrowserConnection connection = connectionAndDn.connection;
             DN dn = connectionAndDn.dn;
 
             IEntry entry = connection.getEntryFromCache( dn );
@@ -123,7 +123,7 @@ public abstract class LocateInDitAction extends BrowserAction
     protected class ConnectionAndDn
     {
         /** The connection */
-        private IConnection connection;
+        private IBrowserConnection connection;
 
         /** The DN */
         private DN dn;
@@ -135,7 +135,7 @@ public abstract class LocateInDitAction extends BrowserAction
          * @param connection the connection
          * @param dn the DN
          */
-        protected ConnectionAndDn( IConnection connection, DN dn )
+        protected ConnectionAndDn( IBrowserConnection connection, DN dn )
         {
             this.connection = connection;
             this.dn = dn;

@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEOFPart;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
@@ -113,7 +114,7 @@ public class LdifParser
             private boolean footerParsed = false;
 
 
-            public boolean hasNext( org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor monitor )
+            public boolean hasNext( StudioProgressMonitor monitor )
             {
                 if ( containerList.isEmpty() )
                 {
@@ -167,7 +168,7 @@ public class LdifParser
             }
 
 
-            public LdifContainer next( org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor monitor )
+            public LdifContainer next( StudioProgressMonitor monitor )
             {
                 if ( hasNext( monitor ) )
                 {

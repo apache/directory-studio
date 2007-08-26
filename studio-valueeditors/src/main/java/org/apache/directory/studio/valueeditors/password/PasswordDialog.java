@@ -23,10 +23,11 @@ package org.apache.directory.studio.valueeditors.password;
 
 import java.util.Arrays;
 
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.connection.core.jobs.CheckBindJob;
+import org.apache.directory.studio.connection.ui.widgets.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.jobs.CheckBindJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.Password;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -485,11 +486,11 @@ public class PasswordDialog extends Dialog
     {
         if ( !"".equals( testPasswordText.getText() ) && entry != null )
         {
-            IConnection connection = ( IConnection ) entry.getConnection().clone();;
+            Connection connection = ( Connection ) entry.getBrowserConnection().getConnection().clone();
             connection.setName( null );
             connection.setBindPrincipal( entry.getDn().toString() );
             connection.setBindPassword( testPasswordText.getText() );
-            connection.setAuthMethod( IConnection.AUTH_SIMPLE );
+            connection.setAuthMethod( AuthenticationMethod.SIMPLE );
 
             CheckBindJob job = new CheckBindJob( connection );
             RunnableContextJobAdapter.execute( job );

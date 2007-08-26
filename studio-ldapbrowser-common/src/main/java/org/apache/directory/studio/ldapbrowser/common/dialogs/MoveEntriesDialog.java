@@ -112,7 +112,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
         this.dnBuilderWidget = new DnBuilderWidget( false, true );
         this.dnBuilderWidget.addWidgetModifyListener( this );
         this.dnBuilderWidget.createContents( composite );
-        this.dnBuilderWidget.setInput( this.entries[0].getConnection(), null, null, this.entries[0].getDn()
+        this.dnBuilderWidget.setInput( this.entries[0].getBrowserConnection(), null, null, this.entries[0].getDn()
             .getParentDn() );
 
         this.simulateMoveButton = BaseWidgetUtils.createCheckbox( composite,

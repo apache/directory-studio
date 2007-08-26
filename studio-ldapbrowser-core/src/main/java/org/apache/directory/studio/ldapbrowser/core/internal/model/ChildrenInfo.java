@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 public class ChildrenInfo implements Serializable
@@ -52,7 +52,7 @@ public class ChildrenInfo implements Serializable
 
         private static final long serialVersionUID = -8339682035388780022L;
 
-        protected IConnection connection;
+        protected IBrowserConnection connection;
 
         protected DN dn;
 
@@ -62,7 +62,7 @@ public class ChildrenInfo implements Serializable
         }
 
 
-        public AliasOrReferral( IConnection connection, DN dn )
+        public AliasOrReferral( IBrowserConnection connection, DN dn )
         {
             this.connection = connection;
             this.dn = dn;

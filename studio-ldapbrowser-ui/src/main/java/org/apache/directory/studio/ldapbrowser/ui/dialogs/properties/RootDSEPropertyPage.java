@@ -31,10 +31,11 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetTableMetadata;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -98,11 +99,22 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         super.noDefaultAndApplyButton();
     }
 
+    
+    static IBrowserConnection getConnection( Object element )
+    {
+        IBrowserConnection connection = null;
+        if ( element instanceof IAdaptable )
+        {
+            connection = ( IBrowserConnection ) ( ( IAdaptable ) element ).getAdapter( IBrowserConnection.class );
+        }
+        return connection;
+    }
+
 
     protected Control createContents( Composite parent )
     {
 
-        final IConnection connection = ConnectionPropertyPage.getConnection( getElement() );
+        final IBrowserConnection connection = getConnection( getElement() );
 
         this.tabFolder = new TabFolder( parent, SWT.TOP );
         RowLayout mainLayout = new RowLayout();
@@ -458,7 +470,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
     }
 
 
-    private void addInfo( final IConnection connection, Composite composite, String attributeName, String labelName )
+    private void addInfo( final IBrowserConnection connection, Composite composite, String attributeName, String labelName )
     {
         Label label = new Label( composite, SWT.NONE );
         label.setText( labelName );

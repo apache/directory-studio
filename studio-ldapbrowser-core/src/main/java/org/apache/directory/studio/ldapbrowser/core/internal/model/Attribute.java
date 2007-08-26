@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueDeletedEvent;
@@ -35,7 +36,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
@@ -206,7 +207,7 @@ public class Attribute implements IAttribute
         {
             IValue emptyValue = new Value( this );
             valueList.add( emptyValue );
-            this.attributeModified( new EmptyValueAddedEvent( getEntry().getConnection(), getEntry(), this, emptyValue ) );
+            this.attributeModified( new EmptyValueAddedEvent( getEntry().getBrowserConnection(), getEntry(), this, emptyValue ) );
         }
         catch ( ModelModificationException mme )
         {
@@ -226,7 +227,7 @@ public class Attribute implements IAttribute
             if ( value.isEmpty() )
             {
                 it.remove();
-                attributeModified( new EmptyValueDeletedEvent( getEntry().getConnection(), getEntry(), this, value ) );
+                attributeModified( new EmptyValueDeletedEvent( getEntry().getBrowserConnection(), getEntry(), this, value ) );
                 return;
             }
         }
@@ -292,7 +293,7 @@ public class Attribute implements IAttribute
         this.checkValue( valueToAdd );
 
         valueList.add( valueToAdd );
-        attributeModified( new ValueAddedEvent( getEntry().getConnection(), getEntry(), this, valueToAdd ) );
+        attributeModified( new ValueAddedEvent( getEntry().getBrowserConnection(), getEntry(), this, valueToAdd ) );
     }
 
 
@@ -305,7 +306,7 @@ public class Attribute implements IAttribute
 
         if ( this.internalDeleteValue( valueToDelete ) )
         {
-            this.attributeModified( new ValueDeletedEvent( getEntry().getConnection(), getEntry(), this, valueToDelete ) );
+            this.attributeModified( new ValueDeletedEvent( getEntry().getBrowserConnection(), getEntry(), this, valueToDelete ) );
         }
     }
 
@@ -320,7 +321,7 @@ public class Attribute implements IAttribute
 
         this.internalDeleteValue( oldValue );
         this.valueList.add( newValue );
-        this.attributeModified( new ValueModifiedEvent( getEntry().getConnection(), getEntry(), this, oldValue,
+        this.attributeModified( new ValueModifiedEvent( getEntry().getBrowserConnection(), getEntry(), this, oldValue,
             newValue ) );
     }
 
@@ -457,7 +458,7 @@ public class Attribute implements IAttribute
      */
     public AttributeTypeDescription getAttributeTypeDescription()
     {
-        return getEntry().getConnection().getSchema().getAttributeTypeDescription( getType() );
+        return getEntry().getBrowserConnection().getSchema().getAttributeTypeDescription( getType() );
     }
 
 
@@ -466,15 +467,18 @@ public class Attribute implements IAttribute
      */
     public Object getAdapter( Class adapter )
     {
-
         Class<?> clazz = ( Class<?> ) adapter;
         if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( clazz.isAssignableFrom( IConnection.class ) )
+        if ( clazz.isAssignableFrom( Connection.class ) )
         {
-            return getEntry().getConnection();
+            return getEntry().getBrowserConnection().getConnection();
+        }
+        if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
+        {
+            return getEntry().getBrowserConnection();
         }
         if ( clazz.isAssignableFrom( IEntry.class ) )
         {

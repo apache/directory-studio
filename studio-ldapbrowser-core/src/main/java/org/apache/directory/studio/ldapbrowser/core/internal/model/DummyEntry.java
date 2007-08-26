@@ -35,7 +35,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
@@ -63,7 +63,7 @@ public class DummyEntry implements IEntry
     }
 
 
-    public DummyEntry( DN dn, IConnection connection )
+    public DummyEntry( DN dn, IBrowserConnection connection )
     {
         if ( connection instanceof DummyConnection )
         {
@@ -88,7 +88,7 @@ public class DummyEntry implements IEntry
     public void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException
     {
         attributeMap.put( attributeToAdd.getDescription().toLowerCase(), attributeToAdd );
-        EventRegistry.fireEntryUpdated( new AttributeAddedEvent( attributeToAdd.getEntry().getConnection(), this,
+        EventRegistry.fireEntryUpdated( new AttributeAddedEvent( attributeToAdd.getEntry().getBrowserConnection(), this,
             attributeToAdd ), this );
     }
 
@@ -101,7 +101,7 @@ public class DummyEntry implements IEntry
     public void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException
     {
         attributeMap.remove( attributeToDelete.getDescription().toLowerCase() );
-        EventRegistry.fireEntryUpdated( new AttributeDeletedEvent( attributeToDelete.getEntry().getConnection(), this,
+        EventRegistry.fireEntryUpdated( new AttributeDeletedEvent( attributeToDelete.getEntry().getBrowserConnection(), this,
             attributeToDelete ), this );
     }
 
@@ -129,7 +129,7 @@ public class DummyEntry implements IEntry
             IAttribute attribute = ( IAttribute ) iterator.next();
 
             AttributeDescription other = new AttributeDescription( attributeDescription );
-            if ( other.isSubtypeOf( ad, getConnection().getSchema() ) )
+            if ( other.isSubtypeOf( ad, getBrowserConnection().getSchema() ) )
             {
                 attributeList.add( attribute );
             }
@@ -154,7 +154,7 @@ public class DummyEntry implements IEntry
     }
 
 
-    public IConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
         return dummyConnection != null ? dummyConnection : BrowserCorePlugin.getDefault().getConnectionManager()
             .getConnection( this.connectionName );
@@ -169,7 +169,7 @@ public class DummyEntry implements IEntry
 
     public URL getUrl()
     {
-        return new URL( getConnection(), getDn() );
+        return new URL( getBrowserConnection(), getDn() );
     }
 
 
@@ -260,7 +260,7 @@ public class DummyEntry implements IEntry
         boolean structuralObjectClassAvailable = false;
         for ( int i = 0; i < ocValues.length; i++ )
         {
-            ObjectClassDescription ocd = this.getConnection().getSchema().getObjectClassDescription( ocValues[i] );
+            ObjectClassDescription ocd = this.getBrowserConnection().getSchema().getObjectClassDescription( ocValues[i] );
             if ( ocd.isStructural() )
             {
                 structuralObjectClassAvailable = true;

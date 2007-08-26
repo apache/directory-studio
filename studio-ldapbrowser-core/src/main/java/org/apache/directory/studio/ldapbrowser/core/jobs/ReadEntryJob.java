@@ -24,9 +24,11 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
@@ -34,14 +36,14 @@ import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationExcep
 public class ReadEntryJob extends AbstractAsyncBulkJob
 {
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private DN dn;
 
     private IEntry readEntry;
 
 
-    public ReadEntryJob( IConnection connection, DN dn )
+    public ReadEntryJob( IBrowserConnection connection, DN dn )
     {
         this.connection = connection;
         this.dn = dn;
@@ -51,10 +53,10 @@ public class ReadEntryJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { connection.getConnection() };
     }
 
 
@@ -78,7 +80,7 @@ public class ReadEntryJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor pm ) throws ModelModificationException
+    protected void executeBulkJob( StudioProgressMonitor pm ) throws ModelModificationException
     {
         readEntry = connection.getEntryFromCache( dn );
         if ( readEntry == null )

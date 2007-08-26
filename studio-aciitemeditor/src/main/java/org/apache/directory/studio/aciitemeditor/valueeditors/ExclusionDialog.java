@@ -29,7 +29,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -56,7 +56,7 @@ class ExclusionDialog extends Dialog
 {
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The base. */
     private DN base;
@@ -91,7 +91,7 @@ class ExclusionDialog extends Dialog
      * @param base the base DN
      * @param exclusion the exclusion string
      */
-    protected ExclusionDialog( Shell parentShell, IConnection connection, DN base, String exclusion )
+    protected ExclusionDialog( Shell parentShell, IBrowserConnection connection, DN base, String exclusion )
     {
         super( parentShell );
         this.connection = connection;

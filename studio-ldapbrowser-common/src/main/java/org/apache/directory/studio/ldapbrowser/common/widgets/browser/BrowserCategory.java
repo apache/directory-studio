@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 /**
@@ -54,7 +54,7 @@ public class BrowserCategory
     public static final String TITLE_BOOKMARKS = "Bookmarks";
 
     /** The category's connection */
-    private IConnection parent;
+    private IBrowserConnection parent;
 
     /** The category's type */
     private int type;
@@ -66,7 +66,7 @@ public class BrowserCategory
      * @param type the category's type, one of TYPE_DIT, TYPE_SEARCHES or TYPE_BOOKMARKS
      * @param parent the category's connection
      */
-    public BrowserCategory( int type, IConnection parent )
+    public BrowserCategory( int type, IBrowserConnection parent )
     {
         this.parent = parent;
         this.type = type;
@@ -78,7 +78,7 @@ public class BrowserCategory
      * 
      * @return the parent connection
      */
-    public IConnection getParent()
+    public IBrowserConnection getParent()
     {
         return parent;
     }

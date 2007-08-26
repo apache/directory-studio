@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 public class ReferralBaseEntry extends DelegateEntry
@@ -36,7 +36,7 @@ public class ReferralBaseEntry extends DelegateEntry
     }
 
 
-    public ReferralBaseEntry( IConnection connection, DN dn )
+    public ReferralBaseEntry( IBrowserConnection connection, DN dn )
     {
         super( connection, dn );
     }

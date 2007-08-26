@@ -110,7 +110,7 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
     public boolean performOk()
     {
         boolean modified = spw.saveToSearch( search );
-        if ( modified && search.getConnection() != null && search.getConnection().isOpened() )
+        if ( modified && search.getBrowserConnection() != null )
         {
             // send update event to force saving of new search parameters.
             EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,

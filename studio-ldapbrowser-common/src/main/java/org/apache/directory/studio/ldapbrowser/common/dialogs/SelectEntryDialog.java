@@ -25,7 +25,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserAct
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserConfiguration;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserUniversalListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 import org.eclipse.jface.dialogs.Dialog;

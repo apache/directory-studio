@@ -32,7 +32,7 @@ import java.util.List;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
@@ -103,7 +103,7 @@ public class ValuesTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < values.length; i++ )
                 {
-                    byte[] connectionName = values[i].getAttribute().getEntry().getConnection().getName().getBytes();
+                    byte[] connectionName = values[i].getAttribute().getEntry().getBrowserConnection().getName().getBytes();
                     writeOut.writeInt( connectionName.length );
                     writeOut.write( connectionName );
                     byte[] dn = values[i].getAttribute().getEntry().getDn().toString().getBytes();
@@ -168,7 +168,7 @@ public class ValuesTransfer extends ByteArrayTransfer
 
                     do
                     {
-                        IConnection connection = null;
+                        IBrowserConnection connection = null;
                         if ( readIn.available() > 1 )
                         {
                             int size = readIn.readInt();

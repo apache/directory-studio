@@ -24,10 +24,10 @@ package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.common.dnd.ConnectionTransfer;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
@@ -103,9 +103,9 @@ public class DropConnectionListener implements DropTargetListener
         {
             if ( ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
             {
-                if ( event.item != null && event.item.getData() instanceof IConnection )
+                if ( event.item != null && event.item.getData() instanceof Connection )
                 {
-                    IConnection overConn = ( IConnection ) event.item.getData();
+                    Connection overConn = ( Connection ) event.item.getData();
                     if ( event.widget instanceof DropTarget )
                     {
                         DropTarget dropTarget = ( DropTarget ) event.widget;
@@ -113,12 +113,12 @@ public class DropConnectionListener implements DropTargetListener
                         {
                             Table table = ( Table ) dropTarget.getControl();
                             TableItem[] items = table.getSelection();
-                            List<IConnection> connectionList = new ArrayList<IConnection>();
+                            List<Connection> connectionList = new ArrayList<Connection>();
                             for ( int i = 0; i < items.length; i++ )
                             {
-                                if ( items[i].getData() instanceof IConnection )
+                                if ( items[i].getData() instanceof Connection )
                                 {
-                                    connectionList.add( ( IConnection ) items[i].getData() );
+                                    connectionList.add( ( Connection ) items[i].getData() );
                                 }
                             }
                             if ( connectionList.contains( overConn ) )
@@ -172,15 +172,15 @@ public class DropConnectionListener implements DropTargetListener
      */
     public void drop( DropTargetEvent event )
     {
-        ConnectionManager connectionManager = BrowserCorePlugin.getDefault().getConnectionManager();
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
 
         try
         {
             if ( ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
             {
                 // get connection to handle
-                IConnection[] connections = ( IConnection[] ) event.data;
-                IConnection targetConnection = ( IConnection ) event.item.getData();
+                Connection[] connections = ( Connection[] ) event.data;
+                Connection targetConnection = ( Connection ) event.item.getData();
 
                 if ( event.detail == DND.DROP_MOVE )
                 {
@@ -208,7 +208,7 @@ public class DropConnectionListener implements DropTargetListener
                 {
                     for ( int i = 0; i < connections.length; i++ )
                     {
-                        IConnection newConnection = ( IConnection ) connections[i].clone();
+                        Connection newConnection = ( Connection ) connections[i].clone();
                         int index = connectionManager.indexOf( targetConnection );
                         connectionManager.addConnection( index + i + 1, newConnection );
                     }

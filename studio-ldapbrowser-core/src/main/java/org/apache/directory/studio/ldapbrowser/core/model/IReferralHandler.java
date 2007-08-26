@@ -40,6 +40,6 @@ public interface IReferralHandler
      * @param referralURL the referral URL
      * @return the target connection
      */
-    public IConnection getReferralConnection( URL referralURL );
+    public IBrowserConnection getReferralConnection( URL referralURL );
 
 }

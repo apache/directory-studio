@@ -21,14 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionContentProvider;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionLabelProvider;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionContentProvider;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionLabelProvider;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -90,7 +91,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
         comboViewer = new ComboViewer( parent, SWT.DROP_DOWN | SWT.READ_ONLY );
         comboViewer.setLabelProvider( new ConnectionLabelProvider() );
         comboViewer.setContentProvider( new ConnectionContentProvider() );
-        comboViewer.setInput( BrowserCorePlugin.getDefault().getConnectionManager() );
+        comboViewer.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
         comboViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -99,13 +100,13 @@ public class ConnectionComboContributionItem extends ContributionItem implements
                 // the selection was changed programatically.
                 if ( !inChange )
                 {
-                    IConnection connection = getConnection();
+                    IBrowserConnection connection = getConnection();
                     schemaPage.getSchemaBrowser().setInput( new SchemaBrowserInput( connection, null ) );
                 }
             }
         } );
 
-        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
 
         // Initialize width of combo
         toolitem.setWidth( comboViewer.getCombo().computeSize( SWT.DEFAULT, SWT.DEFAULT, true ).x );
@@ -119,7 +120,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
      */
     public void dispose()
     {
-        EventRegistry.removeConnectionUpdateListener( this );
+        ConnectionEventRegistry.removeConnectionUpdateListener( this );
         comboViewer = null;
     }
 
@@ -167,14 +168,59 @@ public class ConnectionComboContributionItem extends ContributionItem implements
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
      */
-    public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
+    public final void connectionUpdated( Connection connection )
     {
         if ( comboViewer != null )
         {
-            this.comboViewer.refresh();
+            comboViewer.refresh();
         }
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionAdded( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionRemoved( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
+     */
+    public void connectionRenamed( Connection connection, String oldName )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionOpened( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionClosed( Connection connection )
+    {
+        connectionUpdated( connection );
     }
 
 
@@ -183,12 +229,13 @@ public class ConnectionComboContributionItem extends ContributionItem implements
      *
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         ISelection selection = comboViewer.getSelection();
         if ( !selection.isEmpty() )
         {
-            return ( IConnection ) ( ( IStructuredSelection ) selection ).getFirstElement();
+            Connection connection = ( Connection ) ( ( IStructuredSelection ) selection ).getFirstElement();
+            return BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection( connection );
         }
 
         return null;
@@ -200,9 +247,9 @@ public class ConnectionComboContributionItem extends ContributionItem implements
      *
      * @param connection the connection
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
-        ISelection newSelection = new StructuredSelection( connection );
+        ISelection newSelection = new StructuredSelection( connection.getConnection() );
         ISelection oldSelection = comboViewer.getSelection();
         if ( !newSelection.equals( oldSelection ) )
         {

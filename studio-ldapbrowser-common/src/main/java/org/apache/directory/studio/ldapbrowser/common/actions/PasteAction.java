@@ -22,17 +22,13 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.ScopeDialog;
-import org.apache.directory.studio.ldapbrowser.common.dnd.ConnectionTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CopyEntriesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
@@ -65,13 +61,6 @@ public class PasteAction extends BrowserAction
      */
     public String getText()
     {
-        // connection
-        IConnection[] connections = getConnectionsToPaste();
-        if ( connections != null )
-        {
-            return connections.length > 1 ? "Paste Connections" : "Paste Connection";
-        }
-
         // entry
         IEntry[] entries = getEntriesToPaste();
         if ( entries != null )
@@ -113,15 +102,8 @@ public class PasteAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-
-        // connection
-        if ( getConnectionsToPaste() != null )
-        {
-            return true;
-        }
-
         // entry
-        else if ( getEntriesToPaste() != null )
+        if ( getEntriesToPaste() != null )
         {
             return true;
         }
@@ -141,18 +123,6 @@ public class PasteAction extends BrowserAction
      */
     public void run()
     {
-        // connection
-        IConnection[] connections = getConnectionsToPaste();
-        if ( connections != null )
-        {
-            for ( int i = 0; i < connections.length; i++ )
-            {
-                IConnection newConnection = ( IConnection ) connections[i].clone();
-                BrowserCorePlugin.getDefault().getConnectionManager().addConnection( newConnection );
-            }
-            return;
-        }
-
         // entry
         IEntry[] entries = getEntriesToPaste();
         if ( entries != null )
@@ -182,7 +152,6 @@ public class PasteAction extends BrowserAction
      */
     private void pasteEntries( final IEntry parent, final IEntry[] entriesToPaste )
     {
-
         int scope = ISearch.SCOPE_OBJECT;
         boolean askForScope = false;
         for ( int i = 0; i < entriesToPaste.length; i++ )
@@ -246,31 +215,6 @@ public class PasteAction extends BrowserAction
             }
             new CreateValuesJob( entry, attributeNames, rawValues ).execute();
         }
-    }
-
-
-    /**
-     * Conditions: - a connection is selected - there are connections in
-     * clipboard
-     * 
-     * @return
-     */
-    private IConnection[] getConnectionsToPaste()
-    {
-        if ( getSelectedBookmarks().length + getSelectedEntries().length + getSelectedSearchResults().length
-            + getSelectedSearches().length + getSelectedAttributes().length + getSelectedValues().length == 0
-            && getSelectedConnections().length > 0 )
-        {
-
-            Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
-            if ( content != null && content instanceof IConnection[] )
-            {
-                IConnection[] connections = ( IConnection[] ) content;
-                return connections;
-            }
-        }
-
-        return null;
     }
 
 

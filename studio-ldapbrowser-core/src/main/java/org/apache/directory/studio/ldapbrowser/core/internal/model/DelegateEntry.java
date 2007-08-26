@@ -39,7 +39,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPa
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
@@ -68,7 +68,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public DelegateEntry( IConnection connection, DN dn )
+    public DelegateEntry( IBrowserConnection connection, DN dn )
     {
         this.connectionName = connection.getName();
         this.dn = dn;
@@ -80,7 +80,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
 
     protected IEntry getDelegate()
     {
-        if ( this.delegate != null && !this.delegate.getConnection().isOpened() )
+        if ( this.delegate != null && !this.delegate.getBrowserConnection().getConnection().getJNDIConnectionWrapper().isConnected() )
         {
             this.entryDoesNotExist = false;
             this.delegate = null;
@@ -95,10 +95,10 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public IConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
         if ( this.getDelegate() != null )
-            return getDelegate().getConnection();
+            return getDelegate().getBrowserConnection();
         else
             return BrowserCorePlugin.getDefault().getConnectionManager().getConnection( this.connectionName );
         // return connection;
@@ -119,7 +119,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         if ( this.getDelegate() != null )
             return getDelegate().getUrl();
         else
-            return new URL( getConnection(), getDn() );
+            return new URL( getBrowserConnection(), getDn() );
     }
 
 
@@ -315,7 +315,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         /* if(b) */{
             if ( this.getDelegate() == null )
             {
-                setDelegate( this.getConnection().getEntryFromCache( this.dn ) );
+                setDelegate( this.getBrowserConnection().getEntryFromCache( this.dn ) );
                 if ( this.getDelegate() == null )
                 {
                     // entry doesn't exist!
@@ -374,7 +374,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         /* if(b) */{
             if ( this.getDelegate() == null )
             {
-                setDelegate( this.getConnection().getEntryFromCache( this.dn ) );
+                setDelegate( this.getBrowserConnection().getEntryFromCache( this.dn ) );
                 if ( this.getDelegate() == null )
                 {
                     // entry doesn't exist!
@@ -528,9 +528,9 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( adapter == IBrowserConnection.class )
         {
-            return this.getConnection();
+            return this.getBrowserConnection();
         }
         if ( adapter == IEntry.class )
         {

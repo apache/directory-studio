@@ -247,7 +247,7 @@ public class ValueEditorManager
      */
     public IValueEditor getCurrentValueEditor( IEntry entry, String attributeType )
     {
-        return getCurrentValueEditor( entry.getConnection().getSchema(), attributeType );
+        return getCurrentValueEditor( entry.getBrowserConnection().getSchema(), attributeType );
     }
 
 
@@ -334,7 +334,7 @@ public class ValueEditorManager
      */
     public IValueEditor[] getAlternativeValueEditors( IEntry entry, String attributeName )
     {
-        Schema schema = entry.getConnection().getSchema();
+        Schema schema = entry.getBrowserConnection().getSchema();
         return getAlternativeValueEditors( schema, attributeName );
     }
 
@@ -547,7 +547,7 @@ public class ValueEditorManager
                 EventRegistry.resumeEventFireingInCurrentThread();
 
                 Object newValue;
-                if ( entry.getConnection().getSchema().getAttributeTypeDescription( attributeDescription )
+                if ( entry.getBrowserConnection().getSchema().getAttributeTypeDescription( attributeDescription )
                     .getSyntaxDescription().isString() )
                 {
                     if ( newRawValue instanceof String )

@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -78,7 +78,7 @@ public class ReferralException extends ConnectionException
             URL referralUrl = new URL( referral );
 
             // get referral connection
-            IConnection referralConnection = referralHandler.getReferralConnection( referralUrl );
+            IBrowserConnection referralConnection = referralHandler.getReferralConnection( referralUrl );
             if ( referralConnection == null )
             {
                 // throw new

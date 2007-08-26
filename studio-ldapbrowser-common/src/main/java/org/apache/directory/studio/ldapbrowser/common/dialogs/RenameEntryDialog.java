@@ -123,7 +123,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         this.dnBuilderWidget = new DnBuilderWidget( true, false );
         this.dnBuilderWidget.addWidgetModifyListener( this );
         this.dnBuilderWidget.createContents( composite );
-        this.dnBuilderWidget.setInput( this.entry.getConnection(), this.entry.getSubschema().getAllAttributeNames(),
+        this.dnBuilderWidget.setInput( this.entry.getBrowserConnection(), this.entry.getSubschema().getAllAttributeNames(),
             this.entry.getRdn(), null );
 
         this.deleteOldRdnButton = BaseWidgetUtils.createCheckbox( composite, "Delete old RDN", 1 );

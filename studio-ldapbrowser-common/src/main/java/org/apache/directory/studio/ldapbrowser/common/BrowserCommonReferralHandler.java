@@ -26,7 +26,7 @@ import java.util.Map;
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectReferralConnectionDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 
@@ -39,19 +39,19 @@ public class BrowserCommonReferralHandler implements IReferralHandler
     private Map referralUrlToReferralConnectionCache = new HashMap();
 
 
-    public IConnection getReferralConnection( final URL referralUrl )
+    public IBrowserConnection getReferralConnection( final URL referralUrl )
     {
 
         // check cache
         if ( referralUrlToReferralConnectionCache.containsKey( referralUrl ) )
         {
-            IConnection referralConnection = ( IConnection ) referralUrlToReferralConnectionCache.get( referralUrl );
+            IBrowserConnection referralConnection = ( IBrowserConnection ) referralUrlToReferralConnectionCache.get( referralUrl );
             if ( referralConnection != null )
             {
-                IConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getConnections();
+                IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnections();
                 for ( int i = 0; i < connections.length; i++ )
                 {
-                    IConnection connection = connections[i];
+                    IBrowserConnection connection = connections[i];
                     if ( referralConnection == connection )
                     {
                         return referralConnection;
@@ -63,7 +63,7 @@ public class BrowserCommonReferralHandler implements IReferralHandler
         referralUrlToReferralConnectionCache.remove( referralUrl );
 
         // open dialog
-        final IConnection[] referralConnection = new IConnection[1];
+        final IBrowserConnection[] referralConnection = new IBrowserConnection[1];
         PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
         {
             public void run()
@@ -72,7 +72,7 @@ public class BrowserCommonReferralHandler implements IReferralHandler
                     .getDisplay().getActiveShell(), referralUrl );
                 if ( dialog.open() == SelectReferralConnectionDialog.OK )
                 {
-                    IConnection connection = dialog.getReferralConnection();
+                    IBrowserConnection connection = dialog.getReferralConnection();
                     referralUrlToReferralConnectionCache.put( referralUrl, connection );
                     referralConnection[0] = connection;
                 }

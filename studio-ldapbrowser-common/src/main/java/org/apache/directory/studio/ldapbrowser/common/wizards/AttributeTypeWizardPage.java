@@ -124,7 +124,7 @@ public class AttributeTypeWizardPage extends WizardPage
         this.initialShowSubschemaAttributesOnly = initialShowSubschemaAttributesOnly;
         this.initialHideExistingAttributes = initialHideExistingAttributes;
 
-        possibleAttributeTypes = initialEntry.getConnection().getSchema().getAttributeTypeDescriptionNames();
+        possibleAttributeTypes = initialEntry.getBrowserConnection().getSchema().getAttributeTypeDescriptionNames();
         Arrays.sort( possibleAttributeTypes );
         possibleAttributeTypesSubschemaOnly = initialEntry.getSubschema().getAllAttributeNames();
         Arrays.sort( possibleAttributeTypesSubschemaOnly );

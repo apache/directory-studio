@@ -25,14 +25,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
 import org.eclipse.jface.viewers.ISelection;
@@ -69,10 +71,11 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
             {
                 if ( view.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
                 {
-                    IConnection[] connections = SelectionUtils.getConnections( selection );
+                    Connection[] connections = BrowserSelectionUtils.getConnections( selection );
                     if ( connections.length == 1 )
                     {
-                        ModificationLogsViewInput input = new ModificationLogsViewInput( connections[0], 0 );
+                        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection( connections[0].getName() );
+                        ModificationLogsViewInput input = new ModificationLogsViewInput( connection, 0 );
                         setInput( input );
                         scrollToNewest();
                     }

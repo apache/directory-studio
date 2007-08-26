@@ -21,10 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionUniversalListener;
-import org.apache.directory.studio.ldapbrowser.core.jobs.OpenConnectionsJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
+import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -54,10 +54,10 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            IConnection[] connections = SelectionUtils.getConnections( event.getSelection() );
+            Connection[] connections = SelectionUtils.getConnections( event.getSelection() );
             if ( connections.length == 1 )
             {
-                ensureViewVisible( connections[0] );
+                ensureViewVisible();
             }
         }
     };
@@ -67,7 +67,7 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
     {
         public void doubleClick( DoubleClickEvent event )
         {
-            IConnection[] connections = SelectionUtils.getConnections( event.getSelection() );
+            Connection[] connections = SelectionUtils.getConnections( event.getSelection() );
             if ( connections.length == 1 )
             {
                 toggleConnection( connections[0] );
@@ -103,12 +103,12 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
 
 
     /**
-     * Ensures that the browser view and modification log viewa are opended 
+     * Ensures that the browser view and modification log views are opended 
      * and ready to show the given selection.
      *
      * @param selection the view's selection.
      */
-    private void ensureViewVisible( IConnection selection )
+    private void ensureViewVisible()
     {
         if ( view != null )
         {
@@ -144,14 +144,11 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
      *
      * @param connection the connection
      */
-    private void toggleConnection( IConnection connection )
+    private void toggleConnection( Connection connection )
     {
-        if ( connection.isOpened() )
+        if ( connection.getJNDIConnectionWrapper().isConnected() )
         {
-            if ( connection.canClose() )
-            {
-                connection.close();
-            }
+            connection.getJNDIConnectionWrapper().disconnect();
         }
         else
         {

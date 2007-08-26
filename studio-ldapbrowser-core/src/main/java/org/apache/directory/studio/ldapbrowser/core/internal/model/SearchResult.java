@@ -23,11 +23,12 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 import java.util.ArrayList;
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -96,25 +97,30 @@ public class SearchResult implements ISearchResult
 
     public Object getAdapter( Class adapter )
     {
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+        Class<?> clazz = ( Class<?> ) adapter;
+        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IConnection.class )
+        if ( clazz.isAssignableFrom( Connection.class ) )
         {
-            return this.getConnection();
+            return getConnection().getConnection();
         }
-        if ( adapter == IEntry.class )
+        if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
         {
-            return this.getEntry();
+            return getConnection();
+        }
+        if ( clazz.isAssignableFrom( IEntry.class ) )
+        {
+            return getEntry();
         }
         return null;
     }
 
 
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
-        return this.search.getConnection();
+        return this.search.getBrowserConnection();
     }
 
 

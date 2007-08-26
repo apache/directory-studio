@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
@@ -85,9 +85,9 @@ public class Entry extends AbstractEntry
     }
 
 
-    public IConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
-        return this.getParententry().getConnection();
+        return this.getParententry().getBrowserConnection();
     }
 
 

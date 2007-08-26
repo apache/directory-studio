@@ -123,7 +123,6 @@ public class BrowserCommonActivator extends AbstractUIPlugin
             }
         }
 
-        BrowserCorePlugin.getDefault().setAuthHandler( new BrowserCommonAuthHandler() );
         BrowserCorePlugin.getDefault().setReferralHandler( new BrowserCommonReferralHandler() );
     }
 

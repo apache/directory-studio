@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
@@ -41,7 +41,7 @@ public class EntryDeletedEvent extends EntryModificationEvent
      * @param connection the connection
      * @param deletedEntry the deleted entry
      */
-    public EntryDeletedEvent( IConnection connection, IEntry deletedEntry )
+    public EntryDeletedEvent( IBrowserConnection connection, IEntry deletedEntry )
     {
         super( connection, deletedEntry );
     }

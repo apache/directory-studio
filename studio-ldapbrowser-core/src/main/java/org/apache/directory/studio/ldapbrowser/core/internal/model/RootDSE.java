@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
@@ -42,7 +42,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
     }
 
 
-    public RootDSE( IConnection connection ) throws ModelModificationException
+    public RootDSE( IBrowserConnection connection ) throws ModelModificationException
     {
         super( new DN(), connection );
     }

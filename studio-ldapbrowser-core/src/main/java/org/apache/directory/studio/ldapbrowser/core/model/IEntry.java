@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
-import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -379,11 +379,11 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Gets the connection of this entry.
+     * Gets the browser connection of this entry.
      * 
-     * @return the connection of this entry, never null.
+     * @return the browser connection of this entry, never null.
      */
-    public abstract IConnection getConnection();
+    public abstract IBrowserConnection getBrowserConnection();
 
 
     /**

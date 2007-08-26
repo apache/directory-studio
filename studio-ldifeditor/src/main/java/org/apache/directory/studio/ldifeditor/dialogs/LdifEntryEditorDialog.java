@@ -28,7 +28,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryE
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
@@ -59,7 +59,7 @@ public class LdifEntryEditorDialog extends Dialog
 
     public static final int MAX_HEIGHT = 250;
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private LdifRecord ldifRecord;
 
@@ -77,19 +77,19 @@ public class LdifEntryEditorDialog extends Dialog
     private IContextActivation contextActivation;
 
 
-    public LdifEntryEditorDialog( Shell parentShell, IConnection connection, LdifContentRecord ldifRecord )
+    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifContentRecord ldifRecord )
     {
         this( parentShell, connection, ldifRecord, null );
     }
 
 
-    public LdifEntryEditorDialog( Shell parentShell, IConnection connection, LdifChangeAddRecord ldifRecord )
+    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifChangeAddRecord ldifRecord )
     {
         this( parentShell, connection, ldifRecord, null );
     }
 
 
-    private LdifEntryEditorDialog( Shell parentShell, IConnection connection, LdifRecord ldifRecord, String s )
+    private LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifRecord ldifRecord, String s )
     {
         super( parentShell );
         setShellStyle( getShellStyle() | SWT.RESIZE );

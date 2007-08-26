@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectConnectionDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -50,7 +50,7 @@ public class ConnectionWidget extends BrowserWidget
     private Button connectionBrowseButton;
 
     /** The selected connection */
-    private IConnection selectedConnection;
+    private IBrowserConnection selectedConnection;
 
 
     /**
@@ -58,7 +58,7 @@ public class ConnectionWidget extends BrowserWidget
      * 
      * @param connection the initial connection
      */
-    public ConnectionWidget( IConnection connection )
+    public ConnectionWidget( IBrowserConnection connection )
     {
         this.selectedConnection = connection;
     }
@@ -94,7 +94,7 @@ public class ConnectionWidget extends BrowserWidget
                 SelectConnectionDialog dialog = new SelectConnectionDialog( parent.getShell(), "Select Connection",
                     selectedConnection );
                 dialog.open();
-                IConnection connection = dialog.getSelectedConnection();
+                IBrowserConnection connection = dialog.getSelectedConnection();
                 if ( connection != null )
                 {
                     setConnection( connection );
@@ -115,7 +115,7 @@ public class ConnectionWidget extends BrowserWidget
      * 
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return selectedConnection;
     }
@@ -126,7 +126,7 @@ public class ConnectionWidget extends BrowserWidget
      * 
      * @param connection the connection
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
         selectedConnection = connection;
         connectionText.setText( selectedConnection != null ? selectedConnection.getName() : "" );

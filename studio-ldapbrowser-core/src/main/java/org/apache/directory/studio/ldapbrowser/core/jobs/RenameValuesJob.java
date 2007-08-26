@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
@@ -58,7 +59,7 @@ public class RenameValuesJob extends AbstractModificationJob
     }
 
 
-    protected void executeAsyncModificationJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( oldValues.length == 1 ? BrowserCoreMessages.jobs__rename_value_task_1
@@ -92,17 +93,17 @@ public class RenameValuesJob extends AbstractModificationJob
 
             if ( this.event == null )
             {
-                this.event = new ValueRenamedEvent( entry.getConnection(), entry, oldValues[0], newValues[0] );
+                this.event = new ValueRenamedEvent( entry.getBrowserConnection(), entry, oldValues[0], newValues[0] );
             }
         }
 
         if ( !monitor.errorsReported() )
         {
-            entry.getConnection().create( newValues, monitor );
+            entry.getBrowserConnection().create( newValues, monitor );
         }
         if ( !monitor.errorsReported() )
         {
-            entry.getConnection().delete( oldValues, monitor );
+            entry.getBrowserConnection().delete( oldValues, monitor );
         }
     }
 

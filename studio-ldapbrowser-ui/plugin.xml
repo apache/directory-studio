@@ -235,22 +235,17 @@
 	<extension
 		point="org.eclipse.ui.propertyPages">
 		<page
-        class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ConnectionPropertyPage"
-        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ConnectionPropertyPage"
-        name="Connection"
-        objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ConnectionPropertyPageProvider"/>            
-		<page
-        category="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ConnectionPropertyPage"
+        category="org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage"
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SchemaPropertyPage"
         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SchemaPropertyPage"
         name="Schema"
-        objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ConnectionPropertyPageProvider"/>            
+        objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>            
 		<page
-        category="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ConnectionPropertyPage"
+        category="org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage"
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.RootDSEPropertyPage"
         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.RootDSEPropertyPage"
         name="Root DSE"
-        objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ConnectionPropertyPageProvider"/>                        
+        objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>                        
 		<page
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage"
         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage"
@@ -315,9 +310,9 @@
              style="push">
        </action>
        <action
-             class="org.apache.directory.studio.ldapbrowser.common.actions.NewConnectionAction"
+             class="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
              icon="resources/icons/connection_add.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewConnectionAction"
+             id="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
              label="New Connection..."
              menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newConnection"
              style="push"/>

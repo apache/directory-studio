@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
@@ -39,7 +39,7 @@ public class DirectoryMetadataEntry extends BaseDNEntry
     }
 
 
-    public DirectoryMetadataEntry( DN dn, IConnection connection )
+    public DirectoryMetadataEntry( DN dn, IBrowserConnection connection )
         throws ModelModificationException
     {
         super();
@@ -52,7 +52,7 @@ public class DirectoryMetadataEntry extends BaseDNEntry
 
     public boolean hasChildren()
     {
-        if ( getDn().equals( getConnection().getSchema().getDn() ) )
+        if ( getDn().equals( getBrowserConnection().getSchema().getDn() ) )
         {
             return false;
         }

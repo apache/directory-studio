@@ -26,7 +26,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnecti
 import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
@@ -133,7 +133,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
     }
 
 
-    protected IConnection getConnection()
+    protected IBrowserConnection getConnection()
     {
         return editor.getConnection() != null ? editor.getConnection() : new DummyConnection( Schema.DEFAULT_SCHEMA );
     }
@@ -141,7 +141,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
     protected Object getValueEditorRawValue()
     {
-        IConnection connection = getConnection();
+        IBrowserConnection connection = getConnection();
         String dn = getDn();
         String description = getAttributeDescription();
         Object value = getValue();

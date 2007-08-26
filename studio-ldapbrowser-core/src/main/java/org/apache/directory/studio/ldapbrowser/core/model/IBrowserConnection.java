@@ -24,20 +24,31 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.io.Writer;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ModificationLogger;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ConnectionPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
 
-public interface IConnection extends Serializable, IAdaptable, ConnectionPropertyPageProvider
+public interface IBrowserConnection extends Serializable, IAdaptable, ConnectionPropertyPageProvider
 {
 
+    public static String CONNECTION_PARAMETER_FETCH_BASE_DNS = "ldapbrowser.fetchBaseDns";
+    public static String CONNECTION_PARAMETER_BASE_DN = "ldapbrowser.baseDn";
+    public static String CONNECTION_PARAMETER_COUNT_LIMIT = "ldapbrowser.countLimit";
+    public static String CONNECTION_PARAMETER_TIME_LIMIT = "ldapbrowser.timeLimit";
+    public static String CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD = "ldapbrowser.aliasesDereferencingMethod";
+    public static String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod";
+    
+    
     public static final String[] ROOT_DSE_ATTRIBUTES =
         { IRootDSE.ROOTDSE_ATTRIBUTE_MONITORCONTEXT, IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS,
             IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY,
@@ -45,22 +56,6 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
             IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES,
             IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM, ISearch.ALL_OPERATIONAL_ATTRIBUTES,
             ISearch.ALL_USER_ATTRIBUTES };
-
-    public static final int AUTH_ANONYMOUS = 0;
-
-    public static final int AUTH_SIMPLE = 1;
-    
-    public static final int AUTH_SASL_DIGMD5 = 2;
-    
-    public static final int AUTH_SASL_CRAMD5 = 3;
-    
-    public static final int AUTH_SASL_GSSAPI = 4;
-
-    public static final int ENCYRPTION_NONE = 0;
-
-    public static final int ENCYRPTION_LDAPS = 1;
-
-    public static final int ENCYRPTION_STARTTLS = 2;
 
     public static final int DEREFERENCE_ALIASES_NEVER = 0;
 
@@ -116,10 +111,10 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
     public abstract void setPort( int port );
 
 
-    public abstract int getEncryptionMethod();
+    public abstract EncryptionMethod getEncryptionMethod();
 
 
-    public abstract void setEncryptionMethod( int encryptionMethod );
+    public abstract void setEncryptionMethod( EncryptionMethod encryptionMethod );
 
 
     public abstract int getAliasesDereferencingMethod();
@@ -152,10 +147,10 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
     public void setBindPassword( String bindPassword );
 
 
-    public int getAuthMethod();
+    public AuthenticationMethod getAuthMethod();
 
 
-    public void setAuthMethod( int authMethod );
+    public void setAuthMethod( AuthenticationMethod authMethod );
 
 
     public abstract IRootDSE getRootDSE();
@@ -167,12 +162,6 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
     public abstract void setSchema( Schema schema );
 
 
-    public abstract ConnectionParameter getConnectionParameter();
-
-
-    public abstract void setConnectionParameter( ConnectionParameter connectionParameter );
-
-
     public abstract SearchManager getSearchManager();
 
 
@@ -182,26 +171,7 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
     public abstract ModificationLogger getModificationLogger();
 
 
-    public abstract void reloadSchema( ExtendedProgressMonitor monitor );
-
-
-    /**
-     * Connects to the LDAP server without any authentication:
-     * 
-     * @param pm
-     *                The progress monitor
-     */
-    public abstract void connect( ExtendedProgressMonitor monitor );
-
-
-    /**
-     * Binds to the LDAP server using the required authentication. Depends
-     * on connect().
-     * 
-     * @param pm
-     *                The progress monitor
-     */
-    public abstract void bind( ExtendedProgressMonitor monitor );
+    public abstract void reloadSchema( StudioProgressMonitor monitor );
 
 
     /**
@@ -211,102 +181,55 @@ public interface IConnection extends Serializable, IAdaptable, ConnectionPropert
      * @param pm
      *                The progress monitor
      */
-    public abstract void fetchRootDSE( ExtendedProgressMonitor monitor );
+    public abstract void fetchRootDSE( StudioProgressMonitor monitor );
 
 
-    /**
-     * Opens the connection to the LDAP server and loads the schema if
-     * required. Depends on fetchRootDSE().
-     * 
-     * @param pm
-     *                The progress monitor
-     */
-    public abstract void open( ExtendedProgressMonitor monitor );
+    public abstract boolean existsEntry( DN dn, StudioProgressMonitor monitor );
 
 
-    public abstract boolean isOpened();
-
-
-    public abstract boolean canOpen();
-
-
-    public abstract boolean canClose();
-
-
-    public abstract void close();
-
-
-    public abstract boolean existsEntry( DN dn, ExtendedProgressMonitor monitor );
-
-
-    public abstract IEntry getEntry( DN dn, ExtendedProgressMonitor monitor );
+    public abstract IEntry getEntry( DN dn, StudioProgressMonitor monitor );
 
 
     public abstract IEntry getEntryFromCache( DN dn );
 
 
-    public abstract void search( ISearch searchRequest, ExtendedProgressMonitor monitor );
+    public abstract void search( ISearch searchRequest, StudioProgressMonitor monitor );
 
 
-    public abstract void delete( IEntry entryToDelete, ExtendedProgressMonitor monitor );
+    public abstract void delete( IEntry entryToDelete, StudioProgressMonitor monitor );
 
 
-    public abstract void delete( IValue valuesToDelete[], ExtendedProgressMonitor monitor );
+    public abstract void delete( IValue valuesToDelete[], StudioProgressMonitor monitor );
 
 
-    public abstract void delete( IAttribute attriubtesToDelete[], ExtendedProgressMonitor monitor );
+    public abstract void delete( IAttribute attriubtesToDelete[], StudioProgressMonitor monitor );
 
 
-    public abstract void create( IEntry entryToCreate, ExtendedProgressMonitor monitor );
+    public abstract void create( IEntry entryToCreate, StudioProgressMonitor monitor );
 
 
-    public abstract void create( IValue valuesToCreate[], ExtendedProgressMonitor monitor );
+    public abstract void create( IValue valuesToCreate[], StudioProgressMonitor monitor );
 
 
-    public abstract void modify( IValue oldValue, IValue newVaue, ExtendedProgressMonitor monitor );
+    public abstract void modify( IValue oldValue, IValue newVaue, StudioProgressMonitor monitor );
 
 
-    public abstract void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, ExtendedProgressMonitor monitor );
+    public abstract void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor );
 
 
-    public abstract void move( IEntry entryToMove, DN newSuperior, ExtendedProgressMonitor monitor );
-
-
-    public abstract Object clone();
+    public abstract void move( IEntry entryToMove, DN newSuperior, StudioProgressMonitor monitor );
 
 
     public abstract void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
-        ExtendedProgressMonitor monitor );
+        StudioProgressMonitor monitor );
 
 
-    public abstract LdifEnumeration exportLdif( SearchParameter searchParameter, ExtendedProgressMonitor pm )
+    public abstract LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor pm )
         throws ConnectionException;
 
 
-    /**
-     * Suspends the commitment of modifications.
-     * 
-     */
-    public abstract void suspend();
-
-
-    /**
-     * Resume the commitment of modifications.
-     * 
-     */
-    public abstract void resume( ExtendedProgressMonitor monitor );
-
-
-    /**
-     * Resets the state and deletes all uncommitted modifications
-     * 
-     */
-    public abstract void reset();
-
-
-    public abstract boolean isSuspended();
-
-
+    public abstract Connection getConnection();
+    
     public abstract int hashCode();
 
 

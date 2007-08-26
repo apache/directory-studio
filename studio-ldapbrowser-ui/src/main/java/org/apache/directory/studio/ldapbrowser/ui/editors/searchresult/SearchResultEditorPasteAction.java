@@ -95,7 +95,7 @@ public class SearchResultEditorPasteAction extends PasteAction
     private IValue[] getValuesToPaste()
     {
         if ( getSelectedEntries().length + getSelectedBookmarks().length + getSelectedValues().length
-            + getSelectedAttributes().length + getSelectedSearches().length + getSelectedConnections().length == 0
+            + getSelectedAttributes().length + getSelectedSearches().length == 0
             && getSelectedSearchResults().length == 1
             && getSelectedAttributeHierarchies().length == 1
             && getSelectedAttributeHierarchies()[0].size() == 1 )

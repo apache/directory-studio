@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
@@ -35,7 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -62,12 +64,12 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        IConnection[] connections = new IConnection[entriesToDelete.length];
+        Connection[] connections = new Connection[entriesToDelete.length];
         for ( int i = 0; i < connections.length; i++ )
         {
-            connections[i] = entriesToDelete[i].getConnection();
+            connections[i] = entriesToDelete[i].getBrowserConnection().getConnection();
         }
         return connections;
     }
@@ -81,7 +83,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    protected void executeBulkJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( entriesToDelete.length == 1 ? BrowserCoreMessages.bind(
@@ -97,7 +99,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
         {
 
             IEntry entryToDelete = entriesToDelete[i];
-            IConnection connection = entryToDelete.getConnection();
+            IBrowserConnection connection = entryToDelete.getBrowserConnection();
 
             // delete from directory
             // TODO: use TreeDelete Control, if available
@@ -144,7 +146,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
 
 
     private int deleteEntryRecursive( IEntry entry, boolean refInitialized, int numberOfDeletedEntries,
-        ExtendedProgressMonitor monitor )
+        StudioProgressMonitor monitor )
     {
         try
         {
@@ -158,13 +160,13 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
                 subParam.setSearchBase( entry.getDn() );
                 subParam.setFilter( ISearch.FILTER_TRUE );
                 subParam.setScope( ISearch.SCOPE_ONELEVEL );
-                subParam.setAliasesDereferencingMethod( IConnection.DEREFERENCE_ALIASES_NEVER );
-                subParam.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
+                subParam.setAliasesDereferencingMethod( IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
+                subParam.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
                 subParam.setReturningAttributes( new String[]
                     { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
                 subParam.setCountLimit( 100 );
-                ISearch search = new Search( entry.getConnection(), subParam );
-                entry.getConnection().search( search, monitor );
+                ISearch search = new Search( entry.getBrowserConnection(), subParam );
+                entry.getBrowserConnection().search( search, monitor );
 
                 ISearchResult[] srs = search.getSearchResults();
                 for ( int i = 0; !monitor.isCanceled() && srs != null && i < srs.length; i++ )
@@ -187,12 +189,12 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
                     param.setSearchBase( entry.getDn() );
                     param.setFilter( ISearch.FILTER_TRUE );
                     param.setScope( ISearch.SCOPE_OBJECT );
-                    param.setAliasesDereferencingMethod( IConnection.DEREFERENCE_ALIASES_NEVER );
-                    param.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
+                    param.setAliasesDereferencingMethod( IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
+                    param.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
                     param.setReturningAttributes( new String[]
                         { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
-                    ISearch search = new Search( entry.getConnection(), param );
-                    entry.getConnection().search( search, monitor );
+                    ISearch search = new Search( entry.getBrowserConnection(), param );
+                    entry.getBrowserConnection().search( search, monitor );
 
                     ISearchResult[] srs = search.getSearchResults();
                     if ( !monitor.isCanceled() && srs != null && srs.length == 1 )
@@ -201,7 +203,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
                     }
                 }
 
-                entry.getConnection().delete( entry, monitor );
+                entry.getBrowserConnection().delete( entry, monitor );
 
                 numberOfDeletedEntries++;
                 monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__deleted_n_entries,
@@ -224,7 +226,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
         for ( Iterator it = deletedEntriesSet.iterator(); it.hasNext(); )
         {
             IEntry entry = ( IEntry ) it.next();
-            EventRegistry.fireEntryUpdated( new EntryDeletedEvent( entry.getConnection(), entry ), this );
+            EventRegistry.fireEntryUpdated( new EntryDeletedEvent( entry.getBrowserConnection(), entry ), this );
         }
         for ( Iterator it = entriesToUpdateSet.iterator(); it.hasNext(); )
         {

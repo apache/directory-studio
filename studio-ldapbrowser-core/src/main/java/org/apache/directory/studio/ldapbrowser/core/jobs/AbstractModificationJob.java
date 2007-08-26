@@ -21,7 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
@@ -29,7 +30,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationExcep
 public abstract class AbstractModificationJob extends AbstractAsyncBulkJob
 {
 
-    protected void executeBulkJob( ExtendedProgressMonitor pm ) throws ModelModificationException
+    protected void executeBulkJob( StudioProgressMonitor pm ) throws ModelModificationException
     {
 
         try
@@ -39,19 +40,16 @@ public abstract class AbstractModificationJob extends AbstractAsyncBulkJob
         finally
         {
             // reload affected attributes
-            if ( !getModifiedEntry().getConnection().isSuspended() )
-            {
-                String[] affectedAttributeNames = getAffectedAttributeNames();
-                InitializeAttributesJob.initializeAttributes( getModifiedEntry(), affectedAttributeNames, pm );
-            }
+            String[] affectedAttributeNames = getAffectedAttributeNames();
+            InitializeAttributesJob.initializeAttributes( getModifiedEntry(), affectedAttributeNames, pm );
         }
     }
 
 
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { getModifiedEntry().getConnection() };
+        return new Connection[]
+            { getModifiedEntry().getBrowserConnection().getConnection() };
     }
 
 
@@ -62,7 +60,7 @@ public abstract class AbstractModificationJob extends AbstractAsyncBulkJob
     }
 
 
-    protected abstract void executeAsyncModificationJob( ExtendedProgressMonitor pm ) throws ModelModificationException;
+    protected abstract void executeAsyncModificationJob( StudioProgressMonitor pm ) throws ModelModificationException;
 
 
     protected abstract IEntry getModifiedEntry();
