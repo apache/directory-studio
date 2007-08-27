@@ -20,15 +20,9 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
-import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.model.SchemaImpl;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.difference.DifferenceEngine;
 import org.apache.directory.studio.apacheds.schemaeditor.view.widget.DifferencesWidget;
 import org.eclipse.jface.wizard.WizardPage;
@@ -78,57 +72,10 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         differencesWidget = new DifferencesWidget();
         differencesWidget.createWidget( composite );
 
-        SchemaImpl schema1Old = new SchemaImpl( "Schema1" );
-        SchemaImpl schema1New = new SchemaImpl( "Schema1" );
-        SchemaImpl schema2 = new SchemaImpl( "Schema2" );
-        SchemaImpl schema3 = new SchemaImpl( "Schema3" );
-        SchemaImpl schema4 = new SchemaImpl( "Schema4" );
+        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
 
-        List<Schema> schemasListOld = new ArrayList<Schema>();
-        schemasListOld.add( schema1Old );
-        schemasListOld.add( schema2 );
-        schemasListOld.add( schema4 );
-
-        List<Schema> schemasListNew = new ArrayList<Schema>();
-        schemasListNew.add( schema4 );
-        schemasListNew.add( schema1New );
-        schemasListNew.add( schema3 );
-
-        AttributeTypeImpl at1 = new AttributeTypeImpl( "1.2.1" );
-        at1.setNames( new String[]
-            { "AT1", "AttributeType1" } );
-        AttributeTypeImpl at2 = new AttributeTypeImpl( "1.2.2" );
-        at2.setNames( new String[]
-            { "AT2", "AttributeType2" } );
-        AttributeTypeImpl at2Bis = new AttributeTypeImpl( "1.2.2" );
-        at2Bis.setNames( new String[]
-            { "AT2" } );
-        AttributeTypeImpl at3 = new AttributeTypeImpl( "1.2.3" );
-        at3.setNames( new String[]
-            { "AT3" } );
-        schema1Old.addAttributeType( at1 );
-        schema1Old.addAttributeType( at2 );
-        schema1New.addAttributeType( at2Bis );
-        schema1New.addAttributeType( at3 );
-
-        ObjectClassImpl oc1 = new ObjectClassImpl( "1.2.10" );
-        oc1.setNames( new String[]
-            { "OC1", "ObjectClass1" } );
-        ObjectClassImpl oc2 = new ObjectClassImpl( "1.2.11" );
-        oc2.setNames( new String[]
-            { "OC2", "ObjectClass2" } );
-        ObjectClassImpl oc2Bis = new ObjectClassImpl( "1.2.11" );
-        oc2Bis.setNames( new String[]
-            { "OC2" } );
-        ObjectClassImpl oc3 = new ObjectClassImpl( "1.2.12" );
-        oc3.setNames( new String[]
-            { "OC3" } );
-        schema1Old.addObjectClass( oc1 );
-        schema1Old.addObjectClass( oc2 );
-        schema1New.addObjectClass( oc2Bis );
-        schema1New.addObjectClass( oc3 );
-
-        differencesWidget.setInput( DifferenceEngine.getDifferences( schemasListOld, schemasListNew ) );
+        differencesWidget.setInput( DifferenceEngine.getDifferences( project.getSchemaBackup(), project
+            .getSchemaHandler().getSchemas() ) );
 
         initFields();
 

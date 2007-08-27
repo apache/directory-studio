@@ -52,7 +52,7 @@ public class CommitChangesAction extends Action implements IWorkbenchWindowActio
         setId( PluginConstants.CMD_COMMIT_CHANGES );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_COMMIT_CHANGES ) );
-        setEnabled( true );
+        setEnabled( false );
     }
 
 

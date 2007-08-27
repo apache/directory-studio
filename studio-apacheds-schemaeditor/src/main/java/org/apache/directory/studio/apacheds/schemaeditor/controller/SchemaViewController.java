@@ -27,6 +27,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CommitChangesAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteSchemaElementAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsOpenLdapAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsXmlAction;
@@ -356,6 +357,7 @@ public class SchemaViewController
     private OpenSchemaViewSortingDialogAction openSchemaViewSortingDialog;
     private OpenSchemaViewPreferenceAction openSchemaViewPreference;
     private LinkWithEditorSchemaViewAction linkWithEditor;
+    private CommitChangesAction commitChanges;
 
 
     /**
@@ -401,6 +403,7 @@ public class SchemaViewController
         openSchemaViewSortingDialog = new OpenSchemaViewSortingDialogAction();
         openSchemaViewPreference = new OpenSchemaViewPreferenceAction();
         linkWithEditor = new LinkWithEditorSchemaViewAction( view );
+        commitChanges = new CommitChangesAction();
     }
 
 
@@ -413,6 +416,8 @@ public class SchemaViewController
         toolbar.add( newSchema );
         toolbar.add( newAttributeType );
         toolbar.add( newObjectClass );
+        toolbar.add( new Separator() );
+        toolbar.add( commitChanges );
         toolbar.add( new Separator() );
         toolbar.add( collapseAll );
         toolbar.add( linkWithEditor );
@@ -502,6 +507,7 @@ public class SchemaViewController
                     linkWithEditor.setEnabled( true );
                     openSchemaViewSortingDialog.setEnabled( true );
                     openSchemaViewPreference.setEnabled( true );
+                    commitChanges.setEnabled( true );
 
                     addSchemaHandlerListener( newProject );
                     view.reloadViewer();
@@ -517,6 +523,7 @@ public class SchemaViewController
                     linkWithEditor.setEnabled( false );
                     openSchemaViewSortingDialog.setEnabled( false );
                     openSchemaViewPreference.setEnabled( false );
+                    commitChanges.setEnabled( false );
                 }
             }
         } );
@@ -828,6 +835,7 @@ public class SchemaViewController
             linkWithEditor.setEnabled( true );
             openSchemaViewSortingDialog.setEnabled( true );
             openSchemaViewPreference.setEnabled( true );
+            commitChanges.setEnabled( true );
 
             addSchemaHandlerListener( project );
             view.reloadViewer();
@@ -842,6 +850,7 @@ public class SchemaViewController
             linkWithEditor.setEnabled( false );
             openSchemaViewSortingDialog.setEnabled( false );
             openSchemaViewPreference.setEnabled( false );
+            commitChanges.setEnabled( false );
         }
     }
 }

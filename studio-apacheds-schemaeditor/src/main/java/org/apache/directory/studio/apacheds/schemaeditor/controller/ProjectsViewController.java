@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.schemaeditor.controller;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CloseProjectAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CommitChangesAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteProjectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportProjectsAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ImportProjectsAction;
@@ -77,7 +76,6 @@ public class ProjectsViewController
     private DeleteProjectAction deleteProject;
     private ImportProjectsAction importProjects;
     private ExportProjectsAction exportProjects;
-    private CommitChangesAction commitChanges;
 
 
     /**
@@ -113,7 +111,6 @@ public class ProjectsViewController
         deleteProject = new DeleteProjectAction( view.getViewer() );
         importProjects = new ImportProjectsAction();
         exportProjects = new ExportProjectsAction( view.getViewer() );
-        commitChanges = new CommitChangesAction();
     }
 
 
@@ -124,7 +121,6 @@ public class ProjectsViewController
     {
         IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
         toolbar.add( newProject );
-        toolbar.add( commitChanges );
     }
 
 

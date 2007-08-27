@@ -187,7 +187,9 @@ public class DifferencesWidget
 
         // TreeViewer
         treeViewer = new TreeViewer( leftComposite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        treeViewer.getTree().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true );
+        gridData.heightHint = 250;
+        treeViewer.getTree().setLayoutData( gridData );
         treeViewer.setContentProvider( new DifferencesWidgetSchemaContentProvider() );
         treeViewer.setLabelProvider( new DifferencesWidgetSchemaLabelProvider() );
         treeViewer.addSelectionChangedListener( new ISelectionChangedListener()
