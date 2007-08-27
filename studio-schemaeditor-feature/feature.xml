@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.schemas.feature"
       label="Apache Directory Studio Schemas Editor"
-      version="0.8.0"
+      version="1.0.0"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.schemas"
       os="linux,macosx,win32"
@@ -228,21 +228,21 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.schemas"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.schemas.help"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
 </feature>

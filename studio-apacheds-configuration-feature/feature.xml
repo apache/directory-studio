@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.apacheds.configuration.feature"
       label="Apache Directory Studio Apache DS Configuration Plugins"
-      version="0.8.0"
+      version="1.0.0"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.apacheds.configuration"
       os="linux,macosx,win32"
@@ -227,21 +227,21 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.apacheds.configuration"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.apacheds.configuration.help"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
 </feature>

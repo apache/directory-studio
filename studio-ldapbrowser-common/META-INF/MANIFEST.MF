@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Browser Common Plug-in
 Bundle-SymbolicName: org.apache.directory.studio.ldapbrowser.common;singleton:=true
-Bundle-Version: 0.8.0
+Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

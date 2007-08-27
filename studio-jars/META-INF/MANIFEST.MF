@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Jars Plugin
 Bundle-SymbolicName: org.apache.directory.studio.jars
-Bundle-Version: 0.8.0
+Bundle-Version: 1.0.0
 Bundle-Localization: plugin
 Bundle-Vendor: Apache Software Foundation
 Bundle-ClassPath: lib/antlr-2.7.6.jar,
