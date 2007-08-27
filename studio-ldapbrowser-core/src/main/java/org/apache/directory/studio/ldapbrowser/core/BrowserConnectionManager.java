@@ -365,7 +365,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
 
 
     /**
-     * Saves the browser onnections
+     * Saves the browser Connections
      */
     private void saveBrowserConnections()
     {
