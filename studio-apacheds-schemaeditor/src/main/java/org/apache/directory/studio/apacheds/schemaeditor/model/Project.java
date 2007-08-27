@@ -270,6 +270,7 @@ public class Project
                 getSchemaHandler().addSchema( schema );
             }
 
+            // TODO Add error Handling
             monitor.done();
             hasOnlineSchemaBeenFetched = true;
         }
@@ -285,6 +286,30 @@ public class Project
     public boolean hasOnlineSchemaBeenFetched()
     {
         return hasOnlineSchemaBeenFetched;
+    }
+
+
+    /**
+     * Gets the Schema Backup.
+     *
+     * @return
+     *      the Schema Backup
+     */
+    public List<Schema> getSchemaBackup()
+    {
+        return schemaBackup;
+    }
+
+
+    /**
+     * Sets the Schema Backup
+     *
+     * @param schemaBackup
+     *      the Schema Backup
+     */
+    public void setSchemaBackup( List<Schema> schemaBackup )
+    {
+        this.schemaBackup = schemaBackup;
     }
 
 

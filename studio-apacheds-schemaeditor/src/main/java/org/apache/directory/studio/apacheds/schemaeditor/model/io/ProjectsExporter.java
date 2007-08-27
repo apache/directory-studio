@@ -20,6 +20,8 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model.io;
 
 
+import java.util.List;
+
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -52,6 +54,7 @@ public class ProjectsExporter
     private static final String NAME_TAG = "name";
     private static final String TYPE_TAG = "type";
     private static final String CONNECTION_TAG = "connection";
+    private static final String SCHEMA_BACKUP_TAG = "schemaBackup";
 
 
     /**
@@ -131,10 +134,20 @@ public class ProjectsExporter
                 element.addAttribute( TYPE_TAG, type.toString() );
             }
 
-            // Connection Name
+            // If project is an Apache Directory Server Online Schema Project
             if ( type.equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
             {
+                // Connection Name
                 element.addAttribute( CONNECTION_TAG, project.getConnection().getName() );
+
+                // Schema Backup
+                Element schemaBackupElement = element.addElement( SCHEMA_BACKUP_TAG );
+                List<Schema> backupSchemas = project.getSchemaBackup();
+                if ( backupSchemas != null )
+                {
+                    XMLSchemaFileExporter.addSchemas( backupSchemas.toArray( new Schema[0] ), schemaBackupElement );
+                }
+
             }
 
             // Schemas

@@ -76,39 +76,6 @@ public class Activator extends AbstractUIPlugin
     {
         plugin = this;
         projectsHandler = ProjectsHandler.getInstance();
-        projectsHandler.addListener( new ProjectsHandlerListener()
-        {
-            public void openProjectChanged( Project oldProject, Project newProject )
-            {
-                closeProjectEditors();
-
-                if ( newProject == null )
-                {
-                    schemaHandler = null;
-                    schemaChecker = null;
-                }
-                else
-                {
-                    // Registering the SchemaHandler and SchemaChecker
-                    schemaHandler = newProject.getSchemaHandler();
-                    schemaChecker = newProject.getSchemaChecker();
-                }
-
-                PluginUtils.saveProjects();
-            }
-
-
-            public void projectAdded( Project project )
-            {
-                PluginUtils.saveProjects();
-            }
-
-
-            public void projectRemoved( Project project )
-            {
-                PluginUtils.saveProjects();
-            }
-        } );
     }
 
 
@@ -151,6 +118,40 @@ public class Activator extends AbstractUIPlugin
 
         // Loading the projects
         PluginUtils.loadProjects();
+
+        projectsHandler.addListener( new ProjectsHandlerListener()
+        {
+            public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                closeProjectEditors();
+
+                if ( newProject == null )
+                {
+                    schemaHandler = null;
+                    schemaChecker = null;
+                }
+                else
+                {
+                    // Registering the SchemaHandler and SchemaChecker
+                    schemaHandler = newProject.getSchemaHandler();
+                    schemaChecker = newProject.getSchemaChecker();
+                }
+
+                PluginUtils.saveProjects();
+            }
+
+
+            public void projectAdded( Project project )
+            {
+                PluginUtils.saveProjects();
+            }
+
+
+            public void projectRemoved( Project project )
+            {
+                PluginUtils.saveProjects();
+            }
+        } );
     }
 
 

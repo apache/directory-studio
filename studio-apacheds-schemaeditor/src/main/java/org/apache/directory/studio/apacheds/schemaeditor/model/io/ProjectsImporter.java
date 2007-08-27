@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.model.io;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class ProjectsImporter
     private static final String SCHEMAS_TAG = "schemas";
     private static final String TYPE_TAG = "type";
     private static final String CONNECTION_TAG = "connection";
+    private static final String SCHEMA_BACKUP_TAG = "schemaBackup";
 
 
     /**
@@ -167,13 +169,36 @@ public class ProjectsImporter
             }
         }
 
-        // Connection
+        // If project is an Apache Directory Server Online Schema Project
         if ( project.getType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
         {
+            // Connection
             Attribute connectionAttribute = element.attribute( CONNECTION_TAG );
             if ( ( connectionAttribute != null ) && ( !connectionAttribute.getValue().equals( "" ) ) )
             {
                 project.setConnection( PluginUtils.getConnection( connectionAttribute.getText() ) );
+            }
+
+            // SchemaBackup
+            Element schemaBackupElement = element.element( SCHEMA_BACKUP_TAG );
+            if ( schemaBackupElement != null )
+            {
+                Element schemasElement = schemaBackupElement.element( SCHEMAS_TAG );
+                if ( schemasElement != null )
+                {
+                    Schema[] schemas = null;
+                    try
+                    {
+                        schemas = XMLSchemaFileImporter.readSchemas( schemasElement, path );
+                    }
+                    catch ( XMLSchemaFileImportException e )
+                    {
+                        throw new ProjectsImportException(
+                            "The parser was not able to convert the schemas of the project." );
+                    }
+
+                    project.setSchemaBackup( Arrays.asList( schemas ) );
+                }
             }
         }
 

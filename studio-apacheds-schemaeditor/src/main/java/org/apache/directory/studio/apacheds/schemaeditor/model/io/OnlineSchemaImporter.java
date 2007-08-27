@@ -82,6 +82,7 @@ public class OnlineSchemaImporter
      * @param monitor 
      * @throws NamingException 
      */
+    @SuppressWarnings("unchecked")
     public static List<Schema> getOnlineSchema( JNDIConnectionWrapper wrapper, StudioProgressMonitor monitor )
         throws NamingException
     {
@@ -118,6 +119,7 @@ public class OnlineSchemaImporter
     }
 
 
+    @SuppressWarnings("unchecked")
     private static Schema getSchema( JNDIConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
         throws NamingException
     {
