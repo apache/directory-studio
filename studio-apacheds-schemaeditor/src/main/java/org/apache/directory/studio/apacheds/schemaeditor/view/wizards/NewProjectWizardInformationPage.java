@@ -23,7 +23,7 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

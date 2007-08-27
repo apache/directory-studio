@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;

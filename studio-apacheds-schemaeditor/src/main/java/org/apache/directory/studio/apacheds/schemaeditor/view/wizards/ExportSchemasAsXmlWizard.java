@@ -129,7 +129,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                 {
                     public void run( IProgressMonitor monitor )
                     {
-                        monitor.beginTask( "Exporting schemas ", 1 );
+                        monitor.beginTask( "Exporting schemas", 1 );
                         try
                         {
                             BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportFile ) );

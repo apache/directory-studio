@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.AttributeTypeImpl;
@@ -37,8 +38,12 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.io.ProjectsImport
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileImportException;
 import org.apache.directory.studio.apacheds.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.apacheds.schemaeditor.view.ViewUtils;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+
+import com.sun.org.apache.bcel.internal.generic.LUSHR;
 
 
 /**
@@ -250,5 +255,27 @@ public class PluginUtils
         }
 
         return schema;
+    }
+
+
+    /**
+     * Gets a Connection from the given name.
+     *
+     * @param name
+     *      the name of the Connection
+     * @return
+     *      the corresponding Connection, or null if no connection was found.
+     */
+    public static Connection getConnection( String name )
+    {
+        Connection[] connectionsArray = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
+
+        HashMap<String, Connection> connections = new HashMap<String, Connection>();
+        for ( Connection connection : connectionsArray )
+        {
+            connections.put( connection.getName(), connection );
+        }
+
+        return connections.get( name );
     }
 }

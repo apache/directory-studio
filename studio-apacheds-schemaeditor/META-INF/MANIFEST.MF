@@ -6,12 +6,14 @@ Bundle-Version: 0.0.0.development
 Bundle-Activator: org.apache.directory.studio.apacheds.schemaeditor.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.apache.directory.studio.jars,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface.text,
+ org.eclipse.search,
+ org.eclipse.ui,
  org.eclipse.ui.forms,
- org.eclipse.search
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.jars
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/apacheds-core-plugin-1.5.0-SNAPSHOT.jar,

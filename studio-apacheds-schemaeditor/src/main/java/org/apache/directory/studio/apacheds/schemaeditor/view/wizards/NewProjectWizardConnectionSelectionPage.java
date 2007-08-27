@@ -22,6 +22,16 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -41,7 +51,13 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class NewProjectWizardConnectionSelectionPage extends WizardPage
 {
+    private ConnectionConfiguration configuration;
+    private ConnectionUniversalListener universalListener;
+
     // UI Fields
+    private ConnectionWidget connectionWidget;
+    private ConnectionActionGroup actionGroup;
+
 
     /**
      * Creates a new instance of NewProjectWizardConnectionSelectionPage.
@@ -65,10 +81,36 @@ public class NewProjectWizardConnectionSelectionPage extends WizardPage
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayout( new GridLayout() );
 
-        // Connection
+        // Choose A Connection Label
         Label label = new Label( composite, SWT.NONE );
         label.setText( "Choose a connection:" );
         label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Creating configuration
+        configuration = new ConnectionConfiguration();
+
+        // Creating Connection Widet
+        connectionWidget = new ConnectionWidget( configuration, null );
+        connectionWidget.createWidget( composite );
+        connectionWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
+
+        connectionWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                validatePage();
+            }
+        } );
+
+        // creating the listener
+        universalListener = new ConnectionUniversalListener( connectionWidget.getViewer() );
+
+        // create actions and context menu (and register global actions)
+        actionGroup = new ConnectionActionGroup( connectionWidget, configuration );
+        actionGroup.fillToolBar( connectionWidget.getToolBarManager() );
+        actionGroup.fillMenu( connectionWidget.getMenuManager() );
+        actionGroup.fillContextMenu( connectionWidget.getContextMenuManager() );
+        actionGroup.activateGlobalActionHandlers();
 
         initFields();
 
@@ -87,6 +129,22 @@ public class NewProjectWizardConnectionSelectionPage extends WizardPage
 
 
     /**
+     * Validates the page.
+     */
+    private void validatePage()
+    {
+        ISelection selection = connectionWidget.getViewer().getSelection();
+        if ( selection.isEmpty() )
+        {
+            displayErrorMessage( "A connection must be selected." );
+            return;
+        }
+
+        displayErrorMessage( null );
+    }
+
+
+    /**
      * Displays an error message and set the page status as incomplete
      * if the message is not null.
      *
@@ -97,5 +155,38 @@ public class NewProjectWizardConnectionSelectionPage extends WizardPage
     {
         setErrorMessage( message );
         setPageComplete( message == null );
+    }
+
+
+    /**
+     * Gets the selected connection.
+     *
+     * @return
+     *      the selection connection
+     */
+    public Connection getSelectedConnection()
+    {
+        return ( Connection ) ( ( StructuredSelection ) connectionWidget.getViewer().getSelection() ).getFirstElement();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.DialogPage#dispose()
+     */
+    public void dispose()
+    {
+        if ( configuration != null )
+        {
+            actionGroup.dispose();
+            actionGroup = null;
+            configuration.dispose();
+            configuration = null;
+            universalListener.dispose();
+            universalListener = null;
+            connectionWidget.dispose();
+            connectionWidget = null;
+        }
+
+        super.dispose();
     }
 }

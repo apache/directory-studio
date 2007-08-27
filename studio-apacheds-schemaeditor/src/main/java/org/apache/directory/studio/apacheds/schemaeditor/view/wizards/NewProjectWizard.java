@@ -20,12 +20,19 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -71,10 +78,31 @@ public class NewProjectWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        Project project = new Project( informationPage.getProjectType(), informationPage.getProjectName() );
+        final Project project = new Project( informationPage.getProjectType(), informationPage.getProjectName() );
         if ( informationPage.getProjectType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
         {
-            // TODO: Add connection information.
+            Connection connection = connectionSelectionPage.getSelectedConnection();
+            project.setConnection( connection );
+            try
+            {
+                getContainer().run( true, true, new IRunnableWithProgress()
+                {
+                    public void run( IProgressMonitor monitor )
+                    {
+                        project.fetchOnlineSchema( new StudioProgressMonitor( monitor ) );
+                    }
+                } );
+            }
+            catch ( InvocationTargetException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            catch ( InterruptedException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
         {
@@ -145,7 +173,24 @@ public class NewProjectWizard extends Wizard implements INewWizard
      */
     public boolean canFinish()
     {
-        return !getContainer().getCurrentPage().equals( informationPage );
+        IWizardPage currentPage = getContainer().getCurrentPage();
+
+        if ( currentPage.equals( informationPage ) )
+        {
+            return false;
+        }
+        else if ( currentPage.equals( schemasSelectionPage ) )
+        {
+            return true;
+        }
+        else if ( currentPage.equals( connectionSelectionPage ) )
+        {
+            return connectionSelectionPage.isPageComplete();
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
@@ -154,6 +199,6 @@ public class NewProjectWizard extends Wizard implements INewWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-        // Nothing to do.
+        setNeedsProgressMonitor( true );
     }
 }

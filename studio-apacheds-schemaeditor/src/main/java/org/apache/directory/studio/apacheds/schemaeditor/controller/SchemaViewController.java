@@ -27,7 +27,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.CollapseAllAction;
-import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ConnectAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.DeleteSchemaElementAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsOpenLdapAction;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.actions.ExportSchemasAsXmlAction;
@@ -58,7 +57,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ObjectCla
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.SchemaWrapper;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.TreeNode;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.Folder.FolderType;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -343,7 +341,6 @@ public class SchemaViewController
     };
 
     // The Actions
-    private Action connect;
     private NewSchemaAction newSchema;
     private NewAttributeTypeAction newAttributeType;
     private NewObjectClassAction newObjectClass;
@@ -389,7 +386,6 @@ public class SchemaViewController
      */
     private void initActions()
     {
-        connect = new ConnectAction( view );
         newSchema = new NewSchemaAction();
         newAttributeType = new NewAttributeTypeAction( viewer );
         newObjectClass = new NewObjectClassAction( viewer );
@@ -414,7 +410,6 @@ public class SchemaViewController
     private void initToolbar()
     {
         IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
-        toolbar.add( connect );
         toolbar.add( newSchema );
         toolbar.add( newAttributeType );
         toolbar.add( newObjectClass );

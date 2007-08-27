@@ -24,9 +24,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -48,6 +49,7 @@ public class ProjectsImporter
     private static final String NAME_TAG = "name";
     private static final String SCHEMAS_TAG = "schemas";
     private static final String TYPE_TAG = "type";
+    private static final String CONNECTION_TAG = "connection";
 
 
     /**
@@ -162,6 +164,16 @@ public class ProjectsImporter
             catch ( IllegalArgumentException e )
             {
                 throw new ProjectsImportException( "The parser was not able to convert the type value of the project." );
+            }
+        }
+
+        // Connection
+        if ( project.getType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
+        {
+            Attribute connectionAttribute = element.attribute( CONNECTION_TAG );
+            if ( ( connectionAttribute != null ) && ( !connectionAttribute.getValue().equals( "" ) ) )
+            {
+                project.setConnection( PluginUtils.getConnection( connectionAttribute.getText() ) );
             }
         }
 

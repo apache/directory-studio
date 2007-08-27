@@ -24,7 +24,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectState;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
 import org.apache.directory.studio.apacheds.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;

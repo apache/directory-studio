@@ -29,7 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.apacheds.schemaeditor.model.Project.ProjectType;
+import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
 import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -51,6 +51,7 @@ public class ProjectsExporter
     private static final String PROJECTS_TAG = "projects";
     private static final String NAME_TAG = "name";
     private static final String TYPE_TAG = "type";
+    private static final String CONNECTION_TAG = "connection";
 
 
     /**
@@ -125,9 +126,15 @@ public class ProjectsExporter
 
             // Type
             ProjectType type = project.getType();
-            if ( name != null )
+            if ( type != null )
             {
                 element.addAttribute( TYPE_TAG, type.toString() );
+            }
+
+            // Connection Name
+            if ( type.equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
+            {
+                element.addAttribute( CONNECTION_TAG, project.getConnection().getName() );
             }
 
             // Schemas

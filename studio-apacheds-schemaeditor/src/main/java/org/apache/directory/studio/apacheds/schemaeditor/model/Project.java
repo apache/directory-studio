@@ -20,8 +20,15 @@
 package org.apache.directory.studio.apacheds.schemaeditor.model;
 
 
+import java.util.List;
+
+import javax.naming.NamingException;
+
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.OnlineSchemaImporter;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 
 
 /**
@@ -32,20 +39,6 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.Sch
  */
 public class Project
 {
-    /**
-     * This enum represents the different types of Project.
-     *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
-     */
-    public enum ProjectType
-    {
-        /** A schema project not linked to any LDAP Server */
-        OFFLINE,
-        /** A schema project linked to an Apache Directory Server */
-        APACHE_DIRECTORY_SERVER
-    }
-
     /**
      * This enum represents the different states of Project.
      *
@@ -66,6 +59,9 @@ public class Project
     /** The name of the project */
     private String name;
 
+    /** The connection of the project */
+    private Connection connection;
+
     /** The state of the project */
     private ProjectState state;
 
@@ -74,6 +70,12 @@ public class Project
 
     /** The SchemaCheker */
     private SchemaChecker schemaChecker;
+
+    /** The backup of the Online Schema */
+    private List<Schema> schemaBackup;
+
+    /** The flag for Online Schema Fetch */
+    private boolean hasOnlineSchemaBeenFetched = false;
 
 
     /**
@@ -215,6 +217,74 @@ public class Project
     public SchemaChecker getSchemaChecker()
     {
         return schemaChecker;
+    }
+
+
+    /**
+     * Gets the Connection.
+     *
+     * @return
+     *      the connection
+     */
+    public Connection getConnection()
+    {
+        return connection;
+    }
+
+
+    /**
+     * Sets the Connection.
+     *
+     * @param connection
+     *      the connection
+     */
+    public void setConnection( Connection connection )
+    {
+        this.connection = connection;
+    }
+
+
+    /**
+     * Fetches the Online Schema.
+     *
+     * @param monitor
+     *      a StudioProgressMonitor
+     */
+    public void fetchOnlineSchema( StudioProgressMonitor monitor )
+    {
+        if ( !hasOnlineSchemaBeenFetched && ( connection != null ) )
+        {
+            try
+            {
+                schemaBackup = OnlineSchemaImporter.getOnlineSchema( connection.getJNDIConnectionWrapper(), monitor );
+            }
+            catch ( NamingException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            monitor.beginTask( "Adding Schema to project", schemaBackup.size() );
+            for ( Schema schema : schemaBackup )
+            {
+                getSchemaHandler().addSchema( schema );
+            }
+
+            monitor.done();
+            hasOnlineSchemaBeenFetched = true;
+        }
+    }
+
+
+    /**
+     * Returns whether the online schema has been fetched.
+     *
+     * @return
+     *      true if the online schema has bee fetched
+     */
+    public boolean hasOnlineSchemaBeenFetched()
+    {
+        return hasOnlineSchemaBeenFetched;
     }
 
 

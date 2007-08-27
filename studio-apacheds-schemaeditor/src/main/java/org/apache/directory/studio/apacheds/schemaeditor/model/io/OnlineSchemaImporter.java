@@ -17,19 +17,15 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.schemaeditor;
+package org.apache.directory.studio.apacheds.schemaeditor.model.io;
 
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
-import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
@@ -41,6 +37,8 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.SchemaImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 
 
 /**
@@ -49,7 +47,7 @@ import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SchemaImporter
+public class OnlineSchemaImporter
 {
     /** The Schema DN */
     public static final String SCHEMA_DN = "ou=schema";
@@ -63,6 +61,9 @@ public class SchemaImporter
     /** The name of the metaSyntax object class */
     private static final String META_SYNTAX = "metaSyntax";
 
+    private static final String DEREF_ALIAS_METHOD = "always";
+    private static final String HANDLE_REFERALS_METHOD = "throw";
+
     /**
      * This enum represents the different types of nodes that can be found while
      * reading the schema from the DIT.
@@ -74,108 +75,92 @@ public class SchemaImporter
 
 
     /**
-     * Creates the Jndi Context.
+     * Gets the Online Schema of the given Apache Directory Server JNDIConnectionWrapper.
      * 
-     * @param host
-     * 		the server host
-     * @param port
-     * 		the server port
-     * @param base
-     * 		the Active Directory Base
-     * @param principal
-     * 		the Active Directory principal
-     * @param credentials
-     * 		the Active Directory credentials
-     * @return
-     * 		the jndi context
-     * @throws NamingException
-     */
-    private DirContext createContext( String host, String port, String base, String principal, String credentials )
-        throws NamingException
-    {
-        Hashtable<String, String> env = new Hashtable<String, String>();
-
-        env.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" );
-        env.put( Context.PROVIDER_URL, "ldap://" + host + ":" + port + "/" + base );
-        env.put( Context.SECURITY_PRINCIPAL, principal );
-        env.put( Context.SECURITY_CREDENTIALS, credentials );
-
-        return new InitialDirContext( env );
-    }
-
-
-    /**
-     * Gets the Schema of the given Apache Directory Server.
-     * 
-     * @param context
-     * 		the context
+     * @param  wrapper
+     * 		the JNDIConnectionWrapper
+     * @param monitor 
      * @throws NamingException 
      */
-    public List<Schema> getServerSchema() throws NamingException
+    public static List<Schema> getOnlineSchema( JNDIConnectionWrapper wrapper, StudioProgressMonitor monitor )
+        throws NamingException
     {
-        DirContext context = createContext( "localhost", "10389", SCHEMA_DN, "uid=admin,ou=system", "secret" );
-
         List<Schema> schemas = new ArrayList<Schema>();
+
+        monitor.beginTask( "Fetching Schema: ", 1 );
 
         // Looking for all the defined schemas
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-        NamingEnumeration<SearchResult> answer = context.search( "", "(objectclass=*)", constraintSearch );
-        while ( answer.hasMoreElements() )
+        NamingEnumeration<SearchResult> answer = wrapper.search( "ou=schema", "(objectclass=metaSchema)",
+            constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor );
+        if ( answer != null )
         {
-            SearchResult searchResult = ( SearchResult ) answer.nextElement();
-
-            // Getting the 'cn' Attribute
-            Attribute cnAttribute = searchResult.getAttributes().get( "cn" );
-            // Looping on the values
-            NamingEnumeration<?> ne = cnAttribute.getAll();
-            while ( ne.hasMoreElements() )
+            while ( answer.hasMoreElements() )
             {
-                String value = ( String ) ne.nextElement();
-                schemas.add( getSchema( context, value ) );
+                SearchResult searchResult = ( SearchResult ) answer.nextElement();
+
+                // Getting the 'cn' Attribute
+                Attribute cnAttribute = searchResult.getAttributes().get( "cn" );
+                // Looping on the values
+                NamingEnumeration<?> ne = cnAttribute.getAll();
+                while ( ne.hasMoreElements() )
+                {
+                    String value = ( String ) ne.nextElement();
+                    schemas.add( getSchema( wrapper, value, monitor ) );
+                }
             }
         }
+
+        monitor.worked( 1 );
 
         return schemas;
     }
 
 
-    private Schema getSchema( DirContext context, String name ) throws NamingException
+    private static Schema getSchema( JNDIConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
+        throws NamingException
     {
+        monitor.subTask( "Reading schema '" + name + "'" );
+
         // Creating the schema
         Schema schema = new SchemaImpl( name );
 
         // Looking for the nodes of the schema
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> answer = context.search( "cn=" + name, "(objectclass=*)", constraintSearch );
-        while ( answer.hasMoreElements() )
+        NamingEnumeration<SearchResult> answer = wrapper.search( "cn=" + name + ", ou=schema", "(objectclass=*)",
+            constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor );
+        if ( answer != null )
         {
-            SearchResult searchResult = ( SearchResult ) answer.nextElement();
-            switch ( getNodeType( searchResult ) )
+            while ( answer.hasMoreElements() )
             {
-                case ATTRIBUTE_TYPE:
-                    AttributeTypeImpl at = createAttributeType( searchResult );
-                    at.setSchema( name );
-                    schema.addAttributeType( at );
-                    break;
-                case OBJECT_CLASS:
-                    ObjectClassImpl oc = createObjectClass( searchResult );
-                    oc.setSchema( name );
-                    schema.addObjectClass( oc );
-                    break;
-                case MATCHING_RULE:
-                    MatchingRuleImpl mr = createMatchingRule( searchResult );
-                    mr.setSchema( name );
-                    schema.addMatchingRule( mr );
-                    break;
-                case SYNTAX:
-                    SyntaxImpl syntax = createSyntax( searchResult );
-                    syntax.setSchema( name );
-                    schema.addSyntax( syntax );
-                    break;
-                default:
-                    break;
+                SearchResult searchResult = ( SearchResult ) answer.nextElement();
+                switch ( getNodeType( searchResult ) )
+                {
+                    case ATTRIBUTE_TYPE:
+                        AttributeTypeImpl at = createAttributeType( searchResult );
+                        at.setSchema( name );
+                        schema.addAttributeType( at );
+                        break;
+                    case OBJECT_CLASS:
+                        ObjectClassImpl oc = createObjectClass( searchResult );
+                        oc.setSchema( name );
+                        schema.addObjectClass( oc );
+                        break;
+                    case MATCHING_RULE:
+                        MatchingRuleImpl mr = createMatchingRule( searchResult );
+                        mr.setSchema( name );
+                        schema.addMatchingRule( mr );
+                        break;
+                    case SYNTAX:
+                        SyntaxImpl syntax = createSyntax( searchResult );
+                        syntax.setSchema( name );
+                        schema.addSyntax( syntax );
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -193,7 +178,7 @@ public class SchemaImporter
      * @throws NamingException
      * 		if an error occurrs when reading the SearchResult
      */
-    private SchemaNodeTypes getNodeType( SearchResult sr ) throws NamingException
+    private static SchemaNodeTypes getNodeType( SearchResult sr ) throws NamingException
     {
         // Getting the 'ObjectClass' Attribute
         Attribute objectClassAttribute = sr.getAttributes().get( "objectClass" );
@@ -235,7 +220,7 @@ public class SchemaImporter
      * AttributeTypeImpl could be created
      * @throws NamingException 
      */
-    private AttributeTypeImpl createAttributeType( SearchResult sr ) throws NamingException
+    private static AttributeTypeImpl createAttributeType( SearchResult sr ) throws NamingException
     {
         AttributeTypeImpl at = new AttributeTypeImpl( getOid( sr ) );
         at.setNames( getNames( sr ) );
@@ -265,7 +250,7 @@ public class SchemaImporter
      * ObjectClassImpl could be created
      * @throws NamingException 
      */
-    private ObjectClassImpl createObjectClass( SearchResult sr ) throws NamingException
+    private static ObjectClassImpl createObjectClass( SearchResult sr ) throws NamingException
     {
         ObjectClassImpl oc = new ObjectClassImpl( getOid( sr ) );
         oc.setNames( getNames( sr ) );
@@ -289,7 +274,7 @@ public class SchemaImporter
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private MatchingRuleImpl createMatchingRule( SearchResult sr ) throws NamingException
+    private static MatchingRuleImpl createMatchingRule( SearchResult sr ) throws NamingException
     {
         MatchingRuleImpl mr = new MatchingRuleImpl( getOid( sr ) );
         mr.setNames( getNames( sr ) );
@@ -310,7 +295,7 @@ public class SchemaImporter
      * ObjectClass could be created
      * @throws NamingException 
      */
-    private SyntaxImpl createSyntax( SearchResult sr ) throws NamingException
+    private static SyntaxImpl createSyntax( SearchResult sr ) throws NamingException
     {
         SyntaxImpl syntax = new SyntaxImpl( getOid( sr ) );
         syntax.setNames( getNames( sr ) );
@@ -331,7 +316,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String getOid( SearchResult sr ) throws NamingException
+    private static String getOid( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-oid" );
         if ( at == null )
@@ -355,7 +340,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String[] getNames( SearchResult sr ) throws NamingException
+    private static String[] getNames( SearchResult sr ) throws NamingException
     {
         List<String> names = new ArrayList<String>();
 
@@ -383,7 +368,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String getDescription( SearchResult sr ) throws NamingException
+    private static String getDescription( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-description" );
 
@@ -408,7 +393,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String getSuperior( SearchResult sr ) throws NamingException
+    private static String getSuperior( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-supAttributeType" );
 
@@ -433,7 +418,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private UsageEnum getUsage( SearchResult sr ) throws NamingException
+    private static UsageEnum getUsage( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-usage" );
 
@@ -469,7 +454,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String getSyntax( SearchResult sr ) throws NamingException
+    private static String getSyntax( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-syntax" );
 
@@ -494,7 +479,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private int getSyntaxLength( SearchResult sr ) throws NamingException
+    private static int getSyntaxLength( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-length" );
 
@@ -526,7 +511,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private boolean isObsolete( SearchResult sr ) throws NamingException
+    private static boolean isObsolete( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-obsolete" );
 
@@ -551,7 +536,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private boolean isCollective( SearchResult sr ) throws NamingException
+    private static boolean isCollective( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-collective" );
 
@@ -576,7 +561,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private boolean isSingleValue( SearchResult sr ) throws NamingException
+    private static boolean isSingleValue( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-singleValue" );
 
@@ -601,7 +586,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private boolean isCanUserModify( SearchResult sr ) throws NamingException
+    private static boolean isCanUserModify( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-noUserModification" );
 
@@ -626,7 +611,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String getEquality( SearchResult sr ) throws NamingException
+    private static String getEquality( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-equality" );
 
@@ -651,7 +636,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String getOrdering( SearchResult sr ) throws NamingException
+    private static String getOrdering( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-ordering" );
 
@@ -676,7 +661,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String getSubstr( SearchResult sr ) throws NamingException
+    private static String getSubstr( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-substr" );
 
@@ -701,7 +686,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String[] getSuperiors( SearchResult sr ) throws NamingException
+    private static String[] getSuperiors( SearchResult sr ) throws NamingException
     {
         List<String> names = new ArrayList<String>();
 
@@ -729,7 +714,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private ObjectClassTypeEnum getType( SearchResult sr ) throws NamingException
+    private static ObjectClassTypeEnum getType( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "m-typeObjectClass" );
 
@@ -765,7 +750,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String[] getMay( SearchResult sr ) throws NamingException
+    private static String[] getMay( SearchResult sr ) throws NamingException
     {
         List<String> names = new ArrayList<String>();
 
@@ -793,7 +778,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private String[] getMust( SearchResult sr ) throws NamingException
+    private static String[] getMust( SearchResult sr ) throws NamingException
     {
         List<String> names = new ArrayList<String>();
 
@@ -821,7 +806,7 @@ public class SchemaImporter
      * @throws NamingException
      *      if an error occurrs when searching in the SearchResult
      */
-    private boolean isHumanReadable( SearchResult sr ) throws NamingException
+    private static boolean isHumanReadable( SearchResult sr ) throws NamingException
     {
         Attribute at = sr.getAttributes().get( "x-humanReadable" );
 
