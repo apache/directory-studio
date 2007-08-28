@@ -55,6 +55,22 @@
          <property
                name="windowImages"
                value="resources/icons/window/studio_16x16.gif,resources/icons/window/studio_32x32.gif,resources/icons/window/studio_48x48.gif,resources/icons/window/studio_64x64.gif,resources/icons/window/studio_128x128.gif"/>
+         <property
+               name="appName"
+               value="Apache Directory Studio">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,450,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="7,275,450,15">
+         </property>
       </product>
    </extension>
    <extension
