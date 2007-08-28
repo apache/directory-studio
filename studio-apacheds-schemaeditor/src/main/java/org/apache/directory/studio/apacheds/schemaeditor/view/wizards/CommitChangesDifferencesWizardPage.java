@@ -72,11 +72,6 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         differencesWidget = new DifferencesWidget();
         differencesWidget.createWidget( composite );
 
-        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
-
-        differencesWidget.setInput( DifferenceEngine.getDifferences( project.getSchemaBackup(), project
-            .getSchemaHandler().getSchemas() ) );
-
         initFields();
 
         setControl( composite );
@@ -88,7 +83,10 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
      */
     private void initFields()
     {
+        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
 
+        differencesWidget.setInput( DifferenceEngine.getDifferences( project.getSchemaBackup(), project
+            .getSchemaHandler().getSchemas() ) );
     }
 
 

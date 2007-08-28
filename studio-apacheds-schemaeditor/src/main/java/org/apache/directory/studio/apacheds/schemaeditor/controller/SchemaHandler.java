@@ -489,7 +489,6 @@ public class SchemaHandler
         for ( AttributeTypeImpl at : schema.getAttributeTypes() )
         {
             addSchemaObject( at );
-
         }
 
         // Adding its matching rules

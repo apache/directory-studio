@@ -20,7 +20,16 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
+import org.apache.directory.studio.apacheds.schemaeditor.model.DependenciesComputer;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
+import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
+import org.apache.directory.studio.apacheds.schemaeditor.model.DependenciesComputer.DependencyComputerException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
@@ -35,7 +44,14 @@ import org.eclipse.ui.IWorkbench;
  */
 public class CommitChangesWizard extends Wizard implements IExportWizard
 {
+    /** The wizard's ID */
     public static final String ID = Activator.PLUGIN_ID + ".wizards.CommitChangesWizard";
+
+    /** The flag to know if the Schema contains errors */
+    private boolean schemaContainsErrors = false;
+
+    /** The DependenciesComputer */
+    private DependenciesComputer dependenciesComputer;
 
     // The pages of the wizard
     private CommitChangesInformationWizardPage commitChangesInformation;
@@ -62,7 +78,45 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
      */
     public boolean performFinish()
     {
-        // TODO Implement
+        final List<Schema> orderedSchemas = dependenciesComputer.getDependencyOrderedSchemasList();
+
+        try
+        {
+            getContainer().run( true, true, new IRunnableWithProgress()
+            {
+                public void run( IProgressMonitor monitor )
+                {
+                    monitor.beginTask( "Committing changes:", orderedSchemas.size() );
+
+                    for ( Schema schema : orderedSchemas )
+                    {
+                        monitor.subTask( "Committing schema '" + schema.getName() + "'" );
+                        
+                        try
+                        {
+                            Thread.sleep( 500 );
+                        }
+                        catch ( InterruptedException e )
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        
+                        // TODO implement
+                    }
+                }
+            } );
+        }
+        catch ( InvocationTargetException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch ( InterruptedException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         return true;
     }
@@ -73,7 +127,14 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
      */
     public boolean canFinish()
     {
-        return ( getContainer().getCurrentPage() instanceof CommitChangesDifferencesWizardPage );
+        if ( schemaContainsErrors )
+        {
+            return false;
+        }
+        else
+        {
+            return ( getContainer().getCurrentPage() instanceof CommitChangesDifferencesWizardPage );
+        }
     }
 
 
@@ -82,5 +143,40 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
+        setNeedsProgressMonitor( true );
+
+        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
+        try
+        {
+            dependenciesComputer = new DependenciesComputer( project.getSchemaHandler().getSchemas() );
+        }
+        catch ( DependencyComputerException e )
+        {
+            schemaContainsErrors = true;
+        }
+    }
+
+
+    /**
+     * Gets the SchemaContainsErrors flag.
+     *
+     * @return
+     *      the SchemaContainsErrors flag
+     */
+    public boolean isSchemaContainsErrors()
+    {
+        return schemaContainsErrors;
+    }
+
+
+    /**
+     * Gets the DependenciesComputer.
+     *
+     * @return
+     *      the DependenciesComputer
+     */
+    public DependenciesComputer getDependenciesComputer()
+    {
+        return dependenciesComputer;
     }
 }

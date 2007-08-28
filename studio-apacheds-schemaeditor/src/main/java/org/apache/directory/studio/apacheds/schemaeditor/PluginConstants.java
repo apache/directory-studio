@@ -103,6 +103,7 @@ public interface PluginConstants
     public static final String IMG_SORTING = "resources/icons/sorting.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
     public static final String IMG_TRANSPARENT_16X16 = "resources/icons/transparent_16x16.gif";
+    public static final String IMG_WARNING_32X32 = "resources/icons/warning_32x32.png";
 
     // Commands
     public static final String CMD_COMMIT_CHANGES = Activator.PLUGIN_ID + ".commands.commitChanges";
