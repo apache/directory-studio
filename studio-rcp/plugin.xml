@@ -61,15 +61,15 @@
          </property>
          <property
                name="startupForegroundColor"
-               value="cfe5f0">
+               value="FFFFFF">
          </property>
          <property
                name="startupMessageRect"
-               value="5,240,447,20">
+               value="10,237,435,20">
          </property>
          <property
                name="startupProgressRect"
-               value="1,281,455,15">
+               value="0,280,455,15">
          </property>
       </product>
    </extension>
