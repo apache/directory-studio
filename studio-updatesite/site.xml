@@ -17,22 +17,34 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<site mirrorsURL="http://directory.apache.org/studio/update/update--xml.cgi">
-   <feature url="features/org.apache.directory.ldapstudio.rcp.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.rcp.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+<site>
+   <feature
+   		url="features/org.apache.directory.studio.rcp.feature_1.0.0.jar"
+   		id="org.apache.directory.studio.rcp.feature" version="1.0.0"
+   		os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86,x86_64">
       <category name="Apache Directory Studio RCP"/>
    </feature>
-   <feature url="features/org.apache.directory.ldapstudio.browser.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.browser.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
-      <category name="Apache Directory Studio Browser"/>
+   <feature
+   		url="features/org.apache.directory.studio.ldapbrowser.feature_1.0.0.jar"
+   		id="org.apache.directory.studio.ldapbrowser.feature" version="1.0.0">
+      <category name="Apache Directory Studio LDAP Browser"/>
    </feature>
-   <feature url="features/org.apache.directory.ldapstudio.schemas.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.schemas.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+   <feature
+   		url="features/org.apache.directory.studio.schemas.feature_1.0.0.jar"
+   		id="org.apache.directory.studio.schemas.feature" version="1.0.0">
       <category name="Apache Directory Studio Schemas Editor"/>
+   </feature>
+   <feature 
+   		url="features/org.apache.directory.studio.apacheds.configuration.feature_1.0.0.jar" 
+   		id="org.apache.directory.studio.apacheds.configuration.feature" version="1.0.0">
+      <category name="Apache Directory Studio Apache DS"/>
    </feature>
    <category-def name="Apache Directory Studio RCP" label="Apache Directory Studio RCP">
       <description>
          The Apache Directory Studio RCP category contains all features related to the Apache Directory Studio RCP Application.
       </description>
    </category-def>
-   <category-def name="Apache Directory Studio Browser" label="Apache Directory Studio Browser">
+   <category-def name="Apache Directory Studio LDAP Browser" label="Apache Directory Studio LDAP Browser">
       <description>
          The Apache Directory Studio Browser category contains all features related to the Apache Directory Studio Browser.
       </description>
