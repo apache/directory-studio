@@ -19,9 +19,9 @@
 
    <splash
       location="org.apache.directory.studio"
-      startupProgressRect="7,275,450,15"
-      startupMessageRect="7,252,450,20"
-      startupForegroundColor="000000" />
+      startupProgressRect="1,281,455,15"
+      startupMessageRect="5,240,447,20"
+      startupForegroundColor="cfe5f0" />
    <launcher name="Apache Directory Studio">
       <linux icon="/studio-rcp/resources/icons/linux/studio.xpm"/>
       <macosx icon="/studio-rcp/resources/icons/macosx/studio.icns"/>
