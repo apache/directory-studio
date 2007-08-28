@@ -7,7 +7,7 @@
       plugin="org.apache.directory.studio"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
-      arch="ppc,x86"
+      arch="ppc,x86,x86_64"
       image="studio.png">
 
    <description>

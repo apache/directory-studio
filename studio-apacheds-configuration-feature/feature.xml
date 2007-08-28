@@ -5,9 +5,6 @@
       version="1.0.0"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.apacheds.configuration"
-      os="linux,macosx,win32"
-      ws="carbon,gtk,win32"
-      arch="ppc,x86"
       image="studio.png">
 
    <description>
