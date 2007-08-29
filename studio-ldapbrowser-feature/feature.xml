@@ -275,4 +275,18 @@ of your accepting any such warranty or additional liability.
          version="1.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.apache.directory.studio.connection.core"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.connection.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
 </feature>
