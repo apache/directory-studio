@@ -254,11 +254,20 @@
             </fileset>
         </copy>
 		
-	    <!-- Creation of the LDAP Browser Feature -->
-	    <ant dir="studio-ldapbrowser-feature" inheritAll="no" />
-	    <!-- Copy of the LDAP Browser Feature in the "features" folder -->
-	    <copy todir="${application.features}">
+        <!-- Creation of the LDAP Browser Feature -->
+        <ant dir="studio-ldapbrowser-feature" inheritAll="no" />
+        <!-- Copy of the LDAP Browser Feature in the "features" folder -->
+        <copy todir="${application.features}">
             <fileset dir="studio-ldapbrowser-feature/target">
+                <exclude name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDIF Editor Feature -->
+        <ant dir="studio-ldifeditor-feature" inheritAll="no" />
+        <!-- Copy of the LDIF Editor Feature in the "features" folder -->
+        <copy todir="${application.features}">
+            <fileset dir="studio-ldifeditor-feature/target">
                 <exclude name="*.jar" />
             </fileset>
         </copy>
@@ -433,6 +442,7 @@
         <ant dir="studio-ldapbrowser-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="clean" />
+        <ant dir="studio-ldifeditor-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-ldifeditor" inheritAll="no" target="clean" />
         <ant dir="studio-rcp" inheritAll="no" target="clean"/>
         <ant dir="studio-rcp-feature" inheritAll="no" target="clean"/>
