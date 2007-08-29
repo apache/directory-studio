@@ -100,15 +100,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public void setConnectionParameter( ConnectionParameter connectionParameter )
     {
-        String oldName = this.connectionParameter.getName();
-        
         this.connectionParameter = connectionParameter;
-        
         ConnectionEventRegistry.fireConnectionUpdated( this, this );
-        if(!oldName.equals( connectionParameter.getName() ))
-        {
-            ConnectionEventRegistry.fireConnectionRenamed( this, oldName, this );
-        }
     }
 
 
@@ -156,6 +149,17 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     }
 
 
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public String getId()
+    {
+        return connectionParameter.getId();
+    }
+    
+    
     /**
      * Gets the host.
      * 
@@ -256,9 +260,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public void setName( String name )
     {
-        String oldName = getName();
         connectionParameter.setName( name );
-        ConnectionEventRegistry.fireConnectionRenamed( this, oldName, this );
+        ConnectionEventRegistry.fireConnectionUpdated( this, this );
     }
 
 

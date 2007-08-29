@@ -135,11 +135,11 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public void addConnection( int index, Connection connection )
     {
-        if ( getConnection( connection.getConnectionParameter().getName() ) != null )
+        if ( getConnectionByName( connection.getConnectionParameter().getName() ) != null )
         {
             String newConnectionName = Messages.bind( Messages.copy_n_of_s,
                 "", connection.getConnectionParameter().getName() ); //$NON-NLS-1$
-            for ( int i = 2; getConnection( newConnectionName ) != null; i++ )
+            for ( int i = 2; getConnectionByName( newConnectionName ) != null; i++ )
             {
                 newConnectionName = Messages.bind( Messages.copy_n_of_s,
                     i + " ", connection.getConnectionParameter().getName() ); //$NON-NLS-1$
@@ -153,6 +153,28 @@ public class ConnectionManager implements ConnectionUpdateListener
 
 
     /**
+     * Gets a connection from its id.
+     *
+     * @param id
+     *      the id of the Connection
+     * @return
+     *      the corresponding Connection
+     */
+    public Connection getConnectionById( String id )
+    {
+        for ( Iterator it = connectionList.iterator(); it.hasNext(); )
+        {
+            Connection conn = ( Connection ) it.next();
+            if ( conn.getConnectionParameter().getId().equals( id ) )
+            {
+                return conn;
+            }
+        }
+        return null;
+    }
+    
+    
+    /**
      * Gets a connection from its name.
      *
      * @param name
@@ -160,7 +182,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      * @return
      *      the corresponding Connection
      */
-    public Connection getConnection( String name )
+    public Connection getConnectionByName( String name )
     {
         for ( Iterator it = connectionList.iterator(); it.hasNext(); )
         {
@@ -238,15 +260,6 @@ public class ConnectionManager implements ConnectionUpdateListener
      * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionRemoved( Connection connection )
-    {
-        saveConnections();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
-     */
-    public void connectionRenamed( Connection connection, String oldName )
     {
         saveConnections();
     }

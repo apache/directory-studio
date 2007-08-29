@@ -54,7 +54,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     private static final long serialVersionUID = -4488685394817691963L;
 
     // private IConnection connection;
-    private String connectionName;
+    private String connectionId;
 
     private DN dn;
 
@@ -70,7 +70,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
 
     public DelegateEntry( IBrowserConnection connection, DN dn )
     {
-        this.connectionName = connection.getName();
+        this.connectionId = connection.getConnection().getId();
         this.dn = dn;
         this.entryDoesNotExist = false;
         this.delegate = null;
@@ -100,7 +100,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         if ( this.getDelegate() != null )
             return getDelegate().getBrowserConnection();
         else
-            return BrowserCorePlugin.getDefault().getConnectionManager().getConnection( this.connectionName );
+            return BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( this.connectionId );
         // return connection;
     }
 

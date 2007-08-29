@@ -223,44 +223,6 @@ public class ConnectionEventRegistry
 
 
     /**
-     * Notifies each {@link ConnectionUpdateListener} about the renamed connection.
-     * Uses the {@link EventRunner}s.
-     *
-     * @param connection the renamed connection
-     * @param oldName the old name
-     * @param source the source
-     */
-    public static void fireConnectionRenamed( final Connection connection, final String oldName, final Object source )
-    {
-        if ( isEventFireingSuspendedInCurrentThread() )
-        {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
-            {
-                public void run()
-                {
-                    listener.connectionRenamed( connection, oldName );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
-            }
-        }
-    }
-
-
-    /**
      * Notifies each {@link ConnectionUpdateListener} about the added connection.
      * Uses the {@link EventRunner}s.
      *

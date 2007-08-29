@@ -203,31 +203,60 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
     }
 
 
+//    /**
+//     * Gets a connection from its name.
+//     *
+//     * @param name
+//     *      the name of the Connection
+//     * @return
+//     *      the corresponding IConnection
+//     */
+//    public IBrowserConnection getConnectionByName( String name )
+//    {
+//        return connectionMap.get( name );
+//    }
+    
+    
     /**
-     * Gets a connection from its name.
+     * Gets a browser connection from its id.
      *
-     * @param name
-     *      the name of the Connection
+     * @param id
+     *      the id of the Connection
      * @return
-     *      the corresponding IConnection
+     *      the corresponding IBrowserConnection
      */
-    public IBrowserConnection getConnection( String name )
+    public IBrowserConnection getBrowserConnectionById( String id )
     {
-        return connectionMap.get( name );
+        return connectionMap.get( id );
     }
 
 
     /**
-     * Gets a connection from its underlying connection.
+     * Gets a browser connection from its name.
+     *
+     * @param name
+     *      the name of the Connection
+     * @return
+     *      the corresponding IBrowserConnection
+     */
+    public IBrowserConnection getBrowserConnectionByName( String name )
+    {
+        Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( name );
+        return getBrowserConnection( connection );
+    }
+    
+    
+    /**
+     * Gets a browser connection from its underlying connection.
      *
      * @param connection
      *      the underlying connection
      * @return
-     *      the corresponding IConnection
+     *      the corresponding IBrowserConnection
      */
     public IBrowserConnection getBrowserConnection( Connection connection )
     {
-        return getConnection( connection.getName() );
+        return connection != null ? getBrowserConnectionById( connection.getId() ) : null;
     }
 
 
@@ -244,48 +273,15 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
-     */
-    public void connectionRenamed( Connection connection, String oldName )
-    {
-        String newName = connection.getName();
-        
-        // update connection list
-        IBrowserConnection browserConnection = connectionMap.remove( oldName );
-        connectionMap.put( newName, browserConnection );
-
-        // rename schema file
-        String oldSchemaFileName = getSchemaCacheFileName( oldName );
-        String newSchemaFileName = getSchemaCacheFileName( newName );
-        File oldSchemaFile = new File( oldSchemaFileName );
-        File newSchemaFile = new File( newSchemaFileName );
-        if ( oldSchemaFile.exists() )
-        {
-            oldSchemaFile.renameTo( newSchemaFile );
-        }
-
-        // TODO: schema
-        //        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED
-        //            || connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
-        //        {
-        //            saveSchema( connectionUpdateEvent.getConnection() );
-        //        }
-        
-        // make persistent
-        saveBrowserConnections();
-    }
-
-
-    /**
      * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionRemoved( Connection connection )
     {
         // update connection list
-        connectionMap.remove( connection.getName() );
+        connectionMap.remove( connection.getId() );
 
         // remove schema file
-        File schemaFile = new File( getSchemaCacheFileName( connection.getName() ) );
+        File schemaFile = new File( getSchemaCacheFileName( connection.getId() ) );
         if ( schemaFile.exists() )
         {
             schemaFile.delete();
@@ -303,7 +299,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
     {
         // update connection list
         BrowserConnection browserConnection = new BrowserConnection( connection );
-        connectionMap.put( connection.getName(), browserConnection );
+        connectionMap.put( connection.getId(), browserConnection );
 
         // make persistent
         saveBrowserConnections();
@@ -390,7 +386,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
                 bookmarkParameters[k] = bookmarks[k].getBookmarkParameter();
             }
 
-            object[i][0] = browserConnection.getName();
+            object[i][0] = browserConnection.getConnection().getId();
             object[i][1] = searchParameters;
             object[i][2] = bookmarkParameters;
         }
@@ -409,7 +405,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
     {
         try
         {
-            String filename = getSchemaCacheFileName( connection.getName() );
+            String filename = getSchemaCacheFileName( connection.getConnection().getId() );
             FileWriter writer = new FileWriter( filename );
             connection.getSchema().saveToLdif( writer );
             writer.close();
@@ -431,7 +427,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
         {
             Connection connection = connections[i];
             BrowserConnection browserConnection = new BrowserConnection( connection );
-            connectionMap.put( connection.getName(), browserConnection );
+            connectionMap.put( connection.getId(), browserConnection );
         }
 
         //        try
@@ -458,8 +454,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
                 {
                     for ( int i = 0; i < object.length; i++ )
                     {
-                        String connectionName = ( String ) object[i][0];
-                        IBrowserConnection browserConnection = getConnection( connectionName );
+                        String connectionId = ( String ) object[i][0];
+                        IBrowserConnection browserConnection = getBrowserConnectionById( connectionId );
                         
                         if( browserConnection != null )
                         {

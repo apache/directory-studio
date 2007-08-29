@@ -148,7 +148,7 @@ public class RenameAction extends StudioAction
             {
                 if ( connection.getName().equals( newName ) )
                     return null;
-                else if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnection( newName ) != null )
+                else if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( newName ) != null )
                     return "A connection with this name already exists.";
                 else
                     return null;

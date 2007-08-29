@@ -1029,9 +1029,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     public void connectionUpdated( org.apache.directory.studio.connection.core.Connection connection )
     {
     }
-    public void connectionRenamed( org.apache.directory.studio.connection.core.Connection connection, String oldName )
-    {
-    }
     public void connectionOpened( org.apache.directory.studio.connection.core.Connection connection )
     {
         if(this.connection == connection)

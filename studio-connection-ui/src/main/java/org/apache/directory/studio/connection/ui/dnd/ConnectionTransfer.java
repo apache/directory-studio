@@ -39,9 +39,9 @@ import org.eclipse.swt.dnd.TransferData;
 
 /**
  * A {@link Transfer} that could be used to transfer {@link Connection} objects.
- * Note that only the connection name is converted to a platform specific 
+ * Note that only the connection id is converted to a platform specific 
  * representation, not the complete object. To convert it back to an {@link Connection} 
- * object the {@link ConnectionManager#getConnection(String)} method is invoked.
+ * object the {@link ConnectionManager#getConnectionById(String)} method is invoked.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -82,7 +82,7 @@ public class ConnectionTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation only accepts {@link Connection} objects. 
-     * It just converts the name of the connection to the platform 
+     * It just converts the id of the connection to the platform 
      * specific representation.
      */
     public void javaToNative( Object object, TransferData transferData )
@@ -102,9 +102,9 @@ public class ConnectionTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < connections.length; i++ )
                 {
-                    byte[] name = connections[i].getName().getBytes();
-                    writeOut.writeInt( name.length );
-                    writeOut.write( name );
+                    byte[] id = connections[i].getConnectionParameter().getId().getBytes();
+                    writeOut.writeInt( id.length );
+                    writeOut.write( id );
                 }
 
                 byte[] buffer = out.toByteArray();
@@ -124,8 +124,8 @@ public class ConnectionTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation just converts the platform specific representation
-     * to the connection name and invokes 
-     * {@link ConnectionManager#getConnection(String)} to get the
+     * to the connection id and invokes 
+     * {@link ConnectionManager#getConnectionById(String)} to get the
      * {@link Connection} object.
      */
     public Object nativeToJava( TransferData transferData )
@@ -149,10 +149,10 @@ public class ConnectionTransfer extends ByteArrayTransfer
                     if ( readIn.available() > 1 )
                     {
                         int size = readIn.readInt();
-                        byte[] connectionName = new byte[size];
-                        readIn.read( connectionName );
-                        Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager().getConnection(
-                            new String( connectionName ) );
+                        byte[] id = new byte[size];
+                        readIn.read( id );
+                        Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionById(
+                            new String( id ) );
                         connectionList.add( connection );
                     }
                 }

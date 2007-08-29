@@ -53,7 +53,7 @@ public class DummyEntry implements IEntry
 
     private DummyConnection dummyConnection;
 
-    private String connectionName;
+    private String connectionId;
 
     private Map attributeMap;
 
@@ -71,7 +71,7 @@ public class DummyEntry implements IEntry
         }
         else
         {
-            this.connectionName = connection.getName();
+            this.connectionId = connection.getConnection().getId();
         }
 
         this.dn = dn;
@@ -157,7 +157,7 @@ public class DummyEntry implements IEntry
     public IBrowserConnection getBrowserConnection()
     {
         return dummyConnection != null ? dummyConnection : BrowserCorePlugin.getDefault().getConnectionManager()
-            .getConnection( this.connectionName );
+            .getBrowserConnectionById( this.connectionId );
     }
 
 

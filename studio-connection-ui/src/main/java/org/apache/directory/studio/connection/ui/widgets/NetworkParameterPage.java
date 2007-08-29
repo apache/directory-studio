@@ -288,7 +288,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         {
             message = "Please enter a connection name.";
         }
-        if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnection( nameText.getText() ) != null
+        if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( nameText.getText() ) != null
             && ( connectionParameter == null || !nameText.getText().equals( connectionParameter.getName() ) ) )
         {
             errorMessage = "A connection named '" + nameText.getText() + "' already exists.";

@@ -74,7 +74,7 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     {
         ISearch search = getSearch();
         memento.putString( "SEARCH", search.getName() );
-        memento.putString( "CONNECTION", search.getBrowserConnection().getName() );
+        memento.putString( "CONNECTION", search.getBrowserConnection().getConnection().getId() );
     }
 
 
@@ -83,7 +83,7 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
      */
     public void restoreState( IMemento memento )
     {
-        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
             memento.getString( "CONNECTION" ) );
         ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) );
         super.setInput( new SearchResultEditorInput( search ) );

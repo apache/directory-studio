@@ -102,7 +102,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
     {
         IBrowserConnection connection = getConnection();
         SchemaPart schemaElement = getSchemElement();
-        memento.putString( "CONNECTION", connection.getName() );
+        memento.putString( "CONNECTION", connection.getConnection().getId() );
         memento.putString( "SCHEMAELEMENTYPE", schemaElement.getClass().getName() );
         memento.putString( "SCHEMAELEMENTOID", schemaElement.getNumericOID() );
     }
@@ -113,7 +113,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     public void restoreState( IMemento memento )
     {
-        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
             memento.getString( "CONNECTION" ) );
         String schemaElementType = memento.getString( "SCHEMAELEMENTYPE" );
         String schemaElementOid = memento.getString( "SCHEMAELEMENTOID" );

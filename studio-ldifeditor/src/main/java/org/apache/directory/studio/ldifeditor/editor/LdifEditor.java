@@ -476,7 +476,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         {
             public void modifyText( ModifyEvent e )
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionByName(
                     connectionCombo.getText() );
                 setConnection( connection );
                 IAction action = getAction( ExecuteLdifAction.class.getName() );
@@ -623,15 +623,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionRemoved( Connection connection )
-    {
-        connectionUpdated( connection );
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
-     */
-    public void connectionRenamed( Connection connection, String oldName )
     {
         connectionUpdated( connection );
     }

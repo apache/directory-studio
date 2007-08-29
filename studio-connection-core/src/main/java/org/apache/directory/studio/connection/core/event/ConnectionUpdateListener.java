@@ -68,15 +68,6 @@ public interface ConnectionUpdateListener extends EventListener
 
 
     /**
-     * Called when an {@link Connection} was renamed.
-     *
-     * @param connection the renamed connection 
-     * @param oldName the old connection name
-     */
-    public void connectionRenamed( Connection connection, String oldName );
-
-
-    /**
      * Called when {@link Connection} parameters were updated.
      *
      * @param connection the updated connection 

@@ -198,15 +198,6 @@ public class ConnectionComboContributionItem extends ContributionItem implements
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
-     */
-    public void connectionRenamed( Connection connection, String oldName )
-    {
-        connectionUpdated( connection );
-    }
-
-
-    /**
      * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionOpened( Connection connection )

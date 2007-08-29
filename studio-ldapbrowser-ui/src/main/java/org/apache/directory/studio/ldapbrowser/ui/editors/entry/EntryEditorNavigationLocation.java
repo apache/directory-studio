@@ -115,7 +115,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 IEntry entry = eei.getEntryInput();
                 memento.putString( "TYPE", "IEntry" );
                 memento.putString( "DN", entry.getDn().toString() );
-                memento.putString( "CONNECTION", entry.getBrowserConnection().getName() );
+                memento.putString( "CONNECTION", entry.getBrowserConnection().getConnection().getId() );
             }
             else if ( eei.getSearchResultInput() != null )
             {
@@ -123,14 +123,14 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 memento.putString( "TYPE", "ISearchResult" );
                 memento.putString( "DN", searchResult.getDn().toString() );
                 memento.putString( "SEARCH", searchResult.getSearch().getName() );
-                memento.putString( "CONNECTION", searchResult.getSearch().getBrowserConnection().getName() );
+                memento.putString( "CONNECTION", searchResult.getSearch().getBrowserConnection().getConnection().getId() );
             }
             else if ( eei.getBookmarkInput() != null )
             {
                 IBookmark bookmark = eei.getBookmarkInput();
                 memento.putString( "TYPE", "IBookmark" );
                 memento.putString( "BOOKMARK", bookmark.getName() );
-                memento.putString( "CONNECTION", bookmark.getBrowserConnection().getName() );
+                memento.putString( "CONNECTION", bookmark.getBrowserConnection().getConnection().getId() );
             }
         }
 
@@ -147,7 +147,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             String type = memento.getString( "TYPE" );
             if ( "IEntry".equals( type ) )
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
                     memento.getString( "CONNECTION" ) );
                 DN dn = new DN( memento.getString( "DN" ) );
                 IEntry entry = connection.getEntryFromCache( dn );
@@ -155,7 +155,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             }
             else if ( "ISearchResult".equals( type ) )
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
                     memento.getString( "CONNECTION" ) );
                 ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) );
                 ISearchResult[] searchResults = search.getSearchResults();
@@ -171,7 +171,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             }
             else if ( "IBookmark".equals( type ) )
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
                     memento.getString( "CONNECTION" ) );
                 IBookmark bookmark = connection.getBookmarkManager().getBookmark( memento.getString( "BOOKMARK" ) );
                 super.setInput( new EntryEditorInput( bookmark ) );

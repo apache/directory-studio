@@ -173,15 +173,6 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRenamed(org.apache.directory.studio.connection.core.Connection, java.lang.String)
-     */
-    public void connectionRenamed( Connection connection, String oldName )
-    {
-        viewer.refresh();
-    }
-
-
-    /**
      * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionAdded( Connection connection )

@@ -82,7 +82,7 @@ public class ValuesTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation only accepts {@link IValue} objects. 
-     * It converts the name of the connection, the entry's DN, the 
+     * It converts the id of the connection, the entry's DN, the 
      * attribute description and the value to the platform specific 
      * representation.
      */
@@ -103,9 +103,9 @@ public class ValuesTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < values.length; i++ )
                 {
-                    byte[] connectionName = values[i].getAttribute().getEntry().getBrowserConnection().getName().getBytes();
-                    writeOut.writeInt( connectionName.length );
-                    writeOut.write( connectionName );
+                    byte[] connectionId = values[i].getAttribute().getEntry().getBrowserConnection().getConnection().getId().getBytes();
+                    writeOut.writeInt( connectionId.length );
+                    writeOut.write( connectionId );
                     byte[] dn = values[i].getAttribute().getEntry().getDn().toString().getBytes();
                     writeOut.writeInt( dn.length );
                     writeOut.write( dn );
@@ -172,10 +172,10 @@ public class ValuesTransfer extends ByteArrayTransfer
                         if ( readIn.available() > 1 )
                         {
                             int size = readIn.readInt();
-                            byte[] connectionName = new byte[size];
-                            readIn.read( connectionName );
-                            connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
-                                new String( connectionName ) );
+                            byte[] connectionId = new byte[size];
+                            readIn.read( connectionId );
+                            connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
+                                new String( connectionId ) );
                         }
 
                         IEntry entry = null;

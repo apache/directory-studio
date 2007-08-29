@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -80,9 +81,12 @@ public class ConnectionParameter
 
     }
 
+    /** The unique id. */
+    private String id;
+
     /** The symbolic name. */
     private String name;
-
+    
     /** The host name or IP address of the LDAP server. */
     private String host;
 
@@ -105,23 +109,6 @@ public class ConnectionParameter
     private Map<String, String> extendedProperties;
 
 
-    //    /** Flag indicating if base DNs should be fetched from namingContexts attribute of the Root DSE. */
-    //    private boolean fetchBaseDNs;
-    //
-    //    /** The user provided base DN. */
-    //    private DN baseDN;
-    //
-    //    /** The time limit im milliseconds. */
-    //    private int timeLimit;
-    //
-    //    /** The count limit. */
-    //    private int countLimit;
-    //
-    //    /** The alias dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING or IConnection.DEREFERENCE_ALIASES_SEARCH. */
-    //    private int aliasesDereferencingMethod;
-    //
-    //    /** The referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE or IConnection.HANDLE_REFERRALS_FOLLOW. */
-    //    private int referralsHandlingMethod;
 
     /**
      * Creates a new instance of ConnectionParameter.
@@ -148,6 +135,7 @@ public class ConnectionParameter
         AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
         Map<String, String> extendedProperties )
     {
+        this.id = createId();
         this.name = name;
         this.host = host;
         this.port = port;
@@ -248,6 +236,32 @@ public class ConnectionParameter
     public void setEncryptionMethod( EncryptionMethod encryptionMethod )
     {
         this.encryptionMethod = encryptionMethod;
+    }
+
+
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public String getId()
+    {
+        if ( id == null )
+        {
+            id = createId();
+        }
+        return id;
+    }
+
+
+    /**
+     * Sets the id.
+     * 
+     * @param id the id
+     */
+    public void setId( String id )
+    {
+        this.id = id;
     }
 
 
@@ -427,6 +441,18 @@ public class ConnectionParameter
         {
             return false;
         }
+    }
+
+
+    /**
+     * Creates a unique id.
+     * 
+     * @return the created id
+     */
+    private String createId()
+    {
+        long id = new Random( System.currentTimeMillis() ).nextLong();
+        return Long.valueOf( id ).toString();
     }
 
 }

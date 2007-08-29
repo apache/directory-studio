@@ -74,7 +74,7 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
                     Connection[] connections = BrowserSelectionUtils.getConnections( selection );
                     if ( connections.length == 1 )
                     {
-                        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection( connections[0].getName() );
+                        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( connections[0].getId() );
                         ModificationLogsViewInput input = new ModificationLogsViewInput( connection, 0 );
                         setInput( input );
                         scrollToNewest();
