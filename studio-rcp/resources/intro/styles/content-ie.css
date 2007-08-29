@@ -191,6 +191,13 @@ body
 	height: 90px;
 }
 
+.entry a
+{
+	text-decoration: none;
+	color : #4D4D4D;
+	font-family : Arial, sans-serif;
+}
+
 .entry-icon
 {
 	float: left;
