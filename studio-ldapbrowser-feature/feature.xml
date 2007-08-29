@@ -219,6 +219,19 @@ of your accepting any such warranty or additional liability.
       <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.search"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.core.resources"/>
+   </requires>
+
    <plugin
          id="org.apache.directory.studio.ldapbrowser.core"
          download-size="0"
