@@ -47,7 +47,7 @@ import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OnlineSchemaImporter
+public class ApacheDSSchemaImporter
 {
     /** The Schema DN */
     public static final String SCHEMA_DN = "ou=schema";
@@ -75,7 +75,7 @@ public class OnlineSchemaImporter
 
 
     /**
-     * Gets the Online Schema of the given Apache Directory Server JNDIConnectionWrapper.
+     * Imports the Schema of the given Apache Directory Server JNDIConnectionWrapper.
      * 
      * @param  wrapper
      * 		the JNDIConnectionWrapper
@@ -83,7 +83,7 @@ public class OnlineSchemaImporter
      * @throws NamingException 
      */
     @SuppressWarnings("unchecked")
-    public static List<Schema> getOnlineSchema( JNDIConnectionWrapper wrapper, StudioProgressMonitor monitor )
+    public static List<Schema> importSchema( JNDIConnectionWrapper wrapper, StudioProgressMonitor monitor )
         throws NamingException
     {
         List<Schema> schemas = new ArrayList<Schema>();

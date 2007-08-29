@@ -23,11 +23,15 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import javax.naming.NamingException;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.model.DependenciesComputer;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
 import org.apache.directory.studio.apacheds.schemaeditor.model.DependenciesComputer.DependencyComputerException;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ApacheDSSchemaExporter;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -49,6 +53,9 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
 
     /** The flag to know if the Schema contains errors */
     private boolean schemaContainsErrors = false;
+
+    /** The project */
+    private Project project;
 
     /** The DependenciesComputer */
     private DependenciesComputer dependenciesComputer;
@@ -86,23 +93,16 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    monitor.beginTask( "Committing changes:", orderedSchemas.size() );
-
-                    for ( Schema schema : orderedSchemas )
+                    ApacheDSSchemaExporter exporter = new ApacheDSSchemaExporter();
+                    try
                     {
-                        monitor.subTask( "Committing schema '" + schema.getName() + "'" );
-                        
-                        try
-                        {
-                            Thread.sleep( 500 );
-                        }
-                        catch ( InterruptedException e )
-                        {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        
-                        // TODO implement
+                        exporter.exportSchema( orderedSchemas, dependenciesComputer, project.getConnection().getJNDIConnectionWrapper(),
+                            new StudioProgressMonitor( monitor ) );
+                    }
+                    catch ( NamingException e )
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
                 }
             } );
@@ -145,7 +145,8 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
     {
         setNeedsProgressMonitor( true );
 
-        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
+        project = Activator.getDefault().getProjectsHandler().getOpenProject();
+
         try
         {
             dependenciesComputer = new DependenciesComputer( project.getSchemaHandler().getSchemas() );

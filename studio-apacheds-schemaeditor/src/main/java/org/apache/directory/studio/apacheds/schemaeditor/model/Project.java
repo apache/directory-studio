@@ -25,7 +25,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.apacheds.schemaeditor.model.io.OnlineSchemaImporter;
+import org.apache.directory.studio.apacheds.schemaeditor.model.io.ApacheDSSchemaImporter;
 import org.apache.directory.studio.apacheds.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
@@ -256,7 +256,7 @@ public class Project
         {
             try
             {
-                schemaBackup = OnlineSchemaImporter.getOnlineSchema( connection.getJNDIConnectionWrapper(), monitor );
+                schemaBackup = ApacheDSSchemaImporter.importSchema( connection.getJNDIConnectionWrapper(), monitor );
             }
             catch ( NamingException e )
             {

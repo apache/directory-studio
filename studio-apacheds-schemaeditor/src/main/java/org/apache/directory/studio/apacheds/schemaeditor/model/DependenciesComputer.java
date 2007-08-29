@@ -384,7 +384,7 @@ public class DependenciesComputer
      *      the dependencies of the schema
      */
     @SuppressWarnings("unchecked")
-    private List<Schema> getDependencies( Schema schema )
+    public List<Schema> getDependencies( Schema schema )
     {
         List<Schema> dependencies = ( List<Schema> ) schemasDependencies.get( schema );
 
