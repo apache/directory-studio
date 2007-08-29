@@ -21,27 +21,20 @@
 package org.apache.directory.studio.connection.core;
 
 
-import java.beans.Encoder;
-import java.beans.ExceptionListener;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.core.io.ConnectionIO;
+import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 
 
 /**
@@ -162,7 +155,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection getConnectionById( String id )
     {
-        for ( Iterator it = connectionList.iterator(); it.hasNext(); )
+        for ( Iterator<?> it = connectionList.iterator(); it.hasNext(); )
         {
             Connection conn = ( Connection ) it.next();
             if ( conn.getConnectionParameter().getId().equals( id ) )
@@ -172,8 +165,8 @@ public class ConnectionManager implements ConnectionUpdateListener
         }
         return null;
     }
-    
-    
+
+
     /**
      * Gets a connection from its name.
      *
@@ -184,7 +177,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection getConnectionByName( String name )
     {
-        for ( Iterator it = connectionList.iterator(); it.hasNext(); )
+        for ( Iterator<?> it = connectionList.iterator(); it.hasNext(); )
         {
             Connection conn = ( Connection ) it.next();
             if ( conn.getConnectionParameter().getName().equals( name ) )
@@ -293,172 +286,83 @@ public class ConnectionManager implements ConnectionUpdateListener
     /**
      * Saves the Connections
      */
-    private void saveConnections()
+    private synchronized void saveConnections()
     {
-        Object[] object = new Object[connectionList.size()];
-
-        Iterator connectionIterator = connectionList.iterator();
-        for ( int i = 0; connectionIterator.hasNext(); i++ )
+        List<ConnectionParameter> connectionParameters = new ArrayList<ConnectionParameter>();
+        for ( Connection connection : connectionList )
         {
-            Connection conn = ( Connection ) connectionIterator.next();
-            ConnectionParameter connectionParameters = conn.getConnectionParameter();
-
-            object[i] = connectionParameters;
+            connectionParameters.add( connection.getConnectionParameter() );
         }
 
-        save( object, getConnectionStoreFileName() );
+        // To avoid a corrupt file, save object to a temp file first 
+        try
+        {
+            ConnectionIO.save( connectionParameters, new FileWriter( getConnectionStoreFileName() + "-temp" ) );
+        }
+        catch ( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // move temp file to good file
+        File file = new File( getConnectionStoreFileName() );
+        File tempFile = new File( getConnectionStoreFileName() + "-temp" );
+        if ( file.exists() )
+        {
+            file.delete();
+        }
+        
+        try
+        {
+            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
+            FileUtils.writeStringToFile( file, content, "UTF-8" );
+        }
+        catch ( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 
     /**
      * Loads the Connections
      */
-    private void loadConnections()
+    private synchronized void loadConnections()
     {
+        List<ConnectionParameter> connectionParameters = null;
+
         try
         {
-            Object[] object = ( Object[] ) this.load( getConnectionStoreFileName() );
-
-            if ( object != null )
-            {
-                try
-                {
-                    for ( int i = 0; i < object.length; i++ )
-                    {
-                        ConnectionParameter connectionParameters = ( ConnectionParameter ) object[i];
-                        Connection conn = new Connection( connectionParameters );
-                        connectionList.add( conn );
-                    }
-
-                }
-                catch ( ArrayIndexOutOfBoundsException e )
-                {
-                    // Thrown by decoder.readObject(), signals EOF
-                }
-                catch ( Exception e )
-                {
-                    e.printStackTrace();
-                }
-            }
+            connectionParameters = ConnectionIO.load( new FileReader( getConnectionStoreFileName() ) );
         }
         catch ( Exception e )
         {
-        }
-    }
-
-
-    /**
-     * Loads an Object from an XML file
-     *
-     * @param filename
-     *      the filename of the XML file
-     * @return
-     *      the deserialized Object
-     */
-    private synchronized Object load( String filename )
-    {
-        try
-        {
-            Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
-            XMLDecoder decoder = new XMLDecoder( new BufferedInputStream( ( new FileInputStream( filename ) ) ) );
-            Object object = decoder.readObject();
-            decoder.close();
-            return object;
-        }
-        catch ( IOException ioe )
-        {
-            return null;
-        }
-        catch ( Exception e )
-        {
-            // if loading failed, try with temp file
-            String tempFilename = filename + "-temp";
+            // If loading failed, try with temp file
             try
             {
-                XMLDecoder decoder = new XMLDecoder( new BufferedInputStream( ( new FileInputStream( tempFilename ) ) ) );
-                Object object = decoder.readObject();
-                decoder.close();
-                return object;
+                connectionParameters = ConnectionIO.load( new FileReader( getConnectionStoreFileName() + "-temp" ) );
             }
-            catch ( IOException ioe2 )
+            catch ( FileNotFoundException e1 )
             {
-                return null;
+                // TODO Auto-generated catch block
+                return;
             }
-            catch ( Exception e2 )
+            catch ( ConnectionIOException e1 )
             {
-                return null;
+                // TODO Auto-generated catch block
+                return;
             }
         }
-    }
 
-
-    /**
-     * Saves an Object into a serialized XML file
-     *
-     * @param object
-     *      the object to save
-     * @param filename
-     *      the filename to save to
-     */
-    private synchronized void save( Object object, String filename )
-    {
-        XMLEncoder encoder = null;
-        try
+        if ( connectionParameters != null )
         {
-            // to avoid a corrupt file, save object to a temp file first 
-            String tempFilename = filename + "-temp";
-            Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
-            encoder = new XMLEncoder( new BufferedOutputStream( new FileOutputStream( tempFilename ) ) );
-
-            encoder.setPersistenceDelegate( AuthenticationMethod.class, enumPersistenceDelegate );
-            encoder.setPersistenceDelegate( EncryptionMethod.class, enumPersistenceDelegate );
-
-            encoder.setExceptionListener( new ExceptionListener()
+            for ( ConnectionParameter connectionParameter : connectionParameters )
             {
-                public void exceptionThrown( Exception e )
-                {
-                    e.printStackTrace();
-                }
-            } );
-            encoder.writeObject( object );
-            encoder.close();
-
-            // move temp file to good file
-            File file = new File( filename );
-            File tempFile = new File( tempFilename );
-            if ( file.exists() )
-            {
-                file.delete();
-            }
-            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
-            FileUtils.writeStringToFile( file, content, "UTF-8" );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if ( encoder != null )
-            {
-                encoder.close();
+                Connection conn = new Connection( connectionParameter );
+                connectionList.add( conn );
             }
         }
     }
-
-    private static final PersistenceDelegate enumPersistenceDelegate = new PersistenceDelegate()
-    {
-        protected boolean mutatesTo( Object oldInstance, Object newInstance )
-        {
-            return oldInstance == newInstance;
-        }
-
-
-        protected Expression instantiate( Object oldInstance, Encoder out )
-        {
-            Enum e = ( Enum ) oldInstance;
-            return new Expression( e, e.getClass(), "valueOf", new Object[]
-                { e.name() } );
-        }
-    };
 }
