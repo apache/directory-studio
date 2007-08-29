@@ -82,7 +82,7 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
         newAT.setObsolete( contentPage.getObsoleteValue() );
         newAT.setSingleValue( contentPage.getSingleValueValue() );
         newAT.setCollective( contentPage.getCollectiveValue() );
-        newAT.setCanUserModify( contentPage.getNoUserModificationValue() );
+        newAT.setCanUserModify( !contentPage.getNoUserModificationValue() );
         newAT.setEqualityName( matchingRulesPage.getEqualityMatchingRuleValue() );
         newAT.setOrderingName( matchingRulesPage.getOrderingMatchingRuleValue() );
         newAT.setSubstrName( matchingRulesPage.getSubstringMatchingRuleValue() );

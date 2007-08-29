@@ -43,8 +43,6 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
-import com.sun.org.apache.bcel.internal.generic.LUSHR;
-
 
 /**
  * This class contains helper methods.
@@ -90,7 +88,7 @@ public class PluginUtils
         clone.setObsolete( at.isObsolete() );
         clone.setSingleValue( at.isSingleValue() );
         clone.setCollective( at.isCollective() );
-        clone.setCanUserModify( clone.isCanUserModify() );
+        clone.setCanUserModify( at.isCanUserModify() );
         clone.setEqualityName( at.getEqualityName() );
         clone.setOrderingName( at.getOrderingName() );
         clone.setSubstrName( at.getSubstrName() );
