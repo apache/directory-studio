@@ -90,7 +90,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor
     public void preWindowOpen()
     {
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-        configurer.setInitialSize( new Point( 1000, 660 ) );
+        configurer.setInitialSize( new Point( 950, 708 ) );
         configurer.setShowCoolBar( true );
         configurer.setShowStatusLine( false );
         configurer.setShowPerspectiveBar( true );
