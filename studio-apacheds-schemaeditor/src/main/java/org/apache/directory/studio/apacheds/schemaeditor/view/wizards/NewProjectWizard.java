@@ -20,18 +20,12 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginUtils;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Project;
 import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
 import org.apache.directory.studio.apacheds.schemaeditor.model.Schema;
-import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -51,7 +45,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
 
     // The pages of the wizard
     private NewProjectWizardInformationPage informationPage;
-    private NewProjectWizardConnectionSelectionPage connectionSelectionPage;
+//    private NewProjectWizardConnectionSelectionPage connectionSelectionPage;
     private NewProjectWizardSchemasSelectionPage schemasSelectionPage;
 
 
@@ -62,12 +56,12 @@ public class NewProjectWizard extends Wizard implements INewWizard
     {
         // Creating pages
         informationPage = new NewProjectWizardInformationPage();
-        connectionSelectionPage = new NewProjectWizardConnectionSelectionPage();
+//        connectionSelectionPage = new NewProjectWizardConnectionSelectionPage();
         schemasSelectionPage = new NewProjectWizardSchemasSelectionPage();
 
         // Adding pages
         addPage( informationPage );
-        addPage( connectionSelectionPage );
+//        addPage( connectionSelectionPage );
         addPage( schemasSelectionPage );
     }
 
@@ -77,34 +71,35 @@ public class NewProjectWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        final Project project = new Project( informationPage.getProjectType(), informationPage.getProjectName() );
-        if ( informationPage.getProjectType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
-        {
-            Connection connection = connectionSelectionPage.getSelectedConnection();
-            project.setConnection( connection );
-            try
-            {
-                getContainer().run( true, true, new IRunnableWithProgress()
-                {
-                    public void run( IProgressMonitor monitor )
-                    {
-                        project.fetchOnlineSchema( new StudioProgressMonitor( monitor ) );
-                    }
-                } );
-            }
-            catch ( InvocationTargetException e )
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch ( InterruptedException e )
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
-        {
+        Project project = new Project( ProjectType.OFFLINE, informationPage.getProjectName() );
+//        final Project project = new Project( informationPage.getProjectType(), informationPage.getProjectName() );
+//        if ( informationPage.getProjectType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
+//        {
+//            Connection connection = connectionSelectionPage.getSelectedConnection();
+//            project.setConnection( connection );
+//            try
+//            {
+//                getContainer().run( true, true, new IRunnableWithProgress()
+//                {
+//                    public void run( IProgressMonitor monitor )
+//                    {
+//                        project.fetchOnlineSchema( new StudioProgressMonitor( monitor ) );
+//                    }
+//                } );
+//            }
+//            catch ( InvocationTargetException e )
+//            {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            catch ( InterruptedException e )
+//            {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        }
+//        else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
+//        {
             String[] selectedSchemas = schemasSelectionPage.getSelectedSchemas();
             if ( selectedSchemas != null )
             {
@@ -117,7 +112,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
                     }
                 }
             }
-        }
+//        }
 
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
         projectsHandler.addProject( project );
@@ -127,44 +122,44 @@ public class NewProjectWizard extends Wizard implements INewWizard
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
-     */
-    public IWizardPage getNextPage( IWizardPage page )
-    {
-        if ( page.equals( informationPage ) )
-        {
-            if ( informationPage.getProjectType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
-            {
-                return connectionSelectionPage;
-            }
-            else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
-            {
-                return schemasSelectionPage;
-            }
+//    /* (non-Javadoc)
+//     * @see org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
+//     */
+//    public IWizardPage getNextPage( IWizardPage page )
+//    {
+//        if ( page.equals( informationPage ) )
+//        {
+//            if ( informationPage.getProjectType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
+//            {
+//                return connectionSelectionPage;
+//            }
+//            else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
+//            {
+//                return schemasSelectionPage;
+//            }
+//
+//            // Default
+//            return null;
+//        }
+//
+//        // Default
+//        return null;
+//    }
 
-            // Default
-            return null;
-        }
 
-        // Default
-        return null;
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
-     */
-    public IWizardPage getPreviousPage( IWizardPage page )
-    {
-        if ( ( page.equals( connectionSelectionPage ) ) || ( page.equals( schemasSelectionPage ) ) )
-        {
-            return informationPage;
-        }
-
-        // Default
-        return null;
-    }
+//    /* (non-Javadoc)
+//     * @see org.eclipse.jface.wizard.Wizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
+//     */
+//    public IWizardPage getPreviousPage( IWizardPage page )
+//    {
+//        if ( ( page.equals( connectionSelectionPage ) ) || ( page.equals( schemasSelectionPage ) ) )
+//        {
+//            return informationPage;
+//        }
+//
+//        // Default
+//        return null;
+//    }
 
 
     /* (non-Javadoc)
@@ -182,10 +177,10 @@ public class NewProjectWizard extends Wizard implements INewWizard
         {
             return true;
         }
-        else if ( currentPage.equals( connectionSelectionPage ) )
-        {
-            return connectionSelectionPage.isPageComplete();
-        }
+//        else if ( currentPage.equals( connectionSelectionPage ) )
+//        {
+//            return connectionSelectionPage.isPageComplete();
+//        }
         else
         {
             return false;
@@ -198,6 +193,6 @@ public class NewProjectWizard extends Wizard implements INewWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-        setNeedsProgressMonitor( true );
+//        setNeedsProgressMonitor( true );
     }
 }

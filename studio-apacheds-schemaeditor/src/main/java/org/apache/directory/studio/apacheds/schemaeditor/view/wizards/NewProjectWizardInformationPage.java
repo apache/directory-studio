@@ -23,16 +23,13 @@ package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.ProjectsHandler;
-import org.apache.directory.studio.apacheds.schemaeditor.model.ProjectType;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -53,8 +50,8 @@ public class NewProjectWizardInformationPage extends WizardPage
 
     // UI Fields
     private Text nameText;
-    private Button typeAdsRadio;
-    private Button typeOfflineRadio;
+//    private Button typeAdsRadio;
+//    private Button typeOfflineRadio;
 
 
     /**
@@ -64,7 +61,8 @@ public class NewProjectWizardInformationPage extends WizardPage
     {
         super( "NewProjectWizardInformationPage" );
         setTitle( "Create a Schema project." );
-        setDescription( "Please specify a name and a type to create a new Schema project." );
+//        setDescription( "Please specify a name and a type to create a new Schema project." );
+      setDescription( "Please specify a name to create a new Schema project." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
         projectsHandler = Activator.getDefault().getProjectsHandler();
@@ -92,19 +90,19 @@ public class NewProjectWizardInformationPage extends WizardPage
                 dialogChanged();
             }
         } );
-
-        // Type Group
-        Group typeGroup = new Group( composite, SWT.NONE );
-        typeGroup.setText( "Type" );
-        typeGroup.setLayout( new GridLayout() );
-        typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-
-        typeAdsRadio = new Button( typeGroup, SWT.RADIO );
-        typeAdsRadio.setText( "Online Apache Directory Server Schema" );
-        typeAdsRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
-        typeOfflineRadio.setText( "Offline Schema" );
-        typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+//
+//        // Type Group
+//        Group typeGroup = new Group( composite, SWT.NONE );
+//        typeGroup.setText( "Type" );
+//        typeGroup.setLayout( new GridLayout() );
+//        typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+//
+//        typeAdsRadio = new Button( typeGroup, SWT.RADIO );
+//        typeAdsRadio.setText( "Online Apache Directory Server Schema" );
+//        typeAdsRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+//        typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
+//        typeOfflineRadio.setText( "Offline Schema" );
+//        typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         initFields();
 
@@ -117,7 +115,7 @@ public class NewProjectWizardInformationPage extends WizardPage
      */
     private void initFields()
     {
-        typeAdsRadio.setSelection( true );
+//        typeAdsRadio.setSelection( true );
 
         displayErrorMessage( null );
         setPageComplete( false );
@@ -170,23 +168,22 @@ public class NewProjectWizardInformationPage extends WizardPage
         return nameText.getText();
     }
 
-
-    /**
-     * Gets the type of the project.
-     *
-     * @return
-     *      the type of the project
-     */
-    public ProjectType getProjectType()
-    {
-        if ( typeAdsRadio.getSelection() )
-        {
-            return ProjectType.APACHE_DIRECTORY_SERVER;
-        }
-        else
-        {
-            return ProjectType.OFFLINE;
-        }
-    }
-
+//
+//    /**
+//     * Gets the type of the project.
+//     *
+//     * @return
+//     *      the type of the project
+//     */
+//    public ProjectType getProjectType()
+//    {
+//        if ( typeAdsRadio.getSelection() )
+//        {
+//            return ProjectType.APACHE_DIRECTORY_SERVER;
+//        }
+//        else
+//        {
+//            return ProjectType.OFFLINE;
+//        }
+//    }
 }
