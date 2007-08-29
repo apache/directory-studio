@@ -20,11 +20,19 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
+import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.MatchingRuleImpl;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -47,6 +55,36 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 {
+    /** The SchemaHandler */
+    private SchemaHandler schemaHandler;
+
+    /** The LabelProvider */
+    private LabelProvider labelProvider = new LabelProvider()
+    {
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+         */
+        public String getText( Object element )
+        {
+            if ( element instanceof MatchingRuleImpl )
+            {
+                MatchingRuleImpl mr = ( MatchingRuleImpl ) element;
+
+                String name = mr.getName();
+                if ( name != null )
+                {
+                    return name + "  -  (" + mr.getOid() + ")";
+                }
+                else
+                {
+                    return "(None)  -  (" + mr.getOid() + ")";
+                }
+            }
+
+            return super.getText( element );
+        }
+    };
+
     // UI fields
     private ComboViewer equalityComboViewer;
     private ComboViewer orderingComboViewer;
@@ -63,6 +101,8 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         setDescription( "Please specify the matching rules (equality, ordering and substring) to use for the attribute type." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
+
+        schemaHandler = Activator.getDefault().getSchemaHandler();
     }
 
 
@@ -84,31 +124,82 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         // Equality
         Label equalityLabel = new Label( matchingRulesGroup, SWT.NONE );
         equalityLabel.setText( "Equality:" );
-        Combo equalityCombo = new Combo( matchingRulesGroup, SWT.NONE );
+        Combo equalityCombo = new Combo( matchingRulesGroup, SWT.READ_ONLY );
         equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         equalityComboViewer = new ComboViewer( equalityCombo );
         equalityComboViewer.setContentProvider( new ArrayContentProvider() );
-        equalityComboViewer.setLabelProvider( new LabelProvider() );
+        equalityComboViewer.setLabelProvider( labelProvider );
 
         // Ordering
         Label orderingLabel = new Label( matchingRulesGroup, SWT.NONE );
         orderingLabel.setText( "Ordering:" );
-        Combo orderingCombo = new Combo( matchingRulesGroup, SWT.NONE );
+        Combo orderingCombo = new Combo( matchingRulesGroup, SWT.READ_ONLY );
         orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         orderingComboViewer = new ComboViewer( orderingCombo );
         orderingComboViewer.setContentProvider( new ArrayContentProvider() );
-        orderingComboViewer.setLabelProvider( new LabelProvider() );
+        orderingComboViewer.setLabelProvider( labelProvider );
 
         // Substring
         Label substringLabel = new Label( matchingRulesGroup, SWT.NONE );
         substringLabel.setText( "Substring:" );
-        Combo substringCombo = new Combo( matchingRulesGroup, SWT.NONE );
+        Combo substringCombo = new Combo( matchingRulesGroup, SWT.READ_ONLY );
         substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         substringComboViewer = new ComboViewer( substringCombo );
         substringComboViewer.setContentProvider( new ArrayContentProvider() );
-        substringComboViewer.setLabelProvider( new LabelProvider() );
+        substringComboViewer.setLabelProvider( labelProvider );
+
+        initFields();
 
         setControl( composite );
+    }
+
+
+    /**
+     * Initializes the UI fields.
+     */
+    private void initFields()
+    {
+        if ( schemaHandler != null )
+        {
+            // Getting the matching rules
+            List<MatchingRuleImpl> matchingRules = new ArrayList<MatchingRuleImpl>( schemaHandler.getMatchingRules() );
+
+            // Sorting the matching rules
+            Collections.sort( matchingRules, new Comparator<MatchingRuleImpl>()
+            {
+
+                public int compare( MatchingRuleImpl o1, MatchingRuleImpl o2 )
+                {
+                    String[] o1Names = o1.getNames();
+                    String[] o2Names = o2.getNames();
+
+                    // Comparing the First Name
+                    if ( ( o1Names != null ) && ( o2Names != null ) )
+                    {
+                        if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                        {
+                            return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                        }
+                        else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                        {
+                            return "".compareToIgnoreCase( o2Names[0] );
+                        }
+                        else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                        {
+                            return o1Names[0].compareToIgnoreCase( "" );
+                        }
+                    }
+
+                    // Default
+                    return o1.toString().compareToIgnoreCase( o2.toString() );
+                }
+            } );
+
+            // Setting the input
+            equalityComboViewer.setInput( matchingRules );
+            orderingComboViewer.setInput( matchingRules );
+            substringComboViewer.setInput( matchingRules );
+        }
     }
 
 
@@ -120,7 +211,22 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public String getEqualityMatchingRuleValue()
     {
-        return null; // TODO: implement
+        MatchingRuleImpl mr = ( MatchingRuleImpl ) ( ( StructuredSelection ) equalityComboViewer.getSelection() )
+            .getFirstElement();
+        if ( mr != null )
+        {
+            String[] names = mr.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                return mr.getName();
+            }
+            else
+            {
+                return mr.getOid();
+            }
+        }
+
+        return null;
     }
 
 
@@ -132,7 +238,22 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public String getOrderingMatchingRuleValue()
     {
-        return null; // TODO: implement
+        MatchingRuleImpl mr = ( MatchingRuleImpl ) ( ( StructuredSelection ) orderingComboViewer.getSelection() )
+            .getFirstElement();
+        if ( mr != null )
+        {
+            String[] names = mr.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                return mr.getName();
+            }
+            else
+            {
+                return mr.getOid();
+            }
+        }
+
+        return null;
     }
 
 
@@ -144,6 +265,21 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public String getSubstringMatchingRuleValue()
     {
-        return null; // TODO: implement
+        MatchingRuleImpl mr = ( MatchingRuleImpl ) ( ( StructuredSelection ) substringComboViewer.getSelection() )
+            .getFirstElement();
+        if ( mr != null )
+        {
+            String[] names = mr.getNames();
+            if ( ( names != null ) && ( names.length > 0 ) )
+            {
+                return mr.getName();
+            }
+            else
+            {
+                return mr.getOid();
+            }
+        }
+
+        return null;
     }
 }

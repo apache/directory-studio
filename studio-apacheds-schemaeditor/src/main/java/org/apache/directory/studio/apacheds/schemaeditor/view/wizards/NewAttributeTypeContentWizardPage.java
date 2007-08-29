@@ -20,10 +20,16 @@
 package org.apache.directory.studio.apacheds.schemaeditor.view.wizards;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.apacheds.schemaeditor.Activator;
 import org.apache.directory.studio.apacheds.schemaeditor.PluginConstants;
 import org.apache.directory.studio.apacheds.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.apacheds.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.apacheds.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -157,11 +163,32 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
         // Syntax
         Label syntaxLabel = new Label( syntaxGroup, SWT.NONE );
         syntaxLabel.setText( "Syntax:" );
-        Combo syntaxCombo = new Combo( syntaxGroup, SWT.BORDER );
+        Combo syntaxCombo = new Combo( syntaxGroup, SWT.READ_ONLY );
         syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         syntaxComboViewer = new ComboViewer( syntaxCombo );
         syntaxComboViewer.setContentProvider( new ArrayContentProvider() );
-        syntaxComboViewer.setLabelProvider( new LabelProvider() );
+        syntaxComboViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
+            {
+                if ( element instanceof SyntaxImpl )
+                {
+                    SyntaxImpl syntax = ( SyntaxImpl ) element;
+
+                    String name = syntax.getName();
+                    if ( name != null )
+                    {
+                        return name + "  -  (" + syntax.getOid() + ")";
+                    }
+                    else
+                    {
+                        return "(None)  -  (" + syntax.getOid() + ")";
+                    }
+                }
+
+                return super.getText( element );
+            }
+        } );
 
         // Syntax Length
         Label lengthLabel = new Label( syntaxGroup, SWT.NONE );
@@ -200,7 +227,56 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
         noUserModificationCheckbox = new Button( propertiesGroup, SWT.CHECK );
         noUserModificationCheckbox.setText( "No User Modification" );
 
+        initFields();
+
         setControl( composite );
+    }
+
+
+    /**
+     * Initializes the UI fields.
+     */
+    private void initFields()
+    {
+        if ( schemaHandler != null )
+        {
+            // Getting the syntaxes
+            List<SyntaxImpl> syntaxes = new ArrayList<SyntaxImpl>( schemaHandler.getSyntaxes() );
+
+            // Sorting the syntaxes
+            Collections.sort( syntaxes, new Comparator<SyntaxImpl>()
+            {
+
+                public int compare( SyntaxImpl o1, SyntaxImpl o2 )
+                {
+                    String[] o1Names = o1.getNames();
+                    String[] o2Names = o2.getNames();
+
+                    // Comparing the First Name
+                    if ( ( o1Names != null ) && ( o2Names != null ) )
+                    {
+                        if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                        {
+                            return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                        }
+                        else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                        {
+                            return "".compareToIgnoreCase( o2Names[0] );
+                        }
+                        else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                        {
+                            return o1Names[0].compareToIgnoreCase( "" );
+                        }
+                    }
+
+                    // Default
+                    return o1.toString().compareToIgnoreCase( o2.toString() );
+                }
+            } );
+
+            // Setting the input
+            syntaxComboViewer.setInput( syntaxes );
+        }
     }
 
 
@@ -209,10 +285,14 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
      */
     private void verifySuperior()
     {
-        if ( schemaHandler.getAttributeType( superiorText.getText() ) == null )
+        String superior = superiorText.getText();
+        if ( ( superior != null ) && ( !superior.equals( "" ) ) )
         {
-            displayErrorMessage( "The superior attribute type does not exist." );
-            return;
+            if ( schemaHandler.getAttributeType( superiorText.getText() ) == null )
+            {
+                displayErrorMessage( "The superior attribute type does not exist." );
+                return;
+            }
         }
 
         displayErrorMessage( null );
@@ -241,7 +321,15 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
      */
     public String getSuperiorValue()
     {
-        return superiorText.getText();
+        String superior = superiorText.getText();
+        if ( ( superior != null ) && ( !superior.equals( "" ) ) )
+        {
+            return superior;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -293,15 +381,14 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
      */
     public String getSyntax()
     {
-        StructuredSelection selection = ( StructuredSelection ) syntaxComboViewer.getSelection();
-        if ( !selection.isEmpty() )
+        SyntaxImpl syntax = ( SyntaxImpl ) ( ( StructuredSelection ) syntaxComboViewer.getSelection() )
+            .getFirstElement();
+        if ( syntax != null )
         {
-            return ( String ) selection.getFirstElement();
+            return syntax.getOid();
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
 
