@@ -241,7 +241,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
             if ( source.getType().equals( ObjectClassTypeEnum.ABSTRACT ) )
             {
-                message.append( "Abstract object class Ô" + getDisplayName( source ) + "' can not extend " );
+                message.append( "Abstract object class '" + getDisplayName( source ) + "' can not extend " );
 
                 if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
                 {
@@ -254,7 +254,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             }
             else if ( source.getType().equals( ObjectClassTypeEnum.AUXILIARY ) )
             {
-                message.append( "Auxiliary object class Ô" + getDisplayName( source ) + "' can not extend " );
+                message.append( "Auxiliary object class '" + getDisplayName( source ) + "' can not extend " );
 
                 if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
                 {
