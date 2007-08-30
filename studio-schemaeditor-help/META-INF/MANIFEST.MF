@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Schemas Editor Help
-Bundle-SymbolicName: org.apache.directory.studio.schemas.help;singleton:=true
+Bundle-Name: Apache Directory Studio Schema Editor Help
+Bundle-SymbolicName: org.apache.directory.studio.schemaeditor.help;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
