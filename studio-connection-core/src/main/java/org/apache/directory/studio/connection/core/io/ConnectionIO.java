@@ -224,7 +224,7 @@ public class ConnectionIO
                 Attribute keyAttribute = extendedPropertyElement.attribute( KEY_TAG );
                 Attribute valueAttribute = extendedPropertyElement.attribute( VALUE_TAG );
 
-                if ( keyAttribute != null )
+                if ( keyAttribute != null && valueAttribute != null )
                 {
                     connection.setExtendedProperty( keyAttribute.getValue(), valueAttribute.getValue() );
                 }
