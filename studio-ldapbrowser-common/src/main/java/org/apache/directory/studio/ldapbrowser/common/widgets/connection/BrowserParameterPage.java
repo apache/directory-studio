@@ -29,7 +29,7 @@ import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAda
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.AliasesDereferencingWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.LimitWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.ReferralsHandlingWidget;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.BrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.jobs.FetchBaseDNsJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -104,7 +104,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
      */
     private String getBaseDN()
     {
-        return baseDNCombo.getText();
+        return isAutoFetchBaseDns() ? null : baseDNCombo.getText();
     }
 
 
@@ -211,8 +211,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             public void widgetSelected( SelectionEvent e )
             {
                 Connection connection = getTestConnection();
-                IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
-                    .getBrowserConnection( connection );
+                IBrowserConnection browserConnection = new BrowserConnection( connection );
 
                 FetchBaseDNsJob job = new FetchBaseDNsJob( browserConnection );
                 RunnableContextJobAdapter.execute( job, runnableContext );
@@ -289,18 +288,21 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     private void validate()
     {
         // set enabled/disabled state of fields and buttons
-        baseDNCombo.setEnabled( !autoFetchBaseDnsButton.getSelection() );
+        baseDNCombo.setEnabled( !isAutoFetchBaseDns() );
 
         // validate input fields
         message = null;
         errorMessage = null;
-        try
+        if ( !isAutoFetchBaseDns() )
         {
-            new DN( baseDNCombo.getText() );
-        }
-        catch ( NameException e )
-        {
-            message = "Please enter a valid base DN.";
+            try
+            {
+                new DN( getBaseDN() );
+            }
+            catch ( NameException e )
+            {
+                message = "Please enter a valid base DN.";
+            }
         }
     }
 

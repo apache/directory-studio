@@ -97,7 +97,8 @@ public class RunnableContextJobAdapter
         catch ( Exception ex )
         {
             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                new Status( IStatus.ERROR, ConnectionUIPlugin.PLUGIN_ID, IStatus.ERROR, ex.getMessage(), ex ) );
+                new Status( IStatus.ERROR, ConnectionUIPlugin.PLUGIN_ID, IStatus.ERROR, ex.getMessage() != null ? ex
+                    .getMessage() : "", ex ) );
         }
 
         if ( handleError && !job.getExternalResult().isOK() )
