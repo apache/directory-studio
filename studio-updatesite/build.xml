@@ -77,7 +77,7 @@
 	    <!-- Apache Directory Studio Help Plugin -->
 	    <ant dir="../studio-rcp-help" inheritAll="no" />		
 	    <!-- Apache Directory Studio Schemas Editor Plugin -->
-	    <ant dir="../studio-schemaeditor-plugin" inheritAll="no" />
+	    <ant dir="../studio-schemaeditor" inheritAll="no" />
 	    <!-- Apache Directory Studio Schemas Editor Help Plugin -->
 	    <ant dir="../studio-schemaeditor-help" inheritAll="no" />
 	    <!-- Apache Directory Studio Browser Core Plugin -->
@@ -112,7 +112,7 @@
 	            <include name="*.jar" />
 	        </fileset>
 	       <!-- Apache Directory Studio Schemas Editor Plugin -->
-            <fileset dir="../studio-schemaeditor-plugin/target">
+            <fileset dir="../studio-schemaeditor/target">
 	            <include name="*.jar" />
 	        </fileset>
 	        <!-- Apache Directory Studio Schemas Editor Help Plugin -->
