@@ -88,7 +88,7 @@ public class NewVersionDialog extends Dialog
         composite.setLayout( new GridLayout() );
         composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        Label imageLabel = new Label( composite, SWT.CENTER | SWT.BORDER );
+        Label imageLabel = new Label( composite, SWT.CENTER );
         imageLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             "resources/graphics/new_version.png" ).createImage() );
         imageLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
