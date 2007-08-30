@@ -110,10 +110,10 @@
         </copy>
 
         <!-- Creation of the Schemas Editor Plugin -->
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" />
+        <ant dir="studio-schemaeditor" inheritAll="no" />
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${application.plugins}">
-            <fileset dir="studio-schemaeditor-plugin/target">
+            <fileset dir="studio-schemaeditor/target">
                 <include name="*.jar" />
             </fileset>
         </copy>

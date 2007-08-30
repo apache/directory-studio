@@ -17,37 +17,53 @@
   under the License.
 -->
 <project default="plugin">
-	<import file="../studio-build/build.xml"/>
-	
-	
+	<import file="../studio-build/build.xml" />
+
+
 	<!-- RETRIEVE-STUDIO-JAR-DEPENDENCIES TASK -->
-	<target name="retrieve-studio-jar-dependencies" description="Compiles the dependencies of the project" >
+	<target name="retrieve-studio-jar-dependencies" description="Compiles the dependencies of the project">
 		<ant dir="../studio-jars" target="retrieve-dependencies" inheritall="false" />
 	</target>
-	
-	
-    <!-- COMPILE-DEPENDENCIES TASK -->
-	<target name="compile-dependencies" description="Compiles the dependencies of the project" >
+
+
+	<!-- COMPILE-DEPENDENCIES TASK -->
+	<target name="compile-dependencies" description="Compiles the dependencies of the project">
 		<ant dir="../studio-connection-core" target="compile" inheritall="false" />
 		<ant dir="../studio-connection-ui" target="compile" inheritall="false" />
 	</target>
-		
-		
+
+
 	<!-- BUILD-CLASSPATH TASK -->
-	<target name="build-classpath" depends="retrieve-studio-jar-dependencies,compile-dependencies" description="Computes the classpath" >
+	<target name="build-classpath" depends="retrieve-studio-jar-dependencies,compile-dependencies" description="Computes the classpath">
 		<echo>Building classpath for ${project.name} (${project.id}) version ${project.version}</echo>
 		<path id="classpath">
 			<!-- Project dependencies -->
 			<fileset dir="${lib.dir}" />
 			<!-- Eclipse dependencies -->
 			<fileset dir="../dependencies/eclipse/3.2">
-				<include name="**/*.jar"/>
+				<include name="**/*.jar" />
 			</fileset>
 			<!-- Plugin dependencies -->
 			<fileset dir="../studio-jars/lib/" />
-			<pathelement location="../studio-connection-core/target/classes"/>
-			<pathelement location="../studio-connection-ui/target/classes"/>
+			<pathelement location="../studio-connection-core/target/classes" />
+			<pathelement location="../studio-connection-ui/target/classes" />
 		</path>
 	</target>
-	
+
+
+	<!-- PLUGIN TASK -->
+	<target name="plugin" depends="pre-plugin,studio-build.plugin" />
+
+
+	<!-- PRE-PLUGIN TASK -->
+	<target name="pre-plugin">
+		<mkdir dir="${target.build}" />
+		<copy todir="${target.build}" failonerror="false">
+			<fileset dir="${basedir}">
+				<include name="about.ini" />
+				<include name="studio.png" />
+			</fileset>
+		</copy>
+	</target>
+
 </project>

@@ -54,4 +54,20 @@
 		</path>
 	</target>
 	
+	
+	<!-- PLUGIN TASK -->
+	<target name="plugin" depends="pre-plugin,studio-build.plugin" />
+	
+
+	<!-- PRE-PLUGIN TASK -->
+	<target name="pre-plugin">
+		<mkdir dir="${target.build}" />
+		<copy todir="${target.build}" failonerror="false">
+			<fileset dir="${basedir}">
+				<include name="about.ini" />
+				<include name="studio.png" />
+			</fileset>
+		</copy>
+	</target>
+	
 </project>
