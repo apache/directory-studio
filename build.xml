@@ -396,7 +396,7 @@
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldifeditor" inheritAll="no" target="javadoc" />
         <ant dir="studio-rcp" inheritAll="no" target="javadoc" />
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="javadoc" />
+        <ant dir="studio-schemaeditor" inheritAll="no" target="javadoc" />
         <ant dir="studio-valueeditors" inheritAll="no" target="javadoc" />
     </target>
 	
@@ -418,7 +418,7 @@
         <ant dir="studio-rcp" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-rcp-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-schemaeditor-help" inheritAll="no" target="retrieve-dependencies" />
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-schemaeditor" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-valueeditors" inheritAll="no" target="retrieve-dependencies" />
     </target>
 	
@@ -449,7 +449,7 @@
         <ant dir="studio-rcp-help" inheritAll="no" target="clean"/>
         <ant dir="studio-schemaeditor-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-schemaeditor-help" inheritAll="no" target="clean" />
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="clean"/>
+        <ant dir="studio-schemaeditor" inheritAll="no" target="clean"/>
         <ant dir="studio-updatesite" inheritAll="no" target="clean" />
         <ant dir="studio-valueeditors" inheritAll="no" target="clean" />
         <delete dir="${target}" />
