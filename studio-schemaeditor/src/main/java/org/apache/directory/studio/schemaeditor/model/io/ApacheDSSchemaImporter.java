@@ -303,7 +303,7 @@ public class ApacheDSSchemaImporter
         syntax.setNames( getNames( sr ) );
         syntax.setDescription( getDescription( sr ) );
         syntax.setObsolete( isObsolete( sr ) );
-        syntax.setHumanReadible( isHumanReadable( sr ) );
+        syntax.setHumanReadable( isHumanReadable( sr ) );
         return syntax;
     }
 

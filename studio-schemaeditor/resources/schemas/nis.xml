@@ -503,13 +503,13 @@
       </matchingrule>
    </matchingrules>
    <syntaxes>
-      <syntax oid="1.3.6.1.1.1.0.0" obsolete="false" humanreadible="true">
+      <syntax oid="1.3.6.1.1.1.0.0" obsolete="false" humanreadable="true">
          <aliases>
             <alias>NIS Netgroup Triple</alias>
          </aliases>
          <description>RFC2307 NIS Netgroup Triple</description>
       </syntax>
-      <syntax oid="1.3.6.1.1.1.0.1" obsolete="false" humanreadible="true">
+      <syntax oid="1.3.6.1.1.1.0.1" obsolete="false" humanreadable="true">
          <aliases>
             <alias>NIS Boot Parameter</alias>
          </aliases>

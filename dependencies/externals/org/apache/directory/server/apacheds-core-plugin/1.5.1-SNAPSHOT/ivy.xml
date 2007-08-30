@@ -1,7 +1,7 @@
 <ivy-module version="1.0">
-	<info organisation="org.apache.directory.shared"
-		module="shared-asn1"
-		revision="0.9.7-SNAPSHOT"
+	<info organisation="org.apache.directory.server"
+		module="apacheds-core-plugin"
+		revision="1.5.1-SNAPSHOT"
 		status="release"
 		publication="20070830140800"
 	/>
@@ -9,6 +9,6 @@
 		<conf name="default" visibility="public"/>
 	</configurations>
 	<publications>
-		<artifact name="shared-asn1" type="jar" ext="jar" conf="default"/>
+		<artifact name="apacheds-core-plugin" type="jar" ext="jar" conf="default"/>
 	</publications>
 </ivy-module>

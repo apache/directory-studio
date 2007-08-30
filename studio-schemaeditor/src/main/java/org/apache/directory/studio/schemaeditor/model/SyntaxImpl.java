@@ -50,11 +50,11 @@ public class SyntaxImpl extends AbstractSyntax
 
 
     /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.schema.AbstractSyntax#setHumanReadible(boolean)
+     * @see org.apache.directory.shared.ldap.schema.AbstractSyntax#setHumanReadable(boolean)
      */
-    public void setHumanReadible( boolean isHumanReadible )
+    public void setHumanReadable( boolean isHumanReadable )
     {
-        super.setHumanReadible( isHumanReadible );
+        super.setHumanReadable( isHumanReadable );
     }
 
 

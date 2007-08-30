@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 
 /**
  * This class implements an object class.
- *
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
@@ -57,9 +57,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Creates a new instance of ObjectClassImpl.
-     *
+     * 
      * @param oid
-     *      the OID of the object class
+     *            the OID of the object class
      */
     public ObjectClassImpl( String oid )
     {
@@ -68,7 +68,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setNames(java.lang.String[])
      */
     public void setNames( String[] names )
@@ -77,7 +79,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#getOid()
      */
     public String getOid()
@@ -88,9 +92,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Set the OID.
-     *
+     * 
      * @param oid
-     *      the OID value
+     *            the OID value
      */
     public void setOid( String oid )
     {
@@ -98,7 +102,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setDescription(java.lang.String)
      */
     public void setDescription( String description )
@@ -107,7 +113,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#setObsolete(boolean)
      */
     public void setObsolete( boolean obsolete )
@@ -116,7 +124,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.ObjectClass#getType()
      */
     public ObjectClassTypeEnum getType()
@@ -127,9 +137,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Sets the type of the object class.
-     *
+     * 
      * @param objectClassTypeEnum
-     *      the type of the object class
+     *            the type of the object class
      */
     public void setType( ObjectClassTypeEnum objectClassTypeEnum )
     {
@@ -137,11 +147,39 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.ObjectClass#isAbstract()
+     */
+    public boolean isAbstract()
+    {
+        return ObjectClassTypeEnum.ABSTRACT.equals( getType() );
+    }
+
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.directory.shared.ldap.schema.ObjectClass#isAuxiliary()
+     */
+    public boolean isAuxiliary()
+    {
+        return ObjectClassTypeEnum.AUXILIARY.equals( getType() );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.schema.ObjectClass#isStructural()
+     */
+    public boolean isStructural()
+    {
+        return ObjectClassTypeEnum.STRUCTURAL.equals( getType() );
+    }
+
+
     /**
      * gets the names of the super classes.
-     *
-     * @return
-     *      the names of the super classes
+     * 
+     * @return the names of the super classes
      */
     public String[] getSuperClassesNames()
     {
@@ -151,9 +189,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Sets the names of the super classes.
-     *
+     * 
      * @param superClassesNames
-     *      the names of the super classes
+     *            the names of the super classes
      */
     public void setSuperClassesNames( String[] superClassesNames )
     {
@@ -161,7 +199,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.ObjectClass#getSuperClasses()
      */
     public ObjectClass[] getSuperClasses() throws NamingException
@@ -172,9 +212,8 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Gets the names of the mandatory attribute types.
-     *
-     * @return
-     *      the names of the mandatory attribute types
+     * 
+     * @return the names of the mandatory attribute types
      */
     public String[] getMustNamesList()
     {
@@ -184,9 +223,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Set the names of the mandatory attribute types.
-     *
+     * 
      * @param mustNamesList
-     *      the names of the mandatory attribute types
+     *            the names of the mandatory attribute types
      */
     public void setMustNamesList( String[] mustNamesList )
     {
@@ -194,7 +233,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.ObjectClass#getMustList()
      */
     public AttributeType[] getMustList() throws NamingException
@@ -205,9 +246,8 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Gets the names of the optional attribute types.
-     *
-     * @return
-     *      the names of the optional attribute types
+     * 
+     * @return the names of the optional attribute types
      */
     public String[] getMayNamesList()
     {
@@ -217,9 +257,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
 
     /**
      * Sets the names of the optional attribute types.
-     *
+     * 
      * @param mayNamesList
-     *      the names of the optional attribute types
+     *            the names of the optional attribute types
      */
     public void setMayNamesList( String[] mayNamesList )
     {
@@ -227,7 +267,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.ObjectClass#getMayList()
      */
     public AttributeType[] getMayList() throws NamingException
@@ -236,7 +278,9 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     }
 
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.directory.shared.ldap.schema.AbstractSchemaObject#equals(java.lang.Object)
      */
     public boolean equals( Object obj )

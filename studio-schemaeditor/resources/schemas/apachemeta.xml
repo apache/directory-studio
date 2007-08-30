@@ -564,31 +564,31 @@
       </matchingrule>
    </matchingrules>
    <syntaxes>
-      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.2" obsolete="false" humanreadible="true">
+      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.2" obsolete="false" humanreadable="true">
          <aliases>
             <alias>numericOid</alias>
          </aliases>
          <description>The syntax for numericoids.</description>
       </syntax>
-      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.6" obsolete="false" humanreadible="true">
+      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.6" obsolete="false" humanreadable="true">
          <aliases>
             <alias>objectName</alias>
          </aliases>
          <description>The syntax for object names.</description>
       </syntax>
-      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.0" obsolete="false" humanreadible="true">
+      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.0" obsolete="false" humanreadable="true">
          <aliases>
             <alias>nameOrOid</alias>
          </aliases>
          <description>The syntax for either numeric ids or names.</description>
       </syntax>
-      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.4" obsolete="false" humanreadible="true">
+      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.4" obsolete="false" humanreadable="true">
          <aliases>
             <alias>numeric</alias>
          </aliases>
          <description>The syntax for numeric strings.</description>
       </syntax>
-      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.1" obsolete="false" humanreadible="true">
+      <syntax oid="1.3.6.1.4.1.18060.0.4.0.0.1" obsolete="false" humanreadable="true">
          <aliases>
             <alias>objectClassType</alias>
          </aliases>

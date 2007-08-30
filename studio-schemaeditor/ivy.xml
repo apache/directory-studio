@@ -24,7 +24,7 @@
 					rev="3.8.2"/>
 		<dependency org="org.apache.directory.server" 
 					name="apacheds-core-plugin" 
-					rev="1.5.0-SNAPSHOT"/>
+					rev="1.5.1-SNAPSHOT"/>
 		<dependency org="org.apache.directory.shared" 
 					name="shared-converter" 
 					rev="0.9.7-SNAPSHOT"/>

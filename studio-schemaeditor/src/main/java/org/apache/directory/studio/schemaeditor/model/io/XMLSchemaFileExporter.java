@@ -62,7 +62,7 @@ public class XMLSchemaFileExporter
     private static final String COLLECTIVE_TAG = "collective";
     private static final String DESCRIPTION_TAG = "description";
     private static final String EQUALITY_TAG = "equality";
-    private static final String HUMAN_READIBLE_TAG = "humanreadible";
+    private static final String HUMAN_READABLE_TAG = "humanreadable";
     private static final String MANDATORY_TAG = "mandatory";
     private static final String MATCHING_RULE_TAG = "matchingrule";
     private static final String MATCHING_RULES_TAG = "matchingrules";
@@ -544,13 +544,13 @@ public class XMLSchemaFileExporter
         }
 
         // Human Readible
-        if ( syntax.isHumanReadible() )
+        if ( syntax.isHumanReadable() )
         {
-            syntaxNode.addAttribute( HUMAN_READIBLE_TAG, BOOLEAN_TRUE );
+            syntaxNode.addAttribute( HUMAN_READABLE_TAG, BOOLEAN_TRUE );
         }
         else
         {
-            syntaxNode.addAttribute( HUMAN_READIBLE_TAG, BOOLEAN_FALSE );
+            syntaxNode.addAttribute( HUMAN_READABLE_TAG, BOOLEAN_FALSE );
         }
     }
 

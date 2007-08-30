@@ -58,7 +58,7 @@ public class XMLSchemaFileImporter
     private static final String COLLECTIVE_TAG = "collective";
     private static final String DESCRIPTION_TAG = "description";
     private static final String EQUALITY_TAG = "equality";
-    private static final String HUMAN_READIBLE_TAG = "humanreadible";
+    private static final String HUMAN_READABLE_TAG = "humanreadable";
     private static final String MANDATORY_TAG = "mandatory";
     private static final String MATCHING_RULE_TAG = "matchingrule";
     private static final String MATCHING_RULES_TAG = "matchingrules";
@@ -754,10 +754,10 @@ public class XMLSchemaFileImporter
         }
 
         // Human Readible
-        Attribute humanReadibleAttribute = element.attribute( HUMAN_READIBLE_TAG );
+        Attribute humanReadibleAttribute = element.attribute( HUMAN_READABLE_TAG );
         if ( ( humanReadibleAttribute != null ) && ( !humanReadibleAttribute.getValue().equals( "" ) ) )
         {
-            syntax.setHumanReadible( readBoolean( humanReadibleAttribute.getValue() ) );
+            syntax.setHumanReadable( readBoolean( humanReadibleAttribute.getValue() ) );
         }
 
         // Adding the syntax to the schema
