@@ -216,7 +216,7 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update/1.x"/>
    </url>
 
    <plugin
