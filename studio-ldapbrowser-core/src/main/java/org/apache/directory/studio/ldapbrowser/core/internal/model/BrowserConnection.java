@@ -39,7 +39,10 @@ import org.apache.directory.studio.connection.core.event.ConnectionUpdateListene
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
+import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -150,7 +153,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      */
     public void reloadSchema( StudioProgressMonitor monitor )
     {
-        fetchRootDSE( monitor );
+        InitializeAttributesJob.initializeAttributes( getRootDSE(), true, monitor );
         
         monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
         loadSchema( monitor );
@@ -1034,6 +1037,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         if(this.connection == connection)
         {
             new OpenBrowserConnectionsJob( this ).execute();
+            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
+                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED );
+            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent , this );
         }
     }
     public void connectionClosed( org.apache.directory.studio.connection.core.Connection connection )
@@ -1041,6 +1047,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         if(this.connection == connection)
         {
             close();
+            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
+                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_CLOSED );
+            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent , this );
         }
     }
 

@@ -402,7 +402,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         boolean fetchBaseDns = connectionParameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS );
         String baseDn = connectionParameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_BASE_DN );
-        return fetchBaseDns != isAutoFetchBaseDns() || !( baseDn.equals( getBaseDN() ) );
+        return fetchBaseDns != isAutoFetchBaseDns() || ( baseDn == null && getBaseDN() != null )
+            || ( baseDn != null && getBaseDN() == null )
+            || ( baseDn != getBaseDN() && !( baseDn.equals( getBaseDN() ) ) );
     }
 
 }

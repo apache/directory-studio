@@ -29,6 +29,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,6 +43,8 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
@@ -53,6 +56,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.eclipse.core.runtime.IPath;
 
@@ -63,7 +67,7 @@ import org.eclipse.core.runtime.IPath;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BrowserConnectionManager implements ConnectionUpdateListener, SearchUpdateListener, BookmarkUpdateListener
+public class BrowserConnectionManager implements ConnectionUpdateListener, BrowserConnectionUpdateListener, SearchUpdateListener, BookmarkUpdateListener
 {
 
     /** The list of connections. */
@@ -80,33 +84,34 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
         EventRegistry.addSearchUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
         EventRegistry.addBookmarkUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
+        EventRegistry.addBrowserConnectionUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
     }
 
 
     /**
-     * Gets the Schema Cache filename for the corresponding Connection name.
+     * Gets the Schema Cache filename for the corresponding browser connection.
      *
-     * @param connectionName
-     *      the connection name
+     * @param browserConnection
+     *      the browser connection
      * @return
-     *      the Schema Cache filename for the corresponding Connection name
+     *      the Schema Cache filename for the corresponding browser connection
      */
-    public static final String getSchemaCacheFileName( String connectionName )
+    public static final String getSchemaCacheFileName( IBrowserConnection browserConnection )
     {
         return BrowserCorePlugin.getDefault().getStateLocation().append(
-            "schema-" + toSaveString( connectionName ) + ".ldif" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+            "schema-" + toSaveString( browserConnection.getConnection().getId() ) + ".ldif" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
     /**
-     * Gets the Modification Log filename for the corresponding Connection name.
+     * Gets the Modification Log filename for the corresponding browser connection.
      *
-     * @param connectionName
-     *      the connection name
+     * @param browserConnection
+     *      the browser connection
      * @return
      *      the Modification Log filename
      */
-    public static final String getModificationLogFileName( String connectionName )
+    public static final String getModificationLogFileName( IBrowserConnection browserConnection )
     {
         IPath p = BrowserCorePlugin.getDefault().getStateLocation().append( "logs" ); //$NON-NLS-1$
         File file = p.toFile();
@@ -114,7 +119,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
         {
             file.mkdir();
         }
-        return p.append( "modifications-" + toSaveString( connectionName ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+        return p
+            .append( "modifications-" + toSaveString( browserConnection.getConnection().getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -203,20 +209,6 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
     }
 
 
-//    /**
-//     * Gets a connection from its name.
-//     *
-//     * @param name
-//     *      the name of the Connection
-//     * @return
-//     *      the corresponding IConnection
-//     */
-//    public IBrowserConnection getConnectionByName( String name )
-//    {
-//        return connectionMap.get( name );
-//    }
-    
-    
     /**
      * Gets a browser connection from its id.
      *
@@ -278,10 +270,10 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
     public void connectionRemoved( Connection connection )
     {
         // update connection list
-        connectionMap.remove( connection.getId() );
+        IBrowserConnection browserConnection = connectionMap.remove( connection.getId() );
 
         // remove schema file
-        File schemaFile = new File( getSchemaCacheFileName( connection.getId() ) );
+        File schemaFile = new File( getSchemaCacheFileName( browserConnection ) );
         if ( schemaFile.exists() )
         {
             schemaFile.delete();
@@ -312,6 +304,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
     public void connectionUpdated( Connection connection )
     {
         saveBrowserConnections();
+        saveSchema( getBrowserConnection( connection ) );
     }
 
 
@@ -328,6 +321,19 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
      */
     public void connectionClosed( Connection connection )
     {
+    }
+
+ 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateListener#browserConnectionUpdated(org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent)
+     */
+    public void browserConnectionUpdated( BrowserConnectionUpdateEvent browserConnectionUpdateEvent )
+    {
+        if ( browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED
+            || browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED )
+        {
+            saveSchema( browserConnectionUpdateEvent.getBrowserConnection() );
+        }
     }
 
 
@@ -405,7 +411,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
     {
         try
         {
-            String filename = getSchemaCacheFileName( connection.getConnection().getId() );
+            String filename = getSchemaCacheFileName( connection );
             FileWriter writer = new FileWriter( filename );
             connection.getSchema().saveToLdif( writer );
             writer.close();
@@ -428,22 +434,20 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Searc
             Connection connection = connections[i];
             BrowserConnection browserConnection = new BrowserConnection( connection );
             connectionMap.put( connection.getId(), browserConnection );
+            
+            try
+            {
+                String schemaFilename = getSchemaCacheFileName( browserConnection );
+                FileReader reader = new FileReader( schemaFilename );
+                Schema schema = new Schema();
+                schema.loadFromLdif( reader );
+                browserConnection.setSchema( schema );
+            }
+            catch ( Exception e )
+            {
+            }
         }
-
-        //        try
-        //        {
-        //            String schemaFilename = getSchemaCacheFileName( conn.getName() );
-        //            FileReader reader = new FileReader( schemaFilename );
-        //            Schema schema = new Schema();
-        //            schema.loadFromLdif( reader );
-        //            conn.setSchema( schema );
-        //        }
-        //        catch ( Exception e )
-        //        {
-        //        }
         
-//        connectionList.clear();
-//        
         try
         {
             Object[][] object = ( Object[][] ) this.load( getBrowserConnectionStoreFileName() );

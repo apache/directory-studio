@@ -218,9 +218,81 @@ public class EventRegistry
     }
 
     /** The map with entry update listeners and their runners */
+    private static Map<BrowserConnectionUpdateListener, EventRunner> browserConnectionUpdateListeners = new HashMap<BrowserConnectionUpdateListener, EventRunner>();
+
+
+    /**
+     * Adds the browser connection update listener.
+     *
+     * @param listener the listener
+     * @param runner the runner
+     */
+    public static void addBrowserConnectionUpdateListener( BrowserConnectionUpdateListener listener, EventRunner runner )
+    {
+        assert listener != null;
+        assert runner != null;
+
+        if ( !browserConnectionUpdateListeners.containsKey( listener ) )
+        {
+            browserConnectionUpdateListeners.put( listener, runner );
+        }
+    }
+
+
+    /**
+     * Removes the browser connection update listener.
+     *
+     * @param listener the listener
+     */
+    public static void removeBrowserConnectionpdateListener( BrowserConnectionUpdateListener listener )
+    {
+        if ( browserConnectionUpdateListeners.containsKey( listener ) )
+        {
+            browserConnectionUpdateListeners.remove( listener );
+        }
+    }
+
+
+    /**
+     * Notifies each {@link BrowserConnectionUpdateListener} about the the given {@link BrowserConnectionUpdateEvent}.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param browserConnectionUpdateEvent the browser connection update event
+     * @param source the source
+     */
+    public static void fireBrowserConnectionUpdated( final BrowserConnectionUpdateEvent browserConnectionUpdateEvent,
+        final Object source )
+    {
+        if( isEventFireingSuspendedInCurrentThread() )
+        {
+            return;
+        }
+
+        Iterator<BrowserConnectionUpdateListener> it = browserConnectionUpdateListeners.keySet().iterator();
+        while( it.hasNext() )
+        {
+            final BrowserConnectionUpdateListener listener = it.next();
+            EventRunnable runnable = new EventRunnable()
+            {
+                public void run()
+                {
+                    listener.browserConnectionUpdated( browserConnectionUpdateEvent );
+                }
+            };
+
+            EventRunner runner = browserConnectionUpdateListeners.get( listener );
+            synchronized( lock )
+            {
+                runner.execute( runnable );
+            }
+        }
+    }
+
+
+    /** The map with entry update listeners and their runners */
     private static Map<EntryUpdateListener, EventRunner> entryUpdateListeners = new HashMap<EntryUpdateListener, EventRunner>();
-
-
+    
+    
     /**
      * Adds the entry update listener.
      *
@@ -231,14 +303,14 @@ public class EventRegistry
     {
         assert listener != null;
         assert runner != null;
-
+        
         if ( !entryUpdateListeners.containsKey( listener ) )
         {
             entryUpdateListeners.put( listener, runner );
         }
     }
-
-
+    
+    
     /**
      * Removes the entry update listener.
      *
@@ -251,8 +323,8 @@ public class EventRegistry
             entryUpdateListeners.remove( listener );
         }
     }
-
-
+    
+    
     /**
      * Notifies each {@link EntryUpdateListener} about the the given {@link EntryModificationEvent}.
      * Uses the {@link EventRunner}s.
@@ -266,7 +338,7 @@ public class EventRegistry
         {
             return;
         }
-
+        
         Iterator<EntryUpdateListener> it = entryUpdateListeners.keySet().iterator();
         while( it.hasNext() )
         {
@@ -278,7 +350,7 @@ public class EventRegistry
                     listener.entryUpdated( entryUpdateEvent );
                 }
             };
-
+            
             EventRunner runner = entryUpdateListeners.get( listener );
             synchronized( lock )
             {
@@ -286,6 +358,6 @@ public class EventRegistry
             }
         }
     }
-
-
+    
+    
 }

@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.core;
 
 import org.apache.directory.studio.ldapbrowser.core.events.CoreEventRunner;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

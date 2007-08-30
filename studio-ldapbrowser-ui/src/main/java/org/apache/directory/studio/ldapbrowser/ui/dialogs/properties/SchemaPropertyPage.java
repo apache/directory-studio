@@ -188,7 +188,7 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
 
             if ( connection != null )
             {
-                String cacheFileName = BrowserConnectionManager.getSchemaCacheFileName( connection.getName() );
+                String cacheFileName = BrowserConnectionManager.getSchemaCacheFileName( connection );
                 File cacheFile = new File( cacheFileName );
                 if ( cacheFile.exists() )
                 {

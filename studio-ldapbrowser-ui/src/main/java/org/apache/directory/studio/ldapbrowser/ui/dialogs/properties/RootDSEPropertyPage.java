@@ -27,8 +27,11 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetTableMetadata;
+import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -102,12 +105,17 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
     
     static IBrowserConnection getConnection( Object element )
     {
-        IBrowserConnection connection = null;
+        IBrowserConnection browserConnection = null;
         if ( element instanceof IAdaptable )
         {
-            connection = ( IBrowserConnection ) ( ( IAdaptable ) element ).getAdapter( IBrowserConnection.class );
+            browserConnection = ( IBrowserConnection ) ( ( IAdaptable ) element ).getAdapter( IBrowserConnection.class );
+            if(browserConnection == null)
+            {
+                Connection connection = ( Connection ) ( ( IAdaptable ) element ).getAdapter( Connection.class );
+                browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection( connection );
+            }
         }
-        return connection;
+        return browserConnection;
     }
 
 

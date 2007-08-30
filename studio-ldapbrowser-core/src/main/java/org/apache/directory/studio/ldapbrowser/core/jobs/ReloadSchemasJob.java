@@ -27,7 +27,10 @@ import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
@@ -82,11 +85,11 @@ public class ReloadSchemasJob extends AbstractAsyncBulkJob
 
     protected void runNotification()
     {
-        for ( int i = 0; i < browserConnections.length; i++ )
+        for ( IBrowserConnection browserConnection : browserConnections )
         {
-            // TODO: schema update event
-//            EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connections[i],
-//                ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
+            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
+                browserConnection, BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED );
+            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
         }
     }
 

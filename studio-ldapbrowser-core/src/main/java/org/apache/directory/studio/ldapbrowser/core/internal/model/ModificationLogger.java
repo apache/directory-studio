@@ -55,7 +55,7 @@ public class ModificationLogger
         this.logger = Logger.getAnonymousLogger();
         this.logger.setLevel( Level.ALL );
 
-        String logfileName = BrowserConnectionManager.getModificationLogFileName( connection.getName() );
+        String logfileName = BrowserConnectionManager.getModificationLogFileName( connection );
         try
         {
             fileHandler = new FileHandler( logfileName, 100000, 10, true );

@@ -42,10 +42,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;

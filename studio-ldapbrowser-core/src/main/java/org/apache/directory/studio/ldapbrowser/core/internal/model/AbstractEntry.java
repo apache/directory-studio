@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
-import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;

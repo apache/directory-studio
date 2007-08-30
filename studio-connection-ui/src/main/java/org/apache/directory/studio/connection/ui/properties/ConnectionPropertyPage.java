@@ -207,6 +207,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         boolean parametersModified = false;
         boolean reconnectionRequired = false;
         ConnectionParameter connectionParameter = new ConnectionParameter();
+        connectionParameter.setId( connection.getConnectionParameter().getId() );
         for ( int i = 0; i < pages.length; i++ )
         {
             pages[i].saveParameters( connectionParameter );

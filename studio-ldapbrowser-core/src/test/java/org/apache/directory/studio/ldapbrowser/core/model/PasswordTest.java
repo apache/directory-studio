@@ -20,8 +20,6 @@
 
 package org.apache.directory.studio.ldapbrowser.core.model;
 
-import org.apache.directory.studio.ldapbrowser.core.model.Password;
-
 import junit.framework.TestCase;
 
 /**
