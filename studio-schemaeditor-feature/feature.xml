@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.directory.studio.schemas.feature"
-      label="Apache Directory Studio Schemas Editor"
+      label="Apache Directory Studio Schema Editor"
       version="1.0.0"
       provider-name="Apache Software Foundation"
-      plugin="org.apache.directory.studio.schemas"
+      plugin="org.apache.directory.studio.schemaeditor"
       image="studio.png">
 
    <description>
