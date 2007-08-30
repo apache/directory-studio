@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Value Editors Plug-in
+Bundle-Name: Apache Directory Studio Value Editors
 Bundle-SymbolicName: org.apache.directory.studio.valueeditors;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.directory.studio.valueeditors.ValueEditorsActivator

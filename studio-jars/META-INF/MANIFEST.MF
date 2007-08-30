@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Jars Plugin
+Bundle-Name: Apache Directory Studio Jars
 Bundle-SymbolicName: org.apache.directory.studio.jars
 Bundle-Version: 1.0.0
 Bundle-Localization: plugin

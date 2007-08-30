@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Apache DS Schema Editor Plug-in
+Bundle-Name: Apache Directory Studio Schema Editor
 Bundle-SymbolicName: org.apache.directory.studio.schemaeditor;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.directory.studio.schemaeditor.Activator
