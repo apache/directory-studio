@@ -17,7 +17,7 @@
   under the License.
 -->
 <ivy-module version="1.0">
-	<info organisation="org.apache.directory.studio" module="studio-apacheds-schemaeditor"/>
+	<info organisation="org.apache.directory.studio" module="studio-schemaeditor"/>
 	<dependencies>
 		<dependency org="junit" 
 					name="junit" 
