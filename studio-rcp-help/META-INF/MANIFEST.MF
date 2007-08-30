@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Help
+Bundle-Name: Apache Directory Studio RCP Help
 Bundle-SymbolicName: org.apache.directory.studio.help;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Localization: plugin
