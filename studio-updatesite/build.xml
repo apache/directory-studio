@@ -106,6 +106,10 @@
 		<ant dir="../studio-apacheds-configuration" inheritAll="no" />
 		<!-- Apache Directory Studio Apache DS Configuration Help Plugin -->
 		<ant dir="../studio-apacheds-configuration-help" inheritAll="no" />
+		<!-- Apache Directory Studio Connection Core Plugin -->
+		<ant dir="../studio-connection-core" inheritAll="no" />
+		<!-- Apache Directory Studio Connection UI Plugin -->
+		<ant dir="../studio-connection-ui" inheritAll="no" />
 
 		<!-- Copying the Plugins -->
 		<copy todir="${updatesite.plugins}">
@@ -163,6 +167,14 @@
 			</fileset>
 			<!-- Apache Directory Studio Apache DS Configuration Plugin Help -->
 			<fileset dir="../studio-apacheds-configuration-help/target">
+				<include name="*.jar" />
+			</fileset>
+			<!-- Apache Directory Studio Connection Core Plugin -->
+			<fileset dir="../studio-connection-core/target">
+				<include name="*.jar" />
+			</fileset>
+			<!-- Apache Directory Studio Connection UI Plugin -->
+			<fileset dir="../studio-connection-ui/target">
 				<include name="*.jar" />
 			</fileset>
 		</copy>

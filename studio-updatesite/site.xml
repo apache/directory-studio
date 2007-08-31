@@ -4,8 +4,8 @@
       The Apache Directory Studio update site.
    </description>
    <feature
-       url="features/org.apache.directory.studio.rcp.feature_1.0.0.jar"
-       id="org.apache.directory.studio.rcp.feature" version="1.0.0"
+       url="features/org.apache.directory.studio.feature_1.0.0.jar"
+       id="org.apache.directory.studio.feature" version="1.0.0"
        os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86,x86_64">
       <category name="Apache Directory Studio RCP"/>
    </feature>
