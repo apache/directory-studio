@@ -210,7 +210,6 @@ public class SchemaEditorOverviewPage extends FormPage
     {
         // Getting the associated schema
         schema = ( ( SchemaEditor ) getEditor() ).getSchema();
-        schemaHandler.addListener( schema, schemaListener );
 
         // Creating the base UI
         ScrolledForm form = managedForm.getForm();
@@ -305,11 +304,34 @@ public class SchemaEditorOverviewPage extends FormPage
 
 
     /**
-     * Initializes and adds the listners.
+     * Initializes and adds the listeners.
      */
     private void addListeners()
     {
+        schemaHandler.addListener( schema, schemaListener );
         attributeTypesTableViewer.addDoubleClickListener( attributeTypesTableViewerListener );
         objectClassesTableViewer.addDoubleClickListener( objectClassesTableViewerListener );
+    }
+
+
+    /**
+     * Removes the listeners.
+     */
+    private void removeListeners()
+    {
+        schemaHandler.removeListener( schema, schemaListener );
+        attributeTypesTableViewer.removeDoubleClickListener( attributeTypesTableViewerListener );
+        objectClassesTableViewer.removeDoubleClickListener( objectClassesTableViewerListener );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+     */
+    public void dispose()
+    {
+        removeListeners();
+
+        super.dispose();
     }
 }

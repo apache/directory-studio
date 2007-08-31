@@ -157,36 +157,51 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
     /**
      * Initializes the UI fields.
      */
+    @SuppressWarnings("unchecked")
     private void initFields()
     {
         if ( schemaHandler != null )
         {
             // Getting the matching rules
-            List<MatchingRuleImpl> matchingRules = new ArrayList<MatchingRuleImpl>( schemaHandler.getMatchingRules() );
+            List<Object> matchingRules = new ArrayList( schemaHandler.getMatchingRules() );
+            // Adding the (None) matching rule
+            String none = "(None)";
+            matchingRules.add( none );
 
             // Sorting the matching rules
-            Collections.sort( matchingRules, new Comparator<MatchingRuleImpl>()
+            Collections.sort( matchingRules, new Comparator<Object>()
             {
 
-                public int compare( MatchingRuleImpl o1, MatchingRuleImpl o2 )
+                public int compare( Object o1, Object o2 )
                 {
-                    String[] o1Names = o1.getNames();
-                    String[] o2Names = o2.getNames();
-
-                    // Comparing the First Name
-                    if ( ( o1Names != null ) && ( o2Names != null ) )
+                    if ( ( o1 instanceof MatchingRuleImpl ) && ( o2 instanceof MatchingRuleImpl ) )
                     {
-                        if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                        String[] o1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
+                        String[] o2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+
+                        // Comparing the First Name
+                        if ( ( o1Names != null ) && ( o2Names != null ) )
                         {
-                            return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                            if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                            {
+                                return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                            }
+                            else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                            {
+                                return "".compareToIgnoreCase( o2Names[0] );
+                            }
+                            else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                            {
+                                return o1Names[0].compareToIgnoreCase( "" );
+                            }
                         }
-                        else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                        else if ( ( o1 instanceof String ) && ( o2 instanceof MatchingRuleImpl ) )
                         {
-                            return "".compareToIgnoreCase( o2Names[0] );
+                            return Integer.MIN_VALUE;
                         }
-                        else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                        else if ( ( o1 instanceof MatchingRuleImpl ) && ( o2 instanceof String ) )
                         {
-                            return o1Names[0].compareToIgnoreCase( "" );
+                            return Integer.MAX_VALUE;
                         }
                     }
 
@@ -199,6 +214,11 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
             equalityComboViewer.setInput( matchingRules );
             orderingComboViewer.setInput( matchingRules );
             substringComboViewer.setInput( matchingRules );
+
+            // Selecting the None matching rules
+            equalityComboViewer.setSelection( new StructuredSelection( none ) );
+            orderingComboViewer.setSelection( new StructuredSelection( none ) );
+            substringComboViewer.setSelection( new StructuredSelection( none ) );
         }
     }
 
@@ -211,10 +231,12 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public String getEqualityMatchingRuleValue()
     {
-        MatchingRuleImpl mr = ( MatchingRuleImpl ) ( ( StructuredSelection ) equalityComboViewer.getSelection() )
-            .getFirstElement();
-        if ( mr != null )
+        Object selection = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
+
+        if ( selection instanceof MatchingRuleImpl )
         {
+            MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
+
             String[] names = mr.getNames();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
@@ -238,10 +260,12 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public String getOrderingMatchingRuleValue()
     {
-        MatchingRuleImpl mr = ( MatchingRuleImpl ) ( ( StructuredSelection ) orderingComboViewer.getSelection() )
-            .getFirstElement();
-        if ( mr != null )
+        Object selection = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
+
+        if ( selection instanceof MatchingRuleImpl )
         {
+            MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
+
             String[] names = mr.getNames();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
@@ -265,10 +289,12 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public String getSubstringMatchingRuleValue()
     {
-        MatchingRuleImpl mr = ( MatchingRuleImpl ) ( ( StructuredSelection ) substringComboViewer.getSelection() )
-            .getFirstElement();
-        if ( mr != null )
+        Object selection = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
+
+        if ( selection instanceof MatchingRuleImpl )
         {
+            MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
+
             String[] names = mr.getNames();
             if ( ( names != null ) && ( names.length > 0 ) )
             {

@@ -236,37 +236,51 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
     /**
      * Initializes the UI fields.
      */
+    @SuppressWarnings("unchecked")
     private void initFields()
     {
         if ( schemaHandler != null )
         {
             // Getting the syntaxes
-            List<SyntaxImpl> syntaxes = new ArrayList<SyntaxImpl>( schemaHandler.getSyntaxes() );
+            List<Object> syntaxes = new ArrayList( schemaHandler.getSyntaxes() );
+            // Adding the (None) Syntax
+            String none = "(None)";
+            syntaxes.add( none );
 
             // Sorting the syntaxes
-            Collections.sort( syntaxes, new Comparator<SyntaxImpl>()
+            Collections.sort( syntaxes, new Comparator<Object>()
             {
-
-                public int compare( SyntaxImpl o1, SyntaxImpl o2 )
+                public int compare( Object o1, Object o2 )
                 {
-                    String[] o1Names = o1.getNames();
-                    String[] o2Names = o2.getNames();
-
-                    // Comparing the First Name
-                    if ( ( o1Names != null ) && ( o2Names != null ) )
+                    if ( ( o1 instanceof SyntaxImpl ) && ( o2 instanceof SyntaxImpl ) )
                     {
-                        if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                        String[] o1Names = ( ( SyntaxImpl ) o1 ).getNames();
+                        String[] o2Names = ( ( SyntaxImpl ) o2 ).getNames();
+
+                        // Comparing the First Name
+                        if ( ( o1Names != null ) && ( o2Names != null ) )
                         {
-                            return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                            if ( ( o1Names.length > 0 ) && ( o2Names.length > 0 ) )
+                            {
+                                return o1Names[0].compareToIgnoreCase( o2Names[0] );
+                            }
+                            else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
+                            {
+                                return "".compareToIgnoreCase( o2Names[0] );
+                            }
+                            else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
+                            {
+                                return o1Names[0].compareToIgnoreCase( "" );
+                            }
                         }
-                        else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
-                        {
-                            return "".compareToIgnoreCase( o2Names[0] );
-                        }
-                        else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
-                        {
-                            return o1Names[0].compareToIgnoreCase( "" );
-                        }
+                    }
+                    else if ( ( o1 instanceof String ) && ( o2 instanceof SyntaxImpl ) )
+                    {
+                        return Integer.MIN_VALUE;
+                    }
+                    else if ( ( o1 instanceof SyntaxImpl ) && ( o2 instanceof String ) )
+                    {
+                        return Integer.MAX_VALUE;
                     }
 
                     // Default
@@ -276,6 +290,7 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
 
             // Setting the input
             syntaxComboViewer.setInput( syntaxes );
+            syntaxComboViewer.setSelection( new StructuredSelection( none ) );
         }
     }
 
@@ -381,11 +396,11 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
      */
     public String getSyntax()
     {
-        SyntaxImpl syntax = ( SyntaxImpl ) ( ( StructuredSelection ) syntaxComboViewer.getSelection() )
-            .getFirstElement();
-        if ( syntax != null )
+        Object selection = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
+
+        if ( selection instanceof SyntaxImpl )
         {
-            return syntax.getOid();
+            return ( ( SyntaxImpl ) selection ).getOid();
         }
 
         return null;

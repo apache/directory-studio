@@ -83,9 +83,9 @@ public class SchemaEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
-
         schema = ( ( SchemaEditorInput ) getEditorInput() ).getSchema();
+
+        Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
     }
 
 

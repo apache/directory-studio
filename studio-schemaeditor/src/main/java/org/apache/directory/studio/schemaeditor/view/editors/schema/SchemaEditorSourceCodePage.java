@@ -194,7 +194,6 @@ public class SchemaEditorSourceCodePage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         schema = ( ( SchemaEditor ) getEditor() ).getSchema();
-        Activator.getDefault().getSchemaHandler().addListener( schema, schemaListener );
 
         ScrolledForm form = managedForm.getForm();
         FormToolkit toolkit = managedForm.getToolkit();
@@ -219,6 +218,8 @@ public class SchemaEditorSourceCodePage extends FormPage
 
         // Initializes the UI from the schema
         fillInUiFields();
+
+        addListeners();
     }
 
 
@@ -228,5 +229,34 @@ public class SchemaEditorSourceCodePage extends FormPage
     private void fillInUiFields()
     {
         schemaSourceViewer.getDocument().set( OpenLdapSchemaFileExporter.toSourceCode( schema ) );
+    }
+
+
+    /**
+     * Adds the listeners.
+     */
+    private void addListeners()
+    {
+        Activator.getDefault().getSchemaHandler().addListener( schema, schemaListener );
+    }
+
+
+    /**
+     * Removes the listeners.
+     */
+    private void removeListeners()
+    {
+        Activator.getDefault().getSchemaHandler().removeListener( schema, schemaListener );
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.forms.editor.FormPage#dispose()
+     */
+    public void dispose()
+    {
+        removeListeners();
+
+        super.dispose();
     }
 }
