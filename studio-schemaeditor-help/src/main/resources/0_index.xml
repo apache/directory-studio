@@ -21,8 +21,8 @@
 <book>
 	<bookinfo>
 		<title>Apache Directory Studio</title>
-		<subtitle>Schemas Editor User's Guide</subtitle>
-		<releaseinfo>Version 0.6.0</releaseinfo>
+		<subtitle>Schema Editor User's Guide</subtitle>
+		<releaseinfo>Version 1.0.0</releaseinfo>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>
@@ -60,7 +60,7 @@
         <section id="download_install">
 		    <title>Download and installation</title>
 		    <para>
-		 	    Beside the integration in Apache Directory Studio the Apache Directory Studio Schemas Editor can also be installed
+		 	    Beside the integration in Apache Directory Studio the Apache Directory Studio Schema Editor can also be installed
 		 	    as a plug-in into a regular Eclipse installation. This section describes this
 		 	    alternative. 
 		    </para>
@@ -95,7 +95,7 @@
 			    In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
 			    <itemizedlist>
 				    <listitem>Name: Apache Directory Studio Update Site</listitem>
-				    <listitem>URL: http://directory.apache.org/studio/update/</listitem>
+				    <listitem>URL: http://directory.apache.org/studio/update/1.x</listitem>
 			    </itemizedlist>
 			    <screenshot>
 				    <mediaobject>
@@ -120,7 +120,7 @@
 		    </para>
 		    <para>
 			    Now the install manager checks the update site and presents the search results. Select the
-			    feature you want to install - of course the Apache Directory Studio Schemas Editor - and click 
+			    feature you want to install - of course the Apache Directory Studio Schema Editor - and click 
 			    <emphasis role="strong">Next</emphasis>.
 			    <screenshot>
 				    <mediaobject>
@@ -144,7 +144,7 @@
 			    </screenshot>
 		    </para>
 		    <para>
-			    In the next dialog ensure that the Apache Directory Studio Schemas Editor feature is selected and 
+			    In the next dialog ensure that the Apache Directory Studio Schema Editor feature is selected and 
 			    click to <emphasis role="strong">Finish</emphasis>.
 			    <screenshot>
 				    <mediaobject>
