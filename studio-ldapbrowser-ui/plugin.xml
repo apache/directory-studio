@@ -225,7 +225,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
-            class="org.apache.directory.studio.ldapbrowser.preferences.SearchResultEditorPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchResultEditorPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.SearchResultEditorPreferencePage"
             name="Search Result Editor">
          <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
