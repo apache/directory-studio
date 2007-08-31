@@ -22,7 +22,7 @@
 	<bookinfo>
 		<title>Apache Directory Studio</title>
 		<subtitle>User's Guide</subtitle>
-		<releaseinfo>Version 0.6.0</releaseinfo>
+		<releaseinfo>Version 1.0.0</releaseinfo>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>
@@ -62,7 +62,7 @@
 			<para><emphasis role="strong">System requirements</emphasis></para>
 			<para>
 				<itemizedlist>
-					<listitem>Mac OS X 10.4 or later, Windows, Linux or Solaris</listitem>
+					<listitem>Mac OS X 10.4 or later, Windows, Linux</listitem>
 					<listitem><ulink url="http://www.java.com/">Java Runtime Environment</ulink> 5 or later</listitem>
 				</itemizedlist>
 			</para>
@@ -71,15 +71,15 @@
 			<para>
 				<itemizedlist>
 					<listitem>Step 1: Double-click the downloaded package to mount the Apache Directory Studio DMG.</listitem>
-					<listitem>Step 2: Drag and drop Apache Directory Studio to your Applications folder.</listitem>
+					<listitem>Step 2: Drag and drop the Apache Directory Studio application to your Applications folder.</listitem>
 				</itemizedlist>
 			</para>
 			<para><emphasis role="strong">Installing on Linux</emphasis></para>
 			<para>Follow this installation process:</para>
 			<para>
 				<itemizedlist>
-					<listitem>Step 1: Uncompress the Tar Gzip archive ('tar xzf apachedirectorystudio-0.6.0-linux-i386.tar.gz' for the i386 Linux version).</listitem>
-					<listitem>Step 2: Move the Apache Directory Studio folder to the location of your choice.</listitem>
+					<listitem>Step 1: Uncompress the Tar Gzip archive ('tar xzf ApacheDirectoryStudio-1.0.0-linux-i386.tar.gz' for the i386 Linux version).</listitem>
+					<listitem>Step 2: Move the ApacheDirectoryStudio folder to the location of your choice.</listitem>
 				</itemizedlist>
 			</para>
 			<para><emphasis role="strong">Installing on Windows</emphasis></para>
@@ -90,8 +90,6 @@
 					<listitem>Run the installer and follow install instructions.</listitem>
 				</itemizedlist>
 			</para>
-			<para><emphasis role="strong">Installing on Solaris</emphasis></para>
-			<para>TO DO</para>
 		</section>
 	</chapter>
 	
@@ -105,11 +103,9 @@
 			<para><emphasis role="strong">Mac OS X</emphasis></para>
 			<para>If you followed the instructions on the "Download and install" page, simply double-click the Apache Directory Studio application located in your Applications folder.</para>
 			<para><emphasis role="strong">Linux</emphasis></para>
-			<para>After installing the Apache Directory Studio in a directory, you can start Apache Directory Studio by running the Apache Directory Studio executable included with the release.</para>
+			<para>After installing the Apache Directory Studio in a directory, you can start Apache Directory Studio by running the ApacheDirectoryStudio executable included with the release.</para>
 			<para><emphasis role="strong">Windows</emphasis></para>
 			<para>If you followed the instructions on the "Download and install" page, simply click on the Apache Directory Studio executable in the Apache Directory Studio folder located in the All programs item of the Start menu.</para>
-			<para><emphasis role="strong">Solaris</emphasis></para>
-			<para>TO DO</para>
 		</section>
 		
 		<!-- UPDATING LDAP STUDIO SECTION -->
@@ -733,13 +729,15 @@
 		<!-- RELEASE NOTES SECTION -->
 		<section id="release_notes">
 			<title>Release notes</title>
-            <para><emphasis role="strong">Apache Directory Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
+            <para><emphasis role="strong">Apache Directory Studio 1.0.0</emphasis> (2007, september 3rd) : initial release</para>
             <para>Includes :</para>
             <para>
                 <itemizedlist spacing="normal" mark="bullet">
-					<listitem>Apache Directory Studio RCP 0.6.0</listitem>
-					<listitem>Apache Directory Studio Browser Plugin 0.6.0</listitem>
-					<listitem>Apache Directory Studio Schemas Editor Plugin 0.6.0</listitem>
+					<listitem>Apache Directory Studio Apache DS Configuration 1.0.0</listitem>
+					<listitem>Apache Directory Studio LDAP Browser 1.0.0</listitem>
+					<listitem>Apache Directory Studio LDIF Editor 1.0.0</listitem>
+					<listitem>Apache Directory Studio RCP 1.0.0</listitem>
+					<listitem>Apache Directory Studio Schema Editor 1.0.0</listitem>
                 </itemizedlist>
             </para>
         </section> <!-- end Release Notes Section -->
