@@ -982,18 +982,11 @@
             </simplelist>
 		</section>
 
-        <!-- RELEASE NOTES SECTION -->
+		<!-- RELEASE NOTES SECTION -->
 		<section id="release_notes">
 			<title>Release notes</title>
-            <para><emphasis role="strong">Apache Directory Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
-            <para>Includes :</para>
-            <para>
-                <itemizedlist spacing="normal" mark="bullet">
-					<listitem>Apache Directory Studio RCP 0.6.0</listitem>
-					<listitem>Apache Directory Studio Browser Plugin 0.6.0</listitem>
-					<listitem>Apache Directory Studio Schemas Editor Plugin 0.6.0</listitem>
-                </itemizedlist>
-            </para>
-        </section>
+            <para><emphasis role="strong">Apache Directory Studio 1.0.0</emphasis> (2007, september 3rd) : initial release</para>
+        </section> <!-- end Release Notes Section -->
+        
 	</chapter>
 </book>
