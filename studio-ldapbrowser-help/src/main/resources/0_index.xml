@@ -93,8 +93,8 @@
 
 	<bookinfo>
 		<title>Apache Directory Studio</title>
-		<subtitle>Browser User's Guide</subtitle>
-		<releaseinfo>Version 0.6.0</releaseinfo>
+		<subtitle>LDAP Browser User's Guide</subtitle>
+		<releaseinfo>Version 1.0.0</releaseinfo>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>
