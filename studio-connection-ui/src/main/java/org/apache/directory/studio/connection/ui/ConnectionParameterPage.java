@@ -110,13 +110,29 @@ public interface ConnectionParameterPage
 
 
     /**
+     * Sets the page id.
+     * 
+     * @param pageId the page id
+     */
+    public void setPageId( String pageId );
+
+
+    /**
+     * Gets the page id.
+     * 
+     * @return the page id
+     */
+    public String getPageId();
+    
+    
+    /**
      * Sets the page name.
      * 
      * @param pageName the page name
      */
     public void setPageName( String pageName );
-
-
+    
+    
     /**
      * Gets the page name.
      * 
@@ -141,6 +157,22 @@ public interface ConnectionParameterPage
     public String getPageDescription();
 
 
+    /**
+     * Sets the page id this page depends on.
+     * 
+     * @param pageDependsOnId the page id this page depends on
+     */
+    public void setPageDependsOnId( String pageDependsOnId );
+
+
+    /**
+     * Gets the page id this page depends on.
+     * 
+     * @return the page id this page depends on
+     */
+    public String getPageDependsOnId();
+    
+    
     /**
      * Sets the focus.
      */

@@ -46,6 +46,13 @@
          </appInfo>
       </annotation>
       <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
@@ -74,6 +81,13 @@
                <appInfo>
                   <meta.attribute kind="java" basedOn="org.apache.directory.studio.connection.ui.IConnectionParameterPage"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="dependsOnId" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
