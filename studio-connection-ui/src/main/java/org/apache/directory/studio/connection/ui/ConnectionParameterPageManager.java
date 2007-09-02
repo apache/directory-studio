@@ -22,7 +22,11 @@ package org.apache.directory.studio.connection.ui;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -53,18 +57,20 @@ public class ConnectionParameterPageManager
         IExtensionPoint extensionPoint = registry
             .getExtensionPoint( "org.apache.directory.studio.connectionparameterpages" );
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
-        Collection<ConnectionParameterPage> pageCollection = new ArrayList<ConnectionParameterPage>();
+        final Map<String, ConnectionParameterPage> pageMap = new HashMap<String, ConnectionParameterPage>();
 
-        // For each extension:
+        // For each extension: instantiate the page
         for ( int m = 0; m < members.length; m++ )
         {
             IConfigurationElement member = members[m];
             try
             {
                 ConnectionParameterPage page = ( ConnectionParameterPage ) member.createExecutableExtension( "class" );
+                page.setPageId( member.getAttribute( "id" ) );
                 page.setPageName( member.getAttribute( "name" ) );
                 page.setPageDescription( member.getAttribute( "description" ) );
-                pageCollection.add( page );
+                page.setPageDependsOnId( member.getAttribute( "dependsOnId" ) );
+                pageMap.put( page.getPageId(), page );
             }
             catch ( Exception e )
             {
@@ -74,7 +80,82 @@ public class ConnectionParameterPageManager
             }
         }
 
-        ConnectionParameterPage[] pages = pageCollection.toArray( new ConnectionParameterPage[0] );
+        final ConnectionParameterPage[] pages = pageMap.values().toArray( new ConnectionParameterPage[0] );
+        Comparator<? super ConnectionParameterPage> pageComparator = new Comparator<ConnectionParameterPage>()
+        {
+            public int compare( ConnectionParameterPage p1, ConnectionParameterPage p2 )
+            {
+                String dependsOnId1 = p1.getPageDependsOnId();
+                String dependsOnId2 = p2.getPageDependsOnId();
+                do
+                {
+                    if(dependsOnId1 == null && dependsOnId2 != null )
+                    {
+                        return -1;
+                    }
+                    else if(dependsOnId2 == null && dependsOnId1 != null )
+                    {
+                        return 1;
+                    }
+                    else if(dependsOnId1 != null && dependsOnId1.equals( p2.getPageId() ))
+                    {
+                        return 1;
+                    }
+                    else if(dependsOnId2 != null && dependsOnId2.equals( p1.getPageId() ))
+                    {
+                        return -1;
+                    }
+                    
+                    ConnectionParameterPage page = pageMap.get( dependsOnId1 );
+                    if(page != null)
+                    {
+                        dependsOnId1 = page.getPageDependsOnId();
+                    }
+                    else
+                    {
+                        dependsOnId1 = null;
+                    }
+                }
+                while(dependsOnId1 != null && !dependsOnId1.equals( p1.getPageId() ));
+                
+                dependsOnId1 = p1.getPageDependsOnId();
+                dependsOnId2 = p2.getPageDependsOnId();
+                do
+                {
+                    if(dependsOnId1 == null && dependsOnId2 != null )
+                    {
+                        return -1;
+                    }
+                    else if(dependsOnId2 == null && dependsOnId1 != null )
+                    {
+                        return 1;
+                    }
+                    else if(dependsOnId1 != null && dependsOnId1.equals( p2.getPageId() ))
+                    {
+                        return 1;
+                    }
+                    else if(dependsOnId2 != null && dependsOnId2.equals( p1.getPageId() ))
+                    {
+                        return -1;
+                    }
+                    
+                    ConnectionParameterPage page = pageMap.get( dependsOnId2 );
+                    if(page != null)
+                    {
+                        dependsOnId2 = page.getPageDependsOnId();
+                    }
+                    else
+                    {
+                        dependsOnId2 = null;
+                    }
+                }
+                while(dependsOnId2 != null && !dependsOnId2.equals( p2.getPageId() ));
+                
+                return 0;
+            }
+        };
+        Arrays.sort( pages, pageComparator );
+        
         return pages;
     }
 }

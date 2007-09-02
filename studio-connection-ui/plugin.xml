@@ -28,11 +28,15 @@
          point="org.apache.directory.studio.connectionparameterpages">
       <connectionParameterPage
             class="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
+            dependsOnId="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
             description="Please enter connection name and network parameters."
+            id="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
             name="Network Parameter"/>
       <connectionParameterPage
             class="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
+            dependsOnId="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
             description="Please select an authentification method and input authentification data."
+            id="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
             name="Authentication"/>
    </extension>  
 </plugin>
