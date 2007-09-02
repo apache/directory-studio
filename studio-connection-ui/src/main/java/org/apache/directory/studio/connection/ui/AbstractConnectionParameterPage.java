@@ -33,18 +33,12 @@ import org.eclipse.jface.operation.IRunnableContext;
 public abstract class AbstractConnectionParameterPage implements ConnectionParameterPage
 {
 
-    /** The page id. */
-    protected String pageId;
-
     /** The page name. */
     protected String pageName;
-    
+
     /** The page description. */
     protected String pageDescription;
 
-    /** The page id this page depends on. */
-    protected String pageDependsOnId;
-    
     /** The runnable context. */
     protected IRunnableContext runnableContext;
 
@@ -100,24 +94,6 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#getPageId()
-     */
-    public String getPageId()
-    {
-        return pageId;
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#setPageId(java.lang.String)
-     */
-    public void setPageId( String pageId )
-    {
-        this.pageId = pageId;
-    }
-
-
-    /**
      * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#getPageName()
      */
     public String getPageName()
@@ -150,24 +126,6 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
     public void setPageDescription( String pageDescription )
     {
         this.pageDescription = pageDescription;
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#getPageDependsOnId()
-     */
-    public String getPageDependsOnId()
-    {
-        return pageDependsOnId;
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#setPageDependsOnId(java.lang.String)
-     */
-    public void setPageDependsOnId( String pageDependsOnId )
-    {
-        this.pageDependsOnId = pageDependsOnId;
     }
 
 
