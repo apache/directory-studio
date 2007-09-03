@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
 <!--
-  Licensed to the Apache Software Foundation (ASF) under one
-  or more contributor license agreements.  See the NOTICE file
-  distributed with this work for additional information
-  regarding copyright ownership.  The ASF licenses this file
-  to you under the Apache License, Version 2.0 (the
-  "License"); you may not use this file except in compliance
-  with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
-  specific language governing permissions and limitations
-  under the License.
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
 -->
 <book>
 	<bookinfo>
@@ -53,11 +53,11 @@
 	<chapter id="gettingstarted">
 		<title>Getting started</title>
 		<para>
-			This part of the guide provides you a sum up of the basic concepts of the Schemas Editor Plugin. 
+			This part of the guide provides you a sum up of the basic concepts of the Schema Editor Plugin. 
 		</para>
 
         <!-- DOWNLOAD AND INSTALLATION SECTION -->
-        <section id="download_install">
+        <section id="gettingstarted_download_install">
 		    <title>Download and installation</title>
 		    <para>
 		 	    Beside the integration in Apache Directory Studio the Apache Directory Studio Schema Editor can also be installed
@@ -172,5 +172,341 @@
 			    After installation it is recommended to restart the Eclipse workbench.
 		    </para>
 	    </section>
+	    
+		<!-- VIEWS SECTION -->
+        <section id="gettingstarted_views">
+		    <title>Views</title>
+		    
+			<!-- HIERARCHY VIEW SECTION -->
+	        <section id="gettings tarted_views_hierarchy">
+			    <title>Hierarchy view</title>
+			    <para>This view shows the hierarchy of an element (attribute type or object class).</para>
+			    <para>
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_hierarchy-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para><emphasis role="strong">Toolbar</emphasis></para>
+			    <para>The toolbar of the Hierarchy View contains the following actions:
+			    <itemizedlist spacing="normal" mark="bullet">
+					<listitem>
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
+						</imageobject> - 
+						<emphasis>Show the Supertype Hierarchy</emphasis>: Shows the supertype hierarchy.
+					</listitem>
+					<listitem>
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/icons_hierarchy-subtype.gif" format="GIF" />
+						</imageobject> - 
+						<emphasis>Show the Subtype Hierarchy</emphasis>: Shows the subtype hierarchy.
+					</listitem>
+					<listitem>
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/icons_link-with-editor.gif" format="GIF" />
+						</imageobject> - 
+						<emphasis>Link with Editor</emphasis>: Links the view with the editor.
+					</listitem>
+				</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Menu</emphasis></para>
+			    <para>The menu of the Hierarchy View contains the following actions:
+			    <itemizedlist spacing="normal" mark="bullet">
+					<listitem>
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
+						</imageobject> - 
+						<emphasis>Show the Supertype Hierarchy</emphasis>: Shows the supertype hierarchy.
+					</listitem>
+					<listitem>
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/icons_hierarchy-subtype.gif" format="GIF" />
+						</imageobject> - 
+						<emphasis>Show the Subtype Hierarchy</emphasis>: Shows the subtype hierarchy.
+					</listitem>
+					<listitem>
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/icons_link-with-editor.gif" format="GIF" />
+						</imageobject> - 
+						<emphasis>Link with Editor</emphasis>: Links the view with the editor.
+					</listitem>
+					<listitem>
+						<emphasis>Preferences</emphasis>: Displays the preferences dialog for the Hierarchy view.
+					</listitem>
+				</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Hierarchy View:</para>
+			    <para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-operational.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type (operational)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-user.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type (user)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-abstract.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (abstract)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-auxiliary.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (auxiliary)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-structural.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (structural)</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+		    </section>
+		    
+			<!-- PROBLEMS VIEW SECTION -->
+	        <section id="gettingstarted_views_problems">
+			    <title>Problems view</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+			<!-- PROJECTS VIEW SECTION -->
+	        <section id="gettingstarted_views_projects">
+			    <title>Projects view</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+			<!-- SCHEMA VIEW SECTION -->
+	        <section id="gettingstarted_views_schema">
+			    <title>Schema view</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+			<!-- SEARCH VIEW SECTION -->
+	        <section id="gettingstarted_views_search">
+			    <title>Search view</title>
+			    <para>
+			    </para>
+		    </section>
+	    
+	    </section>
+		    
+		<!-- EDITORS VIEW SECTION -->
+        <section id="gettingstarted_editors">
+		    <title>Editors</title>
+		    <para>
+		    </para>
+		    
+			<!-- ATTRIBUTE TYPE EDITOR SECTION -->
+	        <section id="gettingstarted_editors_attribute_type">
+			    <title>Attribute type editor</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+			<!-- OBJECT CLASS EDITOR SECTION -->
+	        <section id="gettingstarted_editors_object_class">
+			    <title>Object class editor</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+			<!-- SCHEMA EDITOR SECTION -->
+	        <section id="gettingstarted_editors_schema">
+			    <title>Schema editor</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+	    </section>
+	    
+	</chapter>
+	    
+	<!-- TASKS CHAPTER -->
+	<chapter id="tasks">
+		<title>Tasks</title>
+		
+		<!-- CREATING A NEW PROJECT SECTION -->
+        <section id="tasks_creating_new_project">
+		    <title>Creating a new project</title>
+		    <para>
+		    </para>
+	    </section>
+		
+		<!-- IMPORTING PROJECTS SECTION -->
+        <section id="tasks_importing_projects">
+		    <title>Importing projects</title>
+		    <para>
+		    </para>
+	    </section>
+		
+		<!-- EXPORTING PROJECTS SECTION -->
+        <section id="tasks_exporting_projects">
+		    <title>Exporting projects</title>
+		    <para>
+		    </para>
+	    </section>
+		
+		<!-- CREATING A NEW SCHEMA SECTION -->
+        <section id="tasks_creating_new_schema">
+		    <title>Creating a new schema</title>
+		    <para>
+		    </para>
+	    </section>
+	    
+		<!-- IMPORTING SCHEMAS SECTION -->
+        <section id="tasks_importing_schemas">
+		    <title>Importing schemas</title>
+		    <para>
+		    </para>
+		    
+    		<!-- IMPORTING SCHEMAS FROM XML FILES SECTION -->
+	        <section id="tasks_importing_schemas_from_xml_files">
+			    <title>Importing schemas from XML files</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+    		<!-- IMPORTING SCHEMAS FROM OPENLDAP FILES SECTION -->
+	        <section id="tasks_importing_schemas_from_openldap_files">
+			    <title>Importing schemas from OpenLDAP files</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+	    </section>
+	    
+		<!-- EXPORTING SCHEMAS SECTION -->
+        <section id="tasks_exporting_schemas">
+		    <title>Exporting schemas</title>
+		    <para>
+		    </para>
+		    
+		    <!-- EXPORTING SCHEMAS TO XML FILES SECTION -->
+	        <section id="tasks_exporting_schemas_toxml_files">
+			    <title>Importing schemas to XML files</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+    		<!-- EXPORTING SCHEMAS TO OPENLDAP FILES SECTION -->
+	        <section id="tasks_exporting_schemas_to_openldap_files">
+			    <title>Importing schemas to OpenLDAP files</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+    		<!-- EXPORTING SCHEMAS FOR APACHE DS SECTION -->
+	        <section id="tasks_exporting_schemas_for_apache_ds">
+			    <title>Importing schemas for Apache DS</title>
+			    <para>
+			    </para>
+		    </section>
+		    
+	    </section>
+		
+		<!-- CREATING A NEW ATTRIBUTE TYPE SECTION -->
+        <section id="tasks_creating_new_attribute_type">
+		    <title>Creating a new attribute type</title>
+		    <para>
+		    </para>
+	    </section>
+	    
+		<!-- CREATING A NEW OBJECT CLASS SECTION -->
+        <section id="tasks_creating_new_object_class">
+		    <title>Creating a new object class</title>
+		    <para>
+		    </para>
+	    </section>
+	    
+	</chapter>
+	
+	<!-- REFERENCES CHAPTER -->
+	<chapter id="references">
+		<title>References</title>
+	    
+		<!-- PREFERENCES SECTION -->
+        <section id="references_preferences">
+		    <title>Preferences</title>
+		    <para>
+		    </para>
+		    
+				<!-- HIERARCHY VIEW PREFERENCES SECTION -->
+				<section id="references_hierarchy_view_preferences">
+				    <title>Hierarchy View Preferences</title>
+				    <para>
+				    </para>
+	    		</section>
+		    
+				<!-- SCHEMA VIEW PREFERENCES SECTION -->
+				<section id="references_schema_view_preferences">
+				    <title>Schema View Preferences</title>
+				    <para>
+				    </para>
+	    		</section>
+		    
+				<!-- SEARCH VIEW PREFERENCES SECTION -->
+				<section id="references_search_view_preferences">
+				    <title>Search View Preferences</title>
+				    <para>
+				    </para>
+	    		</section>
+	    </section>
+	    		    
+		<!-- RELEASE NOTES SECTION -->
+		<section id="references_release_notes">
+		    <title>Release notes</title>
+            <para><emphasis role="strong">Apache Directory Studio 1.0.0</emphasis> (2007, september 3rd) : initial release</para>
+        </section>
+	    
 	</chapter>
 </book>
