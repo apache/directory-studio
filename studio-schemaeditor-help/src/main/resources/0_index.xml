@@ -850,8 +850,87 @@
 		<!-- CREATING A NEW PROJECT SECTION -->
         <section id="tasks_creating_new_project">
 		    <title>Creating a new project</title>
-		    <para>
+		    <para>To create a new project, in the Projects view toolbar, click on the 
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-new.gif" format="GIF" />
+						</imageobject>
+						<emphasis role="strong">New Schema Project</emphasis> button.
 		    </para>
+		    <para>
+				The creation of a new Schema Project is a two-step process:
+				<orderedlist numeration="arabic">
+					<listitem>
+						<para>Define the name of the project.</para>
+					</listitem>
+					<listitem>
+						<para>Select the 'core' schema files to import.</para>
+					</listitem>
+				</orderedlist>
+			</para>
+			<simplesect>
+				<title>Page 1</title>
+				<para>
+					The first page allows you to enter a project name.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-project-wizard_name.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Name</entry>
+									<entry>
+										The name of the project. In the
+										Projects view the project is
+										listed with this name. The name must be
+										unique.
+									</entry>
+									<entry>empty</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 2</title>
+				<para>
+					The second page allows you to select the 'core' schema files to import.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-project-wizard-schemas.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					Check the 'core' schema files you want to import.
+				</para>
+			</simplesect>
 	    </section>
 		
 		<!-- IMPORTING PROJECTS SECTION -->
