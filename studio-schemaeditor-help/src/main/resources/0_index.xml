@@ -1002,8 +1002,53 @@
 		<!-- CREATING A NEW SCHEMA SECTION -->
         <section id="tasks_creating_new_schema">
 		    <title>Creating a new schema</title>
-		    <para>
+		    <para>To create a new schema, in the Schema view toolbar, click on the 
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_schema-new.gif" format="GIF" />
+						</imageobject>
+						<emphasis role="strong">New Schema</emphasis> button (a project must be opened).
 		    </para>
+		    <para>The following wizard appears:</para>
+		    <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tasks_new-schema.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>Give a name to the schema.</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>Name</entry>
+								<entry>
+									The name of the schema. In the
+									Schema view the project is
+									listed with this name. The name must be
+									unique.
+								</entry>
+								<entry>empty</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
 	    </section>
 	    
 		<!-- IMPORTING SCHEMAS SECTION -->
