@@ -943,7 +943,7 @@
 							<imagedata contentdepth="1em"
 								fileref="images/icons_project-import.gif" format="GIF" />
 						</imageobject>
-                     	Schema Projects</emphasis>.</listitem> 
+                     	Schema Projects</emphasis> from the context menu.</listitem> 
                      <listitem>In the Workbench menu bar select <emphasis role="strong">File > Import...</emphasis>  and choose 
                      	<imageobject>
 							<imagedata contentdepth="1em"
@@ -976,7 +976,7 @@
 							<imagedata contentdepth="1em"
 								fileref="images/icons_project-export.gif" format="GIF" />
 						</imageobject>
-                     	Schema Projects</emphasis>.</listitem> 
+                     	Schema Projects</emphasis> from the context menu.</listitem> 
                      <listitem>In the Workbench menu bar select <emphasis role="strong">File > Export...</emphasis>  and choose 
                      	<imageobject>
 							<imagedata contentdepth="1em"
@@ -1054,14 +1054,38 @@
 		<!-- IMPORTING SCHEMAS SECTION -->
         <section id="tasks_importing_schemas">
 		    <title>Importing schemas</title>
-		    <para>
-		    </para>
 		    
     		<!-- IMPORTING SCHEMAS FROM XML FILES SECTION -->
 	        <section id="tasks_importing_schemas_from_xml_files">
 			    <title>Importing schemas from XML files</title>
-			    <para>
+			    <para>To import schemas from XML files choose one of the following options:
+			    	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>In the Schema view, choose <emphasis role="strong">Import > 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-import.gif" format="GIF" />
+							</imageobject>
+	                     	Schemas from XML file(s)</emphasis> from the context menu.</listitem> 
+	                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Import...</emphasis>  and choose 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-import.gif" format="GIF" />
+							</imageobject>
+	                     	<emphasis role="strong"> Schemas from XML file(s)</emphasis></listitem> 
+	                 </itemizedlist>
 			    </para>
+			    <para>The following wizard appears:</para>
+			    <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_import-schemas-xml-wizard.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>Select the directory from which import the schema files and then check each schema file you want to import.</para>
 		    </section>
 		    
     		<!-- IMPORTING SCHEMAS FROM OPENLDAP FILES SECTION -->
