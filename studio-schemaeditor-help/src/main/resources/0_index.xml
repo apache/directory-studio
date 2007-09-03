@@ -241,7 +241,7 @@
 				</itemizedlist>
 			    </para>
 			    <para><emphasis role="strong">Icons</emphasis></para>
-			    <para>The following icons can appear in the Hierarchy View:</para>
+			    <para>The following icons can appear in the Hierarchy view:</para>
 			    <para>
 					<informaltable>
 						<tgroup cols="2">
@@ -313,8 +313,55 @@
 			<!-- PROBLEMS VIEW SECTION -->
 	        <section id="gettingstarted_views_problems">
 			    <title>Problems view</title>
+			    <para> The Problems view displays errors and warnings associated with a resource.</para>
 			    <para>
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_problems-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
 			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Problems view:</para>
+			    <para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_error.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Error</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_warning.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Warning</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
 		    </section>
 		    
 			<!-- PROJECTS VIEW SECTION -->
