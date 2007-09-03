@@ -180,8 +180,8 @@
 			<!-- HIERARCHY VIEW SECTION -->
 	        <section id="gettings tarted_views_hierarchy">
 			    <title>Hierarchy view</title>
-			    <para>This view shows the hierarchy of an element (attribute type or object class).</para>
-			    <para>
+			    <para>The Hierarchy view shows the hierarchy of an element (attribute type or object class).</para>
+			    <para>Here is what the Hierarchy view looks like:
 				    <screenshot>
 					    <mediaobject>
 						    <imageobject>
@@ -313,8 +313,8 @@
 			<!-- PROBLEMS VIEW SECTION -->
 	        <section id="gettingstarted_views_problems">
 			    <title>Problems view</title>
-			    <para> The Problems view displays errors and warnings associated with a resource.</para>
-			    <para>
+			    <para>The Problems view displays errors and warnings associated with a resource.</para>
+			    <para>Here is what the Problems view looks like:
 				    <screenshot>
 					    <mediaobject>
 						    <imageobject>
@@ -367,8 +367,8 @@
 			<!-- PROJECTS VIEW SECTION -->
 	        <section id="gettingstarted_views_projects">
 			    <title>Projects view</title>
-			    <para>This Projects view shows all the Schema projects of the workspace.</para>
-			    <para>
+			    <para>The Projects view shows all the Schema projects of the workspace.</para>
+			    <para>Here is what the Projects view looks like:
 				    <screenshot>
 					    <mediaobject>
 						    <imageobject>
@@ -433,7 +433,7 @@
 	        <section id="gettingstarted_views_schema">
 			    <title>Schema view</title>
 			    <para>This Schema view shows all the schemas of the currently opened project.</para>
-			    <para>
+			    <para>Here is what the Schema view looks like:
 				    <screenshot>
 					    <mediaobject>
 						    <imageobject>
@@ -591,8 +591,122 @@
 			<!-- SEARCH VIEW SECTION -->
 	        <section id="gettingstarted_views_search">
 			    <title>Search view</title>
-			    <para>
+			    <para>The Search view displays the results of a search.</para>
+			    <para>Here is what the Search view looks like:
+			    	<screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_search-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
 			    </para>
+			    <para><emphasis role="strong">Toolbar</emphasis></para>
+			    <para>The toolbar of the Search view contains the following actions:
+				    <itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_show-search-field.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show Search Field</emphasis>: Shows the search field in the Search view.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_run-current-search-again.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Run the Current Search Again</emphasis>: Runs the current search again.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_show-search-history.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Search History</emphasis>: This command allows you to browse previously conducted searches and repeat a previous search.  You can select a previous search from the drop-down menu or clear the search history.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Menu</emphasis></para>
+			    <para>The menu of the Search view contains the following actions:
+					<itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_sorting.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Sorting...</emphasis>: Opens the Sorting dialog for this view.
+						</listitem>
+						<listitem>
+							<emphasis>Preferences</emphasis>: Opens the Preferences dialog for this view.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Search view:</para>
+			    <para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-operational.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type (operational)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-user.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type (user)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-abstract.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (abstract)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-auxiliary.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (auxiliary)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-structural.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (structural)</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
 		    </section>
 	    
 	    </section>
