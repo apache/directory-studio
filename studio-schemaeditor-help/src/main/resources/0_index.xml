@@ -192,7 +192,7 @@
 				    </screenshot>
 			    </para>
 			    <para><emphasis role="strong">Toolbar</emphasis></para>
-			    <para>The toolbar of the Hierarchy View contains the following actions:
+			    <para>The toolbar of the Hierarchy view contains the following actions:
 			    <itemizedlist spacing="normal" mark="bullet">
 					<listitem>
 						<imageobject>
@@ -215,7 +215,7 @@
 				</itemizedlist>
 			    </para>
 			    <para><emphasis role="strong">Menu</emphasis></para>
-			    <para>The menu of the Hierarchy View contains the following actions:
+			    <para>The menu of the Hierarchy view contains the following actions:
 			    <itemizedlist spacing="normal" mark="bullet">
 					<listitem>
 						<imageobject>
@@ -367,8 +367,66 @@
 			<!-- PROJECTS VIEW SECTION -->
 	        <section id="gettingstarted_views_projects">
 			    <title>Projects view</title>
+			    <para>This Projects view shows all the Schema projects of the workspace.</para>
 			    <para>
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_projects-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
 			    </para>
+			    <para><emphasis role="strong">Toolbar</emphasis></para>
+			    <para>The toolbar of the Projects view contains the following actions:
+			    <itemizedlist spacing="normal" mark="bullet">
+					<listitem>
+						<imageobject>
+							<imagedata contentdepth="1em" fileref="images/icons_project-new.gif" format="GIF" />
+						</imageobject> - 
+						<emphasis>New Schema Project</emphasis>: Opens the New Schema Project wizard.
+					</listitem>
+				</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Projects view:</para>
+			    <para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_project-offline-closed.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Closed project</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_project-offline.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Open project</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
 		    </section>
 		    
 			<!-- SCHEMA VIEW SECTION -->
