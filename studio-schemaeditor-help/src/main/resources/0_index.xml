@@ -936,8 +936,34 @@
 		<!-- IMPORTING PROJECTS SECTION -->
         <section id="tasks_importing_projects">
 		    <title>Importing projects</title>
-		    <para>
+		    <para>To import schema projects choose one of the following options:
+		    	<itemizedlist spacing="normal" mark="bullet">
+                     <listitem>In the Projects view, choose <emphasis role="strong">Import > 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-import.gif" format="GIF" />
+						</imageobject>
+                     	Schema Projects</emphasis>.</listitem> 
+                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Import...</emphasis>  and choose 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-import.gif" format="GIF" />
+						</imageobject>
+                     	<emphasis role="strong"> Schema Projects</emphasis></listitem> 
+                 </itemizedlist>
 		    </para>
+		    <para>The following wizard appears:</para>
+		    <para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tasks_import-projects-wizard.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>Select the directory from which import the schema project files and then check each schema project file you want to import.</para>
 	    </section>
 		
 		<!-- EXPORTING PROJECTS SECTION -->
