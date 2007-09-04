@@ -178,7 +178,7 @@
 		    <title>Views</title>
 		    
 			<!-- HIERARCHY VIEW SECTION -->
-	        <section id="gettings tarted_views_hierarchy">
+	        <section id="gettingstarted_views_hierarchy">
 			    <title>Hierarchy view</title>
 			    <para>The Hierarchy view shows the hierarchy of an element (attribute type or object class).</para>
 			    <para>Here is what the Hierarchy view looks like:
@@ -1732,26 +1732,87 @@
 		<!-- PREFERENCES SECTION -->
         <section id="references_preferences">
 		    <title>Preferences</title>
-		    <para>
-		    </para>
 		    
 				<!-- HIERARCHY VIEW PREFERENCES SECTION -->
 				<section id="references_hierarchy_view_preferences">
-				    <title>Hierarchy View Preferences</title>
-				    <para>
-				    </para>
+				    <title>Hierarchy View preferences</title>
+		    		<para>
+						In the Hierarchy View preferences page you can configure general settings
+						for the <link linkend="gettingstarted_views_hierarchy">Hierarchy view</link>.
+					</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/preferences_hierarchy-view.png"
+										format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>
+						<informaltable frame="all">
+							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1*" />
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>
+											Label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as label for attribute types or object classes. 
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>All Aliases with limit of 50 characters</entry>
+									</row>
+									<row>
+										<entry>
+											Secondary label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as secondary label for attribute types or object classes.
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>OID with limit of 50 characters</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>		
 	    		</section>
 		    
 				<!-- SCHEMA VIEW PREFERENCES SECTION -->
 				<section id="references_schema_view_preferences">
-				    <title>Schema View Preferences</title>
+				    <title>Schema View preferences</title>
 				    <para>
 				    </para>
 	    		</section>
 		    
 				<!-- SEARCH VIEW PREFERENCES SECTION -->
 				<section id="references_search_view_preferences">
-				    <title>Search View Preferences</title>
+				    <title>Search View preferences</title>
 				    <para>
 				    </para>
 	    		</section>
@@ -1760,7 +1821,24 @@
 		<!-- RELEASE NOTES SECTION -->
 		<section id="references_release_notes">
 		    <title>Release notes</title>
-            <para><emphasis role="strong">Apache Directory Studio 1.0.0</emphasis> (2007, september 3rd) : initial release</para>
+		    <simplesect>
+				<title>Apache Directory Studio 1.0.1 - (2007, september 10)</title>
+				<para><emphasis>Bug</emphasis></para>
+	            <para>
+	            	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>[DIRSTUDIO-180] - Connection wizard and properties tabs are out of order</listitem>
+	                </itemizedlist>
+	            </para>
+	            <para><emphasis>Task</emphasis></para>
+	            <para>
+	            	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>[DIRSTUDIO-181] - Update the documentation of the Schema Editor Plugin</listitem>
+	                </itemizedlist>
+	            </para>
+			</simplesect>
+			<simplesect>
+				<title>Apache Directory Studio 1.0.0 - (2007, september 3rd) : initial release</title>
+			</simplesect>
         </section>
 	    
 	</chapter>
