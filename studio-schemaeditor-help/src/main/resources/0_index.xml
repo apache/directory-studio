@@ -1795,7 +1795,7 @@
 											than the specified number of characters are
 											abbreviated.
 										</entry>
-										<entry>OID with limit of 50 characters</entry>
+										<entry>OID with no limit of characters</entry>
 									</row>
 								</tbody>
 							</tgroup>
@@ -1807,14 +1807,117 @@
 				<section id="references_schema_view_preferences">
 				    <title>Schema View preferences</title>
 				    <para>
-				    </para>
+						In the Schema View preferences page you can configure general settings
+						for the <link linkend="gettingstarted_views_schema">Schema view</link>.
+					</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/preferences_schema-view.png"
+										format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>
+						<informaltable frame="all">
+							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1*" />
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>
+											Label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as label for attribute types or object classes. 
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>All Aliases with limit of 50 characters</entry>
+									</row>
+									<row>
+										<entry>
+											Secondary label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as secondary label for attribute types or object classes.
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>OID with no limit of characters</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>	
 	    		</section>
 		    
 				<!-- SEARCH VIEW PREFERENCES SECTION -->
 				<section id="references_search_view_preferences">
 				    <title>Search View preferences</title>
 				    <para>
-				    </para>
+						In the Search View preferences page you can configure general settings
+						for the <link linkend="gettingstarted_views_search">Search view</link>.
+					</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/preferences_search-view.png"
+										format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>
+						<informaltable frame="all">
+							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1*" />
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>
+											Schema label
+										</entry>
+										<entry>
+											If the checkbox is checked the name of the schema of the element will be added to the label.
+										</entry>
+										<entry>Checked</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>	
 	    		</section>
 	    </section>
 	    		    
