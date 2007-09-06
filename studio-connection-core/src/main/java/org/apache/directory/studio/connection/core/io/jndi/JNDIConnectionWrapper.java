@@ -366,14 +366,22 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             private NamingException namingException = null;
 
 
-            // TODO: delteOldRdn
-
             public void run()
             {
                 try
                 {
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
+
+                    if ( deleteOldRdn )
+                    {
+                        modCtx.addToEnvironment( "java.naming.ldap.deleteRDN", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    else
+                    {
+                        modCtx.addToEnvironment( "java.naming.ldap.deleteRDN", "false" ); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+
                     modCtx.rename( new LdapName( oldDn ), new LdapName( newDn ) );
                 }
                 catch ( NamingException ne )
