@@ -29,6 +29,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
@@ -43,6 +44,27 @@ import javax.net.ssl.X509TrustManager;
  */
 public class DummySSLSocketFactory extends SSLSocketFactory
 {
+
+    /** The default instance. */
+    private static SocketFactory instance;
+
+
+    /**
+     * Gets the default instance.
+     * 
+     * Note: This method is invoked from the JNDI framework when 
+     * creating a ldaps:// connection.
+     * 
+     * @return the default instance
+     */
+    public static SocketFactory getDefault()
+    {
+        if ( instance == null )
+        {
+            instance = new DummySSLSocketFactory();
+        }
+        return instance;
+    }
 
     /** The delegate. */
     private SSLSocketFactory delegate;
@@ -77,7 +99,6 @@ public class DummySSLSocketFactory extends SSLSocketFactory
             SSLContext sc = SSLContext.getInstance( "TLS" ); //$NON-NLS-1$
             sc.init( null, tma, new SecureRandom() );
             delegate = sc.getSocketFactory();
-
         }
         catch ( Exception e )
         {
