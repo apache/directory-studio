@@ -44,13 +44,13 @@ public class ConnectionWidget extends BrowserWidget
 {
 
     /** The connection text, displays the selected connection */
-    private Text connectionText;
+    private Text browserConnectionText;
 
     /** The connection browse button, opens the dialog */
     private Button connectionBrowseButton;
 
     /** The selected connection */
-    private IBrowserConnection selectedConnection;
+    private IBrowserConnection selectedBrowserConnection;
 
 
     /**
@@ -60,7 +60,7 @@ public class ConnectionWidget extends BrowserWidget
      */
     public ConnectionWidget( IBrowserConnection connection )
     {
-        this.selectedConnection = connection;
+        this.selectedBrowserConnection = connection;
     }
 
 
@@ -69,7 +69,7 @@ public class ConnectionWidget extends BrowserWidget
      */
     public ConnectionWidget()
     {
-        this.selectedConnection = null;
+        this.selectedBrowserConnection = null;
     }
 
 
@@ -82,7 +82,7 @@ public class ConnectionWidget extends BrowserWidget
     {
 
         // Text
-        connectionText = BaseWidgetUtils.createReadonlyText( parent, "", 1 );
+        browserConnectionText = BaseWidgetUtils.createReadonlyText( parent, "", 1 );
 
         // Button
         connectionBrowseButton = BaseWidgetUtils.createButton( parent, "B&rowse...", 1 );
@@ -92,12 +92,12 @@ public class ConnectionWidget extends BrowserWidget
             {
                 // if(selectedConnection != null) {
                 SelectConnectionDialog dialog = new SelectConnectionDialog( parent.getShell(), "Select Connection",
-                    selectedConnection );
+                    selectedBrowserConnection );
                 dialog.open();
                 IBrowserConnection browserConnection = dialog.getSelectedBrowserConnection();
                 if ( browserConnection != null )
                 {
-                    setConnection( browserConnection );
+                    setBrowserConnection( browserConnection );
                     notifyListeners();
                 }
                 // }
@@ -105,7 +105,7 @@ public class ConnectionWidget extends BrowserWidget
         } );
 
         // initial values
-        setConnection( selectedConnection );
+        setBrowserConnection( selectedBrowserConnection );
 
     }
 
@@ -115,9 +115,9 @@ public class ConnectionWidget extends BrowserWidget
      * 
      * @return the connection
      */
-    public IBrowserConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
-        return selectedConnection;
+        return selectedBrowserConnection;
     }
 
 
@@ -126,10 +126,10 @@ public class ConnectionWidget extends BrowserWidget
      * 
      * @param connection the connection
      */
-    public void setConnection( IBrowserConnection connection )
+    public void setBrowserConnection( IBrowserConnection connection )
     {
-        selectedConnection = connection;
-        connectionText.setText( selectedConnection != null ? selectedConnection.getName() : "" );
+        selectedBrowserConnection = connection;
+        browserConnectionText.setText( selectedBrowserConnection != null ? selectedBrowserConnection.getName() : "" );
     }
 
 
@@ -140,7 +140,7 @@ public class ConnectionWidget extends BrowserWidget
      */
     public void setEnabled( boolean b )
     {
-        connectionText.setEnabled( b );
+        browserConnectionText.setEnabled( b );
         connectionBrowseButton.setEnabled( b );
     }
 

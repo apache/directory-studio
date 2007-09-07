@@ -129,7 +129,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
         {
             public void widgetModified( WidgetModifyEvent event )
             {
-                wizard.setImportConnection( connectionWidget.getConnection() );
+                wizard.setImportConnection( connectionWidget.getBrowserConnection() );
                 validate();
             }
         } );
@@ -275,7 +275,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
             }
         }
 
-        if ( ( wizard.getImportConnection() == null ) || ( connectionWidget.getConnection() == null ) )
+        if ( ( wizard.getImportConnection() == null ) || ( connectionWidget.getBrowserConnection() == null ) )
         {
             setErrorMessage( "Please select a Connection." );
             ok = false;

@@ -211,7 +211,7 @@ public class ImportLdifMainWizardPage extends WizardPage
         {
             public void widgetModified( WidgetModifyEvent event )
             {
-                wizard.setImportConnection( connectionWidget.getConnection() );
+                wizard.setImportConnection( connectionWidget.getBrowserConnection() );
                 validate();
             }
         } );
