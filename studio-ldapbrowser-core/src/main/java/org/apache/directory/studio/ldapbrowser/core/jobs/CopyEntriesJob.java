@@ -118,6 +118,8 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
 
     protected void runNotification()
     {
+        parent.setChildrenInitialized( false );
+        parent.setHasChildrenHint( true );
         EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
     }
 
@@ -248,7 +250,6 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                 }
 
                 newEntry.getBrowserConnection().create( newEntry, monitor );
-                newEntry.getParententry().addChild( newEntry );
                 newEntry.setHasChildrenHint( false );
 
                 num++;
