@@ -21,11 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -153,9 +155,13 @@ public class SelectConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IBrowserConnection )
+                    if ( o instanceof Connection )
                     {
-                        initialConnection = ( IBrowserConnection ) o;
+                        Connection connection = ( Connection ) o;
+                        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                            .getBrowserConnection( connection );
+                        initialConnection = browserConnection;
+                        
                     }
                 }
             }
@@ -168,9 +174,12 @@ public class SelectConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IBrowserConnection )
+                    if ( o instanceof Connection )
                     {
-                        initialConnection = ( IBrowserConnection ) o;
+                        Connection connection = ( Connection ) o;
+                        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                            .getBrowserConnection( connection );
+                        initialConnection = browserConnection;
                         okPressed();
                     }
                 }
@@ -179,7 +188,7 @@ public class SelectConnectionDialog extends Dialog
 
         if ( this.initialConnection != null )
         {
-            IBrowserConnection connection = this.initialConnection;
+            Connection connection = this.initialConnection.getConnection();
             this.mainWidget.getViewer().reveal( connection );
             this.mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
         }
