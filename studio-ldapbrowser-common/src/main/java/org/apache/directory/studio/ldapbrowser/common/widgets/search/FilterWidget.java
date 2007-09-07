@@ -75,7 +75,7 @@ public class FilterWidget extends BrowserWidget
     private FilterContentAssistProcessor contentAssistProcessor;
 
     /** The connection. */
-    private IBrowserConnection connection;
+    private IBrowserConnection browserConnection;
 
     /** The inital filter. */
     private String initalFilter;
@@ -87,12 +87,12 @@ public class FilterWidget extends BrowserWidget
     /**
      * Creates a new instance of FilterWidget.
      * 
-     * @param connection the connection
+     * @param browserConnection the connection
      * @param initalFilter the inital filter
      */
-    public FilterWidget( IBrowserConnection connection, String initalFilter )
+    public FilterWidget( IBrowserConnection browserConnection, String initalFilter )
     {
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.initalFilter = initalFilter;
     }
 
@@ -103,7 +103,7 @@ public class FilterWidget extends BrowserWidget
      */
     public FilterWidget()
     {
-        this.connection = null;
+        this.browserConnection = null;
         this.initalFilter = null;
     }
 
@@ -158,10 +158,10 @@ public class FilterWidget extends BrowserWidget
         {
             public void widgetSelected( SelectionEvent e )
             {
-                if ( connection != null )
+                if ( browserConnection != null )
                 {
                     FilterDialog dialog = new FilterDialog( parent.getShell(), "Filter Editor", filterCombo.getText(),
-                        connection );
+                        browserConnection );
                     dialog.open();
                     String filter = dialog.getFilter();
                     if ( filter != null )
@@ -177,7 +177,7 @@ public class FilterWidget extends BrowserWidget
         filterCombo.setItems( history );
 
         // initial values
-        setConnection( connection );
+        setBrowserConnection( browserConnection );
         filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter );
     }
 
@@ -206,16 +206,16 @@ public class FilterWidget extends BrowserWidget
 
 
     /**
-     * Sets the connection.
+     * Sets the browser connection.
      * 
-     * @param connection the connection
+     * @param browserConnection the browser connection
      */
-    public void setConnection( IBrowserConnection connection )
+    public void setBrowserConnection( IBrowserConnection browserConnection )
     {
-        if ( this.connection != connection )
+        if ( this.browserConnection != browserConnection )
         {
-            this.connection = connection;
-            contentAssistProcessor.setSchema( connection == null ? null : connection.getSchema() );
+            this.browserConnection = browserConnection;
+            contentAssistProcessor.setSchema( browserConnection == null ? null : browserConnection.getSchema() );
             filterCPA.setAutoActivationCharacters( contentAssistProcessor
                 .getCompletionProposalAutoActivationCharacters() );
         }

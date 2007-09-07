@@ -532,13 +532,13 @@ public class SearchPageWrapper extends BrowserWidget
         if ( browserConnectionWidget.getBrowserConnection() != null )
         {
             if ( searchBaseWidget.getDn() == null
-                || searchBaseWidget.getConnection() != browserConnectionWidget.getBrowserConnection() )
+                || searchBaseWidget.getBrowserConnection() != browserConnectionWidget.getBrowserConnection() )
             {
                 searchBaseWidget.setInput( browserConnectionWidget.getBrowserConnection(), null );
             }
         }
 
-        filterWidget.setConnection( browserConnectionWidget.getBrowserConnection() );
+        filterWidget.setBrowserConnection( browserConnectionWidget.getBrowserConnection() );
 
         super.notifyListeners();
     }
@@ -584,13 +584,13 @@ public class SearchPageWrapper extends BrowserWidget
 
             if ( filterWidget != null )
             {
-                filterWidget.setConnection( browserConnection );
+                filterWidget.setBrowserConnection( browserConnection );
                 filterWidget.setFilter( search.getFilter() );
             }
 
             if ( returningAttributesWidget != null )
             {
-                returningAttributesWidget.setConnection( browserConnection );
+                returningAttributesWidget.setBrowserConnection( browserConnection );
                 returningAttributesWidget.setInitialReturningAttributes( search.getReturningAttributes() );
             }
 

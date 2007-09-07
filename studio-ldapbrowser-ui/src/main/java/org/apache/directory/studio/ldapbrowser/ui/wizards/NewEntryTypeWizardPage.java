@@ -108,7 +108,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         }
         else if ( templateButton.getSelection() )
         {
-            setPageComplete( entryWidget.getConnection() != null && entryWidget.getDn() != null );
+            setPageComplete( entryWidget.getBrowserConnection() != null && entryWidget.getDn() != null );
         }
         else
         {
@@ -140,11 +140,11 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
     {
         if ( templateButton.getSelection() )
         {
-            final IBrowserConnection connection = entryWidget.getConnection();
+            final IBrowserConnection browserConnection = entryWidget.getBrowserConnection();
             final DN dn = entryWidget.getDn();
             final IEntry[] templateEntries = new IEntry[1];
 
-            if ( connection == null )
+            if ( browserConnection == null )
             {
                 getShell().getDisplay().syncExec( new Runnable()
                 {
@@ -168,7 +168,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             }
 
             // check if selected DN exists
-            ReadEntryJob readEntryJob = new ReadEntryJob( connection, dn );
+            ReadEntryJob readEntryJob = new ReadEntryJob( browserConnection, dn );
             RunnableContextJobAdapter.execute( readEntryJob, getContainer(), false );
             templateEntries[0] = readEntryJob.getReadEntry();
             if ( templateEntries[0] == null )
@@ -196,7 +196,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 EventRegistry.suspendEventFireingInCurrentThread();
 
                 LdifContentRecord record = ModelConverter.entryToLdifContentRecord( templateEntries[0] );
-                DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, new DummyConnection( connection.getSchema() ) );
+                DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, new DummyConnection( browserConnection.getSchema() ) );
                 IAttribute[] attributes = prototypeEntry.getAttributes();
                 for ( int i = 0; i < attributes.length; i++ )
                 {

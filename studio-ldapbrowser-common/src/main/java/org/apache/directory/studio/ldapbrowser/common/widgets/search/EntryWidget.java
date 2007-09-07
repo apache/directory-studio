@@ -70,7 +70,7 @@ public class EntryWidget extends BrowserWidget
     private Button entryBrowseButton;
 
     /** The connection. */
-    private IBrowserConnection connection;
+    private IBrowserConnection browserConnection;
 
     /** The selected DN. */
     private DN dn;
@@ -84,7 +84,7 @@ public class EntryWidget extends BrowserWidget
      */
     public EntryWidget()
     {
-        this.connection = null;
+        this.browserConnection = null;
         this.dn = null;
     }
 
@@ -92,25 +92,25 @@ public class EntryWidget extends BrowserWidget
     /**
      * Creates a new instance of EntryWidget.
      *
-     * @param connection the connection
+     * @param browserConnection the connection
      * @param dn the initial DN
      */
-    public EntryWidget( IBrowserConnection connection, DN dn )
+    public EntryWidget( IBrowserConnection browserConnection, DN dn )
     {
-        this( connection, dn, null );
+        this( browserConnection, dn, null );
     }
 
 
     /**
      * Creates a new instance of EntryWidget.
      *
-     * @param connection the connection
+     * @param browserConnection the connection
      * @param dn the initial DN
      * @param suffix the suffix
      */
-    public EntryWidget( IBrowserConnection connection, DN dn, DN suffix )
+    public EntryWidget( IBrowserConnection browserConnection, DN dn, DN suffix )
     {
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.dn = dn;
         this.suffix = suffix;
     }
@@ -178,16 +178,16 @@ public class EntryWidget extends BrowserWidget
         {
             public void widgetSelected( SelectionEvent e )
             {
-                if ( connection != null )
+                if ( browserConnection != null )
                 {
                     // get root entry
-                    IEntry rootEntry = connection.getRootDSE();
+                    IEntry rootEntry = browserConnection.getRootDSE();
                     if( suffix != null && suffix.getRdns().length > 0 )
                     {
-                        rootEntry = connection.getEntryFromCache( suffix );
+                        rootEntry = browserConnection.getEntryFromCache( suffix );
                         if ( rootEntry == null )
                         {
-                            ReadEntryJob job = new ReadEntryJob( connection, suffix );
+                            ReadEntryJob job = new ReadEntryJob( browserConnection, suffix );
                             RunnableContextJobAdapter.execute( job );
                             rootEntry = job.getReadEntry();
                         }
@@ -207,10 +207,10 @@ public class EntryWidget extends BrowserWidget
                     IEntry entry = rootEntry;
                     if ( initialDN != null && initialDN.getRdns().length > 0 )
                     {
-                        entry = connection.getEntryFromCache( initialDN );
+                        entry = browserConnection.getEntryFromCache( initialDN );
                         if ( entry == null )
                         {
-                            ReadEntryJob job = new ReadEntryJob( connection, initialDN );
+                            ReadEntryJob job = new ReadEntryJob( browserConnection, initialDN );
                             RunnableContextJobAdapter.execute( job );
                             entry = job.getReadEntry();
                         }
@@ -279,7 +279,7 @@ public class EntryWidget extends BrowserWidget
     private void internalSetEnabled()
     {
         upButton.setEnabled( dn != null && dn.getParentDn() != null && dnCombo.isEnabled() );
-        entryBrowseButton.setEnabled( connection != null && dnCombo.isEnabled() );
+        entryBrowseButton.setEnabled( browserConnection != null && dnCombo.isEnabled() );
     }
 
 
@@ -315,13 +315,13 @@ public class EntryWidget extends BrowserWidget
 
 
     /**
-     * Gets the connection.
+     * Gets the browser connection.
      *
-     * @return the connection
+     * @return the browser connection
      */
-    public IBrowserConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
-        return connection;
+        return browserConnection;
     }
 
 
@@ -329,26 +329,26 @@ public class EntryWidget extends BrowserWidget
      * Sets the input.
      *
      * @param dn the DN
-     * @param connection the connection
+     * @param browserConnection the connection
      */
-    public void setInput( IBrowserConnection connection, DN dn )
+    public void setInput( IBrowserConnection browserConnection, DN dn )
     {
-        setInput( connection, dn, null );
+        setInput( browserConnection, dn, null );
     }
 
 
     /**
      * Sets the input.
      *
-     * @param connection the connection
+     * @param browserConnection the connection
      * @param dn the DN
      * @param suffix the suffix
      */
-    public void setInput( IBrowserConnection connection, DN dn, DN suffix )
+    public void setInput( IBrowserConnection browserConnection, DN dn, DN suffix )
     {
-        if ( this.connection != connection || this.dn != dn || this.suffix != suffix )
+        if ( this.browserConnection != browserConnection || this.dn != dn || this.suffix != suffix )
         {
-            this.connection = connection;
+            this.browserConnection = browserConnection;
             this.dn = dn;
             this.suffix = suffix;
             dnChanged();

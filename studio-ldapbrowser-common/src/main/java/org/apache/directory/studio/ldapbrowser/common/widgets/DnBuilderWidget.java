@@ -123,10 +123,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * 
      * @param rdn the initial RDN
      * @param attributeNames the attribute names that could be selected from drop-down list
-     * @param connection the connection
+     * @param browserConnection the connection
      * @param parentDn the initial parent DN
      */
-    public void setInput( IBrowserConnection connection, String[] attributeNames, RDN rdn, DN parentDn )
+    public void setInput( IBrowserConnection browserConnection, String[] attributeNames, RDN rdn, DN parentDn )
     {
         this.attributeNames = attributeNames;
         this.currentRdn = rdn;
@@ -184,7 +184,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
         if ( showParent )
         {
-            parentEntryWidget.setInput( connection, currentParentDn );
+            parentEntryWidget.setInput( browserConnection, currentParentDn );
         }
 
         validate();
