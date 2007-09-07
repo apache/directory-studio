@@ -27,7 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.FileBrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
-import org.apache.directory.studio.ldapbrowser.common.widgets.search.ConnectionWidget;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.wizard.WizardPage;
@@ -56,8 +56,8 @@ public class ImportDsmlMainWizardPage extends WizardPage
     /** The dsml file browser widget. */
     private FileBrowserWidget dsmlFileBrowserWidget;
 
-    /** The connection widget. */
-    private ConnectionWidget connectionWidget;
+    /** The browser connection widget. */
+    private BrowserConnectionWidget browserConnectionWidget;
 
     /** The save response button. */
     private Button saveResponseButton;
@@ -123,13 +123,13 @@ public class ImportDsmlMainWizardPage extends WizardPage
 
         // Connection
         BaseWidgetUtils.createLabel( composite, "Import into:", 1 );
-        connectionWidget = new ConnectionWidget( wizard.getImportConnection() );
-        connectionWidget.createWidget( composite );
-        connectionWidget.addWidgetModifyListener( new WidgetModifyListener()
+        browserConnectionWidget = new BrowserConnectionWidget( wizard.getImportConnection() );
+        browserConnectionWidget.createWidget( composite );
+        browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
             public void widgetModified( WidgetModifyEvent event )
             {
-                wizard.setImportConnection( connectionWidget.getBrowserConnection() );
+                wizard.setImportConnection( browserConnectionWidget.getBrowserConnection() );
                 validate();
             }
         } );
@@ -275,7 +275,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
             }
         }
 
-        if ( ( wizard.getImportConnection() == null ) || ( connectionWidget.getBrowserConnection() == null ) )
+        if ( ( wizard.getImportConnection() == null ) || ( browserConnectionWidget.getBrowserConnection() == null ) )
         {
             setErrorMessage( "Please select a Connection." );
             ok = false;

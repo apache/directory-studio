@@ -141,8 +141,8 @@ public class SearchPageWrapper extends BrowserWidget
     /** The connection label. */
     protected Label connectionLabel;
 
-    /** The connection widget. */
-    protected ConnectionWidget connectionWidget;
+    /** The browser connection widget. */
+    protected BrowserConnectionWidget browserConnectionWidget;
 
     /** The search base label. */
     protected Label searchBaseLabel;
@@ -290,10 +290,10 @@ public class SearchPageWrapper extends BrowserWidget
         }
 
         connectionLabel = BaseWidgetUtils.createLabel( composite, "Connection:", 1 );
-        connectionWidget = new ConnectionWidget();
-        connectionWidget.createWidget( composite );
-        connectionWidget.setEnabled( !isActive( CONNECTION_READONLY ) );
-        connectionWidget.addWidgetModifyListener( new WidgetModifyListener()
+        browserConnectionWidget = new BrowserConnectionWidget();
+        browserConnectionWidget.createWidget( composite );
+        browserConnectionWidget.setEnabled( !isActive( CONNECTION_READONLY ) );
+        browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
             public void widgetModified( WidgetModifyEvent event )
             {
@@ -529,16 +529,16 @@ public class SearchPageWrapper extends BrowserWidget
     protected void validate()
     {
 
-        if ( connectionWidget.getBrowserConnection() != null )
+        if ( browserConnectionWidget.getBrowserConnection() != null )
         {
             if ( searchBaseWidget.getDn() == null
-                || searchBaseWidget.getConnection() != connectionWidget.getBrowserConnection() )
+                || searchBaseWidget.getConnection() != browserConnectionWidget.getBrowserConnection() )
             {
-                searchBaseWidget.setInput( connectionWidget.getBrowserConnection(), null );
+                searchBaseWidget.setInput( browserConnectionWidget.getBrowserConnection(), null );
             }
         }
 
-        filterWidget.setConnection( connectionWidget.getBrowserConnection() );
+        filterWidget.setConnection( browserConnectionWidget.getBrowserConnection() );
 
         super.notifyListeners();
     }
@@ -569,28 +569,28 @@ public class SearchPageWrapper extends BrowserWidget
 
         if ( search.getBrowserConnection() != null )
         {
-            IBrowserConnection connection = search.getBrowserConnection();
+            IBrowserConnection browserConnection = search.getBrowserConnection();
             DN searchBase = search.getSearchBase();
 
-            if ( connectionWidget != null )
+            if ( browserConnectionWidget != null )
             {
-                connectionWidget.setBrowserConnection( connection );
+                browserConnectionWidget.setBrowserConnection( browserConnection );
             }
 
             if ( searchBase != null )
             {
-                searchBaseWidget.setInput( connection, searchBase );
+                searchBaseWidget.setInput( browserConnection, searchBase );
             }
 
             if ( filterWidget != null )
             {
-                filterWidget.setConnection( connection );
+                filterWidget.setConnection( browserConnection );
                 filterWidget.setFilter( search.getFilter() );
             }
 
             if ( returningAttributesWidget != null )
             {
-                returningAttributesWidget.setConnection( connection );
+                returningAttributesWidget.setConnection( browserConnection );
                 returningAttributesWidget.setInitialReturningAttributes( search.getReturningAttributes() );
             }
 
@@ -646,10 +646,10 @@ public class SearchPageWrapper extends BrowserWidget
             search.getSearchParameter().setName( searchNameText.getText() );
             searchModified = true;
         }
-        if ( connectionWidget != null && connectionWidget.getBrowserConnection() != null
-            && connectionWidget.getBrowserConnection() != search.getBrowserConnection() )
+        if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() != null
+            && browserConnectionWidget.getBrowserConnection() != search.getBrowserConnection() )
         {
-            search.setConnection( connectionWidget.getBrowserConnection() );
+            search.setConnection( browserConnectionWidget.getBrowserConnection() );
             searchModified = true;
         }
         if ( searchBaseWidget != null && searchBaseWidget.getDn() != null
@@ -698,7 +698,7 @@ public class SearchPageWrapper extends BrowserWidget
                     if ( returnOperationalAttributesButton.getSelection() )
                     {
                         AttributeTypeDescription[] opAtds = SchemaUtils
-                            .getOperationalAttributeDescriptions( connectionWidget.getBrowserConnection().getSchema() );
+                            .getOperationalAttributeDescriptions( browserConnectionWidget.getBrowserConnection().getSchema() );
                         String[] attributeTypeDescriptionNames = SchemaUtils.getAttributeTypeDescriptionNames( opAtds );
                         raList.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
                         raList.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
@@ -821,7 +821,7 @@ public class SearchPageWrapper extends BrowserWidget
      */
     public boolean isValid()
     {
-        if ( connectionWidget != null && connectionWidget.getBrowserConnection() == null )
+        if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() == null )
         {
             return false;
         }
@@ -850,7 +850,7 @@ public class SearchPageWrapper extends BrowserWidget
      */
     public String getErrorMessage()
     {
-        if ( connectionWidget != null && connectionWidget.getBrowserConnection() == null )
+        if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() == null )
         {
             return "Please select a connection.";
         }
@@ -883,10 +883,10 @@ public class SearchPageWrapper extends BrowserWidget
             searchNameLabel.setEnabled( b );
             searchNameText.setEnabled( b );
         }
-        if ( connectionWidget != null )
+        if ( browserConnectionWidget != null )
         {
             connectionLabel.setEnabled( b );
-            connectionWidget.setEnabled( b && !isActive( CONNECTION_READONLY ) );
+            browserConnectionWidget.setEnabled( b && !isActive( CONNECTION_READONLY ) );
         }
         if ( searchBaseWidget != null )
         {

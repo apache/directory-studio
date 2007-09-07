@@ -46,12 +46,12 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * Dialog to select a connection.
+ * Dialog to select an {@link IBrowserConnection}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SelectConnectionDialog extends Dialog
+public class SelectBrowserConnectionDialog extends Dialog
 {
 
     /** The title. */
@@ -83,7 +83,7 @@ public class SelectConnectionDialog extends Dialog
      * @param title the title
      * @param initialBrowserConnection the initial browser connection
      */
-    public SelectConnectionDialog( Shell parentShell, String title, IBrowserConnection initialBrowserConnection )
+    public SelectBrowserConnectionDialog( Shell parentShell, String title, IBrowserConnection initialBrowserConnection )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );

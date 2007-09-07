@@ -27,7 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.FileBrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
-import org.apache.directory.studio.ldapbrowser.common.widgets.search.ConnectionWidget;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.wizard.WizardPage;
@@ -61,8 +61,8 @@ public class ImportLdifMainWizardPage extends WizardPage
     /** The ldif file browser widget. */
     private FileBrowserWidget ldifFileBrowserWidget;
 
-    /** The connection widget. */
-    private ConnectionWidget connectionWidget;
+    /** The browser connection widget. */
+    private BrowserConnectionWidget browserConnectionWidget;
 
     /** The enable logging button. */
     private Button enableLoggingButton;
@@ -205,13 +205,13 @@ public class ImportLdifMainWizardPage extends WizardPage
 
         // Connection
         BaseWidgetUtils.createLabel( composite, "Import into:", 1 );
-        connectionWidget = new ConnectionWidget( wizard.getImportConnection() );
-        connectionWidget.createWidget( composite );
-        connectionWidget.addWidgetModifyListener( new WidgetModifyListener()
+        browserConnectionWidget = new BrowserConnectionWidget( wizard.getImportConnection() );
+        browserConnectionWidget.createWidget( composite );
+        browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
             public void widgetModified( WidgetModifyEvent event )
             {
-                wizard.setImportConnection( connectionWidget.getBrowserConnection() );
+                wizard.setImportConnection( browserConnectionWidget.getBrowserConnection() );
                 validate();
             }
         } );

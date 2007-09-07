@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectConnectionDialog;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectBrowserConnectionDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -33,14 +33,14 @@ import org.eclipse.swt.widgets.Text;
 
 
 /**
- * The ConnectionWidget could be used to select a connection. 
+ * The BrowserConnectionWidget could be used to select an {@link IBrowserConnection}. 
  * It is composed of a text to display the selected connection
- * and a browse button to open a {@link SelectConnectionDialog}.
+ * and a browse button to open a {@link SelectBrowserConnectionDialog}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionWidget extends BrowserWidget
+public class BrowserConnectionWidget extends BrowserWidget
 {
 
     /** The connection text, displays the selected connection */
@@ -58,7 +58,7 @@ public class ConnectionWidget extends BrowserWidget
      * 
      * @param connection the initial connection
      */
-    public ConnectionWidget( IBrowserConnection connection )
+    public BrowserConnectionWidget( IBrowserConnection connection )
     {
         this.selectedBrowserConnection = connection;
     }
@@ -67,7 +67,7 @@ public class ConnectionWidget extends BrowserWidget
     /**
      * Creates a new instance of ConnectionWidget with no initial connection.
      */
-    public ConnectionWidget()
+    public BrowserConnectionWidget()
     {
         this.selectedBrowserConnection = null;
     }
@@ -91,7 +91,7 @@ public class ConnectionWidget extends BrowserWidget
             public void widgetSelected( SelectionEvent e )
             {
                 // if(selectedConnection != null) {
-                SelectConnectionDialog dialog = new SelectConnectionDialog( parent.getShell(), "Select Connection",
+                SelectBrowserConnectionDialog dialog = new SelectBrowserConnectionDialog( parent.getShell(), "Select Connection",
                     selectedBrowserConnection );
                 dialog.open();
                 IBrowserConnection browserConnection = dialog.getSelectedBrowserConnection();
