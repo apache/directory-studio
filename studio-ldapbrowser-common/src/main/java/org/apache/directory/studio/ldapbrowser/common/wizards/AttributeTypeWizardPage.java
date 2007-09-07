@@ -206,7 +206,7 @@ public class AttributeTypeWizardPage extends WizardPage
 
         // content proposal adapter
         attributeTypeCPA = new ContentProposalAdapter (attributeTypeCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( attributeTypeCombo.getItems() ), null, null );
+            new ListContentProposalProvider( possibleAttributeTypes ), null, null );
         attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
         attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );  
 
@@ -291,7 +291,6 @@ public class AttributeTypeWizardPage extends WizardPage
         {
             attributeTypeCombo.setItems( possibleAttributeTypes );
         }
-        attributeTypeCPA.setContentProposalProvider( new ListContentProposalProvider( attributeTypeCombo.getItems() ) );
         attributeTypeCombo.setText( value );
     }
 
