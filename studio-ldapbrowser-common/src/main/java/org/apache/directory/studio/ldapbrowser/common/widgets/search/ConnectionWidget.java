@@ -94,10 +94,10 @@ public class ConnectionWidget extends BrowserWidget
                 SelectConnectionDialog dialog = new SelectConnectionDialog( parent.getShell(), "Select Connection",
                     selectedConnection );
                 dialog.open();
-                IBrowserConnection connection = dialog.getSelectedConnection();
-                if ( connection != null )
+                IBrowserConnection browserConnection = dialog.getSelectedBrowserConnection();
+                if ( browserConnection != null )
                 {
-                    setConnection( connection );
+                    setConnection( browserConnection );
                     notifyListeners();
                 }
                 // }

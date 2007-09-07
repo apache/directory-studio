@@ -45,34 +45,57 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Dialog to select a connection.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SelectConnectionDialog extends Dialog
 {
 
+    /** The title. */
     private String title;
 
-    private IBrowserConnection initialConnection;
+    /** The initial browser connection. */
+    private IBrowserConnection initialBrowserConnection;
 
-    private IBrowserConnection selectedConnection;
+    /** The selected browser connection. */
+    private IBrowserConnection selectedBrowserConnection;
 
-    private ConnectionConfiguration configuration;
+    /** The connection configuration. */
+    private ConnectionConfiguration connectionConfiguration;
 
-    private ConnectionUniversalListener universalListener;
+    /** The connection universal listener. */
+    private ConnectionUniversalListener connectionUniversalListener;
 
-    private ConnectionActionGroup actionGroup;
+    /** The connection action group. */
+    private ConnectionActionGroup connectionActionGroup;
 
-    private ConnectionWidget mainWidget;
+    /** The connection main widget. */
+    private ConnectionWidget connectionMainWidget;
 
 
-    public SelectConnectionDialog( Shell parentShell, String title, IBrowserConnection initialConnection )
+    /**
+     * Creates a new instance of SelectConnectionDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param title the title
+     * @param initialBrowserConnection the initial browser connection
+     */
+    public SelectConnectionDialog( Shell parentShell, String title, IBrowserConnection initialBrowserConnection )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         this.title = title;
-        this.initialConnection = initialConnection;
-        this.selectedConnection = null;
+        this.initialBrowserConnection = initialBrowserConnection;
+        this.selectedBrowserConnection = null;
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -80,38 +103,50 @@ public class SelectConnectionDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
     public boolean close()
     {
-        if ( this.mainWidget != null )
+        if ( connectionMainWidget != null )
         {
-            this.configuration.dispose();
-            this.configuration = null;
-            this.actionGroup.deactivateGlobalActionHandlers();
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
+            connectionConfiguration.dispose();
+            connectionConfiguration = null;
+            connectionActionGroup.deactivateGlobalActionHandlers();
+            connectionActionGroup.dispose();
+            connectionActionGroup = null;
+            connectionUniversalListener.dispose();
+            connectionUniversalListener = null;
+            connectionMainWidget.dispose();
+            connectionMainWidget = null;
         }
         return super.close();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.selectedConnection = initialConnection;
+        selectedBrowserConnection = initialBrowserConnection;
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
+     */
     protected void cancelPressed()
     {
-        this.selectedConnection = null;
+        selectedBrowserConnection = null;
         super.cancelPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -119,9 +154,11 @@ public class SelectConnectionDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridLayout gl = new GridLayout();
         composite.setLayout( gl );
@@ -131,24 +168,24 @@ public class SelectConnectionDialog extends Dialog
         composite.setLayoutData( gd );
 
         // create configuration
-        this.configuration = new ConnectionConfiguration();
+        connectionConfiguration = new ConnectionConfiguration();
 
         // create main widget
-        this.mainWidget = new ConnectionWidget( this.configuration, null );
-        this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
+        connectionMainWidget = new ConnectionWidget( connectionConfiguration, null );
+        connectionMainWidget.createWidget( composite );
+        connectionMainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
 
         // create actions and context menu (and register global actions)
-        this.actionGroup = new ConnectionActionGroup( this.mainWidget, this.configuration );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
-        this.actionGroup.activateGlobalActionHandlers();
+        connectionActionGroup = new ConnectionActionGroup( connectionMainWidget, connectionConfiguration );
+        connectionActionGroup.fillToolBar( connectionMainWidget.getToolBarManager() );
+        connectionActionGroup.fillMenu( connectionMainWidget.getMenuManager() );
+        connectionActionGroup.fillContextMenu( connectionMainWidget.getContextMenuManager() );
+        connectionActionGroup.activateGlobalActionHandlers();
 
         // create the listener
-        this.universalListener = new ConnectionUniversalListener( this.mainWidget.getViewer() );
+        connectionUniversalListener = new ConnectionUniversalListener( connectionMainWidget.getViewer() );
 
-        this.mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        connectionMainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
@@ -160,14 +197,14 @@ public class SelectConnectionDialog extends Dialog
                         Connection connection = ( Connection ) o;
                         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
                             .getBrowserConnection( connection );
-                        initialConnection = browserConnection;
-                        
+                        initialBrowserConnection = browserConnection;
+
                     }
                 }
             }
         } );
 
-        this.mainWidget.getViewer().addDoubleClickListener( new IDoubleClickListener()
+        connectionMainWidget.getViewer().addDoubleClickListener( new IDoubleClickListener()
         {
             public void doubleClick( DoubleClickEvent event )
             {
@@ -179,32 +216,37 @@ public class SelectConnectionDialog extends Dialog
                         Connection connection = ( Connection ) o;
                         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
                             .getBrowserConnection( connection );
-                        initialConnection = browserConnection;
+                        initialBrowserConnection = browserConnection;
                         okPressed();
                     }
                 }
             }
         } );
 
-        if ( this.initialConnection != null )
+        if ( initialBrowserConnection != null )
         {
-            Connection connection = this.initialConnection.getConnection();
-            this.mainWidget.getViewer().reveal( connection );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+            Connection connection = initialBrowserConnection.getConnection();
+            connectionMainWidget.getViewer().reveal( connection );
+            connectionMainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
         }
 
         applyDialogFont( composite );
 
-        this.mainWidget.setFocus();
+        connectionMainWidget.setFocus();
 
         return composite;
 
     }
 
 
-    public IBrowserConnection getSelectedConnection()
+    /**
+     * Gets the selected browser connection or null if the dialog was canceled.
+     * 
+     * @return the selected browser connection or null if the dialog was canceled
+     */
+    public IBrowserConnection getSelectedBrowserConnection()
     {
-        return this.selectedConnection;
+        return selectedBrowserConnection;
     }
 
 }
