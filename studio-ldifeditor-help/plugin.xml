@@ -24,6 +24,6 @@
 		<toc file="toc.xml" primary="true" />
 	</extension>
 	<extension point="org.eclipse.help.contexts">
-		<contexts file="contexts.xml" plugin="org.apache.directory.studio.ldifeditor.ui" />
+		<contexts file="contexts.xml" plugin="org.apache.directory.studio.ldifeditor" />
 	</extension>
 </plugin>

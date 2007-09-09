@@ -21,6 +21,9 @@
 <contexts>
  	<context id="tools_ldif_editor">
    		<description>The LDIF editor provides you with LDIF specific text editing support.</description>
-   		<topic label="LDIF editor" href="html/tools_ldif_editor.html"/>
+   		<topic label="LDIF editor overview" href="html/gettingstarted_overview.html"/>
+   		<topic label="Working with the LDIF editor" href="html/gettingstarted_working.html"/>
+   		<topic label="LDIF editor outline" href="html/gettingstarted_outline.html"/>
+   		<topic label="LDIF editor preferences" href="html/gettingstarted_preferences.html.html"/>
    	</context>
 </contexts>
