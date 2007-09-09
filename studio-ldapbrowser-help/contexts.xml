@@ -57,13 +57,6 @@
    		<description>The Modification Logs view shows all sucessful and failed modifications.</description>
    		<topic label="Modification Logs view" href="html/tools_modification_logs_view.html"/>
    	</context>
- 	<context id="tools_ldif_editor">
-   		<description>The LDIF editor provides you with LDIF specific text editing support.</description>
-   		<topic label="LDIF editor" href="html/tools_ldif_editor.html"/>
-   	</context>
-   	
-   	
-   	
  	<context id="tools_newconnection_wizard">
    		<description>This wizard helps you to create a new connection to a LDAP directory.</description>
    		<topic label="New LDAP Connection wizard" href="html/tools_newconnection_wizard.html"/>
