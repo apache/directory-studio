@@ -190,6 +190,15 @@
             </fileset>
         </copy>
 
+        <!-- Creation of the LDIF Editor Help Plugin -->
+        <ant dir="studio-ldifeditor-help" inheritAll="no" />
+        <!-- Copy of the LDIF Editor Help Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-ldifeditor-help/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
         <!-- Creation of the Value Editors Plugin -->
         <ant dir="studio-valueeditors" inheritAll="no" />
         <!-- Copy of the Value Editors Plugin in the "plugins" folder of the RCP app -->
@@ -334,6 +343,22 @@
             </fileset>
         </copy>
 
+        <!-- Creation of the Apache Directory Studio LDIF Editor user guides -->
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="help-html" />
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="help-pdf" />
+        <!-- Copy of the ldif editor user guides -->
+        <mkdir dir="${target.userguides}/ldif_editor" />
+        <copy todir="${target.userguides}/ldif_editor">
+            <fileset dir="${basedir}/studio-ldifeditor-help/target/html">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <copy todir="${target.userguides}">
+            <fileset dir="${basedir}/studio-ldifeditor-help/target/pdf">
+                <include name="**/*.pdf" />
+            </fileset>
+        </copy>
+
         <!-- Creation of the Apache Directory Studio Browser user guides -->
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="help-html" />
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="help-pdf" />
@@ -415,6 +440,7 @@
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldifeditor" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-rcp" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-rcp-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-schemaeditor-help" inheritAll="no" target="retrieve-dependencies" />
@@ -444,6 +470,7 @@
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="clean" />
         <ant dir="studio-ldifeditor-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-ldifeditor" inheritAll="no" target="clean" />
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="clean" />
         <ant dir="studio-rcp" inheritAll="no" target="clean"/>
         <ant dir="studio-rcp-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-rcp-help" inheritAll="no" target="clean"/>
