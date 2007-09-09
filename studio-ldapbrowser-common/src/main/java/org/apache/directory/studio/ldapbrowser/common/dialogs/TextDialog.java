@@ -33,22 +33,34 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 
+/**
+ * Dialog with an text area.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class TextDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "Text Editor";
+    /** The dialog title. */
+    private static final String DIALOG_TITLE = "Text Editor";
 
-    public static final double MAX_WIDTH = 250.0;
-
-    public static final double MAX_HEIGHT = 250.0;
-
+    /** The initial value. */
     private String initialValue;
 
+    /** The return value. */
     private String returnValue;
 
+    /** The text area. */
     private Text text;
 
 
+    /**
+     * Creates a new instance of TextDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param initialValue the initial value
+     */
     public TextDialog( Shell parentShell, String initialValue )
     {
         super( parentShell );
@@ -58,12 +70,9 @@ public class TextDialog extends Dialog
     }
 
 
-    public boolean close()
-    {
-        return super.close();
-    }
-
-
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -72,6 +81,9 @@ public class TextDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -79,13 +91,19 @@ public class TextDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.returnValue = this.text.getText();
+        returnValue = text.getText();
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
         // create composite
@@ -108,8 +126,14 @@ public class TextDialog extends Dialog
     }
 
 
+    /**
+     * Gets the text.
+     * 
+     * @return the text
+     */
     public String getText()
     {
-        return this.returnValue;
+        return returnValue;
     }
+
 }

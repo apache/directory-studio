@@ -25,9 +25,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserAct
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserConfiguration;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserUniversalListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -35,35 +33,54 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Dialog to select an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SelectEntryDialog extends Dialog
 {
 
+    /** The dialog title. */
     private String title;
 
-    private Image image;
-
+    /** The root entry. */
     private IEntry rootEntry;
 
+    /** The initial entry. */
     private IEntry initialEntry;
 
+    /** The selected entry. */
     private IEntry selectedEntry;
 
-    private BrowserConfiguration configuration;
+    /** The browser configuration. */
+    private BrowserConfiguration browserConfiguration;
 
-    private BrowserUniversalListener universalListener;
+    /** The browser universal listener. */
+    private BrowserUniversalListener browserUniversalListener;
 
-    private BrowserActionGroup actionGroup;
+    /** The browser action group. */
+    private BrowserActionGroup browserActionGroup;
 
-    private BrowserWidget mainWidget;
+    /** The browser widget. */
+    private BrowserWidget browserWidget;
 
 
+    /**
+     * Creates a new instance of SelectEntryDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param title the title
+     * @param rootEntry the root entry
+     * @param initialEntry the initial entry
+     */
     public SelectEntryDialog( Shell parentShell, String title, IEntry rootEntry, IEntry initialEntry )
     {
         super( parentShell );
@@ -75,53 +92,60 @@ public class SelectEntryDialog extends Dialog
     }
 
 
-    public SelectEntryDialog( Shell parentShell, String title, Image image, IEntry rootEntry, IEntry initialEntry )
-    {
-        this( parentShell, title, rootEntry, initialEntry );
-        this.image = image;
-    }
-
-
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
         shell.setText( title );
-        shell.setImage( image );
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
     public boolean close()
     {
-        if ( this.mainWidget != null )
+        if ( browserWidget != null )
         {
-            this.configuration.dispose();
-            this.configuration = null;
-            this.actionGroup.deactivateGlobalActionHandlers();
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
+            browserConfiguration.dispose();
+            browserConfiguration = null;
+            browserActionGroup.deactivateGlobalActionHandlers();
+            browserActionGroup.dispose();
+            browserActionGroup = null;
+            browserUniversalListener.dispose();
+            browserUniversalListener = null;
+            browserWidget.dispose();
+            browserWidget = null;
         }
         return super.close();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.selectedEntry = initialEntry;
+        selectedEntry = initialEntry;
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#cancelPressed()
+     */
     protected void cancelPressed()
     {
-        this.selectedEntry = null;
+        selectedEntry = null;
         super.cancelPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -129,9 +153,11 @@ public class SelectEntryDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
@@ -139,25 +165,25 @@ public class SelectEntryDialog extends Dialog
         composite.setLayoutData( gd );
 
         // create configuration
-        this.configuration = new BrowserConfiguration();
+        browserConfiguration = new BrowserConfiguration();
 
         // create main widget
-        this.mainWidget = new BrowserWidget( this.configuration, null );
-        this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( new IEntry[]
+        browserWidget = new BrowserWidget( browserConfiguration, null );
+        browserWidget.createWidget( composite );
+        browserWidget.setInput( new IEntry[]
             { rootEntry } );
 
         // create actions and context menu (and register global actions)
-        this.actionGroup = new BrowserActionGroup( this.mainWidget, this.configuration );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
-        this.actionGroup.activateGlobalActionHandlers();
+        browserActionGroup = new BrowserActionGroup( browserWidget, browserConfiguration );
+        browserActionGroup.fillToolBar( browserWidget.getToolBarManager() );
+        browserActionGroup.fillMenu( browserWidget.getMenuManager() );
+        browserActionGroup.fillContextMenu( browserWidget.getContextMenuManager() );
+        browserActionGroup.activateGlobalActionHandlers();
 
         // create the listener
-        this.universalListener = new BrowserUniversalListener( this.mainWidget.getViewer() );
+        browserUniversalListener = new BrowserUniversalListener( browserWidget.getViewer() );
 
-        this.mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        browserWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
@@ -172,28 +198,32 @@ public class SelectEntryDialog extends Dialog
             }
         } );
 
-        this.mainWidget.getViewer().expandToLevel( 2 );
-        if ( this.initialEntry != null )
+        browserWidget.getViewer().expandToLevel( 2 );
+        if ( initialEntry != null )
         {
             IEntry entry = this.initialEntry;
-            this.mainWidget.getViewer().reveal( entry );
-            this.mainWidget.getViewer().refresh( entry, true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( entry ), true );
-            this.mainWidget.getViewer().setSelection( new StructuredSelection( entry ), true );
+            browserWidget.getViewer().reveal( entry );
+            browserWidget.getViewer().refresh( entry, true );
+            browserWidget.getViewer().setSelection( new StructuredSelection( entry ), true );
+            browserWidget.getViewer().setSelection( new StructuredSelection( entry ), true );
         }
 
         applyDialogFont( composite );
 
-        this.mainWidget.setFocus();
+        browserWidget.setFocus();
 
         return composite;
-
     }
 
 
+    /**
+     * Gets the selected entry.
+     * 
+     * @return the selected entry
+     */
     public IEntry getSelectedEntry()
     {
-        return this.selectedEntry;
+        return selectedEntry;
     }
 
 }

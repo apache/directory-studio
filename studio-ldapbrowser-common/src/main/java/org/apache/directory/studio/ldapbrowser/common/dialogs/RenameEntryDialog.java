@@ -38,30 +38,52 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * A dialog to enter the new RDN of an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RenameEntryDialog extends Dialog implements WidgetModifyListener
 {
 
-    public static final String DELETE_OLD_RDN_DIALOGSETTING_KEY = RenameEntryDialog.class.getName() + ".deleteOldRdn";
+    /** The "Delete old RDN" dialog setting . */
+    private static final String DELETE_OLD_RDN_DIALOGSETTING_KEY = RenameEntryDialog.class.getName() + ".deleteOldRdn";
 
-    public static final String DIALOG_TITLE = "Rename Entry";
+    /** The dialog title. */
+    private static final String DIALOG_TITLE = "Rename Entry";
 
+    /** The entry to rename. */
     private IEntry entry;
 
+    /** The dn builder widget. */
     private DnBuilderWidget dnBuilderWidget;
 
+    /** The delete old rdn button. */
     private Button deleteOldRdnButton;
 
+    /** The simulate rename button. */
     private Button simulateRenameButton;
 
+    /** The ok button. */
     private Button okButton;
 
+    /** The new rdn. */
     private RDN rdn;
 
+    /** The delete old rdn flag. */
     private boolean deleteOldRdn;
 
+    /** The simulate rename flag. */
     private boolean simulateRename;
 
 
+    /**
+     * Creates a new instance of RenameEntryDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param entry the entry
+     */
     public RenameEntryDialog( Shell parentShell, IEntry entry )
     {
         super( parentShell );
@@ -70,11 +92,17 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         this.rdn = null;
 
         if ( BrowserCommonActivator.getDefault().getDialogSettings().get( DELETE_OLD_RDN_DIALOGSETTING_KEY ) == null )
+        {
             BrowserCommonActivator.getDefault().getDialogSettings().put( DELETE_OLD_RDN_DIALOGSETTING_KEY, true );
-        this.deleteOldRdn = BrowserCommonActivator.getDefault().getDialogSettings().getBoolean( DELETE_OLD_RDN_DIALOGSETTING_KEY );
+        }
+        this.deleteOldRdn = BrowserCommonActivator.getDefault().getDialogSettings().getBoolean(
+            DELETE_OLD_RDN_DIALOGSETTING_KEY );
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -82,27 +110,36 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
     public boolean close()
     {
-        this.dnBuilderWidget.removeWidgetModifyListener( this );
-        this.dnBuilderWidget.dispose();
+        dnBuilderWidget.removeWidgetModifyListener( this );
+        dnBuilderWidget.dispose();
         return super.close();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.rdn = this.dnBuilderWidget.getRdn();
-        this.deleteOldRdn = this.deleteOldRdnButton.getSelection();
-        this.simulateRename = this.simulateRenameButton.getSelection();
+        rdn = dnBuilderWidget.getRdn();
+        deleteOldRdn = deleteOldRdnButton.getSelection();
+        simulateRename = simulateRenameButton.getSelection();
 
-        BrowserCommonActivator.getDefault().getDialogSettings().put( DELETE_OLD_RDN_DIALOGSETTING_KEY, this.deleteOldRdn );
-        this.dnBuilderWidget.saveDialogSettings();
+        BrowserCommonActivator.getDefault().getDialogSettings().put( DELETE_OLD_RDN_DIALOGSETTING_KEY, deleteOldRdn );
+        dnBuilderWidget.saveDialogSettings();
 
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -110,9 +147,11 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     }
 
 
+    /**     
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 3 / 2;
@@ -120,46 +159,64 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
 
         BaseWidgetUtils.createLabel( composite, "Please enter the new RDN of the selected entry.", 1 );
 
-        this.dnBuilderWidget = new DnBuilderWidget( true, false );
-        this.dnBuilderWidget.addWidgetModifyListener( this );
-        this.dnBuilderWidget.createContents( composite );
-        this.dnBuilderWidget.setInput( this.entry.getBrowserConnection(), this.entry.getSubschema().getAllAttributeNames(),
-            this.entry.getRdn(), null );
+        dnBuilderWidget = new DnBuilderWidget( true, false );
+        dnBuilderWidget.addWidgetModifyListener( this );
+        dnBuilderWidget.createContents( composite );
+        dnBuilderWidget.setInput( entry.getBrowserConnection(), entry.getSubschema().getAllAttributeNames(), entry
+            .getRdn(), null );
 
-        this.deleteOldRdnButton = BaseWidgetUtils.createCheckbox( composite, "Delete old RDN", 1 );
-        this.deleteOldRdnButton.setSelection( this.deleteOldRdn );
+        deleteOldRdnButton = BaseWidgetUtils.createCheckbox( composite, "Delete old RDN", 1 );
+        deleteOldRdnButton.setSelection( deleteOldRdn );
 
-        this.simulateRenameButton = BaseWidgetUtils.createCheckbox( composite,
+        simulateRenameButton = BaseWidgetUtils.createCheckbox( composite,
             "Simulate subtree renaming by searching/adding/deleting recursively", 1 );
-        this.simulateRenameButton.setSelection( false );
-        this.simulateRenameButton.setEnabled( false );
+        simulateRenameButton.setSelection( false );
+        simulateRenameButton.setEnabled( false );
 
         applyDialogFont( composite );
         return composite;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent)
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
-        if ( this.okButton != null )
+        if ( okButton != null )
         {
-            this.okButton.setEnabled( this.dnBuilderWidget.getRdn() != null );
+            okButton.setEnabled( dnBuilderWidget.getRdn() != null );
         }
     }
 
 
+    /**
+     * Gets the rdn.
+     * 
+     * @return the rdn
+     */
     public RDN getRdn()
     {
-        return this.rdn;
+        return rdn;
     }
 
 
+    /**
+     * Checks if the old RDN should be deleted.
+     * 
+     * @return true if the old RDN should be deleted.
+     */
     public boolean isDeleteOldRdn()
     {
-        return this.deleteOldRdn;
+        return deleteOldRdn;
     }
 
 
+    /**
+     * Checks if the renaming should be simulated by searching/adding/deleting.
+     * 
+     * @return true, if renaming shoudl be simulated
+     */
     public boolean isSimulateRename()
     {
         return simulateRename;

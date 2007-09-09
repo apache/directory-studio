@@ -41,58 +41,93 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Dialog to edit a filter in a text source viewer with syntax highlighting
+ * and content assistent. It also provides a button to format the filter.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class FilterDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "Filter Editor";
+    /** The default dialog title. */
+    private static final String DIALOG_TITLE = "Filter Editor";
 
+    /** The button ID for the format button. */
+    private static final int FORMAT_BUTTON_ID = 987654321;
+
+    /** The dialog title. */
     private String title;
 
-    private IBrowserConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The source viewer. */
     private SourceViewer sourceViewer;
 
+    /** The filter source viewer configuration. */
     private FilterSourceViewerConfiguration configuration;
 
+    /** The filter parser. */
     private LdapFilterParser parser;
 
+    /** The filter. */
     private String filter;
 
 
-    public FilterDialog( Shell parentShell, String title, String filter, IBrowserConnection connection )
+    /**
+     * Creates a new instance of FilterDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param title the title
+     * @param filter the initial filter
+     * @param brwoserConnection the browser connection
+     */
+    public FilterDialog( Shell parentShell, String title, String filter, IBrowserConnection brwoserConnection )
     {
         super( parentShell );
         this.title = title;
         this.filter = filter;
-        this.connection = connection;
+        this.browserConnection = brwoserConnection;
         this.parser = new LdapFilterParser();
         setShellStyle( SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE );
     }
 
 
+    /**
+     * Gets the filter.
+     * 
+     * @return the filter
+     */
     public String getFilter()
     {
-        return this.filter;
+        return filter;
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( this.title != null ? this.title : DIALOG_TITLE );
+        newShell.setText( title != null ? title : DIALOG_TITLE );
         newShell.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_FILTER_EDITOR ) );
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
+     */
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
         {
-            // this.filter = sourceViewer.getDocument().get();
-            this.parser.parse( sourceViewer.getDocument().get() );
-            this.filter = this.parser.getModel().toString();
+            parser.parse( sourceViewer.getDocument().get() );
+            filter = parser.getModel().toString();
         }
-        else if ( buttonId == 987654321 )
+        else if ( buttonId == FORMAT_BUTTON_ID )
         {
             IRegion region = new Region( 0, sourceViewer.getDocument().getLength() );
             configuration.getContentFormatter( sourceViewer ).format( sourceViewer.getDocument(), region );
@@ -103,14 +138,20 @@ public class FilterDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createButtonBar( Composite parent )
     {
         Composite composite = ( Composite ) super.createButtonBar( parent );
-        super.createButton( composite, 987654321, "Format", false );
+        super.createButton( composite, FORMAT_BUTTON_ID, "Format", false );
         return composite;
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
         // Composite composite = parent;
@@ -123,27 +164,21 @@ public class FilterDialog extends Dialog
         // create and configure source viewer
         sourceViewer = new SourceViewer( composite, new VerticalRuler( 0 ), SWT.H_SCROLL | SWT.V_SCROLL );
         sourceViewer.getControl().setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        configuration = new FilterSourceViewerConfiguration( this.parser, this.connection );
+        configuration = new FilterSourceViewerConfiguration( parser, browserConnection );
         sourceViewer.configure( configuration );
 
         // set document
-        IDocument document = new Document( this.filter );
+        IDocument document = new Document( filter );
         sourceViewer.setDocument( document );
 
         // preformat
         IRegion region = new Region( 0, sourceViewer.getDocument().getLength() );
         configuration.getContentFormatter( sourceViewer ).format( sourceViewer.getDocument(), region );
 
+        // set focus to the source viewer
         sourceViewer.getTextWidget().setFocus();
 
         return composite;
-    }
-
-
-    protected boolean canHandleShellCloseEvent()
-    {
-        // proposal popup is opened, don't close dialog!
-        return super.canHandleShellCloseEvent();
     }
 
 }
