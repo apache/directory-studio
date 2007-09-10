@@ -94,6 +94,8 @@
 		<ant dir="../studio-jars" inheritAll="no" />
 		<!-- Apache Directory Studio LDIF Editor Plugin -->
 		<ant dir="../studio-ldifeditor" inheritAll="no" />
+		<!-- Apache Directory Studio LDIF Editor Help Plugin -->
+		<ant dir="../studio-ldifeditor-help" inheritAll="no" />
 		<!-- Apache Directory Studio Value Editors Plugin -->
 		<ant dir="../studio-valueeditors" inheritAll="no" />
 		<!-- Apache Directory Studio ACI Item Editor Plugin -->
@@ -139,6 +141,10 @@
 			</fileset>
 			<!-- Apache Directory Studio LDIF Editor Plugin -->
 			<fileset dir="../studio-ldifeditor/target">
+				<include name="*.jar" />
+			</fileset>
+			<!-- Apache Directory Studio LDIF Editor Help Plugin -->
+			<fileset dir="../studio-ldifeditor-help/target">
 				<include name="*.jar" />
 			</fileset>
 			<!-- Apache Directory Studio Value Editors Plugin -->
