@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.schemaeditor.feature"
       label="Apache Directory Studio Schema Editor"
-      version="1.0.0"
+      version="1.0.1"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.schemaeditor"
       image="studio.png">
@@ -231,7 +231,7 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.schemaeditor.help"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin

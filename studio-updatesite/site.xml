@@ -10,20 +10,20 @@
       <category name="Apache Directory Studio RCP"/>
    </feature>
    <feature
-       url="features/org.apache.directory.studio.ldapbrowser.feature_1.0.0.jar"
-       id="org.apache.directory.studio.ldapbrowser.feature" version="1.0.0">
+       url="features/org.apache.directory.studio.ldapbrowser.feature_1.0.1.jar"
+       id="org.apache.directory.studio.ldapbrowser.feature" version="1.0.1">
       <category name="Apache Directory Studio LDAP Browser"/>
    </feature>
-   <feature url="features/org.apache.directory.studio.schemaeditor.feature_1.0.0.jar"
-       id="org.apache.directory.studio.schemaeditor.feature" version="1.0.0">
+   <feature url="features/org.apache.directory.studio.schemaeditor.feature_1.0.1.jar"
+       id="org.apache.directory.studio.schemaeditor.feature" version="1.0.1">
       <category name="Apache Directory Studio Schema Editor"/>
    </feature>
    <feature url="features/org.apache.directory.studio.apacheds.configuration.feature_1.0.0.jar"
        id="org.apache.directory.studio.apacheds.configuration.feature" version="1.0.0">
       <category name="Apache Directory Studio Apache DS"/>
    </feature>
-   <feature url="features/org.apache.directory.studio.ldifeditor.feature_1.0.0.jar"
-       id="org.apache.directory.studio.ldifeditor.feature" version="1.0.0">
+   <feature url="features/org.apache.directory.studio.ldifeditor.feature_1.0.1.jar"
+       id="org.apache.directory.studio.ldifeditor.feature" version="1.0.1">
       <category name="Apache Directory Studio LDIF Editor"/>
    </feature>
    <category-def name="Apache Directory Studio RCP" label="Apache Directory Studio RCP">
