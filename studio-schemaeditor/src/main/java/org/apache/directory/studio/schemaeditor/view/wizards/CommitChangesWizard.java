@@ -23,15 +23,11 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import javax.naming.NamingException;
-
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.DependenciesComputer;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.DependenciesComputer.DependencyComputerException;
-import org.apache.directory.studio.schemaeditor.model.io.ApacheDSSchemaExporter;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -93,17 +89,7 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    ApacheDSSchemaExporter exporter = new ApacheDSSchemaExporter();
-                    try
-                    {
-                        exporter.exportSchema( orderedSchemas, dependenciesComputer, project.getConnection().getJNDIConnectionWrapper(),
-                            new StudioProgressMonitor( monitor ) );
-                    }
-                    catch ( NamingException e )
-                    {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    //TODO
                 }
             } );
         }
