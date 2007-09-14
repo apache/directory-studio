@@ -64,8 +64,8 @@ public class NewProjectWizardInformationPage extends WizardPage
     protected NewProjectWizardInformationPage()
     {
         super( "NewProjectWizardInformationPage" );
+        setTitle( "Create a Schema project." );
         setDescription( "Please specify a name and a type to create a new Schema project." );
-        setDescription( "Please specify a name to create a new Schema project." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
         projectsHandler = Activator.getDefault().getProjectsHandler();
