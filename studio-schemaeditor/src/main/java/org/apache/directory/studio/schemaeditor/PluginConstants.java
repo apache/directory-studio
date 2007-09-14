@@ -72,8 +72,6 @@ public interface PluginConstants
     public static final String IMG_PROBLEMS_ERROR = "resources/icons/problems_error.gif";
     public static final String IMG_PROBLEMS_GROUP = "resources/icons/problems_group.gif";
     public static final String IMG_PROBLEMS_WARNING = "resources/icons/problems_warning.gif";
-    public static final String IMG_PROJECT_ADS = "resources/icons/project_ads.gif";
-    public static final String IMG_PROJECT_ADS_CLOSED = "resources/icons/project_ads_closed.gif";
     public static final String IMG_PROJECT_EXPORT = "resources/icons/project_export.gif";
     public static final String IMG_PROJECT_EXPORT_WIZARD = "resources/icons/project_export_wizard.png";
     public static final String IMG_PROJECT_FILE = "resources/icons/project_file.gif";
@@ -83,9 +81,12 @@ public interface PluginConstants
     public static final String IMG_PROJECT_NEW_WIZARD = "resources/icons/project_new_wizard.png";
     public static final String IMG_PROJECT_OFFLINE = "resources/icons/project_offline.gif";
     public static final String IMG_PROJECT_OFFLINE_CLOSED = "resources/icons/project_offline_closed.gif";
+    public static final String IMG_PROJECT_ONLINE = "resources/icons/project_online.gif";
+    public static final String IMG_PROJECT_ONLINE_CLOSED = "resources/icons/project_online_closed.gif";
     public static final String IMG_RENAME = "resources/icons/rename.gif";
     public static final String IMG_RUN_CURRENT_SEARCH_AGAIN = "resources/icons/run_current_search_again.gif";
     public static final String IMG_SCHEMA = "resources/icons/schema.gif";
+    public static final String IMG_SCHEMA_CONNECTOR = "resources/icons/schema_connector.gif";
     public static final String IMG_SCHEMA_NEW = "resources/icons/schema_new.gif";
     public static final String IMG_SCHEMA_NEW_WIZARD = "resources/icons/schema_new_wizard.png";
     public static final String IMG_SCHEMAS_EXPORT = "resources/icons/schemas_export.gif";

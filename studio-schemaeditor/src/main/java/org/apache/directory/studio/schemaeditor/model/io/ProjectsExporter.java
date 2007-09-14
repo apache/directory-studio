@@ -54,6 +54,7 @@ public class ProjectsExporter
     private static final String NAME_TAG = "name";
     private static final String TYPE_TAG = "type";
     private static final String CONNECTION_TAG = "connection";
+    private static final String SCHEMA_CONNECTOR_TAG = "schemaConnector";
     private static final String SCHEMA_BACKUP_TAG = "schemaBackup";
 
 
@@ -134,11 +135,14 @@ public class ProjectsExporter
                 element.addAttribute( TYPE_TAG, type.toString() );
             }
 
-            // If project is an Apache Directory Server Online Schema Project
-            if ( type.equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
+            // If project is an Online Schema Project
+            if ( type.equals( ProjectType.ONLINE ) )
             {
                 // Connection Name
-                element.addAttribute( CONNECTION_TAG, project.getConnection().getName() );
+                element.addAttribute( CONNECTION_TAG, project.getConnection().getId() );
+
+                // Connection Name
+                element.addAttribute( SCHEMA_CONNECTOR_TAG, project.getSchemaConnector().getId() );
 
                 // Schema Backup
                 Element schemaBackupElement = element.addElement( SCHEMA_BACKUP_TAG );

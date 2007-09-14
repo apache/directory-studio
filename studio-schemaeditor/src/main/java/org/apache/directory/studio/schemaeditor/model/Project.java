@@ -22,12 +22,10 @@ package org.apache.directory.studio.schemaeditor.model;
 
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
-import org.apache.directory.studio.schemaeditor.model.io.ApacheDSSchemaImporter;
+import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
 
 
@@ -64,6 +62,9 @@ public class Project
 
     /** The state of the project */
     private ProjectState state;
+
+    /** The SchemaConnector of the project */
+    private SchemaConnector schemaConnector;
 
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
@@ -252,22 +253,17 @@ public class Project
      */
     public void fetchOnlineSchema( StudioProgressMonitor monitor )
     {
-        if ( !hasOnlineSchemaBeenFetched && ( connection != null ) )
+        if ( ( !hasOnlineSchemaBeenFetched ) && ( connection != null ) && ( schemaConnector != null ) )
         {
-            try
-            {
-                schemaBackup = ApacheDSSchemaImporter.importSchema( connection.getJNDIConnectionWrapper(), monitor );
-            }
-            catch ( NamingException e )
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            schemaBackup = schemaConnector.importSchema( connection, monitor );
 
-            monitor.beginTask( "Adding Schema to project", schemaBackup.size() );
-            for ( Schema schema : schemaBackup )
+            if ( schemaBackup != null )
             {
-                getSchemaHandler().addSchema( schema );
+                monitor.beginTask( "Adding Schema to project", schemaBackup.size() );
+                for ( Schema schema : schemaBackup )
+                {
+                    getSchemaHandler().addSchema( schema );
+                }
             }
 
             // TODO Add error Handling
@@ -310,6 +306,30 @@ public class Project
     public void setSchemaBackup( List<Schema> schemaBackup )
     {
         this.schemaBackup = schemaBackup;
+    }
+
+
+    /**
+     * Gets the SchemaConnector.
+     *
+     * @return
+     *      the SchemaConnector
+     */
+    public SchemaConnector getSchemaConnector()
+    {
+        return schemaConnector;
+    }
+
+
+    /**
+     * Sets the SchemaConnector.
+     *
+     * @param schemaConnector
+     *      the SchemaConnector
+     */
+    public void setSchemaConnector( SchemaConnector schemaConnector )
+    {
+        this.schemaConnector = schemaConnector;
     }
 
 

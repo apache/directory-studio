@@ -51,6 +51,7 @@ public class ProjectsImporter
     private static final String SCHEMAS_TAG = "schemas";
     private static final String TYPE_TAG = "type";
     private static final String CONNECTION_TAG = "connection";
+    private static final String SCHEMA_CONNECTOR_TAG = "schemaConnector";
     private static final String SCHEMA_BACKUP_TAG = "schemaBackup";
 
 
@@ -161,7 +162,7 @@ public class ProjectsImporter
         {
             try
             {
-                project.setType( ProjectType.valueOf( typeAttribute.getText() ) );
+                project.setType( ProjectType.valueOf( typeAttribute.getValue() ) );
             }
             catch ( IllegalArgumentException e )
             {
@@ -169,14 +170,40 @@ public class ProjectsImporter
             }
         }
 
-        // If project is an Apache Directory Server Online Schema Project
-        if ( project.getType().equals( ProjectType.APACHE_DIRECTORY_SERVER ) )
+        // If project is an Online Schema Project
+        if ( project.getType().equals( ProjectType.ONLINE ) )
         {
             // Connection
             Attribute connectionAttribute = element.attribute( CONNECTION_TAG );
             if ( ( connectionAttribute != null ) && ( !connectionAttribute.getValue().equals( "" ) ) )
             {
-                project.setConnection( PluginUtils.getConnection( connectionAttribute.getText() ) );
+                project.setConnection( PluginUtils.getConnection( connectionAttribute.getValue() ) );
+            }
+
+            // Schema Connector
+            Attribute schemaConnectorAttribute = element.attribute( SCHEMA_CONNECTOR_TAG );
+            if ( ( schemaConnectorAttribute != null ) && ( !schemaConnectorAttribute.getValue().equals( "" ) ) )
+            {
+                String schemaConnectorId = schemaConnectorAttribute.getValue();
+
+                SchemaConnector schemaConnector = null;
+                List<SchemaConnector> schemaConnectors = PluginUtils.getSchemaConnectors();
+                for ( SchemaConnector sc : schemaConnectors )
+                {
+                    if ( sc.getId().equalsIgnoreCase( schemaConnectorId ) )
+                        ;
+                    {
+                        schemaConnector = sc;
+                    }
+                }
+
+                if ( schemaConnector == null )
+                {
+                    throw new ProjectsImportException( "The parser was not able to find the SchemaConnector with ID :"
+                        + schemaConnectorId + "." );
+                }
+
+                project.setSchemaConnector( schemaConnector );
             }
 
             // SchemaBackup

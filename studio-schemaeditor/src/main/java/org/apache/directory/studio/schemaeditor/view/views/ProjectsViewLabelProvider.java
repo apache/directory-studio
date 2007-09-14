@@ -61,16 +61,16 @@ public class ProjectsViewLabelProvider extends LabelProvider
                             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                                 PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
                     }
-                case APACHE_DIRECTORY_SERVER:
+                case ONLINE:
                     ProjectState state2 = project.getState();
                     switch ( state2 )
                     {
                         case OPEN:
                             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_ADS ).createImage();
+                                PluginConstants.IMG_PROJECT_ONLINE ).createImage();
                         case CLOSED:
                             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_ADS_CLOSED ).createImage();
+                                PluginConstants.IMG_PROJECT_ONLINE_CLOSED ).createImage();
                     }
             }
         }

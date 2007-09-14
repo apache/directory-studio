@@ -25,7 +25,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -37,9 +39,13 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.ProjectsExporter;
 import org.apache.directory.studio.schemaeditor.model.io.ProjectsImportException;
 import org.apache.directory.studio.schemaeditor.model.io.ProjectsImporter;
+import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImportException;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
@@ -257,23 +263,63 @@ public class PluginUtils
 
 
     /**
-     * Gets a Connection from the given name.
+     * Gets a Connection from the given id.
      *
-     * @param name
-     *      the name of the Connection
+     * @param id
+     *      the id of the Connection
      * @return
      *      the corresponding Connection, or null if no connection was found.
      */
-    public static Connection getConnection( String name )
+    public static Connection getConnection( String id )
     {
         Connection[] connectionsArray = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
 
         HashMap<String, Connection> connections = new HashMap<String, Connection>();
         for ( Connection connection : connectionsArray )
         {
-            connections.put( connection.getName(), connection );
+            connections.put( connection.getId(), connection );
         }
 
-        return connections.get( name );
+        return connections.get( id );
+    }
+
+
+    /**
+     * Gets the List of SchemaConnectors defined using the ExtensionPoint.
+     *
+     * @return
+     *      the List of SchemaConnectors defined using the ExtensionPoint
+     */
+    public static List<SchemaConnector> getSchemaConnectors()
+    {
+        List<SchemaConnector> schemaConnectors = new ArrayList<SchemaConnector>();
+
+        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+            "org.apache.directory.studio.schemaeditor.schemaConnectors" );
+        IConfigurationElement[] members = extensionPoint.getConfigurationElements();
+
+        if ( members != null )
+        {
+            // Creating each SchemaConnector
+            for ( IConfigurationElement member : members )
+            {
+                try
+                {
+                    SchemaConnector schemaConnector = ( SchemaConnector ) member.createExecutableExtension( "class" );
+                    schemaConnector.setName( member.getAttribute( "name" ) );
+                    schemaConnector.setId( member.getAttribute( "id" ) );
+                    schemaConnector.setDescription( member.getAttribute( "description" ) );
+
+                    schemaConnectors.add( schemaConnector );
+                }
+                catch ( CoreException e )
+                {
+                    PluginUtils.logError( "An error occured when loading the schema connectors.", e );
+                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when loading the schema connectors." );
+                }
+            }
+        }
+
+        return schemaConnectors;
     }
 }

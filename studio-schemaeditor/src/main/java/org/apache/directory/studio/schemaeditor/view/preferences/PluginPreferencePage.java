@@ -20,15 +20,32 @@
 package org.apache.directory.studio.schemaeditor.view.preferences;
 
 
+import java.util.Comparator;
+
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
+import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -47,7 +64,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
     {
         super();
         setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        setDescription( "Please select a preference page below \"Schema Editor\"." );
+        setDescription( "General settings for the Schema Editor Plugin" );
     }
 
 
@@ -59,6 +76,91 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayout( new GridLayout() );
         composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        // SchemaConnectors Group
+        Group schemaConnectorsGroup = new Group( composite, SWT.NONE );
+        schemaConnectorsGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        schemaConnectorsGroup.setLayout( new GridLayout( 2, true ) );
+        schemaConnectorsGroup.setText( "Schema Connectors" );
+
+        // Available Schema Connectors Label
+        Label availableSchemaConnectorsLabel = new Label( schemaConnectorsGroup, SWT.NONE );
+        availableSchemaConnectorsLabel.setText( "Available Connectors:" );
+
+        // Description Label
+        Label descriptionLabel = new Label( schemaConnectorsGroup, SWT.NONE );
+        descriptionLabel.setText( "Description:" );
+        // SchemaConnectors TableViewer
+        final TableViewer schemaConnectorsTableViewer = new TableViewer( schemaConnectorsGroup, SWT.BORDER | SWT.SINGLE
+            | SWT.FULL_SELECTION );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        gridData.heightHint = 125;
+        schemaConnectorsTableViewer.getTable().setLayoutData( gridData );
+        schemaConnectorsTableViewer.setContentProvider( new ArrayContentProvider() );
+        schemaConnectorsTableViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
+            {
+                return ( ( SchemaConnector ) element ).getName();
+            }
+
+
+            public Image getImage( Object element )
+            {
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_SCHEMA_CONNECTOR ).createImage();
+            }
+        } );
+        
+        schemaConnectorsTableViewer.setComparator( new ViewerComparator( new Comparator<String>()
+        {
+            public int compare( String o1, String o2 )
+            {
+                if ( ( o1 != null ) && ( o2 != null ) )
+                {
+                    return o1.compareToIgnoreCase( o2 );
+                }
+
+                // Default
+                return 0;
+            }
+        } ) );
+       
+//      schemaConnectorsTableViewer.setComparator( new ViewerComparator( new Comparator<SchemaConnector>()
+//      {
+//          public int compare( SchemaConnector o1, SchemaConnector o2 )
+//          {
+//              String name1 = o1.getName();
+//              String name2 = o2.getName();
+//
+//              if ( ( name1 != null ) && ( name2 != null ) )
+//              {
+//                  return name1.compareToIgnoreCase( name2 );
+//              }
+//
+//              // Default
+//              return 0;
+//          }
+//      } ) );
+        schemaConnectorsTableViewer.setInput( PluginUtils.getSchemaConnectors() );
+
+        // Description Text
+        final Text descriptionText = new Text( schemaConnectorsGroup, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY );
+        descriptionText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        schemaConnectorsTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                SchemaConnector schemaConnector = ( SchemaConnector ) ( ( StructuredSelection ) schemaConnectorsTableViewer
+                    .getSelection() ).getFirstElement();
+
+                if ( schemaConnector != null )
+                {
+                    descriptionText.setText( schemaConnector.getDescription() );
+                }
+            }
+        } );
 
         return parent;
     }

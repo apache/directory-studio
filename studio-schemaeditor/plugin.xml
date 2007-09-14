@@ -19,6 +19,7 @@
   under the License.
 -->
 <plugin>
+   <extension-point id="org.apache.directory.studio.schemaeditor.schemaConnectors" name="Schema Editor Schema Connectors" schema="src/main/resources/org.apache.directory.studio.schemaeditor.schemaConnectors.exsd"/>
 	<extension
          point="org.eclipse.ui.perspectives">
       <perspective
@@ -286,4 +287,12 @@
             showScopeSection="false"
             sizeHint="450,300"/>
 	</extension>
+	<extension
+		point="org.apache.directory.studio.schemaeditor.schemaConnectors">
+		<schemaConnector
+			name="Apache Directory Server"
+			id="org.apache.directory.studio.schemaeditor.schemaConnectors.apacheDirectoryServer"
+			description="A SchemaConnector for Apache Directory Server."
+			class="org.apache.directory.studio.schemaeditor.model.io.ApacheDsSchemaConnector"/>
+	 </extension>     
 </plugin>

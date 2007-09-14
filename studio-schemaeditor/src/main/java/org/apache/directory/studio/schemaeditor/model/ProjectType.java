@@ -30,6 +30,6 @@ public enum ProjectType
 {
     /** A schema project not linked to any LDAP Server */
     OFFLINE,
-    /** A schema project linked to an Apache Directory Server */
-    APACHE_DIRECTORY_SERVER
+    /** A schema project linked to a Directory Server */
+    ONLINE
 }

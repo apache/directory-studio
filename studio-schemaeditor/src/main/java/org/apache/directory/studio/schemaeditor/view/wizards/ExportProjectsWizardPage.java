@@ -140,9 +140,9 @@ public class ExportProjectsWizardPage extends WizardPage
                         case OFFLINE:
                             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
                                 PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
-                        case APACHE_DIRECTORY_SERVER:
+                        case ONLINE:
                             return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_ADS_CLOSED ).createImage();
+                                PluginConstants.IMG_PROJECT_ONLINE_CLOSED ).createImage();
                     }
                 }
 
