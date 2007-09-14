@@ -59,6 +59,9 @@ public class ProblemsView extends ViewPart
 
     /** The SchemaChecker */
     private SchemaChecker schemaChecker;
+    
+    /** The Controller */
+    private ProblemsViewController controller;
 
 
     /* (non-Javadoc)
@@ -90,7 +93,7 @@ public class ProblemsView extends ViewPart
         initViewer( parent );
 
         // Adding the controller
-        new ProblemsViewController( this );
+        controller = new ProblemsViewController( this );
     }
 
 
@@ -194,5 +197,13 @@ public class ProblemsView extends ViewPart
         }
 
         overviewLabel.setText( sb.toString() );
+    }
+    
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.part.WorkbenchPart#dispose()
+     */
+    public void dispose()
+    {
+        controller.dispose();
     }
 }
