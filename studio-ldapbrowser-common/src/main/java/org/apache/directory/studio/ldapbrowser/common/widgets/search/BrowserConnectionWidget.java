@@ -80,7 +80,6 @@ public class BrowserConnectionWidget extends BrowserWidget
      */
     public void createWidget( final Composite parent )
     {
-
         // Text
         browserConnectionText = BaseWidgetUtils.createReadonlyText( parent, "", 1 );
 
@@ -90,9 +89,8 @@ public class BrowserConnectionWidget extends BrowserWidget
         {
             public void widgetSelected( SelectionEvent e )
             {
-                // if(selectedConnection != null) {
-                SelectBrowserConnectionDialog dialog = new SelectBrowserConnectionDialog( parent.getShell(), "Select Connection",
-                    selectedBrowserConnection );
+                SelectBrowserConnectionDialog dialog = new SelectBrowserConnectionDialog( parent.getShell(),
+                    "Select Connection", selectedBrowserConnection );
                 dialog.open();
                 IBrowserConnection browserConnection = dialog.getSelectedBrowserConnection();
                 if ( browserConnection != null )
@@ -100,13 +98,11 @@ public class BrowserConnectionWidget extends BrowserWidget
                     setBrowserConnection( browserConnection );
                     notifyListeners();
                 }
-                // }
             }
         } );
 
         // initial values
         setBrowserConnection( selectedBrowserConnection );
-
     }
 
 

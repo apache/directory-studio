@@ -32,7 +32,9 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
@@ -76,12 +78,9 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ViewForm;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -118,13 +117,13 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  */
 public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpdateListener, IPartListener2
 {
-    protected ViewForm control;
+    private ViewForm control;
 
-    protected Combo connectionCombo;
+    private BrowserConnectionWidget browserConnectionWidget;
 
-    protected ToolBar actionToolBar;
+    private ToolBar actionToolBar;
 
-    protected IToolBarManager actionToolBarManager;
+    private IToolBarManager actionToolBarManager;
 
     private IBrowserConnection connection;
 
@@ -162,7 +161,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.PropertyChangeEvent)
      */
     protected void handlePreferenceStoreChanged( PropertyChangeEvent event )
     {
@@ -188,7 +187,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#collectContextMenuPreferencePages()
      */
     protected String[] collectContextMenuPreferencePages()
     {
@@ -216,7 +215,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.texteditor.AbstractTextEditor#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
      */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
@@ -245,12 +244,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.editors.text.TextEditor#dispose()
      */
     public void dispose()
     {
-
-        this.valueEditorManager.dispose();
+        valueEditorManager.dispose();
 
         deactivateGlobalActionHandlers();
 
@@ -262,7 +260,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.editors.text.TextEditor#getAdapter(java.lang.Class)
      */
     public Object getAdapter( Class required )
     {
@@ -316,7 +314,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.editors.text.TextEditor#editorContextMenuAboutToShow(org.eclipse.jface.action.IMenuManager)
      */
     protected void editorContextMenuAboutToShow( IMenuManager menu )
     {
@@ -371,12 +369,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         addAction( formatMenuManager, FormatLdifDocumentAction.class.getName() );
         addAction( formatMenuManager, FormatLdifRecordAction.class.getName() );
         menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, formatMenuManager );
-
     }
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.editors.text.TextEditor#createActions()
      */
     protected void createActions()
     {
@@ -390,22 +387,22 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         // add execute action (for tool bar)
         ExecuteLdifAction executeLdifAction = new ExecuteLdifAction( this );
-        this.actionToolBarManager.add( executeLdifAction );
+        actionToolBarManager.add( executeLdifAction );
         setAction( ExecuteLdifAction.class.getName(), executeLdifAction );
-        this.actionToolBarManager.update( true );
+        actionToolBarManager.update( true );
 
         // add context menu edit actions
         EditLdifAttributeAction editLdifAttributeAction = new EditLdifAttributeAction( this );
         setAction( EditLdifAttributeAction.class.getName(), editLdifAttributeAction );
 
-        this.openBestValueEditorAction = new OpenBestValueEditorAction( this );
+        openBestValueEditorAction = new OpenBestValueEditorAction( this );
         IValueEditor[] valueEditors = valueEditorManager.getAllValueEditors();
-        this.openValueEditorActions = new OpenValueEditorAction[valueEditors.length];
+        openValueEditorActions = new OpenValueEditorAction[valueEditors.length];
         for ( int i = 0; i < this.openValueEditorActions.length; i++ )
         {
-            this.openValueEditorActions[i] = new OpenValueEditorAction( this, valueEditors[i] );
+            openValueEditorActions[i] = new OpenValueEditorAction( this, valueEditors[i] );
         }
-        this.valueEditorPreferencesAction = new ValueEditorPreferencesAction();
+        valueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
         OpenDefaultValueEditorAction openDefaultValueEditorAction = new OpenDefaultValueEditorAction( this,
             openBestValueEditorAction );
@@ -441,16 +438,14 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         }
 
         activateGlobalActionHandlers();
-
     }
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl( Composite parent )
     {
-
         setHelpContextId( LdifEditorActivator.PLUGIN_ID + "." + "tools_ldif_editor" );
 
         Composite composite = new Composite( parent, SWT.NONE );
@@ -465,30 +460,19 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         control = new ViewForm( composite, SWT.NONE );
         control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
-        // infoText = BaseWidgetUtils.createLabeledText(control, "", 1);
-        Composite connectionComboControl = BaseWidgetUtils.createColumnContainer( control, 1, 1 );
-        // connectionComboControl.setLayoutData(new
-        // GridData(GridData.GRAB_HORIZONTAL));
-        connectionCombo = BaseWidgetUtils.createReadonlyCombo( connectionComboControl, new String[0], 0, 1 );
-        connectionCombo.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, true ) );
+        Composite browserConnectionWidgetControl = BaseWidgetUtils.createColumnContainer( control, 2, 1 );
+        browserConnectionWidget = new BrowserConnectionWidget();
+        browserConnectionWidget.createWidget( browserConnectionWidgetControl );
         connectionUpdated( null );
-        connectionCombo.addModifyListener( new ModifyListener()
+        browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
-            public void modifyText( ModifyEvent e )
+            public void widgetModified( WidgetModifyEvent event )
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionByName(
-                    connectionCombo.getText() );
-                setConnection( connection );
-                IAction action = getAction( ExecuteLdifAction.class.getName() );
-                if ( action != null )
-                {
-                    action.setEnabled( connection == null );
-                    action.setEnabled( connection != null );
-                    // actionToolBarManager.update(true);
-                }
+                IBrowserConnection browserConnection = browserConnectionWidget.getBrowserConnection();
+                setConnection( browserConnection );
             }
         } );
-        control.setTopLeft( connectionComboControl );
+        control.setTopLeft( browserConnectionWidgetControl );
 
         // tool bar
         actionToolBar = new ToolBar( control, SWT.FLAT | SWT.RIGHT );
@@ -513,12 +497,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         projectionSupport = new ProjectionSupport( projectionViewer, getAnnotationAccess(), getSharedColors() );
         projectionSupport.install();
         projectionViewer.doOperation( ProjectionViewer.TOGGLE );
-
     }
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer(org.eclipse.swt.widgets.Composite, org.eclipse.jface.text.source.IVerticalRuler, int)
      */
     protected ISourceViewer createSourceViewer( Composite parent, IVerticalRuler ruler, int styles )
     {
@@ -532,7 +515,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#configureSourceViewerDecorationSupport(org.eclipse.ui.texteditor.SourceViewerDecorationSupport)
      */
     protected void configureSourceViewerDecorationSupport( SourceViewerDecorationSupport support )
     {
@@ -541,7 +524,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldifeditor.editor.ILdifEditor#getLdifModel()
      */
     public LdifFile getLdifModel()
     {
@@ -568,11 +551,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.apache.directory.studio.ldifeditor.editor.ILdifEditor#getConnection()
      */
     public IBrowserConnection getConnection()
     {
-        return this.connection;
+        return connection;
     }
 
 
@@ -588,6 +571,13 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         getEditorSite().getActionBars().getStatusLineManager().setMessage(
             "Used Connection: " + ( this.connection == null ? "-" : this.connection.getName() ) );
         // getStatusField("ldapconnection").setText();
+        
+        IAction action = getAction( ExecuteLdifAction.class.getName() );
+        if ( action != null )
+        {
+            action.setEnabled( connection == null );
+            action.setEnabled( connection != null );
+        }
     }
 
 
@@ -596,17 +586,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public final void connectionUpdated( Connection connection )
     {
-        IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnections();
-        String[] names = new String[connections.length + 1];
-        names[0] = "";
-        for ( int i = 0; i < connections.length; i++ )
-        {
-            names[i + 1] = connections[i].getName();
-        }
-        String old = connectionCombo.getText();
-        connectionCombo.setItems( names );
-        connectionCombo.setText( old );
-        connectionCombo.setVisibleItemCount( Math.max( names.length, 20 ) );
+        IBrowserConnection browserConnection = browserConnectionWidget.getBrowserConnection();
+        setConnection( browserConnection );
+        browserConnectionWidget.setBrowserConnection( browserConnection );
     }
 
 
@@ -646,10 +628,16 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    
+    
+    
+    
     /**
      * This implementation checks if the input is of type
      * NonExistingLdifEditorInput. In that case doSaveAs() is
      * called to prompt for a new file name and location.
+     * 
+     * @see org.eclipse.ui.texteditor.AbstractTextEditor#doSave(org.eclipse.core.runtime.IProgressMonitor)
      */
     public void doSave( IProgressMonitor progressMonitor )
     {
@@ -664,6 +652,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
+    
     /**
      * The input could be one of the following types:
      * - NonExistingLdifEditorInput: New file, not yet saved
@@ -675,6 +664,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      * In IDE the super implementation is called.
      * To detect if this plugin runs in IDE the org.eclipse.ui.ide extension point is checked.
      *
+     * @see org.eclipse.ui.editors.text.TextEditor#performSaveAs(org.eclipse.core.runtime.IProgressMonitor)
      */
     protected void performSaveAs( IProgressMonitor progressMonitor )
     {
@@ -769,13 +759,13 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partDeactivated(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partDeactivated( IWorkbenchPartReference partRef )
     {
         if ( partRef.getPart( false ) == this && contextActivation != null )
         {
-            this.deactivateGlobalActionHandlers();
+            deactivateGlobalActionHandlers();
 
             IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                 IContextService.class );
@@ -786,7 +776,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partActivated(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partActivated( IWorkbenchPartReference partRef )
     {
@@ -797,13 +787,13 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             contextActivation = contextService
                 .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
 
-            this.activateGlobalActionHandlers();
+            activateGlobalActionHandlers();
         }
     }
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partBroughtToTop(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partBroughtToTop( IWorkbenchPartReference partRef )
     {
@@ -811,7 +801,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partClosed(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partClosed( IWorkbenchPartReference partRef )
     {
@@ -819,7 +809,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partHidden(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partHidden( IWorkbenchPartReference partRef )
     {
@@ -827,7 +817,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partInputChanged(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partInputChanged( IWorkbenchPartReference partRef )
     {
@@ -835,7 +825,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partOpened(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partOpened( IWorkbenchPartReference partRef )
     {
@@ -843,7 +833,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
-     * {@inheritDoc}
+     * @see org.eclipse.ui.IPartListener2#partVisible(org.eclipse.ui.IWorkbenchPartReference)
      */
     public void partVisible( IWorkbenchPartReference partRef )
     {
@@ -898,4 +888,5 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         return valueEditorManager;
     }
+
 }
