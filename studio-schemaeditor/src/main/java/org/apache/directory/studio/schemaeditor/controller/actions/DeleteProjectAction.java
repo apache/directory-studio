@@ -66,6 +66,7 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
         super( "&Delete Project" );
         setToolTipText( "Delete Project" );
         setId( PluginConstants.CMD_DELETE_PROJECT );
+        setActionDefinitionId( PluginConstants.CMD_DELETE_PROJECT );
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
         setEnabled( false );

@@ -65,6 +65,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
         super( "Re&name Project..." );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_RENAME_PROJECT );
+        setActionDefinitionId( PluginConstants.CMD_RENAME_PROJECT );
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_RENAME ) );
         setEnabled( false );

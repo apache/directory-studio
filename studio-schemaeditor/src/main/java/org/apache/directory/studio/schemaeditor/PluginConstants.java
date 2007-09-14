@@ -319,4 +319,9 @@ public interface PluginConstants
     /** The preference ID for Search View Display Secondary Label */
     public static final String PREFS_SEARCH_VIEW_SCHEMA_LABEL_DISPLAY = SearchViewPreferencePage.ID
         + ".schemaLabel.display"; //$NON-NLS-1$
+
+    /** The Context for the SchemaView */
+    public static final String CONTEXT_SCHEMA_VIEW = Activator.PLUGIN_ID + ".contexts.schemaView"; //$NON-NLS-1$
+    /** The Context for the SchemaView */
+    public static final String CONTEXT_PROJECTS_VIEW = Activator.PLUGIN_ID + ".contexts.projectsView"; //$NON-NLS-1$
 }

@@ -62,6 +62,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -70,10 +71,15 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 
 
 /**
@@ -340,6 +346,9 @@ public class SchemaViewController
         }
     };
 
+    /** Token used to activate and deactivate shortcuts in the view */
+    private IContextActivation contextActivation;
+
     // The Actions
     private NewSchemaAction newSchema;
     private NewAttributeTypeAction newAttributeType;
@@ -356,8 +365,9 @@ public class SchemaViewController
     private OpenSchemaViewSortingDialogAction openSchemaViewSortingDialog;
     private OpenSchemaViewPreferenceAction openSchemaViewPreference;
     private LinkWithEditorSchemaViewAction linkWithEditor;
-//    private CommitChangesAction commitChanges;
 
+
+    //    private CommitChangesAction commitChanges;
 
     /**
      * Creates a new instance of SchemasViewController.
@@ -379,6 +389,7 @@ public class SchemaViewController
         initAuthorizedPrefs();
         initPreferencesListener();
         initState();
+        initPartListener();
     }
 
 
@@ -402,7 +413,7 @@ public class SchemaViewController
         openSchemaViewSortingDialog = new OpenSchemaViewSortingDialogAction();
         openSchemaViewPreference = new OpenSchemaViewPreferenceAction();
         linkWithEditor = new LinkWithEditorSchemaViewAction( view );
-//        commitChanges = new CommitChangesAction();
+        //        commitChanges = new CommitChangesAction();
     }
 
 
@@ -415,8 +426,8 @@ public class SchemaViewController
         toolbar.add( newSchema );
         toolbar.add( newAttributeType );
         toolbar.add( newObjectClass );
-//        toolbar.add( new Separator() );
-//        toolbar.add( commitChanges );
+        //        toolbar.add( new Separator() );
+        //        toolbar.add( commitChanges );
         toolbar.add( new Separator() );
         toolbar.add( collapseAll );
         toolbar.add( linkWithEditor );
@@ -506,7 +517,7 @@ public class SchemaViewController
                     linkWithEditor.setEnabled( true );
                     openSchemaViewSortingDialog.setEnabled( true );
                     openSchemaViewPreference.setEnabled( true );
-//                    commitChanges.setEnabled( true );
+                    //                    commitChanges.setEnabled( true );
 
                     addSchemaHandlerListener( newProject );
                     view.reloadViewer();
@@ -522,7 +533,7 @@ public class SchemaViewController
                     linkWithEditor.setEnabled( false );
                     openSchemaViewSortingDialog.setEnabled( false );
                     openSchemaViewPreference.setEnabled( false );
-//                    commitChanges.setEnabled( false );
+                    //                    commitChanges.setEnabled( false );
                 }
             }
         } );
@@ -834,7 +845,7 @@ public class SchemaViewController
             linkWithEditor.setEnabled( true );
             openSchemaViewSortingDialog.setEnabled( true );
             openSchemaViewPreference.setEnabled( true );
-//            commitChanges.setEnabled( true );
+            //            commitChanges.setEnabled( true );
 
             addSchemaHandlerListener( project );
             view.reloadViewer();
@@ -849,7 +860,106 @@ public class SchemaViewController
             linkWithEditor.setEnabled( false );
             openSchemaViewSortingDialog.setEnabled( false );
             openSchemaViewPreference.setEnabled( false );
-//            commitChanges.setEnabled( false );
+            //            commitChanges.setEnabled( false );
         }
+    }
+
+
+    /**
+     * Initializes the PartListener.
+     */
+    private void initPartListener()
+    {
+        view.getSite().getPage().addPartListener( new IPartListener2()
+        {
+            /**
+              * This implementation deactivates the shortcuts when the part is deactivated.
+              */
+            public void partDeactivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == view && contextActivation != null )
+                {
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( newSchema.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( newAttributeType.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( newObjectClass.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( openElement.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( openTypeHierarchy.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( deleteSchemaElement.getActionDefinitionId() ).setHandler( null );
+                    }
+
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextService.deactivateContext( contextActivation );
+                    contextActivation = null;
+                }
+            }
+
+
+            /**
+             * This implementation activates the shortcuts when the part is activated.
+             */
+            public void partActivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == view )
+                {
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextActivation = contextService.activateContext( PluginConstants.CONTEXT_SCHEMA_VIEW );
+
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( newSchema.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( newSchema ) );
+                        commandService.getCommand( newAttributeType.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( newAttributeType ) );
+                        commandService.getCommand( newObjectClass.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( newObjectClass ) );
+                        commandService.getCommand( openElement.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( openElement ) );
+                        commandService.getCommand( openTypeHierarchy.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( openTypeHierarchy ) );
+                        commandService.getCommand( deleteSchemaElement.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( deleteSchemaElement ) );
+                    }
+                }
+            }
+
+
+            public void partBroughtToTop( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partClosed( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partHidden( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partInputChanged( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partOpened( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partVisible( IWorkbenchPartReference partRef )
+            {
+            }
+
+        } );
     }
 }

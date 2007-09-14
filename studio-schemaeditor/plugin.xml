@@ -294,5 +294,138 @@
 			id="org.apache.directory.studio.schemaeditor.schemaConnectors.apacheDirectoryServer"
 			description="A SchemaConnector for Apache Directory Server."
 			class="org.apache.directory.studio.schemaeditor.model.io.ApacheDsSchemaConnector"/>
-	 </extension>     
+	 </extension>
+ <extension
+       point="org.eclipse.ui.contexts">
+    <context
+          description="In Projects View of Schema Editor"
+          id="org.apache.directory.studio.schemaeditor.contexts.projectsView"
+          name="In Projects View of Schema Editor"
+          parentId="org.eclipse.ui.contexts.window">
+    </context>
+    <context
+          description="In Schema View of Schema Editor"
+          id="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          name="In Schema View of Schema Editor"
+          parentId="org.eclipse.ui.contexts.window">
+    </context>
+ </extension>
+ <extension
+       point="org.eclipse.ui.commands">
+    <category
+          id="org.apache.directory.studio.schemaeditor.commands"
+          name="Schema Editor">
+    </category>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Creates a new project"
+          id="org.apache.directory.studio.schemaeditor.commands.newProject"
+          name="New Project">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Renames the selected project"
+          id="org.apache.directory.studio.schemaeditor.commands.renameProject"
+          name="Rename Project">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Deletes the selected project(s)"
+          id="org.apache.directory.studio.schemaeditor.commands.deleteProject"
+          name="Delete Project">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Creates a new schema"
+          id="org.apache.directory.studio.schemaeditor.commands.newSchema"
+          name="New Schema">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Creates a new attribute type"
+          id="org.apache.directory.studio.schemaeditor.commands.newAttributeType"
+          name="New Attribute Type">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Creates a new object class"
+          id="org.apache.directory.studio.schemaeditor.commands.newObjectClass"
+          name="New Object Class">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Opens the selected element"
+          id="org.apache.directory.studio.schemaeditor.commands.openElement"
+          name="Open Element">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Opens the selected element in Type Hierarchy"
+          id="org.apache.directory.studio.schemaeditor.commands.openTypeHierarchy"
+          name="Open Type Hierarchy">
+    </command>
+    <command
+          categoryId="org.apache.directory.studio.schemaeditor.commands"
+          description="Delete the selected schema elements"
+          id="org.apache.directory.studio.schemaeditor.commands.deleteSchemaElement"
+          name="Delete Schema Element">
+    </command>
+ </extension>
+ <extension
+       point="org.eclipse.ui.bindings">
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.newProject"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.projectsView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+R">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.renameProject"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.projectsView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F2">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.deleteProject"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.projectsView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="DEL">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.newSchema"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+E">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.newAttributeType"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+T">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.newObjectClass"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="M1+B">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.openElement"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F3">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.openTypeHierarchy"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="F4">
+    </key>
+    <key
+          commandId="org.apache.directory.studio.schemaeditor.commands.deleteSchemaElement"
+          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+          sequence="DEL">
+    </key>
+ </extension>     
 </plugin>

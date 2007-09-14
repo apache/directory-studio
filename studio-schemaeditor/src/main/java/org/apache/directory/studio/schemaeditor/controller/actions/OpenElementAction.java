@@ -66,6 +66,7 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
         super( "&Open" );
         setToolTipText( "Open" );
         setId( PluginConstants.CMD_OPEN_ELEMENT );
+        setActionDefinitionId( PluginConstants.CMD_OPEN_ELEMENT );
         setEnabled( true );
         this.viewer = viewer;
     }

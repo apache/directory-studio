@@ -50,6 +50,7 @@ public class NewProjectAction extends Action implements IWorkbenchWindowActionDe
         super( "New Schema P&roject" );
         setToolTipText( "New Schema Project" );
         setId( PluginConstants.CMD_NEW_PROJECT );
+        setActionDefinitionId( PluginConstants.CMD_NEW_PROJECT  );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_PROJECT_NEW ) );
         setEnabled( true );

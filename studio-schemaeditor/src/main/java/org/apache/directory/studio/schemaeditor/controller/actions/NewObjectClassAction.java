@@ -58,9 +58,10 @@ public class NewObjectClassAction extends Action implements IWorkbenchWindowActi
      */
     public NewObjectClassAction( TreeViewer viewer )
     {
-        super( "New &Object Class" );
+        super( "New O&bject Class" );
         setToolTipText( "New Object Class" );
         setId( PluginConstants.CMD_NEW_OBJECT_CLASS );
+        setActionDefinitionId( PluginConstants.CMD_NEW_OBJECT_CLASS );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_OBJECT_CLASS_NEW ) );
         setEnabled( false );

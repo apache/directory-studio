@@ -71,6 +71,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
         super( "&Delete" );
         setToolTipText( "Delete" );
         setId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
+        setActionDefinitionId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
         setImageDescriptor( AbstractUIPlugin
             .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
         setEnabled( true );

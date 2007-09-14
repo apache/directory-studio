@@ -64,6 +64,7 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
         super( "Ope&n Type Hierarchy" );
         setToolTipText( "Open Type Hierarchy" );
         setId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
+        setActionDefinitionId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setEnabled( true );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()
