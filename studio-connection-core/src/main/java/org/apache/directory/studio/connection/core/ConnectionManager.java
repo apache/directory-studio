@@ -27,7 +27,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -123,9 +122,8 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection getConnectionById( String id )
     {
-        for ( Iterator<?> it = connectionList.iterator(); it.hasNext(); )
+        for ( Connection conn:connectionList )
         {
-            Connection conn = ( Connection ) it.next();
             if ( conn.getConnectionParameter().getId().equals( id ) )
             {
                 return conn;
@@ -145,9 +143,8 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection getConnectionByName( String name )
     {
-        for ( Iterator<?> it = connectionList.iterator(); it.hasNext(); )
+        for ( Connection conn:connectionList )
         {
-            Connection conn = ( Connection ) it.next();
             if ( conn.getConnectionParameter().getName().equals( name ) )
             {
                 return conn;
