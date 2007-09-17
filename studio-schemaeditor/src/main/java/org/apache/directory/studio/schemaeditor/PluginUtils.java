@@ -21,10 +21,8 @@ package org.apache.directory.studio.schemaeditor;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,7 +129,7 @@ public class PluginUtils
 
 
     /**
-     * Gets the Projects (where is store information about the loaded Projects).
+     * Gets the Projects (where is stored information about the loaded Projects).
      *
      * @return
      *      the Projects File
@@ -185,16 +183,6 @@ public class PluginUtils
             writer.write( ProjectsExporter.toDocument( Activator.getDefault().getProjectsHandler().getProjects()
                 .toArray( new Project[0] ) ) );
             writer.flush();
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            PluginUtils.logError( "An error occured when saving the projects.", e );
-            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when saving the projects." );
-        }
-        catch ( FileNotFoundException e )
-        {
-            PluginUtils.logError( "An error occured when saving the projects.", e );
-            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when saving the projects." );
         }
         catch ( IOException e )
         {

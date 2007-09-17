@@ -119,12 +119,11 @@ public class ProjectsExporter
             {
                 try
                 {
-                    element.addAttribute( NAME_TAG, new String ( name.getBytes("UTF-8"), "UTF-8") );
+                    element.addAttribute( NAME_TAG, new String( name.getBytes( "UTF-8" ), "UTF-8" ) );
                 }
                 catch ( UnsupportedEncodingException e )
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // Will never occur
                 }
             }
 
