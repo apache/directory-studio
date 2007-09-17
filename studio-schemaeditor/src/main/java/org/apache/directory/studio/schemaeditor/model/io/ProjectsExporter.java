@@ -20,7 +20,6 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -117,14 +116,7 @@ public class ProjectsExporter
             String name = project.getName();
             if ( ( name != null ) && ( !name.equals( "" ) ) )
             {
-                try
-                {
-                    element.addAttribute( NAME_TAG, new String( name.getBytes( "UTF-8" ), "UTF-8" ) );
-                }
-                catch ( UnsupportedEncodingException e )
-                {
-                    // Will never occur
-                }
+                element.addAttribute( NAME_TAG, name );
             }
 
             // Type
