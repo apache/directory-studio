@@ -191,7 +191,6 @@ public class ProjectsImporter
                 for ( SchemaConnector sc : schemaConnectors )
                 {
                     if ( sc.getId().equalsIgnoreCase( schemaConnectorId ) )
-                        ;
                     {
                         schemaConnector = sc;
                     }

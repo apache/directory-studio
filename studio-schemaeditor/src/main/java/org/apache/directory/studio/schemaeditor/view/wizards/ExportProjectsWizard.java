@@ -20,9 +20,10 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -30,6 +31,8 @@ import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.io.ProjectsExporter;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -90,10 +93,26 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
 
                         try
                         {
-                            BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/"
-                                + project.getName() + ".schemaproject" ) );
-                            buffWriter.write( ProjectsExporter.toXml( project ) );
-                            buffWriter.close();
+                            OutputFormat outformat = OutputFormat.createPrettyPrint();
+                            outformat.setEncoding( "UTF-8" );
+                            XMLWriter writer = new XMLWriter( new FileOutputStream( exportDirectory + "/"
+                                + project.getName() + ".schemaproject" ), outformat );
+                            writer.write( ProjectsExporter.toDocument( project ) );
+                            writer.flush();
+                        }
+                        catch ( UnsupportedEncodingException e )
+                        {
+                            PluginUtils.logError(
+                                "An error occured when saving the project " + project.getName() + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the project "
+                                + project.getName() + "." );
+                        }
+                        catch ( FileNotFoundException e )
+                        {
+                            PluginUtils.logError(
+                                "An error occured when saving the project " + project.getName() + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the project "
+                                + project.getName() + "." );
                         }
                         catch ( IOException e )
                         {

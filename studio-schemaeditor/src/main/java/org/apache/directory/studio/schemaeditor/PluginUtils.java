@@ -20,10 +20,11 @@
 package org.apache.directory.studio.schemaeditor;
 
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,8 @@ import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImportException;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -174,14 +177,24 @@ public class PluginUtils
      */
     public static void saveProjects()
     {
-        ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
-        File projectsFile = getProjectsFile();
-
         try
         {
-            BufferedWriter buffWriter = new BufferedWriter( new FileWriter( projectsFile ) );
-            buffWriter.write( ProjectsExporter.toXml( projectsHandler.getProjects().toArray( new Project[0] ) ) );
-            buffWriter.close();
+            OutputFormat outformat = OutputFormat.createPrettyPrint();
+            outformat.setEncoding( "UTF-8" );
+            XMLWriter writer = new XMLWriter( new FileOutputStream( getProjectsFile() ), outformat );
+            writer.write( ProjectsExporter.toDocument( Activator.getDefault().getProjectsHandler().getProjects()
+                .toArray( new Project[0] ) ) );
+            writer.flush();
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            PluginUtils.logError( "An error occured when saving the projects.", e );
+            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when saving the projects." );
+        }
+        catch ( FileNotFoundException e )
+        {
+            PluginUtils.logError( "An error occured when saving the projects.", e );
+            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when saving the projects." );
         }
         catch ( IOException e )
         {

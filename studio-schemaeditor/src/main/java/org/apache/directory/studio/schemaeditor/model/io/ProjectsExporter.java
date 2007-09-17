@@ -20,15 +20,9 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.ProjectType;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -36,8 +30,6 @@ import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
 
 
 /**
@@ -59,15 +51,15 @@ public class ProjectsExporter
 
 
     /**
-     * Converts the given project to its code representation
-     * in XML file format.
-     *
+     * Converts the given project to its representation
+     * in Dom4J Document.
+     * 
      * @param project
      *      the project to convert
      * @return
-     *      the corresponding code representation
+     *      the corresponding Dom4j Document representation
      */
-    public static String toXml( Project project )
+    public static Document toDocument( Project project )
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -75,20 +67,20 @@ public class ProjectsExporter
         // Adding the project
         addProject( project, document );
 
-        return styleDocument( document ).asXML();
+        return document;
     }
 
 
     /**
-     * Converts the given projects to their code representation
-     * in XML file format.
+     * Converts the given projects to their representation
+     * in Dom4J Document.
      *
      * @param projects
      *      the projects to convert
      * @return
-     *      the corresponding code representation
+     *      the corresponding Dom4j Document representation
      */
-    public static String toXml( Project[] projects )
+    public static Document toDocument( Project[] projects )
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -102,7 +94,7 @@ public class ProjectsExporter
             }
         }
 
-        return styleDocument( document ).asXML();
+        return document;
     }
 
 
@@ -125,7 +117,15 @@ public class ProjectsExporter
             String name = project.getName();
             if ( ( name != null ) && ( !name.equals( "" ) ) )
             {
-                element.addAttribute( NAME_TAG, name );
+                try
+                {
+                    element.addAttribute( NAME_TAG, new String ( name.getBytes("UTF-8"), "UTF-8") );
+                }
+                catch ( UnsupportedEncodingException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
 
             // Type
@@ -158,45 +158,5 @@ public class ProjectsExporter
             XMLSchemaFileExporter
                 .addSchemas( project.getSchemaHandler().getSchemas().toArray( new Schema[0] ), element );
         }
-    }
-
-
-    /**
-     * XML Pretty Printer XSLT Transformation
-     * 
-     * @param document
-     *      the Dom4j Document
-     * @return
-     */
-    private static Document styleDocument( Document document )
-    {
-        // load the transformer using JAXP
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try
-        {
-            transformer = factory.newTransformer( new StreamSource( Activator.class
-                .getResourceAsStream( "XmlFileFormat.xslt" ) ) );
-        }
-        catch ( TransformerConfigurationException e1 )
-        {
-            // Will never occur
-        }
-
-        // now lets style the given document
-        DocumentSource source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        try
-        {
-            transformer.transform( source, result );
-        }
-        catch ( TransformerException e )
-        {
-            // Will never occur
-        }
-
-        // return the transformed document
-        Document transformedDoc = result.getDocument();
-        return transformedDoc;
     }
 }
