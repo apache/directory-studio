@@ -589,7 +589,10 @@ public class SearchView extends ViewPart
 
         if ( searchString != null )
         {
-            Pattern pattern = Pattern.compile( ".*" + searchString + ".*", Pattern.CASE_INSENSITIVE );
+            String computedSearchString = searchString.replaceAll( "\\*", "\\\\w*" );
+            computedSearchString = computedSearchString.replaceAll( "\\?", ".*" );
+
+            Pattern pattern = Pattern.compile( computedSearchString, Pattern.CASE_INSENSITIVE );
 
             SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
             if ( schemaHandler != null )
