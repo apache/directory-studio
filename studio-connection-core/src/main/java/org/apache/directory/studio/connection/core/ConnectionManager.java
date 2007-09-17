@@ -22,9 +22,9 @@ package org.apache.directory.studio.connection.core;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -262,7 +262,7 @@ public class ConnectionManager implements ConnectionUpdateListener
         // To avoid a corrupt file, save object to a temp file first 
         try
         {
-            ConnectionIO.save( connectionParameters, new FileWriter( getConnectionStoreFileName() + "-temp" ) );
+            ConnectionIO.save( connectionParameters, new FileOutputStream( getConnectionStoreFileName() + "-temp" ) );
         }
         catch ( IOException e )
         {
@@ -277,7 +277,7 @@ public class ConnectionManager implements ConnectionUpdateListener
         {
             file.delete();
         }
-        
+
         try
         {
             String content = FileUtils.readFileToString( tempFile, "UTF-8" );
@@ -300,14 +300,15 @@ public class ConnectionManager implements ConnectionUpdateListener
 
         try
         {
-            connectionParameters = ConnectionIO.load( new FileReader( getConnectionStoreFileName() ) );
+            connectionParameters = ConnectionIO.load( new FileInputStream( getConnectionStoreFileName() ) );
         }
         catch ( Exception e )
         {
             // If loading failed, try with temp file
             try
             {
-                connectionParameters = ConnectionIO.load( new FileReader( getConnectionStoreFileName() + "-temp" ) );
+                connectionParameters = ConnectionIO
+                    .load( new FileInputStream( getConnectionStoreFileName() + "-temp" ) );
             }
             catch ( FileNotFoundException e1 )
             {

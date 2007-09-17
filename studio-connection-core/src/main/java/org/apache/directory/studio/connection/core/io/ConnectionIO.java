@@ -20,9 +20,8 @@
 package org.apache.directory.studio.connection.core.io;
 
 
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,13 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -45,9 +37,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 
 /**
@@ -78,14 +70,14 @@ public class ConnectionIO
     /**
      * Loads the connections using the reader
      *
-     * @param reader
-     *      the reader
+     * @param stream
+     *      the FileInputStream
      * @return
      *      the connections
      * @throws ConnectionIOException 
      *      if an error occurs when converting the document
      */
-    public static List<ConnectionParameter> load( FileReader reader ) throws ConnectionIOException
+    public static List<ConnectionParameter> load( FileInputStream stream ) throws ConnectionIOException
     {
         List<ConnectionParameter> connections = new ArrayList<ConnectionParameter>();
 
@@ -94,7 +86,7 @@ public class ConnectionIO
 
         try
         {
-            document = saxReader.read( reader );
+            document = saxReader.read( stream );
         }
         catch ( DocumentException e )
         {
@@ -240,12 +232,12 @@ public class ConnectionIO
      *
      * @param connections
      *      the connections
-     * @param writer
-     *      the writer
+     * @param stream
+     *      the OutputStream
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void save( List<ConnectionParameter> connections, FileWriter writer ) throws IOException
+    public static void save( List<ConnectionParameter> connections, FileOutputStream stream ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -262,9 +254,11 @@ public class ConnectionIO
         }
 
         // Writing the file to disk
-        BufferedWriter buffWriter = new BufferedWriter( writer );
-        buffWriter.write( styleDocument( document ).asXML() );
-        buffWriter.close();
+        OutputFormat outformat = OutputFormat.createPrettyPrint();
+        outformat.setEncoding( "UTF-8" );
+        XMLWriter writer = new XMLWriter( stream, outformat );
+        writer.write( document );
+        writer.flush();
     }
 
 
@@ -318,45 +312,5 @@ public class ConnectionIO
                 extendedPropertyElement.addAttribute( VALUE_TAG, element.getValue() );
             }
         }
-    }
-
-
-    /**
-     * XML Pretty Printer XSLT Transformation
-     * 
-     * @param document
-     *      the Dom4j Document
-     * @return
-     */
-    private static Document styleDocument( Document document )
-    {
-        // load the transformer using JAXP
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try
-        {
-            transformer = factory.newTransformer( new StreamSource( ConnectionCorePlugin.class
-                .getResourceAsStream( "XmlFileFormat.xslt" ) ) );
-        }
-        catch ( TransformerConfigurationException e1 )
-        {
-            // Will never occur
-        }
-
-        // now lets style the given document
-        DocumentSource source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        try
-        {
-            transformer.transform( source, result );
-        }
-        catch ( TransformerException e )
-        {
-            // Will never occur
-        }
-
-        // return the transformed document
-        Document transformedDoc = result.getDocument();
-        return transformedDoc;
     }
 }
