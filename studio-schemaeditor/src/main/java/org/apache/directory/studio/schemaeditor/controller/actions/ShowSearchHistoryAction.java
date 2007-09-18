@@ -24,7 +24,7 @@ import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.dialogs.PreviousSearchesDialog;
 import org.apache.directory.studio.schemaeditor.view.search.SearchPage;
-import org.apache.directory.studio.schemaeditor.view.search.SearchPage.SearchScopeEnum;
+import org.apache.directory.studio.schemaeditor.view.search.SearchPage.SearchInEnum;
 import org.apache.directory.studio.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -170,7 +170,8 @@ class MenuCreator implements IMenuCreator
             {
                 public void widgetSelected( SelectionEvent e )
                 {
-                    view.setSearchInput( search, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
+                    view.setSearchInput( search, SearchPage.loadSearchIn().toArray( new SearchInEnum[0] ), SearchPage
+                        .loadScope() );
                 }
             } );
             if ( search.equals( view.getSearchString() ) )

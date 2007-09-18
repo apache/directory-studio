@@ -40,7 +40,7 @@ import org.apache.directory.studio.schemaeditor.view.editors.attributetype.Attri
 import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
 import org.apache.directory.studio.schemaeditor.view.search.SearchPage;
-import org.apache.directory.studio.schemaeditor.view.search.SearchPage.SearchScopeEnum;
+import org.apache.directory.studio.schemaeditor.view.search.SearchPage.SearchInEnum;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
@@ -208,10 +208,29 @@ public class SearchView extends ViewPart
             }
         } );
 
-        // Search Scope Toolbar
-        final ToolBar scopeToolBar = new ToolBar( searchFieldInnerComposite, SWT.HORIZONTAL | SWT.FLAT );
-        // Creating the Search Scope ToolItem
-        final ToolItem scopeToolItem = new ToolItem( scopeToolBar, SWT.DROP_DOWN );
+        // Search Toolbar
+        final ToolBar searchToolBar = new ToolBar( searchFieldInnerComposite, SWT.HORIZONTAL | SWT.FLAT );
+        // Creating the Search In ToolItem
+        final ToolItem searchInToolItem = new ToolItem( searchToolBar, SWT.DROP_DOWN );
+        searchInToolItem.setText( "Search In" );
+        // Adding the action to display the Menu when the item is clicked
+        searchInToolItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                Rectangle rect = searchInToolItem.getBounds();
+                Point pt = new Point( rect.x, rect.y + rect.height );
+                pt = searchToolBar.toDisplay( pt );
+
+                Menu menu = createSearchInMenu();
+                menu.setLocation( pt.x, pt.y );
+                menu.setVisible( true );
+            }
+        } );
+
+        new ToolItem( searchToolBar, SWT.SEPARATOR );
+
+        final ToolItem scopeToolItem = new ToolItem( searchToolBar, SWT.DROP_DOWN );
         scopeToolItem.setText( "Scope" );
         // Adding the action to display the Menu when the item is clicked
         scopeToolItem.addSelectionListener( new SelectionAdapter()
@@ -220,14 +239,14 @@ public class SearchView extends ViewPart
             {
                 Rectangle rect = scopeToolItem.getBounds();
                 Point pt = new Point( rect.x, rect.y + rect.height );
-                pt = scopeToolBar.toDisplay( pt );
+                pt = searchToolBar.toDisplay( pt );
 
-                Menu menu = createMenu();
+                Menu menu = createScopeMenu();
                 menu.setLocation( pt.x, pt.y );
                 menu.setVisible( true );
             }
         } );
-        scopeToolBar.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
+        searchToolBar.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // Search Button
         searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
@@ -251,12 +270,167 @@ public class SearchView extends ViewPart
 
 
     /**
-     * Creates the menu
+     * Creates the Search In Menu
      *
      * @return
-     *      the menu
+     *      the Search In menu
      */
-    public Menu createMenu()
+    public Menu createSearchInMenu()
+    {
+        final IDialogSettings settings = Activator.getDefault().getDialogSettings();
+
+        // Creating the associated Menu
+        Menu searchInMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
+
+        // Filling the menu
+        // Aliases
+        final MenuItem aliasesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        aliasesMenuItem.setText( "Aliases" );
+        aliasesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES, aliasesMenuItem.getSelection() );
+            }
+        } );
+        // OID
+        final MenuItem oidMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        oidMenuItem.setText( "OID" );
+        oidMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID, oidMenuItem.getSelection() );
+            }
+        } );
+        // Description
+        final MenuItem descriptionMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        descriptionMenuItem.setText( "Description" );
+        descriptionMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION, descriptionMenuItem.getSelection() );
+            }
+        } );
+        // Separator
+        new MenuItem( searchInMenu, SWT.SEPARATOR );
+        // Superior
+        final MenuItem superiorMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        superiorMenuItem.setText( "Superior" );
+        superiorMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR, superiorMenuItem.getSelection() );
+            }
+        } );
+        // Syntax
+        final MenuItem syntaxMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        syntaxMenuItem.setText( "Syntax" );
+        syntaxMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX, syntaxMenuItem.getSelection() );
+            }
+        } );
+        // Matching Rules
+        final MenuItem matchingRulesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        matchingRulesMenuItem.setText( "Matching Rules" );
+        matchingRulesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES, matchingRulesMenuItem
+                    .getSelection() );
+            }
+        } );
+        // Separator
+        new MenuItem( searchInMenu, SWT.SEPARATOR );
+        // Superiors
+        final MenuItem superiorsMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        superiorsMenuItem.setText( "Superiors" );
+        superiorsMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS, superiorsMenuItem.getSelection() );
+            }
+        } );
+        // Mandatory Attributes
+        final MenuItem mandatoryAttributesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        mandatoryAttributesMenuItem.setText( "Mandatory Attributes" );
+        mandatoryAttributesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES, mandatoryAttributesMenuItem
+                    .getSelection() );
+            }
+        } );
+        // Optional Attributes
+        final MenuItem optionalAttributesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
+        optionalAttributesMenuItem.setText( "Optional Attributes" );
+        optionalAttributesMenuItem.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES, optionalAttributesMenuItem
+                    .getSelection() );
+            }
+        } );
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES ) == null )
+        {
+            aliasesMenuItem.setSelection( true );
+        }
+        else
+        {
+            aliasesMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES ) );
+        }
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID ) == null )
+        {
+            oidMenuItem.setSelection( true );
+        }
+        else
+        {
+
+            oidMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID ) );
+        }
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) == null )
+        {
+            descriptionMenuItem.setSelection( true );
+        }
+        else
+        {
+            descriptionMenuItem
+                .setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) );
+        }
+
+        superiorMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR ) );
+        syntaxMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX ) );
+        matchingRulesMenuItem.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES ) );
+        superiorsMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS ) );
+        mandatoryAttributesMenuItem.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES ) );
+        optionalAttributesMenuItem.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES ) );
+
+        return searchInMenu;
+    }
+
+
+    /**
+     * Creates the Scope Menu
+     *
+     * @return
+     *      the Scope menu
+     */
+    public Menu createScopeMenu()
     {
         final IDialogSettings settings = Activator.getDefault().getDialogSettings();
 
@@ -264,142 +438,57 @@ public class SearchView extends ViewPart
         Menu scopeMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
 
         // Filling the menu
-        // Aliases
-        final MenuItem aliasesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        aliasesMenuItem.setText( "Aliases" );
-        aliasesMenuItem.addSelectionListener( new SelectionAdapter()
+        // Attribute Types And Object Classes
+        final MenuItem attributeTypesAndObjectClassesMenuItem = new MenuItem( scopeMenu, SWT.RADIO );
+        attributeTypesAndObjectClassesMenuItem.setText( "Attribute Types And Object Classes" );
+        attributeTypesAndObjectClassesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES, aliasesMenuItem.getSelection() );
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE,
+                    PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC );
             }
         } );
-        // OID
-        final MenuItem oidMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        oidMenuItem.setText( "OID" );
-        oidMenuItem.addSelectionListener( new SelectionAdapter()
+        // Attributes Type Only
+        final MenuItem attributesTypesOnlyMenuItem = new MenuItem( scopeMenu, SWT.RADIO );
+        attributesTypesOnlyMenuItem.setText( "Attribute Types Only" );
+        attributesTypesOnlyMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID, oidMenuItem.getSelection() );
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE, PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_ONLY );
             }
         } );
-        // Description
-        final MenuItem descriptionMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        descriptionMenuItem.setText( "Description" );
-        descriptionMenuItem.addSelectionListener( new SelectionAdapter()
+        // Object Classes Only
+        final MenuItem objectClassesMenuItem = new MenuItem( scopeMenu, SWT.RADIO );
+        objectClassesMenuItem.setText( "Object Classes Only" );
+        objectClassesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION, descriptionMenuItem.getSelection() );
-            }
-        } );
-        // Separator
-        new MenuItem( scopeMenu, SWT.SEPARATOR );
-        // Superior
-        final MenuItem superiorMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        superiorMenuItem.setText( "Superior" );
-        superiorMenuItem.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR, superiorMenuItem.getSelection() );
-            }
-        } );
-        // Syntax
-        final MenuItem syntaxMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        syntaxMenuItem.setText( "Syntax" );
-        syntaxMenuItem.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX, syntaxMenuItem.getSelection() );
-            }
-        } );
-        // Matching Rules
-        final MenuItem matchingRulesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        matchingRulesMenuItem.setText( "Matching Rules" );
-        matchingRulesMenuItem.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES, matchingRulesMenuItem
-                    .getSelection() );
-            }
-        } );
-        // Separator
-        new MenuItem( scopeMenu, SWT.SEPARATOR );
-        // Superiors
-        final MenuItem superiorsMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        superiorsMenuItem.setText( "Superiors" );
-        superiorsMenuItem.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS, superiorsMenuItem.getSelection() );
-            }
-        } );
-        // Mandatory Attributes
-        final MenuItem mandatoryAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        mandatoryAttributesMenuItem.setText( "Mandatory Attributes" );
-        mandatoryAttributesMenuItem.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES, mandatoryAttributesMenuItem
-                    .getSelection() );
-            }
-        } );
-        // Optional Attributes
-        final MenuItem optionalAttributesMenuItem = new MenuItem( scopeMenu, SWT.CHECK );
-        optionalAttributesMenuItem.setText( "Optional Attributes" );
-        optionalAttributesMenuItem.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES, optionalAttributesMenuItem
-                    .getSelection() );
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE, PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OC_ONLY );
             }
         } );
 
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) == null )
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE ) == null )
         {
-            aliasesMenuItem.setSelection( true );
+            attributeTypesAndObjectClassesMenuItem.setSelection( true );
         }
         else
         {
-            aliasesMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) );
+            switch ( settings.getInt( PluginConstants.PREFS_SEARCH_PAGE_SCOPE ) )
+            {
+                case PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC:
+                    attributeTypesAndObjectClassesMenuItem.setSelection( true );
+                    break;
+                case PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_ONLY:
+                    attributesTypesOnlyMenuItem.setSelection( true );
+                    break;
+                case PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OC_ONLY:
+                    objectClassesMenuItem.setSelection( true );
+                    break;
+            }
         }
-
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) == null )
-        {
-            oidMenuItem.setSelection( true );
-        }
-        else
-        {
-
-            oidMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) );
-        }
-
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) == null )
-        {
-            descriptionMenuItem.setSelection( true );
-        }
-        else
-        {
-            descriptionMenuItem
-                .setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) );
-        }
-
-        superiorMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR ) );
-        syntaxMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX ) );
-        matchingRulesMenuItem.setSelection( settings
-            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES ) );
-        superiorsMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS ) );
-        mandatoryAttributesMenuItem.setSelection( settings
-            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES ) );
-        optionalAttributesMenuItem.setSelection( settings
-            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES ) );
 
         return scopeMenu;
     }
@@ -552,16 +641,18 @@ public class SearchView extends ViewPart
      *
      * @param searchString
      *      the search String
+     * @param searchIn
+     *      the search In
      * @param scope
-     *      the search Scope
+     *      the scope
      */
-    public void setSearchInput( String searchString, SearchScopeEnum[] scope )
+    public void setSearchInput( String searchString, SearchInEnum[] searchIn, int scope )
     {
         this.searchString = searchString;
 
         // Saving search String and Search Scope to dialog settings
         SearchPage.addSearchStringHistory( searchString );
-        SearchPage.saveSearchScope( Arrays.asList( scope ) );
+        SearchPage.saveSearchScope( Arrays.asList( searchIn ) );
 
         if ( ( searchField != null ) && ( !searchField.isDisposed() ) )
         {
@@ -569,7 +660,7 @@ public class SearchView extends ViewPart
             validateSearchField();
         }
 
-        List<SchemaObject> results = search( searchString, scope );
+        List<SchemaObject> results = search( searchString, searchIn, scope );
         setSearchResultsLabel( searchString, results.size() );
         resultsTableViewer.setInput( results );
     }
@@ -580,10 +671,12 @@ public class SearchView extends ViewPart
      *
      * @param searchString
      *      the search String
+     * @param searchIn
+     *      the search In
      * @param scope
-     *      the search Scope
+     *      the scope
      */
-    private List<SchemaObject> search( String searchString, SearchScopeEnum[] scope )
+    private List<SchemaObject> search( String searchString, SearchInEnum[] searchIn, int scope )
     {
         List<SchemaObject> searchResults = new ArrayList<SchemaObject>();
 
@@ -597,149 +690,157 @@ public class SearchView extends ViewPart
             SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
             if ( schemaHandler != null )
             {
-                List<SearchScopeEnum> searchScope = new ArrayList<SearchScopeEnum>( Arrays.asList( scope ) );
+                List<SearchInEnum> searchScope = new ArrayList<SearchInEnum>( Arrays.asList( searchIn ) );
 
-                // Looping on attribute types
-                List<AttributeTypeImpl> attributeTypes = schemaHandler.getAttributeTypes();
-                for ( AttributeTypeImpl at : attributeTypes )
+                if ( ( scope == PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC )
+                    || ( scope == PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_ONLY ) )
                 {
-                    // Aliases
-                    if ( searchScope.contains( SearchScopeEnum.ALIASES ) )
+                    // Looping on attribute types
+                    List<AttributeTypeImpl> attributeTypes = schemaHandler.getAttributeTypes();
+                    for ( AttributeTypeImpl at : attributeTypes )
                     {
-                        if ( checkArray( pattern, at.getNames() ) )
+                        // Aliases
+                        if ( searchScope.contains( SearchInEnum.ALIASES ) )
                         {
-                            searchResults.add( at );
-                            continue;
-                        }
-                    }
-
-                    // OID
-                    if ( searchScope.contains( SearchScopeEnum.OID ) )
-                    {
-                        if ( checkString( pattern, at.getOid() ) )
-                        {
-                            searchResults.add( at );
-                            continue;
-                        }
-                    }
-
-                    // Description
-                    if ( searchScope.contains( SearchScopeEnum.DESCRIPTION ) )
-                    {
-                        if ( checkString( pattern, at.getDescription() ) )
-                        {
-                            searchResults.add( at );
-                            continue;
-                        }
-                    }
-
-                    // Superior
-                    if ( searchScope.contains( SearchScopeEnum.SUPERIOR ) )
-                    {
-                        if ( checkString( pattern, at.getSuperiorName() ) )
-                        {
-                            searchResults.add( at );
-                            continue;
-                        }
-                    }
-
-                    // Syntax
-                    if ( searchScope.contains( SearchScopeEnum.SYNTAX ) )
-                    {
-                        if ( checkString( pattern, at.getSyntaxOid() ) )
-                        {
-                            searchResults.add( at );
-                            continue;
-                        }
-                    }
-
-                    // Matching Rules
-                    if ( searchScope.contains( SearchScopeEnum.MATCHING_RULES ) )
-                    {
-                        // Equality
-                        if ( checkString( pattern, at.getEqualityName() ) )
-                        {
-                            searchResults.add( at );
-                            continue;
+                            if ( checkArray( pattern, at.getNames() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
                         }
 
-                        // Ordering
-                        if ( checkString( pattern, at.getOrderingName() ) )
+                        // OID
+                        if ( searchScope.contains( SearchInEnum.OID ) )
                         {
-                            searchResults.add( at );
-                            continue;
+                            if ( checkString( pattern, at.getOid() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
                         }
 
-                        // Substring
-                        if ( checkString( pattern, at.getSubstrName() ) )
+                        // Description
+                        if ( searchScope.contains( SearchInEnum.DESCRIPTION ) )
                         {
-                            searchResults.add( at );
-                            continue;
+                            if ( checkString( pattern, at.getDescription() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
+                        }
+
+                        // Superior
+                        if ( searchScope.contains( SearchInEnum.SUPERIOR ) )
+                        {
+                            if ( checkString( pattern, at.getSuperiorName() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
+                        }
+
+                        // Syntax
+                        if ( searchScope.contains( SearchInEnum.SYNTAX ) )
+                        {
+                            if ( checkString( pattern, at.getSyntaxOid() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
+                        }
+
+                        // Matching Rules
+                        if ( searchScope.contains( SearchInEnum.MATCHING_RULES ) )
+                        {
+                            // Equality
+                            if ( checkString( pattern, at.getEqualityName() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
+
+                            // Ordering
+                            if ( checkString( pattern, at.getOrderingName() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
+
+                            // Substring
+                            if ( checkString( pattern, at.getSubstrName() ) )
+                            {
+                                searchResults.add( at );
+                                continue;
+                            }
                         }
                     }
                 }
 
-                // Looping on object classes
-                List<ObjectClassImpl> objectClasses = schemaHandler.getObjectClasses();
-                for ( ObjectClassImpl oc : objectClasses )
+                if ( ( scope == PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC )
+                    || ( scope == PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OC_ONLY ) )
                 {
-                    // Aliases
-                    if ( searchScope.contains( SearchScopeEnum.ALIASES ) )
+                    // Looping on object classes
+                    List<ObjectClassImpl> objectClasses = schemaHandler.getObjectClasses();
+                    for ( ObjectClassImpl oc : objectClasses )
                     {
-                        if ( checkArray( pattern, oc.getNames() ) )
+                        // Aliases
+                        if ( searchScope.contains( SearchInEnum.ALIASES ) )
                         {
-                            searchResults.add( oc );
-                            continue;
+                            if ( checkArray( pattern, oc.getNames() ) )
+                            {
+                                searchResults.add( oc );
+                                continue;
+                            }
                         }
-                    }
 
-                    // OID
-                    if ( searchScope.contains( SearchScopeEnum.OID ) )
-                    {
-                        if ( checkString( pattern, oc.getOid() ) )
+                        // OID
+                        if ( searchScope.contains( SearchInEnum.OID ) )
                         {
-                            searchResults.add( oc );
-                            continue;
+                            if ( checkString( pattern, oc.getOid() ) )
+                            {
+                                searchResults.add( oc );
+                                continue;
+                            }
                         }
-                    }
 
-                    // Description
-                    if ( searchScope.contains( SearchScopeEnum.DESCRIPTION ) )
-                    {
-                        if ( checkString( pattern, oc.getDescription() ) )
+                        // Description
+                        if ( searchScope.contains( SearchInEnum.DESCRIPTION ) )
                         {
-                            searchResults.add( oc );
-                            continue;
+                            if ( checkString( pattern, oc.getDescription() ) )
+                            {
+                                searchResults.add( oc );
+                                continue;
+                            }
                         }
-                    }
 
-                    // Superiors
-                    if ( searchScope.contains( SearchScopeEnum.SUPERIORS ) )
-                    {
-                        if ( checkArray( pattern, oc.getSuperClassesNames() ) )
+                        // Superiors
+                        if ( searchScope.contains( SearchInEnum.SUPERIORS ) )
                         {
-                            searchResults.add( oc );
-                            continue;
+                            if ( checkArray( pattern, oc.getSuperClassesNames() ) )
+                            {
+                                searchResults.add( oc );
+                                continue;
+                            }
                         }
-                    }
 
-                    // Mandatory Attributes
-                    if ( searchScope.contains( SearchScopeEnum.MANDATORY_ATTRIBUTES ) )
-                    {
-                        if ( checkArray( pattern, oc.getMustNamesList() ) )
+                        // Mandatory Attributes
+                        if ( searchScope.contains( SearchInEnum.MANDATORY_ATTRIBUTES ) )
                         {
-                            searchResults.add( oc );
-                            continue;
+                            if ( checkArray( pattern, oc.getMustNamesList() ) )
+                            {
+                                searchResults.add( oc );
+                                continue;
+                            }
                         }
-                    }
 
-                    // Optional Attributes
-                    if ( searchScope.contains( SearchScopeEnum.OPTIONAL_ATTRIBUTES ) )
-                    {
-                        if ( checkArray( pattern, oc.getMayNamesList() ) )
+                        // Optional Attributes
+                        if ( searchScope.contains( SearchInEnum.OPTIONAL_ATTRIBUTES ) )
                         {
-                            searchResults.add( oc );
-                            continue;
+                            if ( checkArray( pattern, oc.getMayNamesList() ) )
+                            {
+                                searchResults.add( oc );
+                                continue;
+                            }
                         }
                     }
                 }
@@ -792,9 +893,9 @@ public class SearchView extends ViewPart
     private void search()
     {
         String searchString = searchField.getText();
-        List<SearchScopeEnum> searchScope = SearchPage.loadSearchScope();
+        List<SearchInEnum> searchScope = SearchPage.loadSearchIn();
 
-        setSearchInput( searchString, searchScope.toArray( new SearchScopeEnum[0] ) );
+        setSearchInput( searchString, searchScope.toArray( new SearchInEnum[0] ), SearchPage.loadScope() );
     }
 
 
@@ -846,7 +947,8 @@ public class SearchView extends ViewPart
     {
         if ( searchString != null )
         {
-            setSearchInput( searchString, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
+            setSearchInput( searchString, SearchPage.loadSearchIn().toArray( new SearchInEnum[0] ), SearchPage
+                .loadScope() );
         }
     }
 

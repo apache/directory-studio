@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.search.SearchPage;
-import org.apache.directory.studio.schemaeditor.view.search.SearchPage.SearchScopeEnum;
+import org.apache.directory.studio.schemaeditor.view.search.SearchPage.SearchInEnum;
 import org.apache.directory.studio.schemaeditor.view.views.SearchView;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -183,7 +183,8 @@ public class PreviousSearchesDialog extends Dialog
                 StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
                 String selectedSearch = ( String ) selection.getFirstElement();
 
-                view.setSearchInput( selectedSearch, SearchPage.loadSearchScope().toArray( new SearchScopeEnum[0] ) );
+                view.setSearchInput( selectedSearch, SearchPage.loadSearchIn().toArray( new SearchInEnum[0] ),
+                    SearchPage.loadScope() );
             }
         }
 

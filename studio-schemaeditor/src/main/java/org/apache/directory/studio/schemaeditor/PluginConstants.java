@@ -242,32 +242,41 @@ public interface PluginConstants
     /** The preference ID for Search History of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SEARCH_HISTORY = Activator.PLUGIN_ID
         + ".preferences.SearchPage.searchHistory"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Aliases' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_ALIASES = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'Aliases' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeAliases"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'OID' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_OID = Activator.PLUGIN_ID + ".preferences.SearchPage.scopeOid"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Description' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'OID' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OID = Activator.PLUGIN_ID + ".preferences.SearchPage.scopeOid"; //$NON-NLS-1$
+    /** The preference ID for Search In 'Description' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeDescription"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Superior' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_SUPERIOR = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'Superior' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeSuperior"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Syntax' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_SYNTAX = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'Syntax' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeSyntax"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Matching Rules' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'Matching Rules' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeMatchingRules"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Superiors' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_SUPERIORS = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'Superiors' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeSuperiors"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Mandatory Attributes' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'Mandatory Attributes' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeMandatoryAttributes"; //$NON-NLS-1$
-    /** The preference ID for Search Scope 'Optional Attributes' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES = Activator.PLUGIN_ID
+    /** The preference ID for Search In 'Optional Attributes' of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeOptionalAttributes"; //$NON-NLS-1$
+    /** The preference ID for Scope of the SearchPage */
+    public static final String PREFS_SEARCH_PAGE_SCOPE = Activator.PLUGIN_ID
+    + ".preferences.SearchPage.scope"; //$NON-NLS-1$
+    /** The preference value for Scope Attribute Types And Object Classes of the SearchPage */
+    public static final int PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC = 0;
+    /** The preference value for Scope Attribute Types only of the SearchPage */
+    public static final int PREFS_SEARCH_PAGE_SCOPE_AT_ONLY = 1;
+    /** The preference value for Scope Object Classes only of the SearchPage */
+    public static final int PREFS_SEARCH_PAGE_SCOPE_OC_ONLY = 2;
 
     // Preferences - SearchView
     /** The preference ID for Search View Label */

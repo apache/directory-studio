@@ -67,16 +67,19 @@ public class SearchPage extends DialogPage implements ISearchPage
     private Button syntaxButton;
     private Button matchingRulesButton;
     private Button superiorsButton;
-    private Button mandatoryAttributes;
-    private Button optionalAttributes;
+    private Button mandatoryAttributesButton;
+    private Button optionalAttributesButton;
+    private Button attributeTypesAndObjectClassesButton;
+    private Button attributeTypesOnlyButton;
+    private Button objectClassesOnly;
 
     /**
-     * This enums represents the different possible scopes for a Schema Search.
+     * This enums represents the different possible search in for a Schema Search.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    public enum SearchScopeEnum
+    public enum SearchInEnum
     {
         ALIASES, OID, DESCRIPTION, SUPERIOR, SYNTAX, MATCHING_RULES, SUPERIORS, MANDATORY_ATTRIBUTES, OPTIONAL_ATTRIBUTES
     }
@@ -105,73 +108,93 @@ public class SearchPage extends DialogPage implements ISearchPage
             }
         } );
 
-        // Seach In Group
-        Group searchIn = new Group( parent, SWT.NONE );
-        searchIn.setLayout( new GridLayout() );
-        searchIn.setText( "Search in" );
-        searchIn.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // Specific Scope Composite
+        Composite searchInComposite = new Composite( parent, SWT.NONE );
+        GridLayout SearchInLayout = new GridLayout( 3, true );
+        SearchInLayout.marginBottom = 0;
+        SearchInLayout.marginHeight = 0;
+        SearchInLayout.marginLeft = 0;
+        SearchInLayout.marginRight = 0;
+        SearchInLayout.marginTop = 0;
+        SearchInLayout.marginWidth = 0;
+        searchInComposite.setLayout( SearchInLayout );
+        searchInComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
+
+        // Search In Group
+        Group searchInGroup = new Group( searchInComposite, SWT.NONE );
+        searchInGroup.setLayout( new GridLayout() );
+        searchInGroup.setText( "Search in" );
+        searchInGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Aliases Button
-        aliasesButton = new Button( searchIn, SWT.CHECK );
+        aliasesButton = new Button( searchInGroup, SWT.CHECK );
         aliasesButton.setText( "Aliases" );
 
         // OID Button
-        oidButton = new Button( searchIn, SWT.CHECK );
+        oidButton = new Button( searchInGroup, SWT.CHECK );
         oidButton.setText( "OID" );
 
         // Description Button
-        descriptionButon = new Button( searchIn, SWT.CHECK );
+        descriptionButon = new Button( searchInGroup, SWT.CHECK );
         descriptionButon.setText( "Description" );
 
-        // Specific Scope Composite
-        Composite specificScopeComposite = new Composite( parent, SWT.NONE );
-        GridLayout specificScopeLayout = new GridLayout( 2, true );
-        specificScopeLayout.marginBottom = 0;
-        specificScopeLayout.marginHeight = 0;
-        specificScopeLayout.marginLeft = 0;
-        specificScopeLayout.marginRight = 0;
-        specificScopeLayout.marginTop = 0;
-        specificScopeLayout.marginWidth = 0;
-        specificScopeComposite.setLayout( specificScopeLayout );
-        specificScopeComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
-
         // Attribute Types Group
-        Group attributeTypesGroup = new Group( specificScopeComposite, SWT.NONE );
-        attributeTypesGroup.setText( "Seach in (for attribute types)" );
-        attributeTypesGroup.setLayout( new GridLayout() );
-        attributeTypesGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        Group attributeTypesSearchInGroup = new Group( searchInComposite, SWT.NONE );
+        attributeTypesSearchInGroup.setText( "Seach in (for attribute types)" );
+        attributeTypesSearchInGroup.setLayout( new GridLayout() );
+        attributeTypesSearchInGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // Superior Button
-        superiorButton = new Button( attributeTypesGroup, SWT.CHECK );
+        superiorButton = new Button( attributeTypesSearchInGroup, SWT.CHECK );
         superiorButton.setText( "Superior" );
 
         // Syntax Button
-        syntaxButton = new Button( attributeTypesGroup, SWT.CHECK );
+        syntaxButton = new Button( attributeTypesSearchInGroup, SWT.CHECK );
         syntaxButton.setText( "Syntax" );
 
         // Matching Rules Button
-        matchingRulesButton = new Button( attributeTypesGroup, SWT.CHECK );
+        matchingRulesButton = new Button( attributeTypesSearchInGroup, SWT.CHECK );
         matchingRulesButton.setText( "Matching Rules" );
 
         // Object Classes Group
-        Group objectClassesGroup = new Group( specificScopeComposite, SWT.NONE );
-        objectClassesGroup.setText( "Search in (for object classes)" );
-        objectClassesGroup.setLayout( new GridLayout() );
-        objectClassesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Group objectClassesSearchInGroup = new Group( searchInComposite, SWT.NONE );
+        objectClassesSearchInGroup.setText( "Search in (for object classes)" );
+        objectClassesSearchInGroup.setLayout( new GridLayout() );
+        objectClassesSearchInGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Superiors Button
-        superiorsButton = new Button( objectClassesGroup, SWT.CHECK );
+        superiorsButton = new Button( objectClassesSearchInGroup, SWT.CHECK );
         superiorsButton.setText( "Superiors" );
 
         // Mandatory Attributes Button
-        mandatoryAttributes = new Button( objectClassesGroup, SWT.CHECK );
-        mandatoryAttributes.setText( "Mandatory Attributes" );
+        mandatoryAttributesButton = new Button( objectClassesSearchInGroup, SWT.CHECK );
+        mandatoryAttributesButton.setText( "Mandatory Attributes" );
 
         // Optional Attributes Button
-        optionalAttributes = new Button( objectClassesGroup, SWT.CHECK );
-        optionalAttributes.setText( "Optional Attributes" );
+        optionalAttributesButton = new Button( objectClassesSearchInGroup, SWT.CHECK );
+        optionalAttributesButton.setText( "Optional Attributes" );
+
+        // Scope Group
+        Group scopeGroup = new Group( parent, SWT.NONE );
+        scopeGroup.setText( "Scope" );
+        scopeGroup.setLayout( new GridLayout() );
+        scopeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Attribute Types and Object Classes
+        attributeTypesAndObjectClassesButton = new Button( scopeGroup, SWT.RADIO );
+        attributeTypesAndObjectClassesButton.setText( "Attribute Types And Object Classes" );
+
+        // Attribute Types Only
+        attributeTypesOnlyButton = new Button( scopeGroup, SWT.RADIO );
+        attributeTypesOnlyButton.setText( "Attribute Types Only" );
+
+        // Object Classes Only
+        objectClassesOnly = new Button( scopeGroup, SWT.RADIO );
+        objectClassesOnly.setText( "Object Classes Only" );
 
         initSearchStringHistory();
+
+        initSearchIn();
 
         initSearchScope();
 
@@ -191,47 +214,76 @@ public class SearchPage extends DialogPage implements ISearchPage
 
 
     /**
-     * Initializes the Search Scope
+     * Initializes the Search In.
      */
-    private void initSearchScope()
+    private void initSearchIn()
     {
         IDialogSettings settings = Activator.getDefault().getDialogSettings();
 
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) == null )
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES ) == null )
         {
             aliasesButton.setSelection( true );
         }
         else
         {
-            aliasesButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) );
+            aliasesButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES ) );
         }
 
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) == null )
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID ) == null )
         {
             oidButton.setSelection( true );
         }
         else
         {
-            oidButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) );
+            oidButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID ) );
         }
 
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) == null )
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) == null )
         {
             descriptionButon.setSelection( true );
         }
         else
         {
-            descriptionButon.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) );
+            descriptionButon.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) );
         }
-        superiorButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR ) );
-        syntaxButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX ) );
+        superiorButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR ) );
+        syntaxButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX ) );
         matchingRulesButton
-            .setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES ) );
-        superiorsButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS ) );
-        mandatoryAttributes.setSelection( settings
-            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES ) );
-        optionalAttributes.setSelection( settings
-            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES ) );
+            .setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES ) );
+        superiorsButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS ) );
+        mandatoryAttributesButton.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES ) );
+        optionalAttributesButton.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES ) );
+    }
+
+
+    /**
+     * Initializes the Search Scope.
+     */
+    private void initSearchScope()
+    {
+        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE ) == null )
+        {
+            attributeTypesAndObjectClassesButton.setSelection( true );
+        }
+        else
+        {
+            switch ( settings.getInt( PluginConstants.PREFS_SEARCH_PAGE_SCOPE ) )
+            {
+                case PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC:
+                    attributeTypesAndObjectClassesButton.setSelection( true );
+                    break;
+                case PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_ONLY:
+                    attributeTypesOnlyButton.setSelection( true );
+                    break;
+                case PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OC_ONLY:
+                    objectClassesOnly.setSelection( true );
+                    break;
+            }
+        }
     }
 
 
@@ -240,42 +292,58 @@ public class SearchPage extends DialogPage implements ISearchPage
      */
     public boolean performAction()
     {
-        List<SearchScopeEnum> searchScope = new ArrayList<SearchScopeEnum>();
+        // Search In
+        List<SearchInEnum> searchIn = new ArrayList<SearchInEnum>();
         if ( aliasesButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.ALIASES );
+            searchIn.add( SearchInEnum.ALIASES );
         }
         if ( oidButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.OID );
+            searchIn.add( SearchInEnum.OID );
         }
         if ( descriptionButon.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.DESCRIPTION );
+            searchIn.add( SearchInEnum.DESCRIPTION );
         }
         if ( superiorButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.SUPERIOR );
+            searchIn.add( SearchInEnum.SUPERIOR );
         }
         if ( syntaxButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.SYNTAX );
+            searchIn.add( SearchInEnum.SYNTAX );
         }
         if ( matchingRulesButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.MATCHING_RULES );
+            searchIn.add( SearchInEnum.MATCHING_RULES );
         }
         if ( superiorsButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.SUPERIORS );
+            searchIn.add( SearchInEnum.SUPERIORS );
         }
-        if ( mandatoryAttributes.getSelection() )
+        if ( mandatoryAttributesButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.MANDATORY_ATTRIBUTES );
+            searchIn.add( SearchInEnum.MANDATORY_ATTRIBUTES );
         }
-        if ( optionalAttributes.getSelection() )
+        if ( optionalAttributesButton.getSelection() )
         {
-            searchScope.add( SearchScopeEnum.OPTIONAL_ATTRIBUTES );
+            searchIn.add( SearchInEnum.OPTIONAL_ATTRIBUTES );
+        }
+
+        // Scope
+        int scope = 0;
+        if ( attributeTypesAndObjectClassesButton.getSelection() )
+        {
+            scope = PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC;
+        }
+        else if ( attributeTypesOnlyButton.getSelection() )
+        {
+            scope = PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_ONLY;
+        }
+        else if ( objectClassesOnly.getSelection() )
+        {
+            scope = PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OC_ONLY;
         }
 
         // Opening the SearchView and displaying the results
@@ -283,7 +351,7 @@ public class SearchPage extends DialogPage implements ISearchPage
         {
             SearchView searchView = ( SearchView ) Activator.getDefault().getWorkbench().getActiveWorkbenchWindow()
                 .getActivePage().showView( SearchView.ID );
-            searchView.setSearchInput( searchCombo.getText(), searchScope.toArray( new SearchScopeEnum[0] ) );
+            searchView.setSearchInput( searchCombo.getText(), searchIn.toArray( new SearchInEnum[0] ), scope );
         }
         catch ( PartInitException e )
         {
@@ -409,79 +477,90 @@ public class SearchPage extends DialogPage implements ISearchPage
 
 
     /**
-     * Loads the Search scope.
+     * Loads the Search In.
      *
      * @return
-     *      the search scope
+     *      the search In
      */
-    public static List<SearchScopeEnum> loadSearchScope()
+    public static List<SearchInEnum> loadSearchIn()
     {
-        List<SearchScopeEnum> searchScope = new ArrayList<SearchScopeEnum>();
+        List<SearchInEnum> searchScope = new ArrayList<SearchInEnum>();
         IDialogSettings settings = Activator.getDefault().getDialogSettings();
 
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) == null )
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES ) == null )
         {
-            searchScope.add( SearchScopeEnum.ALIASES );
+            searchScope.add( SearchInEnum.ALIASES );
         }
         else
         {
-            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES ) )
+            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES ) )
             {
-                searchScope.add( SearchScopeEnum.ALIASES );
+                searchScope.add( SearchInEnum.ALIASES );
             }
         }
 
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) == null )
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID ) == null )
         {
-            searchScope.add( SearchScopeEnum.OID );
+            searchScope.add( SearchInEnum.OID );
         }
         else
         {
-            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID ) )
+            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID ) )
             {
-                searchScope.add( SearchScopeEnum.OID );
+                searchScope.add( SearchInEnum.OID );
             }
         }
 
-        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) == null )
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) == null )
         {
-            searchScope.add( SearchScopeEnum.DESCRIPTION );
+            searchScope.add( SearchInEnum.DESCRIPTION );
         }
         else
         {
-            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION ) )
+            if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) )
             {
-                searchScope.add( SearchScopeEnum.DESCRIPTION );
+                searchScope.add( SearchInEnum.DESCRIPTION );
             }
         }
-        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR ) )
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR ) )
         {
-            searchScope.add( SearchScopeEnum.SUPERIOR );
+            searchScope.add( SearchInEnum.SUPERIOR );
         }
-        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX ) )
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX ) )
         {
-            searchScope.add( SearchScopeEnum.SYNTAX );
+            searchScope.add( SearchInEnum.SYNTAX );
         }
-        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES ) )
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES ) )
         {
-            searchScope.add( SearchScopeEnum.MATCHING_RULES );
+            searchScope.add( SearchInEnum.MATCHING_RULES );
         }
-        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS ) )
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS ) )
         {
-            searchScope.add( SearchScopeEnum.SUPERIORS );
+            searchScope.add( SearchInEnum.SUPERIORS );
         }
-        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES ) )
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES ) )
         {
-            searchScope.add( SearchScopeEnum.MANDATORY_ATTRIBUTES );
+            searchScope.add( SearchInEnum.MANDATORY_ATTRIBUTES );
         }
-        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES ) )
+        if ( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES ) )
         {
-            searchScope.add( SearchScopeEnum.OPTIONAL_ATTRIBUTES );
+            searchScope.add( SearchInEnum.OPTIONAL_ATTRIBUTES );
         }
 
         return searchScope;
     }
 
+    
+    /**
+     * Loads the scope.
+     *
+     * @return
+     *      the scope
+     */
+    public static int loadScope()
+    {
+        return Activator.getDefault().getDialogSettings().getInt( PluginConstants.PREFS_SEARCH_PAGE_SCOPE );
+    }
 
     /**
      * Saves the Search scope.
@@ -489,26 +568,25 @@ public class SearchPage extends DialogPage implements ISearchPage
      * @param scope
      *      the Search scope
      */
-    public static void saveSearchScope( List<SearchScopeEnum> scope )
+    public static void saveSearchScope( List<SearchInEnum> scope )
     {
         if ( ( scope != null ) && ( scope.size() > 0 ) )
         {
             IDialogSettings settings = Activator.getDefault().getDialogSettings();
 
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_ALIASES, scope.contains( SearchScopeEnum.ALIASES ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OID, scope.contains( SearchScopeEnum.OID ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_DESCRIPTION, scope
-                .contains( SearchScopeEnum.DESCRIPTION ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIOR, scope.contains( SearchScopeEnum.SUPERIOR ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SYNTAX, scope.contains( SearchScopeEnum.SYNTAX ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MATCHING_RULES, scope
-                .contains( SearchScopeEnum.MATCHING_RULES ) );
-            settings
-                .put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_SUPERIORS, scope.contains( SearchScopeEnum.SUPERIORS ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_MANDATORY_ATTRIBUTES, scope
-                .contains( SearchScopeEnum.MANDATORY_ATTRIBUTES ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SCOPE_OPTIONAL_ATTRIBUTES, scope
-                .contains( SearchScopeEnum.OPTIONAL_ATTRIBUTES ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES, scope.contains( SearchInEnum.ALIASES ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID, scope.contains( SearchInEnum.OID ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION, scope
+                .contains( SearchInEnum.DESCRIPTION ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR, scope.contains( SearchInEnum.SUPERIOR ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX, scope.contains( SearchInEnum.SYNTAX ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES, scope
+                .contains( SearchInEnum.MATCHING_RULES ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS, scope.contains( SearchInEnum.SUPERIORS ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES, scope
+                .contains( SearchInEnum.MANDATORY_ATTRIBUTES ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES, scope
+                .contains( SearchInEnum.OPTIONAL_ATTRIBUTES ) );
         }
     }
 
