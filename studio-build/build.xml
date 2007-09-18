@@ -233,6 +233,7 @@
 				<include name="plugin.xml" />
 				<include name="plugin.properties" />
 				<include name="about.html" />
+				<include name="contexts.xml" />
 			</fileset>
 		</copy>
 		<mkdir dir="${target.build}/META-INF" />
