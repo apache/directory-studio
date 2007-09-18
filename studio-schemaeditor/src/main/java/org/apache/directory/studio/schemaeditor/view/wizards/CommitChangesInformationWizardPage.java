@@ -74,11 +74,11 @@ public class CommitChangesInformationWizardPage extends WizardPage
         Label informationLabel = new Label( composite, SWT.WRAP );
         informationLabel.setText( informationString );
         informationLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, true ) );
-        
+
         // Warning Label
-        Label warningLabel = new Label( composite, SWT.NONE);
+        Label warningLabel = new Label( composite, SWT.NONE );
         warningLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_WARNING_32X32).createImage() );
+            PluginConstants.IMG_WARNING_32X32 ).createImage() );
         warningLabel.setLayoutData( new GridData( SWT.CENTER, SWT.BOTTOM, true, true ) );
 
         setControl( composite );

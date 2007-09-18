@@ -60,7 +60,7 @@ public class ProblemsView extends ViewPart
 
     /** The SchemaChecker */
     private SchemaChecker schemaChecker;
-    
+
     /** The Controller */
     private ProblemsViewController controller;
 
@@ -71,9 +71,8 @@ public class ProblemsView extends ViewPart
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            Activator.PLUGIN_ID + "." + "problems_view" );
-        
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, Activator.PLUGIN_ID + "." + "problems_view" );
+
         GridLayout gridLayout = new GridLayout();
         gridLayout.horizontalSpacing = 0;
         gridLayout.marginBottom = 0;
@@ -203,7 +202,8 @@ public class ProblemsView extends ViewPart
 
         overviewLabel.setText( sb.toString() );
     }
-    
+
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#dispose()
      */

@@ -243,10 +243,9 @@ public class AttributeTypeEditorUsedByPage extends FormPage
 
         // Listeners initialization
         addListeners();
-        
+
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
-            Activator.PLUGIN_ID + "." + "attribute_type_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "attribute_type_editor" );
     }
 
 

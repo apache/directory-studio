@@ -97,7 +97,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
 
             // Reseting the Exception Thrown
             exceptionThrown = null;
-            
+
             try
             {
                 getContainer().run( true, false, new IRunnableWithProgress()

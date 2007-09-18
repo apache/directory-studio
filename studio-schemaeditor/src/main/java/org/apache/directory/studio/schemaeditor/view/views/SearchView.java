@@ -110,9 +110,8 @@ public class SearchView extends ViewPart
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            Activator.PLUGIN_ID + "." + "search_view" );
-        
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, Activator.PLUGIN_ID + "." + "search_view" );
+
         this.parent = parent;
         GridLayout gridLayout = new GridLayout();
         gridLayout.horizontalSpacing = 0;
@@ -314,7 +313,8 @@ public class SearchView extends ViewPart
         {
             public void widgetSelected( SelectionEvent e )
             {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION, descriptionMenuItem.getSelection() );
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION, descriptionMenuItem
+                    .getSelection() );
             }
         } );
         // Separator
@@ -369,8 +369,8 @@ public class SearchView extends ViewPart
         {
             public void widgetSelected( SelectionEvent e )
             {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES, mandatoryAttributesMenuItem
-                    .getSelection() );
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES,
+                    mandatoryAttributesMenuItem.getSelection() );
             }
         } );
         // Optional Attributes
@@ -380,8 +380,8 @@ public class SearchView extends ViewPart
         {
             public void widgetSelected( SelectionEvent e )
             {
-                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES, optionalAttributesMenuItem
-                    .getSelection() );
+                settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES,
+                    optionalAttributesMenuItem.getSelection() );
             }
         } );
 
@@ -410,8 +410,8 @@ public class SearchView extends ViewPart
         }
         else
         {
-            descriptionMenuItem
-                .setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) );
+            descriptionMenuItem.setSelection( settings
+                .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) );
         }
 
         superiorMenuItem.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR ) );

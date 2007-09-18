@@ -197,7 +197,7 @@ public class NewProjectWizardInformationPage extends WizardPage
                 return ProjectType.OFFLINE;
             }
         }
-        
+
         // Default
         return ProjectType.OFFLINE;
     }

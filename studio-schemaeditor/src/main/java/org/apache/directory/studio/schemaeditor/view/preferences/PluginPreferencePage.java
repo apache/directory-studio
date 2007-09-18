@@ -111,7 +111,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
                     PluginConstants.IMG_SCHEMA_CONNECTOR ).createImage();
             }
         } );
-        
+
         schemaConnectorsTableViewer.setComparator( new ViewerComparator( new Comparator<String>()
         {
             public int compare( String o1, String o2 )
@@ -125,23 +125,23 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
                 return 0;
             }
         } ) );
-       
-//      schemaConnectorsTableViewer.setComparator( new ViewerComparator( new Comparator<SchemaConnector>()
-//      {
-//          public int compare( SchemaConnector o1, SchemaConnector o2 )
-//          {
-//              String name1 = o1.getName();
-//              String name2 = o2.getName();
-//
-//              if ( ( name1 != null ) && ( name2 != null ) )
-//              {
-//                  return name1.compareToIgnoreCase( name2 );
-//              }
-//
-//              // Default
-//              return 0;
-//          }
-//      } ) );
+
+        //      schemaConnectorsTableViewer.setComparator( new ViewerComparator( new Comparator<SchemaConnector>()
+        //      {
+        //          public int compare( SchemaConnector o1, SchemaConnector o2 )
+        //          {
+        //              String name1 = o1.getName();
+        //              String name2 = o2.getName();
+        //
+        //              if ( ( name1 != null ) && ( name2 != null ) )
+        //              {
+        //                  return name1.compareToIgnoreCase( name2 );
+        //              }
+        //
+        //              // Default
+        //              return 0;
+        //          }
+        //      } ) );
         schemaConnectorsTableViewer.setInput( PluginUtils.getSchemaConnectors() );
 
         // Description Text

@@ -244,12 +244,13 @@ public class SearchPage extends DialogPage implements ISearchPage
         }
         else
         {
-            descriptionButon.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) );
+            descriptionButon.setSelection( settings
+                .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION ) );
         }
         superiorButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR ) );
         syntaxButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX ) );
-        matchingRulesButton
-            .setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES ) );
+        matchingRulesButton.setSelection( settings
+            .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES ) );
         superiorsButton.setSelection( settings.getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS ) );
         mandatoryAttributesButton.setSelection( settings
             .getBoolean( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES ) );
@@ -550,7 +551,7 @@ public class SearchPage extends DialogPage implements ISearchPage
         return searchScope;
     }
 
-    
+
     /**
      * Loads the scope.
      *
@@ -561,6 +562,7 @@ public class SearchPage extends DialogPage implements ISearchPage
     {
         return Activator.getDefault().getDialogSettings().getInt( PluginConstants.PREFS_SEARCH_PAGE_SCOPE );
     }
+
 
     /**
      * Saves the Search scope.
@@ -578,11 +580,13 @@ public class SearchPage extends DialogPage implements ISearchPage
             settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OID, scope.contains( SearchInEnum.OID ) );
             settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION, scope
                 .contains( SearchInEnum.DESCRIPTION ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR, scope.contains( SearchInEnum.SUPERIOR ) );
+            settings
+                .put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR, scope.contains( SearchInEnum.SUPERIOR ) );
             settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX, scope.contains( SearchInEnum.SYNTAX ) );
             settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES, scope
                 .contains( SearchInEnum.MATCHING_RULES ) );
-            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS, scope.contains( SearchInEnum.SUPERIORS ) );
+            settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS, scope
+                .contains( SearchInEnum.SUPERIORS ) );
             settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES, scope
                 .contains( SearchInEnum.MANDATORY_ATTRIBUTES ) );
             settings.put( PluginConstants.PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES, scope

@@ -78,7 +78,7 @@ public class SchemaEditor extends FormEditor
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         super.init( site, input );
-        
+
         instance = this;
 
         setSite( site );

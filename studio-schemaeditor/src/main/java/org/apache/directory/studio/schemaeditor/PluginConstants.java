@@ -246,7 +246,8 @@ public interface PluginConstants
     public static final String PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeAliases"; //$NON-NLS-1$
     /** The preference ID for Search In 'OID' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OID = Activator.PLUGIN_ID + ".preferences.SearchPage.scopeOid"; //$NON-NLS-1$
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OID = Activator.PLUGIN_ID
+        + ".preferences.SearchPage.scopeOid"; //$NON-NLS-1$
     /** The preference ID for Search In 'Description' of the SearchPage */
     public static final String PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeDescription"; //$NON-NLS-1$
@@ -269,8 +270,7 @@ public interface PluginConstants
     public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES = Activator.PLUGIN_ID
         + ".preferences.SearchPage.scopeOptionalAttributes"; //$NON-NLS-1$
     /** The preference ID for Scope of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE = Activator.PLUGIN_ID
-    + ".preferences.SearchPage.scope"; //$NON-NLS-1$
+    public static final String PREFS_SEARCH_PAGE_SCOPE = Activator.PLUGIN_ID + ".preferences.SearchPage.scope"; //$NON-NLS-1$
     /** The preference value for Scope Attribute Types And Object Classes of the SearchPage */
     public static final int PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC = 0;
     /** The preference value for Scope Attribute Types only of the SearchPage */

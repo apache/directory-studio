@@ -52,9 +52,8 @@ public class ProjectsView extends ViewPart
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            Activator.PLUGIN_ID + "." + "projects_view" );
-        
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, Activator.PLUGIN_ID + "." + "projects_view" );
+
         initViewer( parent );
 
         // Adding the controller

@@ -86,10 +86,9 @@ public class HierarchyView extends ViewPart
         initViewer( parent );
 
         controller = new HierarchyViewController( this );
-        
+
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            Activator.PLUGIN_ID + "." + "hierarchy_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, Activator.PLUGIN_ID + "." + "hierarchy_view" );
     }
 
 
