@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
@@ -50,6 +51,10 @@ public class ProjectsView extends ViewPart
      */
     public void createPartControl( Composite parent )
     {
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
+            Activator.PLUGIN_ID + "." + "projects_view" );
+        
         initViewer( parent );
 
         // Adding the controller

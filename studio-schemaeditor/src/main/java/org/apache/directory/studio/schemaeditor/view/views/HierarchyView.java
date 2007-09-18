@@ -33,6 +33,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
@@ -85,6 +86,10 @@ public class HierarchyView extends ViewPart
         initViewer( parent );
 
         controller = new HierarchyViewController( this );
+        
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
+            Activator.PLUGIN_ID + "." + "hierarchy_view" );
     }
 
 

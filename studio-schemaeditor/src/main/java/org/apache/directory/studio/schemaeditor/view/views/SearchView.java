@@ -109,6 +109,10 @@ public class SearchView extends ViewPart
     @Override
     public void createPartControl( Composite parent )
     {
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
+            Activator.PLUGIN_ID + "." + "search_view" );
+        
         this.parent = parent;
         GridLayout gridLayout = new GridLayout();
         gridLayout.horizontalSpacing = 0;

@@ -226,6 +226,9 @@ public class SchemaEditorOverviewPage extends FormPage
 
         // Listeners initialization
         addListeners();
+
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "schema_editor" );
     }
 
 

@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
@@ -59,6 +60,10 @@ public class SchemaView extends ViewPart
 
         // Adding the controller
         new SchemaViewController( this );
+
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
+            Activator.PLUGIN_ID + "." + "schema_view" );
     }
 
 

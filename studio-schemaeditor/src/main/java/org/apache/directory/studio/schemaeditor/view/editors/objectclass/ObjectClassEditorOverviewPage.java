@@ -854,6 +854,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
         // Listeners initialization
         addListeners();
+        
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "object_class_editor" );
     }
 
 

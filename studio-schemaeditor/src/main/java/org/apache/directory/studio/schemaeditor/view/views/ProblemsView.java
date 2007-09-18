@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 
@@ -69,6 +70,10 @@ public class ProblemsView extends ViewPart
      */
     public void createPartControl( Composite parent )
     {
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
+            Activator.PLUGIN_ID + "." + "problems_view" );
+        
         GridLayout gridLayout = new GridLayout();
         gridLayout.horizontalSpacing = 0;
         gridLayout.marginBottom = 0;

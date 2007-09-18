@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;
+import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.schemaeditor.view.widget.SchemaSourceViewer;
@@ -39,6 +40,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -146,6 +148,9 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         fillInUiFields();
 
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
+
+        // Help Context for Dynamic Help
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "attribute_type_editor" );
     }
 
 
