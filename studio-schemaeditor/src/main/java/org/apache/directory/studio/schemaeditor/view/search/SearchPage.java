@@ -560,7 +560,16 @@ public class SearchPage extends DialogPage implements ISearchPage
      */
     public static int loadScope()
     {
-        return Activator.getDefault().getDialogSettings().getInt( PluginConstants.PREFS_SEARCH_PAGE_SCOPE );
+        IDialogSettings settings = Activator.getDefault().getDialogSettings();
+        
+        if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE ) == null )
+        {
+            return PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC;
+        }
+        else
+        {
+            return settings.getInt( PluginConstants.PREFS_SEARCH_PAGE_SCOPE );
+        }
     }
 
 
