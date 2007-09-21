@@ -20,6 +20,8 @@
 package org.apache.directory.studio.schemaeditor.view.views;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
@@ -29,6 +31,7 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapp
 import org.apache.directory.studio.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
+import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -65,6 +68,7 @@ public class SchemaViewLabelProvider extends LabelProvider
     {
         String label = ""; //$NON-NLS-1$
 
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         int labelValue = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_LABEL );
         boolean abbreviate = store.getBoolean( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE );
         int abbreviateMaxLength = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_ABBREVIATE_MAX_LENGTH );
@@ -74,6 +78,7 @@ public class SchemaViewLabelProvider extends LabelProvider
             .getBoolean( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE );
         int secondaryLabelAbbreviateMaxLength = store
             .getInt( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH );
+        boolean schemaLabelDisplay = store.getBoolean( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_LABEL_DISPLAY );
 
         if ( element instanceof SchemaWrapper )
         {
@@ -191,7 +196,14 @@ public class SchemaViewLabelProvider extends LabelProvider
         {
             Folder folder = ( Folder ) element;
 
-            return folder.getName() + " (" + folder.getChildren().size() + ")";
+            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+            {
+                return folder.getName() + " (" + folder.getChildren().size() + ")";
+            }
+            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+            {
+                return folder.getName();
+            }
         }
 
         // Secondary Label
@@ -270,7 +282,34 @@ public class SchemaViewLabelProvider extends LabelProvider
                 secondaryLabel = secondaryLabel.substring( 0, secondaryLabelAbbreviateMaxLength ) + "..."; //$NON-NLS-1$
             }
 
-            label += "   [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+            label += "  [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        // Number of children
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            if ( ( element instanceof AttributeTypeWrapper ) || ( element instanceof ObjectClassWrapper ) )
+            {
+                List<TreeNode> children = ( ( TreeNode ) element ).getChildren();
+
+                if ( ( children != null ) && ( children.size() > 0 ) )
+                {
+                    label += "  (" + children.size() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                }
+            }
+        }
+
+        // Schema Label
+        if ( schemaLabelDisplay )
+        {
+            if ( element instanceof AttributeTypeWrapper )
+            {
+                label += "  [" + ( ( AttributeTypeWrapper ) element ).getAttributeType().getSchema() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            else if ( element instanceof ObjectClassWrapper )
+            {
+                label += "  [" + ( ( ObjectClassWrapper ) element ).getObjectClass().getSchema() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
 
         return label;

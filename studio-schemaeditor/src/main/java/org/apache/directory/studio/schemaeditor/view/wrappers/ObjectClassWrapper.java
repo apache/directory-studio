@@ -73,13 +73,4 @@ public class ObjectClassWrapper extends AbstractTreeNode
     {
         return objectClass;
     }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hasChildren()
-     */
-    public boolean hasChildren()
-    {
-        return false;
-    }
 }

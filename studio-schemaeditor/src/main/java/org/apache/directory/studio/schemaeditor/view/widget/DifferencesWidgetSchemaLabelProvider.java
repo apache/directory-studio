@@ -352,7 +352,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                 secondaryLabel = secondaryLabel.substring( 0, secondaryLabelAbbreviateMaxLength ) + "..."; //$NON-NLS-1$
             }
 
-            label += "   [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+            label += "  [" + secondaryLabel + "]"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return label;

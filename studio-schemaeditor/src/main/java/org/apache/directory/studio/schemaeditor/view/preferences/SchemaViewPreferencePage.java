@@ -70,6 +70,7 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
     private Combo secondaryLabelCombo;
     private Button secondaryLabelLimitButton;
     private Text secondaryLabelLengthText;
+    private Button schemaLabelButtonDisplay;
 
 
     /**
@@ -245,6 +246,20 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
             }
         } );
 
+        // Schema Label Group
+        Group schemaLabelGroup = new Group( composite, SWT.NONE );
+        schemaLabelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        schemaLabelGroup.setText( "Schema label" );
+        schemaLabelGroup.setLayout( new GridLayout() );
+        Composite schemaLabelGroupComposite = new Composite( schemaLabelGroup, SWT.NONE );
+        gl = new GridLayout( 1, false );
+        gl.marginHeight = gl.marginWidth = 0;
+        schemaLabelGroupComposite.setLayout( gl );
+        schemaLabelGroupComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        schemaLabelButtonDisplay = new Button( schemaLabelGroupComposite, SWT.CHECK );
+        schemaLabelButtonDisplay.setText( "Display schema name in label." );
+
         // Characters Label
         Label secondaryLabelcharactersLabel = new Label( abbreviateComposite2, SWT.NONE );
         secondaryLabelcharactersLabel.setText( "characters." );
@@ -290,6 +305,9 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
             secondaryLabelLimitButton.setEnabled( false );
             secondaryLabelLengthText.setEnabled( false );
         }
+
+        schemaLabelButtonDisplay.setSelection( store
+            .getBoolean( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_LABEL_DISPLAY ) );
     }
 
 
@@ -368,6 +386,9 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
             secondaryLabelLengthText.setEnabled( false );
         }
 
+        schemaLabelButtonDisplay.setSelection( store
+            .getDefaultBoolean( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_LABEL_DISPLAY ) );
+
         super.performDefaults();
     }
 
@@ -417,6 +438,9 @@ public class SchemaViewPreferencePage extends PreferencePage implements IWorkben
             .getSelection() );
         store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH,
             secondaryLabelLengthText.getText() );
+
+        store
+            .setValue( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_LABEL_DISPLAY, schemaLabelButtonDisplay.getSelection() );
 
         return true;
     }

@@ -125,45 +125,47 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
         }
         else if ( element instanceof Folder )
         {
-            Folder folder = ( Folder ) element;
-            Schema schema = ( ( SchemaWrapper ) folder.getParent() ).getSchema();
-
-            if ( folder.getType().equals( FolderType.ATTRIBUTE_TYPE ) )
-            {
-                for ( AttributeTypeImpl at : schema.getAttributeTypes() )
-                {
-                    if ( schemaChecker.hasErrors( at ) )
-                    {
-                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                            PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
-                        return;
-                    }
-
-                    if ( schemaChecker.hasWarnings( at ) )
-                    {
-                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                            PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
-                    }
-                }
-            }
-            else if ( folder.getType().equals( FolderType.OBJECT_CLASS ) )
-            {
-                for ( ObjectClassImpl oc : schema.getObjectClasses() )
-                {
-                    if ( schemaChecker.hasErrors( oc ) )
-                    {
-                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                            PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
-                        return;
-                    }
-
-                    if ( schemaChecker.hasWarnings( oc ) )
-                    {
-                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                            PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
-                    }
-                }
-            }
+            //TODO Add a workaround
+//            Folder folder = ( Folder ) element;
+//            
+//            Schema schema = ( ( SchemaWrapper ) folder.getParent() ).getSchema();
+//
+//            if ( folder.getType().equals( FolderType.ATTRIBUTE_TYPE ) )
+//            {
+//                for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+//                {
+//                    if ( schemaChecker.hasErrors( at ) )
+//                    {
+//                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+//                            PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+//                        return;
+//                    }
+//
+//                    if ( schemaChecker.hasWarnings( at ) )
+//                    {
+//                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+//                            PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+//                    }
+//                }
+//            }
+//            else if ( folder.getType().equals( FolderType.OBJECT_CLASS ) )
+//            {
+//                for ( ObjectClassImpl oc : schema.getObjectClasses() )
+//                {
+//                    if ( schemaChecker.hasErrors( oc ) )
+//                    {
+//                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+//                            PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+//                        return;
+//                    }
+//
+//                    if ( schemaChecker.hasWarnings( oc ) )
+//                    {
+//                        decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+//                            PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+//                    }
+//                }
+//            }
         }
     }
 }

@@ -73,13 +73,4 @@ public class AttributeTypeWrapper extends AbstractTreeNode
     {
         return attributeType;
     }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hasChildren()
-     */
-    public boolean hasChildren()
-    {
-        return false;
-    }
 }

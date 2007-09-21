@@ -149,6 +149,8 @@ public interface PluginConstants
     public static final String CMD_SHOW_SEARCH_HISTORY = Activator.PLUGIN_ID + ".commands.showSearchHistory";
     public static final String CMD_SHOW_SUBTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSubTypeHierarchy";
     public static final String CMD_SHOW_SUPERTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSuperTypeHierarchy";
+    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_FLAT = Activator.PLUGIN_ID + ".commands.switchSchemaPresentationToFlat";
+    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_HIERARCHICAL = Activator.PLUGIN_ID + ".commands.switchSchemaPresentationToHierarchical";
 
     // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */
@@ -160,6 +162,12 @@ public interface PluginConstants
     public static final int PREFS_DIFFERENCES_WIDGET_GROUPING_TYPE = 1;
 
     // Preferences - SchemaView
+    /** The preference ID for Schema View Schema Presentation */
+    public static final String PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION = SchemaViewPreferencePage.ID + ".schemaPresentation"; //$NON-NLS-1$
+    /** The preference value for Schema View Schema Presentation 'Flat' */
+    public static final int PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT = 0;
+    /** The preference value for Schema View Schema Presentation 'Hierarchical' */
+    public static final int PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL = 1;
     /** The preference ID for Schema View Label */
     public static final String PREFS_SCHEMA_VIEW_LABEL = SchemaViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
     /** The preference value for Schema View First Name label */
@@ -185,6 +193,8 @@ public interface PluginConstants
     /** The preference ID for Schema View Abbreviate Secondary Label Max Length*/
     public static final String PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = SchemaViewPreferencePage.ID
         + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
+    public static final String PREFS_SCHEMA_VIEW_SCHEMA_LABEL_DISPLAY = SchemaViewPreferencePage.ID
+    + ".schemaLabel.display"; //$NON-NLS-1$
     /** The preference ID for Schema View Grouping */
     public static final String PREFS_SCHEMA_VIEW_GROUPING = Activator.PLUGIN_ID + ".preferences.SchemaView.grouping"; //$NON-NLS-1$
     /** The preference value for Schema View Grouping 'group ATs and OCs in folders' */

@@ -122,4 +122,35 @@ public class Folder extends AbstractTreeNode
     {
         return name;
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof Folder )
+        {
+            Folder folder = ( Folder ) obj;
+
+            if ( ( getParent() != null ) && ( !getParent().equals( folder.getParent() ) ) )
+            {
+                return false;
+            }
+
+            if ( !getType().equals( folder.getType() ) )
+            {
+                return false;
+            }
+
+            if ( ( getName() != null ) && ( !getName().equals( folder.getName() ) ) )
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 }
