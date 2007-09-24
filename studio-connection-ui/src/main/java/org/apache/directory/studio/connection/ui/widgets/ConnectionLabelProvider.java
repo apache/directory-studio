@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
@@ -47,6 +48,11 @@ public class ConnectionLabelProvider extends LabelProvider
      */
     public String getText( Object obj )
     {
+        if ( obj instanceof ConnectionFolder )
+        {
+            ConnectionFolder folder = (ConnectionFolder) obj;
+            return folder.getName();
+        }
         if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
@@ -81,7 +87,11 @@ public class ConnectionLabelProvider extends LabelProvider
      */
     public Image getImage( Object obj )
     {
-        if ( obj instanceof Connection )
+        if ( obj instanceof ConnectionFolder )
+        {
+            return ConnectionUIPlugin.getDefault().getImage( ConnectionUIConstants.IMG_CONNECTION_FOLDER );
+        }
+        else if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
             return conn.getJNDIConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(

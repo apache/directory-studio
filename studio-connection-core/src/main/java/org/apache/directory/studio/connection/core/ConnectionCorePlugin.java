@@ -41,6 +41,9 @@ public class ConnectionCorePlugin extends Plugin
     /** The connection manager */
     private ConnectionManager connectionManager;
 
+    /** The connection folder manager */
+    private ConnectionFolderManager connectionFolderManager;
+
     /** The event runner. */
     private EventRunner eventRunner;
 
@@ -73,6 +76,11 @@ public class ConnectionCorePlugin extends Plugin
         {
             connectionManager = new ConnectionManager();
         }
+
+        if ( connectionFolderManager == null )
+        {
+            connectionFolderManager = new ConnectionFolderManager();
+        }
     }
 
 
@@ -98,6 +106,11 @@ public class ConnectionCorePlugin extends Plugin
             }
             connectionManager = null;
         }
+
+        if ( connectionFolderManager != null )
+        {
+            connectionFolderManager = null;
+        }
     }
 
 
@@ -121,6 +134,17 @@ public class ConnectionCorePlugin extends Plugin
     public ConnectionManager getConnectionManager()
     {
         return connectionManager;
+    }
+
+
+    /**
+     * Gets the connection folder manager.
+     *
+     * @return the connection folder manager
+     */
+    public ConnectionFolderManager getConnectionFolderManager()
+    {
+        return connectionFolderManager;
     }
 
 

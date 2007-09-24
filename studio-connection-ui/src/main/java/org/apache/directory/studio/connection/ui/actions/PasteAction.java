@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.ui.actions;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
@@ -112,6 +113,16 @@ public class PasteAction extends StudioAction
             {
                 Connection newConnection = ( Connection ) connections[i].clone();
                 ConnectionCorePlugin.getDefault().getConnectionManager().addConnection( newConnection );
+                ConnectionFolder[] folders = getSelectedConnectionFolders();
+                if(folders != null && folders.length > 0)
+                {
+                    folders[0].addConnectionId( newConnection.getId() );
+                }
+                else
+                {
+                    ConnectionCorePlugin.getDefault().getConnectionFolderManager().getRootConnectionFolder()
+                        .addConnectionId( newConnection.getId() );
+                }
             }
             return;
         }
@@ -119,22 +130,17 @@ public class PasteAction extends StudioAction
 
 
     /**
-     * Conditions: - a connection is selected - there are connections in
-     * clipboard
+     * Condition: there are connections in clipboard
      * 
      * @return the connections to paste
      */
     private Connection[] getConnectionsToPaste()
     {
-        if ( getSelectedConnections().length > 0 )
+        Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
+        if ( content != null && content instanceof Connection[] )
         {
-
-            Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
-            if ( content != null && content instanceof Connection[] )
-            {
-                Connection[] connections = ( Connection[] ) content;
-                return connections;
-            }
+            Connection[] connections = ( Connection[] ) content;
+            return connections;
         }
 
         return null;

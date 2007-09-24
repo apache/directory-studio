@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
@@ -60,13 +61,13 @@ public abstract class SelectionUtils
      * @param type the requested type
      * @return a list containg beans of the requesten type
      */
-    private static List<Object> getTypes( ISelection selection, Class type )
+    private static List<Object> getTypes( ISelection selection, Class<?> type )
     {
         List<Object> list = new ArrayList<Object>();
         if ( selection instanceof IStructuredSelection )
         {
             IStructuredSelection structuredSelection = ( IStructuredSelection ) selection;
-            Iterator it = structuredSelection.iterator();
+            Iterator<?> it = structuredSelection.iterator();
             while ( it.hasNext() )
             {
                 Object o = it.next();
@@ -93,6 +94,19 @@ public abstract class SelectionUtils
     }
 
 
+    /**
+     * Gets the ConnectionFolder beans contained in the given selection.
+     *
+     * @param selection the selection
+     * @return an array with ConnectionFolder beans, may be empty.
+     */
+    public static ConnectionFolder[] getConnectionFolders( ISelection selection )
+    {
+        List<Object> list = getTypes( selection, ConnectionFolder.class );
+        return list.toArray( new ConnectionFolder[list.size()] );
+    }
+    
+    
     /**
      * Gets the objects contained in the given selection.
      *

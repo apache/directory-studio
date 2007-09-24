@@ -25,9 +25,6 @@ import org.apache.directory.studio.connection.ui.actions.StudioAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
-import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -268,39 +265,6 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     protected Shell getShell()
     {
         return PlatformUI.getWorkbench().getDisplay().getActiveShell();
-    }
-
-
-    /**
-     * This method is fired when an Entry is updated.
-     *
-     * @param event
-     *      the associated event
-     */
-    public final void entryUpdated( EntryModificationEvent event )
-    {
-    }
-
-
-    /**
-     * This method is fired when a Search is updated.
-     *
-     * @param searchUpdateEvent
-     *      the associated event
-     */
-    public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
-    {
-    }
-
-
-    /**
-     * This method is fired when a Bookmark is updated.
-     *
-     * @param bookmarkUpdateEvent
-     *      the associated event
-     */
-    public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
-    {
     }
 
 

@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.actions.proxy;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
@@ -109,7 +110,6 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !this.isDisposed() )
         {
-            this.action.entryUpdated( entryModificationEvent );
             this.updateAction();
         }
     }
@@ -119,7 +119,6 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !this.isDisposed() )
         {
-            this.action.searchUpdated( searchUpdateEvent );
             this.updateAction();
         }
     }
@@ -129,7 +128,6 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !this.isDisposed() )
         {
-            this.action.bookmarkUpdated( bookmarkUpdateEvent );
             this.updateAction();
         }
     }
@@ -142,7 +140,6 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !isDisposed() )
         {
-            action.connectionUpdated( connection );
             updateAction();
         }
     }
@@ -181,6 +178,15 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     public void connectionClosed( Connection connection )
     {
         connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
+        connectionUpdated( null );
     }
 
 

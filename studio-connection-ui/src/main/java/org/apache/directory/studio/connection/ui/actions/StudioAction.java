@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.ui.actions;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -42,6 +43,9 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /** The selected Connections */
     private Connection[] selectedConnections;
 
+    /** The selected connection folders */
+    private ConnectionFolder[] selectedConnectionFolders;
+    
     /** The input */
     private Object input;
 
@@ -79,6 +83,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     public void selectionChanged( IAction action, ISelection selection )
     {
         setSelectedConnections( SelectionUtils.getConnections( selection ) );
+        setSelectedConnectionFolders( SelectionUtils.getConnectionFolders( selection ) );
 
         action.setEnabled( this.isEnabled() );
         action.setText( this.getText() );
@@ -147,6 +152,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     private void init()
     {
         this.selectedConnections = new Connection[0];
+        this.selectedConnectionFolders = new ConnectionFolder[0];
 
         this.input = null;
     }
@@ -158,6 +164,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     public void dispose()
     {
         this.selectedConnections = new Connection[0];
+        this.selectedConnectionFolders = new ConnectionFolder[0];
 
         this.input = null;
     }
@@ -172,17 +179,6 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     protected Shell getShell()
     {
         return PlatformUI.getWorkbench().getDisplay().getActiveShell();
-    }
-
-
-    /**
-     * This method is fired when a Connection is updated.
-     *
-     * @param connection
-     *      the connection
-     */
-    public void connectionUpdated( Connection connection )
-    {
     }
 
 
@@ -209,6 +205,30 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
         this.selectedConnections = selectedConnections;
     }
 
+
+    /**
+     * Gets the selected connection folders.
+     *
+     * @return
+     *      the selected connection folders
+     */
+    public ConnectionFolder[] getSelectedConnectionFolders()
+    {
+        return selectedConnectionFolders;
+    }
+    
+    
+    /**
+     * Sets the selected connection folders.
+     *
+     * @param selectedConnectionFolders
+     *      the selected connections folders to set
+     */
+    public void setSelectedConnectionFolders( ConnectionFolder[] selectedConnectionFolders )
+    {
+        this.selectedConnectionFolders = selectedConnectionFolders;
+    }
+    
 
     /**
      * Gets the input.

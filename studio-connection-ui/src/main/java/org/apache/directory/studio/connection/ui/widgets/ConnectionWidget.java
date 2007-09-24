@@ -23,12 +23,12 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
 
 
@@ -56,11 +56,11 @@ public class ConnectionWidget extends ViewFormWidget
     /** The action bars */
     private IActionBars actionBars;
 
-    /** The table widget used by the table viewer */
-    private Table table;
+    /** The tree widget used by the tree viewer */
+    private Tree tree;
 
-    /** The table viewer */
-    private TableViewer viewer;
+    /** The tree viewer */
+    private TreeViewer viewer;
 
 
     /**
@@ -146,19 +146,18 @@ public class ConnectionWidget extends ViewFormWidget
      */
     protected Control createContent( Composite parent )
     {
-
-        table = new Table( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        tree = new Tree( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.widthHint = 450;
         data.heightHint = 250;
-        table.setLayoutData( data );
-        viewer = new TableViewer( table );
+        tree.setLayoutData( data );
+        viewer = new TreeViewer( tree );
 
         // setup providers
         viewer.setContentProvider( configuration.getContentProvider( viewer ) );
         viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
 
-        return table;
+        return tree;
     }
 
 
@@ -178,7 +177,7 @@ public class ConnectionWidget extends ViewFormWidget
      */
     public void setFocus()
     {
-        viewer.getTable().setFocus();
+        viewer.getTree().setFocus();
     }
 
 
@@ -192,19 +191,19 @@ public class ConnectionWidget extends ViewFormWidget
             configuration.dispose();
             configuration = null;
 
-            table.dispose();
-            table = null;
+            tree.dispose();
+            tree = null;
             viewer = null;
         }
     }
 
 
     /**
-     * Gets the table viewer.
+     * Gets the tree viewer.
      * 
-     * @return the table viewer
+     * @return the tree viewer
      */
-    public TableViewer getViewer()
+    public TreeViewer getViewer()
     {
         return viewer;
     }

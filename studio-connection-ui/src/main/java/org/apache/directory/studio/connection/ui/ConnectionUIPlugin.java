@@ -42,7 +42,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     /** The Constant PLUGIN_ID. */
     public static final String PLUGIN_ID = "org.apache.directory.studio.connection.ui";
 
-    /** The shared plugin instande. */
+    /** The shared plugin instance. */
     private static ConnectionUIPlugin plugin;
 
     /** The event dispatcher */

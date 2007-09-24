@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.ui.actions;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
@@ -125,7 +126,6 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
     {
         if ( !isDisposed() )
         {
-            action.connectionUpdated( connection );
             updateAction();
         }
     }
@@ -168,6 +168,15 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
+        connectionUpdated( null );
+    }
+
+
+    /**
      * Input changed.
      * 
      * @param input the input
@@ -192,6 +201,7 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
         {
             ISelection selection = event.getSelection();
             action.setSelectedConnections( SelectionUtils.getConnections( selection ) );
+            action.setSelectedConnectionFolders( SelectionUtils.getConnectionFolders( selection ) );
             updateAction();
         }
     }

@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 
 
 /**
@@ -287,6 +288,43 @@ public class ConnectionEventRegistry
                 }
             };
 
+            EventRunner runner = listeners.get( listener );
+            synchronized ( lock )
+            {
+                runner.execute( runnable );
+            }
+        }
+    }
+    
+    
+    /**
+     * Notifies each {@link ConnectionUpdateListener} about the modified connection folder.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param connectionFolder the modified connection folder
+     * @param source the source
+     */
+    public static void fireConnectonFolderModified( final ConnectionFolder connectionFolder, final Object source )
+    {
+        if ( isEventFireingSuspendedInCurrentThread() )
+        {
+            return;
+        }
+        
+        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
+            connectionUpdateListeners );
+        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
+        while ( it.hasNext() )
+        {
+            final ConnectionUpdateListener listener = it.next();
+            EventRunnable runnable = new EventRunnable()
+            {
+                public void run()
+                {
+                    listener.connectionFolderModified( connectionFolder );
+                }
+            };
+            
             EventRunner runner = listeners.get( listener );
             synchronized ( lock )
             {

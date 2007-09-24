@@ -24,6 +24,7 @@ package org.apache.directory.studio.connection.core.event;
 import java.util.EventListener;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 
 
 /**
@@ -73,5 +74,13 @@ public interface ConnectionUpdateListener extends EventListener
      * @param connection the updated connection 
      */
     public void connectionUpdated( Connection connection );
+
+
+    /**
+     * Called when {@link ConnectionFolder}s were modified.
+     *
+     * @param connectionFolder the modified connection folder 
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder );
 
 }

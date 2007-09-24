@@ -89,10 +89,10 @@ public class NewProjectWizardConnectionSelectionPage extends WizardPage
         // Creating configuration
         configuration = new ConnectionConfiguration();
 
-        // Creating Connection Widet
+        // Creating Connection Widget
         connectionWidget = new ConnectionWidget( configuration, null );
         connectionWidget.createWidget( composite );
-        connectionWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
+        connectionWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
 
         connectionWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
         {

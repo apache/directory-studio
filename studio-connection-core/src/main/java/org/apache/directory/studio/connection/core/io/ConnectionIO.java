@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -66,6 +67,10 @@ public class ConnectionIO
     private static final String KEY_TAG = "key";
     private static final String VALUE_TAG = "value";
 
+    private static final String CONNECTION_FOLDERS_TAG = "connectionFolders";
+    private static final String CONNECTION_FOLDER_TAG = "connectionFolder";
+    private static final String SUB_FOLDERS_TAG = "subFolders";
+    private static final String SUB_FOLDER_TAG = "subFolder";
 
     /**
      * Loads the connections using the reader
@@ -313,4 +318,184 @@ public class ConnectionIO
             }
         }
     }
+
+
+    /**
+     * Loads the connection folders using the reader
+     *
+     * @param stream
+     *      the FileInputStream
+     * @return
+     *      the connection folders
+     * @throws ConnectionIOException 
+     *      if an error occurs when converting the document
+     */
+    public static List<ConnectionFolder> loadConnectionFolders( FileInputStream stream ) throws ConnectionIOException
+    {
+        List<ConnectionFolder> connectionFolders = new ArrayList<ConnectionFolder>();
+
+        SAXReader saxReader = new SAXReader();
+        Document document = null;
+
+        try
+        {
+            document = saxReader.read( stream );
+        }
+        catch ( DocumentException e )
+        {
+            throw new ConnectionIOException( e.getMessage() );
+        }
+
+        Element rootElement = document.getRootElement();
+        if ( !rootElement.getName().equals( CONNECTION_FOLDERS_TAG ) )
+        {
+            throw new ConnectionIOException( "The file does not seem to be a valid ConnectionFolders file." );
+        }
+
+        for ( Iterator<?> i = rootElement.elementIterator( CONNECTION_FOLDER_TAG ); i.hasNext(); )
+        {
+            Element connectionFolderElement = ( Element ) i.next();
+            connectionFolders.add( readConnectionFolder( connectionFolderElement ) );
+        }
+
+        return connectionFolders;
+    }
+
+
+    /**
+     * Reads a connection folder from the given Element.
+     *
+     * @param element
+     *      the element
+     * @return
+     *      the corresponding connection folder
+     * @throws ConnectionIOException
+     *      if an error occurs when converting values
+     */
+    private static ConnectionFolder readConnectionFolder( Element element ) throws ConnectionIOException
+    {
+        ConnectionFolder connectionFolder = new ConnectionFolder();
+
+        // ID
+        Attribute idAttribute = element.attribute( ID_TAG );
+        if ( idAttribute != null )
+        {
+            connectionFolder.setId( idAttribute.getValue() );
+        }
+
+        // Name
+        Attribute nameAttribute = element.attribute( NAME_TAG );
+        if ( nameAttribute != null )
+        {
+            connectionFolder.setName( nameAttribute.getValue() );
+        }
+
+        // Connections
+        Element connectionsElement = element.element( CONNECTIONS_TAG );
+        if ( connectionsElement != null )
+        {
+            for ( Iterator<?> i = connectionsElement.elementIterator( CONNECTION_TAG ); i.hasNext(); )
+            {
+                Element connectionElement = ( Element ) i.next();
+
+                Attribute connectionIdAttribute = connectionElement.attribute( ID_TAG );
+
+                if ( connectionIdAttribute != null )
+                {
+                    connectionFolder.addConnectionId( connectionIdAttribute.getValue() );
+                }
+            }
+        }
+
+        // Sub-folders
+        Element foldersElement = element.element( SUB_FOLDERS_TAG );
+        if ( foldersElement != null )
+        {
+            for ( Iterator<?> i = foldersElement.elementIterator( SUB_FOLDER_TAG ); i.hasNext(); )
+            {
+                Element folderElement = ( Element ) i.next();
+                
+                Attribute folderIdAttribute = folderElement.attribute( ID_TAG );
+                
+                if ( folderIdAttribute != null )
+                {
+                    connectionFolder.addSubFolderId( folderIdAttribute.getValue() );
+                }
+            }
+        }
+
+        return connectionFolder;
+    }
+
+
+    /**
+     * Saves the connection folders using the writer.
+     *
+     * @param connectionFolders
+     *      the connection folders
+     * @param stream
+     *      the OutputStream
+     * @throws IOException
+     *      if an I/O error occurs
+     */
+    public static void saveConnectionFolders( List<ConnectionFolder> connectionFolders, FileOutputStream stream ) throws IOException
+    {
+        // Creating the Document
+        Document document = DocumentHelper.createDocument();
+
+        // Creating the root element
+        Element root = document.addElement( CONNECTION_FOLDERS_TAG );
+
+        if ( connectionFolders != null )
+        {
+            for ( ConnectionFolder connectionFolder : connectionFolders )
+            {
+                addFolderConnection( root, connectionFolder );
+            }
+        }
+
+        // Writing the file to disk
+        OutputFormat outformat = OutputFormat.createPrettyPrint();
+        outformat.setEncoding( "UTF-8" );
+        XMLWriter writer = new XMLWriter( stream, outformat );
+        writer.write( document );
+        writer.flush();
+    }
+
+
+    /**
+     * Adds the given connection folder to the given parent Element.
+     *
+     * @param parent
+     *      the parent Element
+     * @param connectionFolder
+     *      the connection folder
+     */
+    private static void addFolderConnection( Element parent, ConnectionFolder connectionFolder )
+    {
+        Element connectionFolderElement = parent.addElement( CONNECTION_FOLDER_TAG );
+
+        // ID
+        connectionFolderElement.addAttribute( ID_TAG, connectionFolder.getId() );
+
+        // Name
+        connectionFolderElement.addAttribute( NAME_TAG, connectionFolder.getName() );
+
+        // Connections
+        Element connectionsElement = connectionFolderElement.addElement( CONNECTIONS_TAG );
+        for ( String connectionId : connectionFolder.getConnectionIds() )
+        {
+            Element connectionElement = connectionsElement.addElement( CONNECTION_TAG );
+            connectionElement.addAttribute( ID_TAG, connectionId );
+        }
+        
+        // Sub-folders
+        Element foldersElement = connectionFolderElement.addElement( SUB_FOLDERS_TAG );
+        for ( String folderId : connectionFolder.getSubFolderIds() )
+        {
+            Element folderElement = foldersElement.addElement( SUB_FOLDER_TAG );
+            folderElement.addAttribute( ID_TAG, folderId );
+        }
+    }
+
 }

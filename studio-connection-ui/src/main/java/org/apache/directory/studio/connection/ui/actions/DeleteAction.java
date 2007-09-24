@@ -21,9 +21,15 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.jobs.CloseConnectionsJob;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
@@ -44,20 +50,20 @@ public class DeleteAction extends StudioAction
      */
     public String getText()
     {
-        try
+        Connection[] connections = getSelectedConnections();
+        ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();        
+        if ( connections.length > 0 && connectionFolders.length == 0 )
         {
-            Connection[] connections = getConnections();
-
-            if ( connections.length > 0 )
-            {
-                return connections.length > 1 ? "Delete Connections" : "Delete Connection";
-            }
+            return connections.length > 1 ? "Delete Connections" : "Delete Connection";
         }
-        catch ( Exception e )
+        else if ( connectionFolders.length > 0 && connections.length == 0 )
         {
+            return connectionFolders.length > 1 ? "Delete Connection Folders" : "Delete Connection Folder";
         }
-
-        return "Delete";
+        else 
+        {
+            return "Delete";
+        }
     }
 
 
@@ -84,99 +90,171 @@ public class DeleteAction extends StudioAction
      */
     public void run()
     {
-        try
+        Connection[] connections = getSelectedConnections();
+        ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();        
+
+        StringBuffer message = new StringBuffer();
+
+        if ( connections.length > 0 )
         {
-            Connection[] connections = getConnections();
+            if ( connections.length <= 5 )
+            {
+                message.append( connections.length == 1 ? "Are your sure to delete the following connection?"
+                    : "Are your sure to delete the following connections?" );
+                for ( int i = 0; i < connections.length; i++ )
+                {
+                    message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+                    message.append( "  - " );
+                    message.append( connections[i].getName() );
+                }
+            }
+            else
+            {
+                message.append( "Are your sure to delete the selected connections?" );
+            }
+            message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+            message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+        }
 
-            StringBuffer message = new StringBuffer();
+        if ( connectionFolders.length > 0 )
+        {
+            if ( connectionFolders.length <= 5 )
+            {
+                message.append( connectionFolders.length == 1 ? "Are your sure to delete the following connection folder including all connections?"
+                    : "Are your sure to delete the following connection folders including all connections?" );
+                for ( int i = 0; i < connectionFolders.length; i++ )
+                {
+                    message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+                    message.append( "  - " );
+                    message.append( connectionFolders[i].getName() );
+                }
+            }
+            else
+            {
+                message.append( "Are your sure to delete the selected connection folders including all connections?" );
+            }
+            message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+            message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+        }
 
+        if ( message.length() == 0 || MessageDialog.openConfirm( getShell(), getText(), message.toString() ) )
+        {
+            List<Connection> connectionsToDelete = getConnectionsToDelete();
+            List<ConnectionFolder> connectionsFoldersToDelete = getConnectionsFoldersToDelete();
+            
             if ( connections.length > 0 )
             {
-                if ( connections.length <= 5 )
-                {
-                    message.append( connections.length == 1 ? "Are your sure to delete the following connection?"
-                        : "Are your sure to delete the following connections?" );
-                    for ( int i = 0; i < connections.length; i++ )
-                    {
-                        message.append( ConnectionCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " );
-                        message.append( connections[i].getName() );
-                    }
-                }
-                else
-                {
-                    message.append( "Are your sure to delete the selected connections?" );
-                }
-                message.append( ConnectionCoreConstants.LINE_SEPARATOR );
-                message.append( ConnectionCoreConstants.LINE_SEPARATOR );
+                deleteConnections( connectionsToDelete );
             }
-
-            if ( message.length() == 0 || MessageDialog.openConfirm( getShell(), getText(), message.toString() ) )
+            if ( connectionFolders.length > 0 )
             {
-
-                if ( connections.length > 0 )
-                {
-                    deleteConnections( connections );
-                }
+                deleteConnectionFolders( connectionsFoldersToDelete );
             }
-        }
-        catch ( Exception e )
-        {
         }
     }
 
 
+    private List<ConnectionFolder> getConnectionsFoldersToDelete()
+    {
+        List<ConnectionFolder> selectedFolders = new ArrayList<ConnectionFolder>(Arrays.asList( getSelectedConnectionFolders() ));
+        List<ConnectionFolder> foldersToDelete = new ArrayList<ConnectionFolder>();
+        while( !selectedFolders.isEmpty() )
+        {
+            ConnectionFolder folder = selectedFolders.get( 0 );
+
+            List<String> subFolderIds = folder.getSubFolderIds();
+            for ( String subFolderId : subFolderIds )
+            {
+                ConnectionFolder subFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager().getConnectionFolderById( subFolderId );
+                if ( subFolder != null )
+                {
+                    selectedFolders.add( subFolder );
+                }
+            }
+
+            if( !foldersToDelete.contains( folder ) )
+            {
+                foldersToDelete.add( folder );
+            }
+            
+            selectedFolders.remove( folder );
+        }
+        return foldersToDelete;
+    }
+
+
+    private List<Connection> getConnectionsToDelete()
+    {
+        List<ConnectionFolder> selectedFolders = new ArrayList<ConnectionFolder>(Arrays.asList( getSelectedConnectionFolders() ));
+        List<Connection> selectedConnections = new ArrayList<Connection>(Arrays.asList( getSelectedConnections() ));
+        List<Connection> connectionsToDelete = new ArrayList<Connection>( selectedConnections );
+        while( !selectedFolders.isEmpty() )
+        {
+            ConnectionFolder folder = selectedFolders.get( 0 );
+
+            List<String> subFolderIds = folder.getSubFolderIds();
+            for ( String subFolderId : subFolderIds )
+            {
+                ConnectionFolder subFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager().getConnectionFolderById( subFolderId );
+                if ( subFolder != null )
+                {
+                    selectedFolders.add( subFolder );
+                }
+            }
+
+            List<String> connectionIds = folder.getConnectionIds();
+            for ( String connectionId : connectionIds )
+            {
+                Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionById( connectionId );
+                if(connection != null && !connectionsToDelete.contains( connection ))
+                {
+                    connectionsToDelete.add( connection );
+                }
+            }
+
+            selectedFolders.remove( folder );
+        }
+        return connectionsToDelete;
+    }
+
+    
     /**
      * {@inheritDoc}
      */
     public boolean isEnabled()
     {
-        try
-        {
-            Connection[] connections = getConnections();
-            return connections.length > 0;
-        }
-        catch ( Exception e )
-        {
-            // e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    /**
-     * Gets the Connections 
-     *
-     * @return
-     *      the Connections
-     * @throws Exception
-     *      when a is opened
-     */
-    protected Connection[] getConnections() throws Exception
-    {
-        for ( int i = 0; i < getSelectedConnections().length; i++ )
-        {
-            if ( getSelectedConnections()[i].getJNDIConnectionWrapper().isConnected() )
-            {
-                throw new Exception();
-            }
-        }
-
-        return getSelectedConnections();
+        return getSelectedConnections().length + getSelectedConnectionFolders().length > 0;
     }
 
 
     /**
      * Deletes Connections
      *
-     * @param connections
+     * @param connectionsToDelete
      *      the Connections to delete
      */
-    protected void deleteConnections( Connection[] connections )
+    private void deleteConnections( List<Connection> connectionsToDelete )
     {
-        for ( int i = 0; i < connections.length; i++ )
+        new CloseConnectionsJob( connectionsToDelete.toArray( new Connection[connectionsToDelete.size()] ) ).execute();
+        for ( Connection connection : connectionsToDelete )
         {
-            ConnectionCorePlugin.getDefault().getConnectionManager().removeConnection( connections[i] );
+            ConnectionCorePlugin.getDefault().getConnectionManager().removeConnection( connection);
         }
     }
+
+
+    /**
+     * Deletes Connection Folders
+     *
+     * @param connectionsFoldersToDelete
+     *      the Connection Folders to delete
+     */
+    private void deleteConnectionFolders( List<ConnectionFolder> connectionsFoldersToDelete )
+    {
+        for ( ConnectionFolder connectionFolder : connectionsFoldersToDelete )
+        {
+            ConnectionCorePlugin.getDefault().getConnectionFolderManager().removeConnectionFolder( connectionFolder );
+        }
+    }
+
 }

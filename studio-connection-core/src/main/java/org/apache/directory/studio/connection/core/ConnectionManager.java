@@ -249,6 +249,14 @@ public class ConnectionManager implements ConnectionUpdateListener
 
 
     /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
+    }
+
+
+    /**
      * Saves the Connections
      */
     private synchronized void saveConnections()

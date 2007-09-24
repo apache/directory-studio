@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
@@ -139,7 +140,7 @@ public class SelectReferralConnectionDialog extends Dialog
         // create main widget
         this.mainWidget = new ConnectionWidget( this.configuration, null );
         this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
+        this.mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
 
         // create actions and context menu (and register global actions)
         this.actionGroup = new ConnectionActionGroup( this.mainWidget, this.configuration );
@@ -158,9 +159,12 @@ public class SelectReferralConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IBrowserConnection )
+                    if ( o instanceof Connection )
                     {
-                        selectedConnection = ( IBrowserConnection ) o;
+                        Connection connection = ( Connection ) o;
+                        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                            .getBrowserConnection( connection );
+                        selectedConnection = browserConnection;
                     }
                 }
             }
@@ -173,10 +177,12 @@ public class SelectReferralConnectionDialog extends Dialog
                 if ( !event.getSelection().isEmpty() )
                 {
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof IBrowserConnection )
+                    if ( o instanceof Connection )
                     {
-                        selectedConnection = ( IBrowserConnection ) o;
-                        okPressed();
+                        Connection connection = ( Connection ) o;
+                        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                            .getBrowserConnection( connection );
+                        selectedConnection = browserConnection;
                     }
                 }
             }
@@ -192,7 +198,7 @@ public class SelectReferralConnectionDialog extends Dialog
                 if ( connectionUrl != null && referralUrl.toString().startsWith( connectionUrl.toString() ) )
                 {
                     this.mainWidget.getViewer().reveal( connection );
-                    this.mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+                    this.mainWidget.getViewer().setSelection( new StructuredSelection( connection.getConnection() ), true );
                 }
             }
         }

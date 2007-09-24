@@ -25,6 +25,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
@@ -625,6 +626,14 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     public void connectionClosed( Connection connection )
     {
         connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
     }
 
 

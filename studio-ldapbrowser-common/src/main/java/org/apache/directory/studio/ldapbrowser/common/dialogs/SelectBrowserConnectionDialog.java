@@ -173,7 +173,7 @@ public class SelectBrowserConnectionDialog extends Dialog
         // create main widget
         connectionMainWidget = new ConnectionWidget( connectionConfiguration, null );
         connectionMainWidget.createWidget( composite );
-        connectionMainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
+        connectionMainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
 
         // create actions and context menu (and register global actions)
         connectionActionGroup = new ConnectionActionGroup( connectionMainWidget, connectionConfiguration );

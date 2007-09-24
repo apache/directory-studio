@@ -43,4 +43,9 @@ public interface ConnectionUIConstants
     public static final String IMG_CONNECTION_WIZARD = "resources/icons/connection_wizard.gif";
     
     public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif";
+    
+    public static final String IMG_CONNECTION_FOLDER = "resources/icons/connection_folder.gif";
+    
+    public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder.gif";
+
 }

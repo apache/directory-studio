@@ -22,11 +22,12 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 
 
 /**
@@ -38,16 +39,16 @@ import org.eclipse.jface.viewers.TableViewer;
 public class ConnectionUniversalListener implements ConnectionUpdateListener
 {
 
-    /** The table viewer */
-    protected TableViewer viewer;
+    /** The tree viewer */
+    protected TreeViewer viewer;
 
 
     /**
      * Creates a new instance of ConnectionUniversalListener.
      *
-     * @param viewer the table viewer
+     * @param viewer the tree viewer
      */
-    public ConnectionUniversalListener( TableViewer viewer )
+    public ConnectionUniversalListener( TreeViewer viewer )
     {
         this.viewer = viewer;
 
@@ -117,6 +118,15 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
     public void connectionClosed( Connection connection )
     {
         connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
+        connectionUpdated( null );
     }
 
 }

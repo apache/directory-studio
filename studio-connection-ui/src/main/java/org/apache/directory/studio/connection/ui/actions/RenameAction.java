@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.ui.actions;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -52,12 +53,15 @@ public class RenameAction extends StudioAction
      */
     public String getText()
     {
-
-        Connection[] connections = getConnections();
-
-        if ( connections.length == 1 )
+        Connection[] connections = getSelectedConnections();
+        ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
+        if ( connections.length == 1 && connectionFolders.length == 0 )
         {
             return "Rename Connection...";
+        }
+        else if ( connectionFolders.length == 1 && connections.length == 0 )
+        {
+            return "Rename Connection Folder...";
         }
         else
         {
@@ -89,11 +93,15 @@ public class RenameAction extends StudioAction
      */
     public void run()
     {
-        Connection[] connections = getConnections();
-
+        Connection[] connections = getSelectedConnections();
+        ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
         if ( connections.length == 1 )
         {
             renameConnection( connections[0] );
+        }
+        else if ( connectionFolders.length == 1 )
+        {
+            renameConnectionFolder( connectionFolders[0] );
         }
     }
 
@@ -103,34 +111,7 @@ public class RenameAction extends StudioAction
      */
     public boolean isEnabled()
     {
-        try
-        {
-            Connection[] connections = getConnections();
-            return connections.length == 1;
-        }
-        catch ( Exception e )
-        {
-            return false;
-        }
-    }
-
-
-    /**
-     * Gets the Connections
-     * 
-     * @return
-     *      the Connections
-     */
-    protected Connection[] getConnections()
-    {
-        if ( getSelectedConnections().length == 1 )
-        {
-            return getSelectedConnections();
-        }
-        else
-        {
-            return new Connection[0];
-        }
+        return getSelectedConnections().length + getSelectedConnectionFolders().length == 1;
     }
 
 
@@ -140,18 +121,24 @@ public class RenameAction extends StudioAction
      * @param connection
      *      the Connection to rename
      */
-    protected void renameConnection( final Connection connection )
+    private void renameConnection( final Connection connection )
     {
         IInputValidator validator = new IInputValidator()
         {
             public String isValid( String newName )
             {
                 if ( connection.getName().equals( newName ) )
+                {
                     return null;
+                }
                 else if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( newName ) != null )
+                {
                     return "A connection with this name already exists.";
+                }
                 else
+                {
                     return null;
+                }
             }
         };
 
@@ -165,4 +152,44 @@ public class RenameAction extends StudioAction
             connection.setName( newName );
         }
     }
+    
+
+    /**
+     * Renames a ConnectionFolder.
+     *
+     * @param connectionFolder
+     *      the ConnectionFolder to rename
+     */
+    private void renameConnectionFolder( final ConnectionFolder connectionFolder )
+    {
+        IInputValidator validator = new IInputValidator()
+        {
+            public String isValid( String newName )
+            {
+                if ( connectionFolder.getName().equals( newName ) )
+                {
+                    return null;
+                }
+                else if ( ConnectionCorePlugin.getDefault().getConnectionFolderManager().getConnectionFolderByName( newName ) != null )
+                {
+                    return "A connection folder with this name already exists.";
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        };
+
+        InputDialog dialog = new InputDialog( getShell(), "Rename Connection Folder", "New name:", connectionFolder.getName(),
+            validator );
+
+        dialog.open();
+        String newName = dialog.getValue();
+        if ( newName != null )
+        {
+            connectionFolder.setName( newName );
+        }
+    }
+    
 }

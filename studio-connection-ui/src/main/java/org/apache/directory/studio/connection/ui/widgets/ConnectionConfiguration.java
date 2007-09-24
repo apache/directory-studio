@@ -23,7 +23,7 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Menu;
 
 
@@ -97,7 +97,7 @@ public class ConnectionConfiguration
      * 
      * @return the context menu manager
      */
-    public IMenuManager getContextMenuManager( TableViewer viewer )
+    public IMenuManager getContextMenuManager( TreeViewer viewer )
     {
         if ( this.contextMenuManager == null )
         {
@@ -116,7 +116,7 @@ public class ConnectionConfiguration
      * 
      * @return the content provider
      */
-    public ConnectionContentProvider getContentProvider( TableViewer viewer )
+    public ConnectionContentProvider getContentProvider( TreeViewer viewer )
     {
         if ( contentProvider == null )
         {
@@ -134,7 +134,7 @@ public class ConnectionConfiguration
      * 
      * @return the label provider
      */
-    public ConnectionLabelProvider getLabelProvider( TableViewer viewer )
+    public ConnectionLabelProvider getLabelProvider( TreeViewer viewer )
     {
         if ( labelProvider == null )
         {

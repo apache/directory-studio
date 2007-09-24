@@ -241,7 +241,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
 
         if ( mode == MODE_NONE )
         {
-            return true;
+            return getConnection() != null;
         }
         else if ( mode == MODE_OBJECTCLASS )
         {

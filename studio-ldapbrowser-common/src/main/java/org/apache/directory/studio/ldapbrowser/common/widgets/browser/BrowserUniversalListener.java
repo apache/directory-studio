@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
@@ -187,6 +188,14 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
     public void connectionRemoved( Connection connection )
     {
         viewer.refresh();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
     }
 
 

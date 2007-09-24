@@ -131,7 +131,7 @@ public class ConnectionView extends ViewPart
         // create main widget
         mainWidget = new ConnectionWidget( configuration, getViewSite().getActionBars() );
         mainWidget.createWidget( composite );
-        mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
+        mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
 
         // create actions and context menu (and register global actions)
         actionGroup = new ConnectionViewActionGroup( this );

@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * This class implements a {@link DropTargetListener} that is used to
- * drag and drop connections withing the connections view.
+ * drag and drop connections within the connections view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

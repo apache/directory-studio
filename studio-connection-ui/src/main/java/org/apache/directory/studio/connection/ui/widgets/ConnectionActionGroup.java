@@ -26,23 +26,24 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.ui.actions.ActionHandlerManager;
-import org.apache.directory.studio.connection.ui.actions.StudioActionProxy;
 import org.apache.directory.studio.connection.ui.actions.CloseConnectionAction;
 import org.apache.directory.studio.connection.ui.actions.ConnectionViewActionProxy;
 import org.apache.directory.studio.connection.ui.actions.CopyAction;
 import org.apache.directory.studio.connection.ui.actions.DeleteAction;
 import org.apache.directory.studio.connection.ui.actions.NewConnectionAction;
+import org.apache.directory.studio.connection.ui.actions.NewConnectionFolderAction;
 import org.apache.directory.studio.connection.ui.actions.OpenConnectionAction;
 import org.apache.directory.studio.connection.ui.actions.PasteAction;
 import org.apache.directory.studio.connection.ui.actions.PropertiesAction;
 import org.apache.directory.studio.connection.ui.actions.RenameAction;
+import org.apache.directory.studio.connection.ui.actions.StudioActionProxy;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
@@ -62,6 +63,9 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
     /** The Constant newConnectionAction. */
     protected static final String newConnectionAction = "newConnectionAction";
 
+    /** The Constant newConnectionFolderAction. */
+    protected static final String newConnectionFolderAction = "newConnectionFolderAction";
+    
     /** The Constant openConnectionAction. */
     protected static final String openConnectionAction = "openConnectionAction";
 
@@ -104,9 +108,11 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         this.mainWidget = mainWidget;
         this.connectionActionMap = new HashMap<String, ConnectionViewActionProxy>();
 
-        TableViewer viewer = mainWidget.getViewer();
+        TreeViewer viewer = mainWidget.getViewer();
         connectionActionMap.put( newConnectionAction, new ConnectionViewActionProxy( viewer, this,
             new NewConnectionAction() ) );
+        connectionActionMap.put( newConnectionFolderAction, new ConnectionViewActionProxy( viewer, this,
+            new NewConnectionFolderAction() ) );
         connectionActionMap.put( openConnectionAction, new ConnectionViewActionProxy( viewer, this,
             new OpenConnectionAction() ) );
         connectionActionMap.put( closeConnectionAction, new ConnectionViewActionProxy( viewer, this,
@@ -131,9 +137,9 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
     {
         if ( mainWidget != null )
         {
-            for ( Iterator it = connectionActionMap.keySet().iterator(); it.hasNext(); )
+            for ( Iterator<String> it = connectionActionMap.keySet().iterator(); it.hasNext(); )
             {
-                String key = ( String ) it.next();
+                String key = it.next();
                 ConnectionViewActionProxy action = ( ConnectionViewActionProxy ) this.connectionActionMap.get( key );
                 action.dispose();
                 action = null;
@@ -210,6 +216,7 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
     {
         // add
         menuManager.add( ( IAction ) connectionActionMap.get( newConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( newConnectionFolderAction ) );
         menuManager.add( new Separator() );
 
         // open/close

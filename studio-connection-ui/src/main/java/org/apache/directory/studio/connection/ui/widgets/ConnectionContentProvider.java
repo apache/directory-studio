@@ -21,8 +21,14 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
-import org.apache.directory.studio.connection.core.ConnectionManager;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.ConnectionFolderManager;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 
@@ -34,7 +40,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionContentProvider implements IStructuredContentProvider
+public class ConnectionContentProvider implements ITreeContentProvider
 {
 
     /**
@@ -60,20 +66,69 @@ public class ConnectionContentProvider implements IStructuredContentProvider
     /**
      * {@inheritDoc}
      * 
-     * This implementation accepts the ConnectionManager and returns its connections.
+     * This implementation accepts the ConnectionFolderManager and returns its connections.
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement != null && inputElement instanceof ConnectionManager )
+        if ( inputElement != null && inputElement instanceof ConnectionFolderManager )
         {
-            ConnectionManager cm = ( ConnectionManager ) inputElement;
-            return cm.getConnections();
+            ConnectionFolderManager cfm = ( ConnectionFolderManager ) inputElement;
+            ConnectionFolder rootConnectionFolder = cfm.getRootConnectionFolder();
+            Object[] elements = getChildren( rootConnectionFolder );
+            return elements;
         }
         else
         {
-            return new Object[]
-                {};
+            return getChildren( inputElement );
         }
+    }
+
+
+    public Object[] getChildren( Object parentElement )
+    {
+        if ( parentElement != null && parentElement instanceof ConnectionFolder )
+        {
+            List<Object> children = new ArrayList<Object>();
+
+            ConnectionFolder folder = ( ConnectionFolder ) parentElement;
+            List<String> subFolderIds = folder.getSubFolderIds();
+            List<String> connectionIds = folder.getConnectionIds();
+
+            for ( String subFolderId : subFolderIds )
+            {
+                ConnectionFolder subFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
+                    .getConnectionFolderById( subFolderId );
+                if ( subFolder != null )
+                {
+                    children.add( subFolder );
+                }
+            }
+            for ( String connectionId : connectionIds )
+            {
+                Connection conn = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionById(
+                    connectionId );
+                if ( conn != null )
+                {
+                    children.add( conn );
+                }
+            }
+
+            return children.toArray();
+        }
+        return null;
+    }
+
+
+    public Object getParent( Object element )
+    {
+        return null;
+    }
+
+
+    public boolean hasChildren( Object element )
+    {
+        Object[] children = getChildren( element );
+        return children != null && children.length > 0;
     }
 
 }
