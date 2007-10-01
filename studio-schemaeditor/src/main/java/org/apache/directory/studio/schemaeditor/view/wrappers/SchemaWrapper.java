@@ -73,4 +73,43 @@ public class SchemaWrapper extends AbstractTreeNode
     {
         return schema;
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof SchemaWrapper )
+        {
+            if ( super.equals( obj ) )
+            {
+                SchemaWrapper sw = ( SchemaWrapper ) obj;
+
+                if ( schema != null )
+                {
+                    return schema.equals( sw.getSchema() );
+                }
+            }
+        }
+
+        // Default
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+     */
+    public int hashCode()
+    {
+        int result = super.hashCode();
+
+        if ( schema != null )
+        {
+            result = 37 * result + schema.hashCode();
+        }
+
+        return result;
+    }
 }

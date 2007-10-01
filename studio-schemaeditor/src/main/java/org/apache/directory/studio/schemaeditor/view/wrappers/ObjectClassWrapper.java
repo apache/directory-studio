@@ -73,4 +73,43 @@ public class ObjectClassWrapper extends AbstractTreeNode
     {
         return objectClass;
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ObjectClassWrapper )
+        {
+            if ( super.equals( obj ) )
+            {
+                ObjectClassWrapper ocw = ( ObjectClassWrapper ) obj;
+
+                if ( objectClass != null )
+                {
+                    return objectClass.equals( ocw.getObjectClass() );
+                }
+            }
+        }
+
+        // Default
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+     */
+    public int hashCode()
+    {
+        int result = super.hashCode();
+
+        if ( objectClass != null )
+        {
+            result = 37 * result + objectClass.hashCode();
+        }
+
+        return result;
+    }
 }

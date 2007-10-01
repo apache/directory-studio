@@ -139,4 +139,40 @@ public abstract class AbstractTreeNode implements TreeNode
 
         return fChildren.addAll( c );
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof AbstractTreeNode )
+        {
+            AbstractTreeNode atn = ( AbstractTreeNode ) obj;
+
+            if ( fParent != null )
+            {
+                return fParent.equals( atn.getParent() );
+            }
+        }
+
+        // Default
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        int result = 17;
+
+        if ( fParent != null )
+        {
+            result = 37 * result + fParent.hashCode();
+        }
+
+        return result;
+    }
 }

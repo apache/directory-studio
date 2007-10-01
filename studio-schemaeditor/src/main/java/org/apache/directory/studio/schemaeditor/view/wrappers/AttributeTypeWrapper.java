@@ -73,4 +73,43 @@ public class AttributeTypeWrapper extends AbstractTreeNode
     {
         return attributeType;
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof AttributeTypeWrapper )
+        {
+            if ( super.equals( obj ) )
+            {
+                AttributeTypeWrapper atw = ( AttributeTypeWrapper ) obj;
+
+                if ( attributeType != null )
+                {
+                    return attributeType.equals( atw.getAttributeType() );
+                }
+            }
+        }
+
+        // Default
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+     */
+    public int hashCode()
+    {
+        int result = super.hashCode();
+
+        if ( attributeType != null )
+        {
+            result = 37 * result + attributeType.hashCode();
+        }
+
+        return result;
+    }
 }
