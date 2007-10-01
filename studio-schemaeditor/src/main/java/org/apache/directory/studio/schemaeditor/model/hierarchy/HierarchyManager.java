@@ -48,6 +48,7 @@ public class HierarchyManager
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
+    /** The RootObject of the Hierarchy */
     private RootObject root;
 
 
@@ -60,9 +61,257 @@ public class HierarchyManager
         parentsMap = new MultiValueMap();
         childrenMap = new MultiValueMap();
 
+        // Getting the SchemaHandler
         schemaHandler = Activator.getDefault().getSchemaHandler();
 
+        // Loading the complete Schema
         loadSchema();
+    }
+
+
+    /**
+     * Adds an attribute type.
+     *
+     * @param at
+     *      the attribute type
+     */
+    private void addAttributeType( AttributeTypeImpl at )
+    {
+        // Checking Aliases and OID
+        checkAliasesAndOID( at );
+
+        String superiorName = at.getSuperiorName();
+        if ( superiorName != null )
+        // The attribute type has a superior
+        {
+            AttributeTypeImpl superior = schemaHandler.getAttributeType( superiorName );
+            if ( superior != null )
+            // The superior attribute type object exists
+            {
+                parentsMap.put( at, superior );
+                childrenMap.put( superior, at );
+            }
+            else
+            // The superior attribute type object does not exist
+            {
+                // Then, its parent is the name of its superior and
+                // it becomes the children of it and the RootObject
+                parentsMap.put( at, superiorName.toLowerCase() );
+                childrenMap.put( superiorName.toLowerCase(), at );
+                childrenMap.put( root, at );
+            }
+        }
+        else
+        // The attribute type does not have a superior
+        {
+            // Then, its parent is the RootObject
+            parentsMap.put( at, root );
+            childrenMap.put( root, at );
+        }
+    }
+
+
+    /**
+     * Adds an object class.
+     *
+     * @param oc
+     *      the object class
+     */
+    private void addObjectClass( ObjectClassImpl oc )
+    {
+        // Checking Aliases and OID
+        checkAliasesAndOID( oc );
+
+        String[] superClasseNames = oc.getSuperClassesNames();
+        if ( ( superClasseNames != null ) && ( superClasseNames.length > 0 ) )
+        // The object class has one or more superiors
+        {
+            for ( String superClassName : superClasseNames )
+            {
+                ObjectClassImpl superClass = schemaHandler.getObjectClass( superClassName );
+                if ( superClass == null )
+                {
+                    parentsMap.put( oc, superClassName.toLowerCase() );
+                    childrenMap.put( superClassName.toLowerCase(), oc );
+                    childrenMap.put( root, oc );
+                }
+                else
+                {
+                    parentsMap.put( oc, superClass );
+                    childrenMap.put( superClass, oc );
+                }
+            }
+        }
+        else
+        // The object class does not have any declared superior
+        // Then, it is a child of the "top (2.5.6.0)" object class
+        // (Unless it is the "top (2.5.6.0)" object class itself)
+        {
+            ObjectClassImpl topOC = schemaHandler.getObjectClass( "2.5.6.0" );
+            if ( oc.equals( topOC ) )
+            // The given object class is the "top (2.5.6.0)" object class
+            {
+                parentsMap.put( oc, root );
+                childrenMap.put( root, oc );
+            }
+            else
+            {
+                if ( topOC != null )
+                // The "top (2.5.6.0)" object class exists
+                {
+                    parentsMap.put( oc, topOC );
+                    childrenMap.put( topOC, oc );
+                }
+                else
+                // The "top (2.5.6.0)" object class does not exist
+                {
+                    parentsMap.put( oc, "2.5.6.0" );
+                    childrenMap.put( "2.5.6.0", oc );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * This method is called when an attribute type is added.
+     *
+     * @param at
+     *      the added attribute type
+     */
+    public void attributeTypeAdded( AttributeTypeImpl at )
+    {
+        addAttributeType( at );
+    }
+
+
+    /**
+     * This method is called when an attribute type is modified.
+     *
+     * @param at
+     *      the modified attribute type
+     */
+    public void attributeTypeModified( AttributeTypeImpl at )
+    {
+        // Removing the attribute type
+        List<Object> parents = getParents( at );
+        if ( parents != null )
+        {
+            for ( Object parent : parents )
+            {
+                childrenMap.remove( parent, at );
+            }
+
+            parentsMap.remove( at );
+        }
+
+        // Adding the attribute type again
+        addAttributeType( at );
+    }
+
+
+    /**
+     * This method is called when an attribute type is removed.
+     *
+     * @param at
+     *      the removed attribute type
+     */
+    public void attributeTypeRemoved( AttributeTypeImpl at )
+    {
+        removeAttributeType( at );
+    }
+
+
+    /**
+     * Checks the Aliases and OID of an attribute type or an object class.
+     *
+     * @param object
+     *      an attribute type or an object class.
+     */
+    private void checkAliasesAndOID( SchemaObject object )
+    {
+        // Aliases
+        String[] aliases = object.getNames();
+        if ( aliases != null )
+        {
+            for ( String alias : aliases )
+            {
+                // Looking for children objects for this alias value
+                @SuppressWarnings("unchecked")
+                List<Object> children = ( List<Object> ) childrenMap.get( alias.toLowerCase() );
+                if ( children != null )
+                {
+                    for ( Object value : children )
+                    {
+                        childrenMap.put( object, value );
+                        parentsMap.remove( value, alias.toLowerCase() );
+                        parentsMap.put( value, object );
+                    }
+                    childrenMap.remove( alias.toLowerCase() );
+                }
+            }
+        }
+
+        // OID
+        String oid = object.getOid();
+        if ( oid != null )
+        {
+            // Looking for children objects for this OID value
+            @SuppressWarnings("unchecked")
+            List<Object> children = ( List<Object> ) childrenMap.get( oid.toLowerCase() );
+            if ( children != null )
+            {
+                for ( Object value : children )
+                {
+                    childrenMap.put( object, value );
+                    parentsMap.remove( value, oid.toLowerCase() );
+                    parentsMap.put( value, object );
+                }
+                childrenMap.remove( oid.toLowerCase() );
+            }
+        }
+    }
+
+
+    /**
+     * Gets the children of the given object.
+     *
+     * @param o
+     *      the object
+     * @return
+     *      the children of the given object
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object> getChildren( Object o )
+    {
+        return ( List<Object> ) childrenMap.get( o );
+    }
+
+
+    /**
+     * Gets the parents of the given object.
+     *
+     * @param o
+     *      the object
+     * @return
+     *      the parents of the given object
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object> getParents( Object o )
+    {
+        return ( List<Object> ) parentsMap.get( o );
+    }
+
+
+    /**
+     * Gets the RootObject of the Hierarchy.
+     *
+     * @return
+     *      the RootObject of the Hierarchy
+     */
+    public RootObject getRootObject()
+    {
+        return root;
     }
 
 
@@ -95,178 +344,51 @@ public class HierarchyManager
     }
 
 
-    private void addAttributeType( AttributeTypeImpl at )
+    /**
+     * This method is called when an object class is added.
+     *
+     * @param oc
+     *      the added object class
+     */
+    public void objectClassAdded( ObjectClassImpl oc )
     {
-        checkAliasesAndOID( at );
-
-        String superiorName = at.getSuperiorName();
-        if ( superiorName != null )
-        {
-            AttributeTypeImpl superior = schemaHandler.getAttributeType( superiorName );
-            if ( superior == null )
-            {
-                parentsMap.put( at, superiorName.toLowerCase() );
-                childrenMap.put( superiorName.toLowerCase(), at );
-                childrenMap.put( root, at );
-            }
-            else
-            {
-                parentsMap.put( at, superior );
-                childrenMap.put( superior, at );
-            }
-        }
-        else
-        {
-            parentsMap.put( at, root );
-            childrenMap.put( root, at );
-        }
+        addObjectClass( oc );
     }
 
 
-    private void addObjectClass( ObjectClassImpl oc )
+    /**
+     * This method is called when an object class is modified.
+     *
+     * @param oc
+     *      the modified object class
+     */
+    public void objectClassModified( ObjectClassImpl oc )
     {
-        checkAliasesAndOID( oc );
-
-        String[] superClasseNames = oc.getSuperClassesNames();
-        if ( ( superClasseNames != null ) && ( superClasseNames.length > 0 ) )
-        {
-            for ( String superClassName : superClasseNames )
-            {
-                ObjectClassImpl superClass = schemaHandler.getObjectClass( superClassName );
-                if ( superClass == null )
-                {
-                    parentsMap.put( oc, superClassName.toLowerCase() );
-                    childrenMap.put( superClassName.toLowerCase(), oc );
-                    childrenMap.put( root, oc );
-                }
-                else
-                {
-                    parentsMap.put( oc, superClass );
-                    childrenMap.put( superClass, oc );
-                }
-            }
-        }
-        else
-        {
-            ObjectClassImpl topOC = schemaHandler.getObjectClass( "2.5.6.0" );
-
-            if ( oc.equals( topOC ) )
-            {
-                parentsMap.put( oc, root );
-                childrenMap.put( root, oc );
-            }
-            else
-            {
-                if ( topOC != null )
-                {
-                    parentsMap.put( oc, topOC );
-                    childrenMap.put( topOC, oc );
-                }
-                else
-                {
-                    parentsMap.put( oc, "2.5.6.0" );
-                    childrenMap.put( "2.5.6.0", oc );
-                }
-            }
-        }
+        // TODO implement
     }
 
 
-    private void checkAliasesAndOID( SchemaObject object )
+    /**
+     * This method is called when an object class is removed.
+     *
+     * @param oc
+     *      the removed object class
+     */
+    public void objectClassRemoved( ObjectClassImpl oc )
     {
-        // Aliases
-        String[] aliases = object.getNames();
-        if ( aliases != null )
-        {
-            for ( String alias : aliases )
-            {
-                @SuppressWarnings("unchecked")
-                List<Object> children = ( List<Object> ) childrenMap.get( alias.toLowerCase() );
-                if ( children != null )
-                {
-                    for ( Object value : children )
-                    {
-                        childrenMap.put( object, value );
-                        parentsMap.remove( value, alias.toLowerCase() );
-                        parentsMap.put( value, object );
-                    }
-                    childrenMap.remove( alias.toLowerCase() );
-                }
-            }
-        }
-
-        // OID
-        String oid = object.getOid();
-        if ( oid != null )
-        {
-            @SuppressWarnings("unchecked")
-            List<Object> children = ( List<Object> ) childrenMap.get( oid.toLowerCase() );
-            if ( children != null )
-            {
-                for ( Object value : children )
-                {
-                    childrenMap.remove( oid.toLowerCase(), value );
-                    childrenMap.put( object, value );
-                    parentsMap.remove( value, object );
-                    parentsMap.put( value, object );
-                }
-            }
-        }
+        // TODO implement
     }
 
 
-    public RootObject getRootObject()
-    {
-        return root;
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public List<Object> getChildren( Object o )
-    {
-        return ( List<Object> ) childrenMap.get( o );
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public List<Object> getParents( Object o )
-    {
-        return ( List<Object> ) parentsMap.get( o );
-    }
-
-
-    public void attributeTypeAdded( AttributeTypeImpl at )
-    {
-        addAttributeType( at );
-    }
-
-
-    public void attributeTypeModified( AttributeTypeImpl at )
-    {
-        List<Object> parents = getParents( at );
-        if ( parents != null )
-        {
-            for ( Object parent : parents )
-            {
-                childrenMap.remove( parent, at );
-            }
-
-            parentsMap.remove( at );
-        }
-
-        //        removeAttributeType( at );
-        addAttributeType( at );
-    }
-
-
-    public void attributeTypeRemoved( AttributeTypeImpl at )
-    {
-        removeAttributeType( at );
-    }
-
-
+    /**
+     * Removes an attribute type.
+     *
+     * @param at
+     *      the attribute type
+     */
     private void removeAttributeType( AttributeTypeImpl at )
     {
+        // Removing the attribute type as child of its superior
         String superiorName = at.getSuperiorName();
         if ( ( superiorName != null ) && ( !"".equals( superiorName ) ) )
         {
@@ -285,6 +407,7 @@ public class HierarchyManager
             childrenMap.remove( root, at );
         }
 
+        // Attaching each child (if there are children) to the RootObject
         List<Object> children = getChildren( at );
         if ( children != null )
         {
@@ -310,28 +433,26 @@ public class HierarchyManager
     }
 
 
-    public void objectClassAdded( ObjectClassImpl oc )
-    {
-    }
-
-
-    public void objectClassModified( ObjectClassImpl oc )
-    {
-    }
-
-
-    public void objectClassRemoved( ObjectClassImpl oc )
-    {
-    }
-
-
+    /**
+     * This method is called when a schema is added.
+     *
+     * @param schema
+     *      the added schema
+     */
     public void schemaAdded( Schema schema )
     {
+        // TODO implement
     }
 
 
+    /**
+     * This method is called when a schema is removed.
+     *
+     * @param schema
+     *      the removed schema
+     */
     public void schemaRemoved( Schema schema )
     {
+        // TODO implement
     }
-
 }
