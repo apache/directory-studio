@@ -79,6 +79,7 @@ public class NewAttributeTypeAction extends Action implements IWorkbenchWindowAc
         StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
         if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
         {
+            // TODO REFACTOR THIS
             Object firstElement = selection.getFirstElement();
             if ( firstElement instanceof SchemaWrapper )
             {

@@ -243,6 +243,19 @@ public class HierarchyManager
 
     public void attributeTypeModified( AttributeTypeImpl at )
     {
+        List<Object> parents = getParents( at );
+        if ( parents != null )
+        {
+            for ( Object parent : parents )
+            {
+                childrenMap.remove( parent, at );
+            }
+
+            parentsMap.remove( at );
+        }
+
+        //        removeAttributeType( at );
+        addAttributeType( at );
     }
 
 

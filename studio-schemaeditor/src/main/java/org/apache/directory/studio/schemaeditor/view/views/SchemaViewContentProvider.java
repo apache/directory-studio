@@ -87,8 +87,6 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
         firstNameSorter = new FirstNameSorter();
         oidSorter = new OidSorter();
         schemaSorter = new SchemaSorter();
-
-        elementsToWrappersMap = new MultiValueMap();
     }
 
 
@@ -139,6 +137,8 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             {
                 if ( root.getChildren().isEmpty() )
                 {
+                    elementsToWrappersMap = new MultiValueMap();
+
                     SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
                     if ( schemaHandler != null )
                     {
@@ -190,6 +190,8 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             {
                 if ( root.getChildren().isEmpty() )
                 {
+                    elementsToWrappersMap = new MultiValueMap();
+
                     hierarchyManager = new HierarchyManager();
 
                     if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
@@ -535,6 +537,61 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
 
     public void attributeTypeModified( AttributeTypeImpl at )
     {
+        // Propagating the modification to the hierarchy manager
+        hierarchyManager.attributeTypeModified( at );
+        
+        // Removing the Wrappers
+        List<TreeNode> wrappers = getWrappers( at );
+        if ( wrappers != null )
+        {
+            for ( TreeNode wrapper : wrappers )
+            {
+                wrapper.getParent().removeChild( wrapper );
+            }
+
+            elementsToWrappersMap.remove( at );
+        }
+
+        // Creating the wrapper
+        List<Object> parents = hierarchyManager.getParents( at );
+        if ( parents != null )
+        {
+            for ( Object parent : parents )
+            {
+                AttributeTypeWrapper parentATW = ( AttributeTypeWrapper ) getWrapper( parent );
+                AttributeTypeWrapper atw = null;
+                if ( parentATW == null )
+                {
+                    int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+                    if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                    {
+                        for ( TreeNode child : root.getChildren() )
+                        {
+                            if ( child instanceof Folder )
+                            {
+                                Folder folder = ( Folder ) child;
+                                if ( folder.getType().equals( FolderType.ATTRIBUTE_TYPE ) )
+                                {
+                                    atw = new AttributeTypeWrapper( at, folder );
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                    {
+                        atw = new AttributeTypeWrapper( at, root );
+                    }
+
+                }
+                else
+                {
+                    atw = new AttributeTypeWrapper( at, parentATW );
+                }
+                atw.getParent().addChild( atw );
+                elementsToWrappersMap.put( at, atw );
+            }
+        }
     }
 
 
@@ -596,13 +653,13 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
     {
         for ( TreeNode child : wrapper.getChildren() )
         {
-            if ( child instanceof AttributeTypeImpl )
+            if ( child instanceof AttributeTypeWrapper )
             {
-                elementsToWrappersMap.remove( ( AttributeTypeImpl ) child, child );
+                elementsToWrappersMap.remove( ( ( AttributeTypeWrapper ) child ).getAttributeType(), child );
             }
-            else if ( child instanceof ObjectClassImpl )
+            else if ( child instanceof ObjectClassWrapper )
             {
-                elementsToWrappersMap.remove( ( ObjectClassImpl ) child, child );
+                elementsToWrappersMap.remove( ( ( ObjectClassWrapper ) child ).getObjectClass(), child );
             }
         }
     }

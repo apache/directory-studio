@@ -160,7 +160,6 @@ public class SchemaViewController
             }
             else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
             {
-                //                addAttributeTypeHierchicalPresentation( at, store, contentProvider );
                 contentProvider.attributeTypeAdded( at );
                 view.refresh();
             }
