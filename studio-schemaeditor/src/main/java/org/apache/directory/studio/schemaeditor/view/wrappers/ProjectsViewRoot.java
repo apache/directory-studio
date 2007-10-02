@@ -124,4 +124,18 @@ public class ProjectsViewRoot extends AbstractTreeNode
             }
         } );
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ProjectsViewRoot )
+        {
+            return this == obj;
+        }
+
+        return false;
+    }
 }

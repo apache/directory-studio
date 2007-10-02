@@ -35,4 +35,18 @@ public class SchemaViewRoot extends AbstractTreeNode
     {
         super( null );
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof SchemaViewRoot )
+        {
+            return this == obj;
+        }
+
+        return false;
+    }
 }

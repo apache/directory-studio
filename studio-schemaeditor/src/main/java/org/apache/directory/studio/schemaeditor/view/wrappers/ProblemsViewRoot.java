@@ -35,4 +35,18 @@ public class ProblemsViewRoot extends AbstractTreeNode
     {
         super( null );
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ProblemsViewRoot )
+        {
+            return this == obj;
+        }
+
+        return false;
+    }
 }
