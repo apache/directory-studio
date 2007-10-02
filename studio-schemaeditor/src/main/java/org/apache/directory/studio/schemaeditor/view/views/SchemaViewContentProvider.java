@@ -466,6 +466,12 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
     }
 
 
+    /**
+     * This method is called when an attribute type is added.
+     *
+     * @param at
+     *      the added attribute type
+     */
     public void attributeTypeAdded( AttributeTypeImpl at )
     {
         hierarchyManager.attributeTypeAdded( at );
@@ -531,15 +537,20 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 }
             }
         }
-
     }
 
 
+    /**
+     * This method is called when an attribute type is modified.
+     *
+     * @param at
+     *      the modified attribute type
+     */
     public void attributeTypeModified( AttributeTypeImpl at )
     {
         // Propagating the modification to the hierarchy manager
         hierarchyManager.attributeTypeModified( at );
-        
+
         // Removing the Wrappers
         List<TreeNode> wrappers = getWrappers( at );
         if ( wrappers != null )
@@ -595,7 +606,19 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
     }
 
 
+    /**
+     * This method is called when an attribute type is removed.
+     *
+     * @param at
+     *      the removed attribute type
+     */
     public void attributeTypeRemoved( AttributeTypeImpl at )
+    {
+        removeAttributeTypeHierarchicalPresentation( at );
+    }
+
+
+    private void removeAttributeTypeHierarchicalPresentation( AttributeTypeImpl at )
     {
         // Creating children nodes of the AT 
         // and attaching them to the root
@@ -631,9 +654,6 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             }
         }
 
-        // Propagating the removal to the hierarchy manager
-        hierarchyManager.attributeTypeRemoved( at );
-
         // Removing the Wrappers
         List<TreeNode> wrappers = getWrappers( at );
         if ( wrappers != null )
@@ -646,45 +666,263 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
 
             elementsToWrappersMap.remove( at );
         }
+
+        // Propagating the removal to the hierarchy manager
+        hierarchyManager.attributeTypeRemoved( at );
     }
 
 
+    /**
+     * Recursively removes the children of the given wrapper.
+     *
+     * @param wrapper
+     *      the wrapper
+     */
     private void removeRecursiveChildren( TreeNode wrapper )
     {
         for ( TreeNode child : wrapper.getChildren() )
         {
             if ( child instanceof AttributeTypeWrapper )
             {
-                elementsToWrappersMap.remove( ( ( AttributeTypeWrapper ) child ).getAttributeType(), child );
+                AttributeTypeWrapper atw = ( AttributeTypeWrapper ) child;
+                elementsToWrappersMap.remove( atw.getAttributeType(), child );
+                removeRecursiveChildren( atw );
             }
             else if ( child instanceof ObjectClassWrapper )
             {
-                elementsToWrappersMap.remove( ( ( ObjectClassWrapper ) child ).getObjectClass(), child );
+                ObjectClassWrapper ocw = ( ObjectClassWrapper ) child;
+                elementsToWrappersMap.remove( ocw.getObjectClass(), child );
+                removeRecursiveChildren( ocw );
             }
         }
     }
 
 
+    /**
+     * This method is called when an object class is added.
+     *
+     * @param oc
+     *      the added object class
+     */
     public void objectClassAdded( ObjectClassImpl oc )
     {
+        // Propagating the addition to the hierarchy manager
+        hierarchyManager.objectClassAdded( oc );
+
+        List<TreeNode> createdWrappers = new ArrayList<TreeNode>();
+
+        List<Object> parents = hierarchyManager.getParents( oc );
+
+        if ( parents != null )
+        {
+            for ( Object parent : parents )
+            {
+                ObjectClassWrapper parentOCW = ( ObjectClassWrapper ) getWrapper( parent );
+                ObjectClassWrapper ocw = null;
+                if ( parentOCW == null )
+                {
+                    int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+                    if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                    {
+                        for ( TreeNode child : root.getChildren() )
+                        {
+                            if ( child instanceof Folder )
+                            {
+                                Folder folder = ( Folder ) child;
+                                if ( folder.getType().equals( FolderType.OBJECT_CLASS ) )
+                                {
+                                    ocw = new ObjectClassWrapper( oc, folder );
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                    {
+                        ocw = new ObjectClassWrapper( oc, root );
+                    }
+
+                }
+                else
+                {
+                    ocw = new ObjectClassWrapper( oc, parentOCW );
+                }
+                ocw.getParent().addChild( ocw );
+                createdWrappers.add( ocw );
+                elementsToWrappersMap.put( oc, ocw );
+            }
+        }
+
+        //        List<Object> children = hierarchyManager.getChildren( oc );
+        //        if ( children != null )
+        //        {
+        //            for ( Object child : children )
+        //            {
+        //                List<TreeNode> childOCWs = getWrappers( child );
+        //                if ( childOCWs != null )
+        //                {
+        //                    
+        //                }
+        //                
+        //                
+        //                elementsToWrappersMap.remove( child );
+        //                childATW.getParent().removeChild( childATW );
+        //
+        //                for ( TreeNode createdWrapper : createdWrappers )
+        //                {
+        //                    AttributeTypeWrapper atw = new AttributeTypeWrapper( ( AttributeTypeImpl ) child, createdWrapper );
+        //                    atw.getParent().addChild( atw );
+        //                    elementsToWrappersMap.put( ( AttributeTypeImpl ) child, atw );
+        //                }
+        //            }
+        //        }
     }
 
 
+    /**
+     * This method is called when an object class is modified.
+     *
+     * @param oc
+     *      the modified object class
+     */
     public void objectClassModified( ObjectClassImpl oc )
     {
+        // Propagating the modification to the hierarchy manager
+        hierarchyManager.objectClassModified( oc );
+
+        // Removing the Wrappers
+        List<TreeNode> wrappers = getWrappers( oc );
+        if ( wrappers != null )
+        {
+            for ( TreeNode wrapper : wrappers )
+            {
+                wrapper.getParent().removeChild( wrapper );
+            }
+
+            elementsToWrappersMap.remove( oc );
+        }
+
+        // Creating the wrapper
+        List<Object> parents = hierarchyManager.getParents( oc );
+        if ( parents != null )
+        {
+            for ( Object parent : parents )
+            {
+                ObjectClassWrapper parentOCW = ( ObjectClassWrapper ) getWrapper( parent );
+                ObjectClassWrapper ocw = null;
+                if ( parentOCW == null )
+                {
+                    int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+                    if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                    {
+                        for ( TreeNode child : root.getChildren() )
+                        {
+                            if ( child instanceof Folder )
+                            {
+                                Folder folder = ( Folder ) child;
+                                if ( folder.getType().equals( FolderType.ATTRIBUTE_TYPE ) )
+                                {
+                                    ocw = new ObjectClassWrapper( oc, folder );
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                    {
+                        ocw = new ObjectClassWrapper( oc, root );
+                    }
+
+                }
+                else
+                {
+                    ocw = new ObjectClassWrapper( oc, parentOCW );
+                }
+                ocw.getParent().addChild( ocw );
+                elementsToWrappersMap.put( oc, ocw );
+            }
+        }
     }
 
 
+    /**
+     * This method is called when an object class is removed.
+     *
+     * @param oc
+     *      the removed object class
+     */
     public void objectClassRemoved( ObjectClassImpl oc )
     {
+        // Creating children nodes of the OC 
+        // and attaching them to the root
+        List<Object> children = hierarchyManager.getChildren( oc );
+        if ( children != null )
+        {
+            for ( Object child : children )
+            {
+                ObjectClassWrapper ocw = null;
+                int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+                if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                {
+                    for ( TreeNode rootChild : root.getChildren() )
+                    {
+                        if ( rootChild instanceof Folder )
+                        {
+                            Folder folder = ( Folder ) rootChild;
+                            if ( folder.getType().equals( FolderType.OBJECT_CLASS ) )
+                            {
+                                ocw = new ObjectClassWrapper( ( ObjectClassImpl ) child, folder );
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                {
+                    ocw = new ObjectClassWrapper( ( ObjectClassImpl ) child, root );
+                }
+
+                ocw.getParent().addChild( ocw );
+                elementsToWrappersMap.put( ( ObjectClassImpl ) child, ocw );
+                addHierarchyChildren( ocw, hierarchyManager.getChildren( child ) );
+            }
+        }
+
+        // Removing the Wrappers
+        List<TreeNode> wrappers = getWrappers( oc );
+        if ( wrappers != null )
+        {
+            for ( TreeNode wrapper : wrappers )
+            {
+                wrapper.getParent().removeChild( wrapper );
+                removeRecursiveChildren( wrapper );
+            }
+
+            elementsToWrappersMap.remove( oc );
+        }
+
+        // Propagating the removal to the hierarchy manager
+        hierarchyManager.objectClassRemoved( oc );
     }
 
 
+    /**
+     * This method is called when a schema is added.
+     *
+     * @param schema
+     *      the added schema
+     */
     public void schemaAdded( Schema schema )
     {
     }
 
 
+    /**
+     * This method is called when a schema is removed.
+     *
+     * @param schema
+     *      the removed schema
+     */
     public void schemaRemoved( Schema schema )
     {
     }
