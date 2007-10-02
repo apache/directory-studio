@@ -20,6 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model.hierarchy;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.collections.map.MultiValueMap;
@@ -376,7 +377,7 @@ public class HierarchyManager
      */
     public void objectClassRemoved( ObjectClassImpl oc )
     {
-        // TODO implement
+        removeObjectClass( oc );
     }
 
 
@@ -426,10 +427,113 @@ public class HierarchyManager
                     childrenMap.put( childSuperiorName.toLowerCase(), child );
                 }
             }
-
-            childrenMap.remove( at );
-            parentsMap.remove( at );
         }
+
+        childrenMap.remove( at );
+        parentsMap.remove( at );
+    }
+
+
+    private void removeObjectClass( ObjectClassImpl oc )
+    {
+        // Removing the object class as child of its superiors
+        String[] superClassesNames = oc.getSuperClassesNames();
+        if ( ( superClassesNames != null ) && ( superClassesNames.length > 0 ) )
+        {
+            for ( String superClassName : superClassesNames )
+            {
+                if ( !"".equals( superClassName ) )
+                {
+                    ObjectClassImpl superClassOC = schemaHandler.getObjectClass( superClassName );
+                    if ( superClassOC == null )
+                    {
+                        childrenMap.remove( superClassName.toLowerCase(), oc );
+                        childrenMap.remove( root, oc );
+                    }
+                    else
+                    {
+                        childrenMap.remove( superClassOC, oc );
+                    }
+                }
+            }
+        }
+        else
+        {
+            if ( oc.getOid().equals( "2.5.6.0" ) )
+            // The given object class is the "top (2.5.6.0)" object class
+            {
+                childrenMap.remove( root, oc );
+            }
+            else
+            {
+                ObjectClassImpl topOC = schemaHandler.getObjectClass( "2.5.6.0" );
+                if ( topOC != null )
+                // The "top (2.5.6.0)" object class exists
+                {
+                    childrenMap.remove( topOC, oc );
+                }
+                else
+                // The "top (2.5.6.0)" object class does not exist
+                {
+                    childrenMap.remove( "2.5.6.0", oc );
+                }
+            }
+        }
+
+        // Attaching each child (if there are children) to the RootObject
+        List<Object> children = getChildren( oc );
+        if ( children != null )
+        {
+            for ( Object child : children )
+            {
+                ObjectClassImpl childOC = ( ObjectClassImpl ) child;
+
+                parentsMap.remove( child, oc );
+
+                parentsMap.put( child, root );
+                childrenMap.put( root, child );
+                String[] childSuperClassesNames = childOC.getSuperClassesNames();
+                if ( ( childSuperClassesNames != null ) && ( childSuperClassesNames.length > 0 ) )
+                {
+                    String correctSuperClassName = getCorrectSuperClassName( oc, childSuperClassesNames );
+                    if ( correctSuperClassName != null )
+                    {
+                        parentsMap.put( child, correctSuperClassName.toLowerCase() );
+                        childrenMap.put( correctSuperClassName.toLowerCase(), child );
+                    }
+                }
+                else
+                {
+                    parentsMap.put( child, "2.5.6.0" );
+                    childrenMap.put( "2.5.6.0", child );
+                }
+            }
+        }
+
+        childrenMap.remove( oc );
+        parentsMap.remove( oc );
+    }
+
+
+    private String getCorrectSuperClassName( ObjectClassImpl oc, String[] childSuperClassesNames )
+    {
+        if ( childSuperClassesNames != null )
+        {
+            List<String> aliases = Arrays.asList( oc.getNames() );
+            if ( aliases != null )
+            {
+                for ( String childSuperClassName : childSuperClassesNames )
+                {
+                    if ( aliases.contains( childSuperClassName ) )
+                    {
+                        return childSuperClassName;
+                    }
+                }
+            }
+        }
+
+        // Default
+        return null;
     }
 
 
