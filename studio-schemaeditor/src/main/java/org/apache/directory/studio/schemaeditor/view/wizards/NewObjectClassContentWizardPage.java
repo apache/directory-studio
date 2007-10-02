@@ -311,7 +311,16 @@ public class NewObjectClassContentWizardPage extends WizardPage
         List<String> names = new ArrayList<String>();
         for ( ObjectClassImpl oc : superiorsList )
         {
-            names.add( oc.getName() );
+            String[] aliases = oc.getNames();
+
+            if ( ( aliases != null ) && ( aliases.length > 0 ) )
+            {
+                names.add( aliases[0] );
+            }
+            else
+            {
+                names.add( oc.getOid() );
+            }
         }
 
         return names.toArray( new String[0] );
