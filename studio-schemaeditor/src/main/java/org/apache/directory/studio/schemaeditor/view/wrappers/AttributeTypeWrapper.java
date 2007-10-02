@@ -86,10 +86,12 @@ public class AttributeTypeWrapper extends AbstractTreeNode
             {
                 AttributeTypeWrapper atw = ( AttributeTypeWrapper ) obj;
 
-                if ( attributeType != null )
+                if ( ( attributeType != null ) && ( !attributeType.equals( atw.getAttributeType() ) ) )
                 {
-                    return attributeType.equals( atw.getAttributeType() );
+                    return false;
                 }
+
+                return true;
             }
         }
 

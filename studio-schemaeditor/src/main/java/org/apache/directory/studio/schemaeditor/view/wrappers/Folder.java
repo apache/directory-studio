@@ -153,4 +153,25 @@ public class Folder extends AbstractTreeNode
 
         return false;
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+     */
+    public int hashCode()
+    {
+        int result = super.hashCode();
+
+        if ( name != null )
+        {
+            result = 37 * result + name.hashCode();
+        }
+
+        if ( type != null )
+        {
+            result = 37 * result + type.hashCode();
+        }
+
+        return result;
+    }
 }

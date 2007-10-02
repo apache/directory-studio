@@ -86,10 +86,12 @@ public class ObjectClassWrapper extends AbstractTreeNode
             {
                 ObjectClassWrapper ocw = ( ObjectClassWrapper ) obj;
 
-                if ( objectClass != null )
+                if ( ( objectClass != null ) && ( !objectClass.equals( ocw.getObjectClass() ) ) )
                 {
-                    return objectClass.equals( ocw.getObjectClass() );
+                    return false;
                 }
+
+                return true;
             }
         }
 

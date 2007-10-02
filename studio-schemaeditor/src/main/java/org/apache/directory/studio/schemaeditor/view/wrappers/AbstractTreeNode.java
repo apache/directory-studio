@@ -150,10 +150,12 @@ public abstract class AbstractTreeNode implements TreeNode
         {
             AbstractTreeNode atn = ( AbstractTreeNode ) obj;
 
-            if ( fParent != null )
+            if ( ( fParent != null ) && ( !fParent.equals( atn.getParent() ) ) )
             {
-                return fParent.equals( atn.getParent() );
+                return false;
             }
+
+            return true;
         }
 
         // Default

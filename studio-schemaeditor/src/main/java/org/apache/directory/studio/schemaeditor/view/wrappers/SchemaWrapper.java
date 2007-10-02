@@ -86,10 +86,12 @@ public class SchemaWrapper extends AbstractTreeNode
             {
                 SchemaWrapper sw = ( SchemaWrapper ) obj;
 
-                if ( schema != null )
+                if ( ( schema != null ) && ( !schema.equals( sw.getSchema() ) ) )
                 {
-                    return schema.equals( sw.getSchema() );
+                    return false;
                 }
+
+                return true;
             }
         }
 

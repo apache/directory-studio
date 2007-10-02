@@ -91,9 +91,32 @@ public class ProjectWrapper extends AbstractTreeNode
     {
         if ( obj instanceof ProjectWrapper )
         {
-            return getProject().equals( ( ( ProjectWrapper ) obj ).getProject() );
+            ProjectWrapper projectWrapper = ( ProjectWrapper ) obj;
+
+            if ( ( project != null ) && ( !project.equals( projectWrapper.getProject() ) ) )
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        return super.equals( obj );
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+     */
+    public int hashCode()
+    {
+        int result = super.hashCode();
+
+        if ( project != null )
+        {
+            result = 37 * result + project.hashCode();
+        }
+
+        return result;
     }
 }
