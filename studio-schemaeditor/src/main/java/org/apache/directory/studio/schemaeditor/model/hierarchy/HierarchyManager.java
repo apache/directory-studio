@@ -168,6 +168,7 @@ public class HierarchyManager
                 {
                     parentsMap.put( oc, "2.5.6.0" );
                     childrenMap.put( "2.5.6.0", oc );
+                    childrenMap.put( root, oc );
                 }
             }
         }
@@ -365,7 +366,20 @@ public class HierarchyManager
      */
     public void objectClassModified( ObjectClassImpl oc )
     {
-        // TODO implement
+        // Removing the object class type
+        List<Object> parents = getParents( oc );
+        if ( parents != null )
+        {
+            for ( Object parent : parents )
+            {
+                childrenMap.remove( parent, oc );
+            }
+
+            parentsMap.remove( oc );
+        }
+
+        // Adding the object class again
+        addObjectClass( oc );
     }
 
 
