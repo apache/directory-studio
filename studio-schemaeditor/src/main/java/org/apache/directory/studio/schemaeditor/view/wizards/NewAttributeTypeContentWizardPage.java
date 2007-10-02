@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
+import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
@@ -137,7 +138,16 @@ public class NewAttributeTypeContentWizardPage extends WizardPage
                 AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
                 if ( dialog.open() == Dialog.OK )
                 {
-                    superiorText.setText( dialog.getSelectedAttributeType().getName() );
+                    AttributeTypeImpl selectedAT = dialog.getSelectedAttributeType();
+                    String[] aliases = selectedAT.getNames();
+                    if ( ( aliases != null ) && ( aliases.length > 0 ) )
+                    {
+                        superiorText.setText( aliases[0] );
+                    }
+                    else
+                    {
+                        superiorText.setText( selectedAT.getOid() );
+                    }
                 }
             }
         } );
