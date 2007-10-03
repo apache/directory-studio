@@ -21,11 +21,17 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -50,7 +56,12 @@ public class NewConnectionAction extends StudioAction
      */
     public void run()
     {
+        List<Object> selectedObjects = new ArrayList<Object>();
+        selectedObjects.addAll( Arrays.asList( getSelectedConnectionFolders() ) );
+        selectedObjects.addAll( Arrays.asList( getSelectedConnections() ) );
+
         NewConnectionWizard wizard = new NewConnectionWizard();
+        wizard.init( PlatformUI.getWorkbench(), new StructuredSelection( selectedObjects ) );
         WizardDialog dialog = new WizardDialog( getShell(), wizard );
         dialog.setBlockOnOpen( true );
         dialog.create();

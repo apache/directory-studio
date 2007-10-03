@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.ui.wizards;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
@@ -49,6 +50,8 @@ public class NewConnectionWizard extends Wizard implements INewWizard
     /** The connection parameter pages. */
     private ConnectionParameterPage[] pages;
 
+    /** The selected connection folder. */
+    private ConnectionFolder selectedConnectionFolder;
 
     /**
      * Creates a new instance of NewConnectionWizard.
@@ -76,6 +79,23 @@ public class NewConnectionWizard extends Wizard implements INewWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
+        Object firstElement = selection.getFirstElement();
+        if ( firstElement instanceof ConnectionFolder )
+        {
+            selectedConnectionFolder = ( ConnectionFolder ) firstElement;
+        }
+        else if ( firstElement instanceof Connection )
+        {
+            Connection connection = ( Connection ) firstElement;
+            selectedConnectionFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
+                .getParentConnectionFolder( connection );
+        }
+
+        if ( selectedConnectionFolder == null )
+        {
+            selectedConnectionFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
+                .getRootConnectionFolder();
+        }
     }
 
 
@@ -132,7 +152,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        // get connection paramters from pages and save dialog settings 
+        // get connection parameters from pages and save dialog settings 
         ConnectionParameter connectionParameter = new ConnectionParameter();
         for ( int i = 0; i < pages.length; i++ )
         {
@@ -143,6 +163,9 @@ public class NewConnectionWizard extends Wizard implements INewWizard
         // create persistent connection
         final Connection conn = new Connection( connectionParameter );
         ConnectionCorePlugin.getDefault().getConnectionManager().addConnection( conn );
+        
+        // add connection to folder
+        selectedConnectionFolder.addConnectionId( conn.getId() );
 
         // open connection
         new OpenConnectionsJob( conn ).execute();
