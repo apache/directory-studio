@@ -474,6 +474,40 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void attributeTypeAdded( AttributeTypeImpl at )
     {
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            attributeTypeAddedFlatPresentation( at );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            attributeTypeAddedHierarchicalPresentation( at );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when an attribute type is added and the
+     * presentation is set as 'Flat'.
+     *
+     * @param at
+     *      the added attribute type
+     */
+    public void attributeTypeAddedFlatPresentation( AttributeTypeImpl at )
+    {
+        // TODO implement
+    }
+
+
+    /**
+     * Updates the TreeNodes when an attribute type is added and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param at
+     *      the added attribute type
+     */
+    public void attributeTypeAddedHierarchicalPresentation( AttributeTypeImpl at )
+    {
         hierarchyManager.attributeTypeAdded( at );
 
         List<TreeNode> createdWrappers = new ArrayList<TreeNode>();
@@ -548,6 +582,40 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void attributeTypeModified( AttributeTypeImpl at )
     {
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            attributeTypeModifiedFlatPresentation( at );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            attributeTypeModifiedHierarchicalPresentation( at );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when an attribute type is modified and the
+     * presentation is set as 'Flat'.
+     *
+     * @param at
+     *      the modified attribute type
+     */
+    public void attributeTypeModifiedFlatPresentation( AttributeTypeImpl at )
+    {
+        // TODO implement
+    }
+
+
+    /**
+     * Updates the TreeNodes when an attribute type is modified and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param at
+     *      the modified attribute type
+     */
+    public void attributeTypeModifiedHierarchicalPresentation( AttributeTypeImpl at )
+    {
         // Propagating the modification to the hierarchy manager
         hierarchyManager.attributeTypeModified( at );
 
@@ -615,11 +683,39 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void attributeTypeRemoved( AttributeTypeImpl at )
     {
-        removeAttributeTypeHierarchicalPresentation( at );
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            attributeTypeRemovedFlatPresentation( at );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            attributeTypeRemovedHierarchicalPresentation( at );
+        }
     }
 
 
-    private void removeAttributeTypeHierarchicalPresentation( AttributeTypeImpl at )
+    /**
+     * Updates the TreeNodes when an attribute type is removed and the
+     * presentation is set as 'Flat'.
+     *
+     * @param at
+     *      the removed attribute type
+     */
+    private void attributeTypeRemovedFlatPresentation( AttributeTypeImpl at )
+    {
+        // TODO Implement
+    }
+
+
+    /**
+     * Updates the TreeNodes when an attribute type is removed and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param at
+     *      the removed attribute type
+     */
+    private void attributeTypeRemovedHierarchicalPresentation( AttributeTypeImpl at )
     {
         // Creating children nodes of the AT 
         // and attaching them to the root
@@ -707,6 +803,40 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void objectClassAdded( ObjectClassImpl oc )
     {
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            objectClassAddedFlatlPresentation( oc );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            objectClassAddedHierarchicalPresentation( oc );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when an object class is added and the
+     * presentation is set as 'Flat'.
+     *
+     * @param oc
+     *      the added object class
+     */
+    public void objectClassAddedFlatlPresentation( ObjectClassImpl oc )
+    {
+        // TODO implement
+    }
+
+
+    /**
+     * Updates the TreeNodes when an object class is added and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param oc
+     *      the added object class
+     */
+    public void objectClassAddedHierarchicalPresentation( ObjectClassImpl oc )
+    {
         // Propagating the addition to the hierarchy manager
         hierarchyManager.objectClassAdded( oc );
 
@@ -791,6 +921,40 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void objectClassModified( ObjectClassImpl oc )
     {
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            objectClassModifiedFlatPresentation( oc );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            objectClassModifiedHierarchicalPresentation( oc );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when an object class is modified and the
+     * presentation is set as 'Flat'.
+     *
+     * @param oc
+     *      the modified object class
+     */
+    public void objectClassModifiedFlatPresentation( ObjectClassImpl oc )
+    {
+        // TODO implement
+    }
+
+
+    /**
+     * Updates the TreeNodes when an object class is modified and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param oc
+     *      the modified object class
+     */
+    public void objectClassModifiedHierarchicalPresentation( ObjectClassImpl oc )
+    {
         // Propagating the modification to the hierarchy manager
         hierarchyManager.objectClassModified( oc );
 
@@ -857,6 +1021,40 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      *      the removed object class
      */
     public void objectClassRemoved( ObjectClassImpl oc )
+    {
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            objectClassRemovedFlatPresentation( oc );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            objectClassRemovedHierarchicalPresentation( oc );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when an object class is removed and the
+     * presentation is set as 'Flat'.
+     *
+     * @param oc
+     *      the removed object class
+     */
+    public void objectClassRemovedFlatPresentation( ObjectClassImpl oc )
+    {
+        // TODO Implement
+    }
+
+
+    /**
+     * Updates the TreeNodes when an object class is removed and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param oc
+     *      the removed object class
+     */
+    public void objectClassRemovedHierarchicalPresentation( ObjectClassImpl oc )
     {
         // Creating children nodes of the OC 
         // and attaching them to the root

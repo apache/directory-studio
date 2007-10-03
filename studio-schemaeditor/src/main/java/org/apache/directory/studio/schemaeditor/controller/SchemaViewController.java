@@ -117,6 +117,9 @@ public class SchemaViewController
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
 
+            contentProvider.attributeTypeAdded( at );
+            view.refresh();
+
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
             {
@@ -174,6 +177,9 @@ public class SchemaViewController
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
 
+            contentProvider.attributeTypeModified( at );
+            view.refresh();
+
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
             {
@@ -204,6 +210,9 @@ public class SchemaViewController
         {
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
+            
+            contentProvider.attributeTypeRemoved( at );
+            view.refresh();
 
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -236,6 +245,9 @@ public class SchemaViewController
         {
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
+            
+            contentProvider.objectClassAdded( oc );
+            view.refresh();
 
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -266,7 +278,7 @@ public class SchemaViewController
                         schemaWrapper.addChild( ocw );
                     }
 
-                    viewer.refresh( schemaWrapper );
+                    view.refresh();
                     if ( ocw != null )
                     {
                         viewer.setSelection( new StructuredSelection( ocw ) );
@@ -281,7 +293,7 @@ public class SchemaViewController
             else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
             {
                 contentProvider.objectClassAdded( oc );
-                view.reloadViewer();
+                view.refresh();
             }
         }
 
@@ -293,6 +305,10 @@ public class SchemaViewController
         {
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
+            
+
+            contentProvider.objectClassModified( oc );
+            view.refresh();
 
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -312,7 +328,7 @@ public class SchemaViewController
             else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
             {
                 contentProvider.objectClassModified( oc );
-                view.reloadViewer();
+                view.refresh();
             }
         }
 
@@ -324,6 +340,10 @@ public class SchemaViewController
         {
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
+            
+
+            contentProvider.objectClassRemoved( oc );
+            view.refresh();
 
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -344,7 +364,7 @@ public class SchemaViewController
             else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
             {
                 contentProvider.objectClassRemoved( oc );
-                view.reloadViewer();
+                view.refresh();
             }
         }
 
@@ -355,6 +375,12 @@ public class SchemaViewController
         public void schemaAdded( Schema schema )
         {
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+            SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
+            
+
+            contentProvider.schemaAdded( schema );
+            view.refresh();
 
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -407,8 +433,7 @@ public class SchemaViewController
             }
             else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
             {
-                // TODO Change this
-                view.reloadViewer();
+                view.refresh();
             }
         }
 
@@ -419,6 +444,11 @@ public class SchemaViewController
         public void schemaRemoved( Schema schema )
         {
             IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
+            SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
+            
+            contentProvider.schemaAdded( schema );
+            view.refresh();
 
             int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
             if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -437,8 +467,7 @@ public class SchemaViewController
             }
             else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
             {
-                // TODO Change this
-                view.reloadViewer();
+                view.refresh();
             }
         }
     };
@@ -1076,7 +1105,6 @@ public class SchemaViewController
             public void partVisible( IWorkbenchPartReference partRef )
             {
             }
-
         } );
     }
 }
