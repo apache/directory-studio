@@ -153,6 +153,9 @@ public class ConnectionWidget extends ViewFormWidget
         tree.setLayoutData( data );
         viewer = new TreeViewer( tree );
 
+        // setup sorter
+        configuration.getSorter().connect( viewer );
+
         // setup providers
         viewer.setContentProvider( configuration.getContentProvider( viewer ) );
         viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
