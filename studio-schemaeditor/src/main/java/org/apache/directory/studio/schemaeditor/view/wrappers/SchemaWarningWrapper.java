@@ -82,4 +82,45 @@ public class SchemaWarningWrapper extends AbstractTreeNode
     {
         return false;
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof SchemaWarningWrapper )
+        {
+            if ( super.equals( obj ) )
+            {
+                SchemaWarningWrapper sww = ( SchemaWarningWrapper ) obj;
+
+                if ( ( schemaWarning != null ) && ( !schemaWarning.equals( sww.getSchemaWarning() ) ) )
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        // Default
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.view.wrappers.AbstractTreeNode#hashCode()
+     */
+    public int hashCode()
+    {
+        int result = super.hashCode();
+
+        if ( schemaWarning != null )
+        {
+            result = 37 * result + schemaWarning.hashCode();
+        }
+
+        return result;
+    }
 }
