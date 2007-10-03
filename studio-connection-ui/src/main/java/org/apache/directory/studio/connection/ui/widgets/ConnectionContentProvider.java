@@ -44,9 +44,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
 {
 
     /**
-     * {@inheritDoc}
-     * 
-     * This implementation does nothing.
+     * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
      */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
@@ -54,9 +52,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
 
 
     /**
-     * {@inheritDoc}
-     * 
-     * This implementation does nothing.
+     * @see org.eclipse.jface.viewers.IContentProvider#dispose()
      */
     public void dispose()
     {
@@ -64,9 +60,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
 
 
     /**
-     * {@inheritDoc}
-     * 
-     * This implementation accepts the ConnectionFolderManager and returns its connections.
+     * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
     public Object[] getElements( Object inputElement )
     {
@@ -84,6 +78,9 @@ public class ConnectionContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+     */
     public Object[] getChildren( Object parentElement )
     {
         if ( parentElement != null && parentElement instanceof ConnectionFolder )
@@ -119,12 +116,31 @@ public class ConnectionContentProvider implements ITreeContentProvider
     }
 
 
+    /**
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+     */
     public Object getParent( Object element )
     {
-        return null;
+        if ( element instanceof ConnectionFolder )
+        {
+            return ConnectionCorePlugin.getDefault().getConnectionFolderManager().getParentConnectionFolder(
+                ( ConnectionFolder ) element );
+        }
+        else if ( element instanceof Connection )
+        {
+            return ConnectionCorePlugin.getDefault().getConnectionFolderManager().getParentConnectionFolder(
+                ( Connection ) element );
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
+    /**
+     * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+     */
     public boolean hasChildren( Object element )
     {
         Object[] children = getChildren( element );

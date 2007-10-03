@@ -116,7 +116,7 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
         connectionUpdated( connection );
         if ( viewer != null )
         {
-            viewer.setSelection( new StructuredSelection( connection ) );
+            viewer.setSelection( new StructuredSelection( connection ), true );
         }
     }
 
