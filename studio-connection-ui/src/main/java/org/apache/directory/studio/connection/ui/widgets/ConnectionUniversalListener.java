@@ -26,6 +26,10 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 
@@ -42,7 +46,29 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
     /** The tree viewer */
     protected TreeViewer viewer;
 
-
+    /** This listener expands/collapses a connection folder when double clicking */
+    private IDoubleClickListener viewerDoubleClickListener = new IDoubleClickListener()
+    {
+        public void doubleClick( DoubleClickEvent event )
+        {
+            if ( event.getSelection() instanceof IStructuredSelection )
+            {
+                Object obj = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
+                if ( obj instanceof ConnectionFolder )
+                {
+                    if ( viewer.getExpandedState( obj ) )
+                    {
+                        viewer.collapseToLevel( obj, 1 );
+                    }
+                    else if ( ( ( ITreeContentProvider ) viewer.getContentProvider() ).hasChildren( obj ) )
+                    {
+                        viewer.expandToLevel( obj, 1 );
+                    }
+                }
+            }
+        }
+    };
+    
     /**
      * Creates a new instance of ConnectionUniversalListener.
      *
@@ -52,6 +78,7 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
     {
         this.viewer = viewer;
 
+        this.viewer.addDoubleClickListener( viewerDoubleClickListener );
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
     }
 
