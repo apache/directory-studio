@@ -21,7 +21,12 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
@@ -61,15 +66,20 @@ public class CopyAction extends StudioAction
      */
     public String getText()
     {
-
-        // connection
-        Connection[] connections = getConnections();
-        if ( connections != null )
+        Connection[] connections = getSelectedConnections();
+        ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
+        if ( connections.length > 0 && connectionFolders.length == 0 )
         {
             return connections.length > 1 ? "Copy Connections" : "Copy Connection";
         }
-
-        return "Copy";
+        else if ( connectionFolders.length > 0 && connections.length == 0 )
+        {
+            return connectionFolders.length > 1 ? "Copy Connection Folders" : "Copy Connection Folder";
+        }
+        else
+        {
+            return "Copy";
+        }
     }
 
 
@@ -96,13 +106,17 @@ public class CopyAction extends StudioAction
      */
     public void run()
     {
-        Connection[] connections = getConnections();
+        Connection[] connections = getSelectedConnections();
+        ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
+        List<Object> objects = new ArrayList<Object>();
+        objects.addAll( Arrays.asList( connections ) );
+        objects.addAll( Arrays.asList( connectionFolders ) );
 
         // connection
-        if ( connections != null )
+        if ( objects != null )
         {
             copyToClipboard( new Object[]
-                { connections }, new Transfer[]
+                { objects.toArray() }, new Transfer[]
                 { ConnectionTransfer.getInstance() } );
         }
 
@@ -144,37 +158,7 @@ public class CopyAction extends StudioAction
      */
     public boolean isEnabled()
     {
-
-        // connection
-        if ( getConnections() != null )
-        {
-            return true;
-        }
-
-        else
-        {
-            return false;
-        }
-    }
-
-
-    /**
-     * Get the Connections
-     *
-     * @return
-     *      the Connections
-     */
-    private Connection[] getConnections()
-    {
-
-        if ( getSelectedConnections().length > 0 )
-        {
-            return getSelectedConnections();
-        }
-        else
-        {
-            return null;
-        }
+        return getSelectedConnections().length + getSelectedConnectionFolders().length > 0;
     }
 
 }

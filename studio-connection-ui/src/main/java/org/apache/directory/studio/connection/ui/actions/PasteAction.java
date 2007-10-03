@@ -21,9 +21,14 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.ConnectionFolderManager;
+import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
@@ -56,14 +61,20 @@ public class PasteAction extends StudioAction
      */
     public String getText()
     {
-        // connection
-        Connection[] connections = getConnectionsToPaste();
-        if ( connections != null )
+        List<Connection> connections = getConnectionsToPaste();
+        List<ConnectionFolder> connectionFolders = getConnectionFoldersToPaste();
+        if ( connections.size() > 0 && connectionFolders.size() == 0 )
         {
-            return connections.length > 1 ? "Paste Connections" : "Paste Connection";
+            return connections.size() > 1 ? "Paste Connections" : "Paste Connection";
         }
-
-        return "Paste";
+        else if ( connectionFolders.size() > 0 && connections.size() == 0 )
+        {
+            return connectionFolders.size() > 1 ? "Paste Connection Folders" : "Paste Connection Folder";
+        }
+        else
+        {
+            return "Paste";
+        }
     }
 
 
@@ -90,13 +101,7 @@ public class PasteAction extends StudioAction
      */
     public boolean isEnabled()
     {
-        // connection
-        if ( getConnectionsToPaste() != null )
-        {
-            return true;
-        }
-
-        return false;
+        return this.getFromClipboard( ConnectionTransfer.getInstance() ) != null;
     }
 
 
@@ -105,26 +110,42 @@ public class PasteAction extends StudioAction
      */
     public void run()
     {
-        // connection
-        Connection[] connections = getConnectionsToPaste();
-        if ( connections != null )
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+            .getConnectionFolderManager();
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+
+        ConnectionFolder[] selectedFolders = getSelectedConnectionFolders();
+        Connection[] selectedConnections = getSelectedConnections();
+        ConnectionFolder targetFolder = null;
+        if ( selectedFolders.length > 0 )
         {
-            for ( int i = 0; i < connections.length; i++ )
-            {
-                Connection newConnection = ( Connection ) connections[i].clone();
-                ConnectionCorePlugin.getDefault().getConnectionManager().addConnection( newConnection );
-                ConnectionFolder[] folders = getSelectedConnectionFolders();
-                if(folders != null && folders.length > 0)
-                {
-                    folders[0].addConnectionId( newConnection.getId() );
-                }
-                else
-                {
-                    ConnectionCorePlugin.getDefault().getConnectionFolderManager().getRootConnectionFolder()
-                        .addConnectionId( newConnection.getId() );
-                }
-            }
-            return;
+            targetFolder = selectedFolders[0];
+        }
+        else if ( selectedConnections.length > 0 )
+        {
+            targetFolder = connectionFolderManager.getParentConnectionFolder( selectedConnections[0] );
+        }
+        if ( targetFolder == null )
+        {
+            targetFolder = connectionFolderManager.getRootConnectionFolder();
+        }
+
+        // connections
+        List<Connection> connections = getConnectionsToPaste();
+        for ( Connection connection : connections )
+        {
+            Connection newConnection = ( Connection ) connection.clone();
+            connectionManager.addConnection( newConnection );
+            targetFolder.addConnectionId( newConnection.getId() );
+        }
+
+        // connection folders
+        List<ConnectionFolder> connectionFolders = getConnectionFoldersToPaste();
+        for ( ConnectionFolder connectionFolder : connectionFolders )
+        {
+            ConnectionFolder newConnectionFolder = ( ConnectionFolder ) connectionFolder.clone();
+            connectionFolderManager.addConnectionFolder( newConnectionFolder );
+            targetFolder.addSubFolderId( newConnectionFolder.getId() );
         }
     }
 
@@ -134,16 +155,50 @@ public class PasteAction extends StudioAction
      * 
      * @return the connections to paste
      */
-    private Connection[] getConnectionsToPaste()
+    private List<Connection> getConnectionsToPaste()
     {
+        List<Connection> connections = new ArrayList<Connection>();
+
         Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
-        if ( content != null && content instanceof Connection[] )
+        if ( content != null && content instanceof Object[] )
         {
-            Connection[] connections = ( Connection[] ) content;
-            return connections;
+            Object[] objects = ( Object[] ) content;
+            for ( Object object : objects )
+            {
+                if ( object instanceof Connection )
+                {
+                    connections.add( ( Connection ) object );
+                }
+            }
         }
 
-        return null;
+        return connections;
+    }
+
+
+    /**
+     * Condition: there are connection folders in clipboard
+     * 
+     * @return the connection folders to paste
+     */
+    private List<ConnectionFolder> getConnectionFoldersToPaste()
+    {
+        List<ConnectionFolder> folders = new ArrayList<ConnectionFolder>();
+
+        Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
+        if ( content != null && content instanceof Object[] )
+        {
+            Object[] objects = ( Object[] ) content;
+            for ( Object object : objects )
+            {
+                if ( object instanceof ConnectionFolder )
+                {
+                    folders.add( ( ConnectionFolder ) object );
+                }
+            }
+        }
+
+        return folders;
     }
 
 
