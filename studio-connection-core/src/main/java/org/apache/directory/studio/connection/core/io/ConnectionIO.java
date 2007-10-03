@@ -23,10 +23,10 @@ package org.apache.directory.studio.connection.core.io;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -82,9 +82,9 @@ public class ConnectionIO
      * @throws ConnectionIOException 
      *      if an error occurs when converting the document
      */
-    public static List<ConnectionParameter> load( FileInputStream stream ) throws ConnectionIOException
+    public static Set<ConnectionParameter> load( FileInputStream stream ) throws ConnectionIOException
     {
-        List<ConnectionParameter> connections = new ArrayList<ConnectionParameter>();
+        Set<ConnectionParameter> connections = new HashSet<ConnectionParameter>();
 
         SAXReader saxReader = new SAXReader();
         Document document = null;
@@ -242,7 +242,7 @@ public class ConnectionIO
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void save( List<ConnectionParameter> connections, FileOutputStream stream ) throws IOException
+    public static void save( Set<ConnectionParameter> connections, FileOutputStream stream ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -330,9 +330,9 @@ public class ConnectionIO
      * @throws ConnectionIOException 
      *      if an error occurs when converting the document
      */
-    public static List<ConnectionFolder> loadConnectionFolders( FileInputStream stream ) throws ConnectionIOException
+    public static Set<ConnectionFolder> loadConnectionFolders( FileInputStream stream ) throws ConnectionIOException
     {
-        List<ConnectionFolder> connectionFolders = new ArrayList<ConnectionFolder>();
+        Set<ConnectionFolder> connectionFolders = new HashSet<ConnectionFolder>();
 
         SAXReader saxReader = new SAXReader();
         Document document = null;
@@ -438,7 +438,7 @@ public class ConnectionIO
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void saveConnectionFolders( List<ConnectionFolder> connectionFolders, FileOutputStream stream ) throws IOException
+    public static void saveConnectionFolders( Set<ConnectionFolder> connectionFolders, FileOutputStream stream ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();

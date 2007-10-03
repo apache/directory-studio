@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
-import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 
 /**
@@ -65,7 +65,7 @@ public class DragConnectionListener implements DragSourceListener
     /**
      * {@inheritDoc}
      * 
-     * This implementation adds the dragged connections to the 
+     * This implementation adds the dragged connections and connection folders to the 
      * given event data.
      */
     public void dragSetData( DragSourceEvent event )
@@ -75,19 +75,19 @@ public class DragConnectionListener implements DragSourceListener
             if ( event.widget instanceof DragSource )
             {
                 DragSource dragSource = ( DragSource ) event.widget;
-                if ( dragSource.getControl() instanceof Table )
+                if ( dragSource.getControl() instanceof Tree )
                 {
-                    Table table = ( Table ) dragSource.getControl();
-                    TableItem[] items = table.getSelection();
-                    List<Connection> connectionList = new ArrayList<Connection>();
+                    Tree tree = ( Tree ) dragSource.getControl();
+                    TreeItem[] items = tree.getSelection();
+                    List<Object> objectList = new ArrayList<Object>();
                     for ( int i = 0; i < items.length; i++ )
                     {
-                        if ( items[i].getData() instanceof Connection )
+                        if ( items[i].getData() instanceof Connection || items[i].getData() instanceof ConnectionFolder )
                         {
-                            connectionList.add( ( Connection ) items[i].getData() );
+                            objectList.add( items[i].getData() );
                         }
                     }
-                    event.data = connectionList.toArray( new Connection[connectionList.size()] );
+                    event.data = objectList.toArray();
                 }
             }
         }
@@ -101,10 +101,6 @@ public class DragConnectionListener implements DragSourceListener
      */
     public void dragFinished( DragSourceEvent event )
     {
-        if ( event.detail == DND.DROP_MOVE && event.doit )
-        {
-            // this.connectionManager.removeConnection(this.dragConnection);
-        }
     }
 
 }

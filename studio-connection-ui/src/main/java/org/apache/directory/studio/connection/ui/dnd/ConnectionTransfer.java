@@ -31,6 +31,8 @@ import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -81,37 +83,45 @@ public class ConnectionTransfer extends ByteArrayTransfer
     /**
      * {@inheritDoc}
      * 
-     * This implementation only accepts {@link Connection} objects. 
-     * It just converts the id of the connection to the platform 
+     * This implementation only accepts {@link Connection} and {@link ConnectionFolder} objects. 
+     * It just converts the id of the connection or connection folder to the platform 
      * specific representation.
      */
     public void javaToNative( Object object, TransferData transferData )
     {
-        if ( object == null || !( object instanceof Connection[] ) )
+        if ( object == null || !( object instanceof Object[] ) )
         {
             return;
         }
 
         if ( isSupportedType( transferData ) )
         {
-            Connection[] connections = ( Connection[] ) object;
+            Object[] objects = ( Object[] ) object;
             try
             {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 DataOutputStream writeOut = new DataOutputStream( out );
 
-                for ( int i = 0; i < connections.length; i++ )
+                for ( int i = 0; i < objects.length; i++ )
                 {
-                    byte[] id = connections[i].getConnectionParameter().getId().getBytes();
-                    writeOut.writeInt( id.length );
-                    writeOut.write( id );
+                    if ( objects[i] instanceof Connection )
+                    {
+                        byte[] id = ( ( Connection ) objects[i] ).getConnectionParameter().getId().getBytes();
+                        writeOut.writeInt( id.length );
+                        writeOut.write( id );
+                    }
+                    else if ( objects[i] instanceof ConnectionFolder )
+                    {
+                        byte[] id = ( ( ConnectionFolder ) objects[i] ).getId().getBytes();
+                        writeOut.writeInt( id.length );
+                        writeOut.write( id );
+                    }
                 }
 
                 byte[] buffer = out.toByteArray();
                 writeOut.close();
 
                 super.javaToNative( buffer, transferData );
-
             }
             catch ( IOException e )
             {
@@ -124,9 +134,10 @@ public class ConnectionTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation just converts the platform specific representation
-     * to the connection id and invokes 
+     * to the connection id or connection folder id and invokes 
      * {@link ConnectionManager#getConnectionById(String)} to get the
-     * {@link Connection} object.
+     * {@link Connection} object or {@link ConnectionFolderManager#getConnectionFolderById(String)}
+     * to get the {@link ConnectionFolder} object.
      */
     public Object nativeToJava( TransferData transferData )
     {
@@ -138,7 +149,7 @@ public class ConnectionTransfer extends ByteArrayTransfer
                 return null;
             }
 
-            List<Connection> connectionList = new ArrayList<Connection>();
+            List<Object> objectList = new ArrayList<Object>();
             try
             {
                 ByteArrayInputStream in = new ByteArrayInputStream( buffer );
@@ -151,9 +162,21 @@ public class ConnectionTransfer extends ByteArrayTransfer
                         int size = readIn.readInt();
                         byte[] id = new byte[size];
                         readIn.read( id );
-                        Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionById(
-                            new String( id ) );
-                        connectionList.add( connection );
+                        Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager()
+                            .getConnectionById( new String( id ) );
+                        if ( connection != null )
+                        {
+                            objectList.add( connection );
+                        }
+                        else
+                        {
+                            ConnectionFolder folder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
+                                .getConnectionFolderById( new String( id ) );
+                            if ( folder != null )
+                            {
+                                objectList.add( folder );
+                            }
+                        }
                     }
                 }
                 while ( readIn.available() > 1 );
@@ -165,7 +188,7 @@ public class ConnectionTransfer extends ByteArrayTransfer
                 return null;
             }
 
-            return connectionList.toArray( new Connection[0] );
+            return objectList.toArray();
         }
 
         return null;

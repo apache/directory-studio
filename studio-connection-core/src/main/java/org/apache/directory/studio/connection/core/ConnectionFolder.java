@@ -23,7 +23,7 @@ package org.apache.directory.studio.connection.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.UUID;
 
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 
@@ -34,7 +34,7 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionFolder
+public class ConnectionFolder implements Cloneable
 {
     private String id;
 
@@ -69,25 +69,62 @@ public class ConnectionFolder
 
 
     /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone()
+    {
+        ConnectionFolder folder = new ConnectionFolder( getName() );
+
+        // clone connections
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        for ( String id : connectionIds )
+        {
+            Connection connection = connectionManager.getConnectionById( id );
+            if ( connection != null )
+            {
+                Connection newConnection = ( Connection ) connection.clone();
+                connectionManager.addConnection( newConnection );
+                folder.addConnectionId( newConnection.getId() );
+            }
+        }
+        
+        // clone subfolders
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault().getConnectionFolderManager();
+        for ( String id : subFolderIds )
+        {
+            ConnectionFolder subFolder = connectionFolderManager.getConnectionFolderById( id );
+            if ( subFolder != null )
+            {
+                ConnectionFolder newFolder = ( ConnectionFolder ) subFolder.clone();
+                connectionFolderManager.addConnectionFolder( newFolder );
+                folder.addSubFolderId( newFolder.getId() );
+            }
+        }
+
+        return folder;
+    }
+
+
+    /**
      * Adds the connection id to the end of the connection list.
      * 
      * @param connectionId the connection id
      */
     public void addConnectionId( String connectionId )
     {
-        addConnectionId( connectionIds.size(), connectionId );
+        connectionIds.add( connectionId );
+        ConnectionEventRegistry.fireConnectonFolderModified( this, this );
     }
 
 
     /**
-     * Adds the connection id at the specified position of the connection list.
+     * Removes the connection id from the connection list.
      * 
-     * @param index the index
      * @param connectionId the connection id
      */
-    public void addConnectionId( int index, String connectionId )
+    public void removeConnectionId( String connectionId )
     {
-        connectionIds.add( index, connectionId );
+        connectionIds.remove( connectionId );
         ConnectionEventRegistry.fireConnectonFolderModified( this, this );
     }
 
@@ -99,19 +136,19 @@ public class ConnectionFolder
      */
     public void addSubFolderId( String folderId )
     {
-        addSubFolderId( subFolderIds.size(), folderId );
+        subFolderIds.add( folderId );
+        ConnectionEventRegistry.fireConnectonFolderModified( this, this );
     }
 
 
     /**
-     * Adds the folder id to the end of the sub-folder list.
+     * Removes the connection folder from the sub-folder list.
      * 
-     * @param index the index
      * @param folderId the folder id
      */
-    public void addSubFolderId( int index, String folderId )
+    public void removeSubFolderId( String folderId )
     {
-        subFolderIds.add( index, folderId );
+        subFolderIds.remove( folderId );
         ConnectionEventRegistry.fireConnectonFolderModified( this, this );
     }
 
@@ -123,6 +160,10 @@ public class ConnectionFolder
      */
     public String getId()
     {
+        if ( id == null )
+        {
+            id = createId();
+        }
         return id;
     }
 
@@ -230,8 +271,30 @@ public class ConnectionFolder
      */
     private String createId()
     {
-        long id = new Random( System.currentTimeMillis() ).nextLong();
-        return Long.valueOf( id ).toString();
+        return UUID.randomUUID().toString();
+    }
+
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return getId().hashCode();
+    }
+
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ConnectionFolder )
+        {
+            ConnectionFolder other = ( ConnectionFolder ) obj;
+            return getId().equals( other.getId() );
+        }
+        return false;
     }
 
 }

@@ -27,7 +27,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -49,7 +51,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     private ConnectionFolder root;
 
     /** The list of folders. */
-    private List<ConnectionFolder> folderList;
+    private Set<ConnectionFolder> folderList;
 
 
     /**
@@ -59,7 +61,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     {
         this.root = new ConnectionFolder( "" );
         this.root.setId( "0" ); //$NON-NLS-1$s
-        this.folderList = new ArrayList<ConnectionFolder>();
+        this.folderList = new HashSet<ConnectionFolder>();
 
         loadConnectionFolders();
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
@@ -160,6 +162,98 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     }
 
 
+    /**
+     * Gets the parent connection folder of the given connection.
+     *
+     * @param connection
+     *      the connection used to search the parent
+     * @return
+     *      the parent connection folder of the given connection
+     */
+    public ConnectionFolder getParentConnectionFolder( Connection connection )
+    {
+        for ( ConnectionFolder folder : folderList )
+        {
+            if ( folder.getConnectionIds().contains( connection.getId() ) )
+            {
+                return folder;
+            }
+        }
+        return getRootConnectionFolder();
+    }
+    
+    
+    /**
+     * Gets the parent connection folder of the given connection folder 
+     * or null if the folder doesn't have a parent folder.
+     *
+     * @param connectionFolder
+     *      the connection folder used to search the parent
+     * @return
+     *      the parent connection folder of the given connection folder
+     *      or null if the folder doesn't have a parent folder
+     */
+    public ConnectionFolder getParentConnectionFolder( ConnectionFolder connectionFolder )
+    {
+        for ( ConnectionFolder folder : folderList )
+        {
+            if ( folder.getSubFolderIds().contains( connectionFolder.getId() ) )
+            {
+                return folder;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Gets the all sub-folders of the given folder including the given folder.
+     * 
+     * @param folder the folder
+     * 
+     * @return all sub-folders
+     */
+    public Set<ConnectionFolder> getAllSubFolders( ConnectionFolder folder )
+    {
+        Set<ConnectionFolder> allSubFolders = new HashSet<ConnectionFolder>();
+        
+        List<String> ids = new ArrayList<String>();
+        ids.add( folder.getId() );
+        while ( !ids.isEmpty() )
+        {
+            String id = ids.remove( 0 );
+            ConnectionFolder subFolder = getConnectionFolderById( id );
+            allSubFolders.add( subFolder );
+            
+            ids.addAll( subFolder.getSubFolderIds() );
+        }
+        
+        return allSubFolders;
+    }
+
+
+    /**
+     * Gets the all parent folders of the given folder including the given folder.
+     * 
+     * @param folder the folder
+     * 
+     * @return all parent folders
+     */
+    public Set<ConnectionFolder> getAllParentFolders( ConnectionFolder folder )
+    {
+        Set<ConnectionFolder> allParentFolders = new HashSet<ConnectionFolder>();
+        
+        do
+        {
+            allParentFolders.add( folder );
+            folder = getParentConnectionFolder( folder );
+        }
+        while ( folder != null );
+        
+        return allParentFolders;
+    }
+    
+    
     /**
      * Gets the root connection folder.
      * 

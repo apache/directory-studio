@@ -23,7 +23,7 @@ package org.apache.directory.studio.connection.core;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+import java.util.UUID;
 
 
 /**
@@ -451,8 +451,30 @@ public class ConnectionParameter
      */
     private String createId()
     {
-        long id = new Random( System.currentTimeMillis() ).nextLong();
-        return Long.valueOf( id ).toString();
+        return UUID.randomUUID().toString();
+    }
+
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return getId().hashCode();
+    }
+
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof ConnectionParameter )
+        {
+            ConnectionParameter other = ( ConnectionParameter ) obj;
+            return getId().equals( other.getId() );
+        }
+        return false;
     }
 
 }

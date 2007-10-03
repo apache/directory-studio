@@ -26,8 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -46,7 +46,7 @@ public class ConnectionManager implements ConnectionUpdateListener
 {
 
     /** The list of connections. */
-    private List<Connection> connectionList;
+    private Set<Connection> connectionList;
 
 
     /**
@@ -54,7 +54,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public ConnectionManager()
     {
-        this.connectionList = new ArrayList<Connection>();
+        this.connectionList = new HashSet<Connection>();
         loadConnections();
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
@@ -77,23 +77,9 @@ public class ConnectionManager implements ConnectionUpdateListener
      * Adds the connection to the end of the connection list. If there is
      * already a connection with this name, the new connection is renamed.
      *
-     * @param connection
+     * @param connection the connection to add
      */
     public void addConnection( Connection connection )
-    {
-        addConnection( connectionList.size(), connection );
-    }
-
-
-    /**
-     * Adds the connection at the specified position of the connection list.
-     * If there is already a connection with this name the new connection is
-     * renamed.
-     *
-     * @param index
-     * @param connection
-     */
-    public void addConnection( int index, Connection connection )
     {
         if ( getConnectionByName( connection.getConnectionParameter().getName() ) != null )
         {
@@ -107,7 +93,7 @@ public class ConnectionManager implements ConnectionUpdateListener
             connection.getConnectionParameter().setName( newConnectionName );
         }
 
-        connectionList.add( index, connection );
+        connectionList.add( connection );
         ConnectionEventRegistry.fireConnectionAdded( connection, this );
     }
 
@@ -151,20 +137,6 @@ public class ConnectionManager implements ConnectionUpdateListener
             }
         }
         return null;
-    }
-
-
-    /**
-     * Gets the index in the Connection list of the first occurrence of the specified Connection.
-     *
-     * @param connection
-     *      the Connection to search for
-     * @return
-     *      the index in the Connection list of the first occurrence of the specified Connection
-     */
-    public int indexOf( Connection connection )
-    {
-        return connectionList.indexOf( connection );
     }
 
 
@@ -261,7 +233,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     private synchronized void saveConnections()
     {
-        List<ConnectionParameter> connectionParameters = new ArrayList<ConnectionParameter>();
+        Set<ConnectionParameter> connectionParameters = new HashSet<ConnectionParameter>();
         for ( Connection connection : connectionList )
         {
             connectionParameters.add( connection.getConnectionParameter() );
@@ -304,7 +276,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     private synchronized void loadConnections()
     {
-        List<ConnectionParameter> connectionParameters = null;
+        Set<ConnectionParameter> connectionParameters = null;
 
         try
         {

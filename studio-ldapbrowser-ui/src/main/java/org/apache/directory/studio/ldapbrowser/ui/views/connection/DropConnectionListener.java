@@ -21,19 +21,20 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.DropTargetListener;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 
 /**
@@ -98,58 +99,68 @@ public class DropConnectionListener implements DropTargetListener
      */
     public void dragOver( DropTargetEvent event )
     {
-        boolean isOverSelection = false;
-        if ( event.detail == DND.DROP_MOVE || event.detail == DND.DROP_NONE )
+        try
         {
-            if ( ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
+            // move connection folder: check that the new connection folder is not the same or a parent folder
+            boolean isMoveConnectionFolderForbidden = false;
+            if ( event.detail == DND.DROP_MOVE || event.detail == DND.DROP_NONE )
             {
-                if ( event.item != null && event.item.getData() instanceof Connection )
+                if ( ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
                 {
-                    Connection overConn = ( Connection ) event.item.getData();
-                    if ( event.widget instanceof DropTarget )
+                    if ( event.item != null && event.item.getData() instanceof ConnectionFolder )
                     {
-                        DropTarget dropTarget = ( DropTarget ) event.widget;
-                        if ( dropTarget.getControl() instanceof Table )
+                        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+                            .getConnectionFolderManager();
+                        ConnectionFolder overFolder = ( ConnectionFolder ) event.item.getData();
+                        Set<ConnectionFolder> allParentFolders = connectionFolderManager
+                            .getAllParentFolders( overFolder );
+
+                        if ( event.widget instanceof DropTarget )
                         {
-                            Table table = ( Table ) dropTarget.getControl();
-                            TableItem[] items = table.getSelection();
-                            List<Connection> connectionList = new ArrayList<Connection>();
-                            for ( int i = 0; i < items.length; i++ )
+                            DropTarget dropTarget = ( DropTarget ) event.widget;
+                            if ( dropTarget.getControl() instanceof Tree )
                             {
-                                if ( items[i].getData() instanceof Connection )
+                                Tree tree = ( Tree ) dropTarget.getControl();
+                                TreeItem[] items = tree.getSelection();
+                                for ( int i = 0; i < items.length; i++ )
                                 {
-                                    connectionList.add( ( Connection ) items[i].getData() );
+                                    if ( items[i].getData() instanceof ConnectionFolder )
+                                    {
+                                        ConnectionFolder folder = ( ConnectionFolder ) items[i].getData();
+                                        if ( allParentFolders.contains( folder ) )
+                                        {
+                                            isMoveConnectionFolderForbidden = true;
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
-                            if ( connectionList.contains( overConn ) )
-                            {
-                                isOverSelection = true;
                             }
                         }
                     }
                 }
             }
-        }
 
-        if ( !ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
+            if ( !ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
+            {
+                event.detail = DND.DROP_NONE;
+            }
+            else if ( isMoveConnectionFolderForbidden )
+            {
+                event.detail = DND.DROP_NONE;
+            }
+            else if ( event.detail == DND.DROP_LINK )
+            {
+                event.detail = DND.DROP_NONE;
+            }
+            else if ( event.detail == DND.DROP_NONE )
+            {
+                event.detail = DND.DROP_DEFAULT;
+            }
+        }
+        catch ( Exception e )
         {
             event.detail = DND.DROP_NONE;
-        }
-        else if ( event.item == null )
-        {
-            event.detail = DND.DROP_NONE;
-        }
-        else if ( isOverSelection )
-        {
-            event.detail = DND.DROP_NONE;
-        }
-        else if ( event.detail == DND.DROP_LINK )
-        {
-            event.detail = DND.DROP_NONE;
-        }
-        else if ( event.detail == DND.DROP_NONE )
-        {
-            event.detail = DND.DROP_DEFAULT;
+            e.printStackTrace();
         }
     }
 
@@ -173,44 +184,66 @@ public class DropConnectionListener implements DropTargetListener
     public void drop( DropTargetEvent event )
     {
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+            .getConnectionFolderManager();
 
         try
         {
             if ( ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
             {
-                // get connection to handle
-                Connection[] connections = ( Connection[] ) event.data;
-                Connection targetConnection = ( Connection ) event.item.getData();
+                // get connection and folders to handle
+                Object[] objects = ( Object[] ) event.data;
+                Object target = event.item != null ? event.item.getData() : connectionFolderManager
+                    .getRootConnectionFolder();
 
-                if ( event.detail == DND.DROP_MOVE )
+                ConnectionFolder targetFolder = null;
+                if ( target instanceof ConnectionFolder )
                 {
-                    boolean fromTop = connectionManager.indexOf( connections[0] ) < connectionManager
-                        .indexOf( targetConnection );
-                    for ( int i = 0; i < connections.length; i++ )
-                    {
-                        connectionManager.removeConnection( connections[i] );
-                    }
-                    for ( int i = 0; i < connections.length; i++ )
-                    {
-                        int index = connectionManager.indexOf( targetConnection );
-                        if ( fromTop )
-                        {
-                            index++;
-                            connectionManager.addConnection( index + i, connections[i] );
-                        }
-                        else
-                        {
-                            connectionManager.addConnection( index, connections[i] );
-                        }
-                    }
+                    targetFolder = ( ConnectionFolder ) target;
                 }
-                else if ( event.detail == DND.DROP_COPY )
+                else if ( target instanceof Connection )
                 {
-                    for ( int i = 0; i < connections.length; i++ )
+                    Connection connection = ( Connection ) target;
+                    targetFolder = connectionFolderManager.getParentConnectionFolder( connection );
+                }
+
+                for ( Object object : objects )
+                {
+                    if ( object instanceof Connection )
                     {
-                        Connection newConnection = ( Connection ) connections[i].clone();
-                        int index = connectionManager.indexOf( targetConnection );
-                        connectionManager.addConnection( index + i + 1, newConnection );
+                        Connection connection = ( Connection ) object;
+                        if ( event.detail == DND.DROP_MOVE )
+                        {
+                            ConnectionFolder parentConnectionFolder = connectionFolderManager
+                                .getParentConnectionFolder( connection );
+                            parentConnectionFolder.removeConnectionId( connection.getId() );
+                            targetFolder.addConnectionId( connection.getId() );
+                        }
+                        else if ( event.detail == DND.DROP_COPY )
+                        {
+                            Connection newConnection = ( Connection ) connection.clone();
+                            connectionManager.addConnection( newConnection );
+                            targetFolder.addConnectionId( newConnection.getId() );
+                        }
+                    }
+                    else if ( object instanceof ConnectionFolder )
+                    {
+                        ConnectionFolder folder = ( ConnectionFolder ) object;
+                        if ( event.detail == DND.DROP_MOVE )
+                        {
+                            ConnectionFolder parentConnectionFolder = connectionFolderManager
+                                .getParentConnectionFolder( folder );
+                            parentConnectionFolder.removeSubFolderId( folder.getId() );
+                            targetFolder.addSubFolderId( folder.getId() );
+                            // TODO: expand target folder
+                        }
+                        else if ( event.detail == DND.DROP_COPY )
+                        {
+                            ConnectionFolder newFolder = ( ConnectionFolder ) folder.clone();
+                            connectionFolderManager.addConnectionFolder( newFolder );
+                            targetFolder.addSubFolderId( newFolder.getId() );
+                            // TODO: expand target folder
+                        }
                     }
                 }
             }
