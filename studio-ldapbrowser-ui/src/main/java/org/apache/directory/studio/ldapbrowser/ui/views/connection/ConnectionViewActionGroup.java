@@ -22,9 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 
 import org.apache.directory.studio.connection.ui.actions.ConnectionViewActionProxy;
-import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
-import org.apache.directory.studio.ldapbrowser.common.dnd.SearchTransfer;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
 import org.eclipse.jface.action.IAction;
@@ -32,8 +30,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.IWorkbenchActionConstants;
 
 
@@ -73,12 +69,6 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     /** The Constant openSchemaBrowserAction. */
     private static final String openSchemaBrowserAction = "openSchemaBrowserAction";
 
-    /** The drag connection listener. */
-    private DragConnectionListener dragConnectionListener;
-
-    /** The drop connection listener. */
-    private DropConnectionListener dropConnectionListener;
-
 
     /**
      * Creates a new instance of ConnectionViewActionGroup and creates
@@ -108,15 +98,6 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer, this,
             new OpenSchemaBrowserAction() ) );
-
-        // DND support
-        dropConnectionListener = new DropConnectionListener();
-        dragConnectionListener = new DragConnectionListener();
-        int ops = DND.DROP_COPY | DND.DROP_MOVE;
-        Transfer[] transfers = new Transfer[]
-            { ConnectionTransfer.getInstance(), SearchTransfer.getInstance() };
-        viewer.addDragSupport( ops, transfers, dragConnectionListener );
-        viewer.addDropSupport( ops, transfers, dropConnectionListener );
     }
 
 
@@ -129,10 +110,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         {
             linkWithEditorAction.dispose();
             linkWithEditorAction = null;
-            dragConnectionListener = null;
-            dropConnectionListener = null;
             view = null;
         }
+        super.dispose();
     }
 
 

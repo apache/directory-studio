@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.views.connection;
+package org.apache.directory.studio.connection.ui.dnd;
 
 
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
-import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;

@@ -37,6 +37,9 @@ import org.apache.directory.studio.connection.ui.actions.PasteAction;
 import org.apache.directory.studio.connection.ui.actions.PropertiesAction;
 import org.apache.directory.studio.connection.ui.actions.RenameAction;
 import org.apache.directory.studio.connection.ui.actions.StudioActionProxy;
+import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
+import org.apache.directory.studio.connection.ui.dnd.DragConnectionListener;
+import org.apache.directory.studio.connection.ui.dnd.DropConnectionListener;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -44,6 +47,8 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
@@ -87,6 +92,12 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
     /** The Constant propertyDialogAction. */
     protected static final String propertyDialogAction = "propertyDialogAction";
 
+    /** The drag connection listener. */
+    private DragConnectionListener dragConnectionListener;
+
+    /** The drop connection listener. */
+    private DropConnectionListener dropConnectionListener;
+
     /** The action map. */
     protected Map<String, ConnectionViewActionProxy> connectionActionMap;
 
@@ -127,6 +138,15 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
             new RenameAction() ) );
         connectionActionMap.put( propertyDialogAction, new ConnectionViewActionProxy( viewer, this,
             new PropertiesAction() ) );
+
+        // DND support
+        dropConnectionListener = new DropConnectionListener();
+        dragConnectionListener = new DragConnectionListener();
+        int ops = DND.DROP_COPY | DND.DROP_MOVE;
+        Transfer[] transfers = new Transfer[]
+            { ConnectionTransfer.getInstance() };
+        viewer.addDragSupport( ops, transfers, dragConnectionListener );
+        viewer.addDropSupport( ops, transfers, dropConnectionListener );
     }
 
 
@@ -150,6 +170,9 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
 
             actionBars = null;
             mainWidget = null;
+            
+            dragConnectionListener = null;
+            dropConnectionListener = null;
         }
     }
 
