@@ -60,6 +60,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
     /** The text widget to input bind password */
     private Text bindPasswordText;
+    
+    /** The text widget to input saslRealm */
+    private Combo saslRealmText;
 
     /** The checkbox to choose if the bind password should be saved on disk */
     private Button saveBindPasswordButton;
@@ -91,6 +94,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                 return ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5;
             case 3:
                 return ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5;
+            case 4:
+                return ConnectionParameter.AuthenticationMethod.SASL_GSSAPI;
             default:
                 return ConnectionParameter.AuthenticationMethod.NONE;
         }
@@ -116,6 +121,11 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     private String getBindPassword()
     {
         return isSaveBindPassword() ? bindPasswordText.getText() : null;
+    }
+    
+    private String getSaslRealm()
+    {
+        return saslRealmText.getText();
     }
 
 
@@ -191,6 +201,17 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             }
         } );
 
+        BaseWidgetUtils.createLabel( composite, "SASL Realm:", 1 );
+        String[] saslHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY );
+        saslRealmText = BaseWidgetUtils.createCombo( composite, saslHistory, -1, 2 );
+        saslRealmText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent even )
+            {
+                connectionPageModified();
+            }
+        } );
+        
         BaseWidgetUtils.createSpacer( composite, 1 );
         saveBindPasswordButton = BaseWidgetUtils.createCheckbox( composite, "Save password", 1 );
         saveBindPasswordButton.setSelection( true );
@@ -222,7 +243,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                 }
             }
         } );
-
+        
         validate();
     }
 
@@ -232,6 +253,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
      */
     private void connectionPageModified()
     {
+    	
         validate();
         fireConnectionPageModified();
     }
@@ -248,6 +270,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         saveBindPasswordButton.setEnabled( isPrincipalPasswordEnabled() );
         checkPrincipalPasswordAuthButton.setEnabled( isPrincipalPasswordEnabled() && isSaveBindPassword()
             && !bindPrincipalCombo.getText().equals( "" ) && !bindPasswordText.getText().equals( "" ) );
+        saslRealmText.setEnabled( isSaslRealmTextEnabled() );
 
         // validate input fields
         message = null;
@@ -261,6 +284,15 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             if ( "".equals( bindPrincipalCombo.getText() ) )
             {
                 message = "Please enter a bind DN or user.";
+            }
+        }
+        
+        if ( isSaslRealmTextEnabled() )
+        {
+            if ( "".equals( saslRealmText.getText() ) )
+            {
+                message = message != null ? message + "\n" : "";
+                message += "Please enter a SASL Realm otherwise any available SASL realm is chosen";
             }
         }
     }
@@ -277,6 +309,16 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             || ( getAuthenticationMethod() == AuthenticationMethod.SASL_DIGEST_MD5 )
             || ( getAuthenticationMethod() == AuthenticationMethod.SASL_CRAM_MD5 );
     }
+    
+    
+    private boolean isSaslRealmTextEnabled(){
+    	return getAuthenticationMethod() == AuthenticationMethod.SASL_DIGEST_MD5;
+    }
+    
+    
+    private boolean isGssapiEnabled(){
+    	return getAuthenticationMethod() == AuthenticationMethod.SASL_GSSAPI;
+    }
 
 
     /**
@@ -288,11 +330,13 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         int index = parameter.getAuthMethod() == AuthenticationMethod.SIMPLE ? 1
             : parameter.getAuthMethod() == AuthenticationMethod.SASL_DIGEST_MD5 ? 2
-                : parameter.getAuthMethod() == AuthenticationMethod.SASL_CRAM_MD5 ? 3 : 0;
+                : parameter.getAuthMethod() == AuthenticationMethod.SASL_CRAM_MD5 ? 3
+                    : parameter.getAuthMethod() == AuthenticationMethod.SASL_GSSAPI ? 4 : 0;
         authenticationMethodCombo.select( index );
         bindPrincipalCombo.setText( parameter.getBindPrincipal() );
         bindPasswordText.setText( parameter.getBindPassword() != null ? parameter.getBindPassword() : "" );
         saveBindPasswordButton.setSelection( parameter.getBindPassword() != null );
+        saslRealmText.setText( parameter.getSaslRealm() != null ? parameter.getSaslRealm() : "" );
 
         connectionPageModified();
     }
@@ -306,6 +350,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         parameter.setAuthMethod( getAuthenticationMethod() );
         parameter.setBindPrincipal( getBindPrincipal() );
         parameter.setBindPassword( getBindPassword() );
+        parameter.setSaslRealm(getSaslRealm());
     }
 
 
@@ -315,6 +360,10 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     public void saveDialogSettings()
     {
         HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY, bindPrincipalCombo.getText() );
+        if ( getAuthenticationMethod().equals( AuthenticationMethod.SASL_DIGEST_MD5 ) )
+        {
+            HistoryUtils.save( ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY, saslRealmText.getText() );
+        }
     }
 
 
@@ -341,9 +390,11 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
      */
     public boolean isReconnectionRequired()
     {
-        return connectionParameter == null || connectionParameter.getAuthMethod() != getAuthenticationMethod()
+        return connectionParameter == null
+            || connectionParameter.getAuthMethod() != getAuthenticationMethod()
             || !( connectionParameter.getBindPrincipal().equals( getBindPrincipal() ) )
-            || !( connectionParameter.getBindPassword().equals( getBindPassword() ) );
+            || !( connectionParameter.getBindPassword().equals( getBindPassword() ) || !( connectionParameter
+                .getSaslRealm().equals( getSaslRealm() ) ) );
     }
 
 }

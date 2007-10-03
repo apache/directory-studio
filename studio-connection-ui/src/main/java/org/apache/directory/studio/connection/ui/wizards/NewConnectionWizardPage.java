@@ -103,7 +103,21 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
      */
     public void connectionParameterPageModified()
     {
-        setMessage( page.getMessage() );
+    	//only one of the messages can be shown
+    	//warning messages are more important 
+    	//than info messages
+    	if ( page.getMessage() != null )
+        {
+            setMessage( page.getMessage() );
+        }
+        else if ( page.getInfoMessage() != null )
+        {
+            setMessage( page.getInfoMessage() );
+        }
+        else
+        {
+            setMessage( null );
+        }
         setErrorMessage( page.getErrorMessage() );
         setPageComplete( page.isValid() );
         getContainer().updateButtons();

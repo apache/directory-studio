@@ -56,6 +56,8 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
 
     /** The error message. */
     protected String errorMessage;
+    
+    protected String infoMessage;
 
     /** The connection parameter. */
     protected ConnectionParameter connectionParameter;
@@ -196,5 +198,10 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
     {
         return message == null && errorMessage == null;
     }
+
+
+	public String getInfoMessage() {
+		return infoMessage;
+	}
 
 }

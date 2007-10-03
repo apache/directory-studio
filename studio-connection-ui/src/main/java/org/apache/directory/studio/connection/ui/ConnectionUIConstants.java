@@ -28,6 +28,8 @@ public interface ConnectionUIConstants
     public static final String DIALOGSETTING_KEY_PORT_HISTORY = "portHistory";
     
     public static final String DIALOGSETTING_KEY_PRINCIPAL_HISTORY = "principalHistory";
+    
+    public static final String DIALOGSETTING_KEY_REALM_HISTORY = "saslrealmHistory";
 
     
     public static final String IMG_CONNECTION_ADD = "resources/icons/connection_add.gif";

@@ -78,6 +78,8 @@ public interface ConnectionParameterPage
      */
     public String getMessage();
 
+    
+    public String getInfoMessage();
 
     /**
      * Creates the composite.

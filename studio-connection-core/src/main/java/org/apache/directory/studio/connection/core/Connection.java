@@ -59,7 +59,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public Object clone()
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
-            getAuthMethod(), getBindPrincipal(), getBindPassword(), getConnectionParameter().getExtendedProperties() );
+            getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), getConnectionParameter().getExtendedProperties() );
 
         Connection clone = new Connection( cp );
 
@@ -192,6 +192,11 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         return connectionParameter.getPort();
     }
 
+    
+    public String getSaslRealm ()
+    {
+    	return connectionParameter.getSaslRealm();
+    }
 
     /**
      * Sets the auth method.
@@ -274,6 +279,13 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     {
         connectionParameter.setPort( port );
         ConnectionEventRegistry.fireConnectionUpdated( this, this );
+    }
+    
+    
+    public void setSaslRealm (String realm)
+    {
+    	connectionParameter.setSaslRealm(realm);
+    	ConnectionEventRegistry.fireConnectionUpdated(this, this);
     }
     
     

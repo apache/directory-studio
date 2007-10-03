@@ -104,6 +104,9 @@ public class ConnectionParameter
 
     /** The bind password. */
     private String bindPassword;
+    
+    /** The SASL realm **/
+    private String saslRealm;
 
     /** The extended properties. */
     private Map<String, String> extendedProperties;
@@ -132,7 +135,7 @@ public class ConnectionParameter
      * @param extendedProperties the extended properties
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
-        AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
+        AuthenticationMethod authMethod, String bindPrincipal, String bindPassword, String saslRealm,
         Map<String, String> extendedProperties )
     {
         this.id = createId();
@@ -143,6 +146,7 @@ public class ConnectionParameter
         this.authMethod = authMethod;
         this.bindPrincipal = bindPrincipal;
         this.bindPassword = bindPassword;
+        this.saslRealm = saslRealm;
         this.extendedProperties = new HashMap<String, String>();
         if ( extendedProperties != null )
         {
@@ -192,6 +196,24 @@ public class ConnectionParameter
     public void setBindPassword( String bindPassword )
     {
         this.bindPassword = bindPassword;
+    }
+    
+    
+    /**
+     * Gets the SASL realm
+     * @return the sasl realm
+     */
+    public String getSaslRealm (){
+    	return saslRealm;
+    }
+    
+    
+    /**
+     * Sets the SASL realm
+     * @param saslRealm the sasl realm
+     */
+    public void setSaslRealm (String saslRealm){
+    	this.saslRealm = saslRealm;
     }
 
 

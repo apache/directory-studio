@@ -75,6 +75,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     private String bindPrincipal;
 
     private String bindCredentials;
+    
+    private String saslRealm;
 
     private Hashtable<String, String> environment;
 
@@ -681,10 +683,15 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
             {
                 authMethod = "DIGEST-MD5";
+                saslRealm = connection.getConnectionParameter().getSaslRealm();
             }
             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
             {
                 authMethod = "CRAM-MD5";
+            }
+            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
+            {
+                authMethod = "GSSAPI";
             }
 
             // setup credentials
@@ -713,11 +720,16 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         context.removeFromEnvironment( Context.SECURITY_AUTHENTICATION );
                         context.removeFromEnvironment( Context.SECURITY_PRINCIPAL );
                         context.removeFromEnvironment( Context.SECURITY_CREDENTIALS );
+                        context.removeFromEnvironment( "java.naming.security.sasl.realm" );
 
                         context.addToEnvironment( Context.SECURITY_PRINCIPAL, bindPrincipal );
                         context.addToEnvironment( Context.SECURITY_CREDENTIALS, bindCredentials );
                         context.addToEnvironment( Context.SECURITY_AUTHENTICATION, authMethod );
 
+                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
+                        {
+                            context.addToEnvironment( "java.naming.security.sasl.realm", saslRealm );
+                        }
                         context.reconnect( context.getConnectControls() );
                     }
                     catch ( NamingException ne )
