@@ -754,29 +754,32 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             }
         }
 
-        //        List<Object> children = hierarchyManager.getChildren( oc );
-        //        if ( children != null )
-        //        {
-        //            for ( Object child : children )
-        //            {
-        //                List<TreeNode> childOCWs = getWrappers( child );
-        //                if ( childOCWs != null )
-        //                {
-        //                    
-        //                }
-        //                
-        //                
-        //                elementsToWrappersMap.remove( child );
-        //                childATW.getParent().removeChild( childATW );
-        //
-        //                for ( TreeNode createdWrapper : createdWrappers )
-        //                {
-        //                    AttributeTypeWrapper atw = new AttributeTypeWrapper( ( AttributeTypeImpl ) child, createdWrapper );
-        //                    atw.getParent().addChild( atw );
-        //                    elementsToWrappersMap.put( ( AttributeTypeImpl ) child, atw );
-        //                }
-        //            }
-        //        }
+        List<Object> children = hierarchyManager.getChildren( oc );
+        if ( children != null )
+        {
+            for ( Object child : children )
+            {
+                List<TreeNode> childOCWs = getWrappers( child );
+                if ( childOCWs != null )
+                {
+                    for ( TreeNode childOCW : childOCWs )
+                    {
+                        if ( root.equals( childOCW.getParent() ) )
+                        {
+                            elementsToWrappersMap.remove( child );
+                            childOCW.getParent().removeChild( childOCW );
+                        }
+                    }
+                }
+
+                for ( TreeNode createdWrapper : createdWrappers )
+                {
+                    ObjectClassWrapper ocw = new ObjectClassWrapper( ( ObjectClassImpl ) child, createdWrapper );
+                    ocw.getParent().addChild( ocw );
+                    elementsToWrappersMap.put( ( ObjectClassImpl ) child, ocw );
+                }
+            }
+        }
     }
 
 
