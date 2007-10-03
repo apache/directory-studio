@@ -59,14 +59,12 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
-import org.apache.directory.studio.schemaeditor.view.wrappers.Folder.FolderType;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -97,14 +95,14 @@ public class SchemaViewController
     /** The associated view */
     private SchemaView view;
 
+    /** The TreeViewer */
+    private TreeViewer viewer;
+
     /** The authorized Preferences keys*/
     private List<String> authorizedPrefs;
 
     /** The Context Menu */
     private MenuManager contextMenu;
-
-    /** The TreeViewer */
-    private TreeViewer viewer;
 
     /** The SchemaHandlerListener */
     private SchemaHandlerListener schemaHandlerListener = new SchemaHandlerAdapter()
@@ -114,57 +112,14 @@ public class SchemaViewController
          */
         public void attributeTypeAdded( AttributeTypeImpl at )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-
             contentProvider.attributeTypeAdded( at );
             view.refresh();
 
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+            TreeNode wrapper = contentProvider.getWrapper( at );
+            if ( wrapper != null )
             {
-                TreeNode schemaWrapper = findSchemaWrapperInTree( at.getSchema() );
-
-                if ( schemaWrapper != null )
-                {
-                    AttributeTypeWrapper atw = null;
-                    int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-                    if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-                    {
-                        List<TreeNode> children = schemaWrapper.getChildren();
-                        for ( TreeNode child : children )
-                        {
-                            Folder folder = ( Folder ) child;
-                            if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
-                            {
-                                atw = new AttributeTypeWrapper( at, folder );
-                                folder.addChild( atw );
-                                break;
-                            }
-                        }
-                    }
-                    else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-                    {
-                        atw = new AttributeTypeWrapper( at, schemaWrapper );
-                        schemaWrapper.addChild( atw );
-                    }
-
-                    viewer.refresh( schemaWrapper );
-                    if ( atw != null )
-                    {
-                        viewer.setSelection( new StructuredSelection( atw ) );
-                    }
-                }
-                else
-                {
-                    // An error has occurred we need to reload the view.
-                    view.reloadViewer();
-                }
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                contentProvider.attributeTypeAdded( at );
-                view.refresh();
+                viewer.setSelection( new StructuredSelection( wrapper ) );
             }
         }
 
@@ -174,32 +129,8 @@ public class SchemaViewController
          */
         public void attributeTypeModified( AttributeTypeImpl at )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-            SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-
-            contentProvider.attributeTypeModified( at );
+            ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeModified( at );
             view.refresh();
-
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
-            {
-                AttributeTypeWrapper atw = findAttributeTypeWrapperInTree( at );
-
-                if ( atw != null )
-                {
-                    updateNodeAndParents( atw );
-                }
-                else
-                {
-                    // An error has occurred we need to reload the view.
-                    view.reloadViewer();
-                }
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                contentProvider.attributeTypeModified( at );
-                view.refresh();
-            }
         }
 
 
@@ -208,33 +139,8 @@ public class SchemaViewController
          */
         public void attributeTypeRemoved( AttributeTypeImpl at )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-            SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-            
-            contentProvider.attributeTypeRemoved( at );
+            ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).attributeTypeRemoved( at );
             view.refresh();
-
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
-            {
-                AttributeTypeWrapper atw = findAttributeTypeWrapperInTree( at );
-
-                if ( atw != null )
-                {
-                    atw.getParent().removeChild( atw );
-                    viewer.refresh( atw.getParent() );
-                }
-                else
-                {
-                    // An error has occurred we need to reload the view.
-                    view.reloadViewer();
-                }
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                contentProvider.attributeTypeRemoved( at );
-                view.refresh();
-            }
         }
 
 
@@ -243,57 +149,14 @@ public class SchemaViewController
          */
         public void objectClassAdded( ObjectClassImpl oc )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-            
             contentProvider.objectClassAdded( oc );
             view.refresh();
 
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+            TreeNode wrapper = contentProvider.getWrapper( oc );
+            if ( wrapper != null )
             {
-                TreeNode schemaWrapper = findSchemaWrapperInTree( oc.getSchema() );
-
-                if ( schemaWrapper != null )
-                {
-                    ObjectClassWrapper ocw = null;
-                    int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-                    if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-                    {
-                        List<TreeNode> children = schemaWrapper.getChildren();
-                        for ( TreeNode child : children )
-                        {
-                            Folder folder = ( Folder ) child;
-                            if ( folder.getType() == FolderType.OBJECT_CLASS )
-                            {
-                                ocw = new ObjectClassWrapper( oc, folder );
-                                folder.addChild( ocw );
-                                break;
-                            }
-                        }
-                    }
-                    else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-                    {
-                        ocw = new ObjectClassWrapper( oc, schemaWrapper );
-                        schemaWrapper.addChild( ocw );
-                    }
-
-                    view.refresh();
-                    if ( ocw != null )
-                    {
-                        viewer.setSelection( new StructuredSelection( ocw ) );
-                    }
-                }
-                else
-                {
-                    // An error has occurred we need to reload the view.
-                    view.reloadViewer();
-                }
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                contentProvider.objectClassAdded( oc );
-                view.refresh();
+                viewer.setSelection( new StructuredSelection( wrapper ) );
             }
         }
 
@@ -303,33 +166,8 @@ public class SchemaViewController
          */
         public void objectClassModified( ObjectClassImpl oc )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-            SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-            
-
-            contentProvider.objectClassModified( oc );
+            ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassModified( oc );
             view.refresh();
-
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
-            {
-                ObjectClassWrapper ocw = findObjectClassWrapperInTree( oc );
-
-                if ( ocw != null )
-                {
-                    updateNodeAndParents( ocw );
-                }
-                else
-                {
-                    // An error has occurred we need to reload the view.
-                    view.reloadViewer();
-                }
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                contentProvider.objectClassModified( oc );
-                view.refresh();
-            }
         }
 
 
@@ -338,34 +176,8 @@ public class SchemaViewController
          */
         public void objectClassRemoved( ObjectClassImpl oc )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-            SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-            
-
-            contentProvider.objectClassRemoved( oc );
+            ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassRemoved( oc );
             view.refresh();
-
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
-            {
-                ObjectClassWrapper ocw = findObjectClassWrapperInTree( oc );
-
-                if ( ocw != null )
-                {
-                    ocw.getParent().removeChild( ocw );
-                    viewer.refresh( ocw.getParent() );
-                }
-                else
-                {
-                    // An error has occurred we need to reload the view.
-                    view.reloadViewer();
-                }
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                contentProvider.objectClassRemoved( oc );
-                view.refresh();
-            }
         }
 
 
@@ -374,67 +186,23 @@ public class SchemaViewController
          */
         public void schemaAdded( Schema schema )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-            
-
             contentProvider.schemaAdded( schema );
-            view.refresh();
 
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+            final TreeNode wrapper = contentProvider.getWrapper( schema );
+
+            Display.getDefault().asyncExec( new Runnable()
             {
-                final TreeNode rootNode = ( TreeNode ) viewer.getInput();
-                final SchemaWrapper schemaWrapper = new SchemaWrapper( schema, rootNode );
-                rootNode.addChild( schemaWrapper );
-
-                int group = Activator.getDefault().getPreferenceStore().getInt(
-                    PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-                if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                public void run()
                 {
-                    Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
-                    schemaWrapper.addChild( atFolder );
+                    view.refresh();
 
-                    for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
+                    if ( wrapper != null )
                     {
-                        atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
-                    }
-
-                    Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
-                    schemaWrapper.addChild( ocFolder );
-
-                    for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
-                    {
-                        ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
+                        viewer.setSelection( new StructuredSelection( wrapper ) );
                     }
                 }
-                else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-                {
-                    for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
-                    {
-                        schemaWrapper.addChild( new AttributeTypeWrapper( attributeType, schemaWrapper ) );
-                    }
-
-                    for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
-                    {
-                        schemaWrapper.addChild( new ObjectClassWrapper( objectClass, schemaWrapper ) );
-                    }
-                }
-
-                Display.getDefault().asyncExec( new Runnable()
-                {
-                    public void run()
-                    {
-                        viewer.refresh( rootNode );
-                        viewer.setSelection( new StructuredSelection( schemaWrapper ) );
-                    }
-                } );
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                view.refresh();
-            }
+            } );
         }
 
 
@@ -443,32 +211,8 @@ public class SchemaViewController
          */
         public void schemaRemoved( Schema schema )
         {
-            IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-            SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
-            
-            contentProvider.schemaAdded( schema );
+            ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).schemaRemoved( schema );
             view.refresh();
-
-            int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
-            if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
-            {
-                TreeNode schemaWrapper = findSchemaWrapperInTree( schema.getName() );
-                if ( schemaWrapper != null )
-                {
-                    schemaWrapper.getParent().removeChild( schemaWrapper );
-                    viewer.refresh( viewer.getInput() );
-                }
-                else
-                {
-                    // An error has occurred we need to reload the view.
-                    view.reloadViewer();
-                }
-            }
-            else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
-            {
-                view.refresh();
-            }
         }
     };
 
@@ -815,159 +559,6 @@ public class SchemaViewController
                 }
             }
         } );
-    }
-
-
-    /**
-     * Finds the corresponding SchemaWrapper in the Tree.
-     *
-     * @param name
-     *      the name of the SchemaWrapper to search
-     * @return
-     *      the corresponding SchemaWrapper in the Tree
-     */
-    private SchemaWrapper findSchemaWrapperInTree( String name )
-    {
-        List<TreeNode> schemaWrappers = ( ( TreeNode ) viewer.getInput() ).getChildren();
-        for ( TreeNode sw : schemaWrappers )
-        {
-            if ( ( ( SchemaWrapper ) sw ).getSchema().getName().toLowerCase().equals( name.toLowerCase() ) )
-            {
-                return ( SchemaWrapper ) sw;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Finds the corresponding AttributeTypeWrapper in the Tree.
-     *
-     * @param at
-     *      the attribute type
-     * @return
-     *      the corresponding AttributeTypeWrapper in the Tree
-     */
-    private AttributeTypeWrapper findAttributeTypeWrapperInTree( AttributeTypeImpl at )
-    {
-        SchemaWrapper schemaWrapper = findSchemaWrapperInTree( at.getSchema() );
-        if ( schemaWrapper == null )
-        {
-            return null;
-        }
-
-        // Finding the correct node
-        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-        List<TreeNode> children = schemaWrapper.getChildren();
-        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-        {
-            for ( TreeNode child : children )
-            {
-                Folder folder = ( Folder ) child;
-                if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
-                {
-                    for ( TreeNode folderChild : folder.getChildren() )
-                    {
-                        AttributeTypeWrapper atw = ( AttributeTypeWrapper ) folderChild;
-                        if ( atw.getAttributeType().equals( at ) )
-                        {
-                            return atw;
-                        }
-                    }
-                }
-            }
-        }
-        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-        {
-            for ( Object child : children )
-            {
-                if ( child instanceof AttributeTypeImpl )
-                {
-                    AttributeTypeWrapper atw = ( AttributeTypeWrapper ) child;
-                    if ( atw.getAttributeType().equals( at ) )
-                    {
-                        return atw;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Finds the corresponding ObjectClassWrapper in the Tree.
-     *
-     * @param oc
-     *      the attribute type
-     * @return
-     *      the corresponding ObjectClassWrapper in the Tree
-     */
-    private ObjectClassWrapper findObjectClassWrapperInTree( ObjectClassImpl oc )
-    {
-        SchemaWrapper schemaWrapper = findSchemaWrapperInTree( oc.getSchema() );
-        if ( schemaWrapper == null )
-        {
-            return null;
-        }
-
-        // Finding the correct node
-        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-        List<TreeNode> children = schemaWrapper.getChildren();
-        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-        {
-            for ( TreeNode child : children )
-            {
-                Folder folder = ( Folder ) child;
-                if ( folder.getType() == FolderType.OBJECT_CLASS )
-                {
-                    for ( TreeNode folderChild : folder.getChildren() )
-                    {
-                        ObjectClassWrapper ocw = ( ObjectClassWrapper ) folderChild;
-                        if ( ocw.getObjectClass().equals( oc ) )
-                        {
-                            return ocw;
-                        }
-                    }
-                }
-            }
-        }
-        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-        {
-            for ( Object child : children )
-            {
-                if ( child instanceof ObjectClassWrapper )
-                {
-                    ObjectClassWrapper ocw = ( ObjectClassWrapper ) child;
-                    if ( ocw.getObjectClass().equals( oc ) )
-                    {
-                        return ocw;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Updates the given node and its parents.
-     *
-     * @param node
-     *      the node
-     */
-    public void updateNodeAndParents( TreeNode node )
-    {
-        viewer.update( node, null );
-        TreeNode parent = node.getParent();
-        while ( parent != null )
-        {
-            viewer.update( parent, null );
-            parent = parent.getParent();
-        }
     }
 
 

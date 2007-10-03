@@ -145,39 +145,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                         List<Schema> schemas = schemaHandler.getSchemas();
                         for ( Schema schema : schemas )
                         {
-                            SchemaWrapper schemaWrapper = new SchemaWrapper( schema, root );
-                            root.addChild( schemaWrapper );
-
-                            if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-                            {
-                                Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
-                                schemaWrapper.addChild( atFolder );
-
-                                for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
-                                {
-                                    atFolder.addChild( new AttributeTypeWrapper( attributeType, atFolder ) );
-                                }
-
-                                Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
-                                schemaWrapper.addChild( ocFolder );
-
-                                for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
-                                {
-                                    ocFolder.addChild( new ObjectClassWrapper( objectClass, ocFolder ) );
-                                }
-                            }
-                            else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-                            {
-                                for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
-                                {
-                                    schemaWrapper.addChild( new AttributeTypeWrapper( attributeType, schemaWrapper ) );
-                                }
-
-                                for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
-                                {
-                                    schemaWrapper.addChild( new ObjectClassWrapper( objectClass, schemaWrapper ) );
-                                }
-                            }
+                            addSchemaFlatPresentation( schema );
                         }
                     }
                 }
@@ -495,7 +463,31 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void attributeTypeAddedFlatPresentation( AttributeTypeImpl at )
     {
-        // TODO implement
+        SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
+            .getSchema( at.getSchema() ) );
+        if ( schemaWrapper != null )
+        {
+            AttributeTypeWrapper atw = null;
+            int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+            if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+            {
+                for ( TreeNode child : schemaWrapper.getChildren() )
+                {
+                    if ( ( ( Folder ) child ).getType() == FolderType.ATTRIBUTE_TYPE )
+                    {
+                        atw = new AttributeTypeWrapper( at, child );
+                        break;
+                    }
+                }
+            }
+            else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+            {
+                atw = new AttributeTypeWrapper( at, schemaWrapper );
+            }
+
+            atw.getParent().addChild( atw );
+            elementsToWrappersMap.put( at, atw );
+        }
     }
 
 
@@ -603,7 +595,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void attributeTypeModifiedFlatPresentation( AttributeTypeImpl at )
     {
-        // TODO implement
+        // Nothing to do
     }
 
 
@@ -704,7 +696,12 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     private void attributeTypeRemovedFlatPresentation( AttributeTypeImpl at )
     {
-        // TODO Implement
+        AttributeTypeWrapper atw = ( AttributeTypeWrapper ) getWrapper( at );
+        if ( atw != null )
+        {
+            atw.getParent().removeChild( atw );
+            elementsToWrappersMap.remove( at, atw );
+        }
     }
 
 
@@ -791,6 +788,10 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 elementsToWrappersMap.remove( ocw.getObjectClass(), child );
                 removeRecursiveChildren( ocw );
             }
+            else
+            {
+                removeRecursiveChildren( child );
+            }
         }
     }
 
@@ -824,7 +825,31 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void objectClassAddedFlatlPresentation( ObjectClassImpl oc )
     {
-        // TODO implement
+        SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
+            .getSchema( oc.getSchema() ) );
+        if ( schemaWrapper != null )
+        {
+            ObjectClassWrapper ocw = null;
+            int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+            if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+            {
+                for ( TreeNode child : schemaWrapper.getChildren() )
+                {
+                    if ( ( ( Folder ) child ).getType() == FolderType.OBJECT_CLASS )
+                    {
+                        ocw = new ObjectClassWrapper( oc, child );
+                        break;
+                    }
+                }
+            }
+            else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+            {
+                ocw = new ObjectClassWrapper( oc, schemaWrapper );
+            }
+
+            ocw.getParent().addChild( ocw );
+            elementsToWrappersMap.put( oc, ocw );
+        }
     }
 
 
@@ -942,7 +967,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void objectClassModifiedFlatPresentation( ObjectClassImpl oc )
     {
-        // TODO implement
+        // Nothing to do
     }
 
 
@@ -1043,7 +1068,12 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void objectClassRemovedFlatPresentation( ObjectClassImpl oc )
     {
-        // TODO Implement
+        ObjectClassWrapper ocw = ( ObjectClassWrapper ) getWrapper( oc );
+        if ( ocw != null )
+        {
+            ocw.getParent().removeChild( ocw );
+            elementsToWrappersMap.remove( oc, ocw );
+        }
     }
 
 
@@ -1117,6 +1147,41 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void schemaAdded( Schema schema )
     {
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            schemaAddedFlatPresentation( schema );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            schemaAddedHierarchicalPresentation( schema );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when a schema is added and the
+     * presentation is set as 'Flat'.
+     *
+     * @param oc
+     *      the added schema
+     */
+    private void schemaAddedFlatPresentation( Schema schema )
+    {
+        addSchemaFlatPresentation( schema );
+    }
+
+
+    /**
+     * Updates the TreeNodes when a schema is added and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param oc
+     *      the added schema
+     */
+    private void schemaAddedHierarchicalPresentation( Schema schema )
+    {
+        // TODO implement
     }
 
 
@@ -1128,5 +1193,100 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void schemaRemoved( Schema schema )
     {
+        int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
+        {
+            schemaRemovedFlatPresentation( schema );
+        }
+        else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
+        {
+            schemaRemovedHierarchicalPresentation( schema );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when a schema is removed and the
+     * presentation is set as 'Flat'.
+     *
+     * @param schema
+     *      the removed schema
+     */
+    private void schemaRemovedFlatPresentation( Schema schema )
+    {
+        SchemaWrapper sw = ( SchemaWrapper ) getWrapper( schema );
+        if ( sw != null )
+        {
+            sw.getParent().removeChild( sw );
+            elementsToWrappersMap.remove( schema, sw );
+            removeRecursiveChildren( sw );
+        }
+    }
+
+
+    /**
+     * Updates the TreeNodes when a schema is removed and the
+     * presentation is set as 'Hierarchical'.
+     *
+     * @param schema
+     *      the removed schema
+     */
+    private void schemaRemovedHierarchicalPresentation( Schema schema )
+    {
+        // TODO implement
+
+    }
+
+
+    /**
+     * Adds a schema in 'Flat' Presentation.
+     *
+     * @param schema
+     */
+    public void addSchemaFlatPresentation( Schema schema )
+    {
+        SchemaWrapper schemaWrapper = new SchemaWrapper( schema, root );
+        root.addChild( schemaWrapper );
+        elementsToWrappersMap.put( schema, schemaWrapper );
+
+        int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+        {
+            Folder atFolder = new Folder( FolderType.ATTRIBUTE_TYPE, schemaWrapper );
+            schemaWrapper.addChild( atFolder );
+
+            for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
+            {
+                AttributeTypeWrapper atw = new AttributeTypeWrapper( attributeType, atFolder );
+                atw.getParent().addChild( atw );
+                elementsToWrappersMap.put( attributeType, atw );
+            }
+
+            Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
+            schemaWrapper.addChild( ocFolder );
+
+            for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
+            {
+                ObjectClassWrapper ocw = new ObjectClassWrapper( objectClass, ocFolder );
+                ocw.getParent().addChild( ocw );
+                elementsToWrappersMap.put( objectClass, ocw );
+            }
+        }
+        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+        {
+            for ( AttributeTypeImpl attributeType : schema.getAttributeTypes() )
+            {
+                AttributeTypeWrapper atw = new AttributeTypeWrapper( attributeType, schemaWrapper );
+                atw.getParent().addChild( atw );
+                elementsToWrappersMap.put( attributeType, atw );
+            }
+
+            for ( ObjectClassImpl objectClass : schema.getObjectClasses() )
+            {
+                ObjectClassWrapper ocw = new ObjectClassWrapper( objectClass, schemaWrapper );
+                ocw.getParent().addChild( ocw );
+                elementsToWrappersMap.put( objectClass, ocw );
+            }
+        }
     }
 }
