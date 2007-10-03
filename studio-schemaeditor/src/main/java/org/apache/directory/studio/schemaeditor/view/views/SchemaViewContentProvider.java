@@ -807,7 +807,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
         {
-            objectClassAddedFlatlPresentation( oc );
+            objectClassAddedFlatPresentation( oc );
         }
         else if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_HIERARCHICAL )
         {
@@ -823,7 +823,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the added object class
      */
-    public void objectClassAddedFlatlPresentation( ObjectClassImpl oc )
+    public void objectClassAddedFlatPresentation( ObjectClassImpl oc )
     {
         SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
             .getSchema( oc.getSchema() ) );
