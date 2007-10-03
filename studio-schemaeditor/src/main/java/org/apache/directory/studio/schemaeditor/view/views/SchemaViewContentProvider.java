@@ -601,6 +601,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 }
                 atw.getParent().addChild( atw );
                 elementsToWrappersMap.put( at, atw );
+                addHierarchyChildren( atw, hierarchyManager.getChildren( at ) );
             }
         }
     }
@@ -840,6 +841,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 }
                 ocw.getParent().addChild( ocw );
                 elementsToWrappersMap.put( oc, ocw );
+                addHierarchyChildren( ocw, hierarchyManager.getChildren( oc ) );
             }
         }
     }
