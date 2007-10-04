@@ -114,4 +114,13 @@ public class AttributeTypeWrapper extends AbstractTreeNode
 
         return result;
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return "AttributeTypeWrapper: " + attributeType + " - parent: " + fParent;
+    }
 }

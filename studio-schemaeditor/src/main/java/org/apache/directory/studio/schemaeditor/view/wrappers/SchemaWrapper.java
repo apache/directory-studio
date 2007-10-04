@@ -114,4 +114,13 @@ public class SchemaWrapper extends AbstractTreeNode
 
         return result;
     }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return "SchemaWrapper: " + schema + " - parent: " + fParent;
+    }
 }
