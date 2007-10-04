@@ -126,7 +126,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     private IToolBarManager actionToolBarManager;
 
-    private IBrowserConnection connection;
+    private IBrowserConnection browserConnection;
 
     private ProjectionSupport projectionSupport;
 
@@ -556,28 +556,28 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public IBrowserConnection getConnection()
     {
-        return connection;
+        return browserConnection;
     }
 
 
     /**
      * Sets the Connection
      *
-     * @param connection
-     *      the Connection to set
+     * @param browserConnection
+     *      the browser connection to set
      */
-    private void setConnection( IBrowserConnection connection )
+    private void setConnection( IBrowserConnection browserConnection )
     {
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         getEditorSite().getActionBars().getStatusLineManager().setMessage(
-            "Used Connection: " + ( this.connection == null ? "-" : this.connection.getName() ) );
+            "Used Connection: " + ( this.browserConnection == null ? "-" : this.browserConnection.getConnection().getName() ) );
         // getStatusField("ldapconnection").setText();
         
         IAction action = getAction( ExecuteLdifAction.class.getName() );
         if ( action != null )
         {
-            action.setEnabled( connection == null );
-            action.setEnabled( connection != null );
+            action.setEnabled( browserConnection == null );
+            action.setEnabled( browserConnection != null );
         }
     }
 

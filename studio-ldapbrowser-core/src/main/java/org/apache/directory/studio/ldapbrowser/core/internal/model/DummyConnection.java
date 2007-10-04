@@ -25,8 +25,6 @@ import java.io.Writer;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
@@ -101,27 +99,9 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public AuthenticationMethod getAuthMethod()
-    {
-        return AuthenticationMethod.NONE;
-    }
-
-
     public DN getBaseDN()
     {
         return new DN();
-    }
-
-
-    public String getBindPrincipal()
-    {
-        return null;
-    }
-
-
-    public String getBindPassword()
-    {
-        return null;
     }
 
 
@@ -143,12 +123,6 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public EncryptionMethod getEncryptionMethod()
-    {
-        return EncryptionMethod.NONE;
-    }
-
-
     public IEntry getEntry( DN dn, StudioProgressMonitor monitor )
     {
         return null;
@@ -158,24 +132,6 @@ public class DummyConnection implements IBrowserConnection
     public IEntry getEntryFromCache( DN dn )
     {
         return null;
-    }
-
-
-    public String getHost()
-    {
-        return null;
-    }
-
-
-    public String getName()
-    {
-        return null;
-    }
-
-
-    public int getPort()
-    {
-        return -1;
     }
 
 
@@ -241,22 +197,7 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public void setAuthMethod( AuthenticationMethod authMethod )
-    {
-    }
-
-
     public void setBaseDN( DN baseDN )
-    {
-    }
-
-
-    public void setBindPrincipal( String bindPrincipal )
-    {
-    }
-
-
-    public void setBindPassword( String bindPassword )
     {
     }
 
@@ -271,27 +212,7 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public void setEncryptionMethod( EncryptionMethod encryptionMethod )
-    {
-    }
-
-
     public void setFetchBaseDNs( boolean fetchBaseDNs )
-    {
-    }
-
-
-    public void setHost( String host )
-    {
-    }
-
-
-    public void setName( String name )
-    {
-    }
-
-
-    public void setPort( int port )
     {
     }
 

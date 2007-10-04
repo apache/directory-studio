@@ -64,7 +64,7 @@ import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 class ConnectionModifyHandler
 {
 
-    private BrowserConnection connection;
+    private BrowserConnection browserConnection;
 
     private ModificationLogger modificationLogger;
 
@@ -73,7 +73,7 @@ class ConnectionModifyHandler
 
     ConnectionModifyHandler( BrowserConnection connection )
     {
-        this.connection = connection;
+        this.browserConnection = connection;
 
         this.modificationLogger = new ModificationLogger( connection );
 
@@ -331,7 +331,7 @@ class ConnectionModifyHandler
                 uncacheChildren( children[i] );
             }
         }
-        connection.uncacheEntry( entry );
+        browserConnection.uncacheEntry( entry );
     }
 
 
@@ -346,7 +346,7 @@ class ConnectionModifyHandler
 
             this.applyModificationAndLog( cdr, monitor );
 
-            connection.uncacheEntry( entry );
+            browserConnection.uncacheEntry( entry );
 
         }
         catch ( ConnectionException e )
@@ -377,16 +377,16 @@ class ConnectionModifyHandler
 
                         // update cache and adjust attribute/children initialization flags
                         DN dn = new DN( record.getDnLine().getValueAsString() );
-                        IEntry entry = connection.getEntryFromCache( dn );
+                        IEntry entry = browserConnection.getEntryFromCache( dn );
                         DN parentDn = dn.getParentDn();
-                        IEntry parentEntry = parentDn != null ? connection.getEntryFromCache( dn.getParentDn() ) : null;
+                        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( dn.getParentDn() ) : null;
 
                         if ( record instanceof LdifChangeDeleteRecord )
                         {
                             if ( entry != null )
                             {
                                 entry.setAttributesInitialized( false );
-                                connection.uncacheEntry( entry );
+                                browserConnection.uncacheEntry( entry );
                             }
                             if ( parentEntry != null )
                             {
@@ -398,7 +398,7 @@ class ConnectionModifyHandler
                             if ( entry != null )
                             {
                                 entry.setAttributesInitialized( false );
-                                connection.uncacheEntry( entry );
+                                browserConnection.uncacheEntry( entry );
                             }
                             if ( parentEntry != null )
                             {
@@ -408,7 +408,7 @@ class ConnectionModifyHandler
                             if ( modDnRecord.getNewsuperiorLine() != null )
                             {
                                 DN newSuperiorDn = new DN( modDnRecord.getNewsuperiorLine().getValueAsString() );
-                                IEntry newSuperiorEntry = connection.getEntryFromCache( newSuperiorDn );
+                                IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
                                 if ( newSuperiorEntry != null )
                                 {
                                     newSuperiorEntry.setChildrenInitialized( false );
@@ -491,10 +491,10 @@ class ConnectionModifyHandler
             {
                 try
                 {
-                    int referralsHandlingMethod = connection.getReferralsHandlingMethod();
+                    int referralsHandlingMethod = browserConnection.getReferralsHandlingMethod();
                     // int referralsHandlingMethod =
                     // IConnection.HANDLE_REFERRALS_IGNORE;
-                    connection.connectionProvider.applyModification( records[i], referralsHandlingMethod, monitor );
+                    browserConnection.connectionProvider.applyModification( records[i], referralsHandlingMethod, monitor );
 
                     StringWriter writer = new StringWriter();
                     this.logModification( writer, records[i], monitor );
@@ -507,7 +507,7 @@ class ConnectionModifyHandler
                     if ( ce instanceof ReferralException )
                     {
 
-                        if ( connection.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
+                        if ( browserConnection.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                         {
 
                             // get referral handler
@@ -576,7 +576,7 @@ class ConnectionModifyHandler
 
             logWriter.write( LdifCommentLine.create( "#!RESULT ERROR" ).toFormattedString() ); //$NON-NLS-1$
             logWriter.write( LdifCommentLine.create(
-                "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
+                "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
             logWriter.write( LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ).toFormattedString() ); //$NON-NLS-1$
             logWriter.write( errorCommentLine.toFormattedString() );
             logWriter.write( record.toFormattedString() );
@@ -595,7 +595,7 @@ class ConnectionModifyHandler
             DateFormat df = new SimpleDateFormat( BrowserCoreConstants.DATEFORMAT );
             logWriter.write( LdifCommentLine.create( "#!RESULT OK" ).toFormattedString() ); //$NON-NLS-1$
             logWriter.write( LdifCommentLine.create(
-                "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
+                "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
             logWriter.write( LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ).toFormattedString() ); //$NON-NLS-1$
             logWriter.write( record.toFormattedString() );
         }

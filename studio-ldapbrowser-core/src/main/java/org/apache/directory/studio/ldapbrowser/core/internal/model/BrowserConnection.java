@@ -33,8 +33,6 @@ import java.util.Set;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
@@ -584,24 +582,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     
     
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getName()
-     */
-    public final String getName()
-    {
-        return connection.getName();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setName(java.lang.String)
-     */
-    public final void setName( String name )
-    {
-        connection.setName( name );
-    }
-
-
-    /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#isFetchBaseDNs()
      */
     public boolean isFetchBaseDNs()
@@ -666,42 +646,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getHost()
-     */
-    public String getHost()
-    {
-        return connection.getHost();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setHost(java.lang.String)
-     */
-    public void setHost( String host )
-    {
-        connection.setHost( host );
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getPort()
-     */
-    public int getPort()
-    {
-        return connection.getPort();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setPort(int)
-     */
-    public void setPort( int port )
-    {
-        connection.setPort( port );
-    }
-
-
-    /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getAliasesDereferencingMethod()
      */
     public int getAliasesDereferencingMethod()
@@ -740,23 +684,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getEncryptionMethod()
-     */
-    public EncryptionMethod getEncryptionMethod()
-    {
-        return connection.getEncryptionMethod();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setEncryptionMethod(org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod)
-     */
-    public void setEncryptionMethod( EncryptionMethod encryptionMethod )
-    {
-        connection.setEncryptionMethod( encryptionMethod );
-    }
-    
-    /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getTimeLimit()
      */
     public int getTimeLimit()
@@ -774,64 +701,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getBindPrincipal()
-     */
-    public String getBindPrincipal()
-    {
-        return connection.getBindPrincipal();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setBindPrincipal(java.lang.String)
-     */
-    public void setBindPrincipal( String bindPrincipal )
-    {
-        connection.setBindPrincipal( bindPrincipal );
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getBindPassword()
-     */
-    public String getBindPassword()
-    {
-        return connection.getBindPassword();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setBindPassword(java.lang.String)
-     */
-    public void setBindPassword( String bindPassword )
-    {
-        connection.setBindPassword( bindPassword );
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getAuthMethod()
-     */
-    public AuthenticationMethod getAuthMethod()
-    {
-        return connection.getAuthMethod();
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setAuthMethod(org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod)
-     */
-    public void setAuthMethod( AuthenticationMethod authMethod )
-    {
-        connection.setAuthMethod( authMethod );
-    }
-
-    
-    
-    
-    
 
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getRootDSE()
@@ -882,7 +751,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      */
     public String toString()
     {
-        return getName();
+        return getConnection().getName();
     }
 
 

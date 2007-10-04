@@ -123,16 +123,16 @@ public class URL
      * Creates a new instance of URL, based on the given connection. Only
      * the fields protocol, host and port exists when using this constructor.
      *
-     * @param connection the connection
+     * @param browserConnection the browser connection
      */
-    public URL( IBrowserConnection connection )
+    public URL( IBrowserConnection browserConnection )
     {
-        if ( connection == null )
+        if ( browserConnection == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_url );
         }
 
-        if ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
+        if ( browserConnection.getConnection().getEncryptionMethod() == EncryptionMethod.LDAPS )
         {
             this.protocol = "ldaps";; //$NON-NLS-1$
         }
@@ -140,8 +140,8 @@ public class URL
         {
             this.protocol = "ldap"; //$NON-NLS-1$
         }
-        this.host = connection.getHost();
-        this.port = Integer.toString( connection.getPort() );
+        this.host = browserConnection.getConnection().getHost();
+        this.port = Integer.toString( browserConnection.getConnection().getPort() );
     }
 
 

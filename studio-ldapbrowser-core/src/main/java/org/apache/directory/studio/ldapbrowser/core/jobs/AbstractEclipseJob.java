@@ -254,9 +254,9 @@ public abstract class AbstractEclipseJob extends Job
     }
 
 
-    protected static String getLockIdentifier( IBrowserConnection connection )
+    protected static String getLockIdentifier( IBrowserConnection browserConnection )
     {
-        return connection.getHost() + ":" + connection.getPort();
+        return browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort();
     }
 
 

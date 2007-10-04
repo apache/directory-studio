@@ -125,7 +125,7 @@ public class BrowserConnectionWidget extends BrowserWidget
     public void setBrowserConnection( IBrowserConnection connection )
     {
         selectedBrowserConnection = connection;
-        browserConnectionText.setText( selectedBrowserConnection != null ? selectedBrowserConnection.getName() : "" );
+        browserConnectionText.setText( selectedBrowserConnection != null ? selectedBrowserConnection.getConnection().getName() : "" );
     }
 
 

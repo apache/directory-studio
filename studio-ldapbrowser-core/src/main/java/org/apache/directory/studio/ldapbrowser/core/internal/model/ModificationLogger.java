@@ -37,7 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 public class ModificationLogger
 {
 
-    private BrowserConnection connection;
+    private BrowserConnection browserConnection;
 
     private FileHandler fileHandler;
 
@@ -46,7 +46,7 @@ public class ModificationLogger
 
     public ModificationLogger( BrowserConnection connection )
     {
-        this.connection = connection;
+        this.browserConnection = connection;
     }
 
 
@@ -55,7 +55,7 @@ public class ModificationLogger
         this.logger = Logger.getAnonymousLogger();
         this.logger.setLevel( Level.ALL );
 
-        String logfileName = BrowserConnectionManager.getModificationLogFileName( connection );
+        String logfileName = BrowserConnectionManager.getModificationLogFileName( browserConnection );
         try
         {
             fileHandler = new FileHandler( logfileName, 100000, 10, true );
@@ -98,7 +98,7 @@ public class ModificationLogger
     {
         if ( this.logger == null )
         {
-            if ( connection.getName() != null )
+            if ( browserConnection.getConnection().getName() != null )
             {
                 this.initModificationLogger();
             }
@@ -115,7 +115,7 @@ public class ModificationLogger
     {
         if ( this.logger == null )
         {
-            if ( connection.getName() != null )
+            if ( browserConnection.getConnection().getName() != null )
             {
                 this.initModificationLogger();
             }

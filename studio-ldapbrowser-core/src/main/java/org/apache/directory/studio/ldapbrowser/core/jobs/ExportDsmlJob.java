@@ -77,7 +77,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     private String exportDsmlFilename;
 
     /** The connection to use */
-    private IBrowserConnection connection;
+    private IBrowserConnection browserConnection;
 
     /** The Search Parameter of the export*/
     private SearchParameter searchParameter;
@@ -96,7 +96,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     public ExportDsmlJob( String exportDsmlFilename, IBrowserConnection connection, SearchParameter searchParameter )
     {
         this.exportDsmlFilename = exportDsmlFilename;
-        this.connection = connection;
+        this.browserConnection = connection;
         this.searchParameter = searchParameter;
 
         setName( BrowserCoreMessages.jobs__export_dsml_name );
@@ -109,7 +109,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     protected Connection[] getConnections()
     {
         return new Connection[]
-            { connection.getConnection() };
+            { browserConnection.getConnection() };
     }
 
 
@@ -119,7 +119,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     protected Object[] getLockedObjects()
     {
         List<String> l = new ArrayList<String>();
-        l.add( connection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
         return l.toArray();
     }
 
@@ -212,8 +212,9 @@ public class ExportDsmlJob extends AbstractEclipseJob
             Element rootElement = xmlRequest.addElement( "batchRequest" );
             SearchRequestDsml searchRequestDsml = new SearchRequestDsml( searchRequest );
             searchRequestDsml.toDsml( rootElement );
-            Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
-                .getBindPrincipal(), connection.getBindPassword() );
+            Dsmlv2Engine engine = new Dsmlv2Engine( browserConnection.getConnection().getHost(), browserConnection
+                .getConnection().getPort(), browserConnection.getConnection().getBindPrincipal(), browserConnection
+                .getConnection().getBindPassword() );
             String response = engine.processDSML( xmlRequest.asXML() );
 
             // Saving the response

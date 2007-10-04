@@ -75,12 +75,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract URL getUrl();
 
 
-    public abstract String getName();
-
-
-    public abstract void setName( String name );
-
-
     public abstract boolean isFetchBaseDNs();
 
 
@@ -99,24 +93,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract void setCountLimit( int countLimit );
 
 
-    public abstract String getHost();
-
-
-    public abstract void setHost( String host );
-
-
-    public abstract int getPort();
-
-
-    public abstract void setPort( int port );
-
-
-    public abstract EncryptionMethod getEncryptionMethod();
-
-
-    public abstract void setEncryptionMethod( EncryptionMethod encryptionMethod );
-
-
     public abstract int getAliasesDereferencingMethod();
 
 
@@ -133,24 +109,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
 
     public abstract void setTimeLimit( int timeLimit );
-
-
-    public String getBindPrincipal();
-
-
-    public void setBindPrincipal( String bindPrincipal );
-
-
-    public String getBindPassword();
-
-
-    public void setBindPassword( String bindPassword );
-
-
-    public AuthenticationMethod getAuthMethod();
-
-
-    public void setAuthMethod( AuthenticationMethod authMethod );
 
 
     public abstract IRootDSE getRootDSE();

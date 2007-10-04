@@ -66,7 +66,7 @@ public class OpenBrowserConnectionsJob extends AbstractAsyncBulkJob
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
         monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__open_connections_task, new String[]
-            { this.connection.getName() } ) );
+            { this.connection.getConnection().getName() } ) );
         monitor.worked( 1 );
 
         connection.open( monitor );

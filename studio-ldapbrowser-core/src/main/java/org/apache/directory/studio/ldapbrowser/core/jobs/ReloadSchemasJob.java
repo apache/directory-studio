@@ -75,7 +75,7 @@ public class ReloadSchemasJob extends AbstractAsyncBulkJob
         for ( int i = 0; i < browserConnections.length; i++ )
         {
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__reload_schemas_task, new String[]
-                { browserConnections[i].getName() } ) );
+                { browserConnections[i].getConnection().getName() } ) );
             monitor.worked( 1 );
 
             browserConnections[i].reloadSchema( monitor );
