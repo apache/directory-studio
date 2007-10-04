@@ -76,44 +76,50 @@ public class NewAttributeTypeAction extends Action implements IWorkbenchWindowAc
     {
         // Getting the selection
         Schema selectedSchema = null;
-        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
-        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+
+        int presentation = Activator.getDefault().getPreferenceStore().getInt(
+            PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
+        if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
         {
-            // TODO REFACTOR THIS
-            Object firstElement = selection.getFirstElement();
-            if ( firstElement instanceof SchemaWrapper )
+            StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+            if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
             {
-                selectedSchema = ( ( SchemaWrapper ) firstElement ).getSchema();
-            }
-            else if ( firstElement instanceof Folder )
-            {
-                selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) firstElement ).getParent() ).getSchema();
-            }
-            else if ( firstElement instanceof AttributeTypeWrapper )
-            {
-                TreeNode parent = ( ( AttributeTypeWrapper ) firstElement ).getParent();
-
-                if ( parent instanceof Folder )
+                // TODO REFACTOR THIS
+                Object firstElement = selection.getFirstElement();
+                if ( firstElement instanceof SchemaWrapper )
                 {
-                    selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) parent ).getParent() ).getSchema();
-
+                    selectedSchema = ( ( SchemaWrapper ) firstElement ).getSchema();
                 }
-                else if ( parent instanceof SchemaWrapper )
+                else if ( firstElement instanceof Folder )
                 {
-                    selectedSchema = ( ( SchemaWrapper ) parent ).getSchema();
+                    selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) firstElement ).getParent() ).getSchema();
                 }
-            }
-            else if ( firstElement instanceof ObjectClassWrapper )
-            {
-                TreeNode parent = ( ( ObjectClassWrapper ) firstElement ).getParent();
+                else if ( firstElement instanceof AttributeTypeWrapper )
+                {
+                    TreeNode parent = ( ( AttributeTypeWrapper ) firstElement ).getParent();
 
-                if ( parent instanceof Folder )
-                {
-                    selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) parent ).getParent() ).getSchema();
+                    if ( parent instanceof Folder )
+                    {
+                        selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) parent ).getParent() ).getSchema();
+
+                    }
+                    else if ( parent instanceof SchemaWrapper )
+                    {
+                        selectedSchema = ( ( SchemaWrapper ) parent ).getSchema();
+                    }
                 }
-                else if ( parent instanceof SchemaWrapper )
+                else if ( firstElement instanceof ObjectClassWrapper )
                 {
-                    selectedSchema = ( ( SchemaWrapper ) parent ).getSchema();
+                    TreeNode parent = ( ( ObjectClassWrapper ) firstElement ).getParent();
+
+                    if ( parent instanceof Folder )
+                    {
+                        selectedSchema = ( ( SchemaWrapper ) ( ( Folder ) parent ).getParent() ).getSchema();
+                    }
+                    else if ( parent instanceof SchemaWrapper )
+                    {
+                        selectedSchema = ( ( SchemaWrapper ) parent ).getSchema();
+                    }
                 }
             }
         }
