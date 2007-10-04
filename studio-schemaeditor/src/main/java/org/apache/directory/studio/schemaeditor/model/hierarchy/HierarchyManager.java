@@ -266,8 +266,13 @@ public class HierarchyManager
                 for ( Object value : children )
                 {
                     childrenMap.put( object, value );
+                    if ( oid.equals( "2.5.6.0" ) )
+                    {
+                        childrenMap.remove( root, value );
+                    }
                     parentsMap.remove( value, oid.toLowerCase() );
                     parentsMap.put( value, object );
+
                 }
                 childrenMap.remove( oid.toLowerCase() );
             }

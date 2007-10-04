@@ -248,8 +248,27 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 Collections.reverse( children );
             }
         }
-        else if ( ( parentElement instanceof AttributeTypeWrapper ) || ( parentElement instanceof ObjectClassWrapper )
-            || ( parentElement instanceof SchemaWrapper ) )
+        else if ( ( parentElement instanceof AttributeTypeWrapper ) || ( parentElement instanceof ObjectClassWrapper ) )
+        {
+            children = ( ( TreeNode ) parentElement ).getChildren();
+
+            // Sort by
+            if ( sortBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME )
+            {
+                Collections.sort( children, firstNameSorter );
+            }
+            else if ( sortBy == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_OID )
+            {
+                Collections.sort( children, oidSorter );
+            }
+
+            // Sort Order
+            if ( sortOrder == PluginConstants.PREFS_SCHEMA_VIEW_SORTING_ORDER_DESCENDING )
+            {
+                Collections.reverse( children );
+            }
+        }
+        else if ( parentElement instanceof SchemaWrapper )
         {
             children = ( ( TreeNode ) parentElement ).getChildren();
 
@@ -862,6 +881,56 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     public void objectClassAddedHierarchicalPresentation( ObjectClassImpl oc )
     {
+        // Removing unattached nodes for "top"
+        List<Object> ocChildren = new ArrayList<Object>();
+        List<Object> ocChildren2 = null;
+        if ( "2.5.6.0".equals( oc.getOid() ) )
+        {
+            ocChildren2 = hierarchyManager.getChildren( "2.5.6.0" );
+            if ( ocChildren2 != null )
+            {
+                ocChildren.addAll( ocChildren2 );
+            }
+            ocChildren2 = hierarchyManager.getChildren( "top" );
+            if ( ocChildren2 != null )
+            {
+                ocChildren.addAll( ocChildren2 );
+            }
+        }
+        ocChildren2 = hierarchyManager.getChildren( oc );
+        if ( ocChildren2 != null )
+        {
+            ocChildren.addAll( ocChildren2 );
+        }
+        for ( Object ocChild : ocChildren )
+        {
+            List<TreeNode> wrappers = getWrappers( ocChild );
+            if ( wrappers != null )
+            {
+                for ( TreeNode wrapper : wrappers )
+                {
+                    int group = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
+                    if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
+                    {
+                        if ( wrapper.getParent().getParent().equals( root ) )
+                        {
+                            wrapper.getParent().removeChild( wrapper );
+                            elementsToWrappersMap.remove( oc, wrapper );
+                        }
+                    }
+                    else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
+                    {
+                        if ( wrapper.getParent().equals( root ) )
+                        {
+                            wrapper.getParent().removeChild( wrapper );
+                            elementsToWrappersMap.remove( oc, wrapper );
+                        }
+                    }
+                    removeRecursiveChildren( wrapper );
+                }
+            }
+        }
+
         // Propagating the addition to the hierarchy manager
         hierarchyManager.objectClassAdded( oc );
 
@@ -932,6 +1001,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                     ObjectClassWrapper ocw = new ObjectClassWrapper( ( ObjectClassImpl ) child, createdWrapper );
                     ocw.getParent().addChild( ocw );
                     elementsToWrappersMap.put( ( ObjectClassImpl ) child, ocw );
+                    addHierarchyChildren( ocw, hierarchyManager.getChildren( child ) );
                 }
             }
         }
@@ -1181,7 +1251,15 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     private void schemaAddedHierarchicalPresentation( Schema schema )
     {
-        // TODO implement
+        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+        {
+            attributeTypeAddedHierarchicalPresentation( at );
+        }
+
+        for ( ObjectClassImpl oc : schema.getObjectClasses() )
+        {
+            objectClassAddedHierarchicalPresentation( oc );
+        }
     }
 
 
@@ -1233,8 +1311,15 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      */
     private void schemaRemovedHierarchicalPresentation( Schema schema )
     {
-        // TODO implement
+        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+        {
+            attributeTypeRemovedHierarchicalPresentation( at );
+        }
 
+        for ( ObjectClassImpl oc : schema.getObjectClasses() )
+        {
+            objectClassRemovedHierarchicalPresentation( oc );
+        }
     }
 
 
