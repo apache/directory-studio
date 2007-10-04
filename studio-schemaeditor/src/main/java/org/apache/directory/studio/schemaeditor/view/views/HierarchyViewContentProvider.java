@@ -26,9 +26,9 @@ import java.util.List;
 
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.schemaeditor.model.hierarchy.HierarchyManager;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
@@ -45,13 +45,6 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class HierarchyViewContentProvider implements IStructuredContentProvider, ITreeContentProvider
 {
-    /** The SchemaHandler */
-    private SchemaHandler schemaHandler;
-
-    List<AttributeTypeImpl> attributeTypes;
-    List<ObjectClassImpl> objectClasses;
-
-
     /* (non-Javadoc)
      * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
      */
@@ -66,117 +59,269 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
      */
     public Object[] getChildren( Object parentElement )
     {
-        int mode = Activator.getDefault().getDialogSettings().getInt( PluginConstants.PREFS_HIERARCHY_VIEW_MODE );
-        List<TreeNode> children = null;
-
-        schemaHandler = Activator.getDefault().getSchemaHandler();
-        attributeTypes = schemaHandler.getAttributeTypes();
-        objectClasses = schemaHandler.getObjectClasses();
+        List<TreeNode> children = new ArrayList<TreeNode>();
 
         if ( parentElement instanceof ObjectClassImpl )
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) parentElement;
 
-            ObjectClassWrapper ocw = new ObjectClassWrapper( oc, null );
-            children = new ArrayList<TreeNode>();
-            children.add( ocw );
+            children = createTypeHierarchyObjectClass( oc );
         }
         else if ( parentElement instanceof AttributeTypeImpl )
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) parentElement;
 
-            AttributeTypeWrapper atw = new AttributeTypeWrapper( at, null );
-            children = new ArrayList<TreeNode>();
-            children.add( atw );
+            children = createTypeHierarchyAttributeType( at );
         }
-        else if ( parentElement instanceof ObjectClassWrapper )
+        else if ( parentElement instanceof TreeNode )
         {
-            ObjectClassWrapper ocw = ( ObjectClassWrapper ) parentElement;
-            ObjectClassImpl oc = ocw.getObjectClass();
-
-            if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE )
-            {
-                String[] superiors = oc.getSuperClassesNames();
-                for ( String superior : superiors )
-                {
-                    if ( superior != null || "".equals( superior ) ) //$NON-NLS-1$
-                    {
-                        ObjectClassImpl supOC = schemaHandler.getObjectClass( superior );
-                        if ( supOC != null )
-                        {
-                            ObjectClassWrapper supOCW = new ObjectClassWrapper( supOC, ocw );
-                            ocw.addChild( supOCW );
-                        }
-                    }
-                }
-            }
-            else if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUBTYPE )
-            {
-                for ( ObjectClassImpl objectClass : objectClasses )
-                {
-                    String[] superiors = objectClass.getSuperClassesNames();
-                    for ( String superior : superiors )
-                    {
-                        if ( superior != null || "".equals( superior ) ) //$NON-NLS-1$
-                        {
-                            ObjectClassImpl supOC = schemaHandler.getObjectClass( superior );
-                            if ( supOC != null && oc.equals( supOC ) )
-                            {
-                                ObjectClassWrapper supOCW = new ObjectClassWrapper( objectClass, ocw );
-                                ocw.addChild( supOCW );
-                            }
-                        }
-                    }
-                }
-            }
-
-            children = ocw.getChildren();
-        }
-        else if ( parentElement instanceof AttributeTypeWrapper )
-        {
-            AttributeTypeWrapper atw = ( AttributeTypeWrapper ) parentElement;
-            AttributeTypeImpl at = atw.getAttributeType();
-
-            if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE )
-            {
-                String superior = at.getSuperiorName();
-                if ( superior != null || "".equals( superior ) ) //$NON-NLS-1$
-                {
-                    AttributeTypeImpl supAT = schemaHandler.getAttributeType( superior );
-                    if ( supAT != null )
-                    {
-                        AttributeTypeWrapper supATW = new AttributeTypeWrapper( supAT, atw );
-                        atw.addChild( supATW );
-                    }
-                }
-            }
-            else if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUBTYPE )
-            {
-                for ( AttributeTypeImpl attributeType : attributeTypes )
-                {
-                    String superior = attributeType.getSuperiorName();
-                    if ( superior != null && !"".equals( superior ) ) //$NON-NLS-1$
-                    {
-                        AttributeTypeImpl supAT = schemaHandler.getAttributeType( superior );
-                        if ( supAT != null && at.equals( supAT ) )
-                        {
-                            AttributeTypeWrapper supATW = new AttributeTypeWrapper( attributeType, atw );
-                            atw.addChild( supATW );
-                        }
-                    }
-                }
-            }
-
-            children = atw.getChildren();
+            children = ( ( TreeNode ) parentElement ).getChildren();
         }
 
-        if ( children == null )
+        return children.toArray();
+    }
+
+
+    /**
+     * Creates the Type Hierarchy for an object class.
+     *
+     * @param oc
+     *      the object class
+     * @return
+     *      the Type Hierarchy for an object class
+     */
+    private List<TreeNode> createTypeHierarchyObjectClass( ObjectClassImpl oc )
+    {
+        List<TreeNode> children = new ArrayList<TreeNode>();
+
+        HierarchyManager hierarchyManager = new HierarchyManager();
+
+        // Creating the wrapper of the object class
+        ObjectClassWrapper ocw = new ObjectClassWrapper( oc );
+
+        int mode = Activator.getDefault().getDialogSettings().getInt( PluginConstants.PREFS_HIERARCHY_VIEW_MODE );
+        if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_TYPE )
         {
-            return new Object[0];
+            // Creating its children's wrappers
+            createChildrenHierarchy( ocw, hierarchyManager.getChildren( oc ), hierarchyManager );
+
+            // Creating its parents' wrappers
+            createParentHierarchy( hierarchyManager.getParents( oc ), children, ocw, hierarchyManager );
+        }
+        else if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE )
+        {
+            // Creating its parents' wrappers
+            createParentHierarchy( hierarchyManager.getParents( oc ), children, ocw, hierarchyManager );
+        }
+        else if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUBTYPE )
+        {
+            // Creating its children's wrappers
+            createChildrenHierarchy( ocw, hierarchyManager.getChildren( oc ), hierarchyManager );
+
+            children.add( ocw );
+        }
+
+        return children;
+    }
+
+
+    /**
+     * Creates the parent hierarchy.
+     *
+     * @param parents
+     *      the parents
+     * @param children
+     *      the children
+     * @param ocw
+     *      the object class wrapper
+     * @param hierarchyManager
+     *      the hierarchy manager
+     */
+    private void createParentHierarchy( List<Object> parents, List<TreeNode> children, ObjectClassWrapper ocw,
+        HierarchyManager hierarchyManager )
+    {
+        if ( parents != null )
+        {
+            for ( Object parent : parents )
+            {
+                if ( parent instanceof ObjectClassImpl )
+                {
+                    ObjectClassImpl parentOC = ( ObjectClassImpl ) parent;
+                    ObjectClassWrapper duplicatedOCW = ( ObjectClassWrapper ) duplicateTreeNode( ocw );
+
+                    ObjectClassWrapper ocw2 = new ObjectClassWrapper( parentOC );
+                    duplicatedOCW.setParent( ocw2 );
+                    ocw2.addChild( duplicatedOCW );
+
+                    createParentHierarchy( hierarchyManager.getParents( parentOC ), children, ocw2, hierarchyManager );
+                }
+                else
+                {
+                    children.add( ocw );
+                }
+            }
         }
         else
         {
-            return children.toArray();
+            children.add( ocw );
+        }
+    }
+
+
+    /**
+     * Duplicates the given node.
+     *
+     * @param node
+     *      the node
+     * @return
+     *      a duplicate of the given node
+     */
+    public TreeNode duplicateTreeNode( TreeNode node )
+    {
+        if ( node != null )
+        {
+            if ( node instanceof ObjectClassWrapper )
+            {
+                ObjectClassWrapper ocNode = ( ObjectClassWrapper ) node;
+
+                ObjectClassWrapper duplicatedOCNode = new ObjectClassWrapper( ocNode.getObjectClass(), ocNode
+                    .getParent() );
+
+                for ( TreeNode child : ocNode.getChildren() )
+                {
+                    TreeNode duplicatedChild = duplicateTreeNode( child );
+                    if ( duplicatedChild != null )
+                    {
+                        duplicatedOCNode.addChild( duplicatedChild );
+                    }
+                }
+
+                return duplicatedOCNode;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Creates the Type Hierarchy for an attribute type.
+     *
+     * @param at
+     *      the attribute type
+     * @return
+     *      the Type Hierarchy for an attribute type
+     */
+    private List<TreeNode> createTypeHierarchyAttributeType( AttributeTypeImpl at )
+    {
+        List<TreeNode> children = new ArrayList<TreeNode>();
+        HierarchyManager hierarchyManager = new HierarchyManager();
+        int mode = Activator.getDefault().getDialogSettings().getInt( PluginConstants.PREFS_HIERARCHY_VIEW_MODE );
+
+        // Creating the wrapper of the attribute type
+        AttributeTypeWrapper atw = new AttributeTypeWrapper( at );
+
+        if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_TYPE )
+        {
+            // Creating the children's wrappers
+            createChildrenHierarchy( atw, hierarchyManager.getChildren( at ), hierarchyManager );
+
+            // Creating its parents' wrappers
+            List<Object> parents = hierarchyManager.getParents( at );
+            while ( ( parents != null ) && ( parents.size() == 1 ) )
+            {
+                Object parent = parents.get( 0 );
+                if ( parent instanceof AttributeTypeImpl )
+                {
+                    AttributeTypeImpl parentAT = ( AttributeTypeImpl ) parent;
+
+                    AttributeTypeWrapper atw2 = new AttributeTypeWrapper( parentAT );
+                    atw.setParent( atw2 );
+                    atw2.addChild( atw );
+
+                    atw = atw2;
+
+                    parents = hierarchyManager.getParents( parentAT );
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            children.add( atw );
+        }
+        else if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE )
+        {
+            // Creating its parents' wrappers
+            List<Object> parents = hierarchyManager.getParents( at );
+            while ( ( parents != null ) && ( parents.size() == 1 ) )
+            {
+                Object parent = parents.get( 0 );
+                if ( parent instanceof AttributeTypeImpl )
+                {
+                    AttributeTypeImpl parentAT = ( AttributeTypeImpl ) parent;
+
+                    AttributeTypeWrapper atw2 = new AttributeTypeWrapper( parentAT );
+                    atw.setParent( atw2 );
+                    atw2.addChild( atw );
+
+                    atw = atw2;
+
+                    parents = hierarchyManager.getParents( parentAT );
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            children.add( atw );
+        }
+        else if ( mode == PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUBTYPE )
+        {
+            // Creating the children's wrappers
+            createChildrenHierarchy( atw, hierarchyManager.getChildren( at ), hierarchyManager );
+
+            children.add( atw );
+        }
+
+        return children;
+    }
+
+
+    /**
+     * Create the children hierarchy
+     *
+     * @param node
+     *      the parent node.
+     * @param children
+     *      the children
+     */
+    private void createChildrenHierarchy( TreeNode node, List<Object> children, HierarchyManager hierarchyManager )
+    {
+        if ( ( children != null ) && ( children.size() > 0 ) )
+        {
+            for ( Object child : children )
+            {
+                TreeNode childNode = null;
+                if ( child instanceof AttributeTypeImpl )
+                {
+                    AttributeTypeImpl at = ( AttributeTypeImpl ) child;
+                    childNode = new AttributeTypeWrapper( at, node );
+                    node.addChild( childNode );
+                }
+                else if ( child instanceof ObjectClassImpl )
+                {
+                    ObjectClassImpl oc = ( ObjectClassImpl ) child;
+                    childNode = new ObjectClassWrapper( oc, node );
+                    node.addChild( childNode );
+                }
+
+                // Recursively creating the hierarchy for all children
+                // of the given element.
+                createChildrenHierarchy( childNode, hierarchyManager.getChildren( child ), hierarchyManager );
+            }
         }
     }
 

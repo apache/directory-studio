@@ -35,6 +35,7 @@ public interface PluginConstants
 {
     // Images
     public static final String IMG_ATTRIBUTE_TYPE = "resources/icons/attribute_type.gif";
+    public static final String IMG_ATTRIBUTE_TYPE_HIERARCHY_SELECTED = "resources/icons/attribute_type_hierarchy_selected.gif";
     public static final String IMG_ATTRIBUTE_TYPE_NEW = "resources/icons/attribute_type_new.gif";
     public static final String IMG_ATTRIBUTE_TYPE_NEW_WIZARD = "resources/icons/attribute_type_new_wizard.png";
     public static final String IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION = "resources/icons/attribute_type_overlay_operation.gif";
@@ -62,6 +63,7 @@ public interface PluginConstants
     public static final String IMG_FOLDER_OC = "resources/icons/folder_oc.gif";
     public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif";
     public static final String IMG_OBJECT_CLASS = "resources/icons/object_class.gif";
+    public static final String IMG_OBJECT_CLASS_HIERARCHY_SELECTED = "resources/icons/object_class_hierarchy_selected.gif";
     public static final String IMG_OBJECT_CLASS_NEW = "resources/icons/object_class_new.gif";
     public static final String IMG_OBJECT_CLASS_NEW_WIZARD = "resources/icons/object_class_new_wizard.png";
     public static final String IMG_OBJECT_CLASS_OVERLAY_ABSTRACT = "resources/icons/object_class_overlay_abstract.gif";
@@ -101,6 +103,7 @@ public interface PluginConstants
     public static final String IMG_SHOW_SEARCH_HISTORY = "resources/icons/show_search_history.gif";
     public static final String IMG_SHOW_SUBTYPE_HIERARCHY = "resources/icons/hierarchy_subtype.gif";
     public static final String IMG_SHOW_SUPERTYPE_HIERARCHY = "resources/icons/hierarchy_supertype.gif";
+    public static final String IMG_SHOW_TYPE_HIERARCHY = "resources/icons/hierarchy_type.gif";
     public static final String IMG_SORTING = "resources/icons/sorting.gif";
     public static final String IMG_TOOLBAR_MENU = "resources/icons/toolbar_menu.gif";
     public static final String IMG_TRANSPARENT_16X16 = "resources/icons/transparent_16x16.gif";
@@ -149,8 +152,11 @@ public interface PluginConstants
     public static final String CMD_SHOW_SEARCH_HISTORY = Activator.PLUGIN_ID + ".commands.showSearchHistory";
     public static final String CMD_SHOW_SUBTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSubTypeHierarchy";
     public static final String CMD_SHOW_SUPERTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSuperTypeHierarchy";
-    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_FLAT = Activator.PLUGIN_ID + ".commands.switchSchemaPresentationToFlat";
-    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_HIERARCHICAL = Activator.PLUGIN_ID + ".commands.switchSchemaPresentationToHierarchical";
+    public static final String CMD_SHOW_TYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSubTypeHierarchy";
+    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_FLAT = Activator.PLUGIN_ID
+        + ".commands.switchSchemaPresentationToFlat";
+    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_HIERARCHICAL = Activator.PLUGIN_ID
+        + ".commands.switchSchemaPresentationToHierarchical";
 
     // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */
@@ -163,7 +169,8 @@ public interface PluginConstants
 
     // Preferences - SchemaView
     /** The preference ID for Schema View Schema Presentation */
-    public static final String PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION = SchemaViewPreferencePage.ID + ".schemaPresentation"; //$NON-NLS-1$
+    public static final String PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION = SchemaViewPreferencePage.ID
+        + ".schemaPresentation"; //$NON-NLS-1$
     /** The preference value for Schema View Schema Presentation 'Flat' */
     public static final int PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT = 0;
     /** The preference value for Schema View Schema Presentation 'Hierarchical' */
@@ -194,7 +201,7 @@ public interface PluginConstants
     public static final String PREFS_SCHEMA_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = SchemaViewPreferencePage.ID
         + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
     public static final String PREFS_SCHEMA_VIEW_SCHEMA_LABEL_DISPLAY = SchemaViewPreferencePage.ID
-    + ".schemaLabel.display"; //$NON-NLS-1$
+        + ".schemaLabel.display"; //$NON-NLS-1$
     /** The preference ID for Schema View Grouping */
     public static final String PREFS_SCHEMA_VIEW_GROUPING = Activator.PLUGIN_ID + ".preferences.SchemaView.grouping"; //$NON-NLS-1$
     /** The preference value for Schema View Grouping 'group ATs and OCs in folders' */
@@ -222,6 +229,8 @@ public interface PluginConstants
     public static final int PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE = 0;
     /** The preference value for Hierarchy View Mode 'Subtype' */
     public static final int PREFS_HIERARCHY_VIEW_MODE_SUBTYPE = 1;
+    /** The preference value for Hierarchy View Mode 'Type' */
+    public static final int PREFS_HIERARCHY_VIEW_MODE_TYPE = 2;
     /** The preference ID for Hierarchy View Label */
     public static final String PREFS_HIERARCHY_VIEW_LABEL = HierarchyViewPreferencePage.ID + ".label.labelValue"; //$NON-NLS-1$
     /** The preference value for Hierarchy View First Name label */

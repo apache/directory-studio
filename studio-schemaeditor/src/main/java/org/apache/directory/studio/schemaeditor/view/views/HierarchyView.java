@@ -102,8 +102,8 @@ public class HierarchyView extends ViewPart
     {
         viewer = new TreeViewer( parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL );
         viewer.setContentProvider( new HierarchyViewContentProvider() );
-        viewer.setLabelProvider( new DecoratingLabelProvider( new HierarchyViewLabelProvider(), Activator.getDefault()
-            .getWorkbench().getDecoratorManager().getLabelDecorator() ) );
+        viewer.setLabelProvider( new DecoratingLabelProvider( new HierarchyViewLabelProvider( viewer ), Activator
+            .getDefault().getWorkbench().getDecoratorManager().getLabelDecorator() ) );
         viewer.getTree().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         viewer.getTree().setEnabled( false );
     }

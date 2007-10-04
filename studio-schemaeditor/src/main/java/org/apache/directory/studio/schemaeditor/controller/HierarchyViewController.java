@@ -31,6 +31,7 @@ import org.apache.directory.studio.schemaeditor.controller.actions.LinkWithEdito
 import org.apache.directory.studio.schemaeditor.controller.actions.OpenHierarchyViewPreferencesAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.ShowSubtypeHierarchyAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.ShowSupertypeHierarchyAction;
+import org.apache.directory.studio.schemaeditor.controller.actions.ShowTypeHierarchyAction;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
@@ -80,6 +81,7 @@ public class HierarchyViewController
             if ( newProject != null )
             {
                 view.getViewer().getTree().setEnabled( true );
+                showTypeHierarchy.setEnabled( true );
                 showSupertypeHierarchy.setEnabled( true );
                 showSubtypeHierarchy.setEnabled( true );
                 linkWithEditor.setEnabled( true );
@@ -88,6 +90,7 @@ public class HierarchyViewController
             else
             {
                 view.getViewer().getTree().setEnabled( false );
+                showTypeHierarchy.setEnabled( false );
                 showSupertypeHierarchy.setEnabled( false );
                 showSubtypeHierarchy.setEnabled( false );
                 linkWithEditor.setEnabled( false );
@@ -151,6 +154,7 @@ public class HierarchyViewController
     };
 
     // The Actions
+    private Action showTypeHierarchy;
     private Action showSupertypeHierarchy;
     private Action showSubtypeHierarchy;
     private Action linkWithEditor;
@@ -203,8 +207,9 @@ public class HierarchyViewController
         if ( Activator.getDefault().getDialogSettings().get( PluginConstants.PREFS_HIERARCHY_VIEW_MODE ) == null )
         {
             Activator.getDefault().getDialogSettings().put( PluginConstants.PREFS_HIERARCHY_VIEW_MODE,
-                PluginConstants.PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE );
+                PluginConstants.PREFS_HIERARCHY_VIEW_MODE_TYPE );
         }
+        showTypeHierarchy = new ShowTypeHierarchyAction( view );
         showSupertypeHierarchy = new ShowSupertypeHierarchyAction( view );
         showSubtypeHierarchy = new ShowSubtypeHierarchyAction( view );
         linkWithEditor = new LinkWithEditorHierarchyViewAction( view );
@@ -218,6 +223,7 @@ public class HierarchyViewController
     private void initToolbar()
     {
         IToolBarManager toolbar = view.getViewSite().getActionBars().getToolBarManager();
+        toolbar.add( showTypeHierarchy );
         toolbar.add( showSupertypeHierarchy );
         toolbar.add( showSubtypeHierarchy );
         toolbar.add( new Separator() );
@@ -231,6 +237,7 @@ public class HierarchyViewController
     private void initMenu()
     {
         IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
+        menu.add( showTypeHierarchy );
         menu.add( showSupertypeHierarchy );
         menu.add( showSubtypeHierarchy );
         menu.add( new Separator() );
@@ -275,6 +282,7 @@ public class HierarchyViewController
         if ( Activator.getDefault().getProjectsHandler().getOpenProject() != null )
         {
             view.getViewer().getTree().setEnabled( true );
+            showTypeHierarchy.setEnabled( true );
             showSupertypeHierarchy.setEnabled( true );
             showSubtypeHierarchy.setEnabled( true );
             linkWithEditor.setEnabled( true );
@@ -283,6 +291,7 @@ public class HierarchyViewController
         else
         {
             view.getViewer().getTree().setEnabled( false );
+            showTypeHierarchy.setEnabled( false );
             showSupertypeHierarchy.setEnabled( false );
             showSubtypeHierarchy.setEnabled( false );
             linkWithEditor.setEnabled( false );

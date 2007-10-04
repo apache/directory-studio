@@ -30,6 +30,7 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapp
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -49,13 +50,17 @@ public class HierarchyViewLabelProvider extends LabelProvider
     /** The preferences store */
     private IPreferenceStore store;
 
+    /** The TreeViewer */
+    private TreeViewer viewer;
+
 
     /**
      * Creates a new instance of SchemasViewLabelProvider.
      */
-    public HierarchyViewLabelProvider()
+    public HierarchyViewLabelProvider( TreeViewer viewer )
     {
         store = Activator.getDefault().getPreferenceStore();
+        this.viewer = viewer;
     }
 
 
@@ -273,13 +278,30 @@ public class HierarchyViewLabelProvider extends LabelProvider
     {
         if ( obj instanceof AttributeTypeWrapper )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
-                .createImage();
+            if ( ( ( AttributeTypeWrapper ) obj ).getAttributeType().equals( viewer.getInput() ) )
+            {
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_ATTRIBUTE_TYPE_HIERARCHY_SELECTED ).createImage();
+            }
+            else
+            {
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage();
+            }
         }
         else if ( obj instanceof ObjectClassWrapper )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
-                .createImage();
+
+            if ( ( ( ObjectClassWrapper ) obj ).getObjectClass().equals( viewer.getInput() ) )
+            {
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_OBJECT_CLASS_HIERARCHY_SELECTED ).createImage();
+            }
+            else
+            {
+                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    PluginConstants.IMG_OBJECT_CLASS ).createImage();
+            }
         }
 
         // Default
