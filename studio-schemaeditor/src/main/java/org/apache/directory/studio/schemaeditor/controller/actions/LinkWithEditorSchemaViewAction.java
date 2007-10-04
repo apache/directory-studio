@@ -20,23 +20,17 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import java.util.List;
-
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
-import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
-import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor;
 import org.apache.directory.studio.schemaeditor.view.views.SchemaView;
+import org.apache.directory.studio.schemaeditor.view.views.SchemaViewContentProvider;
 import org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper;
-import org.apache.directory.studio.schemaeditor.view.wrappers.Folder;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
-import org.apache.directory.studio.schemaeditor.view.wrappers.Folder.FolderType;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -281,21 +275,7 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
      */
     private void linkViewWithEditor( Object o )
     {
-        TreeNode wrapper = null;
-
-        if ( o instanceof AttributeTypeImpl )
-        {
-            wrapper = findAttributeTypeWrapperInTree( ( AttributeTypeImpl ) o );
-        }
-        else if ( o instanceof ObjectClassImpl )
-        {
-            wrapper = findObjectClassWrapperInTree( ( ObjectClassImpl ) o );
-        }
-        else if ( o instanceof Schema )
-        {
-            wrapper = findSchemaWrapperInTree( ( ( Schema ) o ).getName() );
-        }
-
+        TreeNode wrapper = ( ( SchemaViewContentProvider ) view.getViewer().getContentProvider() ).getWrapper( o );
         if ( wrapper != null )
         {
             view.getViewer().setSelection( new StructuredSelection( wrapper ) );
@@ -349,141 +329,6 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
                 }
             }
         }
-    }
-
-
-    /**
-     * Finds the corresponding SchemaWrapper in the Tree.
-     *
-     * @param name
-     *      the name of the SchemaWrapper to search
-     * @return
-     *      the corresponding SchemaWrapper in the Tree
-     */
-    private SchemaWrapper findSchemaWrapperInTree( String name )
-    {
-        List<TreeNode> schemaWrappers = ( ( TreeNode ) view.getViewer().getInput() ).getChildren();
-        for ( TreeNode sw : schemaWrappers )
-        {
-            if ( ( ( SchemaWrapper ) sw ).getSchema().getName().toLowerCase().equals( name.toLowerCase() ) )
-            {
-                return ( SchemaWrapper ) sw;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Finds the corresponding AttributeTypeWrapper in the Tree.
-     *
-     * @param at
-     *      the attribute type
-     * @return
-     *      the corresponding AttributeTypeWrapper in the Tree
-     */
-    private AttributeTypeWrapper findAttributeTypeWrapperInTree( AttributeTypeImpl at )
-    {
-        SchemaWrapper schemaWrapper = findSchemaWrapperInTree( at.getSchema() );
-        if ( schemaWrapper == null )
-        {
-            return null;
-        }
-
-        // Finding the correct node
-        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-        List<TreeNode> children = schemaWrapper.getChildren();
-        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-        {
-            for ( TreeNode child : children )
-            {
-                Folder folder = ( Folder ) child;
-                if ( folder.getType() == FolderType.ATTRIBUTE_TYPE )
-                {
-                    for ( TreeNode folderChild : folder.getChildren() )
-                    {
-                        AttributeTypeWrapper atw = ( AttributeTypeWrapper ) folderChild;
-                        if ( atw.getAttributeType().equals( at ) )
-                        {
-                            return atw;
-                        }
-                    }
-                }
-            }
-        }
-        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-        {
-            for ( Object child : children )
-            {
-                if ( child instanceof AttributeTypeImpl )
-                {
-                    AttributeTypeWrapper atw = ( AttributeTypeWrapper ) child;
-                    if ( atw.getAttributeType().equals( at ) )
-                    {
-                        return atw;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Finds the corresponding ObjectClassWrapper in the Tree.
-     *
-     * @param oc
-     *      the attribute type
-     * @return
-     *      the corresponding ObjectClassWrapper in the Tree
-     */
-    private ObjectClassWrapper findObjectClassWrapperInTree( ObjectClassImpl oc )
-    {
-        SchemaWrapper schemaWrapper = findSchemaWrapperInTree( oc.getSchema() );
-        if ( schemaWrapper == null )
-        {
-            return null;
-        }
-
-        // Finding the correct node
-        int group = Activator.getDefault().getPreferenceStore().getInt( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING );
-        List<TreeNode> children = schemaWrapper.getChildren();
-        if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_FOLDERS )
-        {
-            for ( TreeNode child : children )
-            {
-                Folder folder = ( Folder ) child;
-                if ( folder.getType() == FolderType.OBJECT_CLASS )
-                {
-                    for ( TreeNode folderChild : folder.getChildren() )
-                    {
-                        ObjectClassWrapper ocw = ( ObjectClassWrapper ) folderChild;
-                        if ( ocw.getObjectClass().equals( oc ) )
-                        {
-                            return ocw;
-                        }
-                    }
-                }
-            }
-        }
-        else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
-        {
-            for ( Object child : children )
-            {
-                if ( child instanceof ObjectClassWrapper )
-                {
-                    ObjectClassWrapper ocw = ( ObjectClassWrapper ) child;
-                    if ( ocw.getObjectClass().equals( oc ) )
-                    {
-                        return ocw;
-                    }
-                }
-            }
-        }
-
-        return null;
     }
 
 
