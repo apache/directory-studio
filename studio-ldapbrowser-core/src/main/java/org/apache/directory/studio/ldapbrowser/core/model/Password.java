@@ -111,26 +111,26 @@ public class Password
             hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
             String rest = password.substring( hashMethod.length() + 2 );
 
-            if ( HASH_METHOD_SHA.equals( hashMethod ) || HASH_METHOD_MD5.equals( hashMethod ) )
+            if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) )
             {
                 hashedPassword = LdifUtils.base64decodeToByteArray( rest );
                 salt = null;
             }
-            else if ( HASH_METHOD_SSHA.equals( hashMethod ) )
+            else if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
             {
                 byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
                 hashedPassword = new byte[20];
                 salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
                 split( hashedPasswordWithSalt, hashedPassword, salt );
             }
-            else if ( HASH_METHOD_SMD5.equals( hashMethod ) )
+            else if ( HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
             {
                 byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
                 hashedPassword = new byte[16];
                 salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
                 split( hashedPasswordWithSalt, hashedPassword, salt );
             }
-            else if ( HASH_METHOD_CRYPT.equals( hashMethod ) )
+            else if ( HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) )
             {
                 byte[] saltWithPassword = LdifUtils.utf8encode( rest );
                 salt = new byte[2];
@@ -168,9 +168,9 @@ public class Password
      */
     public Password( String hashMethod, String passwordAsPlaintext )
     {
-        if ( !( hashMethod == null || HASH_METHOD_NO.equals( hashMethod ) || HASH_METHOD_SHA.equals( hashMethod )
-            || HASH_METHOD_SSHA.equals( hashMethod ) || HASH_METHOD_MD5.equals( hashMethod )
-            || HASH_METHOD_SMD5.equals( hashMethod ) || HASH_METHOD_CRYPT.equals( hashMethod ) ) )
+        if ( !( hashMethod == null || HASH_METHOD_NO.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SHA.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) ) )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__unsupported_hash );
         }
@@ -180,19 +180,19 @@ public class Password
         }
 
         // set hash method
-        if ( HASH_METHOD_NO.equals( hashMethod ) )
+        if ( HASH_METHOD_NO.equalsIgnoreCase( hashMethod ) )
         {
             hashMethod = null;
         }
         this.hashMethod = hashMethod;
 
         // set salt
-        if ( HASH_METHOD_SSHA.equals( hashMethod ) || HASH_METHOD_SMD5.equals( hashMethod ) )
+        if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
         {
             this.salt = new byte[8];
             new SecureRandom().nextBytes( this.salt );
         }
-        else if ( HASH_METHOD_CRYPT.equals( hashMethod ) )
+        else if ( HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) )
         {
             this.salt = new byte[2];
             SecureRandom sr = new SecureRandom();
@@ -207,15 +207,15 @@ public class Password
         }
 
         // digest
-        if ( HASH_METHOD_SHA.equals( hashMethod ) || HASH_METHOD_SSHA.equals( hashMethod ) )
+        if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
         {
             this.hashedPassword = digest( HASH_METHOD_SHA, passwordAsPlaintext, this.salt );
         }
-        else if ( HASH_METHOD_MD5.equals( hashMethod ) || HASH_METHOD_SMD5.equals( hashMethod ) )
+        else if ( HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
         {
             this.hashedPassword = digest( HASH_METHOD_MD5, passwordAsPlaintext, this.salt );
         }
-        else if ( HASH_METHOD_CRYPT.equals( hashMethod ) )
+        else if ( HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) )
         {
             this.hashedPassword = crypt( passwordAsPlaintext, this.salt );
         }
@@ -245,17 +245,17 @@ public class Password
         {
             verified = testPasswordAsPlaintext.equals( LdifUtils.utf8decode( hashedPassword ) );
         }
-        else if ( HASH_METHOD_SHA.equals( hashMethod ) || HASH_METHOD_SSHA.equals( hashMethod ) )
+        else if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
         {
             byte[] hash = digest( HASH_METHOD_SHA, testPasswordAsPlaintext, salt );
             verified = equals( hash, hashedPassword );
         }
-        else if ( HASH_METHOD_MD5.equals( hashMethod ) || HASH_METHOD_SMD5.equals( hashMethod ) )
+        else if ( HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
         {
             byte[] hash = digest( HASH_METHOD_MD5, testPasswordAsPlaintext, salt );
             verified = equals( hash, hashedPassword );
         }
-        else if ( HASH_METHOD_CRYPT.equals( hashMethod ) )
+        else if ( HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) )
         {
             byte[] crypted = crypt( testPasswordAsPlaintext, salt );
             verified = equals( crypted, hashedPassword );
@@ -338,11 +338,11 @@ public class Password
     {
         StringBuffer sb = new StringBuffer();
 
-        if ( HASH_METHOD_UNSUPPORTED.equals( hashMethod ) )
+        if ( HASH_METHOD_UNSUPPORTED.equalsIgnoreCase( hashMethod ) )
         {
             sb.append( trash );
         }
-        else if ( HASH_METHOD_CRYPT.equals( hashMethod ) )
+        else if ( HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) )
         {
             sb.append( '{' ).append( hashMethod ).append( '}' );
             sb.append( LdifUtils.utf8decode( salt ) );
