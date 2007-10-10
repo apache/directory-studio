@@ -27,7 +27,6 @@ import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -68,22 +67,16 @@ class ConnectionModifyHandler
 
     private ModificationLogger modificationLogger;
 
-    private LinkedList recordQueue;
-
 
     ConnectionModifyHandler( BrowserConnection connection )
     {
         this.browserConnection = connection;
-
         this.modificationLogger = new ModificationLogger( connection );
-
-        this.recordQueue = new LinkedList();
     }
 
 
     void connectionClosed()
     {
-        this.recordQueue.clear();
     }
 
 
@@ -379,7 +372,8 @@ class ConnectionModifyHandler
                         DN dn = new DN( record.getDnLine().getValueAsString() );
                         IEntry entry = browserConnection.getEntryFromCache( dn );
                         DN parentDn = dn.getParentDn();
-                        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( dn.getParentDn() ) : null;
+                        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( dn.getParentDn() )
+                            : null;
 
                         if ( record instanceof LdifChangeDeleteRecord )
                         {
@@ -472,85 +466,64 @@ class ConnectionModifyHandler
     }
 
 
-    private void reset()
+    private void applyModificationAndLog( LdifRecord record, StudioProgressMonitor monitor ) throws ConnectionException
     {
-        this.recordQueue.clear();
-    }
-
-
-    private void commit( StudioProgressMonitor monitor ) throws ConnectionException
-    {
-        if ( !recordQueue.isEmpty() )
+        if ( record != null )
         {
-
-            final LdifRecord[] records = ( LdifRecord[] ) this.recordQueue.toArray( new LdifRecord[this.recordQueue
-                .size()] );
-            this.reset();
-
-            for ( int i = 0; i < records.length; i++ )
+            try
             {
-                try
+                int referralsHandlingMethod = browserConnection.getReferralsHandlingMethod();
+                // int referralsHandlingMethod =
+                // IConnection.HANDLE_REFERRALS_IGNORE;
+                browserConnection.connectionProvider.applyModification( record, referralsHandlingMethod, monitor );
+
+                StringWriter writer = new StringWriter();
+                this.logModification( writer, record, monitor );
+                this.modificationLogger.log( writer.toString() );
+
+            }
+            catch ( ConnectionException ce )
+            {
+                if ( ce instanceof ReferralException )
                 {
-                    int referralsHandlingMethod = browserConnection.getReferralsHandlingMethod();
-                    // int referralsHandlingMethod =
-                    // IConnection.HANDLE_REFERRALS_IGNORE;
-                    browserConnection.connectionProvider.applyModification( records[i], referralsHandlingMethod, monitor );
-
-                    StringWriter writer = new StringWriter();
-                    this.logModification( writer, records[i], monitor );
-                    this.modificationLogger.log( writer.toString() );
-
-                }
-                catch ( ConnectionException ce )
-                {
-
-                    if ( ce instanceof ReferralException )
+                    if ( browserConnection.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                     {
-
-                        if ( browserConnection.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
+                        // get referral handler
+                        IReferralHandler referralHandler = BrowserCorePlugin.getDefault().getReferralHandler();
+                        if ( referralHandler == null )
                         {
-
-                            // get referral handler
-                            IReferralHandler referralHandler = BrowserCorePlugin.getDefault().getReferralHandler();
-                            if ( referralHandler == null )
-                            {
-                                throw new ConnectionException( BrowserCoreMessages.model__no_referral_handler );
-                            }
-
-                            // for all referrals
-                            ReferralException re = ( ReferralException ) ce;
-                            for ( int r = 0; r < re.getReferrals().length; r++ )
-                            {
-
-                                // parse referral URL
-                                String referral = re.getReferrals()[r];
-                                URL referralUrl = new URL( referral );
-
-                                // get referral connection
-                                IBrowserConnection referralConnection = referralHandler.getReferralConnection( referralUrl );
-                                if ( referralConnection == null )
-                                {
-                                    // throw new
-                                    // ConnectionException(BrowserCoreMessages.model__no_referral_connection);
-                                    continue;
-                                }
-
-                                ( ( BrowserConnection ) referralConnection ).modifyHandler.applyModificationAndLog(
-                                    records[i], monitor );
-
-                            }
+                            throw new ConnectionException( BrowserCoreMessages.model__no_referral_handler );
                         }
 
-                    }
-                    else
-                    {
+                        // for all referrals
+                        ReferralException re = ( ReferralException ) ce;
+                        for ( int r = 0; r < re.getReferrals().length; r++ )
+                        {
+                            // parse referral URL
+                            String referral = re.getReferrals()[r];
+                            URL referralUrl = new URL( referral );
 
-                        StringWriter writer = new StringWriter();
-                        this.logModificationError( writer, records[i], ce, monitor );
-                        this.modificationLogger.log( writer.toString() );
+                            // get referral connection
+                            IBrowserConnection referralConnection = referralHandler.getReferralConnection( referralUrl );
+                            if ( referralConnection == null )
+                            {
+                                // throw new
+                                // ConnectionException(BrowserCoreMessages.model__no_referral_connection);
+                                continue;
+                            }
 
-                        throw ce;
+                            ( ( BrowserConnection ) referralConnection ).modifyHandler.applyModificationAndLog( record,
+                                monitor );
+                        }
                     }
+                }
+                else
+                {
+                    StringWriter writer = new StringWriter();
+                    this.logModificationError( writer, record, ce, monitor );
+                    this.modificationLogger.log( writer.toString() );
+
+                    throw ce;
                 }
             }
         }
@@ -575,8 +548,10 @@ class ConnectionModifyHandler
             LdifCommentLine errorCommentLine = LdifCommentLine.create( errorComment );
 
             logWriter.write( LdifCommentLine.create( "#!RESULT ERROR" ).toFormattedString() ); //$NON-NLS-1$
-            logWriter.write( LdifCommentLine.create(
-                "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
+            logWriter
+                .write( LdifCommentLine
+                    .create(
+                        "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
             logWriter.write( LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ).toFormattedString() ); //$NON-NLS-1$
             logWriter.write( errorCommentLine.toFormattedString() );
             logWriter.write( record.toFormattedString() );
@@ -594,8 +569,10 @@ class ConnectionModifyHandler
         {
             DateFormat df = new SimpleDateFormat( BrowserCoreConstants.DATEFORMAT );
             logWriter.write( LdifCommentLine.create( "#!RESULT OK" ).toFormattedString() ); //$NON-NLS-1$
-            logWriter.write( LdifCommentLine.create(
-                "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
+            logWriter
+                .write( LdifCommentLine
+                    .create(
+                        "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
             logWriter.write( LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ).toFormattedString() ); //$NON-NLS-1$
             logWriter.write( record.toFormattedString() );
         }
@@ -603,14 +580,6 @@ class ConnectionModifyHandler
         {
             monitor.reportError( BrowserCoreMessages.model__error_logging_modification, ioe );
         }
-    }
-
-
-    private void applyModificationAndLog( LdifRecord record, StudioProgressMonitor monitor )
-        throws ConnectionException
-    {
-        this.recordQueue.add( record );
-        this.commit( monitor );
     }
 
 }
