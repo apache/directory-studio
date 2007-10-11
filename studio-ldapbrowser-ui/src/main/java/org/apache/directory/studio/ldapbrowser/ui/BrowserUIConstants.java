@@ -203,6 +203,12 @@ public interface BrowserUIConstants
 
     public static final String IMG_OCD = "resources/icons/ocd.png";
 
+    public static final String IMG_OCD_ABSTRACT = "resources/icons/ocd_abstract.gif";
+
+    public static final String IMG_OCD_AUXILIARY = "resources/icons/ocd_auxiliary.gif";
+
+    public static final String IMG_OCD_STRUCTURAL = "resources/icons/ocd_structural.gif";
+
     public static final String IMG_MRD = "resources/icons/mrd.png";
 
     public static final String IMG_MRUD = "resources/icons/mrud.png";
