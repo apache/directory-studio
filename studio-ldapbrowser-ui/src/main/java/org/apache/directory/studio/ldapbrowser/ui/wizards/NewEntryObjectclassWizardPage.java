@@ -173,12 +173,31 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     {
         if ( !selectedObjectClasses.isEmpty() )
         {
+            boolean hasOneStructuralOC = false;
+            for ( ObjectClassDescription ocd : selectedObjectClasses )
+            {
+                if ( ocd.isStructural() )
+                {
+                    hasOneStructuralOC = true;
+                    break;
+                }
+            }
+            if ( !hasOneStructuralOC )
+            {
+                setMessage( "Please select at least one structural object class.", WizardPage.WARNING );
+            }
+            else
+            {
+                setMessage( null );
+            }
+
             setPageComplete( true );
             saveState();
         }
         else
         {
             setPageComplete( false );
+            setMessage( null );
         }
     }
 
