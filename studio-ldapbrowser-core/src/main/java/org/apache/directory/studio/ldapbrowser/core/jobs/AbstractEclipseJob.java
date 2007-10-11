@@ -263,7 +263,7 @@ public abstract class AbstractEclipseJob extends Job
         }
         else
         {
-            return null;
+            return "";
         }
     }
 
