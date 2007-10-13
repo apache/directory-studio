@@ -553,12 +553,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-    public void create( IEntry entryToCreate, StudioProgressMonitor monitor )
-    {
-        modifyHandler.create( entryToCreate, monitor );
-    }
-
-
     public void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor )
     {
         modifyHandler.rename( entryToRename, newDn, deleteOldRdn, monitor );

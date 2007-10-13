@@ -247,23 +247,6 @@ class ConnectionModifyHandler
     }
 
 
-    void create( IEntry entryToCreate, StudioProgressMonitor monitor )
-    {
-        try
-        {
-            LdifChangeAddRecord car = ModelConverter.entryToLdifChangeAddRecord( entryToCreate );
-            this.applyModificationAndLog( car, monitor );
-
-            // connection.cacheEntry(entryToCreate);
-            // entryToCreate.setDirectoryEntry(true);
-        }
-        catch ( ConnectionException e )
-        {
-            monitor.reportError( e );
-        }
-    }
-
-
     void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor )
     {
         try

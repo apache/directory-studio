@@ -47,16 +47,32 @@ import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
 
+/**
+ * Job to copy entries asynchronously.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CopyEntriesJob extends AbstractAsyncBulkJob
 {
 
+    /** The parent entry. */
     private IEntry parent;
 
+    /** The entries to copy. */
     private IEntry[] entriesToCopy;
 
+    /** The copy scope */
     private int scope;
 
 
+    /**
+     * Creates a new instance of CopyEntriesJob.
+     * 
+     * @param parent the parent entry
+     * @param entriesToCopy the entries to copy
+     * @param scope the copy scope
+     */
     public CopyEntriesJob( final IEntry parent, final IEntry[] entriesToCopy, int scope )
     {
         this.parent = parent;
@@ -67,6 +83,9 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         return new Connection[]
@@ -74,18 +93,23 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<IEntry> l = new ArrayList<IEntry>();
         l.add( parent );
         l.addAll( Arrays.asList( entriesToCopy ) );
         return l.toArray();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#executeBulkJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeBulkJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( entriesToCopy.length == 1 ? BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__copy_entries_task_1, new String[]
                 { entriesToCopy[0].getDn().toString(), parent.getDn().toString() } ) : BrowserCoreMessages.bind(
@@ -116,6 +140,9 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#runNotification()
+     */
     protected void runNotification()
     {
         parent.setChildrenInitialized( false );
@@ -124,6 +151,9 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return entriesToCopy.length == 1 ? BrowserCoreMessages.jobs__copy_entries_error_1
@@ -131,8 +161,18 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    private int copyEntryRecursive( IEntry entryToCopy, IEntry parent, int scope, int num,
-        StudioProgressMonitor monitor )
+    /**
+     * Copies the entry recursive.
+     * 
+     * @param entryToCopy the entry to copy
+     * @param parent the parent entry
+     * @param scope the copy scope
+     * @param num the number of copied entries
+     * @param monitor the progress monitor
+     * 
+     * @return the number of copied entries
+     */
+    private int copyEntryRecursive( IEntry entryToCopy, IEntry parent, int scope, int num, StudioProgressMonitor monitor )
     {
         try
         {
@@ -249,7 +289,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
                     }
                 }
 
-                newEntry.getBrowserConnection().create( newEntry, monitor );
+                CreateEntryJob.createEntry( newEntry.getBrowserConnection(), newEntry, monitor );
                 newEntry.setHasChildrenHint( false );
 
                 num++;
@@ -302,6 +342,16 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
+    /**
+     * Gets the new rdn.
+     * 
+     * @param rdn the rdn
+     * @param newRdnValue the new rdn value
+     * 
+     * @return the new rdn
+     * 
+     * @throws NameException the name exception
+     */
     private RDN getNewRdn( RDN rdn, String newRdnValue ) throws NameException
     {
         String[] names = rdn.getTypes();

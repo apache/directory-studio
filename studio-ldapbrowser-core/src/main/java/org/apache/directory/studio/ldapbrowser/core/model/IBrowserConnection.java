@@ -163,9 +163,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract void delete( IAttribute attriubtesToDelete[], StudioProgressMonitor monitor );
 
 
-    public abstract void create( IEntry entryToCreate, StudioProgressMonitor monitor );
-
-
     public abstract void create( IValue valuesToCreate[], StudioProgressMonitor monitor );
 
 
