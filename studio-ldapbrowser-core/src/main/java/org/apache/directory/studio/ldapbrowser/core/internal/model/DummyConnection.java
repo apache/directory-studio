@@ -172,16 +172,6 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public void move( IEntry entryToMove, DN newSuperior, StudioProgressMonitor monitor )
-    {
-    }
-
-
-    public void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor )
-    {
-    }
-
-
     public void search( ISearch searchRequest, StudioProgressMonitor monitor )
     {
     }
@@ -259,4 +249,7 @@ public class DummyConnection implements IBrowserConnection
         return null;
     }
 
+    public void uncacheEntryRecursive( IEntry entry )
+    {
+    }
 }

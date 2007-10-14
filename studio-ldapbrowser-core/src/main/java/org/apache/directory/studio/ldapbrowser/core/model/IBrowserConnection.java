@@ -166,12 +166,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract void modify( IValue oldValue, IValue newVaue, StudioProgressMonitor monitor );
 
 
-    public abstract void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor );
-
-
-    public abstract void move( IEntry entryToMove, DN newSuperior, StudioProgressMonitor monitor );
-
-
     public abstract void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
         StudioProgressMonitor monitor );
 
@@ -184,6 +178,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     
     public abstract int hashCode();
 
-
     public abstract boolean equals( Object obj );
+    
+    public abstract void uncacheEntryRecursive( IEntry entry );
 }

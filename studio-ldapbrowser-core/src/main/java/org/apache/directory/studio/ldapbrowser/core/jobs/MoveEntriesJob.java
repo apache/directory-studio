@@ -24,9 +24,11 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
@@ -41,23 +43,39 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 
+/**
+ * Job to move entries.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class MoveEntriesJob extends AbstractNotificationJob
 {
 
-    private IBrowserConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The entries to move. */
     private IEntry[] oldEntries;
 
+    /** The new parent. */
     private IEntry newParent;
 
+    /** The moved entries. */
     private IEntry[] newEntries;
 
-    private Set searchesToUpdateSet = new HashSet();
+    private Set<ISearch> updatedSearches = new HashSet<ISearch>();
 
 
+    /**
+     * Creates a new instance of MoveEntriesJob.
+     * 
+     * @param entries the entries to move
+     * @param newParent the new parent
+     */
     public MoveEntriesJob( IEntry[] entries, IEntry newParent )
     {
-        this.connection = newParent.getBrowserConnection();
+        this.browserConnection = newParent.getBrowserConnection();
         this.oldEntries = entries;
         this.newParent = newParent;
 
@@ -66,25 +84,33 @@ public class MoveEntriesJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         return new Connection[]
-            { connection.getConnection() };
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<IEntry> l = new ArrayList<IEntry>();
         l.add( newParent );
         l.addAll( Arrays.asList( oldEntries ) );
         return l.toArray();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.bind(
             oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_task_1
                 : BrowserCoreMessages.jobs__move_entry_task_n, new String[]
@@ -92,15 +118,14 @@ public class MoveEntriesJob extends AbstractNotificationJob
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        this.newEntries = new IEntry[oldEntries.length];
+        newEntries = new IEntry[oldEntries.length];
         for ( int i = 0; i < oldEntries.length; i++ )
         {
-            this.newEntries[i] = oldEntries[i];
+            newEntries[i] = oldEntries[i];
         }
 
         for ( int i = 0; i < oldEntries.length; i++ )
         {
-
             IEntry oldEntry = oldEntries[i];
             IEntry oldParent = oldEntry.getParententry();
             DN newDn = new DN( oldEntry.getRdn(), newParent.getDn() );
@@ -109,15 +134,16 @@ public class MoveEntriesJob extends AbstractNotificationJob
             // TODO: use manual/simulated move, if move of subtree is not
             // supported
             int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            connection.move( oldEntry, newParent.getDn(), monitor );
+            moveEntry( browserConnection, oldEntry, newDn.toString(), monitor );
+            //connection.move( oldEntry, newParent.getDn(), monitor );
             int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
 
             if ( errorStatusSize1 == errorStatusSize2 )
             {
                 // move in parent
                 oldParent.deleteChild( oldEntry );
-                IEntry newEntry = connection.getEntry( newDn, monitor );
-                this.newEntries[i] = newEntry;
+                IEntry newEntry = browserConnection.getEntry( newDn, monitor );
+                newEntries[i] = newEntry;
                 newParent.addChild( newEntry );
                 newParent.setHasMoreChildren( false );
 
@@ -128,7 +154,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
                 }
 
                 // move in searches
-                ISearch[] searches = connection.getSearchManager().getSearches();
+                ISearch[] searches = browserConnection.getSearchManager().getSearches();
                 for ( int j = 0; j < searches.length; j++ )
                 {
                     ISearch search = searches[j];
@@ -146,7 +172,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
                                 search.setSearchResults( newsrs );
                                 searchResults = newsrs;
                                 k--;
-                                searchesToUpdateSet.add( search );
+                                updatedSearches.add( search );
                             }
                         }
                     }
@@ -156,6 +182,9 @@ public class MoveEntriesJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
         for ( int i = 0; i < newEntries.length; i++ )
@@ -165,18 +194,47 @@ public class MoveEntriesJob extends AbstractNotificationJob
                 EventRegistry.fireEntryUpdated( new EntryMovedEvent( oldEntries[i], newEntries[i] ), this );
             }
         }
-        for ( Iterator it = searchesToUpdateSet.iterator(); it.hasNext(); )
+        for ( ISearch search : updatedSearches )
         {
-            ISearch search = ( ISearch ) it.next();
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
+                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_error_1
             : BrowserCoreMessages.jobs__move_entry_error_n;
+    }
+
+
+    /**
+     * Moves an entry.
+     * 
+     * @param browserConnection the browser connection
+     * @param oldEntry the old entry
+     * @param newDn the new dn
+     * @param monitor the progress monitor
+     */
+    private void moveEntry( IBrowserConnection browserConnection, IEntry oldEntry, String newDn,
+        StudioProgressMonitor monitor )
+    {
+        // dn
+        String oldDn = oldEntry.getDn().toString();
+
+        // controls
+        Control[] controls = null;
+        if ( oldEntry.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl() };
+        }
+
+        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDn, newDn, false, controls, monitor );
     }
 
 }

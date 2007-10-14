@@ -23,9 +23,11 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
@@ -41,22 +43,41 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 
 
+/**
+ * Job to rename an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RenameEntryJob extends AbstractNotificationJob
 {
 
+    /** The browser connection. */
     private IBrowserConnection browserConnection;
 
+    /** The old entry. */
     private IEntry oldEntry;
 
+    /** The new rdn. */
     private RDN newRdn;
 
+    /** The delete old rdn flag. */
     private boolean deleteOldRdn;
 
+    /** The new entry. */
     private IEntry newEntry;
 
-    private Set searchesToUpdateSet = new HashSet();
+    /** The updated searches. */
+    private Set<ISearch> updatedSearchesSet = new HashSet<ISearch>();
 
 
+    /**
+     * Creates a new instance of RenameEntryJob.
+     * 
+     * @param entry the entry to rename
+     * @param newRdn the new rdn
+     * @param deleteOldRdn the delete old rdn flag
+     */
     public RenameEntryJob( IEntry entry, RDN newRdn, boolean deleteOldRdn )
     {
         this.browserConnection = entry.getBrowserConnection();
@@ -69,6 +90,9 @@ public class RenameEntryJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         return new Connection[]
@@ -76,19 +100,24 @@ public class RenameEntryJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<Object> l = new ArrayList<Object>();
         l.add( oldEntry.getParententry() );
         return l.toArray();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__rename_entry_task, new String[]
-            { this.oldEntry.getDn().toString() } ), 3 );
+            { oldEntry.getDn().toString() } ), 3 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
@@ -98,13 +127,16 @@ public class RenameEntryJob extends AbstractNotificationJob
         // rename in directory
         // TODO: use manual/simulated rename, if rename of subtree is not
         // supported
-        browserConnection.rename( oldEntry, newDn, deleteOldRdn, monitor );
+        renameEntry( browserConnection, oldEntry, newDn.toString(), deleteOldRdn, monitor );
 
         if ( !monitor.errorsReported() )
         {
+            // uncache old entry
+            browserConnection.uncacheEntryRecursive( oldEntry );
+
             // rename in parent
             parent.deleteChild( oldEntry );
-            this.newEntry = browserConnection.getEntry( newDn, monitor );
+            newEntry = browserConnection.getEntry( newDn, monitor );
             parent.addChild( newEntry );
             parent.setHasMoreChildren( false );
 
@@ -133,7 +165,7 @@ public class RenameEntryJob extends AbstractNotificationJob
                             search.setSearchResults( newsrs );
                             searchResults = newsrs;
                             k--;
-                            searchesToUpdateSet.add( search );
+                            updatedSearchesSet.add( search );
                         }
                     }
                 }
@@ -142,23 +174,57 @@ public class RenameEntryJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
         if ( oldEntry != null && newEntry != null )
         {
             EventRegistry.fireEntryUpdated( new EntryRenamedEvent( oldEntry, newEntry ), this );
         }
-        for ( Iterator it = searchesToUpdateSet.iterator(); it.hasNext(); )
+        for ( ISearch search : updatedSearchesSet )
         {
-            ISearch search = ( ISearch ) it.next();
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
+                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__rename_entry_error;
+    }
+
+
+    /**
+     * Renames the entry.
+     * 
+     * @param browserConnection the browser connection
+     * @param oldEntry the old entry
+     * @param newDn the new dn
+     * @param deleteOldRdn the delete old rdn flag
+     * @param monitor the progress monitor
+     */
+    static void renameEntry( IBrowserConnection browserConnection, IEntry oldEntry, String newDn, boolean deleteOldRdn,
+        StudioProgressMonitor monitor )
+    {
+        // dn
+        String oldDn = oldEntry.getDn().toString();
+
+        // controls
+        Control[] controls = null;
+        if ( oldEntry.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl() };
+        }
+
+        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDn, newDn, deleteOldRdn, controls,
+            monitor );
     }
 
 }

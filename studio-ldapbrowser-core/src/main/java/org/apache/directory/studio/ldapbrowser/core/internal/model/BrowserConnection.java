@@ -547,18 +547,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-    public void rename( IEntry entryToRename, DN newDn, boolean deleteOldRdn, StudioProgressMonitor monitor )
-    {
-        modifyHandler.rename( entryToRename, newDn, deleteOldRdn, monitor );
-    }
-
-
-    public void move( IEntry entryToMove, DN newSuperior, StudioProgressMonitor monitor )
-    {
-        modifyHandler.move( entryToMove, newSuperior, monitor );
-    }
-
-
     public LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor monitor )
         throws ConnectionException
     {
@@ -786,6 +774,20 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     protected void uncacheEntry( IEntry entry )
     {
         this.dnToEntryCache.remove( entry.getDn().toOidString( this.schema ) );
+    }
+    
+
+    public void uncacheEntryRecursive( IEntry entry )
+    {
+        IEntry[] children = entry.getChildren();
+        if ( entry.getChildren() != null )
+        {
+            for ( int i = 0; i < children.length; i++ )
+            {
+                uncacheEntryRecursive( children[i] );
+            }
+        }
+        uncacheEntry( entry );
     }
 
 
