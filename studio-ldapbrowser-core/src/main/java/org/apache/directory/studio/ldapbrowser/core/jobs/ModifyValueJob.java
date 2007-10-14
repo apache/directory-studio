@@ -88,7 +88,6 @@ public class ModifyValueJob extends AbstractAttributeModificationJob
         monitor.worked( 1 );
 
         IValue newValue = new Value( attribute, newRawValue );
-        //attribute.modifyValue( oldValue, newValue );
 
         modifyValue( attribute.getEntry().getBrowserConnection(), attribute.getEntry(), oldValue, newValue, monitor );
         if ( !monitor.errorsReported() )
@@ -155,45 +154,54 @@ public class ModifyValueJob extends AbstractAttributeModificationJob
      * @param oldValue the old value
      * @param newValue the new value
      * @param monitor the progress monitor
+     * 
+     * @throws ModelModificationException
      */
     private void modifyValue( IBrowserConnection browserConnection, IEntry entry, IValue oldValue, IValue newValue,
-        StudioProgressMonitor monitor )
+        StudioProgressMonitor monitor ) throws ModelModificationException
     {
-        // dn
-        String dn = entry.getDn().toString();
-
-        // modification items
-        // perform a replace if the current attribute is single-valued
-        // perform an add and a remove operation if the current attribute is multi-valued
-        ModificationItem[] modificationItems;
-        if ( oldValue.getAttribute().getValueSize() == 1 )
+        if ( browserConnection.getConnection() != null )
         {
-            modificationItems = new ModificationItem[1];
-            BasicAttribute attribute = new BasicAttribute( newValue.getAttribute().getDescription(), newValue
-                .getRawValue() );
-            modificationItems[0] = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, attribute );
+            // dn
+            String dn = entry.getDn().toString();
+
+            // modification items
+            // perform a replace if the current attribute is single-valued
+            // perform an add and a remove operation if the current attribute is multi-valued
+            ModificationItem[] modificationItems;
+            if ( oldValue.getAttribute().getValueSize() == 1 )
+            {
+                modificationItems = new ModificationItem[1];
+                BasicAttribute attribute = new BasicAttribute( newValue.getAttribute().getDescription(), newValue
+                    .getRawValue() );
+                modificationItems[0] = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, attribute );
+            }
+            else
+            {
+                modificationItems = new ModificationItem[2];
+                BasicAttribute newAttribute = new BasicAttribute( newValue.getAttribute().getDescription(), newValue
+                    .getRawValue() );
+                modificationItems[0] = new ModificationItem( DirContext.ADD_ATTRIBUTE, newAttribute );
+                BasicAttribute oldAttribute = new BasicAttribute( oldValue.getAttribute().getDescription(), oldValue
+                    .getRawValue() );
+                modificationItems[1] = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, oldAttribute );
+            }
+
+            // controls
+            Control[] controls = null;
+            if ( entry.isReferral() )
+            {
+                controls = new Control[]
+                    { new ManageReferralControl() };
+            }
+
+            browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn, modificationItems,
+                controls, monitor );
         }
         else
         {
-            modificationItems = new ModificationItem[2];
-            BasicAttribute newAttribute = new BasicAttribute( newValue.getAttribute().getDescription(), newValue
-                .getRawValue() );
-            modificationItems[0] = new ModificationItem( DirContext.ADD_ATTRIBUTE, newAttribute );
-            BasicAttribute oldAttribute = new BasicAttribute( oldValue.getAttribute().getDescription(), oldValue
-                .getRawValue() );
-            modificationItems[1] = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, oldAttribute );
+            oldValue.getAttribute().modifyValue( oldValue, newValue );
         }
-
-        // controls
-        Control[] controls = null;
-        if ( entry.isReferral() )
-        {
-            controls = new Control[]
-                { new ManageReferralControl() };
-        }
-
-        browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn, modificationItems, controls,
-            monitor );
     }
 
 }

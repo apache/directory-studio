@@ -184,32 +184,50 @@ public class CreateValuesJob extends AbstractAttributeModificationJob
      * @param entryToModify the entry to modify
      * @param valuesToCreate the values to create
      * @param monitor the progress monitor
+     * 
+     * @throws ModelModificationException
      */
     static void createValues( IBrowserConnection browserConnection, IEntry entryToModify, IValue[] valuesToCreate,
-        StudioProgressMonitor monitor )
+        StudioProgressMonitor monitor ) throws ModelModificationException
     {
-        // dn
-        String dn = entryToModify.getDn().toString();
-
-        // modification items
-        ModificationItem[] modificationItems = new ModificationItem[valuesToCreate.length];
-        for ( int i = 0; i < modificationItems.length; i++ )
+        if ( browserConnection.getConnection() != null )
         {
-            BasicAttribute attribute = new BasicAttribute( valuesToCreate[i].getAttribute().getDescription(),
-                valuesToCreate[i].getRawValue() );
-            modificationItems[i] = new ModificationItem( DirContext.ADD_ATTRIBUTE, attribute );
-        }
+            // dn
+            String dn = entryToModify.getDn().toString();
 
-        // controls
-        Control[] controls = null;
-        if ( entryToModify.isReferral() )
+            // modification items
+            ModificationItem[] modificationItems = new ModificationItem[valuesToCreate.length];
+            for ( int i = 0; i < modificationItems.length; i++ )
+            {
+                BasicAttribute attribute = new BasicAttribute( valuesToCreate[i].getAttribute().getDescription(),
+                    valuesToCreate[i].getRawValue() );
+                modificationItems[i] = new ModificationItem( DirContext.ADD_ATTRIBUTE, attribute );
+            }
+
+            // controls
+            Control[] controls = null;
+            if ( entryToModify.isReferral() )
+            {
+                controls = new Control[]
+                    { new ManageReferralControl() };
+            }
+
+            browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn, modificationItems,
+                controls, monitor );
+        }
+        else
         {
-            controls = new Control[]
-                { new ManageReferralControl() };
+            for ( IValue value : valuesToCreate )
+            {
+                IAttribute attribute = entryToModify.getAttribute( value.getAttribute().getDescription() );
+                if ( attribute == null )
+                {
+                    attribute = new Attribute( entryToModify, value.getAttribute().getDescription() );
+                    entryToModify.addAttribute( attribute );
+                }
+                attribute.addValue( value );
+            }
         }
-
-        browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn, modificationItems, controls,
-            monitor );
     }
 
 }
