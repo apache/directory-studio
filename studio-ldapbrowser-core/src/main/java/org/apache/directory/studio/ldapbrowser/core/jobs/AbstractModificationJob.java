@@ -27,12 +27,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
-public abstract class AbstractModificationJob extends AbstractAsyncBulkJob
+public abstract class AbstractModificationJob extends AbstractNotificationJob
 {
 
-    protected void executeBulkJob( StudioProgressMonitor pm ) throws ModelModificationException
+    protected void executeNotificationJob( StudioProgressMonitor pm ) throws ModelModificationException
     {
-
         try
         {
             this.executeAsyncModificationJob( pm );

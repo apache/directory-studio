@@ -26,31 +26,45 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
-public abstract class AbstractAsyncBulkJob extends AbstractEclipseJob
+/**
+ * Abstract Job used to fire a notification after the job was executed.   
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public abstract class AbstractNotificationJob extends AbstractEclipseJob
 {
 
     protected final void executeAsyncJob( StudioProgressMonitor pm ) throws ModelModificationException
     {
-
         EventRegistry.suspendEventFireingInCurrentThread();
 
         try
         {
-            executeBulkJob( pm );
+            executeNotificationJob( pm );
         }
         finally
         {
             EventRegistry.resumeEventFireingInCurrentThread();
         }
 
-        this.runNotification();
-
+        runNotification();
     }
 
 
-    protected abstract void executeBulkJob( StudioProgressMonitor pm ) throws ModelModificationException;
+    /**
+     * Executes the job.
+     * 
+     * @param pm monitor progress monitor
+     * 
+     * @throws ModelModificationException the model modification exception
+     */
+    protected abstract void executeNotificationJob( StudioProgressMonitor monitor ) throws ModelModificationException;
 
 
+    /**
+     * Runs the notification.
+     */
     protected abstract void runNotification();
 
 }

@@ -43,7 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class CreateEntryJob extends AbstractAsyncBulkJob
+public class CreateEntryJob extends AbstractNotificationJob
 {
 
     /** The entry to create. */
@@ -93,9 +93,9 @@ public class CreateEntryJob extends AbstractAsyncBulkJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#executeBulkJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__create_entry_task_1, new String[]
             { entryToCreate.getDn().toString() } ), 2 + 1 );
@@ -117,7 +117,7 @@ public class CreateEntryJob extends AbstractAsyncBulkJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#runNotification()
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
      */
     protected void runNotification()
     {

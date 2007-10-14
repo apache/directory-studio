@@ -41,7 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 
 
-public class RenameEntryJob extends AbstractAsyncBulkJob
+public class RenameEntryJob extends AbstractNotificationJob
 {
 
     private IBrowserConnection browserConnection;
@@ -84,7 +84,7 @@ public class RenameEntryJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__rename_entry_task, new String[]

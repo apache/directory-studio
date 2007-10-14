@@ -53,7 +53,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class CopyEntriesJob extends AbstractAsyncBulkJob
+public class CopyEntriesJob extends AbstractNotificationJob
 {
 
     /** The parent entry. */
@@ -106,9 +106,9 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#executeBulkJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( entriesToCopy.length == 1 ? BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__copy_entries_task_1, new String[]
@@ -141,7 +141,7 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#runNotification()
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
      */
     protected void runNotification()
     {

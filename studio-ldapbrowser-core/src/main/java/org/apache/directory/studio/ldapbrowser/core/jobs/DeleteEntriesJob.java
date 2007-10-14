@@ -44,7 +44,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
 
-public class DeleteEntriesJob extends AbstractAsyncBulkJob
+public class DeleteEntriesJob extends AbstractNotificationJob
 {
 
     private IEntry[] entriesToDelete;
@@ -83,7 +83,7 @@ public class DeleteEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( entriesToDelete.length == 1 ? BrowserCoreMessages.bind(

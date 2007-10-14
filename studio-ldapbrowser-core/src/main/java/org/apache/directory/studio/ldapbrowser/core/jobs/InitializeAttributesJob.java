@@ -42,7 +42,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDe
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
 
-public class InitializeAttributesJob extends AbstractAsyncBulkJob
+public class InitializeAttributesJob extends AbstractNotificationJob
 {
 
     private IEntry[] entries;
@@ -84,7 +84,7 @@ public class InitializeAttributesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$

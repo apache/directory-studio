@@ -44,7 +44,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
 
 
-public class ImportLdifJob extends AbstractAsyncBulkJob
+public class ImportLdifJob extends AbstractNotificationJob
 {
 
     private IBrowserConnection connection;
@@ -88,7 +88,7 @@ public class ImportLdifJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeNotificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__import_ldif_task, 2 );

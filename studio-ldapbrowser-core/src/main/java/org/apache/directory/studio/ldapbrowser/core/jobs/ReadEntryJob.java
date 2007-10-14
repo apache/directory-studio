@@ -33,7 +33,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
-public class ReadEntryJob extends AbstractAsyncBulkJob
+public class ReadEntryJob extends AbstractNotificationJob
 {
 
     private IBrowserConnection connection;
@@ -80,7 +80,7 @@ public class ReadEntryJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor pm ) throws ModelModificationException
+    protected void executeNotificationJob( StudioProgressMonitor pm ) throws ModelModificationException
     {
         readEntry = connection.getEntryFromCache( dn );
         if ( readEntry == null )

@@ -34,7 +34,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
-public class ReloadSchemasJob extends AbstractAsyncBulkJob
+public class ReloadSchemasJob extends AbstractNotificationJob
 {
 
     private IBrowserConnection[] browserConnections;
@@ -67,7 +67,7 @@ public class ReloadSchemasJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", browserConnections.length + 1 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$

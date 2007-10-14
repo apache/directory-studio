@@ -43,7 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 
-public class InitializeChildrenJob extends AbstractAsyncBulkJob
+public class InitializeChildrenJob extends AbstractNotificationJob
 {
 
     private IEntry[] entries;
@@ -82,7 +82,7 @@ public class InitializeChildrenJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$

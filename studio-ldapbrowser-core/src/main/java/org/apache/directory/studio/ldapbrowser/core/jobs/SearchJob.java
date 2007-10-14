@@ -33,7 +33,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 
 
-public class SearchJob extends AbstractAsyncBulkJob
+public class SearchJob extends AbstractNotificationJob
 {
 
     private ISearch[] searches;
@@ -65,7 +65,7 @@ public class SearchJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( " ", searches.length + 1 ); //$NON-NLS-1$

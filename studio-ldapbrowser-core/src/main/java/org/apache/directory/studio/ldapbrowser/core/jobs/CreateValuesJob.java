@@ -147,7 +147,7 @@ public class CreateValuesJob extends AbstractModificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#runNotification()
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
      */
     protected void runNotification()
     {

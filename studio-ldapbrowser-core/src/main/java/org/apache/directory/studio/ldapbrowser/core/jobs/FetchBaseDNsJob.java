@@ -32,7 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 
 
-public class FetchBaseDNsJob extends AbstractAsyncBulkJob
+public class FetchBaseDNsJob extends AbstractNotificationJob
 {
 
     private IBrowserConnection connection;
@@ -61,7 +61,7 @@ public class FetchBaseDNsJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__fetch_basedns_task, 5 );
         monitor.reportProgress( " " ); //$NON-NLS-1$

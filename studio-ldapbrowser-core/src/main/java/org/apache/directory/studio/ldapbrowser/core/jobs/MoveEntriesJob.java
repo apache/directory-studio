@@ -41,7 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 
-public class MoveEntriesJob extends AbstractAsyncBulkJob
+public class MoveEntriesJob extends AbstractNotificationJob
 {
 
     private IBrowserConnection connection;
@@ -82,7 +82,7 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( BrowserCoreMessages.bind(

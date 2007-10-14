@@ -24,10 +24,10 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob;
 
 
-public class OpenBrowserConnectionsJob extends AbstractAsyncBulkJob
+public class OpenBrowserConnectionsJob extends AbstractNotificationJob
 {
 
     private BrowserConnection connection;
@@ -59,7 +59,7 @@ public class OpenBrowserConnectionsJob extends AbstractAsyncBulkJob
     }
 
 
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( " ", 1 * 6 + 1 ); //$NON-NLS-1$
