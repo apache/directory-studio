@@ -32,7 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
-public class ModifyValueJob extends AbstractModificationJob
+public class ModifyValueJob extends AbstractAttributeModificationJob
 {
 
     private IAttribute attribute;
@@ -53,7 +53,7 @@ public class ModifyValueJob extends AbstractModificationJob
     }
 
 
-    protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__modify_value_task, 2 );
@@ -75,7 +75,7 @@ public class ModifyValueJob extends AbstractModificationJob
     }
 
 
-    protected String[] getAffectedAttributeNames()
+    protected String[] getAffectedAttributeDescriptions()
     {
         return new String[]
             { this.attribute.getDescription() };

@@ -51,7 +51,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationExcep
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class CreateValuesJob extends AbstractModificationJob
+public class CreateValuesJob extends AbstractAttributeModificationJob
 {
 
     /** The entry to modify. */
@@ -94,9 +94,9 @@ public class CreateValuesJob extends AbstractModificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractModificationJob#executeAsyncModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#executeAttributeModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
         monitor.beginTask( valuesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_values_task_1
             : BrowserCoreMessages.jobs__create_values_task_n, 2 );
@@ -124,7 +124,7 @@ public class CreateValuesJob extends AbstractModificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractModificationJob#getModifiedEntry()
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#getModifiedEntry()
      */
     protected IEntry getModifiedEntry()
     {
@@ -133,16 +133,16 @@ public class CreateValuesJob extends AbstractModificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractModificationJob#getAffectedAttributeNames()
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#getAffectedAttributeDescriptions()
      */
-    protected String[] getAffectedAttributeNames()
+    protected String[] getAffectedAttributeDescriptions()
     {
-        Set<String> affectedAttributeNameSet = new HashSet<String>();
+        Set<String> attributeDescriptionSet = new HashSet<String>();
         for ( IValue value : valuesToCreate )
         {
-            affectedAttributeNameSet.add( value.getAttribute().getDescription() );
+            attributeDescriptionSet.add( value.getAttribute().getDescription() );
         }
-        return affectedAttributeNameSet.toArray( new String[affectedAttributeNameSet.size()] );
+        return attributeDescriptionSet.toArray( new String[attributeDescriptionSet.size()] );
     }
 
 

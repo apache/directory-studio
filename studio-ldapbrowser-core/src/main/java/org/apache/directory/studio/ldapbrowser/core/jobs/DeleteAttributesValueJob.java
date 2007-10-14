@@ -37,7 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
-public class DeleteAttributesValueJob extends AbstractModificationJob
+public class DeleteAttributesValueJob extends AbstractAttributeModificationJob
 {
 
     private IEntry entry;
@@ -86,7 +86,7 @@ public class DeleteAttributesValueJob extends AbstractModificationJob
     }
 
 
-    protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
 
         monitor.beginTask( attributes.length + values.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_task_1
@@ -123,7 +123,7 @@ public class DeleteAttributesValueJob extends AbstractModificationJob
     }
 
 
-    protected String[] getAffectedAttributeNames()
+    protected String[] getAffectedAttributeDescriptions()
     {
         Set affectedAttributeNameSet = new HashSet();
         for ( int i = 0; i < attributes.length; i++ )
