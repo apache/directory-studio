@@ -162,11 +162,6 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public void modify( IValue oldValue, IValue newVaue, StudioProgressMonitor monitor )
-    {
-    }
-
-
     public void reloadSchema( StudioProgressMonitor monitor )
     {
     }

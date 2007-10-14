@@ -541,12 +541,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-    public void modify( IValue oldValue, IValue newValue, StudioProgressMonitor monitor )
-    {
-        modifyHandler.modify( oldValue, newValue, monitor );
-    }
-
-
     public LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor monitor )
         throws ConnectionException
     {

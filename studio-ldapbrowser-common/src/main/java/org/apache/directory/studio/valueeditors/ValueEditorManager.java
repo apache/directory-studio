@@ -620,7 +620,7 @@ public class ValueEditorManager
             }
             else
             {
-                new ModifyValueJob( attribute, oldValue, newRawValue ).execute();
+                new ModifyValueJob( oldValue, newRawValue ).execute();
             }
         }
     }
