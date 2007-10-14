@@ -24,117 +24,192 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
+
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
+/**
+ * Job to create values asynchronously.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class CreateValuesJob extends AbstractModificationJob
 {
 
+    /** The entry to modify. */
     private IEntry entry;
 
-    private String[] attributeDescriptions;
+    /** The values to create. */
+    private IValue[] valuesToCreate;
 
-    private Object[] rawValues;
+    /** The created values. */
+    private IValue[] createdValues;
 
-    private ValueAddedEvent event;
 
-
-    public CreateValuesJob( IEntry entry, String[] attributeDescriptions, Object[] rawValues )
+    /**
+     * Creates a new instance of CreateValuesJob.
+     * 
+     * @param entry the entry to modify
+     * @param valuesToCreate the values to create
+     */
+    public CreateValuesJob( IEntry entry, IValue[] valuesToCreate )
     {
         this.entry = entry;
-        this.attributeDescriptions = attributeDescriptions;
-        this.rawValues = rawValues;
+        this.valuesToCreate = valuesToCreate;
 
-        setName( rawValues.length == 1 ? BrowserCoreMessages.jobs__create_values_name_1
+        setName( valuesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_values_name_1
             : BrowserCoreMessages.jobs__create_values_name_n );
     }
 
 
+    /**
+     * Creates a new instance of CreateValuesJob.
+     *
+     * @param attribute the attribute to modify
+     * @param newValue the new value
+     */
     public CreateValuesJob( IAttribute attribute, Object newValue )
     {
-        this( attribute.getEntry(), new String[]
-            { attribute.getDescription() }, new Object[]
-            { newValue } );
+        this( attribute.getEntry(), new IValue[]
+            { new Value( attribute, newValue ) } );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractModificationJob#executeAsyncModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeAsyncModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
     {
-
-        monitor.beginTask( rawValues.length == 1 ? BrowserCoreMessages.jobs__create_values_task_1
+        monitor.beginTask( valuesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_values_task_1
             : BrowserCoreMessages.jobs__create_values_task_n, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        IValue[] newValues = new IValue[rawValues.length];
+        IValue[] newValues = new IValue[valuesToCreate.length];
         for ( int i = 0; i < newValues.length; i++ )
         {
-            IAttribute attribute = entry.getAttribute( attributeDescriptions[i] );
+            IAttribute attribute = entry.getAttribute( valuesToCreate[i].getAttribute().getDescription() );
             if ( attribute == null )
             {
-                // String[] possibleAttributeNames =
-                // entry.getSubschema().getAllAttributeNames();
-                // if(!Arrays.asList(possibleAttributeNames).contains(attributeNames[i]))
-                // {
-                // throw new ModelModificationException("Attribute
-                // "+attributeNames[i]+" is not in subschema");
-                // }
-                attribute = new Attribute( entry, attributeDescriptions[i] );
-                entry.addAttribute( attribute );
+                attribute = new Attribute( entry, valuesToCreate[i].getAttribute().getDescription() );
             }
 
-            newValues[i] = new Value( attribute, rawValues[i] );
-            attribute.addValue( newValues[i] );
-
-            if ( this.event == null )
-            {
-                event = new ValueAddedEvent( entry.getBrowserConnection(), entry, attribute, newValues[i] );
-            }
+            newValues[i] = new Value( attribute, valuesToCreate[i].getRawValue() );
         }
 
-        entry.getBrowserConnection().create( newValues, monitor );
+        createValues( entry.getBrowserConnection(), entry, newValues, monitor );
+        if ( !monitor.errorsReported() )
+        {
+            createdValues = newValues;
+        }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractModificationJob#getModifiedEntry()
+     */
     protected IEntry getModifiedEntry()
     {
         return entry;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractModificationJob#getAffectedAttributeNames()
+     */
     protected String[] getAffectedAttributeNames()
     {
-        Set affectedAttributeNameSet = new HashSet();
-        for ( int i = 0; i < attributeDescriptions.length; i++ )
+        Set<String> affectedAttributeNameSet = new HashSet<String>();
+        for ( IValue value : valuesToCreate )
         {
-            affectedAttributeNameSet.add( attributeDescriptions[i] );
+            affectedAttributeNameSet.add( value.getAttribute().getDescription() );
         }
-        return ( String[] ) affectedAttributeNameSet.toArray( new String[affectedAttributeNameSet.size()] );
+        return affectedAttributeNameSet.toArray( new String[affectedAttributeNameSet.size()] );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAsyncBulkJob#runNotification()
+     */
     protected void runNotification()
     {
-        if ( this.event != null )
+        EntryModificationEvent event;
+
+        if ( createdValues != null && createdValues.length > 0 )
         {
-            EventRegistry.fireEntryUpdated( this.event, this );
+            event = new ValueAddedEvent( entry.getBrowserConnection(), entry, createdValues[0].getAttribute(),
+                createdValues[0] );
         }
+        else
+        {
+            event = new AttributesInitializedEvent( entry );
+        }
+
+        EventRegistry.fireEntryUpdated( event, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
-        return attributeDescriptions.length == 1 ? BrowserCoreMessages.jobs__create_values_error_1
+        return valuesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_values_error_1
             : BrowserCoreMessages.jobs__create_values_error_n;
+    }
+
+
+    /**
+     * Creates the values using the underlying JNDI connection wrapper.
+     * 
+     * @param browserConnection the browser connection
+     * @param entryToModify the entry to modify
+     * @param valuesToCreate the values to create
+     * @param monitor the progress monitor
+     */
+    static void createValues( IBrowserConnection browserConnection, IEntry entryToModify, IValue[] valuesToCreate,
+        StudioProgressMonitor monitor )
+    {
+        // dn
+        String dn = entryToModify.getDn().toString();
+
+        // modification items
+        ModificationItem[] modificationItems = new ModificationItem[valuesToCreate.length];
+        for ( int i = 0; i < modificationItems.length; i++ )
+        {
+            BasicAttribute attribute = new BasicAttribute( valuesToCreate[i].getAttribute().getDescription(),
+                valuesToCreate[i].getRawValue() );
+            modificationItems[i] = new ModificationItem( DirContext.ADD_ATTRIBUTE, attribute );
+        }
+
+        // controls
+        Control[] controls = null;
+        if ( entryToModify.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl() };
+        }
+
+        browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn, modificationItems, controls,
+            monitor );
     }
 
 }

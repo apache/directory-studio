@@ -54,11 +54,6 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public void create( IValue[] valuesToCreate, StudioProgressMonitor monitor )
-    {
-    }
-
-
     public void delete( IEntry entryToDelete, StudioProgressMonitor monitor )
     {
     }

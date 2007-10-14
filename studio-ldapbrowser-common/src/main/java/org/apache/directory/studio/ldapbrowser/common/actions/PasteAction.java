@@ -206,14 +206,15 @@ public class PasteAction extends BrowserAction
 
         if ( entry != null )
         {
-            String[] attributeNames = new String[values.length];
-            Object[] rawValues = new Object[values.length];
-            for ( int v = 0; v < values.length; v++ )
-            {
-                attributeNames[v] = values[v].getAttribute().getDescription();
-                rawValues[v] = values[v].getRawValue();
-            }
-            new CreateValuesJob( entry, attributeNames, rawValues ).execute();
+//            String[] attributeNames = new String[values.length];
+//            Object[] rawValues = new Object[values.length];
+//            for ( int v = 0; v < values.length; v++ )
+//            {
+//                attributeNames[v] = values[v].getAttribute().getDescription();
+//                rawValues[v] = values[v].getRawValue();
+//            }
+//            new CreateValuesJob( entry, attributeNames, rawValues ).execute();
+            new CreateValuesJob( entry, values ).execute();
         }
     }
 

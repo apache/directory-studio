@@ -22,13 +22,11 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -59,16 +57,11 @@ public class Value implements IValue
      *
      * @param attribute the attribute this value belongs to 
      * @param rawValue the raw value, either a String or a byte[]
-     * @throws ModelModificationException if one of the parameter is null
      */
-    public Value( IAttribute attribute, Object rawValue ) throws ModelModificationException
+    public Value( IAttribute attribute, Object rawValue )
     {
         this.init( attribute, rawValue );
-
-        if ( rawValue == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_value );
-        }
+        assert rawValue != null;
     }
 
 
@@ -76,9 +69,8 @@ public class Value implements IValue
      * Creates a new instance of Value with an empty value.
      *
      * @param attribute the attribute this value belongs to
-     * @throws ModelModificationException if one of the parameter is null
      */
-    public Value( IAttribute attribute ) throws ModelModificationException
+    public Value( IAttribute attribute )
     {
         this.init( attribute, null );
     }
@@ -89,14 +81,10 @@ public class Value implements IValue
      *
      * @param attribute the attribute this value belongs to 
      * @param rawValue the raw value, either a String or a byte[] or null 
-     * @throws ModelModificationException
      */
-    private void init( IAttribute attribute, Object rawValue ) throws ModelModificationException
+    private void init( IAttribute attribute, Object rawValue )
     {
-        if ( attribute == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_attribute );
-        }
+        assert attribute != null;
 
         this.attribute = attribute;
 

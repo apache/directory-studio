@@ -33,9 +33,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -164,15 +162,8 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
 
                 if ( ah == null )
                 {
-                    try
-                    {
-                        ah = new AttributeHierarchy( sr.getEntry(), property, new IAttribute[]
-                            { new Attribute( sr.getEntry(), property ) } );
-                    }
-                    catch ( ModelModificationException e )
-                    {
-                        e.printStackTrace();
-                    }
+                    ah = new AttributeHierarchy( sr.getEntry(), property, new IAttribute[]
+                        { new Attribute( sr.getEntry(), property ) } );
                 }
 
                 return ah;

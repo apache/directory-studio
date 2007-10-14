@@ -69,19 +69,20 @@ public class SearchResultEditorPasteAction extends PasteAction
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-
-            String attributeDescription = getSelectedAttributeHierarchies()[0].getAttribute().getDescription();
-
-            String[] attributeDescriptions = new String[values.length];
-            Object[] rawValues = new Object[values.length];
-            for ( int v = 0; v < values.length; v++ )
-            {
-                attributeDescriptions[v] = attributeDescription;
-                rawValues[v] = values[v].getRawValue();
-            }
+//            String attributeDescription = getSelectedAttributeHierarchies()[0].getAttribute().getDescription();
+//
+//            String[] attributeDescriptions = new String[values.length];
+//            Object[] rawValues = new Object[values.length];
+//            for ( int v = 0; v < values.length; v++ )
+//            {
+//                attributeDescriptions[v] = attributeDescription;
+//                rawValues[v] = values[v].getRawValue();
+//            }
+//            IEntry entry = getSelectedAttributeHierarchies()[0].getAttribute().getEntry();
+//
+//            new CreateValuesJob( entry, attributeDescriptions, rawValues ).execute();
             IEntry entry = getSelectedAttributeHierarchies()[0].getAttribute().getEntry();
-
-            new CreateValuesJob( entry, attributeDescriptions, rawValues ).execute();
+            new CreateValuesJob( entry, values ).execute();
         }
     }
 

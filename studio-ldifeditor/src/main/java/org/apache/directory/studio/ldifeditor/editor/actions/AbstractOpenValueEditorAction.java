@@ -27,7 +27,6 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
@@ -161,10 +160,6 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
             {
                 e.printStackTrace();
             }
-            catch ( ModelModificationException e )
-            {
-                e.printStackTrace();
-            }
         }
 
         return rawValue;
@@ -184,8 +179,8 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
         }
         return dn;
     }
-    
-    
+
+
     protected Object getValue()
     {
         LdifPart[] parts = getSelectedLdifParts();

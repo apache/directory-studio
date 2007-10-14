@@ -76,16 +76,8 @@ public class SearchResultEditorCellModifier implements ICellModifier
             // attribute dummy
             if ( ah == null )
             {
-                try
-                {
-                    ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
-                        { new Attribute( result.getEntry(), property ) } );
-                }
-                catch ( ModelModificationException e )
-                {
-                    e.printStackTrace();
-                    return false;
-                }
+                ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
+                    { new Attribute( result.getEntry(), property ) } );
             }
 
             // check schema modifyable
@@ -145,16 +137,8 @@ public class SearchResultEditorCellModifier implements ICellModifier
 
             if ( ah == null )
             {
-                try
-                {
-                    ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
-                        { new Attribute( result.getEntry(), property ) } );
-                }
-                catch ( ModelModificationException e )
-                {
-                    e.printStackTrace();
-                    return null;
-                }
+                ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
+                    { new Attribute( result.getEntry(), property ) } );
             }
 
             return this.valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah );

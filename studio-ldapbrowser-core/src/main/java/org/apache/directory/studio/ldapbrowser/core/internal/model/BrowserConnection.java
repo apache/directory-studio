@@ -541,12 +541,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-    public void create( IValue[] valuesToCreate, StudioProgressMonitor monitor )
-    {
-        modifyHandler.create( valuesToCreate, monitor );
-    }
-
-
     public void modify( IValue oldValue, IValue newValue, StudioProgressMonitor monitor )
     {
         modifyHandler.modify( oldValue, newValue, monitor );

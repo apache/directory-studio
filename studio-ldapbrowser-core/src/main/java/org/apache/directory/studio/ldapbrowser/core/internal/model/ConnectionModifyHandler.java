@@ -80,43 +80,6 @@ class ConnectionModifyHandler
     }
 
 
-    void create( IValue[] valuesToCreate, StudioProgressMonitor monitor )
-    {
-        for ( int i = 0; !monitor.isCanceled() && i < valuesToCreate.length; i++ )
-        {
-
-            LdifChangeModifyRecord cmr = new LdifChangeModifyRecord( LdifDnLine.create( valuesToCreate[i]
-                .getAttribute().getEntry().getDn().toString() ) );
-            ModelConverter.addControls( cmr, valuesToCreate[i].getAttribute().getEntry() );
-            cmr.setChangeType( LdifChangeTypeLine.createModify() );
-
-            LdifModSpec modSpec = LdifModSpec.createAdd( valuesToCreate[i].getAttribute().getDescription() );
-            if ( valuesToCreate[i].isString() )
-            {
-                modSpec.addAttrVal( LdifAttrValLine.create( valuesToCreate[i].getAttribute().getDescription(),
-                    valuesToCreate[i].getStringValue() ) );
-            }
-            else
-            {
-                modSpec.addAttrVal( LdifAttrValLine.create( valuesToCreate[i].getAttribute().getDescription(),
-                    valuesToCreate[i].getBinaryValue() ) );
-            }
-            modSpec.finish( LdifModSpecSepLine.create() );
-            cmr.addModSpec( modSpec );
-            cmr.finish( LdifSepLine.create() );
-
-            try
-            {
-                this.applyModificationAndLog( cmr, monitor );
-            }
-            catch ( ConnectionException e )
-            {
-                monitor.reportError( e );
-            }
-        }
-    }
-
-
     void modify( IValue oldValue, IValue newValue, StudioProgressMonitor monitor )
     {
         try

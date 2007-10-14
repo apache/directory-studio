@@ -75,19 +75,11 @@ public class Attribute implements IAttribute
      *                The entry of this attribute, mustn't be null
      * @param description
      *                The attribute descrption, mustn't be null.
-     * @throws ModelModificationException
-     *                 if the attribute name is null or empty.
      */
-    public Attribute( IEntry entry, String description ) throws ModelModificationException
+    public Attribute( IEntry entry, String description )
     {
-        if ( entry == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_entry );
-        }
-        if ( description == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_attribute );
-        }
+        assert entry != null;
+        assert description != null;
 
         this.entry = entry;
         this.attributeDescription = new AttributeDescription( description );
@@ -203,16 +195,9 @@ public class Attribute implements IAttribute
      */
     public void addEmptyValue()
     {
-        try
-        {
-            IValue emptyValue = new Value( this );
-            valueList.add( emptyValue );
-            this.attributeModified( new EmptyValueAddedEvent( getEntry().getBrowserConnection(), getEntry(), this, emptyValue ) );
-        }
-        catch ( ModelModificationException mme )
-        {
-            // Shouldn't occur
-        }
+        IValue emptyValue = new Value( this );
+        valueList.add( emptyValue );
+        this.attributeModified( new EmptyValueAddedEvent( getEntry().getBrowserConnection(), getEntry(), this, emptyValue ) );
     }
 
 
