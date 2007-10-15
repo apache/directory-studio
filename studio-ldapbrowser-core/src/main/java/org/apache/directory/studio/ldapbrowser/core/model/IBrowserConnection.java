@@ -157,12 +157,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract void delete( IEntry entryToDelete, StudioProgressMonitor monitor );
 
 
-    public abstract void delete( IValue valuesToDelete[], StudioProgressMonitor monitor );
-
-
-    public abstract void delete( IAttribute attriubtesToDelete[], StudioProgressMonitor monitor );
-
-
     public abstract void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
         StudioProgressMonitor monitor );
 

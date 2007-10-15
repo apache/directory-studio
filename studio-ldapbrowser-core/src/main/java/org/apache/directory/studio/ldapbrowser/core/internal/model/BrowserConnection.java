@@ -49,7 +49,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -850,18 +849,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     public void delete( IEntry entry, StudioProgressMonitor monitor )
     {
         modifyHandler.delete( entry, monitor );
-    }
-
-
-    public void delete( IValue[] valuesToDelete, StudioProgressMonitor monitor )
-    {
-        modifyHandler.delete( valuesToDelete, monitor );
-    }
-
-
-    public void delete( IAttribute[] attriubtesToDelete, StudioProgressMonitor monitor )
-    {
-        modifyHandler.delete( attriubtesToDelete, monitor );
     }
 
 

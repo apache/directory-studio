@@ -80,68 +80,6 @@ class ConnectionModifyHandler
     }
 
 
-    void delete( IValue[] valuesToDelete, StudioProgressMonitor monitor )
-    {
-        try
-        {
-            for ( int i = 0; !monitor.isCanceled() && i < valuesToDelete.length; i++ )
-            {
-                LdifChangeModifyRecord cmr = new LdifChangeModifyRecord( LdifDnLine.create( valuesToDelete[i]
-                    .getAttribute().getEntry().getDn().toString() ) );
-                ModelConverter.addControls( cmr, valuesToDelete[i].getAttribute().getEntry() );
-                cmr.setChangeType( LdifChangeTypeLine.createModify() );
-
-                LdifModSpec modSpec = LdifModSpec.createDelete( valuesToDelete[i].getAttribute().getDescription() );
-                if ( valuesToDelete[i].isString() )
-                {
-                    modSpec.addAttrVal( LdifAttrValLine.create( valuesToDelete[i].getAttribute().getDescription(),
-                        valuesToDelete[i].getStringValue() ) );
-                }
-                else
-                {
-                    modSpec.addAttrVal( LdifAttrValLine.create( valuesToDelete[i].getAttribute().getDescription(),
-                        valuesToDelete[i].getBinaryValue() ) );
-                }
-                modSpec.finish( LdifModSpecSepLine.create() );
-                cmr.addModSpec( modSpec );
-                cmr.finish( LdifSepLine.create() );
-
-                this.applyModificationAndLog( cmr, monitor );
-            }
-        }
-        catch ( ConnectionException e )
-        {
-            monitor.reportError( e );
-        }
-    }
-
-
-    void delete( IAttribute[] attriubtesToDelete, StudioProgressMonitor monitor )
-    {
-        try
-        {
-            for ( int i = 0; !monitor.isCanceled() && i < attriubtesToDelete.length; i++ )
-            {
-                LdifChangeModifyRecord cmr = new LdifChangeModifyRecord( LdifDnLine.create( attriubtesToDelete[i]
-                    .getEntry().getDn().toString() ) );
-                ModelConverter.addControls( cmr, attriubtesToDelete[i].getEntry() );
-                cmr.setChangeType( LdifChangeTypeLine.createModify() );
-
-                LdifModSpec modSpec = LdifModSpec.createDelete( attriubtesToDelete[i].getDescription() );
-                modSpec.finish( LdifModSpecSepLine.create() );
-                cmr.addModSpec( modSpec );
-                cmr.finish( LdifSepLine.create() );
-
-                this.applyModificationAndLog( cmr, monitor );
-            }
-        }
-        catch ( ConnectionException e )
-        {
-            monitor.reportError( e );
-        }
-    }
-
-
     void delete( IEntry entry, StudioProgressMonitor monitor )
     {
         try

@@ -111,7 +111,8 @@ public class RenameValuesJob extends AbstractAttributeModificationJob
         CreateValuesJob.createValues( entry.getBrowserConnection(), entry, newValues, monitor );
         if ( !monitor.errorsReported() )
         {
-            entry.getBrowserConnection().delete( oldValues, monitor );
+            DeleteAttributesValueJob.deleteAttributesAndValues( entry.getBrowserConnection(), entry, null, oldValues,
+                monitor );
         }
         if ( !monitor.errorsReported() )
         {

@@ -59,18 +59,6 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public void delete( IValue[] valuesToDelete, StudioProgressMonitor monitor )
-    {
-
-    }
-
-
-    public void delete( IAttribute[] attriubtesToDelete, StudioProgressMonitor monitor )
-    {
-
-    }
-
-
     public boolean existsEntry( DN dn, StudioProgressMonitor monitor )
     {
         return false;
