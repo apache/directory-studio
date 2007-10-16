@@ -55,6 +55,9 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -348,10 +351,20 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             public void modifyText( ModifyEvent e )
             {
                 availableObjectClassesViewer.refresh();
-                if ( availableObjectClassesViewer.getTable().getItemCount() == 1 )
+                if ( availableObjectClassesViewer.getTable().getItemCount() >= 1 )
                 {
                     Object item = availableObjectClassesViewer.getElementAt( 0 );
                     availableObjectClassesViewer.setSelection( new StructuredSelection( item ) );
+                }
+            }
+        } );
+        availableObjectClassesInstantSearch.addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( e.keyCode == SWT.ARROW_DOWN )
+                {
+                    availableObjectClassesViewer.getTable().setFocus();
                 }
             }
         } );
@@ -371,6 +384,19 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             public void doubleClick( DoubleClickEvent event )
             {
                 add( event.getSelection() );
+            }
+        } );
+        availableObjectClassesViewer.getTable().addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( e.keyCode == SWT.ARROW_UP )
+                {
+                    if ( availableObjectClassesViewer.getTable().getSelectionIndex() <= 0 )
+                    {
+                        availableObjectClassesInstantSearch.setFocus();
+                    }
+                }
             }
         } );
 
