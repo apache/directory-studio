@@ -28,6 +28,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttributes;
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -41,6 +46,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
 
@@ -203,12 +209,17 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                     }
                 }
 
-                entry.getBrowserConnection().delete( entry, monitor );
+                int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
+                deleteEntry( entry.getBrowserConnection(), entry, monitor );
+                int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
 
-                numberOfDeletedEntries++;
-                monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__deleted_n_entries,
-                    new String[]
-                        { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
+                if ( errorStatusSize1 == errorStatusSize2 )
+                {
+                    numberOfDeletedEntries++;
+                    monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__deleted_n_entries,
+                        new String[]
+                            { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
+                }
             }
 
         }
@@ -247,4 +258,20 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             : BrowserCoreMessages.jobs__delete_entries_error_n;
     }
 
+    static void deleteEntry( IBrowserConnection browserConnection, IEntry entry, StudioProgressMonitor monitor )
+    {
+        // dn
+        String dn = entry.getDn().toString();
+
+        // controls
+        Control[] controls = null;
+        if ( entry.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl() };
+        }
+
+        browserConnection.getConnection().getJNDIConnectionWrapper()
+            .deleteEntry( dn, controls, monitor );
+    }
 }

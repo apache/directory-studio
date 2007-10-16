@@ -80,27 +80,6 @@ class ConnectionModifyHandler
     }
 
 
-    void delete( IEntry entry, StudioProgressMonitor monitor )
-    {
-        try
-        {
-            LdifChangeDeleteRecord cdr = new LdifChangeDeleteRecord( LdifDnLine.create( entry.getDn().toString() ) );
-            ModelConverter.addControls( cdr, entry );
-            cdr.setChangeType( LdifChangeTypeLine.createDelete() );
-            cdr.finish( LdifSepLine.create() );
-
-            this.applyModificationAndLog( cdr, monitor );
-
-            browserConnection.uncacheEntry( entry );
-
-        }
-        catch ( ConnectionException e )
-        {
-            monitor.reportError( e );
-        }
-    }
-
-
     void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
         StudioProgressMonitor monitor )
     {

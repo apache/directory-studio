@@ -154,9 +154,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract void search( ISearch searchRequest, StudioProgressMonitor monitor );
 
 
-    public abstract void delete( IEntry entryToDelete, StudioProgressMonitor monitor );
-
-
     public abstract void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
         StudioProgressMonitor monitor );
 

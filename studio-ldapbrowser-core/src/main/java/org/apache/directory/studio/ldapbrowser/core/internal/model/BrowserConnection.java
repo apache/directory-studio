@@ -846,12 +846,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-    public void delete( IEntry entry, StudioProgressMonitor monitor )
-    {
-        modifyHandler.delete( entry, monitor );
-    }
-
-
     public void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
         StudioProgressMonitor monitor )
     {
