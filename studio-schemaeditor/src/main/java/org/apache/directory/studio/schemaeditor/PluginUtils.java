@@ -42,6 +42,7 @@ import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImportException;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
+import org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizardSchemasSelectionPage.ServerTypeEnum;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.eclipse.core.runtime.CoreException;
@@ -232,14 +233,14 @@ public class PluginUtils
      * @return
      *      the corresponding schema, or null if no schema has been found
      */
-    public static Schema loadCoreSchema( String schemaName )
+    public static Schema loadCoreSchema( ServerTypeEnum serverType, String schemaName )
     {
         Schema schema = null;
 
         try
         {
-            URL url = Platform.getBundle( Activator.PLUGIN_ID )
-                .getResource( "resources/schemas/" + schemaName + ".xml" );
+            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
+                "resources/schemas/" + getFolderName( serverType ) + "/" + schemaName + ".xml" );
 
             if ( url == null )
             {
@@ -260,6 +261,30 @@ public class PluginUtils
         }
 
         return schema;
+    }
+
+
+    /**
+     * The name of the folder for the given Server Type.
+     *
+     * @param serverType
+     *      the Server Type
+     * @return
+     *      the name of the folder for the given Server Type
+     */
+    private static String getFolderName( ServerTypeEnum serverType )
+    {
+        if ( ServerTypeEnum.APACHE_DS.equals( serverType ) )
+        {
+            return "apacheds";
+        }
+        else if ( ServerTypeEnum.OPENLDAP.equals( serverType ) )
+        {
+            return "openldap";
+        }
+
+        // Default
+        return null;
     }
 
 

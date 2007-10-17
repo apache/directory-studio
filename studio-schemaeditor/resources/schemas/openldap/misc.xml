@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="misc">
+   <attributetypes>
+      <attributetype oid="2.16.840.1.113730.3.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mailLocalAddress</alias>
+         </aliases>
+         <description>RFC822 email address of this recipient</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <syntaxlength>256</syntaxlength>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="2.16.840.1.113730.3.1.18" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mailHost</alias>
+         </aliases>
+         <description>FQDN of the SMTP/MTA of this recipient</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <syntaxlength>256</syntaxlength>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="2.16.840.1.113730.3.1.47" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>mailRoutingAddress</alias>
+         </aliases>
+         <description>RFC822 routing address of this recipient</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <syntaxlength>256</syntaxlength>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.42.2.27.2.1.15" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>rfc822MailMember</alias>
+         </aliases>
+         <description>rfc822 mail address of group member(s)</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+   </attributetypes>
+   <objectclasses>
+      <objectclass oid="2.16.840.1.113730.3.2.147" obsolete="false">
+         <aliases>
+            <alias>inetLocalMailRecipient</alias>
+         </aliases>
+         <description>Internet local mail recipient</description>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>AUXILIARY</type>
+         <optional>
+            <attributetype>mailLocalAddress</attributetype>
+            <attributetype>mailHost</attributetype>
+            <attributetype>mailRoutingAddress</attributetype>
+         </optional>
+      </objectclass>
+      <objectclass oid="1.3.6.1.4.1.42.2.27.1.2.5" obsolete="false">
+         <aliases>
+            <alias>nisMailAlias</alias>
+         </aliases>
+         <description>NIS mail alias</description>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <mandatory>
+            <attributetype>cn</attributetype>
+         </mandatory>
+         <optional>
+            <attributetype>rfc822MailMember</attributetype>
+         </optional>
+      </objectclass>
+   </objectclasses>
+</schema>

@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -52,6 +53,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class NewProjectWizardSchemasSelectionPage extends WizardPage
 {
     // UI Fields
+    private Button typeApacheDSButton;
+    private Button typeOpenLDAPButton;
     private CheckboxTableViewer coreSchemasTableViewer;
 
 
@@ -62,7 +65,7 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
     {
         super( "NewProjectWizardSchemasSelectionPage" );
         setTitle( "Create a Schema project." );
-        setDescription( "Please select the core schemas to include." );
+        setDescription( "Please select the core schemas to include in the project." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
             PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
     }
@@ -77,14 +80,44 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
         composite.setLayout( new GridLayout( 2, false ) );
         composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
+        // Server Type Group
+        Group serverTypeGroup = new Group( composite, SWT.NONE );
+        serverTypeGroup.setText( "Server Type" );
+        serverTypeGroup.setLayout( new GridLayout( 2, false ) );
+        serverTypeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        // Type Apache DS Button
+        typeApacheDSButton = new Button( serverTypeGroup, SWT.RADIO );
+        typeApacheDSButton.setText( "Apache DS" );
+        typeApacheDSButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                initCoreSchemasTableViewerApacheDS();
+            }
+        } );
+
+        // Type OpenLDAP Button
+        typeOpenLDAPButton = new Button( serverTypeGroup, SWT.RADIO );
+        typeOpenLDAPButton.setText( "OpenLDAP" );
+        typeOpenLDAPButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                initCoreSchemasTableViewerOpenLDAP();
+            }
+        } );
+
+        // Core Schemas Label
+        Label coreSchemaslabel = new Label( composite, SWT.NONE );
+        coreSchemaslabel.setText( "Choose the 'core' schemas to include:" );
+        coreSchemaslabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
         // Core Schemas TableViewer
-        Label label = new Label( composite, SWT.NONE );
-        label.setText( "Choose the 'core' schemas to include in the project:" );
-        label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         coreSchemasTableViewer = new CheckboxTableViewer( new Table( composite, SWT.BORDER | SWT.CHECK
             | SWT.FULL_SELECTION ) );
-        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 2 );
-        gridData.heightHint = 160;
+        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
+        gridData.heightHint = 127;
         coreSchemasTableViewer.getTable().setLayoutData( gridData );
         coreSchemasTableViewer.setContentProvider( new ArrayContentProvider() );
         coreSchemasTableViewer.setLabelProvider( new LabelProvider()
@@ -129,9 +162,33 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
      */
     private void initFields()
     {
+        typeApacheDSButton.setSelection( true );
+
+        initCoreSchemasTableViewerApacheDS();
+    }
+
+
+    /**
+     * Initializes the Core Schemas Table with Apache DS Schemas
+     */
+    private void initCoreSchemasTableViewerApacheDS()
+    {
+        coreSchemasTableViewer.setAllChecked( false );
         coreSchemasTableViewer.setInput( new String[]
             { "apache", "apachedns", "apachemeta", "autofs", "collective", "corba", "core", "cosine", "dhcp",
                 "inetorgperson", "java", "krb5kdc", "mozilla", "nis", "samba", "system" } );
+    }
+
+
+    /**
+     * Initializes the Core Schemas Table with Apache DS Schemas
+     */
+    private void initCoreSchemasTableViewerOpenLDAP()
+    {
+        coreSchemasTableViewer.setAllChecked( false );
+        coreSchemasTableViewer.setInput( new String[]
+            { "corba", "core", "cosine", "dyngroup", "inetorgperson", "java", "misc", "nis", "openldap", "ppolicy",
+                "system" } );
     }
 
 
@@ -144,5 +201,40 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
     public String[] getSelectedSchemas()
     {
         return Arrays.asList( coreSchemasTableViewer.getCheckedElements() ).toArray( new String[0] );
+    }
+
+
+    /**
+     * Gets the Server Type
+     *
+     * @return
+     *      the Server Type
+     */
+    public ServerTypeEnum getServerType()
+    {
+        if ( typeApacheDSButton.getSelection() )
+        {
+            return ServerTypeEnum.APACHE_DS;
+        }
+        else if ( typeOpenLDAPButton.getSelection() )
+        {
+            return ServerTypeEnum.OPENLDAP;
+        }
+        else
+        {
+            // Default
+            return null;
+        }
+    }
+
+    /**
+     * This enum represents the different server types.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public enum ServerTypeEnum
+    {
+        APACHE_DS, OPENLDAP
     }
 }

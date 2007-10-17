@@ -34,6 +34,7 @@ import org.apache.directory.studio.schemaeditor.model.ProjectType;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
+import org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizardSchemasSelectionPage.ServerTypeEnum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -167,11 +168,12 @@ public class NewProjectWizard extends Wizard implements INewWizard
         {
             // Getting the selected 'core' schemas
             String[] selectedSchemas = schemasSelectionPage.getSelectedSchemas();
-            if ( selectedSchemas != null )
+            ServerTypeEnum serverType = schemasSelectionPage.getServerType();
+            if ( ( selectedSchemas != null ) && ( serverType != null ) )
             {
                 for ( String selectedSchema : selectedSchemas )
                 {
-                    Schema schema = PluginUtils.loadCoreSchema( selectedSchema );
+                    Schema schema = PluginUtils.loadCoreSchema( serverType, selectedSchema );
                     if ( schema != null )
                     {
                         project.getSchemaHandler().addSchema( schema );
@@ -230,9 +232,6 @@ public class NewProjectWizard extends Wizard implements INewWizard
             {
                 return schemasSelectionPage;
             }
-
-            // Default
-            return null;
         }
 
         // Default

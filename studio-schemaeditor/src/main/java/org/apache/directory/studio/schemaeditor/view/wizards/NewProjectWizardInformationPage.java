@@ -102,12 +102,12 @@ public class NewProjectWizardInformationPage extends WizardPage
             typeGroup.setLayout( new GridLayout() );
             typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
-            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
-            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
             typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
             typeOfflineRadio.setText( "Offline Schema" );
             typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
+            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
+            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         }
 
         initFields();
@@ -121,9 +121,9 @@ public class NewProjectWizardInformationPage extends WizardPage
      */
     private void initFields()
     {
-        if ( typeOnlineRadio != null )
+        if ( typeOfflineRadio != null )
         {
-            typeOnlineRadio.setSelection( true );
+            typeOfflineRadio.setSelection( true );
         }
 
         displayErrorMessage( null );
