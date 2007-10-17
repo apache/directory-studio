@@ -163,7 +163,7 @@ public class OpenLdapSchemaFileImporter
     {
         AttributeTypeImpl newAT = new AttributeTypeImpl( at.getOid() );
         newAT.setNames( at.getNames() );
-        newAT.setDescription( newAT.getDescription() );
+        newAT.setDescription( at.getDescription() );
         newAT.setSuperiorName( at.getSuperior() );
         newAT.setUsage( at.getUsage() );
         newAT.setSyntaxOid( at.getSyntax() );
