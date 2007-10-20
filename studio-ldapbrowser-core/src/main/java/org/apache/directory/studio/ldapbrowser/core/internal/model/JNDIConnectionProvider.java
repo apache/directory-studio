@@ -32,11 +32,6 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.ReferralException;
 import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.BasicAttributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
@@ -52,18 +47,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeDeleteRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModDnRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModifyRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifModSpec;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
 
 
@@ -76,36 +62,6 @@ public class JNDIConnectionProvider
     {
         wrapper = connection.getJNDIConnectionWrapper();
     }
-
-
-//    public void connect( Connection connection, ExtendedProgressMonitor monitor ) throws ConnectionException
-//    {
-//        wrapper = connection.getJNDIConnectionWrapper();
-//        wrapper.connect( monitor );
-//        if(monitor.errorsReported())
-//        {
-//            wrapper = null;
-//            throw createConnectionException( null, monitor.getException() );
-//        }
-//    }
-//
-//
-//    public void bind( BrowserConnectionParameter parameter, ExtendedProgressMonitor monitor )
-//        throws ConnectionException
-//    {
-//        wrapper.bind( monitor );
-//        if(monitor.errorsReported())
-//        {
-//            wrapper = null;
-//            throw createConnectionException( null, monitor.getException() );
-//        }
-//    }
-//
-//
-//    public void close() throws ConnectionException
-//    {
-//        wrapper.disconnect();
-//    }
 
 
     public LdifEnumeration search( SearchParameter parameter, StudioProgressMonitor monitor )
@@ -157,169 +113,6 @@ public class JNDIConnectionProvider
         return new LdifEnumerationImpl( list, parameter );
     }
 
-
-    public void applyModification( LdifRecord record, int referralsHandlingMethod, StudioProgressMonitor monitor )
-        throws ConnectionException
-    {
-
-        if ( !record.isValid() )
-        {
-            throw new ConnectionException( BrowserCoreMessages.model__invalid_record );
-        }
-
-        String dn = record.getDnLine().getValueAsString();
-
-        if ( record instanceof LdifContentRecord )
-        {
-            LdifContentRecord attrValRecord = ( LdifContentRecord ) record;
-            LdifAttrValLine[] attrVals = attrValRecord.getAttrVals();
-            Attributes jndiAttributes = new BasicAttributes();
-            for ( int ii = 0; ii < attrVals.length; ii++ )
-            {
-                String attributeName = attrVals[ii].getUnfoldedAttributeDescription();
-                // String valueType = attrVals[ii].getValueType();
-                // String value = attrVals[ii].getValue();
-                Object realValue = attrVals[ii].getValueAsObject();
-
-                if ( jndiAttributes.get( attributeName ) != null )
-                {
-                    jndiAttributes.get( attributeName ).add( realValue );
-                }
-                else
-                {
-                    jndiAttributes.put( attributeName, realValue );
-                }
-            }
-
-            
-            wrapper.createEntry( dn, jndiAttributes, getControls( attrValRecord ), monitor );
-            if(monitor.errorsReported())
-            {
-                throw createConnectionException( null, monitor.getException() );
-            }
-        }
-        else if ( record instanceof LdifChangeAddRecord )
-        {
-            LdifChangeAddRecord changeAddRecord = ( LdifChangeAddRecord ) record;
-            LdifAttrValLine[] attrVals = changeAddRecord.getAttrVals();
-            Attributes jndiAttributes = new BasicAttributes();
-            for ( int ii = 0; ii < attrVals.length; ii++ )
-            {
-                String attributeName = attrVals[ii].getUnfoldedAttributeDescription();
-                Object realValue = attrVals[ii].getValueAsObject();
-
-                if ( jndiAttributes.get( attributeName ) != null )
-                {
-                    jndiAttributes.get( attributeName ).add( realValue );
-                }
-                else
-                {
-                    jndiAttributes.put( attributeName, realValue );
-                }
-            }
-
-            wrapper.createEntry( dn, jndiAttributes, getControls( changeAddRecord ), monitor );
-            if(monitor.errorsReported())
-            {
-                throw createConnectionException( null, monitor.getException() );
-            }
-        }
-        else if ( record instanceof LdifChangeDeleteRecord )
-        {
-            LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
-            wrapper.deleteEntry( dn, getControls( changeDeleteRecord ), monitor );
-            if(monitor.errorsReported())
-            {
-                throw createConnectionException( null, monitor.getException() );
-            }
-        }
-        else if ( record instanceof LdifChangeModifyRecord )
-        {
-            LdifChangeModifyRecord modifyRecord = ( LdifChangeModifyRecord ) record;
-            LdifModSpec[] modSpecs = modifyRecord.getModSpecs();
-            ModificationItem[] mis = new ModificationItem[modSpecs.length];
-            for ( int ii = 0; ii < modSpecs.length; ii++ )
-            {
-                LdifModSpecTypeLine modSpecType = modSpecs[ii].getModSpecType();
-                LdifAttrValLine[] attrVals = modSpecs[ii].getAttrVals();
-
-                Attribute attribute = new BasicAttribute( modSpecType.getUnfoldedAttributeDescription() );
-                for ( int x = 0; x < attrVals.length; x++ )
-                {
-                    attribute.add( attrVals[x].getValueAsObject() );
-                }
-
-                if ( modSpecType.isAdd() )
-                {
-                    mis[ii] = new ModificationItem( DirContext.ADD_ATTRIBUTE, attribute );
-                }
-                else if ( modSpecType.isDelete() )
-                {
-                    mis[ii] = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, attribute );
-                }
-                else if ( modSpecType.isReplace() )
-                {
-                    mis[ii] = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, attribute );
-                }
-            }
-
-            wrapper.modifyAttributes( dn, mis, getControls( modifyRecord ), monitor );
-            if(monitor.errorsReported())
-            {
-                throw createConnectionException( null, monitor.getException() );
-            }
-        }
-        else if ( record instanceof LdifChangeModDnRecord )
-        {
-            LdifChangeModDnRecord modDnRecord = ( LdifChangeModDnRecord ) record;
-            if ( modDnRecord.getNewrdnLine() != null && modDnRecord.getDeloldrdnLine() != null )
-            {
-                String newRdn = modDnRecord.getNewrdnLine().getValueAsString();
-                boolean deleteOldRdn = modDnRecord.getDeloldrdnLine().isDeleteOldRdn();
-
-                try
-                {
-                    DN newDn;
-                    if ( modDnRecord.getNewsuperiorLine() != null )
-                        newDn = new DN( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
-                    else
-                    {
-                        DN dnObject = new DN( dn );
-                        newDn = new DN( newRdn.toString(), dnObject.getParentDn().toString() );
-                    }
-
-                    wrapper.rename( dn.toString(), newDn.toString(), deleteOldRdn, getControls( modDnRecord ), monitor );
-                    if(monitor.errorsReported())
-                    {
-                        throw createConnectionException( null, monitor.getException() );
-                    }
-                }
-                catch ( NameException ne )
-                {
-                    throw new ConnectionException( ne );
-                }
-            }
-        }
-    }
-
-
-    private Control[] getControls( LdifRecord record )
-    {
-        Control[] controls = null;
-        if ( record instanceof LdifChangeRecord )
-        {
-            LdifChangeRecord changeRecord = ( LdifChangeRecord ) record;
-            LdifControlLine[] controlLines = changeRecord.getControls();
-            controls = new Control[controlLines.length];
-            for ( int i = 0; i < controlLines.length; i++ )
-            {
-                LdifControlLine line = controlLines[i];
-                // TODO: encoded control value
-                controls[i] = new JNDIControl( line.getUnfoldedOid(), line.isCritical(), null );
-            }
-        }
-        return controls;
-    }
 
     class LdifEnumerationImpl implements LdifEnumeration
     {
