@@ -101,7 +101,6 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.ONELEVEL_SCOPE );
 
-        @SuppressWarnings("unchecked")
         NamingEnumeration<SearchResult> answer = wrapper.search( "ou=schema", "(objectclass=metaSchema)",
             constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, ( StudioProgressMonitor ) monitor );
         if ( answer != null )
@@ -152,7 +151,6 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         constraintSearch.setReturningAttributes( new String[]
             { "+" } );
 
-        @SuppressWarnings("unchecked")
         NamingEnumeration<SearchResult> answer = wrapper.search( "", "(objectclass=*)", constraintSearch,
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor );
 
@@ -203,7 +201,6 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.SUBTREE_SCOPE );
 
-        @SuppressWarnings("unchecked")
         NamingEnumeration<SearchResult> answer = wrapper.search( "cn=" + name + ", ou=schema", "(objectclass=*)",
             constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor );
         if ( answer != null )

@@ -31,6 +31,7 @@ import javax.naming.ServiceUnavailableException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
@@ -195,14 +196,14 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @return the naming enumeration or null if an exception occurs.
      */
-    public NamingEnumeration search( final String searchBase, final String filter, final SearchControls searchControls,
+    public NamingEnumeration<SearchResult> search( final String searchBase, final String filter, final SearchControls searchControls,
         final String derefAliasMethod, final String handleReferralsMethod, final Control[] controls,
         final StudioProgressMonitor monitor )
     {
         // start
         InnerRunnable runnable = new InnerRunnable()
         {
-            private NamingEnumeration namingEnumeration = null;
+            private NamingEnumeration<SearchResult> namingEnumeration = null;
             private NamingException namingException = null;
 
 
@@ -276,7 +277,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         else if ( runnable.getResult() != null && runnable.getResult() instanceof NamingEnumeration )
         {
-            return ( NamingEnumeration ) runnable.getResult();
+            return ( NamingEnumeration<SearchResult> ) runnable.getResult();
         }
         else
         {
