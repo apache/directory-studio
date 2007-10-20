@@ -21,19 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
-import java.io.Writer;
-
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
@@ -129,13 +125,6 @@ public class DummyConnection implements IBrowserConnection
     public int getTimeLimit()
     {
         return 0;
-    }
-
-
-    public void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
-        StudioProgressMonitor monitor )
-    {
-
     }
 
 

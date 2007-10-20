@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
 import java.io.Serializable;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -86,7 +85,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
     transient JNDIConnectionProvider connectionProvider;
     
-    transient ConnectionModifyHandler modifyHandler;
+    transient ModificationLogger modificationLogger;
 
     transient ConnectionSearchHandler searchHandler;
 
@@ -130,7 +129,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         this.entryToChildrenInfoMap = new HashMap<IEntry, ChildrenInfo>();
 
         this.connectionProvider = new JNDIConnectionProvider( connection );
-        this.modifyHandler = new ConnectionModifyHandler( this );
+        this.modificationLogger = new ModificationLogger( this );
         this.searchHandler = new ConnectionSearchHandler( this );
         
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
@@ -293,7 +292,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         entryToChildrenInfoMap.clear();
         entryToChildrenFilterMap.clear();
 
-        modifyHandler.connectionClosed();
         searchHandler.connectionClosed();
 
         rootDSE = null;
@@ -738,7 +736,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
     public ModificationLogger getModificationLogger()
     {
-        return modifyHandler.getModificationLogger();
+        return modificationLogger;
     }
 
 
@@ -843,13 +841,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         {
             this.entryToChildrenInfoMap.put( entry, si );
         }
-    }
-
-
-    public void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
-        StudioProgressMonitor monitor )
-    {
-        modifyHandler.importLdif( enumeration, logWriter, continueOnError, monitor );
     }
 
 

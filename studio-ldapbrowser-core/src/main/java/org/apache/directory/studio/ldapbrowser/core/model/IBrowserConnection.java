@@ -22,13 +22,10 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 
 import java.io.Serializable;
-import java.io.Writer;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
@@ -152,10 +149,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
 
     public abstract void search( ISearch searchRequest, StudioProgressMonitor monitor );
-
-
-    public abstract void importLdif( LdifEnumeration enumeration, Writer logWriter, boolean continueOnError,
-        StudioProgressMonitor monitor );
 
 
     public abstract LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor pm )

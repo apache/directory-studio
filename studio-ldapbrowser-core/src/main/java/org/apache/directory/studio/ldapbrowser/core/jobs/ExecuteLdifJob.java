@@ -36,19 +36,35 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
 
 
+/**
+ * Job to execute an LDIF.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExecuteLdifJob extends AbstractEclipseJob
 {
 
-    private IBrowserConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The LDIF to execute. */
     private String ldif;
 
+    /** The continue on error flag. */
     private boolean continueOnError;
 
 
-    public ExecuteLdifJob( IBrowserConnection connection, String ldif, boolean continueOnError )
+    /**
+     * Creates a new instance of ExecuteLdifJob.
+     * 
+     * @param browserConnection the browser connection
+     * @param ldif the LDIF to execute
+     * @param continueOnError the continue on error flag
+     */
+    public ExecuteLdifJob( IBrowserConnection browserConnection, String ldif, boolean continueOnError )
     {
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.ldif = ldif;
         this.continueOnError = continueOnError;
 
@@ -56,24 +72,32 @@ public class ExecuteLdifJob extends AbstractEclipseJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         return new Connection[]
-            { connection.getConnection() };
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.add( connection.getUrl() + "_" + DigestUtils.shaHex( ldif ) );
+        List<Object> l = new ArrayList<Object>();
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( ldif ) );
         return l.toArray();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.jobs__execute_ldif_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -101,7 +125,7 @@ public class ExecuteLdifJob extends AbstractEclipseJob
                 }
             };
 
-            connection.importLdif( enumeration, logWriter, continueOnError, monitor );
+            ImportLdifJob.importLdif( browserConnection, enumeration, logWriter, continueOnError, monitor );
 
             logWriter.close();
             ldifReader.close();
@@ -113,6 +137,9 @@ public class ExecuteLdifJob extends AbstractEclipseJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__execute_ldif_error;
