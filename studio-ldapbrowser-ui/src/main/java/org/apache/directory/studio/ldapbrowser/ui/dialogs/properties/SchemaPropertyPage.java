@@ -131,11 +131,10 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
 
     private void reloadSchema()
     {
-        final IBrowserConnection connection = RootDSEPropertyPage.getConnection( getElement() );
-        ReloadSchemasJob job = new ReloadSchemasJob( new IBrowserConnection[]
-            { connection } );
+        final IBrowserConnection browserConnection = RootDSEPropertyPage.getConnection( getElement() );
+        ReloadSchemasJob job = new ReloadSchemasJob( browserConnection );
         RunnableContextJobAdapter.execute( job );
-        this.connectionUpdated( connection );
+        this.connectionUpdated( browserConnection );
     }
 
 

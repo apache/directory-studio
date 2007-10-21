@@ -24,6 +24,10 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 public class ConnectionException extends Exception
 {
 
+    public static final int STAUS_CODE_TIMELIMIT_EXCEEDED = 3;
+    public static final int STAUS_CODE_SIZELIMIT_EXCEEDED = 4;
+    public static final int STAUS_CODE_ADMINLIMIT_EXCEEDED = 11;
+    
     private static final long serialVersionUID = 1L;
 
     private int ldapStatusCode;

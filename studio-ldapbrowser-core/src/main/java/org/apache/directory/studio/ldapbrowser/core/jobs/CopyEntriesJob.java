@@ -176,6 +176,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
     {
         try
         {
+            // TODO: use JNDI here!!!
             SearchParameter param = new SearchParameter();
             param.setSearchBase( entryToCopy.getDn() );
             param.setFilter( ISearch.FILTER_TRUE );
@@ -185,7 +186,8 @@ public class CopyEntriesJob extends AbstractNotificationJob
             param.setReturningAttributes( new String[]
                 { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
             ISearch search = new Search( entryToCopy.getBrowserConnection(), param );
-            entryToCopy.getBrowserConnection().search( search, monitor );
+            
+            SearchJob.searchAndUpdateModel( entryToCopy.getBrowserConnection(), search, monitor );
 
             ISearchResult[] srs = search.getSearchResults();
             if ( !monitor.isCanceled() && srs != null && srs.length == 1 )
@@ -199,20 +201,20 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
                 // change RDN if entry already exists
                 StudioProgressMonitor testMonitor = new StudioProgressMonitor( monitor );
-                IEntry testEntry = parent.getBrowserConnection().getEntry( newEntry.getDn(), testMonitor );
+                IEntry testEntry = ReadEntryJob.getEntry( parent.getBrowserConnection(), newEntry.getDn(), testMonitor );
                 if ( testEntry != null )
                 {
                     String rdnValue = rdn.getValue();
                     String newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, "", rdnValue ); //$NON-NLS-1$
                     RDN newRdn = getNewRdn( rdn, newRdnValue );
                     newEntry = new Entry( parent, newRdn );
-                    testEntry = parent.getBrowserConnection().getEntry( newEntry.getDn(), testMonitor );
+                    testEntry = ReadEntryJob.getEntry( parent.getBrowserConnection(), newEntry.getDn(), testMonitor );
                     for ( int i = 2; testEntry != null; i++ )
                     {
                         newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, i + " ", rdnValue ); //$NON-NLS-1$
                         newRdn = getNewRdn( rdn, newRdnValue );
                         newEntry = new Entry( parent, newRdn );
-                        testEntry = parent.getBrowserConnection().getEntry( newEntry.getDn(), testMonitor );
+                        testEntry = ReadEntryJob.getEntry( parent.getBrowserConnection(), newEntry.getDn(), testMonitor );
                     }
                 }
 
@@ -300,19 +302,18 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 // check for children
                 if ( !monitor.isCanceled() && ( scope == ISearch.SCOPE_ONELEVEL || scope == ISearch.SCOPE_SUBTREE ) )
                 {
-
+                    // TODO: use JNDI here!!!
                     SearchParameter subParam = new SearchParameter();
                     subParam.setSearchBase( entryToCopy.getDn() );
                     subParam.setFilter( ISearch.FILTER_TRUE );
                     subParam.setScope( ISearch.SCOPE_ONELEVEL );
                     subParam.setReturningAttributes( ISearch.NO_ATTRIBUTES );
                     ISearch subSearch = new Search( entryToCopy.getBrowserConnection(), subParam );
-                    entryToCopy.getBrowserConnection().search( subSearch, monitor );
+                    SearchJob.searchAndUpdateModel( entryToCopy.getBrowserConnection(), subSearch, monitor );
 
                     ISearchResult[] subSrs = subSearch.getSearchResults();
                     if ( !monitor.isCanceled() && subSrs != null && subSrs.length > 0 )
                     {
-
                         for ( int i = 0; i < subSrs.length; i++ )
                         {
                             ISearchResult subSearchResult = subSrs[i];

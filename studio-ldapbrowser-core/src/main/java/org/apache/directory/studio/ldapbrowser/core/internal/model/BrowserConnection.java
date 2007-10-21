@@ -22,38 +22,24 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -83,11 +69,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
     private volatile Map<IEntry, ChildrenInfo> entryToChildrenInfoMap;
 
-    transient JNDIConnectionProvider connectionProvider;
-    
     transient ModificationLogger modificationLogger;
-
-    transient ConnectionSearchHandler searchHandler;
 
 
     /**
@@ -117,20 +99,20 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 //        this.browserConnectionParameter.setFetchBaseDNs( true );
 //        this.browserConnectionParameter.setBaseDN( new DN() );
         
-        this.rootDSE = null;
 
-        this.schema = Schema.DEFAULT_SCHEMA;
+
         this.searchManager = new SearchManager( this );
         this.bookmarkManager = new BookmarkManager( this );
+        this.modificationLogger = new ModificationLogger( this );
 
         this.entryToChildrenFilterMap = new HashMap<IEntry, String>();
         this.dnToEntryCache = new HashMap<String, IEntry>();
         this.entryToAttributeInfoMap = new HashMap<IEntry, AttributeInfo>();
         this.entryToChildrenInfoMap = new HashMap<IEntry, ChildrenInfo>();
-
-        this.connectionProvider = new JNDIConnectionProvider( connection );
-        this.modificationLogger = new ModificationLogger( this );
-        this.searchHandler = new ConnectionSearchHandler( this );
+        
+        this.schema = Schema.DEFAULT_SCHEMA;
+        this.rootDSE = new RootDSE( this );
+        cacheEntry( this.rootDSE );
         
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
@@ -146,141 +128,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#reloadSchema(org.apache.directory.studio.connection.core.StudioProgressMonitor)
-     */
-    public void reloadSchema( StudioProgressMonitor monitor )
-    {
-        InitializeAttributesJob.initializeAttributes( getRootDSE(), true, monitor );
-        
-        monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
-        loadSchema( monitor );
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#fetchRootDSE(org.apache.directory.studio.connection.core.StudioProgressMonitor)
-     */
-    public void fetchRootDSE( StudioProgressMonitor monitor )
-    {
-        if ( !monitor.errorsReported() )
-        {
-            try
-            {
-                monitor.reportProgress( BrowserCoreMessages.model__loading_rootdse );
-                loadRootDSE( monitor );
-                monitor.worked( 1 );
-            }
-            catch ( Exception e )
-            {
-                monitor.reportError( BrowserCoreMessages.model__error_loading_rootdse );
-                rootDSE = null;
-            }
-
-            if ( monitor.errorsReported() )
-            {
-                close();
-            }
-        }
-    }
-
-
-    /**
-     * Open.
-     * 
-     * @param monitor the monitor
-     */
-    public void open( StudioProgressMonitor monitor )
-    {
-        this.fetchRootDSE( monitor );
-
-        if ( this.connectionProvider != null && this.rootDSE != null )
-        {
-            try
-            {
-                monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
-
-                // check if schema is cached
-                if ( this.schema == Schema.DEFAULT_SCHEMA )
-                {
-                    this.loadSchema( monitor );
-                }
-                else
-                {
-                    if ( this.rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
-                    {
-                        // check if schema is up-to-date
-                        SearchParameter sp = new SearchParameter();
-                        sp.setSearchBase( new DN( this.rootDSE.getAttribute(
-                            IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ).getStringValue() ) );
-                        sp.setFilter( Schema.SCHEMA_FILTER );
-                        sp.setScope( ISearch.SCOPE_OBJECT );
-                        sp.setReturningAttributes( new String[]
-                            { IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
-                                IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
-                        ISearch search = new Search( this, sp );
-                        // ISearch search = new Search(null, this, new
-                        // DN(this.rootDSE.getAttribute("subschemaSubentry").getStringValue()),
-                        // ISearch.FILTER_TRUE,
-                        // new String[] {
-                        // IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
-                        // IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP },
-                        // ISearch.SCOPE_OBJECT, 0, 0);
-                        this.search( search, monitor );
-                        ISearchResult[] results = search.getSearchResults();
-
-                        if ( results != null && results.length == 1 )
-                        {
-                            String schemaTimestamp = results[0]
-                                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) != null ? results[0]
-                                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ).getStringValue()
-                                : null;
-                            if ( schemaTimestamp == null )
-                            {
-                                schemaTimestamp = results[0]
-                                    .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) != null ? results[0]
-                                    .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ).getStringValue()
-                                    : null;
-                            }
-                            String cacheTimestamp = this.schema.getModifyTimestamp() != null ? this.schema
-                                .getModifyTimestamp() : this.schema.getCreateTimestamp();
-                            if ( cacheTimestamp == null
-                                || ( cacheTimestamp != null && schemaTimestamp != null && schemaTimestamp
-                                    .compareTo( cacheTimestamp ) > 0 ) )
-                            {
-                                this.loadSchema( monitor );
-                            }
-                        }
-                        else
-                        {
-                            this.schema = Schema.DEFAULT_SCHEMA;
-                            monitor.reportError( BrowserCoreMessages.model__no_schema_information );
-                        }
-                    }
-                    else
-                    {
-                        this.schema = Schema.DEFAULT_SCHEMA;
-                        monitor.reportError( BrowserCoreMessages.model__missing_schema_location );
-                    }
-                }
-
-            }
-            catch ( Exception e )
-            {
-                this.schema = Schema.DEFAULT_SCHEMA;
-                monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
-                e.printStackTrace();
-                return;
-            }
-        }
-    }
-
-
-    /**
      * Closes the connections, clears all caches
-     * 
-     * TODO: call when connection is closed
      */
-    private void close()
+    private void clearCaches()
     {
         for ( int i = 0; i < getSearchManager().getSearchCount(); i++ )
         {
@@ -292,229 +142,15 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         entryToChildrenInfoMap.clear();
         entryToChildrenFilterMap.clear();
 
-        searchHandler.connectionClosed();
-
-        rootDSE = null;
         schema = Schema.DEFAULT_SCHEMA;
+        rootDSE = new RootDSE( this );
+        cacheEntry( rootDSE );
 
         System.gc();
     }
 
 
-    /**
-     * Loads the Root DSE.
-     * 
-     * @param monitor the progress monitor
-     * 
-     * @throws Exception the exception
-     */
-    private void loadRootDSE( StudioProgressMonitor monitor ) throws Exception
-    {
-        if(rootDSE == null)
-        {
-            rootDSE = new RootDSE( this );
-            cacheEntry( rootDSE );
-        }
 
-        // get well-known root DSE attributes, includes + and *
-        ISearch search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES, ISearch.SCOPE_OBJECT, 0,
-            0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
-        search( search, monitor );
-
-        // get base DNs
-        if( !isFetchBaseDNs() && getBaseDN() != null && !"".equals( getBaseDN().toString() ))
-        {
-            // only add the specified base DN
-            DN dn = getBaseDN();
-            IEntry entry = new BaseDNEntry( new DN( dn ), this );
-            cacheEntry( entry );
-            rootDSE.addChild( entry );
-            
-            // check if entry exists
-            search = new Search( null, this, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_OBJECT, 1, 0,
-                IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
-            search( search, monitor );
-        }
-        else
-        {
-            // get naming contexts 
-            Set<String> namingContextSet = new HashSet<String>();
-            IAttribute attribute = rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
-            if ( attribute != null )
-            {
-                String[] values = attribute.getStringValues();
-                for ( int i = 0; i < values.length; i++ )
-                {
-                    namingContextSet.add( values[i] );
-                }
-            }
-            for ( String namingContext : namingContextSet )
-            {
-                if ( !"".equals( namingContext ) ) { //$NON-NLS-1$
-                    try
-                    {
-                        IEntry entry = new BaseDNEntry( new DN( namingContext ), this );
-                        rootDSE.addChild( entry );
-                        cacheEntry( entry );
-                    }
-                    catch ( Exception e )
-                    {
-                        monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
-                    }
-                }
-                else
-                {
-                    // special handling of empty namingContext: perform a one-level search and add all result DNs to the set
-                    search = new Search( null, this, new DN(), ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0,
-                        0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
-                    search( search, monitor );
-                    ISearchResult[] results = search.getSearchResults();
-                    for ( int k = 0; results != null && k < results.length; k++ )
-                    {
-                        ISearchResult result = results[k];
-                        IEntry entry = result.getEntry();
-                        rootDSE.addChild( entry );
-                    }
-                }
-            }
-        }
-
-        // get schema entry
-        DirectoryMetadataEntry[] schemaEntries = getDirectoryMetadataEntries( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY );
-        for ( int i = 0; i < schemaEntries.length; i++ )
-        {
-            schemaEntries[i].setSchemaEntry( true );
-            rootDSE.addChild( ( IEntry ) schemaEntries[i] );
-        }
-        
-        // get other metadata entries
-        String[] metadataAttributeNames = new String[]
-            { IRootDSE.ROOTDSE_ATTRIBUTE_MONITORCONTEXT, IRootDSE.ROOTDSE_ATTRIBUTE_CONFIGCONTEXT,
-                IRootDSE.ROOTDSE_ATTRIBUTE_DSANAME };
-        for ( int x = 0; x < metadataAttributeNames.length; x++ )
-        {
-            DirectoryMetadataEntry[] metadataEntries = getDirectoryMetadataEntries( metadataAttributeNames[x] );
-            for ( int i = 0; i < metadataEntries.length; i++ )
-            {
-                rootDSE.addChild( ( IEntry ) metadataEntries[i] );
-            }
-        }
-        
-        // set flags
-        rootDSE.setHasMoreChildren( false );
-        rootDSE.setAttributesInitialized( true );
-        rootDSE.setChildrenInitialized( true );
-        rootDSE.setHasChildrenHint( true );
-        rootDSE.setDirectoryEntry( true );
-    }
-
-
-    /**
-     * Gets the directory metadata entries.
-     * 
-     * @param metadataAttributeName the metadata attribute name
-     * 
-     * @return the directory metadata entries
-     * 
-     * @throws ModelModificationException the model modification exception
-     */
-    private DirectoryMetadataEntry[] getDirectoryMetadataEntries( String metadataAttributeName )
-        throws ModelModificationException
-    {
-        List<DN> metadataEntryList = new ArrayList<DN>();
-        IAttribute attribute = getRootDSE().getAttribute( metadataAttributeName );
-        if ( attribute != null )
-        {
-            String[] values = attribute.getStringValues();
-            for ( int i = 0; i < values.length; i++ )
-            {
-                try
-                {
-                    metadataEntryList.add( new DN( values[i] ) );
-                }
-                catch ( NameException e )
-                {
-                }
-            }
-        }
-
-        DirectoryMetadataEntry[] metadataEntries = new DirectoryMetadataEntry[metadataEntryList.size()];
-        for ( int i = 0; i < metadataEntryList.size(); i++ )
-        {
-            metadataEntries[i] = new DirectoryMetadataEntry( metadataEntryList.get( i ), this );
-            metadataEntries[i].setDirectoryEntry( true );
-            cacheEntry( metadataEntries[i] );
-        }
-        return metadataEntries;
-    }
-
-
-    /**
-     * Loads the schema.
-     * 
-     * @param monitor the progress monitor
-     */
-    private void loadSchema( StudioProgressMonitor monitor )
-    {
-        schema = Schema.DEFAULT_SCHEMA;
-
-        try
-        {
-            if ( getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
-            {
-                SearchParameter sp = new SearchParameter();
-                sp.setSearchBase( new DN( getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
-                    .getStringValue() ) );
-                sp.setFilter( Schema.SCHEMA_FILTER );
-                sp.setScope( ISearch.SCOPE_OBJECT );
-                sp.setReturningAttributes( new String[]
-                    { Schema.SCHEMA_ATTRIBUTE_OBJECTCLASSES, Schema.SCHEMA_ATTRIBUTE_ATTRIBUTETYPES,
-                        Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES, Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES,
-                        Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE, IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
-                        IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
-                LdifEnumeration le = connectionProvider.search( sp, monitor );
-                if ( le.hasNext( monitor ) )
-                {
-                    LdifContentRecord schemaRecord = ( LdifContentRecord ) le.next( monitor );
-                    schema = new Schema();
-                    schema.loadFromRecord( schemaRecord );
-                    // TODO: Schema update event
-//                    EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-//                        ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
-                }
-                else
-                {
-                    monitor.reportError( BrowserCoreMessages.model__no_schema_information );
-                }
-            }
-            else
-            {
-                monitor.reportError( BrowserCoreMessages.model__missing_schema_location );
-            }
-        }
-        catch ( Exception e )
-        {
-            monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
-            e.printStackTrace();
-        }
-
-        if ( schema == null )
-        {
-            schema = Schema.DEFAULT_SCHEMA;
-        }
-    }
-
-
-    public void search( ISearch searchRequest, StudioProgressMonitor monitor )
-    {
-        searchHandler.search( searchRequest, monitor );
-    }
-
-
-    public boolean existsEntry( DN dn, StudioProgressMonitor monitor )
-    {
-        return searchHandler.existsEntry( dn, monitor );
-    }
 
 
     public IEntry getEntryFromCache( DN dn )
@@ -530,21 +166,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         }
         return null;
     }
-
-
-    public IEntry getEntry( DN dn, StudioProgressMonitor monitor )
-    {
-        return searchHandler.getEntry( dn, monitor );
-    }
-
-
-    public LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor monitor )
-        throws ConnectionException
-    {
-        LdifEnumeration subEnumeration = this.connectionProvider.search( searchParameter, monitor );
-        return subEnumeration;
-    }
-
 
     
     
@@ -674,18 +295,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      */
     public final IRootDSE getRootDSE()
     {
-        if( rootDSE == null )
-        {
-            try
-            {
-                rootDSE = new RootDSE( this );
-                cacheEntry( rootDSE );
-            }
-            catch ( ModelModificationException e )
-            {
-            }
-        }
-        return this.rootDSE;
+        return rootDSE;
     }
 
 
@@ -756,7 +366,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-    protected void cacheEntry( IEntry entry )
+    public void cacheEntry( IEntry entry )
     {
         this.dnToEntryCache.put( entry.getDn().toOidString( this.schema ), entry );
     }
@@ -872,7 +482,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     {
         if(this.connection == connection)
         {
-            close();
+            clearCaches();
             BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
                 BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_CLOSED );
             EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent , this );

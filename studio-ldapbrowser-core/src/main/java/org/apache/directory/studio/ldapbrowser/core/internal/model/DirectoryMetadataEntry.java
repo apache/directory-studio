@@ -23,14 +23,21 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
+/**
+ * The DirectoryMetadataEntry class represents entries that are listed in the root DSE.
+ * Examples are the schema sub-entry, the monitorContext or the configContext entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DirectoryMetadataEntry extends BaseDNEntry
 {
 
     private static final long serialVersionUID = 1340597532850853276L;
 
+    /** The schema entry flag. */
     private boolean schemaEntry;
 
 
@@ -39,17 +46,24 @@ public class DirectoryMetadataEntry extends BaseDNEntry
     }
 
 
-    public DirectoryMetadataEntry( DN dn, IBrowserConnection connection )
-        throws ModelModificationException
+    /**
+     * Creates a new instance of DirectoryMetadataEntry.
+     * 
+     * @param dn the DN
+     * @param browserConnection the browser connection
+     */
+    public DirectoryMetadataEntry( DN dn, IBrowserConnection browserConnection )
     {
         super();
         this.baseDn = dn;
-        // this.connectionName = connection.getName();
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.schemaEntry = false;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#hasChildren()
+     */
     public boolean hasChildren()
     {
         if ( getDn().equals( getBrowserConnection().getSchema().getDn() ) )
@@ -63,12 +77,22 @@ public class DirectoryMetadataEntry extends BaseDNEntry
     }
 
 
+    /**
+     * Checks if is schema entry.
+     * 
+     * @return true, if is schema entry
+     */
     public boolean isSchemaEntry()
     {
         return schemaEntry;
     }
 
 
+    /**
+     * Sets the schema entry flag.
+     * 
+     * @param schemaEntry the schema entry flag
+     */
     public void setSchemaEntry( boolean schemaEntry )
     {
         this.schemaEntry = schemaEntry;

@@ -131,8 +131,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
             DN newDn = new DN( oldEntry.getRdn(), newParent.getDn() );
 
             // move in directory
-            // TODO: use manual/simulated move, if move of subtree is not
-            // supported
+            // TODO: use manual/simulated move, if move of subtree is not supported (JNDI)
             int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
             moveEntry( browserConnection, oldEntry, newDn.toString(), monitor );
             //connection.move( oldEntry, newParent.getDn(), monitor );
@@ -142,7 +141,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
             {
                 // move in parent
                 oldParent.deleteChild( oldEntry );
-                IEntry newEntry = browserConnection.getEntry( newDn, monitor );
+                IEntry newEntry = ReadEntryJob.getEntry( browserConnection, newDn, monitor );
                 newEntries[i] = newEntry;
                 newParent.addChild( newEntry );
                 newParent.setHasMoreChildren( false );

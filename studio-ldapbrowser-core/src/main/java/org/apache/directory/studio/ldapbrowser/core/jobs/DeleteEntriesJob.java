@@ -28,8 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
@@ -46,9 +44,18 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
+
+/*
+ * Search+Delete vs. Delete+SearchOnError
+ * 
+ * Test for:
+ * - delete leaf entry 100.000 times
+ * - tree with 100.000 childs
+ * - tree with 1000 childs each with 1000 childs 
+ * 
+ */
 
 public class DeleteEntriesJob extends AbstractNotificationJob
 {
@@ -151,17 +158,37 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
+    
+    private int deleteEntryRecursive( IBrowserConnection browserConnection, String dn, int numberOfDeletedEntries, StudioProgressMonitor monitor )
+    {
+//        int numberInBatch;
+//        
+//        JNDIConnectionWrapper connectionWrapper = browserConnection.getConnection().getJNDIConnectionWrapper();
+//        
+//        SearchControls searchControls = new SearchControls();
+//        searchControls.setCountLimit( 1000 );
+//        searchControls.setReturningAttributes( new String[]
+//                                                          { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
+//        searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+//        
+//        connectionWrapper.search( dn, ISearch.FILTER_TRUE, searchControls, derefAliasMethod, handleReferralsMethod, controls, monitor )
+        
+        return 0;
+    }
+    
+    
     private int deleteEntryRecursive( IEntry entry, boolean refInitialized, int numberOfDeletedEntries,
         StudioProgressMonitor monitor )
     {
         try
         {
-
             int numberInBatch;
             do
             {
                 numberInBatch = 0;
-
+                
+                // TODO: use JNDI here!!!
+                
                 SearchParameter subParam = new SearchParameter();
                 subParam.setSearchBase( entry.getDn() );
                 subParam.setFilter( ISearch.FILTER_TRUE );
@@ -170,9 +197,9 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 subParam.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
                 subParam.setReturningAttributes( new String[]
                     { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
-                subParam.setCountLimit( 100 );
+                subParam.setCountLimit( 1000 );
                 ISearch search = new Search( entry.getBrowserConnection(), subParam );
-                entry.getBrowserConnection().search( search, monitor );
+                SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 
                 ISearchResult[] srs = search.getSearchResults();
                 for ( int i = 0; !monitor.isCanceled() && srs != null && i < srs.length; i++ )
@@ -187,10 +214,10 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
             if ( !monitor.isCanceled() && !monitor.errorsReported() )
             {
-
                 // check for referrals
                 if ( !refInitialized )
                 {
+                    // TODO: use JNDI here!!!
                     SearchParameter param = new SearchParameter();
                     param.setSearchBase( entry.getDn() );
                     param.setFilter( ISearch.FILTER_TRUE );
@@ -200,7 +227,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                     param.setReturningAttributes( new String[]
                         { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
                     ISearch search = new Search( entry.getBrowserConnection(), param );
-                    entry.getBrowserConnection().search( search, monitor );
+                    SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 
                     ISearchResult[] srs = search.getSearchResults();
                     if ( !monitor.isCanceled() && srs != null && srs.length == 1 )

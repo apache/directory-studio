@@ -21,23 +21,28 @@
 package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 
 
+/**
+ * The BaseDNEntry class represents an entry without a logical parent entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BaseDNEntry extends AbstractEntry
 {
 
     private static final long serialVersionUID = -5444229580355372176L;
 
+    /** The base DN. */
     protected DN baseDn;
 
-    // protected String connectionName;
-    protected IBrowserConnection connection;
+    /** The browser connection. */
+    protected IBrowserConnection browserConnection;
 
 
     protected BaseDNEntry()
@@ -45,51 +50,61 @@ public class BaseDNEntry extends AbstractEntry
     }
 
 
-    public BaseDNEntry( DN baseDn, IBrowserConnection connection ) throws ModelModificationException
+    /**
+     * Creates a new instance of BaseDNEntry.
+     * 
+     * @param baseDn the base DN
+     * @param browserConnection the browser connection
+     */
+    public BaseDNEntry( DN baseDn, IBrowserConnection browserConnection )
     {
-        super();
-
-        if ( baseDn == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_dn );
-        }
-        if ( connection == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_connection );
-        }
+        assert baseDn != null;
+        assert browserConnection != null;
 
         this.setDirectoryEntry( true );
         this.baseDn = baseDn;
-        // this.connectionName = connection.getName();
-        this.connection = connection;
+        this.browserConnection = browserConnection;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getDn()
+     */
     public DN getDn()
     {
-        return this.baseDn;
+        return baseDn;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getParententry()
+     */
     public IEntry getParententry()
     {
         return getBrowserConnection().getRootDSE();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getBrowserConnection()
+     */
     public IBrowserConnection getBrowserConnection()
     {
-        // return
-        // BrowserCorePlugin.getDefault().getConnectionManager().getConnection(this.connectionName);
-        return this.connection;
+        return browserConnection;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#setRdn(org.apache.directory.studio.ldapbrowser.core.model.RDN)
+     */
     protected void setRdn( RDN newRdn )
     {
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#setParent(org.apache.directory.studio.ldapbrowser.core.model.IEntry)
+     */
     protected void setParent( IEntry newParent )
     {
     }

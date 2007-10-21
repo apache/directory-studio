@@ -136,7 +136,7 @@ public class RenameEntryJob extends AbstractNotificationJob
 
             // rename in parent
             parent.deleteChild( oldEntry );
-            newEntry = browserConnection.getEntry( newDn, monitor );
+            newEntry = ReadEntryJob.getEntry( browserConnection, newDn, monitor );
             parent.addChild( newEntry );
             parent.setHasMoreChildren( false );
 

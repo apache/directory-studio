@@ -25,12 +25,9 @@ import java.io.Serializable;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ModificationLogger;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -108,6 +105,11 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract void setTimeLimit( int timeLimit );
 
 
+    /**
+     * Gets the root DSE.
+     * 
+     * @return the root DSE
+     */
     public abstract IRootDSE getRootDSE();
 
 
@@ -126,33 +128,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     public abstract ModificationLogger getModificationLogger();
 
 
-    public abstract void reloadSchema( StudioProgressMonitor monitor );
-
-
-    /**
-     * Fetches the Root DSE and tries to get the base DNs from Root DSE.
-     * Depends on bind().
-     * 
-     * @param pm
-     *                The progress monitor
-     */
-    public abstract void fetchRootDSE( StudioProgressMonitor monitor );
-
-
-    public abstract boolean existsEntry( DN dn, StudioProgressMonitor monitor );
-
-
-    public abstract IEntry getEntry( DN dn, StudioProgressMonitor monitor );
-
-
     public abstract IEntry getEntryFromCache( DN dn );
-
-
-    public abstract void search( ISearch searchRequest, StudioProgressMonitor monitor );
-
-
-    public abstract LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor pm )
-        throws ConnectionException;
 
 
     public abstract Connection getConnection();
@@ -161,5 +137,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
     public abstract boolean equals( Object obj );
     
+    public void cacheEntry( IEntry entry );
     public abstract void uncacheEntryRecursive( IEntry entry );
 }

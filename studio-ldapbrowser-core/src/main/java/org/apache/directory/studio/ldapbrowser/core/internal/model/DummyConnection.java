@@ -22,17 +22,13 @@ package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
@@ -47,24 +43,6 @@ public class DummyConnection implements IBrowserConnection
     public DummyConnection( Schema schema )
     {
         this.schema = schema;
-    }
-
-
-    public boolean existsEntry( DN dn, StudioProgressMonitor monitor )
-    {
-        return false;
-    }
-
-
-    public LdifEnumeration exportLdif( SearchParameter searchParameter, StudioProgressMonitor pm )
-        throws ConnectionException
-    {
-        throw new UnsupportedOperationException();
-    }
-
-
-    public void fetchRootDSE( StudioProgressMonitor monitor )
-    {
     }
 
 
@@ -89,12 +67,6 @@ public class DummyConnection implements IBrowserConnection
     public int getAliasesDereferencingMethod()
     {
         return DEREFERENCE_ALIASES_NEVER;
-    }
-
-
-    public IEntry getEntry( DN dn, StudioProgressMonitor monitor )
-    {
-        return null;
     }
 
 
@@ -131,16 +103,6 @@ public class DummyConnection implements IBrowserConnection
     public boolean isFetchBaseDNs()
     {
         return false;
-    }
-
-
-    public void reloadSchema( StudioProgressMonitor monitor )
-    {
-    }
-
-
-    public void search( ISearch searchRequest, StudioProgressMonitor monitor )
-    {
     }
 
 
@@ -216,6 +178,10 @@ public class DummyConnection implements IBrowserConnection
         return null;
     }
 
+    public void cacheEntry( IEntry entry )
+    {
+    }
+    
     public void uncacheEntryRecursive( IEntry entry )
     {
     }

@@ -106,7 +106,7 @@ public class CreateEntryJob extends AbstractNotificationJob
 
         if ( !monitor.errorsReported() )
         {
-            createdEntry = browserConnection.getEntry( entryToCreate.getDn(), monitor );
+            createdEntry = ReadEntryJob.getEntry( browserConnection, entryToCreate.getDn(), monitor );
             // createdEntries[i].getParententry().addChild(entry, this);
             createdEntry.setHasChildrenHint( false );
         }

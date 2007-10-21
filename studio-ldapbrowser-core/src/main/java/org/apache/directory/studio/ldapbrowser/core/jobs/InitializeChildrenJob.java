@@ -43,12 +43,24 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 
+/**
+ * Job to initialize the child entries of an entry
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class InitializeChildrenJob extends AbstractNotificationJob
 {
 
+    /** The entries. */
     private IEntry[] entries;
 
 
+    /**
+     * Creates a new instance of InitializeChildrenJob.
+     * 
+     * @param entries the entries
+     */
     public InitializeChildrenJob( IEntry[] entries )
     {
         this.entries = entries;
@@ -56,6 +68,9 @@ public class InitializeChildrenJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         Connection[] connections = new Connection[entries.length];
@@ -67,14 +82,20 @@ public class InitializeChildrenJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<Object> l = new ArrayList<Object>();
         l.addAll( Arrays.asList( entries ) );
         return l.toArray();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return entries.length == 1 ? BrowserCoreMessages.jobs__init_entries_error_1
@@ -82,6 +103,9 @@ public class InitializeChildrenJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
@@ -102,6 +126,9 @@ public class InitializeChildrenJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
         for ( int pi = 0; pi < entries.length; pi++ )
@@ -115,9 +142,14 @@ public class InitializeChildrenJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * Initializes the child entries.
+     * 
+     * @param parent the parent
+     * @param monitor the progress monitor
+     */
     public static void initializeChildren( IEntry parent, StudioProgressMonitor monitor )
     {
-
         if ( parent instanceof IRootDSE )
         {
             // special handling for Root DSE
@@ -161,7 +193,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
                     .getDefault().getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
                 BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                     BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ), null );
-            parent.getBrowserConnection().search( search, monitor );
+            SearchJob.searchAndUpdateModel( parent.getBrowserConnection(), search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
                 new String[]
@@ -225,7 +257,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                 BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) )
             {
-                parent.getBrowserConnection().search( subSearch, monitor );
+                SearchJob.searchAndUpdateModel( parent.getBrowserConnection(), subSearch, monitor );
                 ISearchResult[] subSrs = subSearch.getSearchResults();
                 monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
                     new String[]

@@ -62,11 +62,10 @@ public class ReloadSchemaAction extends Action
      */
     public void run()
     {
-        final IBrowserConnection connection = schemaPage.getConnection();
-        if ( connection != null )
+        final IBrowserConnection browserConnection = schemaPage.getConnection();
+        if ( browserConnection != null )
         {
-            new ReloadSchemasJob( new IBrowserConnection[]
-                { connection } ).execute();
+            new ReloadSchemasJob( browserConnection ).execute();
             schemaPage.getSchemaBrowser().refresh();
         }
     }

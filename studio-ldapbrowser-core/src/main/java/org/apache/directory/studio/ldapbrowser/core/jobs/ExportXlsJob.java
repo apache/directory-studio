@@ -23,10 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -50,25 +47,44 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.eclipse.core.runtime.Preferences;
 
 
+/**
+ * Job to export directory content to an XLS file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportXlsJob extends AbstractEclipseJob
 {
 
+    /** The maximum count limit */
     public static final int MAX_COUNT_LIMIT = 65000;
 
-    private String exportLdifFilename;
+    /** The filename of the XLS file. */
+    private String exportXlsFilename;
 
-    private IBrowserConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The search parameter. */
     private SearchParameter searchParameter;
 
+    /** The export dn flag. */
     private boolean exportDn;
 
 
-    public ExportXlsJob( String exportLdifFilename, IBrowserConnection connection, SearchParameter searchParameter,
-        boolean exportDn )
+    /**
+     * Creates a new instance of ExportXlsJob.
+     * 
+     * @param exportLdifFilename the export ldif filename
+     * @param browserConnection the browser connection
+     * @param searchParameter the search parameter
+     * @param exportDn true to export the DN
+     */
+    public ExportXlsJob( String exportLdifFilename, IBrowserConnection browserConnection,
+        SearchParameter searchParameter, boolean exportDn )
     {
-        this.exportLdifFilename = exportLdifFilename;
-        this.connection = connection;
+        this.exportXlsFilename = exportLdifFilename;
+        this.browserConnection = browserConnection;
         this.searchParameter = searchParameter;
         this.exportDn = exportDn;
 
@@ -76,24 +92,31 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         return new Connection[]
-            { connection.getConnection() };
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.add( connection.getUrl() + "_" + DigestUtils.shaHex( exportLdifFilename ) );
-        return l.toArray();
+        return new Object[]
+            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportXlsFilename ) };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.jobs__export_xls_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -107,7 +130,7 @@ public class ExportXlsJob extends AbstractEclipseJob
 
         // header
         HSSFRow headerRow = sheet.createRow( 0 );
-        LinkedHashMap attributeNameMap = new LinkedHashMap();
+        LinkedHashMap<String, Short> attributeNameMap = new LinkedHashMap<String, Short>();
         if ( this.exportDn )
         {
             short cellNum = ( short ) 0;
@@ -134,10 +157,9 @@ public class ExportXlsJob extends AbstractEclipseJob
         // export
         try
         {
-
             int count = 0;
-            export( connection, searchParameter, sheet, headerRow, count, monitor, attributeNameMap, valueDelimiter,
-                binaryEncoding, this.exportDn );
+            exportToXls( browserConnection, searchParameter, sheet, headerRow, count, monitor, attributeNameMap,
+                valueDelimiter, binaryEncoding, this.exportDn );
         }
         catch ( Exception e )
         {
@@ -165,7 +187,7 @@ public class ExportXlsJob extends AbstractEclipseJob
 
         try
         {
-            FileOutputStream fileOut = new FileOutputStream( exportLdifFilename );
+            FileOutputStream fileOut = new FileOutputStream( exportXlsFilename );
             wb.write( fileOut );
             fileOut.close();
         }
@@ -176,14 +198,31 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
-    private static void export( IBrowserConnection connection, SearchParameter searchParameter, HSSFSheet sheet,
-        HSSFRow headerRow, int count, StudioProgressMonitor monitor, LinkedHashMap attributeNameMap,
-        String valueDelimiter, int binaryEncoding, boolean exportDn ) throws IOException, ConnectionException
+    /**
+     * Exports to XLS.
+     * 
+     * @param browserConnection the browser connection
+     * @param searchParameter the search parameter
+     * @param sheet the sheet
+     * @param headerRow the header row
+     * @param count the count
+     * @param monitor the monitor
+     * @param attributeNameMap the attribute name map
+     * @param valueDelimiter the value delimiter
+     * @param binaryEncoding the binary encoding
+     * @param exportDn the export dn
+     * 
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ConnectionException the connection exception
+     */
+    private static void exportToXls( IBrowserConnection browserConnection, SearchParameter searchParameter,
+        HSSFSheet sheet, HSSFRow headerRow, int count, StudioProgressMonitor monitor,
+        LinkedHashMap<String, Short> attributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
+        throws IOException, ConnectionException
     {
         try
         {
-
-            LdifEnumeration enumeration = connection.exportLdif( searchParameter, monitor );
+            LdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
             while ( !monitor.isCanceled() && enumeration.hasNext( monitor ) )
             {
                 LdifContainer container = enumeration.next( monitor );
@@ -191,8 +230,8 @@ public class ExportXlsJob extends AbstractEclipseJob
                 if ( container instanceof LdifContentRecord )
                 {
                     LdifContentRecord record = ( LdifContentRecord ) container;
-                    recordToHSSFRow( connection, record, sheet, headerRow, attributeNameMap, valueDelimiter, binaryEncoding,
-                        exportDn );
+                    recordToHSSFRow( browserConnection, record, sheet, headerRow, attributeNameMap, valueDelimiter,
+                        binaryEncoding, exportDn );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
@@ -211,19 +250,15 @@ public class ExportXlsJob extends AbstractEclipseJob
             }
             else if ( ce instanceof ReferralException )
             {
-
                 if ( searchParameter.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                 {
-
                     ReferralException re = ( ReferralException ) ce;
                     ISearch[] referralSearches = re.getReferralSearches();
-                    for ( int i = 0; i < referralSearches.length; i++ )
+                    for ( ISearch referralSearch : referralSearches )
                     {
-                        ISearch referralSearch = referralSearches[i];
-
                         // export recursive
-                        export( referralSearch.getBrowserConnection(), referralSearch.getSearchParameter(), sheet, headerRow,
-                            count, monitor, attributeNameMap, valueDelimiter, binaryEncoding, exportDn );
+                        exportToXls( referralSearch.getBrowserConnection(), referralSearch.getSearchParameter(), sheet,
+                            headerRow, count, monitor, attributeNameMap, valueDelimiter, binaryEncoding, exportDn );
                     }
                 }
             }
@@ -232,16 +267,28 @@ public class ExportXlsJob extends AbstractEclipseJob
                 monitor.reportError( ce );
             }
         }
-
     }
 
 
-    private static void recordToHSSFRow( IBrowserConnection connection, LdifContentRecord record, HSSFSheet sheet, HSSFRow headerRow,
-        Map headerRowAttributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
+    /**
+     * Transforms an LDIF record to an HSSF row.
+     * 
+     * @param browserConnection the browser connection
+     * @param record the record
+     * @param sheet the sheet
+     * @param headerRow the header row
+     * @param headerRowAttributeNameMap the header row attribute name map
+     * @param valueDelimiter the value delimiter
+     * @param binaryEncoding the binary encoding
+     * @param exportDn the export dn
+     */
+    private static void recordToHSSFRow( IBrowserConnection browserConnection, LdifContentRecord record,
+        HSSFSheet sheet, HSSFRow headerRow, Map<String, Short> headerRowAttributeNameMap, String valueDelimiter,
+        int binaryEncoding, boolean exportDn )
     {
-
         // group multi-valued attributes
-        Map attributeMap = ExportCsvJob.getAttributeMap( null, record, valueDelimiter, "UTF-16", binaryEncoding );
+        Map<String, String> attributeMap = ExportCsvJob.getAttributeMap( null, record, valueDelimiter, "UTF-16",
+            binaryEncoding );
 
         // output attributes
         HSSFRow row = sheet.createRow( sheet.getLastRowNum() + 1 );
@@ -251,9 +298,8 @@ public class ExportXlsJob extends AbstractEclipseJob
             cell.setEncoding( HSSFCell.ENCODING_UTF_16 );
             cell.setCellValue( record.getDnLine().getValueAsString() );
         }
-        for ( Iterator it = attributeMap.keySet().iterator(); it.hasNext(); )
+        for ( String attributeName : attributeMap.keySet() )
         {
-            String attributeName = ( String ) it.next();
             String value = ( String ) attributeMap.get( attributeName );
 
             if ( !headerRowAttributeNameMap.containsKey( attributeName ) )
@@ -287,6 +333,9 @@ public class ExportXlsJob extends AbstractEclipseJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__export_xls_error;

@@ -21,31 +21,46 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
+/**
+ * Job to read a single entry from directory.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ReadEntryJob extends AbstractNotificationJob
 {
 
-    private IBrowserConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The DN of the entry. */
     private DN dn;
 
+    /** The entry read from directory. */
     private IEntry readEntry;
 
 
-    public ReadEntryJob( IBrowserConnection connection, DN dn )
+    /**
+     * Creates a new instance of ReadEntryJob.
+     * 
+     * @param browserConnection the browser connection
+     * @param dn the DN of the entry
+     */
+    public ReadEntryJob( IBrowserConnection browserConnection, DN dn )
     {
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.dn = dn;
         this.readEntry = null;
 
@@ -53,36 +68,52 @@ public class ReadEntryJob extends AbstractNotificationJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         return new Connection[]
-            { connection.getConnection() };
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.add( connection );
-        return l.toArray();
+        return new Object[]
+            { browserConnection };
     }
 
 
+    /**
+     * Gets the read entry.
+     * 
+     * @return the read entry
+     */
     public IEntry getReadEntry()
     {
         return readEntry;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__read_entry_error;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeNotificationJob( StudioProgressMonitor pm ) throws ModelModificationException
     {
-        readEntry = connection.getEntryFromCache( dn );
+        readEntry = browserConnection.getEntryFromCache( dn );
         if ( readEntry == null )
         {
 
@@ -91,13 +122,60 @@ public class ReadEntryJob extends AbstractNotificationJob
             pm.reportProgress( " " ); //$NON-NLS-1$
             pm.worked( 1 );
 
-            readEntry = connection.getEntry( dn, pm );
+            readEntry = getEntry( browserConnection, dn, pm );
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
+    }
+
+
+    /**
+     * Gets the entry, either from the BrowserConnection's cache or from the directory.
+     * 
+     * @param browserConnection the browser connection
+     * @param dn the DN of the entry
+     * @param monitor the progress monitor
+     * 
+     * @return the read entry
+     */
+    static IEntry getEntry( IBrowserConnection browserConnection, DN dn, StudioProgressMonitor monitor )
+    {
+        try
+        {
+            // first check cache
+            IEntry entry = browserConnection.getEntryFromCache( dn );
+            if ( entry != null )
+            {
+                return entry;
+            }
+
+            // search in directory
+            ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES,
+                ISearch.SCOPE_OBJECT, 1, 0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER,
+                IBrowserConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
+            SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+            ISearchResult[] srs = search.getSearchResults();
+            if ( srs.length > 0 )
+            {
+                return srs[0].getEntry();
+            }
+            else
+            {
+                monitor.reportError( BrowserCoreMessages.bind( BrowserCoreMessages.model__no_such_entry, dn ) );
+                return null;
+            }
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( e.getMessage(), e );
+            return null;
+        }
     }
 
 }

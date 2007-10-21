@@ -21,21 +21,27 @@
 package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
 
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 
 
+/**
+ * The Entry class represents an entry with a logical parent entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Entry extends AbstractEntry
 {
 
     private static final long serialVersionUID = -4718107307581983276L;
 
+    /** The RDN. */
     protected RDN rdn;
 
+    /** The parent entry. */
     protected IEntry parent;
 
 
@@ -44,59 +50,73 @@ public class Entry extends AbstractEntry
     }
 
 
-    public Entry( IEntry parent, RDN rdn ) throws ModelModificationException
+    /**
+     * Creates a new instance of Entry.
+     * 
+     * @param parent the parent entry
+     * @param rdn the RDN
+     */
+    public Entry( IEntry parent, RDN rdn )
     {
-        super();
-
-        if ( parent == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_entry );
-        }
-        if ( rdn == null )
-        {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_rdn );
-        }
-        if ( "".equals( rdn.toString() ) ) { //$NON-NLS-1$
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_rdn );
-        }
+        assert parent != null;
+        assert rdn != null;
+        assert !"".equals( rdn.toString() );
 
         this.parent = parent;
         this.rdn = rdn;
     }
 
 
-    // performance opt.
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#getRdn()
+     */
     public RDN getRdn()
     {
-        return this.rdn;
+        // performance opt.
+        return rdn;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getDn()
+     */
     public DN getDn()
     {
-        DN dn = new DN( new RDN( this.rdn ), this.parent.getDn() );
+        DN dn = new DN( new RDN( rdn ), parent.getDn() );
         return dn;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getParententry()
+     */
     public IEntry getParententry()
     {
-        return this.parent;
+        return parent;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getBrowserConnection()
+     */
     public IBrowserConnection getBrowserConnection()
     {
-        return this.getParententry().getBrowserConnection();
+        return getParententry().getBrowserConnection();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#setRdn(org.apache.directory.studio.ldapbrowser.core.model.RDN)
+     */
     protected void setRdn( RDN newRdn )
     {
         this.rdn = newRdn;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#setParent(org.apache.directory.studio.ldapbrowser.core.model.IEntry)
+     */
     protected void setParent( IEntry newParent )
     {
         this.parent = newParent;

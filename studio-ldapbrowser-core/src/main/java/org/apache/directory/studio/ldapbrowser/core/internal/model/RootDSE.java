@@ -28,9 +28,14 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
+/**
+ * The RootDSE class represents a root DSE entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public final class RootDSE extends BaseDNEntry implements IRootDSE
 {
 
@@ -42,53 +47,63 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
     }
 
 
-    public RootDSE( IBrowserConnection connection ) throws ModelModificationException
+    /**
+     * Creates a new instance of RootDSE.
+     * 
+     * @param browserConnection the browser connection
+     */
+    public RootDSE( IBrowserConnection browserConnection )
     {
-        super( new DN(), connection );
+        super( new DN(), browserConnection );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.BaseDNEntry#getParententry()
+     */
     public IEntry getParententry()
     {
         return null;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IRootDSE#getSupportedExtensions()
+     */
     public String[] getSupportedExtensions()
     {
-        IAttribute supportedExtensionsAttr = getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION );
-        if ( supportedExtensionsAttr != null )
-        {
-            String[] stringValues = supportedExtensionsAttr.getStringValues();
-            Arrays.sort( stringValues );
-            return stringValues;
-        }
-        else
-        {
-            return new String[0];
-        }
+        return getAttributeValues( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IRootDSE#getSupportedControls()
+     */
     public String[] getSupportedControls()
     {
-        IAttribute supportedControlsAttr = getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL );
-        if ( supportedControlsAttr != null )
-        {
-            String[] stringValues = supportedControlsAttr.getStringValues();
-            Arrays.sort( stringValues );
-            return stringValues;
-        }
-        else
-        {
-            return new String[0];
-        }
+        return getAttributeValues( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IRootDSE#getSupportedFeatures()
+     */
     public String[] getSupportedFeatures()
     {
-        IAttribute supportedFeaturesAttr = getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES );
+        return getAttributeValues( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES );
+    }
+
+
+    /**
+     * Gets the attribute values.
+     * 
+     * @param attributeDescription the attribute description
+     * 
+     * @return the attribute values
+     */
+    private String[] getAttributeValues( String attributeDescription )
+    {
+        IAttribute supportedFeaturesAttr = getAttribute( attributeDescription );
         if ( supportedFeaturesAttr != null )
         {
             String[] stringValues = supportedFeaturesAttr.getStringValues();
@@ -100,8 +115,11 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
             return new String[0];
         }
     }
-    
-    
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#isSubentry()
+     */
     public boolean isSubentry()
     {
         return false;

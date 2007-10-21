@@ -28,15 +28,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.SearchResult;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
+import org.apache.directory.studio.ldapbrowser.core.internal.model.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralException;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
@@ -46,44 +54,68 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
 
 
+/**
+ * Job to export directory content to an LDIF file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportLdifJob extends AbstractEclipseJob
 {
 
+    /** The filename of the LDIF file. */
     private String exportLdifFilename;
 
-    private IBrowserConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The search parameter. */
     private SearchParameter searchParameter;
 
 
-    public ExportLdifJob( String exportLdifFilename, IBrowserConnection connection, SearchParameter searchParameter )
+    /**
+     * Creates a new instance of ExportLdifJob.
+     * 
+     * @param exportLdifFilename the filename of the LDIF file
+     * @param browserConnection the browser connection
+     * @param searchParameter the search parameter
+     */
+    public ExportLdifJob( String exportLdifFilename, IBrowserConnection browserConnection, SearchParameter searchParameter )
     {
         this.exportLdifFilename = exportLdifFilename;
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.searchParameter = searchParameter;
 
         setName( BrowserCoreMessages.jobs__export_ldif_name );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
     protected Connection[] getConnections()
     {
         return new Connection[]
-            { connection.getConnection() };
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.add( connection.getUrl() + "_" + DigestUtils.shaHex( exportLdifFilename ) );
+        List<Object> l = new ArrayList<Object>();
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportLdifFilename ) );
         return l.toArray();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
     protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.jobs__export_ldif_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -96,7 +128,7 @@ public class ExportLdifJob extends AbstractEclipseJob
 
             // export
             int count = 0;
-            export( connection, searchParameter, bufferedWriter, count, monitor );
+            export( browserConnection, searchParameter, bufferedWriter, count, monitor );
 
             // close file
             bufferedWriter.close();
@@ -107,18 +139,18 @@ public class ExportLdifJob extends AbstractEclipseJob
         {
             monitor.reportError( e );
         }
-
     }
 
 
-    private static void export( IBrowserConnection connection, SearchParameter searchParameter, BufferedWriter bufferedWriter,
+    
+    private static void export( IBrowserConnection browserConnection, SearchParameter searchParameter, BufferedWriter bufferedWriter,
         int count, StudioProgressMonitor monitor ) throws IOException, ConnectionException
     {
         try
         {
-
-            AttributeComparator comparator = new AttributeComparator( connection );
-            LdifEnumeration enumeration = connection.exportLdif( searchParameter, monitor );
+            AttributeComparator comparator = new AttributeComparator( browserConnection );
+            LdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
+            
             while ( !monitor.isCanceled() && enumeration.hasNext( monitor ) )
             {
                 LdifContainer container = enumeration.next( monitor );
@@ -147,24 +179,21 @@ public class ExportLdifJob extends AbstractEclipseJob
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
                         new String[]
                             { Integer.toString( count ) } ) );
-
                 }
-
             }
         }
         catch ( ConnectionException ce )
         {
-
-            if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
+            if ( ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_TIMELIMIT_EXCEEDED 
+                || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_SIZELIMIT_EXCEEDED 
+                || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_ADMINLIMIT_EXCEEDED )
             {
-                // nothing
+                // ignore
             }
             else if ( ce instanceof ReferralException )
             {
-
                 if ( searchParameter.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
                 {
-
                     ReferralException re = ( ReferralException ) ce;
                     ISearch[] referralSearches = re.getReferralSearches();
                     for ( int i = 0; i < referralSearches.length; i++ )
@@ -182,7 +211,6 @@ public class ExportLdifJob extends AbstractEclipseJob
                 monitor.reportError( ce );
             }
         }
-
     }
 
 
@@ -191,4 +219,93 @@ public class ExportLdifJob extends AbstractEclipseJob
         return BrowserCoreMessages.jobs__export_ldif_error;
     }
 
+    
+    static LdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter, StudioProgressMonitor monitor )
+        throws ConnectionException
+    {
+        NamingEnumeration<SearchResult> result = SearchJob.search( browserConnection, parameter, monitor );
+        
+        if(monitor.errorsReported())
+        {
+            throw JNDIUtils.createConnectionException( null, monitor.getException() );
+        }
+        return new JndiLdifEnumeration( result, parameter );
+    }
+    
+    static class JndiLdifEnumeration implements LdifEnumeration
+    {
+
+        private NamingEnumeration<SearchResult> enumeration;
+
+        private SearchParameter parameter;
+
+
+        public JndiLdifEnumeration( NamingEnumeration<SearchResult> enumeration, SearchParameter parameter )
+        {
+            this.enumeration = enumeration;
+            this.parameter = parameter;
+        }
+
+
+        public boolean hasNext( StudioProgressMonitor monitor ) throws ConnectionException
+        {
+            try
+            {
+                return enumeration != null && enumeration.hasMore();
+            }
+            catch ( NamingException e )
+            {
+                throw JNDIUtils.createConnectionException( parameter, e );
+            }
+        }
+
+
+        public LdifContainer next( StudioProgressMonitor monitor ) throws ConnectionException
+        {
+            try
+            {
+                SearchResult sr = enumeration.next();
+                DN dn = JNDIUtils.getDn( sr );
+                LdifContentRecord record = LdifContentRecord.create( dn.toString() );
+
+                NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
+                while ( attributeEnumeration.hasMore() )
+                {
+                    Attribute attribute = attributeEnumeration.next();
+                    String attributeName = attribute.getID();
+                    NamingEnumeration<?> valueEnumeration = attribute.getAll();
+                    while ( valueEnumeration.hasMore() )
+                    {
+                        Object o = valueEnumeration.next();
+                        if ( o instanceof String )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
+                        }
+                        if ( o instanceof byte[] )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
+                        }
+                    }
+                }
+
+                record.finish( LdifSepLine.create() );
+
+                return record;
+
+            }
+            catch ( NamingException e )
+            {
+                throw JNDIUtils.createConnectionException( parameter, e );
+            }
+            catch ( NameException e )
+            {
+                throw new ConnectionException( e );
+            }
+            catch ( NoSuchFieldException e )
+            {
+                throw new ConnectionException( e );
+            }
+        }
+    }
+    
 }
