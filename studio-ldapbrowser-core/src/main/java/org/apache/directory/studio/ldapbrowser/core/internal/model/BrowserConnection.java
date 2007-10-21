@@ -113,7 +113,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         this.schema = Schema.DEFAULT_SCHEMA;
         this.rootDSE = new RootDSE( this );
         cacheEntry( this.rootDSE );
-        
+
+        this.connection.getJNDIConnectionWrapper().setModificationLogger( this.modificationLogger );
+
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
     

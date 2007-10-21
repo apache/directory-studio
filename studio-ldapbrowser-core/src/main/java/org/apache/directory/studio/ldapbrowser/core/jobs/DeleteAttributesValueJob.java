@@ -185,7 +185,7 @@ public class DeleteAttributesValueJob extends AbstractAttributeModificationJob
             event = new ValueDeletedEvent( entry.getBrowserConnection(), entry, deletedValues[0].getAttribute(),
                 deletedValues[0] );
         }
-        if ( deletedAttributes != null && deletedAttributes.length > 0 )
+        else if ( deletedAttributes != null && deletedAttributes.length > 0 )
         {
             event = new AttributeDeletedEvent( entry.getBrowserConnection(), entry, deletedAttributes[0] );
         }

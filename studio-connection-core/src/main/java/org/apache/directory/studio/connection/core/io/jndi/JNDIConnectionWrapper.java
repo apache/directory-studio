@@ -44,10 +44,11 @@ import javax.net.ssl.SSLSession;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
+import org.apache.directory.studio.connection.core.IModificationLogger;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 
 
@@ -76,7 +77,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     private String bindPrincipal;
 
     private String bindCredentials;
-    
+
     private String saslRealm;
 
     private Hashtable<String, String> environment;
@@ -86,6 +87,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     private boolean isConnected;
 
     private Thread jobThread;
+
+    private IModificationLogger modificationLogger;
 
 
     /**
@@ -196,9 +199,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @return the naming enumeration or null if an exception occurs.
      */
-    public NamingEnumeration<SearchResult> search( final String searchBase, final String filter, final SearchControls searchControls,
-        final String derefAliasMethod, final String handleReferralsMethod, final Control[] controls,
-        final StudioProgressMonitor monitor )
+    public NamingEnumeration<SearchResult> search( final String searchBase, final String filter,
+        final SearchControls searchControls, final String derefAliasMethod, final String handleReferralsMethod,
+        final Control[] controls, final StudioProgressMonitor monitor )
     {
         // start
         InnerRunnable runnable = new InnerRunnable()
@@ -315,6 +318,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 {
                     namingException = ne;
                 }
+
+                if ( modificationLogger != null )
+                {
+                    modificationLogger.logChangetypeModify( dn, modificationItems, controls, namingException );
+                }
             }
 
 
@@ -391,6 +399,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 {
                     namingException = ne;
                 }
+
+                if ( modificationLogger != null )
+                {
+                    modificationLogger.logChangetypeModDn( oldDn, newDn, deleteOldRdn, controls, namingException );
+                }
             }
 
 
@@ -446,15 +459,22 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
             public void run()
             {
+
                 try
                 {
                     LdapContext modCtx = context.newInstance( controls );
                     modCtx.addToEnvironment( Context.REFERRAL, "throw" ); //$NON-NLS-1$
+
                     modCtx.createSubcontext( new LdapName( dn ), attributes );
                 }
                 catch ( NamingException ne )
                 {
                     namingException = ne;
+                }
+
+                if ( modificationLogger != null )
+                {
+                    modificationLogger.logChangetypeAdd( dn, attributes, controls, namingException );
                 }
             }
 
@@ -520,6 +540,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 {
                     namingException = ne;
                 }
+
+                if ( modificationLogger != null )
+                {
+                    modificationLogger.logChangetypeDelete( dn, controls, namingException );
+                }
             }
 
 
@@ -565,14 +590,14 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         // setup connection parameters
         String host = connection.getConnectionParameter().getHost();
         int port = connection.getConnectionParameter().getPort();
-        
+
         useLdaps = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.LDAPS;
         useStartTLS = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS;
-        
+
         environment = new Hashtable<String, String>();
         environment.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" ); //$NON-NLS-1$
         environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         // timeouts
         if ( !useLdaps )
         {
@@ -580,7 +605,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         environment.put( "com.sun.jndi.dns.timeout.initial", "2000" ); //$NON-NLS-1$ //$NON-NLS-2$
         environment.put( "com.sun.jndi.dns.timeout.retries", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         // ldaps://
         if ( useLdaps )
         {
@@ -592,7 +617,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             environment.put( Context.PROVIDER_URL, "ldap://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        
+
         InnerRunnable runnable = new InnerRunnable()
         {
             private NamingException namingException = null;
@@ -708,7 +733,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
             bindPrincipal = credentials.getBindPrincipal();
             bindCredentials = credentials.getBindPassword();
-            
+
             InnerRunnable runnable = new InnerRunnable()
             {
                 private NamingException namingException = null;
@@ -905,6 +930,17 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
          * Reset.
          */
         void reset();
+    }
+
+
+    /**
+     * Sets the modification logger.
+     * 
+     * @param modificationLogger the new modification logger
+     */
+    public void setModificationLogger( IModificationLogger modificationLogger )
+    {
+        this.modificationLogger = modificationLogger;
     }
 
 }
