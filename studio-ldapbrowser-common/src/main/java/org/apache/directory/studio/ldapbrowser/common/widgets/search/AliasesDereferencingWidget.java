@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -43,7 +43,7 @@ public class AliasesDereferencingWidget extends BrowserWidget
 {
 
     /** The initial aliases dereferencing method */
-    private int initialAliasesDereferencingMethod;
+    private AliasDereferencingMethod initialAliasesDereferencingMethod;
 
     /** The group. */
     private Group group;
@@ -57,13 +57,11 @@ public class AliasesDereferencingWidget extends BrowserWidget
 
     /**
      * Creates a new instance of AliasesDereferencingWidget with the given
-     * derefenencing method. This must be one of {@link IBrowserConnection#DEREFERENCE_ALIASES_NEVER},
-     * {@link IBrowserConnection#DEREFERENCE_ALIASES_SEARCH}, {@link IBrowserConnection#DEREFERENCE_ALIASES_FINDING}
-     * or {@link IBrowserConnection#DEREFERENCE_ALIASES_ALWAYS}.
+     * dereferencing method.
      * 
      * @param initialAliasesDereferencingMethod the initial aliases dereferencing method
      */
-    public AliasesDereferencingWidget( int initialAliasesDereferencingMethod )
+    public AliasesDereferencingWidget( AliasDereferencingMethod initialAliasesDereferencingMethod )
     {
         this.initialAliasesDereferencingMethod = initialAliasesDereferencingMethod;
     }
@@ -71,11 +69,11 @@ public class AliasesDereferencingWidget extends BrowserWidget
 
     /**
      * Creates a new instance of AliasesDereferencingWidget. The initial 
-     * dereferncing method is set to {@link IBrowserConnection#DEREFERENCE_ALIASES_NEVER}.
+     * dereferencing method is set to {@link AliasDereferencingMethod.NEVER}.
      */
     public AliasesDereferencingWidget()
     {
-        this.initialAliasesDereferencingMethod = IBrowserConnection.DEREFERENCE_ALIASES_NEVER;
+        this.initialAliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
     }
 
 
@@ -113,46 +111,42 @@ public class AliasesDereferencingWidget extends BrowserWidget
 
 
     /**
-     * Sets the aliases dereferencing method, must be one of {@link IBrowserConnection#DEREFERENCE_ALIASES_NEVER},
-     * {@link IBrowserConnection#DEREFERENCE_ALIASES_SEARCH}, {@link IBrowserConnection#DEREFERENCE_ALIASES_FINDING}
-     * or {@link IBrowserConnection#DEREFERENCE_ALIASES_ALWAYS}.
+     * Sets the aliases dereferencing method.
      * 
      * @param aliasesDereferencingMethod the aliases dereferencing method
      */
-    public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
+    public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
         initialAliasesDereferencingMethod = aliasesDereferencingMethod;
-        findingButton.setSelection( initialAliasesDereferencingMethod == IBrowserConnection.DEREFERENCE_ALIASES_FINDING
-            || initialAliasesDereferencingMethod == IBrowserConnection.DEREFERENCE_ALIASES_ALWAYS );
-        searchButton.setSelection( initialAliasesDereferencingMethod == IBrowserConnection.DEREFERENCE_ALIASES_SEARCH
-            || initialAliasesDereferencingMethod == IBrowserConnection.DEREFERENCE_ALIASES_ALWAYS );
+        findingButton.setSelection( initialAliasesDereferencingMethod == AliasDereferencingMethod.FINDING
+            || initialAliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS );
+        searchButton.setSelection( initialAliasesDereferencingMethod == AliasDereferencingMethod.SEARCH
+            || initialAliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS );
     }
 
 
     /**
-     * Gets the aliases dereferencing method, one of {@link IBrowserConnection#DEREFERENCE_ALIASES_NEVER},
-     * {@link IBrowserConnection#DEREFERENCE_ALIASES_SEARCH}, {@link IBrowserConnection#DEREFERENCE_ALIASES_FINDING}
-     * or {@link IBrowserConnection#DEREFERENCE_ALIASES_ALWAYS}.
+     * Gets the aliases dereferencing method.
      * 
      * @return the aliases dereferencing method
      */
-    public int getAliasesDereferencingMethod()
+    public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
         if ( findingButton.getSelection() && searchButton.getSelection() )
         {
-            return IBrowserConnection.DEREFERENCE_ALIASES_ALWAYS;
+            return AliasDereferencingMethod.ALWAYS;
         }
         else if ( findingButton.getSelection() )
         {
-            return IBrowserConnection.DEREFERENCE_ALIASES_FINDING;
+            return AliasDereferencingMethod.FINDING;
         }
         else if ( searchButton.getSelection() )
         {
-            return IBrowserConnection.DEREFERENCE_ALIASES_SEARCH;
+            return AliasDereferencingMethod.SEARCH;
         }
         else
         {
-            return IBrowserConnection.DEREFERENCE_ALIASES_NEVER;
+            return AliasDereferencingMethod.NEVER;
         }
     }
 

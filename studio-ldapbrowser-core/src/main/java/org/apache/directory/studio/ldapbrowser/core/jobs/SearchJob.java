@@ -58,6 +58,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
@@ -222,7 +223,7 @@ public class SearchJob extends AbstractNotificationJob
                     }
                     else if ( ce instanceof ReferralException )
                     {
-                        if ( search.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
+                        if ( search.getReferralsHandlingMethod() == ReferralHandlingMethod.FOLLOW )
                         {
                             ReferralException re = ( ReferralException ) ce;
                             ISearch[] referralSearches = re.getReferralSearches();
@@ -275,13 +276,13 @@ public class SearchJob extends AbstractNotificationJob
         SearchControls controls = new SearchControls();
         switch ( parameter.getScope() )
         {
-            case ISearch.SCOPE_OBJECT:
+            case OBJECT:
                 controls.setSearchScope( SearchControls.OBJECT_SCOPE );
                 break;
-            case ISearch.SCOPE_ONELEVEL:
+            case ONELEVEL:
                 controls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                 break;
-            case ISearch.SCOPE_SUBTREE:
+            case SUBTREE:
                 controls.setSearchScope( SearchControls.SUBTREE_SCOPE );
                 break;
             default:
@@ -292,7 +293,7 @@ public class SearchJob extends AbstractNotificationJob
         controls.setTimeLimit( parameter.getTimeLimit() );
         String filter = parameter.getFilter();
         String derefAliasMethod = getDerefAliasMethod( parameter );
-        String handleReferralsMethod = getReferralsHandlingMethod( parameter.getReferralsHandlingMethod() );
+        String handleReferralsMethod = getReferralsHandlingMethod( parameter );
 
         Control[] ldapControls = null;
         if ( parameter.getControls() != null )
@@ -317,16 +318,16 @@ public class SearchJob extends AbstractNotificationJob
 
         switch ( parameter.getAliasesDereferencingMethod() )
         {
-            case IBrowserConnection.DEREFERENCE_ALIASES_NEVER:
+            case NEVER:
                 m = "never"; //$NON-NLS-1$
                 break;
-            case IBrowserConnection.DEREFERENCE_ALIASES_ALWAYS:
+            case ALWAYS:
                 m = "always"; //$NON-NLS-1$
                 break;
-            case IBrowserConnection.DEREFERENCE_ALIASES_FINDING:
+            case FINDING:
                 m = "finding"; //$NON-NLS-1$
                 break;
-            case IBrowserConnection.DEREFERENCE_ALIASES_SEARCH:
+            case SEARCH:
                 m = "searching"; //$NON-NLS-1$
                 break;
         }
@@ -335,16 +336,16 @@ public class SearchJob extends AbstractNotificationJob
     }
 
 
-    private static String getReferralsHandlingMethod( int referralHandlingMethod )
+    private static String getReferralsHandlingMethod( SearchParameter parameter )
     {
         String m = "follow"; //$NON-NLS-1$
 
-        switch ( referralHandlingMethod )
+        switch ( parameter.getReferralsHandlingMethod() )
         {
-            case IBrowserConnection.HANDLE_REFERRALS_IGNORE:
+            case IGNORE:
                 m = "ignore"; //$NON-NLS-1$
                 break;
-            case IBrowserConnection.HANDLE_REFERRALS_FOLLOW:
+            case FOLLOW:
                 // m = "follow"; //$NON-NLS-1$
                 m = "throw"; //$NON-NLS-1$
                 break;

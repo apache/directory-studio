@@ -24,6 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -59,14 +61,66 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
     /** Filter for fetching subentries (|(objectClass=subentry)(objectClass=ldapSubentry)) */
     public static final String FILTER_SUBENTRY = "(|(objectClass=subentry)(objectClass=ldapSubentry))"; //$NON-NLS-1$
 
-    /** Search scope object */
-    public static final int SCOPE_OBJECT = 0;
+    /**
+     * Enum for the used search scope.
+     * 
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public enum SearchScope
+    {
 
-    /** Search scope one level */
-    public static final int SCOPE_ONELEVEL = 1;
+        /** Object. */
+        OBJECT(0),
 
-    /** Search scope subtree */
-    public static final int SCOPE_SUBTREE = 2;
+        /** Onelevel. */
+        ONELEVEL(1),
+
+        /** Subtree. */
+        SUBTREE(2);
+
+        private final int ordinal;
+
+
+        private SearchScope( int ordinal )
+        {
+            this.ordinal = ordinal;
+        }
+
+
+        /**
+         * Gets the ordinal.
+         * 
+         * @return the ordinal
+         */
+        public int getOrdinal()
+        {
+            return ordinal;
+        }
+
+
+        /**
+         * Gets the SearchScope by ordinal.
+         * 
+         * @param ordinal the ordinal
+         * 
+         * @return the SearchScope
+         */
+        public static SearchScope getByOrdinal( int ordinal )
+        {
+            switch ( ordinal )
+            {
+                case 0:
+                    return OBJECT;
+                case 1:
+                    return ONELEVEL;
+                case 2:
+                    return SUBTREE;
+                default:
+                    return null;
+            }
+        }
+    }
 
 
     /**
@@ -156,66 +210,58 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 
 
     /**
-     * Gets the search scope, one of ISearch.SCOPE_OBJECT, 
-     * ISearch.SCOPE_ONELEVEL or ISearch.SCOPE_SUBTREE.
+     * Gets the search scope.
      * 
      * @return the search scope
      */
-    public abstract int getScope();
+    public abstract SearchScope getScope();
 
 
     /**
-     * Sets the search scope, one of ISearch.SCOPE_OBJECT, 
-     * ISearch.SCOPE_ONELEVEL or ISearch.SCOPE_SUBTREE.
+     * Sets the search scope.
      * 
      * Calling this method causes firing a search update event.
      * 
      * @param scope the search scope
      */
-    public abstract void setScope( int scope );
+    public abstract void setScope( SearchScope scope );
 
 
     /**
-     * Gets the aliases dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER, 
-     * IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING 
-     * or IConnection.DEREFERENCE_ALIASES_SEARCH.
+     * Gets the aliases dereferencing method.
      * 
      * 
      * @return the aliases dereferencing method
      */
-    public abstract int getAliasesDereferencingMethod();
+    public abstract AliasDereferencingMethod getAliasesDereferencingMethod();
 
 
     /**
-     * Sets the aliases dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER, 
-     * IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING 
-     * or IConnection.DEREFERENCE_ALIASES_SEARCH.
+     * Sets the aliases dereferencing method.
      * 
      * Calling this method causes firing a search update event.
      * 
      * @param aliasesDereferencingMethod the aliases dereferencing method
      */
-    public abstract void setAliasesDereferencingMethod( int aliasesDereferencingMethod );
+    public abstract void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod );
 
 
     /**
-     * Gets the referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE
-     * or IConnection.HANDLE_REFERRALS_FOLLOW.
+     * Gets the referrals handling method.
      *  
      * @return the referrals handling method
      */
-    public abstract int getReferralsHandlingMethod();
+    public abstract ReferralHandlingMethod getReferralsHandlingMethod();
 
 
     /**
-     * Sets the referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE or 
-     * IConnection.HANDLE_REFERRALS_FOLLOW.
+     * Sets the referrals handling method.
      * 
      * Calling this method causes firing a search update event.
      * 
      * @param referralsHandlingMethod the referrals handling method
      */
-    public abstract void setReferralsHandlingMethod( int referralsHandlingMethod );
+    public abstract void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod );
 
 
     /**

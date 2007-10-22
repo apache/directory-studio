@@ -44,6 +44,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
@@ -244,7 +247,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         {
 	        // search
 	        ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(), entry.isSubentry()?ISearch.FILTER_SUBENTRY:ISearch.FILTER_TRUE, attributes,
-	            ISearch.SCOPE_OBJECT, 0, 0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE,
+	            SearchScope.OBJECT, 0, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE,
 	            false, false, null );
 	        SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 	
@@ -283,8 +286,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
         // get well-known root DSE attributes, includes + and *
         ISearch search = new Search( null, browserConnection, new DN(), ISearch.FILTER_TRUE,
-            IBrowserConnection.ROOT_DSE_ATTRIBUTES, ISearch.SCOPE_OBJECT, 0, 0,
-            IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false,
+            IBrowserConnection.ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0,
+            AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false,
             null );
         SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
 
@@ -299,8 +302,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             
             // check if entry exists
             // TODO: use browserConnection.getEntry( dn, monitor ) ??
-            search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_OBJECT, 1, 0,
-                IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, true, true, null );
+            search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT, 1, 0,
+                AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, true, null );
             SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
         }
         else
@@ -333,8 +336,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                 else
                 {
                     // special handling of empty namingContext: perform a one-level search and add all result DNs to the set
-                    search = new Search( null, browserConnection, new DN(), ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0,
-                        0, IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
+                    search = new Search( null, browserConnection, new DN(), ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0,
+                        0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false, null );
                     SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
                     ISearchResult[] results = search.getSearchResults();
                     for ( int k = 0; results != null && k < results.length; k++ )

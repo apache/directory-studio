@@ -35,6 +35,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
@@ -86,8 +88,8 @@ public class Search implements ISearch
     {
         this(
             new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss" ).format( new Date() ), //$NON-NLS-1$
-            null, EMPTY_SEARCH_BASE, FILTER_TRUE, NO_ATTRIBUTES, ISearch.SCOPE_ONELEVEL, 0, 0,
-            IBrowserConnection.DEREFERENCE_ALIASES_NEVER, IBrowserConnection.HANDLE_REFERRALS_IGNORE, false, false, null );
+            null, EMPTY_SEARCH_BASE, FILTER_TRUE, NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0,
+            AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false, null );
     }
 
 
@@ -123,26 +125,25 @@ public class Search implements ISearch
      *                the attributes to return, an empty array indicates none,
      *                null will be transformed to '*' (all user attributes)
      * @param scope
-     *                the search scope, one of SCOPE_OBJECT, SCOPE_ONELEVEL,
-     *                SCOPE_SUBTREE
+     *                the search scope
      * @param countLimit
      *                the count limit, 0 indicates no limit
      * @param timeLimit
      *                the time limit in ms, 0 indicates no limit
      * @param aliasesDereferencingMethod
-     *                the aliases dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER,
-     *                IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING
-     *                or IConnection.DEREFERENCE_ALIASES_SEARCH
+     *                the aliases dereferencing method
      * @param referralsHandlingMethod
-     *                the referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE
-     *                or IConnection.HANDLE_REFERRALS_FOLLOW
+     *                the referrals handling method
      * @param initHasChildrenFlag
      *                the init hasChildren flag
      * @param initAliasAndReferralsFlag
      *                the init isAlias and isReferral flag
+     * @param controls
+     *                the controls
      */
-    public Search( String searchName, IBrowserConnection conn, DN searchBase, String filter, String[] returningAttributes,
-        int scope, int countLimit, int timeLimit, int aliasesDereferencingMethod, int referralsHandlingMethod,
+    public Search( String searchName, IBrowserConnection conn, DN searchBase, String filter,
+        String[] returningAttributes, SearchScope scope, int countLimit, int timeLimit,
+        AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         boolean initHasChildrenFlag, boolean initAliasAndReferralsFlag, Control[] controls )
     {
         this.connection = conn;
@@ -274,7 +275,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public int getScope()
+    public SearchScope getScope()
     {
         return this.searchParameter.getScope();
     }
@@ -283,7 +284,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setScope( int scope )
+    public void setScope( SearchScope scope )
     {
         this.searchParameter.setScope( scope );
         this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
@@ -293,7 +294,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public int getAliasesDereferencingMethod()
+    public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
         return this.searchParameter.getAliasesDereferencingMethod();
     }
@@ -302,7 +303,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
+    public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
         this.searchParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
         this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
@@ -312,7 +313,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public int getReferralsHandlingMethod()
+    public ReferralHandlingMethod getReferralsHandlingMethod()
     {
         return this.searchParameter.getReferralsHandlingMethod();
     }
@@ -321,7 +322,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setReferralsHandlingMethod( int referralsHandlingMethod )
+    public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
     {
         this.searchParameter.setReferralsHandlingMethod( referralsHandlingMethod );
         this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );

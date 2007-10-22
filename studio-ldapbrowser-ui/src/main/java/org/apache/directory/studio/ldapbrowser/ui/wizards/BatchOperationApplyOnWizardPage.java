@@ -34,13 +34,12 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageW
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -212,7 +211,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         this.initSearch.setName( null );
 
         // never follow referrals for a batch operation!
-        this.initSearch.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
+        this.initSearch.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
     }
 
 

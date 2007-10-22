@@ -36,11 +36,13 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.AliasBaseEntr
 import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 
 
 /**
@@ -173,17 +175,17 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             parent.setChildrenInitialized( false );
             
             // determine alias and referral handling
-            int scope = ISearch.SCOPE_ONELEVEL;
-            int derefAliasMethod = parent.getBrowserConnection().getAliasesDereferencingMethod();
-            int handleReferralsMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
+            SearchScope scope = SearchScope.ONELEVEL;
+            AliasDereferencingMethod derefAliasMethod = parent.getBrowserConnection().getAliasesDereferencingMethod();
+            ReferralHandlingMethod handleReferralsMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
             if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                 BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) )
             {
-                scope = ( parent.isAlias() || parent.isReferral() ) ? ISearch.SCOPE_OBJECT : ISearch.SCOPE_ONELEVEL;
-                derefAliasMethod = parent.isAlias() ? IBrowserConnection.DEREFERENCE_ALIASES_FINDING
-                    : IBrowserConnection.DEREFERENCE_ALIASES_NEVER;
-                handleReferralsMethod = parent.isReferral() ? IBrowserConnection.HANDLE_REFERRALS_FOLLOW
-                    : IBrowserConnection.HANDLE_REFERRALS_IGNORE;
+                scope = ( parent.isAlias() || parent.isReferral() ) ? SearchScope.OBJECT : SearchScope.ONELEVEL;
+                derefAliasMethod = parent.isAlias() ? AliasDereferencingMethod.FINDING
+                    : AliasDereferencingMethod.NEVER;
+                handleReferralsMethod = parent.isReferral() ? ReferralHandlingMethod.FOLLOW
+                    : ReferralHandlingMethod.IGNORE;
             }
 
             // get children,

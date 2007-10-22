@@ -23,6 +23,10 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+
 
 /**
  * A Bean class to hold the search parameters.
@@ -49,8 +53,8 @@ public class SearchParameter implements Serializable
     /** The returning attributes. */
     private String[] returningAttributes;
 
-    /** The search scope, one of ISearch.SCOPE_OBJECT, ISearch.SCOPE_ONELEVEL or ISearch.SCOPE_SUBTREE. */
-    private int scope;
+    /** The search scope. */
+    private SearchScope scope;
 
     /** The time limit in milliseconds, 0 means no limit. */
     private int timeLimit;
@@ -58,19 +62,19 @@ public class SearchParameter implements Serializable
     /** The count limit, 0 means no limit. */
     private int countLimit;
 
-    /** The alias dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER, IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING or IConnection.DEREFERENCE_ALIASES_SEARCH. */
-    private int aliasesDereferencingMethod;
+    /** The alias dereferencing method. */
+    private AliasDereferencingMethod aliasesDereferencingMethod;
 
-    /** The referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE or IConnection.HANDLE_REFERRALS_FOLLOW. */
-    private int referralsHandlingMethod;
+    /** The referrals handling method. */
+    private ReferralHandlingMethod referralsHandlingMethod;
 
     /** The controls */
     private Control[] controls;
 
-    /** Flag indicating wether the hasChildren flag of IEntry should be initialized */
+    /** Flag indicating weather the hasChildren flag of IEntry should be initialized */
     private boolean initHasChildrenFlag;
 
-    /** Flag indicating wether the isAlias and isReferral flag of IEntry should be initialized */
+    /** Flag indicating weather the isAlias and isReferral flag of IEntry should be initialized */
     private boolean initAliasAndReferralFlag;
 
 
@@ -97,11 +101,11 @@ public class SearchParameter implements Serializable
         searchBase = null;
         filter = ISearch.FILTER_TRUE;
         returningAttributes = ISearch.NO_ATTRIBUTES;
-        scope = ISearch.SCOPE_ONELEVEL;
+        scope = SearchScope.ONELEVEL;
         timeLimit = 0;
         countLimit = 0;
-        aliasesDereferencingMethod = IBrowserConnection.DEREFERENCE_ALIASES_NEVER;
-        referralsHandlingMethod = IBrowserConnection.HANDLE_REFERRALS_IGNORE;
+        aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
+        referralsHandlingMethod = ReferralHandlingMethod.IGNORE;
         controls = null;
         initHasChildrenFlag = false;
         initAliasAndReferralFlag = false;
@@ -208,74 +212,66 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Gets the scope, one of ISearch.SCOPE_OBJECT, 
-     * ISearch.SCOPE_ONELEVEL or ISearch.SCOPE_SUBTREE.
+     * Gets the scope.
      * 
      * @return the scope
      */
-    public int getScope()
+    public SearchScope getScope()
     {
         return scope;
     }
 
 
     /**
-     * Sets the scope, one of ISearch.SCOPE_OBJECT, 
-     * ISearch.SCOPE_ONELEVEL or ISearch.SCOPE_SUBTREE.
+     * Sets the scope.
      * 
      * @param scope the scope
      */
-    public void setScope( int scope )
+    public void setScope( SearchScope scope )
     {
         this.scope = scope;
     }
 
 
     /**
-     * Gets the aliases dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER, 
-     * IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING 
-     * or IConnection.DEREFERENCE_ALIASES_SEARCH.
+     * Gets the aliases dereferencing method.
      * 
      * @return the aliases dereferencing method
      */
-    public int getAliasesDereferencingMethod()
+    public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
         return aliasesDereferencingMethod;
     }
 
 
     /**
-     * Sets the aliases dereferencing method, one of IConnection.DEREFERENCE_ALIASES_NEVER, 
-     * IConnection.DEREFERENCE_ALIASES_ALWAYS, IConnection.DEREFERENCE_ALIASES_FINDING 
-     * or IConnection.DEREFERENCE_ALIASES_SEARCH.
+     * Sets the aliases dereferencing method.
      * 
      * @param aliasesDereferencingMethod the aliases dereferencing method
      */
-    public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
+    public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
         this.aliasesDereferencingMethod = aliasesDereferencingMethod;
     }
 
 
     /**
-     * Gets the referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE
-     *  or IConnection.HANDLE_REFERRALS_FOLLOW.
+     * Gets the referrals handling method.
      * 
      * @return the referrals handling method
      */
-    public int getReferralsHandlingMethod()
+    public ReferralHandlingMethod getReferralsHandlingMethod()
     {
         return referralsHandlingMethod;
     }
 
 
     /**
-     * Sets the referrals handling method, one of IConnection.HANDLE_REFERRALS_IGNORE or 
-     * IConnection.HANDLE_REFERRALS_FOLLOW.
+     * Sets the referrals handling method.
      * 
      * @param referralsHandlingMethod the referrals handling method
      */
-    public void setReferralsHandlingMethod( int referralsHandlingMethod )
+    public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
     {
         this.referralsHandlingMethod = referralsHandlingMethod;
     }

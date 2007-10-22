@@ -85,21 +85,13 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         {
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_COUNT_LIMIT, 0 );
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT, 0 );
-            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
-            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, IBrowserConnection.HANDLE_REFERRALS_IGNORE );
+            connection.getConnectionParameter().setExtendedIntProperty(
+                CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, AliasDereferencingMethod.NEVER.getOrdinal() );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+                ReferralHandlingMethod.IGNORE.getOrdinal() );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
             connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" );
         }
-        
-//        this.browserConnectionParameter = new BrowserConnectionParameter();
-//        this.browserConnectionParameter.setCountLimit( 0 );
-//        this.browserConnectionParameter.setTimeLimit( 0 );
-//        this.browserConnectionParameter.setAliasesDereferencingMethod( IConnection.DEREFERENCE_ALIASES_NEVER );
-//        this.browserConnectionParameter.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
-//        this.browserConnectionParameter.setFetchBaseDNs( true );
-//        this.browserConnectionParameter.setBaseDN( new DN() );
-        
-
 
         this.searchManager = new SearchManager( this );
         this.bookmarkManager = new BookmarkManager( this );
@@ -238,18 +230,21 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getAliasesDereferencingMethod()
      */
-    public int getAliasesDereferencingMethod()
+    public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
-        return connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
+        int ordinal = connection.getConnectionParameter().getExtendedIntProperty(
+            CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
+        return AliasDereferencingMethod.getByOrdinal( ordinal );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setAliasesDereferencingMethod(int)
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setAliasesDereferencingMethod(AliasDereferencingMethod)
      */
-    public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
+    public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
-        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, aliasesDereferencingMethod );
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+            aliasesDereferencingMethod.getOrdinal() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 
@@ -257,18 +252,21 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getReferralsHandlingMethod()
      */
-    public int getReferralsHandlingMethod()
+    public ReferralHandlingMethod getReferralsHandlingMethod()
     {
-        return connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
+        int ordinal = connection.getConnectionParameter().getExtendedIntProperty(
+            CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
+        return ReferralHandlingMethod.getByOrdinal( ordinal );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setReferralsHandlingMethod(int)
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setReferralsHandlingMethod(ReferralHandlingMethod)
      */
-    public void setReferralsHandlingMethod( int referralsHandlingMethod )
+    public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
     {
-        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, referralsHandlingMethod );
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            referralsHandlingMethod.getOrdinal() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 

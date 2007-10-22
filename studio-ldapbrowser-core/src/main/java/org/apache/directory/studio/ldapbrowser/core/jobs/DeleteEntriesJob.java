@@ -45,6 +45,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 
 
 /*
@@ -192,9 +195,9 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 SearchParameter subParam = new SearchParameter();
                 subParam.setSearchBase( entry.getDn() );
                 subParam.setFilter( ISearch.FILTER_TRUE );
-                subParam.setScope( ISearch.SCOPE_ONELEVEL );
-                subParam.setAliasesDereferencingMethod( IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
-                subParam.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
+                subParam.setScope( SearchScope.ONELEVEL );
+                subParam.setAliasesDereferencingMethod( AliasDereferencingMethod.NEVER );
+                subParam.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
                 subParam.setReturningAttributes( new String[]
                     { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
                 subParam.setCountLimit( 1000 );
@@ -221,9 +224,9 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                     SearchParameter param = new SearchParameter();
                     param.setSearchBase( entry.getDn() );
                     param.setFilter( ISearch.FILTER_TRUE );
-                    param.setScope( ISearch.SCOPE_OBJECT );
-                    param.setAliasesDereferencingMethod( IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
-                    param.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
+                    param.setScope( SearchScope.OBJECT );
+                    param.setAliasesDereferencingMethod( AliasDereferencingMethod.NEVER );
+                    param.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
                     param.setReturningAttributes( new String[]
                         { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
                     ISearch search = new Search( entry.getBrowserConnection(), param );

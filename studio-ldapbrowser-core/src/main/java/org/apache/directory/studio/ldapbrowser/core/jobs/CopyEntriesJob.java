@@ -35,7 +35,6 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.Entry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -44,6 +43,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
 
@@ -63,7 +65,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
     private IEntry[] entriesToCopy;
 
     /** The copy scope */
-    private int scope;
+    private SearchScope scope;
 
 
     /**
@@ -73,7 +75,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
      * @param entriesToCopy the entries to copy
      * @param scope the copy scope
      */
-    public CopyEntriesJob( final IEntry parent, final IEntry[] entriesToCopy, int scope )
+    public CopyEntriesJob( final IEntry parent, final IEntry[] entriesToCopy, SearchScope scope )
     {
         this.parent = parent;
         this.entriesToCopy = entriesToCopy;
@@ -119,17 +121,17 @@ public class CopyEntriesJob extends AbstractNotificationJob
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        if ( scope == ISearch.SCOPE_OBJECT || scope == ISearch.SCOPE_ONELEVEL || scope == ISearch.SCOPE_SUBTREE )
+        if ( scope == SearchScope.OBJECT || scope == SearchScope.ONELEVEL || scope == SearchScope.SUBTREE )
         {
             int num = 0;
             for ( int i = 0; !monitor.isCanceled() && i < entriesToCopy.length; i++ )
             {
                 IEntry entryToCopy = entriesToCopy[i];
 
-                if ( scope == ISearch.SCOPE_OBJECT
+                if ( scope == SearchScope.OBJECT
                     || !parent.getDn().toString().endsWith( entryToCopy.getDn().toString() ) )
                 {
-                    num = this.copyEntryRecursive( entryToCopy, parent, scope, num, monitor );
+                    num = copyEntryRecursive( entryToCopy, parent, scope, num, monitor );
                 }
                 else
                 {
@@ -172,7 +174,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
      * 
      * @return the number of copied entries
      */
-    private int copyEntryRecursive( IEntry entryToCopy, IEntry parent, int scope, int num, StudioProgressMonitor monitor )
+    private int copyEntryRecursive( IEntry entryToCopy, IEntry parent, SearchScope scope, int num, StudioProgressMonitor monitor )
     {
         try
         {
@@ -180,9 +182,9 @@ public class CopyEntriesJob extends AbstractNotificationJob
             SearchParameter param = new SearchParameter();
             param.setSearchBase( entryToCopy.getDn() );
             param.setFilter( ISearch.FILTER_TRUE );
-            param.setScope( ISearch.SCOPE_OBJECT );
-            param.setAliasesDereferencingMethod( IBrowserConnection.DEREFERENCE_ALIASES_NEVER );
-            param.setReferralsHandlingMethod( IBrowserConnection.HANDLE_REFERRALS_IGNORE );
+            param.setScope( SearchScope.OBJECT );
+            param.setAliasesDereferencingMethod( AliasDereferencingMethod.NEVER );
+            param.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
             param.setReturningAttributes( new String[]
                 { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
             ISearch search = new Search( entryToCopy.getBrowserConnection(), param );
@@ -300,13 +302,13 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         { Integer.toString( num ) } ) );
 
                 // check for children
-                if ( !monitor.isCanceled() && ( scope == ISearch.SCOPE_ONELEVEL || scope == ISearch.SCOPE_SUBTREE ) )
+                if ( !monitor.isCanceled() && ( scope == SearchScope.ONELEVEL || scope == SearchScope.SUBTREE ) )
                 {
                     // TODO: use JNDI here!!!
                     SearchParameter subParam = new SearchParameter();
                     subParam.setSearchBase( entryToCopy.getDn() );
                     subParam.setFilter( ISearch.FILTER_TRUE );
-                    subParam.setScope( ISearch.SCOPE_ONELEVEL );
+                    subParam.setScope( SearchScope.ONELEVEL );
                     subParam.setReturningAttributes( ISearch.NO_ATTRIBUTES );
                     ISearch subSearch = new Search( entryToCopy.getBrowserConnection(), subParam );
                     SearchJob.searchAndUpdateModel( entryToCopy.getBrowserConnection(), subSearch, monitor );
@@ -319,14 +321,14 @@ public class CopyEntriesJob extends AbstractNotificationJob
                             ISearchResult subSearchResult = subSrs[i];
                             IEntry childEntry = subSearchResult.getEntry();
 
-                            if ( scope == ISearch.SCOPE_ONELEVEL )
+                            if ( scope == SearchScope.ONELEVEL )
                             {
                                 num = this
-                                    .copyEntryRecursive( childEntry, newEntry, ISearch.SCOPE_OBJECT, num, monitor );
+                                    .copyEntryRecursive( childEntry, newEntry,SearchScope.OBJECT, num, monitor );
                             }
-                            else if ( scope == ISearch.SCOPE_SUBTREE )
+                            else if ( scope == SearchScope.SUBTREE )
                             {
-                                num = this.copyEntryRecursive( childEntry, newEntry, ISearch.SCOPE_SUBTREE, num,
+                                num = this.copyEntryRecursive( childEntry, newEntry, SearchScope.SUBTREE, num,
                                     monitor );
                             }
                         }

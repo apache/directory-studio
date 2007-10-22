@@ -64,9 +64,9 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public int getAliasesDereferencingMethod()
+    public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
-        return DEREFERENCE_ALIASES_NEVER;
+        return AliasDereferencingMethod.NEVER;
     }
 
 
@@ -116,7 +116,7 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public void setAliasesDereferencingMethod( int aliasesDereferencingMethod )
+    public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
     }
 
@@ -156,13 +156,13 @@ public class DummyConnection implements IBrowserConnection
     }
 
 
-    public int getReferralsHandlingMethod()
+    public ReferralHandlingMethod getReferralsHandlingMethod()
     {
-        return HANDLE_REFERRALS_IGNORE;
+        return ReferralHandlingMethod.IGNORE;
     }
 
 
-    public void setReferralsHandlingMethod( int referralsHandlingMethod )
+    public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
     {
     }
 

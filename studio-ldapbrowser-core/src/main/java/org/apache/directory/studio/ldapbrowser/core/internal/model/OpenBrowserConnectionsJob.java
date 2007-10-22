@@ -35,6 +35,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
@@ -146,7 +147,7 @@ public class OpenBrowserConnectionsJob extends AbstractNotificationJob
                     sp.setSearchBase( new DN( rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
                         .getStringValue() ) );
                     sp.setFilter( Schema.SCHEMA_FILTER );
-                    sp.setScope( ISearch.SCOPE_OBJECT );
+                    sp.setScope( SearchScope.OBJECT );
                     sp.setReturningAttributes( new String[]
                         { IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
                             IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );

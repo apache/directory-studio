@@ -42,6 +42,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdapFilterUtils;
 import org.eclipse.jface.viewers.ISelection;
@@ -81,7 +82,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
         ISearch exampleSearch = new Search();
         String oldName = exampleSearch.getSearchParameter().getName();
         exampleSearch.getSearchParameter().setName( null );
-        exampleSearch.setScope( ISearch.SCOPE_SUBTREE );
+        exampleSearch.setScope( SearchScope.SUBTREE );
 
         if ( selection != null && !selection.isEmpty() && selection instanceof StructuredSelection )
         {

@@ -58,8 +58,9 @@ import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -142,37 +143,38 @@ public class ExportDsmlJob extends AbstractEclipseJob
             searchRequest.setBaseObject( new LdapDN( searchParameter.getSearchBase().toString() ) );
 
             // Scope
-            int scope = searchParameter.getScope();
-            if ( scope == ISearch.SCOPE_OBJECT )
+            SearchScope scope = searchParameter.getScope();
+            if ( scope == SearchScope.OBJECT )
             {
                 searchRequest.setScope( ScopeEnum.BASE_OBJECT );
             }
-            else if ( scope == ISearch.SCOPE_ONELEVEL )
+            else if ( scope == SearchScope.ONELEVEL )
             {
                 searchRequest.setScope( ScopeEnum.SINGLE_LEVEL );
             }
-            else if ( scope == ISearch.SCOPE_SUBTREE )
+            else if ( scope == SearchScope.SUBTREE )
             {
                 searchRequest.setScope( ScopeEnum.WHOLE_SUBTREE );
             }
 
             // DerefAliases
-            int derefAliases = searchParameter.getAliasesDereferencingMethod();
-            if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_ALWAYS )
+            AliasDereferencingMethod derefAliases = searchParameter.getAliasesDereferencingMethod();
+            switch ( derefAliases )
             {
-                searchRequest.setDerefAliases( LdapConstants.DEREF_ALWAYS );
-            }
-            else if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_FINDING )
-            {
-                searchRequest.setDerefAliases( LdapConstants.DEREF_FINDING_BASE_OBJ );
-            }
-            else if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_NEVER )
-            {
-                searchRequest.setDerefAliases( LdapConstants.NEVER_DEREF_ALIASES );
-            }
-            else if ( derefAliases == IBrowserConnection.DEREFERENCE_ALIASES_SEARCH )
-            {
-                searchRequest.setDerefAliases( LdapConstants.DEREF_IN_SEARCHING );
+                case ALWAYS:
+                    searchRequest.setDerefAliases( LdapConstants.DEREF_ALWAYS );
+                    break;
+                case FINDING:
+                    searchRequest.setDerefAliases( LdapConstants.DEREF_FINDING_BASE_OBJ );
+                    break;
+                case NEVER:
+                    searchRequest.setDerefAliases( LdapConstants.NEVER_DEREF_ALIASES );
+                    break;
+                case SEARCH:
+                    searchRequest.setDerefAliases( LdapConstants.DEREF_IN_SEARCHING );
+                    break;
+                default:
+                    break;
             }
 
             // Time Limit
@@ -439,7 +441,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     {
         List<org.apache.directory.shared.ldap.codec.Control> returnList = new ArrayList<org.apache.directory.shared.ldap.codec.Control>();
 
-        if ( controls != null)
+        if ( controls != null )
         {
             for ( int i = 0; i < controls.length; i++ )
             {

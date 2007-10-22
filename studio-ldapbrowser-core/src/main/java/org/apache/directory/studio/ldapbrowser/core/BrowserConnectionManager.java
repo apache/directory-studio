@@ -21,7 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.core;
 
 
+import java.beans.Encoder;
 import java.beans.ExceptionListener;
+import java.beans.Expression;
+import java.beans.PersistenceDelegate;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -32,6 +35,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -57,6 +62,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.eclipse.core.runtime.IPath;
@@ -588,6 +596,9 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             String tempFilename = filename + "-temp";
             Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
             encoder = new XMLEncoder( new BufferedOutputStream( new FileOutputStream( tempFilename ) ) );
+            encoder.setPersistenceDelegate( SearchScope.class, new TypeSafeEnumPersistenceDelegate() );
+            encoder.setPersistenceDelegate( ReferralHandlingMethod.class, new TypeSafeEnumPersistenceDelegate() );
+            encoder.setPersistenceDelegate( AliasDereferencingMethod.class, new TypeSafeEnumPersistenceDelegate() );
             encoder.setExceptionListener( new ExceptionListener()
             {
                 public void exceptionThrown( Exception e )
@@ -620,4 +631,47 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             }
         }
     }
+    
+    
+    class TypeSafeEnumPersistenceDelegate extends PersistenceDelegate
+    {
+        protected boolean mutatesTo( Object oldInstance, Object newInstance )
+        {
+            return oldInstance == newInstance;
+        }
+
+
+        protected Expression instantiate( Object oldInstance, Encoder out )
+        {
+            Class<?> type = oldInstance.getClass();
+            if ( !Modifier.isPublic( type.getModifiers() ) )
+            {
+                throw new IllegalArgumentException( "Could not instantiate instance of non-public class: "
+                    + oldInstance );
+            }
+
+            for ( Field field : type.getFields() )
+            {
+                int mod = field.getModifiers();
+                if ( Modifier.isPublic( mod ) && Modifier.isStatic( mod ) && Modifier.isFinal( mod )
+                    && ( type == field.getDeclaringClass() ) )
+                {
+                    try
+                    {
+                        if ( oldInstance == field.get( null ) )
+                        {
+                            return new Expression( oldInstance, field, "get", new Object[]
+                                { null } );
+                        }
+                    }
+                    catch ( IllegalAccessException exception )
+                    {
+                        throw new IllegalArgumentException( "Could not get value of the field: " + field, exception );
+                    }
+                }
+            }
+            throw new IllegalArgumentException( "Could not instantiate value: " + oldInstance );
+        }
+    }
+
 }

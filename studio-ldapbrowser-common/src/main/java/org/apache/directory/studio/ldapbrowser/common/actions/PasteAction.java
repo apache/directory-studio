@@ -27,9 +27,8 @@ import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CopyEntriesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.Transfer;
@@ -152,7 +151,7 @@ public class PasteAction extends BrowserAction
      */
     private void pasteEntries( final IEntry parent, final IEntry[] entriesToPaste )
     {
-        int scope = ISearch.SCOPE_OBJECT;
+        SearchScope scope = SearchScope.OBJECT;
         boolean askForScope = false;
         for ( int i = 0; i < entriesToPaste.length; i++ )
         {

@@ -26,6 +26,7 @@ import java.net.URLDecoder;
 
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 
@@ -161,8 +162,8 @@ public class URL
         }
 
         this.attributes = Utils.arrayToString( search.getReturningAttributes() );
-        this.scope = search.getScope() == ISearch.SCOPE_SUBTREE ? "sub" : //$NON-NLS-1$
-            search.getScope() == ISearch.SCOPE_ONELEVEL ? "one" : //$NON-NLS-1$
+        this.scope = search.getScope() == SearchScope.SUBTREE ? "sub" : //$NON-NLS-1$
+            search.getScope() == SearchScope.ONELEVEL ? "one" : //$NON-NLS-1$
                 "base"; //$NON-NLS-1$
         this.filter = search.getFilter();
     }
@@ -564,7 +565,7 @@ public class URL
      * @return the scope
      * @throws NoSuchFieldException if not has scope
      */
-    public int getScope() throws NoSuchFieldException
+    public SearchScope getScope() throws NoSuchFieldException
     {
         if ( scope == null )
         {
@@ -572,13 +573,13 @@ public class URL
         }
 
         if ( "base".equals( scope ) ) { //$NON-NLS-1$
-            return ISearch.SCOPE_OBJECT;
+            return SearchScope.OBJECT;
         }
         else if ( "one".equals( scope ) ) { //$NON-NLS-1$
-            return ISearch.SCOPE_ONELEVEL;
+            return SearchScope.ONELEVEL;
         }
         else if ( "sub".equals( scope ) ) { //$NON-NLS-1$
-            return ISearch.SCOPE_SUBTREE;
+            return SearchScope.SUBTREE;
         }
         else
         {

@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -50,7 +50,7 @@ public class ScopeDialog extends Dialog
     private boolean multipleEntriesSelected;
 
     /** The scope. */
-    private int scope = -1;
+    private SearchScope scope;
 
     /** The object scope button. */
     private Button objectScopeButton;
@@ -93,8 +93,8 @@ public class ScopeDialog extends Dialog
      */
     protected void okPressed()
     {
-        scope = objectScopeButton.getSelection() ? ISearch.SCOPE_OBJECT
-            : onelevelScopeButton.getSelection() ? ISearch.SCOPE_ONELEVEL : ISearch.SCOPE_SUBTREE;
+        scope = objectScopeButton.getSelection() ? SearchScope.OBJECT
+            : onelevelScopeButton.getSelection() ? SearchScope.ONELEVEL : SearchScope.SUBTREE;
         super.okPressed();
     }
 
@@ -141,7 +141,7 @@ public class ScopeDialog extends Dialog
      * 
      * @return the scope
      */
-    public int getScope()
+    public SearchScope getScope()
     {
         return scope;
     }

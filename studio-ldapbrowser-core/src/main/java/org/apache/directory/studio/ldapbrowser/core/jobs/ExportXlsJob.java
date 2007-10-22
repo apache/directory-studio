@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralExcep
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
@@ -250,7 +251,7 @@ public class ExportXlsJob extends AbstractEclipseJob
             }
             else if ( ce instanceof ReferralException )
             {
-                if ( searchParameter.getReferralsHandlingMethod() == IBrowserConnection.HANDLE_REFERRALS_FOLLOW )
+                if ( searchParameter.getReferralsHandlingMethod() == ReferralHandlingMethod.FOLLOW )
                 {
                     ReferralException re = ( ReferralException ) ce;
                     ISearch[] referralSearches = re.getReferralSearches();

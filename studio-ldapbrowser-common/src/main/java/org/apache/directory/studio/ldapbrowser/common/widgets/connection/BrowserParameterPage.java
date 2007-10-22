@@ -34,6 +34,8 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.FetchBaseDNsJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -135,7 +137,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
      * 
      * @return the aliases dereferencing method
      */
-    private int getAliasesDereferencingMethod()
+    private AliasDereferencingMethod getAliasesDereferencingMethod()
     {
         return aliasesDereferencingWidget.getAliasesDereferencingMethod();
     }
@@ -146,7 +148,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
      * 
      * @return the referrals handling method
      */
-    private int getReferralsHandlingMethod()
+    private ReferralHandlingMethod getReferralsHandlingMethod()
     {
         return referralsHandlingWidget.getReferralsHandlingMethod();
     }
@@ -325,11 +327,16 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         int timeLimit = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT );
         limitWidget.setTimeLimit( timeLimit );
 
-        int referralsHandlingMethod = parameter
+        int referralsHandlingMethodOrdinal = parameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
+        ReferralHandlingMethod referralsHandlingMethod = ReferralHandlingMethod
+            .getByOrdinal( referralsHandlingMethodOrdinal );
         referralsHandlingWidget.setReferralsHandlingMethod( referralsHandlingMethod );
-        int aliasesDereferencingMethod = parameter
+
+        int aliasesDereferencingMethodOrdinal = parameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
+        AliasDereferencingMethod aliasesDereferencingMethod = AliasDereferencingMethod
+            .getByOrdinal( aliasesDereferencingMethodOrdinal );
         aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
 
         connectionPageModified();
@@ -347,9 +354,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT, getCountLimit() );
         parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT, getTimeLimit() );
         parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
-            getReferralsHandlingMethod() );
+            getReferralsHandlingMethod().getOrdinal() );
         parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
-            getAliasesDereferencingMethod() );
+            getAliasesDereferencingMethod().getOrdinal() );
     }
 
 
@@ -378,10 +385,15 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         int countLimit = connectionParameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT );
         int timeLimit = connectionParameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT );
-        int referralsHandlingMethod = connectionParameter
+        int referralsHandlingMethodOrdinal = connectionParameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
-        int aliasesDereferencingMethod = connectionParameter
+        ReferralHandlingMethod referralsHandlingMethod = ReferralHandlingMethod
+            .getByOrdinal( referralsHandlingMethodOrdinal );
+        int aliasesDereferencingMethodOrdinal = connectionParameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
+        AliasDereferencingMethod aliasesDereferencingMethod = AliasDereferencingMethod
+            .getByOrdinal( aliasesDereferencingMethodOrdinal );
+        aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
 
         return isReconnectionRequired() || countLimit != getCountLimit() || timeLimit != getTimeLimit()
             || referralsHandlingMethod != getReferralsHandlingMethod()
