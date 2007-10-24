@@ -217,24 +217,23 @@ public class BrowserView extends ViewPart
             while ( tempEntry.getParententry() != null )
             {
                 IEntry parentEntry = tempEntry.getParententry();
-                entryList.add( parentEntry );
+                entryList.add( 0, parentEntry );
                 tempEntry = parentEntry;
             }
 
-            IEntry[] parentEntries = ( IEntry[] ) entryList.toArray( new IEntry[0] );
-            for ( int i = parentEntries.length - 1; i >= 0; i-- )
+            for ( IEntry parentEntry : entryList )
             {
-                if ( !parentEntries[i].isChildrenInitialized() )
+                if ( !parentEntry.isChildrenInitialized() )
                 {
-                    parentEntries[i].setChildrenInitialized( true );
-                    parentEntries[i].setHasMoreChildren( true );
+                    parentEntry.setChildrenInitialized( true );
+                    parentEntry.setHasMoreChildren( true );
                 }
                 
                 // force refresh of each parent, beginning from the root
                 // if the entry to select was lazy initialized then the 
                 // JFace model has no knowledge about it so we must
                 // refresh the JFace model from the browser model
-                mainWidget.getViewer().refresh( parentEntries[i], true );
+                mainWidget.getViewer().refresh( parentEntry, true );
             }
 
             objectToSelect = entry;
