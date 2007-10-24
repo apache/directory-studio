@@ -224,12 +224,17 @@ public class BrowserView extends ViewPart
             IEntry[] parentEntries = ( IEntry[] ) entryList.toArray( new IEntry[0] );
             for ( int i = parentEntries.length - 1; i >= 0; i-- )
             {
-
                 if ( !parentEntries[i].isChildrenInitialized() )
                 {
                     parentEntries[i].setChildrenInitialized( true );
                     parentEntries[i].setHasMoreChildren( true );
                 }
+                
+                // force refresh of each parent, beginning from the root
+                // if the entry to select was lazy initialized then the 
+                // JFace model has no knowledge about it so we must
+                // refresh the JFace model from the browser model
+                mainWidget.getViewer().refresh( parentEntries[i], true );
             }
 
             objectToSelect = entry;
@@ -240,7 +245,6 @@ public class BrowserView extends ViewPart
             mainWidget.getViewer().reveal( objectToSelect );
             mainWidget.getViewer().refresh( objectToSelect, true );
             mainWidget.getViewer().setSelection( new StructuredSelection( objectToSelect ), true );
-
         }
     }
 
