@@ -142,12 +142,11 @@ public class InitializeAttributesJob extends AbstractNotificationJob
      */
     protected void runNotification()
     {
-        for ( int pi = 0; pi < entries.length; pi++ )
+        for ( IEntry entry : entries )
         {
-            IEntry parent = entries[pi];
-            if ( parent.getBrowserConnection() != null && parent.isDirectoryEntry() )
+            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() )
             {
-                EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( parent ), this );
+                EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( entry ), this );
             }
         }
     }
