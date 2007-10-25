@@ -66,6 +66,15 @@ public class InitializeAttributesJob extends AbstractNotificationJob
     /** The flag if operational attributes should be initialized. */
     private boolean initOperationalAttributes;
 
+    /** The requested attributes when reading the Root DSE. */
+    public static final String[] ROOT_DSE_ATTRIBUTES =
+        { IRootDSE.ROOTDSE_ATTRIBUTE_MONITORCONTEXT, IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS,
+            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY,
+            IRootDSE.ROOTDSE_ATTRIBUTE_ALTSERVER, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION,
+            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES,
+            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM, ISearch.ALL_OPERATIONAL_ATTRIBUTES,
+            ISearch.ALL_USER_ATTRIBUTES };
+
 
     /**
      * Creates a new instance of InitializeAttributesJob.
@@ -285,7 +294,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
         // get well-known root DSE attributes, includes + and *
         ISearch search = new Search( null, browserConnection, new DN(), ISearch.FILTER_TRUE,
-            IBrowserConnection.ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0,
+            InitializeAttributesJob.ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0,
             AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false,
             null );
         SearchJob.searchAndUpdateModel( browserConnection, search, monitor );

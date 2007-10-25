@@ -20,7 +20,7 @@
 
 package org.apache.directory.studio.ldapbrowser.core.model;
 
-
+// TODO: remove ModelModificationException
 public class ModelModificationException extends Exception
 {
 

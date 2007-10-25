@@ -32,156 +32,246 @@ import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
+/**
+ * Connection without any operation. It could be used to make model modifications
+ * without committing these modifications to the directory.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DummyConnection implements IBrowserConnection
 {
 
     private static final long serialVersionUID = 3671686808330691741L;
 
+    /** The schema. */
     private Schema schema;
 
 
+    /**
+     * Creates a new instance of DummyConnection.
+     * 
+     * @param schema the schema
+     */
     public DummyConnection( Schema schema )
     {
         this.schema = schema;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public DN getBaseDN()
     {
         return new DN();
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public BookmarkManager getBookmarkManager()
     {
         return null;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public int getCountLimit()
     {
         return 0;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
         return AliasDereferencingMethod.NEVER;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public IEntry getEntryFromCache( DN dn )
     {
         return null;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public IRootDSE getRootDSE()
     {
         return null;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public Schema getSchema()
     {
         return schema;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public SearchManager getSearchManager()
     {
         return null;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public int getTimeLimit()
     {
         return 0;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public boolean isFetchBaseDNs()
     {
         return false;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setBaseDN( DN baseDN )
     {
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setCountLimit( int countLimit )
     {
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setFetchBaseDNs( boolean fetchBaseDNs )
     {
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setSchema( Schema schema )
     {
         this.schema = schema;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setTimeLimit( int timeLimit )
     {
-
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         return null;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public Object clone()
     {
         return this;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public ModificationLogger getModificationLogger()
     {
         return null;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public ReferralHandlingMethod getReferralsHandlingMethod()
     {
         return ReferralHandlingMethod.IGNORE;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
     {
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public URL getUrl()
     {
         return null;
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
     public Connection getConnection()
     {
         return null;
     }
 
+
+    /** 
+     * {@inheritDoc}
+     */
     public void cacheEntry( IEntry entry )
     {
     }
-    
+
+
+    /** 
+     * {@inheritDoc}
+     */
     public void uncacheEntryRecursive( IEntry entry )
     {
     }

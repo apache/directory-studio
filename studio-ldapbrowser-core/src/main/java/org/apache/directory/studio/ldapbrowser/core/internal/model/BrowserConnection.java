@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -44,15 +45,20 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
+/**
+ * The default implementation of {@link IBrowserConnection}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserConnection implements ConnectionUpdateListener, IBrowserConnection, Serializable
 {
 
     private static final long serialVersionUID = 2987596234755856270L;
 
-    private org.apache.directory.studio.connection.core.Connection connection;
+    /** The connection. */
+    private Connection connection;
     
-//    private BrowserConnectionParameter browserConnectionParameter;
-
     private IRootDSE rootDSE;
 
     private Schema schema;
@@ -454,7 +460,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-    public org.apache.directory.studio.connection.core.Connection getConnection()
+    public Connection getConnection()
     {
         return connection;
     }

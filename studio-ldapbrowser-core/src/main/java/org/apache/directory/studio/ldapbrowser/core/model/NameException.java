@@ -20,7 +20,7 @@
 
 package org.apache.directory.studio.ldapbrowser.core.model;
 
-
+// TODO: replace by NamingException or InvalidNameException
 public class NameException extends Exception
 {
 
