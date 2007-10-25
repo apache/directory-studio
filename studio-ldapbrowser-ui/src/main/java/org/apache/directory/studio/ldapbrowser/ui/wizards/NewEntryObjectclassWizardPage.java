@@ -29,12 +29,12 @@ import java.util.Set;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;

@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.utils;
 
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
@@ -32,6 +32,7 @@ import javax.naming.ReferralException;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -167,7 +168,7 @@ public class JNDIUtils
             ConnectionException ce;
             if ( referrals != null )
             {
-                ce = new org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralException(
+                ce = new org.apache.directory.studio.ldapbrowser.core.model.ReferralException(
                     searchParameter, referrals, ldapStatusCode, message, e );
             }
             else

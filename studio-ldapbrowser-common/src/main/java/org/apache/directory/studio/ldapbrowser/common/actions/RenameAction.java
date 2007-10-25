@@ -22,12 +22,12 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;

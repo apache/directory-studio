@@ -17,17 +17,42 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
 
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+package org.apache.directory.studio.connection.core.io.jndi;
 
-public interface DirectoryTypeDetector
+
+import javax.naming.ldap.BasicControl;
+
+
+/**
+ * The Subentries control.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class JNDISubentriesControl extends BasicControl
 {
+
+    private static final long serialVersionUID = -6614360496036854589L;
+
     /**
-     * Tries to detect the directory type from the given Root DSE.
-     * 
-     * @param rootDSE the Root DSE
-     * @return the directory type or null if unknown
+     * The Subentries control's OID is 1.3.6.1.4.1.4203.1.10.1.
      */
-    public String detectDirectoryType( IRootDSE rootDSE );
+    public static final String OID = "1.3.6.1.4.1.4203.1.10.1";
+
+    /**
+     * The Subentries control's value.
+     */
+    public static final byte[] VALUE = new byte[]
+        { 0x01, 0x01, ( byte ) 0xFF };
+
+
+    /**
+     * Creates a new instance of JNDISubentriesControl.
+     */
+    public JNDISubentriesControl()
+    {
+        super( OID, false, VALUE );
+    }
+
 }

@@ -24,11 +24,11 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import java.math.BigInteger;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DirectoryMetadataEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;

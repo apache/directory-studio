@@ -18,33 +18,27 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
-public class AttributeInfo implements Serializable
+public class AliasBaseEntry extends DelegateEntry
 {
 
-    private static final long serialVersionUID = -298229262461058833L;
-
-    public static int COUNTER = 0;
-
-    protected volatile boolean attributesInitialzed = false;
-
-    protected volatile Map attributeMap = new LinkedHashMap();
-
-    protected volatile Subschema subschema = null;
+    private static final long serialVersionUID = -3599038109979581295L;
 
 
-    public AttributeInfo()
+    protected AliasBaseEntry()
     {
-        COUNTER++;
+    }
+
+
+    public AliasBaseEntry( IBrowserConnection connection, DN dn )
+    {
+        super( connection, dn );
     }
 
 }

@@ -17,28 +17,22 @@
  *  under the License. 
  *  
  */
-
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
-
-
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-public class AliasBaseEntry extends DelegateEntry
+/**
+ * A DirectoryTypeDetector detects the directory type.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public interface DirectoryTypeDetector
 {
-
-    private static final long serialVersionUID = -3599038109979581295L;
-
-
-    protected AliasBaseEntry()
-    {
-    }
-
-
-    public AliasBaseEntry( IBrowserConnection connection, DN dn )
-    {
-        super( connection, dn );
-    }
-
+    /**
+     * Tries to detect the directory type from the given Root DSE.
+     * 
+     * @param rootDSE the Root DSE
+     * @return the directory type or null if unknown
+     */
+    public String detectDirectoryType( IRootDSE rootDSE );
 }

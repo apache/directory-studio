@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEOFPart;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;

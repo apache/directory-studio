@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model;
 
 
 import java.util.ArrayList;
@@ -26,11 +26,7 @@ import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.URL;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 
 
 public class ReferralException extends ConnectionException

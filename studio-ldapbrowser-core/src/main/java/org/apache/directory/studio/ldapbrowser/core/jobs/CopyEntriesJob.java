@@ -30,10 +30,6 @@ import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Entry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -46,6 +42,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
 

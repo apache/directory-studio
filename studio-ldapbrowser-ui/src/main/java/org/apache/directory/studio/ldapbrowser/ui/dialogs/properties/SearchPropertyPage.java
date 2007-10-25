@@ -27,8 +27,8 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListen
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

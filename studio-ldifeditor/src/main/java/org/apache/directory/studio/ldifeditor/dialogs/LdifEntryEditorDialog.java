@@ -27,11 +27,11 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryE
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;

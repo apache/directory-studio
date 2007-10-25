@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model;
 
 
 public class ConnectionException extends Exception

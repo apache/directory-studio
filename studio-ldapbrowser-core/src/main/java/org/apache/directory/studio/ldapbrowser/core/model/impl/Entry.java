@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
@@ -28,42 +28,52 @@ import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 
 
 /**
- * The BaseDNEntry class represents an entry without a logical parent entry.
+ * The Entry class represents an entry with a logical parent entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BaseDNEntry extends AbstractEntry
+public class Entry extends AbstractEntry
 {
 
-    private static final long serialVersionUID = -5444229580355372176L;
+    private static final long serialVersionUID = -4718107307581983276L;
 
-    /** The base DN. */
-    protected DN baseDn;
+    /** The RDN. */
+    protected RDN rdn;
 
-    /** The browser connection. */
-    protected IBrowserConnection browserConnection;
+    /** The parent entry. */
+    protected IEntry parent;
 
 
-    protected BaseDNEntry()
+    protected Entry()
     {
     }
 
 
     /**
-     * Creates a new instance of BaseDNEntry.
+     * Creates a new instance of Entry.
      * 
-     * @param baseDn the base DN
-     * @param browserConnection the browser connection
+     * @param parent the parent entry
+     * @param rdn the RDN
      */
-    public BaseDNEntry( DN baseDn, IBrowserConnection browserConnection )
+    public Entry( IEntry parent, RDN rdn )
     {
-        assert baseDn != null;
-        assert browserConnection != null;
+        assert parent != null;
+        assert rdn != null;
+        assert !"".equals( rdn.toString() );
 
-        this.setDirectoryEntry( true );
-        this.baseDn = baseDn;
-        this.browserConnection = browserConnection;
+        this.parent = parent;
+        this.rdn = rdn;
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#getRdn()
+     */
+    public RDN getRdn()
+    {
+        // performance opt.
+        return rdn;
     }
 
 
@@ -72,7 +82,8 @@ public class BaseDNEntry extends AbstractEntry
      */
     public DN getDn()
     {
-        return baseDn;
+        DN dn = new DN( new RDN( rdn ), parent.getDn() );
+        return dn;
     }
 
 
@@ -81,7 +92,7 @@ public class BaseDNEntry extends AbstractEntry
      */
     public IEntry getParententry()
     {
-        return getBrowserConnection().getRootDSE();
+        return parent;
     }
 
 
@@ -90,23 +101,25 @@ public class BaseDNEntry extends AbstractEntry
      */
     public IBrowserConnection getBrowserConnection()
     {
-        return browserConnection;
+        return getParententry().getBrowserConnection();
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#setRdn(org.apache.directory.studio.ldapbrowser.core.model.RDN)
+     * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#setRdn(org.apache.directory.studio.ldapbrowser.core.model.RDN)
      */
     protected void setRdn( RDN newRdn )
     {
+        this.rdn = newRdn;
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#setParent(org.apache.directory.studio.ldapbrowser.core.model.IEntry)
+     * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#setParent(org.apache.directory.studio.ldapbrowser.core.model.IEntry)
      */
     protected void setParent( IEntry newParent )
     {
+        this.parent = newParent;
     }
 
 }

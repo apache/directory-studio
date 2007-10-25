@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.AttributePropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;

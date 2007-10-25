@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model;
 
 
 import java.io.Serializable;
@@ -26,75 +26,136 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
+/**
+ * This class implements an attribute description as 
+ * specified in RFC4512, section 2.5:
+ * 
+ *    An attribute description is represented by the ABNF:
+ *
+ *      attributedescription = attributetype options
+ *      attributetype = oid
+ *      options = *( SEMI option )
+ *      option = 1*keychar
+ *
+ *   where <attributetype> identifies the attribute type and each <option>
+ *   identifies an attribute option.  Both <attributetype> and <option>
+ *   productions are case insensitive.  The order in which <option>s
+ *   appear is irrelevant.  That is, any two <attributedescription>s that
+ *   consist of the same <attributetype> and same set of <option>s are
+ *   equivalent.
+ *
+ *   Examples of valid attribute descriptions:
+ *
+ *      2.5.4.0
+ *      cn;lang-de;lang-en
+ *      owner
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeDescription implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
 
+    /** The user provided description. */
     private String description;
 
+    /** The parsed attribute type. */
     private String parsedAttributeType;
 
-    private List parsedLangList;
+    /** The parsed language tag option list. */
+    private List<String> parsedLangList;
 
-    private List parsedOptionList;
+    /** The parsed option list, except the language tags. */
+    private List<String> parsedOptionList;
 
 
+    /**
+     * Creates a new instance of AttributeDescription.
+     * 
+     * @param description the user provided description
+     */
     public AttributeDescription( String description )
     {
-
         this.description = description;
 
         String[] attributeDescriptionComponents = description.split( IAttribute.OPTION_DELIMITER );
         this.parsedAttributeType = attributeDescriptionComponents[0];
-        this.parsedLangList = new ArrayList();
-        this.parsedOptionList = new ArrayList();
-        for ( int i = 1; i < attributeDescriptionComponents.length; i++ )
+        this.parsedLangList = new ArrayList<String>();
+        this.parsedOptionList = new ArrayList<String>();
+        for ( String component : attributeDescriptionComponents )
         {
-            if ( attributeDescriptionComponents[i].startsWith( IAttribute.OPTION_LANG_PREFIX ) )
+            if ( component.startsWith( IAttribute.OPTION_LANG_PREFIX ) )
             {
-                this.parsedLangList.add( attributeDescriptionComponents[i] );
+                this.parsedLangList.add( component );
             }
             else
             {
-                this.parsedOptionList.add( attributeDescriptionComponents[i] );
+                this.parsedOptionList.add( component );
             }
         }
     }
 
 
+    /**
+     * Gets the user provided description.
+     * 
+     * @return the user provided description
+     */
     public String getDescription()
     {
         return description;
     }
 
 
+    /**
+     * Gets the parsed attribute type.
+     * 
+     * @return the parsed attribute type
+     */
     public String getParsedAttributeType()
     {
         return parsedAttributeType;
     }
 
 
-    public List getParsedLangList()
+    /**
+     * Gets the list of parsed language tags.
+     * 
+     * @return the list of parsed language tags
+     */
+    public List<String> getParsedLangList()
     {
         return parsedLangList;
     }
 
 
-    public List getParsedOptionList()
+    /**
+     * Gets the list of parsed options, except the language tags.
+     * 
+     * @return the list of parsed options, except the language tags
+     */
+    public List<String> getParsedOptionList()
     {
         return parsedOptionList;
     }
 
 
+    /**
+     * Returns the attribute description with the numeric OID
+     * instead of the descriptive attribute type.
+     * 
+     * @param schema the schema
+     * 
+     * @return the attribute description with the numeric OID
+     */
     public String toOidString( Schema schema )
     {
-
         if ( schema == null )
         {
             return description;
@@ -105,9 +166,9 @@ public class AttributeDescription implements Serializable
 
         if ( !parsedLangList.isEmpty() )
         {
-            for ( Iterator it = parsedLangList.iterator(); it.hasNext(); )
+            for ( Iterator<String> it = parsedLangList.iterator(); it.hasNext(); )
             {
-                String element = ( String ) it.next();
+                String element = it.next();
                 oidString += element;
 
                 if ( it.hasNext() || !parsedOptionList.isEmpty() )
@@ -118,9 +179,9 @@ public class AttributeDescription implements Serializable
         }
         if ( !parsedOptionList.isEmpty() )
         {
-            for ( Iterator it = parsedOptionList.iterator(); it.hasNext(); )
+            for ( Iterator<String> it = parsedOptionList.iterator(); it.hasNext(); )
             {
-                String element = ( String ) it.next();
+                String element = it.next();
                 oidString += element;
 
                 if ( it.hasNext() )
@@ -134,9 +195,18 @@ public class AttributeDescription implements Serializable
     }
 
 
+    /**
+     * Checks if the given attribute description is subtype of 
+     * this attriubte description.
+     * 
+     * @param other the other attribute description
+     * @param schema the schema
+     * 
+     * @return true, if the other attribute description is a 
+     *         subtype of this attribute description.
+     */
     public boolean isSubtypeOf( AttributeDescription other, Schema schema )
     {
-
         // this=name, other=givenName;lang-de -> false
         // this=name;lang-en, other=givenName;lang-de -> false
         // this=givenName, other=name -> true
@@ -174,8 +244,8 @@ public class AttributeDescription implements Serializable
         }
 
         // check options
-        List myOptionsList = new ArrayList( this.getParsedOptionList() );
-        List otherOptionsList = new ArrayList( other.getParsedOptionList() );
+        List<String> myOptionsList = new ArrayList<String>( this.getParsedOptionList() );
+        List<String> otherOptionsList = new ArrayList<String>( other.getParsedOptionList() );
         otherOptionsList.removeAll( myOptionsList );
         if ( !otherOptionsList.isEmpty() )
         {
@@ -183,14 +253,13 @@ public class AttributeDescription implements Serializable
         }
 
         // check language tags
-        List myLangList = new ArrayList( this.getParsedLangList() );
-        List otherLangList = new ArrayList( other.getParsedLangList() );
-        for ( Iterator myIt = myLangList.iterator(); myIt.hasNext(); )
+        List<String> myLangList = new ArrayList<String>( this.getParsedLangList() );
+        List<String> otherLangList = new ArrayList<String>( other.getParsedLangList() );
+        for ( String myLang : myLangList )
         {
-            String myLang = ( String ) myIt.next();
-            for ( Iterator otherIt = otherLangList.iterator(); otherIt.hasNext(); )
+            for ( Iterator<String> otherIt = otherLangList.iterator(); otherIt.hasNext(); )
             {
-                String otherLang = ( String ) otherIt.next();
+                String otherLang = otherIt.next();
                 if ( otherLang.endsWith( "-" ) )
                 {
                     if ( myLang.toLowerCase().startsWith( otherLang.toLowerCase() ) )

@@ -25,9 +25,6 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
  * Utilities to convert between models
  */
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -35,6 +32,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeRecord;

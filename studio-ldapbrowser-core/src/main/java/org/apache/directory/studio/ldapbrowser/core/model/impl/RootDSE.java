@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import java.util.Arrays;
@@ -59,7 +59,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.BaseDNEntry#getParententry()
+     * @see org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry#getParententry()
      */
     public IEntry getParententry()
     {
@@ -118,7 +118,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#isSubentry()
+     * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#isSubentry()
      */
     public boolean isSubentry()
     {

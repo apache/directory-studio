@@ -29,13 +29,13 @@ import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAda
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.AliasesDereferencingWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.LimitWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.ReferralsHandlingWidget;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.BrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.jobs.FetchBaseDNsJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

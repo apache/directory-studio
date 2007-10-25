@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
@@ -62,7 +62,7 @@ public class DirectoryMetadataEntry extends BaseDNEntry
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.internal.model.AbstractEntry#hasChildren()
+     * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#hasChildren()
      */
     public boolean hasChildren()
     {

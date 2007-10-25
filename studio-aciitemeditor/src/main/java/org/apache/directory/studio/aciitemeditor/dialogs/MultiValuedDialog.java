@@ -24,10 +24,10 @@ import java.util.List;
 
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

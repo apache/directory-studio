@@ -23,11 +23,11 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import java.util.Iterator;
 
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;

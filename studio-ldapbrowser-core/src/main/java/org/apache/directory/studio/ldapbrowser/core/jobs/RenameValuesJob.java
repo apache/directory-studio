@@ -30,12 +30,12 @@ import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitialized
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 
 
 /**

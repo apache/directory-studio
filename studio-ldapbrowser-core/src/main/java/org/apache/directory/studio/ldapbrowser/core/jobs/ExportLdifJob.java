@@ -37,14 +37,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.AttributeComparator;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.JNDIUtils;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralException;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
@@ -53,6 +51,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifCon
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
+import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
+import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 
 /**

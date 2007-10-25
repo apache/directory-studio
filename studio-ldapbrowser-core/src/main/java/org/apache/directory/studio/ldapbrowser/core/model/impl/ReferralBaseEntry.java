@@ -18,27 +18,27 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import javax.naming.NamingException;
+import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
-public class CancelException extends NamingException
+public class ReferralBaseEntry extends DelegateEntry
 {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6351277968774226912L;
 
 
-    public CancelException()
+    protected ReferralBaseEntry()
     {
-        super();
     }
 
 
-    public CancelException( String arg0 )
+    public ReferralBaseEntry( IBrowserConnection connection, DN dn )
     {
-        super( arg0 );
+        super( connection, dn );
     }
 
 }

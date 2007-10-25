@@ -27,7 +27,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ModificationLogger;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.ModificationLogger;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.core.runtime.IAdaptable;
 

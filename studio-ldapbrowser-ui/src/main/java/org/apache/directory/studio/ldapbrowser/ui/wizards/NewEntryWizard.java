@@ -26,8 +26,6 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCat
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -37,6 +35,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.viewers.IStructuredSelection;

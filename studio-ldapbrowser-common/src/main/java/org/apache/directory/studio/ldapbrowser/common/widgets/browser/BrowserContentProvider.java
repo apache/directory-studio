@@ -31,7 +31,6 @@ import java.util.Map;
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -40,6 +39,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 

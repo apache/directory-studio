@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.ldif;
 
 
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 
 

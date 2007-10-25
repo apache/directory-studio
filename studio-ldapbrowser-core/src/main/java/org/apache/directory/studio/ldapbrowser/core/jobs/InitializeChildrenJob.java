@@ -32,9 +32,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.AliasBaseEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralBaseEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
@@ -43,6 +40,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 
 
 /**

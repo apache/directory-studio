@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;

@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.internal.model;
+package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;

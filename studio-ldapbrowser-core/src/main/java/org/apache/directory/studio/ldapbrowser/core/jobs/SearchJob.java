@@ -41,14 +41,9 @@ import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.BaseDNEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Entry;
 import org.apache.directory.studio.ldapbrowser.core.internal.model.JNDIControl;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.JNDIUtils;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralException;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -57,9 +52,14 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 
@@ -203,7 +203,7 @@ public class SearchJob extends AbstractNotificationJob
                         fillAttributes( entry, sr, search.getSearchParameter() );
 
                         searchResultList
-                            .add( new org.apache.directory.studio.ldapbrowser.core.internal.model.SearchResult( entry,
+                            .add( new org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult( entry,
                                 search ) );
 
                         monitor
@@ -716,7 +716,7 @@ public class SearchJob extends AbstractNotificationJob
                 IAttribute studioAttribute = null;
                 if ( entry.getAttribute( attributeDescription ) == null )
                 {
-                    studioAttribute = new org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute( entry,
+                    studioAttribute = new org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute( entry,
                         attributeDescription );
                     entry.addAttribute( studioAttribute );
                 }
