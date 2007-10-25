@@ -34,6 +34,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.studio.connection.core.Connection;
@@ -41,7 +42,6 @@ import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.JNDIControl;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
@@ -302,7 +302,7 @@ public class SearchJob extends AbstractNotificationJob
             ldapControls = new Control[ctls.length];
             for ( int i = 0; i < ctls.length; i++ )
             {
-                ldapControls[i] = new JNDIControl( ctls[i].getOid(), ctls[i].isCritical(), ctls[i].getControlValue() );
+                ldapControls[i] = new BasicControl( ctls[i].getOid(), ctls[i].isCritical(), ctls[i].getControlValue() );
             }
         }
 

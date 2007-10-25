@@ -41,6 +41,7 @@ import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
+import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -50,7 +51,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.JNDIControl;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -493,7 +493,7 @@ public class ImportLdifJob extends AbstractNotificationJob
             {
                 LdifControlLine line = controlLines[i];
                 // TODO: encoded control value
-                controls[i] = new JNDIControl( line.getUnfoldedOid(), line.isCritical(), null );
+                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(), null );
             }
         }
         return controls;
