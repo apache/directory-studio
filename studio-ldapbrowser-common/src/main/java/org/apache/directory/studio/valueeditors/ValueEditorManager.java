@@ -24,7 +24,6 @@ package org.apache.directory.studio.valueeditors;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
@@ -145,10 +143,9 @@ public class ValueEditorManager
             this.defaultStringMultiLineValueEditor.dispose();
             this.defaultBinaryValueEditor.dispose();
 
-            for ( Iterator it = this.class2ValueEditors.values().iterator(); it.hasNext(); )
+            for ( IValueEditor ve : class2ValueEditors.values() )
             {
-                IValueEditor vp = ( IValueEditor ) it.next();
-                vp.dispose();
+                ve.dispose();
             }
 
             this.parent = null;
@@ -519,7 +516,6 @@ public class ValueEditorManager
      * @throws ModelModificationException the model modification exception
      */
     public void createValue( IEntry entry, String attributeDescription, Object newRawValue )
-        throws ModelModificationException
     {
         if ( entry != null && attributeDescription != null && newRawValue != null
             && ( newRawValue instanceof byte[] || newRawValue instanceof String ) )

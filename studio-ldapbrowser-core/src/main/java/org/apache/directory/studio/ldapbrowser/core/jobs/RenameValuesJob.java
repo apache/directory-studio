@@ -33,7 +33,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 
@@ -81,7 +80,7 @@ public class RenameValuesJob extends AbstractAttributeModificationJob
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#executeAttributeModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeAttributeModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( oldValues.length == 1 ? BrowserCoreMessages.jobs__rename_value_task_1
             : BrowserCoreMessages.jobs__rename_value_task_n, 2 );

@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
@@ -60,11 +59,10 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws ModelModificationException the model modification exception
      * @throws NameException the name exception
      */
     public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IBrowserConnection connection )
-        throws NameException, ModelModificationException
+        throws NameException
     {
         return createIntern( ldifContentRecord, connection );
     }
@@ -78,11 +76,10 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws ModelModificationException the model modification exception
      * @throws NameException the name exception
      */
     public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IBrowserConnection connection )
-        throws NameException, ModelModificationException
+        throws NameException
     {
         return createIntern( ldifChangeAddRecord, connection );
     }
@@ -96,11 +93,9 @@ public class ModelConverter
      *
      * @return the dummy entry
      *
-     * @throws ModelModificationException the model modification exception
      * @throws NameException the name exception
      */
-    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection ) throws NameException,
-        ModelModificationException
+    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection ) throws NameException
     {
         LdifPart[] parts = ldifRecord.getParts();
 

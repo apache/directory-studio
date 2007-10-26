@@ -40,7 +40,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -290,13 +289,7 @@ public class DeleteAction extends BrowserAction
                         }
                         if ( att.getValueSize() == 0 )
                         {
-                            try
-                            {
-                                att.getEntry().deleteAttribute( att );
-                            }
-                            catch ( ModelModificationException e )
-                            {
-                            }
+                            att.getEntry().deleteAttribute( att );
                             it.remove();
                         }
                     }

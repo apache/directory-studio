@@ -45,7 +45,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
@@ -54,6 +53,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
+/**
+ * Base implementation of the {@link IEntry} interface.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public abstract class AbstractEntry implements IEntry
 {
 
@@ -118,9 +123,8 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    public void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException
+    public void addAttribute( IAttribute attributeToAdd ) throws IllegalArgumentException
     {
-
         String oidString = attributeToAdd.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
 
         AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
@@ -132,38 +136,24 @@ public abstract class AbstractEntry implements IEntry
 
         if ( !this.equals( attributeToAdd.getEntry() ) )
         {
-            throw new ModelModificationException( BrowserCoreMessages.model__attributes_entry_is_not_myself );
+            throw new IllegalArgumentException( BrowserCoreMessages.model__attributes_entry_is_not_myself );
         }
-        // else
-        // if(ai.attributeMap.containsKey(attributeToAdd.getDescription().toLowerCase()))
-        // {
         else if ( ai.attributeMap.containsKey( oidString.toLowerCase() ) )
         {
-            throw new ModelModificationException( BrowserCoreMessages.model__attribute_already_exists );
+            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_already_exists );
         }
         else
         {
-            // ai.attributeMap.put(attributeToAdd.getDescription().toLowerCase(),
-            // attributeToAdd);
             ai.attributeMap.put( oidString.toLowerCase(), attributeToAdd );
             this.entryModified( new AttributeAddedEvent( this.getJNDIConnection(), this, attributeToAdd ) );
         }
     }
 
 
-    public void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException
+    public void deleteAttribute( IAttribute attributeToDelete ) throws IllegalArgumentException
     {
-
         String oidString = attributeToDelete.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
-
         AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
-
-        // if(ai != null && ai.attributeMap != null &&
-        // ai.attributeMap.containsKey(attributeToDelete.getDescription().toLowerCase()))
-        // {
-        // IAttribute attribute =
-        // (IAttribute)ai.attributeMap.get(attributeToDelete.getDescription().toLowerCase());
-        // ai.attributeMap.remove(attributeToDelete.getDescription().toLowerCase());
         if ( ai != null && ai.attributeMap != null && ai.attributeMap.containsKey( oidString.toLowerCase() ) )
         {
             IAttribute attribute = ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
@@ -176,17 +166,13 @@ public abstract class AbstractEntry implements IEntry
         }
         else
         {
-            throw new ModelModificationException( BrowserCoreMessages.model__attribute_does_not_exist );
+            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist );
         }
     }
 
 
     public boolean isConsistent()
     {
-
-        // if(!this.isAttributesInitialized() && this.isDirectoryEntry())
-        // return true;
-
         AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
 
         if ( ai == null || ai.attributeMap == null )

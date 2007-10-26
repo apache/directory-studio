@@ -33,7 +33,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
@@ -193,10 +192,6 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 }
             }
 
-        }
-        catch ( ModelModificationException e )
-        {
-            e.printStackTrace();
         }
         finally
         {

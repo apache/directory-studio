@@ -244,11 +244,11 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @param valueToAdd
      *                the value to add
-     * @throws ModelModificationException
+     * @throws IllegalArgumentException
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void addValue( IValue valueToAdd ) throws ModelModificationException;
+    public abstract void addValue( IValue valueToAdd ) throws IllegalArgumentException;
 
 
     /**
@@ -256,11 +256,11 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @param valueToDelete
      *                the value to delete
-     * @throws ModelModificationException
+     * @throws IllegalArgumentException
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void deleteValue( IValue valueToDelete ) throws ModelModificationException;
+    public abstract void deleteValue( IValue valueToDelete ) throws IllegalArgumentException;
 
 
     /**
@@ -270,12 +270,12 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      *                the value that should be replaced
      * @param newValue
      *                the value that should be added
-     * @throws ModelModificationException
+     * @throws IllegalArgumentException
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
     public abstract void modifyValue( IValue oldValue, IValue newValue )
-        throws ModelModificationException;
+        throws IllegalArgumentException;
 
 
     /**

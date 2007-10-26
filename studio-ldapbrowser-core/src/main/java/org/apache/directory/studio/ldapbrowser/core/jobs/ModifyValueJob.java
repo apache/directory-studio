@@ -37,7 +37,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 
 
@@ -81,7 +80,7 @@ public class ModifyValueJob extends AbstractAttributeModificationJob
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#executeAttributeModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeAttributeModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__modify_value_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -154,11 +153,9 @@ public class ModifyValueJob extends AbstractAttributeModificationJob
      * @param oldValue the old value
      * @param newValue the new value
      * @param monitor the progress monitor
-     * 
-     * @throws ModelModificationException
      */
     private void modifyValue( IBrowserConnection browserConnection, IEntry entry, IValue oldValue, IValue newValue,
-        StudioProgressMonitor monitor ) throws ModelModificationException
+        StudioProgressMonitor monitor )
     {
         if ( browserConnection.getConnection() != null )
         {

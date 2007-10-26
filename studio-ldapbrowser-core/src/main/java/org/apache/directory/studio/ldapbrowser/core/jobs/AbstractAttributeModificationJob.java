@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
 /**
@@ -40,7 +39,7 @@ public abstract class AbstractAttributeModificationJob extends AbstractNotificat
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         try
         {
@@ -79,11 +78,8 @@ public abstract class AbstractAttributeModificationJob extends AbstractNotificat
      * Execute the attribute modification job.
      * 
      * @param monitor the progress monitor
-     * 
-     * @throws ModelModificationException the model modification exception
      */
-    protected abstract void executeAttributeModificationJob( StudioProgressMonitor monitor )
-        throws ModelModificationException;
+    protected abstract void executeAttributeModificationJob( StudioProgressMonitor monitor );
 
 
     /**

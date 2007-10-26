@@ -34,7 +34,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -186,10 +185,6 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                         }
                     }
                 }
-            }
-            catch ( ModelModificationException e )
-            {
-                e.printStackTrace();
             }
             finally
             {

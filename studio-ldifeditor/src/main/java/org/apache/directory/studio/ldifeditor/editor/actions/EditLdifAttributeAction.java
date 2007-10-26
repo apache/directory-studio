@@ -26,7 +26,6 @@ import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
@@ -206,9 +205,6 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                 }
             }
             catch ( NameException e )
-            {
-            }
-            catch ( ModelModificationException e )
             {
             }
         }

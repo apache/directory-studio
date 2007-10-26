@@ -62,11 +62,11 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param attributeToAdd
      *                the attribute to add
-     * @throws ModelModificationException
-     *                 if the attribute is alreade present in this entry or
+     * @throws IllegalArgumentException
+     *                 if the attribute is already present in this entry or
      *                 if the attribute's entry isn't this entry.
      */
-    public abstract void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException;
+    public abstract void addAttribute( IAttribute attributeToAdd ) throws IllegalArgumentException;
 
 
     /**
@@ -74,10 +74,10 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param attributeToDelete
      *                the attribute to delete
-     * @throws ModelModificationException
+     * @throws IllegalArgumentException
      *                 if the attribute isn't present in this entry.
      */
-    public abstract void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException;
+    public abstract void deleteAttribute( IAttribute attributeToDelete ) throws IllegalArgumentException;
 
 
     /**
@@ -85,7 +85,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * conditions must be fulfilled:
      * 
      * <ul>
-     * <li>The objectClass attrbute must be present</li>
+     * <li>The objectClass attribute must be present</li>
      * <li>All must attributes must be present</li>
      * <li>There mustn't be any empty value</li>
      * </ul>
@@ -96,9 +96,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * TODO: still needed?
-     * 
-     * Indicates wheter this entry exists in directory. Otherwise it
+     * Indicates whether this entry exists in directory. Otherwise it
      * is a new entry created from the user and not still written to directory.
      * 
      * @return true it this entry is a directory entry
@@ -107,9 +105,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * TODO: still needed?
-     * 
-     * Sets wheter this entry exists in directory.
+     * Sets whether this entry exists in directory.
      * 
      * @param isDirectoryEntry
      *                true if this entry exists in directory.
@@ -118,7 +114,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates wheter this entry is an alias entry.
+     * Indicates whether this entry is an alias entry.
      * 
      * An entry is an alias entry if it has the object class 'alias'.
      * 

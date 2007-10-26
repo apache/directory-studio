@@ -40,7 +40,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
@@ -108,9 +107,8 @@ public class Attribute implements IAttribute
             return false;
         }
 
-        for ( Iterator it = valueList.iterator(); it.hasNext(); )
+        for ( IValue value : valueList )
         {
-            IValue value = ( IValue ) it.next();
             if ( value.isEmpty() )
             {
                 return false;
@@ -133,9 +131,8 @@ public class Attribute implements IAttribute
         else
         {
             String[] mustAttributeNames = getEntry().getSubschema().getMustAttributeNames();
-            for ( int i = 0; i < mustAttributeNames.length; i++ )
+            for ( String must : mustAttributeNames )
             {
-                String must = mustAttributeNames[i];
                 if ( must.equalsIgnoreCase( getType() ) )
                 {
                     return true;
@@ -198,7 +195,7 @@ public class Attribute implements IAttribute
     {
         IValue emptyValue = new Value( this );
         valueList.add( emptyValue );
-        this.attributeModified( new EmptyValueAddedEvent( getEntry().getBrowserConnection(), getEntry(), this, emptyValue ) );
+        attributeModified( new EmptyValueAddedEvent( getEntry().getBrowserConnection(), getEntry(), this, emptyValue ) );
     }
 
 
@@ -207,13 +204,14 @@ public class Attribute implements IAttribute
      */
     public void deleteEmptyValue()
     {
-        for ( Iterator it = this.valueList.iterator(); it.hasNext(); )
+        for ( Iterator<IValue> it = this.valueList.iterator(); it.hasNext(); )
         {
-            IValue value = ( IValue ) it.next();
+            IValue value = it.next();
             if ( value.isEmpty() )
             {
                 it.remove();
-                attributeModified( new EmptyValueDeletedEvent( getEntry().getBrowserConnection(), getEntry(), this, value ) );
+                attributeModified( new EmptyValueDeletedEvent( getEntry().getBrowserConnection(), getEntry(), this,
+                    value ) );
                 return;
             }
         }
@@ -235,17 +233,17 @@ public class Attribute implements IAttribute
      * Checks if the given value is valid.
      *
      * @param value the value to check
-     * @throws ModelModificationException if the value is not valid
+     * @throws IllegalArgumentException if the value is not valid
      */
-    private void checkValue( IValue value ) throws ModelModificationException
+    private void checkValue( IValue value ) throws IllegalArgumentException
     {
         if ( value == null )
         {
-            throw new ModelModificationException( BrowserCoreMessages.model__empty_value );
+            throw new IllegalArgumentException( BrowserCoreMessages.model__empty_value );
         }
         if ( !value.getAttribute().equals( this ) )
         {
-            throw new ModelModificationException( BrowserCoreMessages.model__values_attribute_is_not_myself );
+            throw new IllegalArgumentException( BrowserCoreMessages.model__values_attribute_is_not_myself );
         }
     }
 
@@ -258,9 +256,9 @@ public class Attribute implements IAttribute
      */
     private boolean internalDeleteValue( IValue valueToDelete )
     {
-        for ( Iterator it = valueList.iterator(); it.hasNext(); )
+        for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
         {
-            IValue value = ( IValue ) it.next();
+            IValue value = it.next();
             if ( value.equals( valueToDelete ) )
             {
                 it.remove();
@@ -274,10 +272,9 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public void addValue( IValue valueToAdd ) throws ModelModificationException
+    public void addValue( IValue valueToAdd ) throws IllegalArgumentException
     {
-        this.checkValue( valueToAdd );
-
+        checkValue( valueToAdd );
         valueList.add( valueToAdd );
         attributeModified( new ValueAddedEvent( getEntry().getBrowserConnection(), getEntry(), this, valueToAdd ) );
     }
@@ -286,13 +283,14 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public void deleteValue( IValue valueToDelete ) throws ModelModificationException
+    public void deleteValue( IValue valueToDelete ) throws IllegalArgumentException
     {
-        this.checkValue( valueToDelete );
+        checkValue( valueToDelete );
 
-        if ( this.internalDeleteValue( valueToDelete ) )
+        if ( internalDeleteValue( valueToDelete ) )
         {
-            this.attributeModified( new ValueDeletedEvent( getEntry().getBrowserConnection(), getEntry(), this, valueToDelete ) );
+            attributeModified( new ValueDeletedEvent( getEntry().getBrowserConnection(), getEntry(), this,
+                valueToDelete ) );
         }
     }
 
@@ -300,14 +298,14 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
-    public void modifyValue( IValue oldValue, IValue newValue ) throws ModelModificationException
+    public void modifyValue( IValue oldValue, IValue newValue ) throws IllegalArgumentException
     {
-        this.checkValue( oldValue );
-        this.checkValue( newValue );
+        checkValue( oldValue );
+        checkValue( newValue );
 
-        this.internalDeleteValue( oldValue );
-        this.valueList.add( newValue );
-        this.attributeModified( new ValueModifiedEvent( getEntry().getBrowserConnection(), getEntry(), this, oldValue,
+        internalDeleteValue( oldValue );
+        valueList.add( newValue );
+        attributeModified( new ValueModifiedEvent( getEntry().getBrowserConnection(), getEntry(), this, oldValue,
             newValue ) );
     }
 
@@ -326,7 +324,7 @@ public class Attribute implements IAttribute
      */
     public int getValueSize()
     {
-        return this.valueList.size();
+        return valueList.size();
     }
 
 
@@ -397,9 +395,9 @@ public class Attribute implements IAttribute
         List<byte[]> binaryValueList = new ArrayList<byte[]>();
 
         IValue[] values = getValues();
-        for ( int i = 0; i < values.length; i++ )
+        for ( IValue value : values )
         {
-            binaryValueList.add( values[i].getBinaryValue() );
+            binaryValueList.add( value.getBinaryValue() );
         }
 
         return binaryValueList.toArray( new byte[0][] );
@@ -430,9 +428,9 @@ public class Attribute implements IAttribute
         List<String> stringValueList = new ArrayList<String>();
 
         IValue[] values = getValues();
-        for ( int i = 0; i < values.length; i++ )
+        for ( IValue value : values )
         {
-            stringValueList.add( values[i].getStringValue() );
+            stringValueList.add( value.getStringValue() );
         }
 
         return stringValueList.toArray( new String[stringValueList.size()] );
@@ -451,6 +449,7 @@ public class Attribute implements IAttribute
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;

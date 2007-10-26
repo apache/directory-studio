@@ -51,7 +51,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
@@ -598,11 +597,9 @@ public class SearchJob extends AbstractNotificationJob
      * @param entry the entry
      * @param sr the JNDI search result
      * @param searchParameter the search parameters
-     * 
-     * @throws ModelModificationException the model modification exception
      */
     private static void fillAttributes( IEntry entry, SearchResult sr, SearchParameter searchParameter )
-        throws ModelModificationException, NamingException
+        throws NamingException
     {
         if ( searchParameter.getReturningAttributes() == null || searchParameter.getReturningAttributes().length > 0 )
         {
@@ -620,13 +617,7 @@ public class SearchJob extends AbstractNotificationJob
                     {
                         if ( !oldAttributes[i].isOperationalAttribute() )
                         {
-                            try
-                            {
-                                entry.deleteAttribute( oldAttributes[i] );
-                            }
-                            catch ( ModelModificationException e )
-                            {
-                            }
+                            entry.deleteAttribute( oldAttributes[i] );
                         }
                     }
                 }
@@ -640,13 +631,7 @@ public class SearchJob extends AbstractNotificationJob
                     {
                         if ( oldAttributes[i].isOperationalAttribute() )
                         {
-                            try
-                            {
-                                entry.deleteAttribute( oldAttributes[i] );
-                            }
-                            catch ( ModelModificationException e )
-                            {
-                            }
+                            entry.deleteAttribute( oldAttributes[i] );
                         }
                     }
                 }
@@ -660,13 +645,7 @@ public class SearchJob extends AbstractNotificationJob
                         for ( Iterator<IAttribute> it = ah.iterator(); it.hasNext(); )
                         {
                             IAttribute attribute = it.next();
-                            try
-                            {
-                                entry.deleteAttribute( attribute );
-                            }
-                            catch ( ModelModificationException e )
-                            {
-                            }
+                            entry.deleteAttribute( attribute );
                         }
                     }
                 }
@@ -677,13 +656,7 @@ public class SearchJob extends AbstractNotificationJob
                 IAttribute[] oldAttributes = entry.getAttributes();
                 for ( int i = 0; oldAttributes != null && i < oldAttributes.length; i++ )
                 {
-                    try
-                    {
-                        entry.deleteAttribute( oldAttributes[i] );
-                    }
-                    catch ( ModelModificationException e )
-                    {
-                    }
+                    entry.deleteAttribute( oldAttributes[i] );
                 }
             }
 
@@ -696,13 +669,7 @@ public class SearchJob extends AbstractNotificationJob
                 IAttribute oldAttribute = entry.getAttribute( attributeDescription );
                 if ( oldAttribute != null )
                 {
-                    try
-                    {
-                        entry.deleteAttribute( oldAttribute );
-                    }
-                    catch ( ModelModificationException mme )
-                    {
-                    }
+                    entry.deleteAttribute( oldAttribute );
                 }
             }
 

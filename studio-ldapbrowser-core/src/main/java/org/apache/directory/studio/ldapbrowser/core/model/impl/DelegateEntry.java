@@ -41,7 +41,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
@@ -154,7 +153,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public void addAttribute( IAttribute attributeToAdd ) throws ModelModificationException
+    public void addAttribute( IAttribute attributeToAdd )
     {
         if ( this.getDelegate() != null )
             getDelegate().addAttribute( attributeToAdd );
@@ -168,7 +167,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
-    public void deleteAttribute( IAttribute attributeToDelete ) throws ModelModificationException
+    public void deleteAttribute( IAttribute attributeToDelete )
     {
         if ( this.getDelegate() != null )
             getDelegate().deleteAttribute( attributeToDelete );

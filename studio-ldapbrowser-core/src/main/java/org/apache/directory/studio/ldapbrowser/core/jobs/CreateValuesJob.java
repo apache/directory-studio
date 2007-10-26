@@ -40,7 +40,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 
@@ -96,7 +95,7 @@ public class CreateValuesJob extends AbstractAttributeModificationJob
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#executeAttributeModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeAttributeModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( valuesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_values_task_1
             : BrowserCoreMessages.jobs__create_values_task_n, 2 );
@@ -184,11 +183,9 @@ public class CreateValuesJob extends AbstractAttributeModificationJob
      * @param entryToModify the entry to modify
      * @param valuesToCreate the values to create
      * @param monitor the progress monitor
-     * 
-     * @throws ModelModificationException
      */
     static void createValues( IBrowserConnection browserConnection, IEntry entryToModify, IValue[] valuesToCreate,
-        StudioProgressMonitor monitor ) throws ModelModificationException
+        StudioProgressMonitor monitor )
     {
         if ( browserConnection.getConnection() != null )
         {

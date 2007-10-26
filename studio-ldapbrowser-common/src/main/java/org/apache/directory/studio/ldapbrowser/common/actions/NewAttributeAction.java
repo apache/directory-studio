@@ -26,12 +26,9 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -95,22 +92,14 @@ public class NewAttributeAction extends BrowserAction
                 String newAttributeDescription = wizard.getAttributeDescription();
                 if ( newAttributeDescription != null && !"".equals( newAttributeDescription ) )
                 {
-                    try
+                    IAttribute att = entry.getAttribute( newAttributeDescription );
+                    if ( att == null )
                     {
-                        IAttribute att = entry.getAttribute( newAttributeDescription );
-                        if ( att == null )
-                        {
-                            att = new Attribute( entry, newAttributeDescription );
-                            entry.addAttribute( att ) ;
-                        }
+                        att = new Attribute( entry, newAttributeDescription );
+                        entry.addAttribute( att ) ;
+                    }
 
-                        att.addEmptyValue();
-                    }
-                    catch ( ModelModificationException mme )
-                    {
-                        MessageDialog.openError( Display.getDefault().getActiveShell(), "Error While Adding Attribute",
-                            mme.getMessage() );
-                    }
+                    att.addEmptyValue();
                 }
             }
         }

@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
@@ -114,12 +113,11 @@ public class ReadEntryJob extends AbstractNotificationJob
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeNotificationJob( StudioProgressMonitor pm ) throws ModelModificationException
+    protected void executeNotificationJob( StudioProgressMonitor pm )
     {
         readEntry = browserConnection.getEntryFromCache( dn );
         if ( readEntry == null )
         {
-
             pm.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__read_entry_task, new String[]
                 { dn.toString() } ), 2 );
             pm.reportProgress( " " ); //$NON-NLS-1$

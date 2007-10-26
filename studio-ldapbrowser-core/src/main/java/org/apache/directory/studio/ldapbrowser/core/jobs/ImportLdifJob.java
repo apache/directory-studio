@@ -55,7 +55,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
@@ -152,7 +151,7 @@ public class ImportLdifJob extends AbstractNotificationJob
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__import_ldif_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$

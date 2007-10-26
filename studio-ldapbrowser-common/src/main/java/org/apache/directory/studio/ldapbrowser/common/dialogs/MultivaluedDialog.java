@@ -42,7 +42,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -165,9 +164,9 @@ public class MultivaluedDialog extends Dialog
             dispose();
 
             // cleanup attribute hierarchy after editing
-            for ( Iterator it = attributeHierarchie.iterator(); it.hasNext(); )
+            for ( Iterator<IAttribute> it = attributeHierarchie.iterator(); it.hasNext(); )
             {
-                IAttribute attribute = ( IAttribute ) it.next();
+                IAttribute attribute = it.next();
                 if ( attribute != null )
                 {
                     // remove empty values
@@ -180,16 +179,10 @@ public class MultivaluedDialog extends Dialog
                         }
                     }
 
-                    // deltet attribute from entry if all values were deleted
+                    // delete attribute from entry if all values were deleted
                     if ( attribute.getValueSize() == 0 )
                     {
-                        try
-                        {
-                            attribute.getEntry().deleteAttribute( attribute );
-                        }
-                        catch ( ModelModificationException e )
-                        {
-                        }
+                        attribute.getEntry().deleteAttribute( attribute );
                     }
                 }
             }
@@ -257,9 +250,9 @@ public class MultivaluedDialog extends Dialog
             .getOpenDefaultEditorAction() );
 
         // start edit mode if an empty value exists
-        for ( Iterator it = attributeHierarchie.iterator(); it.hasNext(); )
+        for ( Iterator<IAttribute> it = attributeHierarchie.iterator(); it.hasNext(); )
         {
-            IAttribute attribute = ( IAttribute ) it.next();
+            IAttribute attribute = it.next();
             IValue[] values = attribute.getValues();
             for ( int i = 0; i < values.length; i++ )
             {
@@ -321,15 +314,9 @@ public class MultivaluedDialog extends Dialog
             if ( attributeHierarchie == null )
             {
                 EventRegistry.suspendEventFireingInCurrentThread();
-                try
-                {
-                    IAttribute attribute = new Attribute( entry, attributeDescription );
-                    entry.addAttribute( attribute );
-                    attribute.addEmptyValue();
-                }
-                catch ( ModelModificationException e )
-                {
-                }
+                IAttribute attribute = new Attribute( entry, attributeDescription );
+                entry.addAttribute( attribute );
+                attribute.addEmptyValue();
                 EventRegistry.resumeEventFireingInCurrentThread();
                 attributeHierarchie = entry.getAttributeWithSubtypes( attributeDescription );
             }

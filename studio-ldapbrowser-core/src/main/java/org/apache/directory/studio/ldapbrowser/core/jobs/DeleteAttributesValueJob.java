@@ -44,7 +44,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
 /**
@@ -128,7 +127,7 @@ public class DeleteAttributesValueJob extends AbstractAttributeModificationJob
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#executeAttributeModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeAttributeModificationJob( StudioProgressMonitor monitor ) throws ModelModificationException
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask(
             attributesToDelete.length + valuesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_task_1
@@ -216,12 +215,9 @@ public class DeleteAttributesValueJob extends AbstractAttributeModificationJob
      * @param attributesToDelete the attributes to delete
      * @param valuesToDelete the values to delete
      * @param monitor the progress monitor
-     * 
-     * @throws ModelModificationException the model modification exception
      */
     static void deleteAttributesAndValues( IBrowserConnection browserConnection, IEntry entry,
         IAttribute[] attributesToDelete, IValue[] valuesToDelete, StudioProgressMonitor monitor )
-        throws ModelModificationException
     {
         if ( browserConnection.getConnection() != null )
         {
