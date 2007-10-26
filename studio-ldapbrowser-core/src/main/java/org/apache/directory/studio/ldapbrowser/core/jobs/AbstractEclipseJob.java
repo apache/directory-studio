@@ -149,6 +149,18 @@ public abstract class AbstractEclipseJob extends Job
 
     public final void execute()
     {
+        // prevent from running the job if there are no connections 
+        Connection[] connections = getConnections();
+        for ( Connection connection : connections )
+        {
+            if(connection == null)
+            {
+                // TODO: logger
+                System.out.println( "Null connection: " + this.getClass().getName() );
+                return;
+            }
+        }
+        
         setUser( true );
         schedule();
     }
