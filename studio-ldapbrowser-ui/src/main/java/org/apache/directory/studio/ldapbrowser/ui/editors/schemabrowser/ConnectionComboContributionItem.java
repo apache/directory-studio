@@ -92,7 +92,7 @@ public class ConnectionComboContributionItem extends ContributionItem implements
         comboViewer = new ComboViewer( parent, SWT.DROP_DOWN | SWT.READ_ONLY );
         comboViewer.setLabelProvider( new ConnectionLabelProvider() );
         comboViewer.setContentProvider( new ConnectionContentProvider() );
-        comboViewer.setInput( ConnectionCorePlugin.getDefault().getConnectionManager() );
+        comboViewer.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
         comboViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
